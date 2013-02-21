@@ -1,0 +1,46 @@
+ /*!
+ *	@file geomFault.hpp
+ *	@brief Class for Fault.
+ *
+ *	@author Luca Turconi <lturconi@gmail.com>
+ *  @date 22-09-2012
+ *
+ */
+
+#ifndef INTERSFRACTURES_HPP_
+#define INTERSFRACTURES_HPP_
+
+#include "TypeDefinition.hpp"
+#include "geomPoint3D.hpp"
+#include "geomBilinearSurface.hpp"
+#include "geomCPgridElements.hpp"
+#include "geomCPgrid.hpp"
+#include "interCellIntersections.hpp"
+#include "interGridIntersections.hpp"
+#include "interGridEdgeMap.hpp"
+#include "interGridIntersectionMap.hpp"
+#include "cutCellProperties.hpp"
+
+namespace Geometry
+{
+	
+class IntFrac:public Fracture {
+public:
+	//! @name Constructor & Destructor
+	//@{
+		
+	//! Empty constructor
+	IntFrac();
+	
+	
+private:	
+	std::vector<gmm::size_type> M_i;
+	std::vector<gmm::size_type> M_j;
+	std::vector<gmm::size_type> M_k;
+	
+
+};
+	
+} // namespace Geometry
+
+#endif /* GEOMFAULT_HPP_ */

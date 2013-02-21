@@ -1,0 +1,59 @@
+FILE README: CPgeom.so.1.0
+
+Il makefile offre diverse possibilità per compilare e installare la libreria.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Installare libCPgeom %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Lanciando il comando
+> make install
+la libreria viene installata nella directory di sitema "/usr/lib".
+In questo caso vengono anche complilati tutti i casi test:
+main_testRefined, main_Bashkirian, main_tutorial.
+Gli eseguibili sono disponibili nella directory corrente.
+
+Per disinstallare la libreria eseguire il comando:
+> make uninstall
+
+IMPORTANTE: per eseguire questo comando bisogna prima acquisire i privilegi necessari. (sudo)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Installare libCPgeom-dev %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Lanciando il comando
+> make libdev
+la libreria viene creata nella directory corrente.
+Sarà così possibile utilizzarla per compilare dei nuovi codici senza intaccare
+le directory di sistema.
+
+Per compilare tutti i casi test insieme lanciare il comando:
+> make tests
+Per compilare i singoli casi test basta lanciare il comando:
+> make main_<NOMEDELTEST>
+
+In questo caso, la libreria non risulta installata nelle directory di sistema.
+Per eseguire i casi test è necessario quindi esportare la directory corrente
+tra quelle in cui vengono ricercate le libreria dinamiche.
+Per farlo basta lanciare il comando:
+> export LD_LIBRARY_PATH=.
+I casi test possono a questo punto essere lanciati:
+> ./main_<NOMEDELTEST>
+
+Lanciando il comando:
+> make clean
+verranno cancellati tutti i file oggetto e gli eseguibili dei test.
+
+Per rimuovere la libreria dalla directory corrente, lanciare il comando:
+> make clean_lib
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Creazione della documentazione Doxygen %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+E' possibile generare la documentazione della libreria in formato html lanciando il comando:
+> make doc
+
+Per rimuovere la documentazione basta lanciare il comando:
+> make clean_doc

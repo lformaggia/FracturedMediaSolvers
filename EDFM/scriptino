@@ -1,0 +1,6 @@
+rm libCPgeom.so
+rm libCPgeom.so.1
+make libdev -j4
+export LD_LIBRARY_PATH=.
+make main_tutorial -j4
+./main_tutorial
