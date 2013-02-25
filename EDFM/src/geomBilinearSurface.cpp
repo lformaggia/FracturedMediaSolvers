@@ -76,7 +76,7 @@ namespace Geometry
 		uv[1]=0.5;
 		Segment s(p+normal,p-normal);
 					
-		uv=this->newtonIntersectionWith_uv(s);
+		this->newtonIntersectionWith_uv(s,uv);
 		
 		return uv;
 	}
@@ -349,7 +349,7 @@ namespace Geometry
 		return inter;
 	}
 	
-	std::vector<Real> BilinearSurface::newtonIntersectionWith_uv(const Segment & s, const Real & toll,
+	void BilinearSurface::newtonIntersectionWith_uv(const Segment & s,std::vector<Real> & uv, const Real & toll,
 			const UInt & maxIter) const
 	{
 //		std::cout << "NEWTON: " << std::endl;
@@ -357,7 +357,7 @@ namespace Geometry
 // 		std::cout << " segment: " << s << std::endl;
 		
 		Point3D inter;
-		std::vector<Real> uv(3,0.);
+	
 		
 		// Newton Method1: global problem, without constraints imposition
 		// ----------------------------------------------------------------
@@ -437,7 +437,7 @@ namespace Geometry
 // 		std::cout << " x[0]: " << x[0] << std::endl;
 // 		std::cout << " x[1]: " << x[1] << std::endl;
 // 		std::cout << " x[2]: " << x[2] << std::endl;
-	
+	inter = this->param(x[0],x[1]);
 		if(it>=maxIter || fabs(x[0])>100 || fabs(x[1])>100 || fabs(x[2])>100 )
 		{
  		//	std::cout << " Newton not convergent: no intersection found!" << std::endl;
@@ -445,7 +445,7 @@ namespace Geometry
 			inter.y = std::numeric_limits<Real>::quiet_NaN();
 			inter.z = std::numeric_limits<Real>::quiet_NaN();
 			uv[2]=-1.;
-			return uv;
+			
 		}
 		//commentato da anna per cercare anche le intersezioni virtuali
 	
@@ -460,21 +460,26 @@ namespace Geometry
 	 		uv[0]=x[0];
 			uv[1]=x[1];
 			uv[2]=1.;
-			return uv;
+			
 		}
 		
 		// ----------------------------------------------------------------
 		
 // 		std::cout << " Newton END " << std::endl;
 // 		std::cout << " -- Newton Iterations: " << it << std::endl;
+		//commentato da anna per cercare anche le intersezioni virtuali
+	
+		if( x[0]>(-toll) && x[0]<(1+toll) && x[1]>(-toll) && x[1]<(1+toll) )
+		{
 		
-		inter = this->param(x[0],x[1]);
-
 // 		std::cout << " Intersection: " << inter << std::endl;
 		uv[0]=x[0];
 		uv[1]=x[1];
 		uv[2]=0.0;
-		return uv;
+		
+		}
+		if (!s.isIn(inter)) {uv[2]=-1;}
+		
 	}
 	
 	Point3D BilinearSurface::approxIntersectionWith(const Segment & s, const bool & stdDivision) const
@@ -535,28 +540,34 @@ namespace Geometry
 	{	
 		gmm::size_type cont(0);
 		Segment s1(altra.A(),altra.B());
-		std::vector<Real> uv1(this->newtonIntersectionWith_uv(s1));
+		std::vector<Real> uv1(3,0.);
+		this->newtonIntersectionWith_uv(s1,uv1);
 
 		if (uv1[0]>=0 && uv1[0]<=1 && uv1[1]>=0 && uv1[1]<=1 && uv1[2]>=0&& s1.isIn(this->param(uv1[0],uv1[1]))) {cont+=1; 
 		punti.push_back(this->param(uv1[0],uv1[1]));}
 		Segment s2(altra.B(),altra.C());
-		std::vector<Real> uv2(this->newtonIntersectionWith_uv(s2));	
+		std::vector<Real> uv2(3,0.); 
+		this->newtonIntersectionWith_uv(s2,uv2);	
 		if (uv2[0]>=0 && uv2[0]<=1 && uv2[1]>=0 && uv2[1]<=1&& uv2[2]>=0 && s2.isIn(this->param(uv2[0],uv2[1]))) {cont+=1;
 		punti.push_back(this->param(uv2[0],uv2[1]));}
 		Segment s3(altra.C(),altra.D());
-		std::vector<Real> uv3(this->newtonIntersectionWith_uv(s3));	
+		std::vector<Real> uv3(3,0.);
+		this->newtonIntersectionWith_uv(s3,uv3);	
 		if (uv3[0]>=0 && uv3[0]<=1 && uv3[1]>=0 && uv3[1]<=1&& uv3[2]>=0 && s3.isIn(this->param(uv3[0],uv3[1]))) {cont+=1;
 		punti.push_back(this->param(uv3[0],uv3[1]));}
 		Segment s4(altra.D(),altra.A());
-		std::vector<Real> uv4(this->newtonIntersectionWith_uv(s4));	
+		std::vector<Real> uv4(3,0.);
+		this->newtonIntersectionWith_uv(s4,uv4);	
 		if (uv4[0]>=0 && uv4[0]<=1 && uv4[1]>=0 && uv4[1]<=1&& uv4[2]>=0 && s4.isIn(this->param(uv4[0],uv4[1]))) {cont+=1;
 		punti.push_back(this->param(uv4[0],uv4[1]));}				
 		Segment s5(altra.D(),altra.B());
-		std::vector<Real> uv5(this->newtonIntersectionWith_uv(s5));	
+		std::vector<Real> uv5(3,0.);
+		this->newtonIntersectionWith_uv(s5,uv5);	
 		if (uv5[0]>=0 && uv5[0]<=1 && uv5[1]>=0 && uv5[1]<=1 && uv5[2]>=0&& s5.isIn(this->param(uv5[0],uv5[1]))) {cont+=1;
 		punti.push_back(this->param(uv5[0],uv5[1]));}
 		Segment s6(altra.C(),altra.A());
-		std::vector<Real> uv6(this->newtonIntersectionWith_uv(s6));	
+		std::vector<Real> uv6(3,0.);
+		this->newtonIntersectionWith_uv(s6,uv6);	
 		if (uv6[0]>=0 && uv6[0]<=1 && uv6[1]>=0 && uv6[1]<=1&& uv6[2]>=0 && s6.isIn(this->param(uv6[0],uv6[1]))) {cont+=1;
 		punti.push_back(this->param(uv6[0],uv6[1]));}
 		if (cont>0) {return true;}

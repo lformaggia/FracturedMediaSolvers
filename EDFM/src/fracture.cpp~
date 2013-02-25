@@ -136,7 +136,7 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			Real TT(0);
 			for (gmm::size_type j=0; j<M_Sx.size();++j && j!=i)
 			{
-				if (M_ipos[j]==M_ipos[i]+1) {
+				if (M_ipos[j]==M_ipos[i]+1 && M_jpos[i]==M_jpos[j] && M_kpos[i]==M_kpos[j]) {
 				TT=1./(1./M_THX[i]+1./M_THX[j]);
 				}
 			}
@@ -144,7 +144,7 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			TT=0;
 			for (gmm::size_type j=0; j<M_Sx.size();++j && j!=i)
 			{
-				if (M_jpos[j]==M_jpos[i]+1) {
+				if (M_jpos[j]==M_jpos[i]+1 && M_ipos[i]==M_ipos[j] && M_kpos[i]==M_kpos[j]) {
 				TT=1./(1./M_THY[i]+1./M_THY[j]);
 				}
 			}
@@ -152,7 +152,7 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			TT=0;
 			for (gmm::size_type j=0; j<M_Sx.size();++j && j!=i)
 			{
-				if (M_kpos[j]==M_kpos[i]+1) {
+				if (M_kpos[j]==M_kpos[i]+1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j]) {
 				TT=1./(1./M_THZ[i]+1./M_THZ[j]);
 				}
 			}
@@ -260,8 +260,8 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
 		{
-			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_THX[n]<<"\t"<<M_THY[n]<<"\t"
-			<<M_THZ[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
+			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_Sx[n].length()<<"\t"<<M_Sy[n].length()<<"\t"
+			<<M_Sz[n].length()<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
 		}
 		
 		myfile<< "Intersections "<<std::endl;	

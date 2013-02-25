@@ -47,13 +47,14 @@ namespace Geometry
 //--------------settare le proprietà--------------------
 
 	void CProp::setProperties(){
-		M_Ne=0;
-gmm::size_type counter(0);
-for(Intersect::GridIntersections_Const_Iterator_Type it=M_iteratorcellsbegin;
+	
+	M_Ne=0;
+	gmm::size_type counter(0);
+	/*for(Intersect::GridIntersections_Const_Iterator_Type it=M_iteratorcellsbegin;
 			it!=M_iteratorcellsend; ++it)
 		{
-counter+=1;
-}
+		counter+=1;
+		}*/
 		for(Intersect::GridIntersections_Const_Iterator_Type it=M_iteratorcellsbegin;
 			it!=M_iteratorcellsend; ++it)
 		{	M_Ne=M_Ne+1;
@@ -110,7 +111,7 @@ counter+=1;
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
 				}
 
-				for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
+			/*	for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				
 				std::vector<Real> ooo(counter,0.);
 				M_dmedioint.push_back(ooo);
@@ -122,7 +123,7 @@ counter+=1;
 				}
 					
 					M_dmedioint[i][M_Ne]=dmediosingolo;		
-				}
+				}*/
 
 			}
 			

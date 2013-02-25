@@ -18,7 +18,7 @@
 #include "geomPoint3D.hpp"
 #include "geomSegment.hpp"
 #include "geomTriangle.hpp"
-#include "/home/anna/getfem-4.2/src/gmm/gmm.h"
+#include "gmm/gmm.h"
 
 namespace Geometry
 {
@@ -275,7 +275,7 @@ public:
 	 */	
 	Point3D newtonIntersectionWith(const Segment & s, const Real & toll=eps, const UInt & maxIter=60) const;
 	
-	std::vector<Real> newtonIntersectionWith_uv(const Segment & s, const Real & toll=eps, const UInt & maxIter=60) const;
+	void newtonIntersectionWith_uv(const Segment & s, std::vector<Real> & const Real & toll=eps, const UInt & maxIter=60) const;
 	//! Compute approximated intersection with a segment
 	/*!
 	 * The surface is approximated with two triangles.
@@ -283,7 +283,7 @@ public:
 	 * If the intersection does not exist, this method will return the point (NaN,NaN,NaN).
 	 * Equally, in the case of coplanar segment, the method will return (NaN,NaN,NaN).
 	 * (A single intersection does not exist!)
-	 * @param s The segment
+	 * @param s The segment,
 	 * @param stdDivision A bool parameter to chose the way to split the surface.
 	 * @return The intersection point or (NaN,NaN,NaN) if the intersection does not exist.
 	 */	

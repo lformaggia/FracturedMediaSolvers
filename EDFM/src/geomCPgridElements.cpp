@@ -337,7 +337,7 @@ vol2+=1./6.*fabs(provv.dot(lato3));
 
 }
 
-if (fabs(vol1-vol2)<1.0e-7){
+if (fabs(vol1-vol2)/vol1<1.0e-1){
 return true;}
 else{
 return false;}

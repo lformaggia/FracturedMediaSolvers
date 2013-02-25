@@ -90,7 +90,7 @@ public:
 
 	inline std::vector<Real>& getVolumes()  {return M_vol;}
 
-	inline std::vector<Real>& getAreas() {return M_aree;}
+	inline std::vector<Real> getAreas() {return M_aree;}
 
 	inline std::vector<Real>& getDmedio()  {return M_dmedio;}
 

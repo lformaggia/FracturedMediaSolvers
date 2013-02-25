@@ -59,16 +59,15 @@ namespace Geometry
 		cellinter.k() = c.k();
 		Intersect::Intersection inter;
 		Point3D interPoint;
-		std::vector<Real> uv_point; 
+		std::vector<Real> uv_point(3,0.); 
 		for(UInt i=1; i<=12; ++i)
 		{
-			uv_point = this->newtonIntersectionWith_uv(c.getEdge(i),toll,maxIter);
+			this->newtonIntersectionWith_uv(c.getEdge(i),uv_point,toll,maxIter);
 			interPoint=this->param(uv_point[0], uv_point[1]);
 
-			if( uv_point[2]>=0 && c.isIn(interPoint))
+		if( uv_point[2]>=0)
 			{
-				
-				if (uv_point[2]==0) {inter.first = i;}
+				if (uv_point[2]==0) {inter.first = i;  }
 				else  {inter.first = 100+i;  }
 				inter.second = interPoint;
 				cellinter.insert(inter);

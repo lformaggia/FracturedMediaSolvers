@@ -49,7 +49,7 @@ int main(){
 		GridIntersections intersectionStore(grid.Nx(),grid.Ny(),grid.Nz());
 	
 		// (5) Solver definition
-		IntersectionSolver newton_FOR3(NEWTON,EDGEMAP);
+		IntersectionSolver newton_FOR3(NEWTON,FOR3);
 	
 		// (6) Set solver properties
 		newton_FOR3.setMaxIteration(100);
@@ -63,7 +63,7 @@ int main(){
 		intersectionStore.exportVtk(ss4.str());
 	}
 
-	//lista.computeIntersections(0);
+	lista.computeIntersections(0);
 	
 	for (gmm::size_type i=0; i<lista.M_nfractures;++i){
 
@@ -73,7 +73,7 @@ int main(){
   	
 		CProp propfaglia(intMegaStore[i], &grid, &ff);
 		propfaglia.setProperties();
-		//propStore.push_back(propfaglia);
+		propStore.push_back(propfaglia);
 
 		// (8) Export solutions
 		
@@ -96,7 +96,7 @@ int main(){
 
 	}
 
-/*
+
 
 	grid.exportVtk("./data/Tutorial/grid.vtk");
 	std::string nomefile("./data/Tutorial/fratture");
@@ -115,7 +115,7 @@ int main(){
 	for (gmm::size_type i=0;i<lista.M_nfractures;++i){
 	(lista.M_fractures[i]).exportFracture(myfile,i);
 	}
-	std::cout << "Esportate le fratture"<<std::endl;*/
+	std::cout << "Esportate le fratture"<<std::endl;
 	return 0;
 	
 }
