@@ -16,21 +16,25 @@
 namespace Geometry
 {
 	Fractures::Fractures(const std::string nomefile){
-		
+		std::cout << "sono qui"<<std::endl;
 		std::ifstream myfile;
 		std::string line;
 		std::string nomefile1("data/");
 		nomefile1.append(nomefile);
+
 		myfile.open(nomefile1.c_str());
+
 		gmm::size_type flag(0);
 		getline (myfile,line);
 		getline (myfile,line);
 		getline (myfile,line);
+
 		M_isMetric=false;
 		gmm::size_type pos11;
 		pos11=line.find_first_of("=");
 	        char provv11[1];
 		gmm::size_type length11=line.copy(provv11, 1, pos11+2);
+std::cout << "sono qui"<<std::endl;
 		if (provv11=="M") {M_isMetric=true; std::cout << "METRICO"<<std::endl;}
 		while(myfile.good() && flag==0){
 	
@@ -51,7 +55,9 @@ namespace Geometry
 			flag=1;
 			}
 		}
+
 		for (gmm::size_type i=0; i<M_nfractures;++i ){
+
 			getline (myfile,line);	
 			gmm::size_type n_punti;
 			Real perm, compr, aperture;

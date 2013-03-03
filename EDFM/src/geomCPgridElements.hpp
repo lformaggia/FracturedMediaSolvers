@@ -279,7 +279,7 @@ public:
 
 	bool intersectTheFace(Segment ,  int ,   Point3D & ) const ;
 
-	std::vector<Point3D> segmentIntersectCell(Segment) const;
+	bool segmentIntersectCell(Segment S, std::vector<Point3D> &vettpunti)  const;
 
 	double set_volume() const;
 

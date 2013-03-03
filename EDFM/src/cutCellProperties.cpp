@@ -102,6 +102,8 @@ namespace Geometry
 
 				M_CG[(*it).first]=this->setCG(puntiAreaNew);
 	
+				M_puntiAree.push_back(puntiAreaNew);
+	
 				puntiAreaNew.push_back(puntiAreaNew[0]+no);
 			      
 				Hull faccia(puntiAreaNew);
@@ -158,9 +160,10 @@ namespace Geometry
 //--------------segmenti di intersezione........................................
 
 	void CProp::buildIntSegments(Intersect::GridIntersections_Const_Iterator_Type & it){
-	std::vector<Point3D> puntiX,puntiY,puntiZ;
-	std::vector<bool> isXreal, isYreal,isZreal;
-	
+	std::vector<Point3D> puntiX1,puntiY1,puntiZ1;
+	std::vector<bool> isXreal1, isYreal1,isZreal1;
+	std::vector<Point3D> puntiX2,puntiY2,puntiZ2;
+	std::vector<bool> isXreal2, isYreal2,isZreal2;
 	std::vector<Segment> latiFaglia;
 	Segment ss1(M_faultpointer->A(),M_faultpointer->B());
 	latiFaglia.push_back(ss1);
@@ -178,59 +181,120 @@ namespace Geometry
 	for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
 				jt!=(*it).second.end(); ++jt)		
 			{ 
-	if (jt->first==6 ||jt->first==7 ||jt->first==10||jt->first==2) { puntiX.push_back(jt->second); isXreal.push_back(true); }
-				if (jt->first==106 ||jt->first==107 ||jt->first==110||jt->first==102)  {puntiX.push_back(jt->second); isXreal.push_back  
+	if (jt->first==4 ||jt->first==8 ||jt->first==5||jt->first==12) { puntiX1.push_back(jt->second); isXreal1.push_back(true); }
+				if (jt->first==104 ||jt->first==108 ||jt->first==105||jt->first==112)  {puntiX1.push_back(jt->second); isXreal1.push_back  
 		                (false);}	
 			}
-	if (puntiX.size()==2) {Segment provv(puntiX[0],puntiX[1]); 
+	if (puntiX1.size()==2) {Segment provv(puntiX1[0],puntiX1[1]); 
 	for (gmm::size_type i=0;i<4;++i)
 	{	bool giafatto(false);
 		Point3D comodo;
-		if (isXreal[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo) && provv.isIn(comodo))  {giafatto=true; puntiX[0]=comodo;   }}
-		if (isXreal[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo) && provv.isIn(comodo)) {puntiX[1]=comodo;}}
+		if (isXreal1[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo) && provv.isIn(comodo))  {giafatto=true; puntiX1[0]=comodo;   }}
+		if (isXreal1[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo) && provv.isIn(comodo)) {puntiX1[1]=comodo;}}
 	}
-	Segment ss(puntiX[0],puntiX[1]);  M_Sx.push_back(ss); 
+	Segment ss(puntiX1[0],puntiX1[1]);  M_S1x.push_back(ss); 
 
 	}
-	else {M_Sx.push_back(fake);}
+	else {M_S1x.push_back(fake);}
+
 	for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
 				jt!=(*it).second.end(); ++jt)		
 			{ 
 				
-			 if (jt->first==3 ||jt->first==7 ||jt->first==8||jt->first==11)  { puntiY.push_back(jt->second);  isYreal.push_back(true); }		
-			   if (jt->first==103 ||jt->first==107 ||jt->first==108||jt->first==111)  { puntiY.push_back(jt->second); isYreal.push_back 
+			 if (jt->first==1 ||jt->first==5 ||jt->first==6||jt->first==9)  { puntiY1.push_back(jt->second);  isYreal1.push_back(true); }		
+			   if (jt->first==101 ||jt->first==105 ||jt->first==106||jt->first==109)  { puntiY1.push_back(jt->second); isYreal1.push_back 
 			   (false);}						
 			}
-	if (puntiY.size()==2) {Segment provv(puntiY[0],puntiY[1]);
+	if (puntiY1.size()==2) {Segment provv(puntiY1[0],puntiY1[1]);
 	for (gmm::size_type i=0;i<4;++i)
 	{	bool giafatto(false);
 		Point3D comodo;
-		if (isYreal[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo))  {giafatto=true; puntiY[0]=comodo;  }}
-		if (isYreal[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo)) {puntiY[1]=comodo;}}
+		if (isYreal1[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo))  {giafatto=true; puntiY1[0]=comodo;  }}
+		if (isYreal1[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo)) {puntiY1[1]=comodo;}}
 	}
-	Segment ss(puntiY[0],puntiY[1]); M_Sy.push_back(ss);
+	Segment ss(puntiY1[0],puntiY1[1]); M_S1y.push_back(ss);
 	}
 
-	else {M_Sy.push_back(fake);}
+	else {M_S1y.push_back(fake);}
 	
 	for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
 				jt!=(*it).second.end(); ++jt)		
 			{  
 
-if (jt->first==1 ||jt->first==2 ||jt->first==3||jt->first==4)  { puntiZ.push_back(jt->second);  isZreal.push_back(true); }		
- 			if (jt->first==101 ||jt->first==102 ||jt->first==103||jt->first==104)  { puntiZ.push_back(jt->second); isZreal.push_back
+if (jt->first==9 ||jt->first==10 ||jt->first==11||jt->first==12)  { puntiZ1.push_back(jt->second);  isZreal1.push_back(true); }		
+ 			if (jt->first==109 ||jt->first==110 ||jt->first==111||jt->first==112)  { puntiZ1.push_back(jt->second); isZreal1.push_back
 			(false);}									
 			}
-	if (puntiZ.size()==2) {Segment provv(puntiZ[0],puntiZ[1]);
+	if (puntiZ1.size()==2) {Segment provv(puntiZ1[0],puntiZ1[1]);
 	for (gmm::size_type i=0;i<4;++i)
 	{	bool giafatto(false);
 		Point3D comodo;
-		if (isZreal[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo))  {giafatto=true; puntiZ[0]=comodo;  }}
-		if (isZreal[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo)) {puntiZ[1]=comodo;}}
+		if (isZreal1[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo))  {giafatto=true; puntiZ1[0]=comodo;  }}
+		if (isZreal1[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo)) {puntiZ1[1]=comodo;}}
 	}
-	Segment ss(puntiZ[0],puntiZ[1]); M_Sz.push_back(ss); 
+	Segment ss(puntiZ1[0],puntiZ1[1]); M_S1z.push_back(ss); 
 	}
-	else {M_Sz.push_back(fake);}
+	else {M_S1z.push_back(fake);}
+	
+
+//-------------
+for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
+				jt!=(*it).second.end(); ++jt)		
+			{  
+	if (jt->first==6 ||jt->first==7 ||jt->first==10||jt->first==2) { puntiX2.push_back(jt->second); isXreal2.push_back(true); }
+				if (jt->first==106 ||jt->first==107 ||jt->first==110||jt->first==102)  {puntiX2.push_back(jt->second); isXreal2.push_back  
+		                (false);}	
+			}
+	if (puntiX2.size()==2) {Segment provv(puntiX2[0],puntiX2[1]); 
+	for (gmm::size_type i=0;i<4;++i)
+	{	bool giafatto(false);
+		Point3D comodo;
+		if (isXreal2[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo) && provv.isIn(comodo))  {giafatto=true; puntiX2[0]=comodo;   }}
+		if (isXreal2[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo) && provv.isIn(comodo)) {puntiX2[1]=comodo;}}
+	}
+	Segment ss(puntiX2[0],puntiX2[1]);  M_S2x.push_back(ss); 
+
+	}
+	else {M_S2x.push_back(fake);}
+
+	for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
+				jt!=(*it).second.end(); ++jt)		
+			{ 
+				
+			 if (jt->first==3 ||jt->first==7 ||jt->first==8||jt->first==11)  { puntiY2.push_back(jt->second);  isYreal2.push_back(true); }		
+			   if (jt->first==103 ||jt->first==107 ||jt->first==108||jt->first==111)  { puntiY2.push_back(jt->second); isYreal2.push_back 
+			   (false);}						
+			}
+	if (puntiY2.size()==2) {Segment provv(puntiY2[0],puntiY2[1]);
+	for (gmm::size_type i=0;i<4;++i)
+	{	bool giafatto(false);
+		Point3D comodo;
+		if (isYreal2[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo))  {giafatto=true; puntiY2[0]=comodo;  }}
+		if (isYreal2[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo)) {puntiY2[1]=comodo;}}
+	}
+	Segment ss(puntiY2[0],puntiY2[1]); M_S2y.push_back(ss);
+	}
+
+	else {M_S2y.push_back(fake);}
+	
+	for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
+				jt!=(*it).second.end(); ++jt)		
+			{  
+
+if (jt->first==1 ||jt->first==2 ||jt->first==3||jt->first==4)  { puntiZ2.push_back(jt->second);  isZreal2.push_back(true); }		
+ 			if (jt->first==101 ||jt->first==102 ||jt->first==103||jt->first==104)  { puntiZ2.push_back(jt->second); isZreal2.push_back
+			(false);}									
+			}
+	if (puntiZ2.size()==2) {Segment provv(puntiZ2[0],puntiZ2[1]);
+	for (gmm::size_type i=0;i<4;++i)
+	{	bool giafatto(false);
+		Point3D comodo;
+		if (isZreal2[0]==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo))  {giafatto=true; puntiZ2[0]=comodo;  }}
+		if (isZreal2[1]==false && giafatto==false) 	{ if(latiFaglia[i].intersectTheSegment(provv,comodo)) {puntiZ2[1]=comodo;}}
+	}
+	Segment ss(puntiZ2[0],puntiZ2[1]); M_S2z.push_back(ss); 
+	}
+	else {M_S2z.push_back(fake);}
 	}
 
 //--------------prendere per ogni cella i punti di intersezione-------------------

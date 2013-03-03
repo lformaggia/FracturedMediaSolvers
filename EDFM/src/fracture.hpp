@@ -52,6 +52,9 @@ public:
 	  std::vector<Real> M_az;
 	  std::vector<Real> M_dmedio;
  	 } ; 
+	/*struct CellaF{     //esperimento... serviva per visualizzare ma è meno urgente
+	std::vector<Point3D> puntiAree;
+	};*/
 	//! @name Constructor & Destructor
 	//@{
 		
@@ -75,11 +78,11 @@ public:
 
 	Fracture(const BilinearSurface & b);
 
-	inline std::vector<Segment> getSx() const {return M_Sx;}
+	inline std::vector<Segment> getSx(gmm::size_type i) const {return (i==1)?M_S1x:M_S2x;}
 
-	inline std::vector<Segment> getSy() const {return M_Sy;}
+	inline std::vector<Segment> getSy(gmm::size_type i) const {return (i==1)?M_S1y:M_S2y;}
 
-	inline std::vector<Segment> getSz() const {return M_Sz;}
+	inline std::vector<Segment> getSz(gmm::size_type i) const {return (i==1)?M_S1z:M_S2z;}
 
 	inline std::vector<gmm::size_type> M_ii() const {return M_ipos;}
 
@@ -126,13 +129,17 @@ public:
 
 	inline std::vector<IntFrac> inter() {return M_inter;}
 
+	//bool exportVtk(const std::string & ) const;
+
+
 	Real CDARCY;
 	
 private:
 	CPgrid* M_gridpointer; 
 	bool M_isMetric;
 	std::vector<gmm::size_type> M_isintby;	
-std::vector<IntFrac> M_inter;
+	std::vector<IntFrac> M_inter;
+//	std::vector<CellaF> M_celle;   //non urgente
 	Real M_perm;
 	Real M_aperture;
 	Real M_compr;
@@ -143,18 +150,32 @@ std::vector<IntFrac> M_inter;
 	std::vector<Real> M_areas;
 	std::vector<Real> M_Dmedio;
 	std::vector<Point3D> M_CG;
-	std::vector<Segment> M_Sx;
-	std::vector<Segment> M_Sy;
-	std::vector<Segment> M_Sz;
-	std::vector<Point3D> M_Lx;
-	std::vector<Point3D> M_Ly;
-	std::vector<Point3D> M_Lz;
-	std::vector<Point3D> M_Nx;
-	std::vector<Point3D> M_Ny;
-	std::vector<Point3D> M_Nz;
-	std::vector<Real> M_THX;
-	std::vector<Real> M_THY;
-	std::vector<Real> M_THZ;
+	std::vector<Segment> M_S1x;
+	std::vector<Segment> M_S1y;
+	std::vector<Segment> M_S1z;
+	std::vector<Segment> M_S2x;
+	std::vector<Segment> M_S2y;
+	std::vector<Segment> M_S2z;
+
+	std::vector<Point3D> M_L1x;
+	std::vector<Point3D> M_L1y;
+	std::vector<Point3D> M_L1z;
+	std::vector<Point3D> M_L2x;
+	std::vector<Point3D> M_L2y;
+	std::vector<Point3D> M_L2z;
+	std::vector<Point3D> M_N1x;
+	std::vector<Point3D> M_N1y;
+	std::vector<Point3D> M_N1z;
+	std::vector<Point3D> M_N2x;
+	std::vector<Point3D> M_N2y;
+	std::vector<Point3D> M_N2z;
+
+	std::vector<Real> M_TH1X;
+	std::vector<Real> M_TH1Y;
+	std::vector<Real> M_TH1Z;
+	std::vector<Real> M_TH2X;
+	std::vector<Real> M_TH2Y;
+	std::vector<Real> M_TH2Z;
 	std::vector<Real> M_TX;
 	std::vector<Real> M_TY;
 	std::vector<Real> M_TZ;

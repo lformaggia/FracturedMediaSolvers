@@ -53,6 +53,7 @@ class CProp
 public:
 
 	typedef std::vector<Real> vettReal;
+	typedef std::vector<Point3D> vettPoints;
 	//! @name Constructor & Destructor
 	//@{
 		
@@ -96,15 +97,16 @@ public:
 
 	inline std::vector<Point3D>& getCG()  {return M_CG;}
 
-	inline std::vector<Segment>& getSx()  {return M_Sx;}
+	inline std::vector<Segment>& getSx(gmm::size_type i)  {return (i==1)?M_S1x:M_S2x;}
+	inline std::vector<Segment>& getSy(gmm::size_type i)   {return (i==1)?M_S1y:M_S2y;}
 
-	inline std::vector<Segment>& getSy()  {return M_Sy;}
-
-	inline std::vector<Segment>& getSz()  {return M_Sz;}
+	inline std::vector<Segment>& getSz(gmm::size_type i)  {return (i==1)?M_S1z:M_S2z;}
 
 	inline gmm::size_type getNe() const {return M_Ne;}
 
 	inline std::vector<Real> getMdmedioInt(gmm::size_type i) {return M_dmedioint[i];}
+	inline std::vector<Point3D> getPoints(gmm::size_type i) {return M_puntiAree[i];}
+
 
 	inline std::vector<gmm::size_type> getI() const {return M_i;}	
 	inline std::vector<gmm::size_type> getJ() const {return M_j;}	
@@ -115,6 +117,7 @@ public:
 private:
 	std::vector<Real> M_aree, M_vol, M_dmedio;
 	std::vector<vettReal> M_dmedioint;
+	std::vector<vettPoints> M_puntiAree;
 	std::vector<Point3D> M_CG;
  	Intersect::GridIntersections_Const_Iterator_Type M_iteratorcellsbegin,M_iteratorcellsend;
 	CPgrid* M_gridpointer; 
@@ -123,9 +126,12 @@ private:
 	std::vector<gmm::size_type> M_i;
 	std::vector<gmm::size_type> M_j;
 	std::vector<gmm::size_type> M_k;
-	std::vector<Segment> M_Sx;
-	std::vector<Segment> M_Sy;
-	std::vector<Segment> M_Sz;
+	std::vector<Segment> M_S1x;
+	std::vector<Segment> M_S1y;
+	std::vector<Segment> M_S1z;
+	std::vector<Segment> M_S2x;
+	std::vector<Segment> M_S2y;
+	std::vector<Segment> M_S2z;
 
 };
 

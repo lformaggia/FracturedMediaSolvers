@@ -9,7 +9,9 @@
 
 #include<omp.h>
 //#include "/usr/lib/gcc/x86_64-unknown-linux-gnu/4.7.1/include/omp.h"
-
+#include<limits>
+#include<fstream>
+#include <iomanip>
 #include "fracture.hpp"
 #include "cutCellProperties.hpp"
 
@@ -52,11 +54,20 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			if (aa>0){
 			M_Ne=M_Ne+1;
 			M_areas.push_back(aa);
+			/*CellaF cella;
+			for (gmm::size_type kk=0; kk<geoprop.getPoints(NN).size();++kk){
+			cella.puntiAree.push_back(geoprop.getPoints(NN)[kk]);
+			}
+			std::cout << cella.puntiAree.size()<<std::endl;
+			M_celle.push_back(cella);*/
 			M_Dmedio.push_back(geoprop.getDmedio()[NN]);
 			M_CG.push_back(geoprop.getCG()[NN]);
-			M_Sx.push_back(geoprop.getSx()[i]);
-			M_Sy.push_back(geoprop.getSy()[i]);
-			M_Sz.push_back(geoprop.getSz()[i]);
+			M_S1x.push_back(geoprop.getSx(1)[i]);
+			M_S1y.push_back(geoprop.getSy(1)[i]);
+			M_S1z.push_back(geoprop.getSz(1)[i]);
+			M_S2x.push_back(geoprop.getSx(2)[i]);
+			M_S2y.push_back(geoprop.getSy(2)[i]);
+			M_S2z.push_back(geoprop.getSz(2)[i]);
 			M_ipos.push_back(geoprop.getI()[i]);
 			M_jpos.push_back(geoprop.getJ()[i]);
 			M_kpos.push_back(geoprop.getK()[i]);
@@ -77,22 +88,34 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 	void Fracture::setNormaltoEdges()
 	{
-		for (gmm::size_type i=0; i<M_Sx.size();++i)
+		for (gmm::size_type i=0; i<M_S1x.size();++i)
 		{
 			Point3D ll;
 			Point3D NN;
-			ll=M_Sx[i].A()-M_Sx[i].B();
+			ll=M_S1x[i].A()-M_S1x[i].B();
 			NN=ll.cross(this->normal(0.5,0.5));
-			if (NN.norm()>0){M_Nx.push_back(NN/NN.norm());}
-			else {M_Nx.push_back(NN);}
-			ll=M_Sy[i].A()-M_Sy[i].B();
+			if (NN.norm()>0){M_N1x.push_back(NN/NN.norm());}
+			else {M_N1x.push_back(NN);}
+			ll=M_S1y[i].A()-M_S1y[i].B();
 			NN=ll.cross(this->normal(0.5,0.5));
-			if (NN.norm()>0){M_Ny.push_back(NN/NN.norm());}
-			else {M_Ny.push_back(NN);}
-			ll=M_Sz[i].A()-M_Sz[i].B();
+			if (NN.norm()>0){M_N1y.push_back(NN/NN.norm());}
+			else {M_N1y.push_back(NN);}
+			ll=M_S1z[i].A()-M_S1z[i].B();
 			NN=ll.cross(this->normal(0.5,0.5));
-			if (NN.norm()>0){M_Nz.push_back(NN/NN.norm());}
-			else {M_Nz.push_back(NN);}
+			if (NN.norm()>0){M_N1z.push_back(NN/NN.norm());}
+			else {M_N1z.push_back(NN);}
+			ll=M_S2x[i].A()-M_S2x[i].B();
+			NN=ll.cross(this->normal(0.5,0.5));
+			if (NN.norm()>0){M_N2x.push_back(NN/NN.norm());}
+			else {M_N2x.push_back(NN);}
+			ll=M_S2y[i].A()-M_S2y[i].B();
+			NN=ll.cross(this->normal(0.5,0.5));
+			if (NN.norm()>0){M_N2y.push_back(NN/NN.norm());}
+			else {M_N2y.push_back(NN);}
+			ll=M_S2z[i].A()-M_S2z[i].B();
+			NN=ll.cross(this->normal(0.5,0.5));
+			if (NN.norm()>0){M_N2z.push_back(NN/NN.norm());}
+			else {M_N2z.push_back(NN);}
 
 		}
 	}
@@ -101,59 +124,72 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 	void Fracture::setHalfLength()
 	{
-		for (gmm::size_type i=0; i<M_Sx.size();++i)
+		for (gmm::size_type i=0; i<M_S1x.size();++i)
 		{
 			Point3D ll;
-			ll=2*(M_Sx[i].A()-M_CG[i]);
-			M_Lx.push_back(ll);
-			ll=2*(M_Sy[i].A()-M_CG[i]);
-			M_Ly.push_back(ll);
-			ll=2*(M_Sz[i].A()-M_CG[i]);
-			M_Lz.push_back(ll);
+			ll=2*(M_S1x[i].A()-M_CG[i]);
+			M_L1x.push_back(ll);
+			ll=2*(M_S1y[i].A()-M_CG[i]);
+			M_L1y.push_back(ll);
+			ll=2*(M_S1z[i].A()-M_CG[i]);
+			M_L1z.push_back(ll);
+			ll=2*(M_S2x[i].A()-M_CG[i]);
+			M_L2x.push_back(ll);
+			ll=2*(M_S2y[i].A()-M_CG[i]);
+			M_L2y.push_back(ll);
+			ll=2*(M_S2z[i].A()-M_CG[i]);
+			M_L2z.push_back(ll);
+
 
 		}
 	}
 
 	void Fracture::setHalfTransmFF()
 	{
-		for (gmm::size_type i=0; i<M_Sx.size();++i)
+		for (gmm::size_type i=0; i<M_S1x.size();++i)
 		{
 			Real TT;
-			TT=2*M_perm*CDARCY*M_Sx[i].length()*M_aperture*fabs(M_Lx[i].dot(M_Nx[i]))/(M_Lx[i].norm()*M_Lx[i].norm());
-			M_THX.push_back(TT);
-			TT=2*M_perm*CDARCY*M_Sy[i].length()*M_aperture*fabs(M_Ly[i].dot(M_Ny[i]))/(M_Ly[i].norm()*M_Ly[i].norm());
-			M_THY.push_back(TT);
-			TT=2*M_perm*CDARCY*M_Sz[i].length()*M_aperture*fabs(M_Lz[i].dot(M_Nz[i]))/(M_Lz[i].norm()*M_Lz[i].norm());
-			M_THZ.push_back(TT);
+			TT=2*M_perm*CDARCY*M_S1x[i].length()*M_aperture*fabs(M_L1x[i].dot(M_N1x[i]))/(M_L1x[i].norm()*M_L1x[i].norm());
+			M_TH1X.push_back(TT);
+			TT=2*M_perm*CDARCY*M_S1y[i].length()*M_aperture*fabs(M_L1y[i].dot(M_N1y[i]))/(M_L1y[i].norm()*M_L1y[i].norm());
+			M_TH1Y.push_back(TT);
+			TT=2*M_perm*CDARCY*M_S1z[i].length()*M_aperture*fabs(M_L1z[i].dot(M_N1z[i]))/(M_L1z[i].norm()*M_L1z[i].norm());
+			M_TH1Z.push_back(TT);
+			TT=2*M_perm*CDARCY*M_S2x[i].length()*M_aperture*fabs(M_L2x[i].dot(M_N2x[i]))/(M_L2x[i].norm()*M_L2x[i].norm());
+			M_TH2X.push_back(TT);
+			TT=2*M_perm*CDARCY*M_S2y[i].length()*M_aperture*fabs(M_L2y[i].dot(M_N2y[i]))/(M_L2y[i].norm()*M_L2y[i].norm());
+			M_TH2Y.push_back(TT);
+			TT=2*M_perm*CDARCY*M_S2z[i].length()*M_aperture*fabs(M_L2z[i].dot(M_N2z[i]))/(M_L2z[i].norm()*M_L2z[i].norm());
+			M_TH2Z.push_back(TT);
 		}
 	}
 
 	void Fracture::setTransmFF()
 	{	
 		this->setHalfTransmFF();
-		for (gmm::size_type i=0; i<M_Sx.size();++i)
+		for (gmm::size_type i=0; i<M_S1x.size();++i)
 		{ 
 			Real TT(0);
-			for (gmm::size_type j=0; j<M_Sx.size();++j && j!=i)
+			for (gmm::size_type j=0; j<M_S1x.size();++j && j!=i)
 			{
 				if (M_ipos[j]==M_ipos[i]+1 && M_jpos[i]==M_jpos[j] && M_kpos[i]==M_kpos[j]) {
-				TT=1./(1./M_THX[i]+1./M_THX[j]);
+				TT=1./(1./M_TH2X[i]+1./M_TH1X[j]);
 				}
 			}
 		        M_TX.push_back(TT);
 			TT=0;
-			for (gmm::size_type j=0; j<M_Sx.size();++j && j!=i)
+			for (gmm::size_type j=0; j<M_S1x.size();++j && j!=i)
 			{
 				if (M_jpos[j]==M_jpos[i]+1 && M_ipos[i]==M_ipos[j] && M_kpos[i]==M_kpos[j]) {
-				TT=1./(1./M_THY[i]+1./M_THY[j]);
+				TT=1./(1./M_TH2Y[i]+1./M_TH1Y[j]);
 				}
 			}
 		        M_TY.push_back(TT);
 			TT=0;
-			for (gmm::size_type j=0; j<M_Sx.size();++j && j!=i)
+			for (gmm::size_type j=0; j<M_S1x.size();++j && j!=i)
 			{
 				if (M_kpos[j]==M_kpos[i]+1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j]) {
-				TT=1./(1./M_THZ[i]+1./M_THZ[j]);
+				TT=1./(1./M_TH2Z[i]+1./M_TH1Z[j]);
 				}
 			}
 		        M_TZ.push_back(TT);
@@ -162,7 +198,7 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 	void Fracture::setTransmFM()
 	{	
-		for (gmm::size_type i=0; i<M_Sx.size();++i)
+		for (gmm::size_type i=0; i<M_S1x.size();++i)
 		{ 
 			Real k_mX(1),k_mY(1), k_mZ(1);
 			Real TT(0);
@@ -199,9 +235,9 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 		
 	}
 
-	//Segment SS(maxSegment(punti));
-	Point3D AA(0,0,0);
-	Segment SS(AA,AA);
+	Segment SS(maxSegment(punti));
+//	Point3D AA(0,0,0);
+//	Segment SS(AA,AA);
 	nuova.SMax=SS;
 
 	nuova.Normale=altra.normal(0,0) - (this->normal(0,0)).dot(altra.normal(0,0))*this->normal(0,0);
@@ -212,14 +248,18 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			{
 			   if (M_ipos[ii]==altra.M_ii()[jj] && M_jpos[ii]==altra.M_jj()[jj] &&M_kpos[ii]==altra.M_kk()[jj])
 				{	
+				
+					CPcell CC(M_gridpointer->cell(M_ipos[ii],M_jpos[ii],M_kpos[ii]));
+					std::vector<Point3D> pp;
+					if (CC.segmentIntersectCell(SS,pp)){
+					
 					nuova.M_i.push_back(M_ipos[ii]);
 					nuova.M_j.push_back(M_jpos[ii]);
 					nuova.M_k.push_back(M_kpos[ii]);
 					nuova.Which1.push_back(ii);
 					nuova.Which2.push_back(jj);
 					
-				/*	CPcell CC(M_gridpointer->cell(M_ipos[ii],M_jpos[ii],M_kpos[ii]));
-					std::vector<Point3D> pp(CC.segmentIntersectCell(SS));
+					
 					
 					nuova.M_ax.push_back(fabs(pp[0].x-pp[1].x));
 					nuova.M_ay.push_back(fabs(pp[0].y-pp[1].y));
@@ -227,9 +267,9 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 					Real THX,THY,THZ;
 					nuova.M_dmedio=M_inter[dove].M_dmedio;
 
-					THX=CDARCY*M_perm*fabs(pp[0].x-pp[1].x)*M_aperture/nuova.M_dmedio[ii];*/
+					THX=CDARCY*M_perm*fabs(pp[0].x-pp[1].x)*M_aperture/nuova.M_dmedio[ii];
 
-				
+				}
 	
 				}
 			}
@@ -256,12 +296,13 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 		}
 		
 		myfile<<"Transmissibility FF"<<std::endl;
-		myfile<<"N\tI\tJ\tK\tThalfX\tThalfY\tThalfZ\tTX\tTY\tTZ"<<std::endl;
+		myfile<<"N\tI\tJ\tK\tThalfX1\tThalfY1\tThalfZ1\tThalfX2\tThalfY2\tThalfZ2\tTX\tTY\tTZ"<<std::endl;
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
 		{
-			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_Sx[n].length()<<"\t"<<M_Sy[n].length()<<"\t"
-			<<M_Sz[n].length()<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
+			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_TH1X[n]<<"\t"<<M_TH1Y[n]<<"\t"
+			<<M_TH1Z[n]<<"\t"<<M_TH2X[n]<<"\t"<<M_TH2Y[n]<<"\t"
+			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
 		}
 		
 		myfile<< "Intersections "<<std::endl;	
@@ -309,5 +350,65 @@ Segment maxSegment(std::vector<Point3D> & punti)
 	return S;	
 	}
 
+	/*bool Fracture::exportVtk(const std::string & fileName) const
+	{
+		std::fstream filestr;
+		
+		filestr.open (fileName.c_str(), std::ios_base::out);
+	
+		if (filestr.is_open())
+		{
+			std::cout << std::endl << " File: " << fileName << ", successfully opened";
+		}
+		else
+		{
+			std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+			return  0;
+		}
+		
+		std::cout << std::endl << " Exporting fracture mesh in Vtk format... " << std::endl;
+		
+	
+		// Header
+		filestr << "# vtk DataFile Version 3.1" << std::endl;
+		filestr << "this is a file created for Paraview" << std::endl;
+		filestr << "ASCII" << std::endl;
+		filestr << "DATASET UNSTRUCTURED_GRID" << std::endl;
+		filestr << std::endl;	// The fifth line is empty.
+		
+		filestr << std::scientific << std::setprecision(10);
+		gmm::size_type npoints(0);
+
+		for (gmm::size_type kk=0; kk<M_celle.size();++kk){
+		npoints=npoints+M_celle[kk].puntiAree.size();
+		}
+		// Pointdata
+		filestr << "POINTS " << npoints << " double" << std::endl;
+		for (gmm::size_type kk=0; kk<M_celle.size();++kk){
+
+		}
+		/*filestr << M_pA.x << " " << M_pA.y
+				<< " " << M_pA.z << std::endl;
+		filestr << M_pB.x << " " << M_pB.y
+				<< " " << M_pB.z << std::endl;
+		filestr << M_pC.x << " " << M_pC.y
+				<< " " << M_pC.z << std::endl;
+		filestr << M_pD.x << " " << M_pD.y
+				<< " " << M_pD.z << std::endl;
+		filestr << std::endl;
+		}
+		// Celldata
+		filestr << "CELLS " << nCells << " " << 5 << std::endl;
+		filestr << "4 0 1 2 3" << std::endl;
+		filestr << std::endl;
+		
+		filestr << "CELL_TYPES " << nCells << std::endl;
+		filestr << CellType << std::endl;
+		filestr << std::endl;
+		
+		filestr.close();
+		
+		return 1;
+	}*/
 
 } // namespace Geometry
