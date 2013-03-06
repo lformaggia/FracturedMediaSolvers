@@ -99,22 +99,53 @@ namespace Geometry
 		return inter;
 	}
 
-	std::vector<Point3D> Triangle::getGaussNodes(){
+	std::vector<Point3D> Triangle::getGaussNodes(UInt deg){
 		Point3D p;
 		std::vector<Point3D> nodigauss;
+		if (deg==2){
 		p=2./3.*M_pA + 1./6.*M_pB + 1./6.*M_pC; 
 		nodigauss.push_back(p);
-		p=1./6.*M_pB + 2./3.*M_pA + 1./6.*M_pC;
+		p=1./6.*M_pA + 2./3.*M_pB + 1./6.*M_pC;
 		nodigauss.push_back(p);
 		p=1./6.*M_pA +1./6.*M_pB +2./3.*M_pC;
 		nodigauss.push_back(p);
+		}
+		if (deg==4){
+		p=0.816847572*M_pA + 0.091576213*M_pB + 0.091576213*M_pC; 
+		nodigauss.push_back(p);
+		p= 0.091576213*M_pA + 0.816847572*M_pB +  0.091576213*M_pC;
+		nodigauss.push_back(p);
+		p= 0.091576213*M_pA + 0.091576213*M_pB +0.816847572*M_pC;
+		nodigauss.push_back(p);
+         
+		p=0.1081030181*M_pA + 0.44594849*M_pB +0.44594849*M_pC; 
+		nodigauss.push_back(p);
+		p= 0.44594849*M_pA + 0.1081030181*M_pB + 0.44594849*M_pC;
+		nodigauss.push_back(p);
+		p= 0.44594849*M_pA +0.44594849*M_pB +0.1081030181*M_pC;
+		nodigauss.push_back(p);
+		}
 	
 		return nodigauss;
 	}
 
-	std::vector<Real> Triangle::getGaussWeights(){
-		std::vector<Real>  pesigauss(3,1./3.);
+	std::vector<Real> Triangle::getGaussWeights(UInt deg){	
+		std::vector<Real>  pesigauss
+		if (deg==2){
+		pesigauss.push_back(1./3.);
+		pesigauss.push_back(1./3.);
+		pesigauss.push_back(1./3.);
+		}
+		if (deg==4){
+		pesigauss.push_back(0.10995174);
+		pesigauss.push_back(0.10995174);
+		pesigauss.push_back(0.10995174);
+		pesigauss.push_back(0.2233815896);
+		pesigauss.push_back(0.2233815896);
+		pesigauss.push_back(0.2233815896);
+		}
 		return pesigauss;
+		
 	}
 	
 	bool Triangle::exportVtk(const std::string & fileName) const

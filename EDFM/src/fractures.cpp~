@@ -34,7 +34,7 @@ namespace Geometry
 		pos11=line.find_first_of("=");
 	        char provv11[1];
 		gmm::size_type length11=line.copy(provv11, 1, pos11+2);
-
+std::cout << "sono qui"<<std::endl;
 		if (provv11=="M") {M_isMetric=true; std::cout << "METRICO"<<std::endl;}
 		while(myfile.good() && flag==0){
 	

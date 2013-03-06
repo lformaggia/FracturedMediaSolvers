@@ -52,9 +52,11 @@ public:
 	  std::vector<Real> M_az;
 	  std::vector<Real> M_dmedio;
  	 } ; 
-	/*struct CellaF{     //esperimento... serviva per visualizzare ma è meno urgente
+	struct CellaF{     //esperimento... serviva per visualizzare ma è meno urgente
 	std::vector<Point3D> puntiAree;
-	};*/
+	std::vector<Point3D> raggi;
+	std::vector<Real> theta;
+	};
 	//! @name Constructor & Destructor
 	//@{
 		
@@ -129,6 +131,8 @@ public:
 
 	inline std::vector<IntFrac> inter() {return M_inter;}
 
+	bool isAreaOK() ;
+
 	bool exportVtk(const std::string & ) const;
 
 
@@ -139,7 +143,7 @@ private:
 	bool M_isMetric;
 	std::vector<gmm::size_type> M_isintby;	
 	std::vector<IntFrac> M_inter;
-//	std::vector<CellaF> M_celle;   //non urgente
+	std::vector<CellaF> M_celle;   //non urgente
 	Real M_perm;
 	Real M_aperture;
 	Real M_compr;

@@ -79,8 +79,10 @@ public:
 
 	Real setIntArea(Hull & , gmm::size_type );
 
-	Point3D setCG(std::vector<Point3D> &);
+	//Point3D setCG(std::vector<Point3D> &);
 
+	Point3D setCG(Hull & , gmm::size_type );
+	
 	Real setIntd(Hull & , Point3D);
 
 	std::vector<Point3D> addPoints4area(std::vector<Point3D> &, std::vector<bool>,Intersect::GridIntersections_Const_Iterator_Type &);
@@ -105,7 +107,7 @@ public:
 	inline gmm::size_type getNe() const {return M_Ne;}
 
 	inline std::vector<Real> getMdmedioInt(gmm::size_type i) {return M_dmedioint[i];}
-	inline std::vector<Point3D> getPoints(gmm::size_type i) {return M_puntiAree[i];}
+	inline vettPoints getPoints(gmm::size_type i) {return M_puntiAree[i];}
 
 
 	inline std::vector<gmm::size_type> getI() const {return M_i;}	

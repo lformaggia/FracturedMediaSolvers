@@ -275,7 +275,7 @@ public:
 	 */	
 	Point3D newtonIntersectionWith(const Segment & s, const Real & toll=eps, const UInt & maxIter=60) const;
 	
-	void newtonIntersectionWith_uv(const Segment & s, std::vector<Real> & const Real & toll=eps, const UInt & maxIter=60) const;
+	void newtonIntersectionWith_uv(const Segment & s, std::vector<Real> &, const Real & toll=eps, const UInt & maxIter=60) const;
 	//! Compute approximated intersection with a segment
 	/*!
 	 * The surface is approximated with two triangles.

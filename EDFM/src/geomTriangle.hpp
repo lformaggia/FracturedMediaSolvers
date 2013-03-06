@@ -198,9 +198,9 @@ public:
 	 */	
 	Point3D intersectionWith(const Segment & s) const;
 
-	std::vector<Point3D> getGaussNodes();
+	std::vector<Point3D> getGaussNodes(UInt );
 	
-	std::vector<Real> getGaussWeights();
+	std::vector<Real> getGaussWeights(UInt);
 
 	//! Export in vtk format
 	/*!

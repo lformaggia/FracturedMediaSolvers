@@ -97,6 +97,20 @@ namespace Geometry
 
 	}
 
+	Real BilinearSurface::areaFault(){
+		Point3D lato1(M_pA),lato2(M_pB), lato3(M_pC), lato4(M_pD), NN1,NN2;
+		lato1=lato1-M_pB;
+		lato2=lato2-M_pC;
+		lato3=lato3-M_pD;
+		lato4=lato4-M_pA;
+		NN1=lato1.cross(lato2);
+		NN2=lato3.cross(lato4);
+		Real Area;
+		Area=0.5*NN1.norm()+0.5*NN2.norm();
+		return Area;
+		
+	}
+
 	Real BilinearSurface::maxCurvature(const Real & u, const Real & v) const
 	{
 		// Coefficients of I fundamental form

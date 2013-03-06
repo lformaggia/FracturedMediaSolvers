@@ -105,6 +105,8 @@ public:
 	inline gmm::size_type getNe() const {return M_Ne;}
 
 	inline std::vector<Real> getMdmedioInt(gmm::size_type i) {return M_dmedioint[i];}
+	inline vettPoints getPoints(gmm::size_type i) {return M_puntiAree[i];}
+
 
 	inline std::vector<gmm::size_type> getI() const {return M_i;}	
 	inline std::vector<gmm::size_type> getJ() const {return M_j;}	

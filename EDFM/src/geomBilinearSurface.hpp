@@ -171,6 +171,8 @@ public:
 	std::vector<Real> inv_param(const Point3D ,const Point3D );
 
 	void makePlanar();
+
+	Real areaFault();
 	//! Parametric equation: first order partial derivative with respect to u
 	/*!
 	 * It is the parametrization of the first derivative with respect to u

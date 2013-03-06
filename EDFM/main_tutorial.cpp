@@ -28,13 +28,12 @@ int main(){
 //	CPgrid grid("./data/EP_3D_grid.GRDECL",0);
 	CPgrid grid("./data/EP_Cart_metric.GRDECL",0);
 		
-//CPgrid grid("./data/gridTest",0);
+//	CPgrid grid("./data/gridTest",0);
 	
 	// (2) Points definition
 
 
-	//Fractures lista("EP_longf_metriczp.fab");
-	Fractures lista("EP_longf_metriczp.fab");
+	Fractures lista("EP_longf_metriczp1.fab");
 //	Fractures lista("lista_mia3.fab");
 
 	std::vector<GridIntersections> intMegaStore;	
@@ -68,12 +67,12 @@ int main(){
 
 	lista.computeIntersections(0);
 	
+
 	for (gmm::size_type i=0; i<lista.M_nfractures;++i){
 
 		Fracture ff(lista.M_fractures[i]);
 		Fault f(ff);
-		//i casini fatti da anna
-  	
+		
 		CProp propfaglia(intMegaStore[i], &grid, &ff);
 		propfaglia.setProperties();
 		propStore.push_back(propfaglia);
@@ -96,24 +95,20 @@ int main(){
 	        ss3<< "./data/Tutorial/grid_d"<<i<<".vtk";
 		grid.exportVtk(ss3.str(), propfaglia.getDmedio(),"d",0);
 
-		
-
 	}
-
-
 
 	grid.exportVtk("./data/Tutorial/grid.vtk");
 	std::string nomefile("./data/Tutorial/fratture");
 	std::ofstream myfile;
 	myfile.open(nomefile.c_str());
-	//ricerca delle intersezioni tra fratture
+	//ricerca delle intersezioni  tra fratture
 
 	for (gmm::size_type i=0;i<lista.M_nfractures;++i){
 
 	(lista.M_fractures[i]).setGeoProp(propStore[i]);
 	std::stringstream ss4 (std::stringstream::in | std::stringstream::out);
 	        ss4<< "./data/Tutorial/meshF"<<i<<".vtk";
-	//	(lista.M_fractures[i]).exportVtk(ss4.str());
+		(lista.M_fractures[i]).exportVtk(ss4.str());
 		std::cout << "frattura   "<<i<<"  esportata"<<std::endl;
 	}
 
