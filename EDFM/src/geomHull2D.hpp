@@ -22,16 +22,16 @@
 
   extern "C" {
 #ifdef _MSC_VER
-# include <libqhull/qhull_a.h>
+# include <libqhull/libqhull.h>
 #else
-# include <qhull/qhull.h>
+# include <libqhull/libqhull.h>
 //# include <qhull/mem.h>
-# include <qhull/qset.h>
-# include <qhull/geom.h>
-# include <qhull/merge.h>
-# include <qhull/poly.h>
-# include <qhull/io.h>
-# include <qhull/stat.h>
+# include <libqhull/qset.h>
+# include <libqhull/geom.h>
+# include <libqhull/merge.h>
+# include <libqhull/poly.h>
+# include <libqhull/io.h>
+# include <libqhull/stat.h>
 #endif
 }
 namespace Geometry
