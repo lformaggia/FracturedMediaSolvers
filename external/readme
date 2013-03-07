@@ -1,1 +1,35 @@
 This part of the repo contains the external libraries necessary to to software.
+The directories
+bin
+lib
+share
+man
+
+are created by the compilation process of the external libraries. They
+are NOT sored in the git repo. The user has to recompile the libraries
+forllowing the instructions.
+
+Qhull
+
+To compile qhull you can use the cmake system.  For simplicity, we
+indicate with EXTERNAL this directory. In EXTERNAL yoou may launch
+cmake-gui (or other software to compile cmake files).
+
+-set the source code to $EXTERNAL/qhull-2012.1
+
+-set the build path to $EXTERNAL/qhull_build
+
+-check that CMAKE_INSTALL_PREFIX is set to $EXTERNAL
+
+-check that CMAKE_CXX_COMPILER and CMAKE_C_COMPILER are set to the correct compiler
+
+-choose Release as CMAKE_BUILD_TYPE (to have optimizations activated!)
+
+-generate the Makefiles (configure+generate in cmake-gui). 
+
+-Enter in qhull_build/ and run make clean; make; make install
+
+You can then run again make clean. The libraries and headers will be in $EXTERNAL/lib and $EXTERNAL/
+
+
+
