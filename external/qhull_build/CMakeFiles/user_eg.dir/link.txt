@@ -1,1 +1,0 @@
-/usr/bin/gcc      CMakeFiles/user_eg.dir/src/user_eg/user_eg.c.o  -o user_eg -rdynamic libqhull_p.so.6 -lm -Wl,-rpath,/home/forma/workspace2/eni/eniReservoir/external/qhull_build 
