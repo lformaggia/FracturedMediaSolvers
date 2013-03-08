@@ -68,32 +68,40 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			M_kpos.push_back(geoprop.getK()[i]);
 
 			CellaF cella;
+
 			for (gmm::size_type kk=0; kk<geoprop.getPoints(i).size();++kk){
 			cella.puntiAree.push_back(geoprop.getPoints(i)[kk]);
+			
 			cella.raggi.push_back(geoprop.getPoints(i)[kk]-geoprop.getCG()[NN]);
+
 			}
 			cella.theta.push_back(0);
 			for (gmm::size_type kk=1; kk<geoprop.getPoints(i).size();++kk){
 			Real tt,rr;
 			Point3D p1(cella.raggi[kk]),p2(cella.raggi[0]),p3(cella.raggi[0]);
 			p3=p3.cross(this->normal(0,0));
-			if (p1.norm()>0) {p1=p1/p1.norm();}
+
+			if (p1.norm()>0) {p1=p1/p1.norm();} 
 			if (p2.norm()>0) {p2=p2/p2.norm();}
 			if (p3.norm()>0) {p3=p3/p3.norm();}
 
 			tt=p1.dot(p2);	
 			rr=p1.dot(p3);	
 
+			if (tt>=-1 && tt<=1){
 			if (tt>=0 && rr>=0){
 			cella.theta.push_back(acos(tt));}
 			if (tt<0 && rr>=0){
 			cella.theta.push_back(acos(tt));}
 			if (tt>=0 && rr<0){
-			cella.theta.push_back(-acos(tt));}
+			cella.theta.push_back(2*3.14-acos(tt));}
 			if (tt<0 && rr<0){
-			cella.theta.push_back(-acos(tt));}
+			cella.theta.push_back(2*3.14-acos(tt));}
+			}else{ if (tt<-1) {cella.theta.push_back(3.14);}
+if (tt>1) {cella.theta.push_back(0);}}
 			}
-			
+		
+	
 			M_celle.push_back(cella);
 			
 
@@ -327,14 +335,13 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 		}
 		
 		myfile<<"Transmissibility FF"<<std::endl;
-		myfile<<"N\tI\tJ\tK\tThalfX1\tThalfY1\tThalfZ1\tThalfX2\tThalfY2\tThalfZ2\tTX\tTY\tTZ\tSX1\tSY1\tSZ1\tSX2\tSY2\tSZ2\tL1y\tL2y"<<std::endl;
+		myfile<<"N\tI\tJ\tK\tThalfX1\tThalfY1\tThalfZ1\tThalfX2\tThalfY2\tThalfZ2\tTX\tTY\tTZ"<<std::endl;
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
 		{
 			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_TH1X[n]<<"\t"<<M_TH1Y[n]<<"\t"
 			<<M_TH1Z[n]<<"\t"<<M_TH2X[n]<<"\t"<<M_TH2Y[n]<<"\t"
-			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<"\t"<<M_S1x[n].length()<<"\t"<<M_S1y[n].length()<<"\t"<<M_S1z[n].length()<<
-"\t"<<M_S2x[n].length()<<"\t"<<M_S2y[n].length()<<"\t"<<M_S2z[n].length()<<"\t"<<M_L1y[n].norm()<<"\t"<<M_L2z[n].norm()<<std::endl;	
+			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
 		}
 		
 		myfile<< "Intersections "<<std::endl;	
@@ -417,6 +424,9 @@ Segment maxSegment(std::vector<Point3D> & punti)
 		// Pointdata
 		filestr << "POINTS " << npoints << " double" << std::endl;
 		for (gmm::size_type kk=0; kk<M_celle.size();++kk){
+
+for (gmm::size_type ii=0; ii<M_celle[kk].puntiAree.size();++ii){
+}
 			
 			std::vector<Real> tt(M_celle[kk].theta);
 			for (gmm::size_type ii=0; ii<M_celle[kk].puntiAree.size();++ii){
@@ -426,7 +436,7 @@ Segment maxSegment(std::vector<Point3D> & punti)
 		        std::vector<Real>::iterator it;
  			it=min_element(tt.begin(),tt.end());
 			punto=M_celle[kk].puntiAree[it-tt.begin()];
-			
+		
 			tt[it-tt.begin()]=100.;
 
 
