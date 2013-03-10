@@ -129,7 +129,7 @@ M_Ntriangle=0;
 
 	Real Hull2D::getArea(){
 		Real area(0);
-		for (int ntr=0; ntr<M_simplexes.ncols();++ntr){
+		for (unsigned int ntr=0; ntr<M_simplexes.ncols();++ntr){
 			Triangle triangolino(this->getTriangle()[ntr]);
 			area=area + triangolino.area();
 		}

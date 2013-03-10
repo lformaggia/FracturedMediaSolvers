@@ -23,6 +23,11 @@ namespace Geometry
 		nomefile1.append(nomefile);
 
 		myfile.open(nomefile1.c_str());
+		if(myfile.fail())
+		  {
+		    std::cerr<<"Error opening file "<<nomefile1<<std::endl;
+		    std::exit(1);
+		  }
 
 		gmm::size_type flag(0);
 		getline (myfile,line);
@@ -33,9 +38,9 @@ namespace Geometry
 		gmm::size_type pos11;
 		pos11=line.find_first_of("=");
 	        char provv11[1];
-		gmm::size_type length11=line.copy(provv11, 1, pos11+2);
+		line.copy(provv11, 1, pos11+2);
 
-		if (provv11=="M") {M_isMetric=true; std::cout << "METRICO"<<std::endl;}
+		if (std::string(provv11)==std::string("M")) {M_isMetric=true; std::cout << "METRICO"<<std::endl;}
 		while(myfile.good() && flag==0){
 	
 			getline (myfile,line);

@@ -253,6 +253,7 @@ if (tt>1) {cella.theta.push_back(0);}}
 
 }
 	else{
+
 	std::vector<gmm::size_type>::iterator it;
 
   // iterator to vector element:
@@ -384,7 +385,8 @@ Segment maxSegment(std::vector<Point3D> & punti)
 				
 			}	
 
-		}	
+		}
+		// LF: Sicuri che i e j vengano sempre assegnati???
 	Segment S(punti[i],punti[j]);
 	return S;	
 	}

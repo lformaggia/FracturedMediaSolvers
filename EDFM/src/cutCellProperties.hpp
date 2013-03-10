@@ -117,7 +117,7 @@ public:
 	inline UInt getNy() const {return M_gridpointer->Ny();}	
 	inline UInt getNz() const {return M_gridpointer->Nz();}	
 private:
-	std::vector<Real> M_aree, M_vol, M_dmedio;
+	std::vector<Real> M_vol, M_aree,  M_dmedio;
 	std::vector<vettReal> M_dmedioint;
 	std::vector<vettPoints> M_puntiAree;
 	std::vector<Point3D> M_CG;

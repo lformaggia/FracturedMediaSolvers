@@ -329,7 +329,7 @@ for(Intersect::CellIntersections_Const_Iterator_Type jt=(*it).second.begin();
 
 	void CProp::getCellPoints(Intersect::GridIntersections_Const_Iterator_Type & it, std::vector <Point3D> & punti, int  ispositive, std::vector<Real> uv, Point3D puntosurf){
 		CPcell cella(M_gridpointer->cell((*it).second.i(),(*it).second.j(),(*it).second.k()));
-		int puntis(punti.size());
+		//		int puntis(punti.size());
 		for (int ii=1; ii <= 8; ++ii){
 			//devo capire da che parte sta il nodo
 			//uso la normale
