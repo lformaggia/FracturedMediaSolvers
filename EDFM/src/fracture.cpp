@@ -68,32 +68,40 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			M_kpos.push_back(geoprop.getK()[i]);
 
 			CellaF cella;
+
 			for (gmm::size_type kk=0; kk<geoprop.getPoints(i).size();++kk){
 			cella.puntiAree.push_back(geoprop.getPoints(i)[kk]);
+			
 			cella.raggi.push_back(geoprop.getPoints(i)[kk]-geoprop.getCG()[NN]);
+
 			}
 			cella.theta.push_back(0);
 			for (gmm::size_type kk=1; kk<geoprop.getPoints(i).size();++kk){
 			Real tt,rr;
 			Point3D p1(cella.raggi[kk]),p2(cella.raggi[0]),p3(cella.raggi[0]);
 			p3=p3.cross(this->normal(0,0));
-			if (p1.norm()>0) {p1=p1/p1.norm();}
+
+			if (p1.norm()>0) {p1=p1/p1.norm();} 
 			if (p2.norm()>0) {p2=p2/p2.norm();}
 			if (p3.norm()>0) {p3=p3/p3.norm();}
 
 			tt=p1.dot(p2);	
 			rr=p1.dot(p3);	
 
+			if (tt>=-1 && tt<=1){
 			if (tt>=0 && rr>=0){
 			cella.theta.push_back(acos(tt));}
 			if (tt<0 && rr>=0){
 			cella.theta.push_back(acos(tt));}
 			if (tt>=0 && rr<0){
-			cella.theta.push_back(-acos(tt));}
+			cella.theta.push_back(2*3.14-acos(tt));}
 			if (tt<0 && rr<0){
-			cella.theta.push_back(-acos(tt));}
+			cella.theta.push_back(2*3.14-acos(tt));}
+			}else{ if (tt<-1) {cella.theta.push_back(3.14);}
+if (tt>1) {cella.theta.push_back(0);}}
 			}
-			
+		
+	
 			M_celle.push_back(cella);
 			
 
@@ -416,6 +424,9 @@ Segment maxSegment(std::vector<Point3D> & punti)
 		// Pointdata
 		filestr << "POINTS " << npoints << " double" << std::endl;
 		for (gmm::size_type kk=0; kk<M_celle.size();++kk){
+
+for (gmm::size_type ii=0; ii<M_celle[kk].puntiAree.size();++ii){
+}
 			
 			std::vector<Real> tt(M_celle[kk].theta);
 			for (gmm::size_type ii=0; ii<M_celle[kk].puntiAree.size();++ii){
@@ -425,7 +436,7 @@ Segment maxSegment(std::vector<Point3D> & punti)
 		        std::vector<Real>::iterator it;
  			it=min_element(tt.begin(),tt.end());
 			punto=M_celle[kk].puntiAree[it-tt.begin()];
-			
+		
 			tt[it-tt.begin()]=100.;
 
 
