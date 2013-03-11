@@ -43,13 +43,17 @@ void IntersectionSolver::showMe(std::ostream  & out)
 			break;
 	}
 	
-	switch(M_strategy)
+	
+switch(M_strategy)
 	{
 		case FOR3 :
 			out << "  GridStrategy : FOR3" << std::endl;
 			break;
 		case EDGEMAP :
 			out << "  GridStrategy : EDGEMAP" << std::endl;
+			break;
+		case FOR3OPT :
+			out << "  GridStrategy : FOR3OPT" << std::endl;
 			break;
 	}
 	

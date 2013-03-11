@@ -173,7 +173,7 @@ M_Ntetra=0;
 
 	Real Hull::getVolume(){
 		Real volume(0);
-		for (int ntr=0; ntr<M_simplexes.ncols();++ntr){
+		for (unsigned int ntr=0; ntr<M_simplexes.ncols();++ntr){
 			Tetra tetraedrino(this->getTetra()[ntr]);
 			volume=volume + tetraedrino.volume();
 		}
