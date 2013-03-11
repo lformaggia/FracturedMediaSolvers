@@ -1,0 +1,2 @@
+GridFile=./data/EP_3D_grid.GRDECL
+FractureFile=EP_longf_metriczp1.fab
