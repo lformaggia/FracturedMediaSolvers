@@ -7,7 +7,7 @@ man
 
 are created by the compilation process of the external libraries. They
 are NOT sored in the git repo. The user has to recompile the libraries
-forllowing the instructions.
+following the instructions.
 
 Qhull
 
@@ -31,5 +31,10 @@ cmake-gui (or other software to compile cmake files).
 
 You can then run again make clean. The libraries and headers will be in $EXTERNAL/lib and $EXTERNAL/
 
+
+EXCEPTION:
+
+library gmm is formed just by header files, so i is stored in include/gmm/
+GetPot is a header file and is stored in include/Getpot
 
 
