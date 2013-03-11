@@ -1,6 +1,7 @@
 CXX = g++
 WARFLAGS = -Wall
-OPTFLAGS = -O3
+#OPTFLAGS = -O3
+OPTFLAGS = -g
 OMPFLAGS = -fopenmp
 CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) -I./src -I../external/include
 LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 
@@ -29,7 +30,9 @@ all:
 doc:
 	doxygen Doxyfile
 
-install: $(OBJ)
+install: $(INSTALLDIR)/libCPgeom.so.1.0
+
+$(INSTALLDIR)/libCPgeom.so.1.0: $(OBJ)
 	$(CXX) $(LDFLAGS) -shared -Wl,-soname,libCPgeom.so.1 -o libCPgeom.so.1.0 $(OBJ) $(LDLIBS)
 	$(AR) rs libCPgeom.a $(OBJ)
 	@mv libCPgeom.so.1.0 $(INSTALLDIR)/libCPgeom.so.1.0
@@ -53,7 +56,7 @@ main_anna: main_anna.o
 main_anna.o: main_anna.cpp
 	$(CXX) $(CXXFLAGS) -c -o main_anna.o main_anna.cpp
 
-main_tutorial: main_tutorial.o 
+main_tutorial: $(INSTALLDIR)/libCPgeom.so.1.0 main_tutorial.o  
 	$(CXX) $(LDFLAGS) -o main_tutorial main_tutorial.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
 
 main_tutorial.o: main_tutorial.cpp

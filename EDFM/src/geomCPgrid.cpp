@@ -280,7 +280,7 @@
 // ==================================================
 
 	void CPgrid::rescaleZ(Real scale,Real shift){
-		for (int i=0; i<M_zcorn.size(); ++i){
+		for (unsigned int i=0; i<M_zcorn.size(); ++i){
 			M_zcorn[i]=scale*(M_zcorn[i]-shift)+shift;
 		}
 		

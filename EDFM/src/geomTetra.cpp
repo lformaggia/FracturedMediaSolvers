@@ -7,11 +7,13 @@
 
 #include<cmath>
 #include<limits>
+#include<iostream>
 #include<fstream>
 #include<iomanip>
 #include<vector>
 #include<algorithm>
- 
+#include<cassert> 
+#include<cstdlib>
 #include "geomTetra.hpp"
 
 namespace Geometry
@@ -34,10 +36,15 @@ namespace Geometry
 	Tetra::~Tetra() {}
 
 	Point3D Tetra::getPoint(const gmm::size_type &quale){
-		if (quale==0) return M_pA;
-		if (quale==1) return M_pB;
-		if (quale==2) return M_pC;
-		if (quale==3) return M_pD;
+	  //LF: better safe than sorry
+	  assert(quale>=0 && quale <=3);
+	  if (quale==0) return M_pA;
+	  if (quale==1) return M_pB;
+	  if (quale==2) return M_pC;
+	  if (quale==3) return M_pD;
+	  std::cerr<<" Errore in getPoint"<<std::endl;
+	  std::exit(1);
+
 	}
 
 	Triangle Tetra::getFace(const Point3D &p1, const Point3D &p2 , const Point3D &p3){
