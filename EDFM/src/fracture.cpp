@@ -322,7 +322,7 @@ if (tt>1) {cella.theta.push_back(0);}}
 
 	}
 
-	bool Fracture::exportFracture(std::ofstream & myfile, gmm::size_type i)
+	void Fracture::exportFracture(std::ofstream & myfile, gmm::size_type i)
 	{
 		myfile<< "FRACTURE "<<i+1 <<std::endl;
 		if (!isAreaOK()) {myfile<<"ATTENZIONE: errore aree superiore al 2%"<<std::endl;}

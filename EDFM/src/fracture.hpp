@@ -126,7 +126,7 @@ public:
 
 	void computeNe();
 
-	bool exportFracture(std::ofstream & , gmm::size_type);
+	void exportFracture(std::ofstream & , gmm::size_type);
 
 	inline void setMetric(bool isMetric) {M_isMetric=isMetric;}
 
