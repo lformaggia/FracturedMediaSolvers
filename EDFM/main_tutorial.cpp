@@ -1,5 +1,5 @@
 #include "./src/CPgeom.hpp"
-
+#include <GetPot.hpp>
 
   extern "C" {
 #ifdef _MSC_VER
@@ -18,21 +18,55 @@
 #include "gmm/gmm.h"
 #include <stdlib.h>
 #include <sstream>
-int main(){ 
+
+void printHelp(){
+  using std::cout;
+  using std::endl;
+  cout<<"*** Line Options ***"<<endl;
+  cout<<"[-h  --help] This help"<<endl;
+  cout<<"[InputFile=string] Input file name (data.pot)"<<endl<<endl;
+}
+
+int main(int argc, char** argv){ 
 	 
 	// (0) load namespace
 	using namespace Geometry;
 	using namespace Intersect;
+	// Process help
+	GetPot key_input(argc,argv);
+	if (key_input.search(2, "--help", "-h")){
+	  printHelp();
+	  exit(0);
+	}
+	std::string parameterFile=key_input("InputFile","data.pot");
 	
+	GetPot   cl(parameterFile);
+	std::string gridFile=cl("GridFile","");
+	if(gridFile==std::string(""))
+	  {
+	    std::cerr<<"Wrong grid file "<<gridFile<<std::endl;
+	    std::exit(1);
+	  }
+	std::string fractureFile=cl("FractureFile","");
+	if(fractureFile==std::string(""))
+	  {
+	    std::cerr<<"Wrong fracture file "<<fractureFile<<std::endl;
+	    std::exit(1);
+	  }
 	// (1) Import grid
 //	CPgrid grid("./data/EP_3D_grid.GRDECL",0);
-	CPgrid grid("./data/EP_Cart_metric.GRDECL",0);
+	CPgrid grid(gridFile,0);
 		
 //	CPgrid grid("./data/gridTest",0);
 	
 	// (2) Points definition
 
+<<<<<<< HEAD
 	Fractures lista("EP_longf_metriczp1.fab");
+=======
+
+	Fractures lista(fractureFile);
+>>>>>>> luca
 //	Fractures lista("lista_mia3.fab");
 
 	std::vector<GridIntersections> intMegaStore;	

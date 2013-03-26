@@ -2,4 +2,4 @@ bin/*
 lib/*
 share/*
 man/*
-include/*
+# include dir is treated specially, look at include/.gitignore
