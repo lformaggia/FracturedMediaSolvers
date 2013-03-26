@@ -201,6 +201,8 @@ if (tt>1) {cella.theta.push_back(0);}}
 	void Fracture::setTransmFF()
 	{	
 		this->setHalfTransmFF();
+		
+
 		for (gmm::size_type i=0; i<M_S1x.size();++i)
 		{ 
 			Real TT(0);
@@ -228,6 +230,51 @@ if (tt>1) {cella.theta.push_back(0);}}
 			}
 		        M_TZ.push_back(TT);
 		}
+
+		for (gmm::size_type i=0; i<M_S1x.size();++i)
+		{ 	Neigh_cell provv;
+			provv.nnc=0;
+			for (gmm::size_type j=0; j<M_S1x.size();++j && j!=i)
+			{
+				if (M_ipos[j]==M_ipos[i]+1 && M_jpos[i]==M_jpos[j] && M_kpos[i]==M_kpos[j]) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TX[i]);
+				}
+				if (M_jpos[j]==M_jpos[i]+1 && M_ipos[i]==M_ipos[j] && M_kpos[i]==M_kpos[j]) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TY[i]);
+				}
+			
+				if (M_kpos[j]==M_kpos[i]+1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j]) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TZ[i]);
+				}
+
+				if (M_ipos[j]==M_ipos[i]-1 && M_jpos[i]==M_jpos[j] && M_kpos[i]==M_kpos[j] && M_TX[j]>0) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TX[j]);
+				}
+				if (M_jpos[j]==M_jpos[i]-1 && M_ipos[i]==M_ipos[j] && M_kpos[i]==M_kpos[j] && M_TY[j]>0) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TY[j]);
+				}
+
+			
+				if (M_kpos[j]==M_kpos[i]-1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j] &&  M_TZ[j]>0) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TZ[j]);
+				}
+			}
+		      	M_vicine.push_back(provv);
+		}
+		
+		
 	}
 
 	void Fracture::setTransmFM()
@@ -345,6 +392,19 @@ if (tt>1) {cella.theta.push_back(0);}}
 			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<"\t"<<M_S1z[n].length()<<std::endl;	
 		}
 		
+		myfile<<"Transmissibility FF"<<std::endl;
+		myfile<<"N\tN_nnc\t\N_neigh\tT\t\t\N_neigh\tT\t\t\N_neigh\tT\t\t\N_neigh\tT\t\t\N_neigh\tT\t\t\N_neigh\tT"<<std::endl;
+
+		for (gmm::size_type n=0;n<M_Ne;++n)
+		{
+			myfile<<n+1<<"\t"<<M_vicine[n].nnc<<"\t";
+			for (gmm::size_type k=0; k<M_vicine[n].nnc; ++k)
+			{
+				myfile<<M_vicine[n].vicini[k]+1<<"\t"<<M_vicine[n].TFF[k]<<"\t\t";
+			}	
+			myfile<<std::endl;
+		}
+
 		myfile<< "Intersections "<<std::endl;	
 		
 		if (M_isintby.size()>0){

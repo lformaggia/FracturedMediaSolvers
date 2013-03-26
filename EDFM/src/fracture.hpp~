@@ -20,8 +20,6 @@
 #include "interGridEdgeMap.hpp"
 #include "interGridIntersectionMap.hpp"
 
-
-
 namespace Geometry
 {      class CProp;
 	/*!
@@ -51,12 +49,19 @@ public:
 	  std::vector<Real> M_ay;
 	  std::vector<Real> M_az;
 	  std::vector<Real> M_dmedio;
+	  std::vector<Real> M_Tf1f2;
  	 } ; 
-	struct CellaF{     //esperimento... serviva per visualizzare ma è meno urgente
+	struct CellaF{     
 	std::vector<Point3D> puntiAree;
 	std::vector<Point3D> raggi;
 	std::vector<Real> theta;
 	};
+	struct Neigh_cell{
+	gmm::size_type nnc;
+	std::vector<gmm::size_type> vicini;
+	std::vector<Real> TTF;
+	};
+
 	//! @name Constructor & Destructor
 	//@{
 		
@@ -143,7 +148,7 @@ private:
 	bool M_isMetric;
 	std::vector<gmm::size_type> M_isintby;	
 	std::vector<IntFrac> M_inter;
-	std::vector<CellaF> M_celle;   //non urgente
+	std::vector<CellaF> M_celle;  
 	Real M_perm;
 	Real M_aperture;
 	Real M_compr;
@@ -151,6 +156,7 @@ private:
 	std::vector<gmm::size_type> M_ipos;
 	std::vector<gmm::size_type> M_jpos;
 	std::vector<gmm::size_type> M_kpos;
+	std::vector<Neigh_cell> M_vicine;
 	std::vector<Real> M_areas;
 	std::vector<Real> M_Dmedio;
 	std::vector<Point3D> M_CG;
