@@ -337,7 +337,7 @@ vol2+=1./6.*fabs(provv.dot(lato3));
 
 }
 
-if (fabs(vol1-vol2)/vol1<1.0e-7){
+if (fabs(vol1-vol2)/vol1<1.0e-5){
 return true;}
 else{
 return false;}
@@ -349,8 +349,8 @@ bool CPcell::intersectTheFace(Segment S,  int quale,   Point3D & risultato) cons
 		int f2[4]={4,5,7,6};
 		int f3[4]={0,1,5,4};
 		int f4[4]={1,3,7,5};
-		int f5[4]={2,3,6,7};
-		int f6[4]={0,2,4,6};
+		int f5[4]={2,3,7,6};
+		int f6[4]={0,2,6,4};
 		int* facce[6]={&f1[0],&f2[0],&f3[0],&f4[0],&f5[0],&f6[0] };
 		
                 BilinearSurface faccia( M_vertex[facce[quale][0]], M_vertex[facce[quale][1]], M_vertex[facce[quale][2]], M_vertex[facce[quale][3]] ); 

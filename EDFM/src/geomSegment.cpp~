@@ -11,7 +11,7 @@
 #include<fstream>
 #include <algorithm>
 #include <iomanip>
- 
+ #include <vector>
 #include "geomSegment.hpp"
 #include "geomTriangle.hpp"
 
@@ -52,7 +52,7 @@ namespace Geometry
 	{
 		t=(P.x*m.y-m.x*P.y)/(d.x*m.y-m.x*d.y);
 		s=(d.x*P.y-P.x*d.y)/(d.x*m.y-m.x*d.y);
-		if (t>=0 && t<=1 && s>=0 && s<=1 && fabs(d.z*t+m.z*s-P.z)<1.0e-5)
+		if (t>=0 && t<=1 && s>=0 && s<=1 && fabs(d.z*t+m.z*s-P.z)<1.0e-3*d.norm())
 		{
 			risultato=d*t+M_pA;
 //std::cout << risultato<<std::endl;
@@ -63,7 +63,7 @@ namespace Geometry
 	{
 		t=(P.x*m.z-m.x*P.z)/(d.x*m.z-m.x*d.z);
 		s=(d.x*P.z-P.x*d.z)/(d.x*m.z-m.x*d.z);
-		if (t>=0 && t<=1 && s>=0 && s<=1 && fabs(d.y*t+m.y*s-P.y)<1.0e-5)
+		if (t>=0 && t<=1 && s>=0 && s<=1 && fabs(d.y*t+m.y*s-P.y)<1.0e-3*d.norm())
 		{
 			risultato=d*t+M_pA;
 //std::cout << risultato<<std::endl;
@@ -74,7 +74,7 @@ namespace Geometry
 	{
 		t=(P.y*m.z-m.y*P.z)/(d.y*m.z-m.y*d.z);
 		s=(d.y*P.z-P.y*d.z)/(d.y*m.z-m.y*d.z);
-		if (t>=0 && t<=1 && s>=0 && s<=1 && fabs(d.x*t+m.x*s-P.x)<1.0e-5)
+		if (t>=0 && t<=1 && s>=0 && s<=1 && fabs(d.x*t+m.x*s-P.x)<1.0e-3*d.norm())
 		{
 			risultato=d*t+M_pA;
 //std::cout << risultato<<std::endl;
@@ -160,11 +160,12 @@ namespace Geometry
 	}
 	
 	bool Segment::isIn(Point3D P) const 
-	{
+	{	
 		Real t1,t2,t3;
-		t1=(fabs(M_pA.x-M_pB.x)>0)?(P.x-M_pB.x)/(M_pA.x-M_pB.x):0;
-		t2=(fabs(M_pA.y-M_pB.y)>0)?(P.y-M_pB.y)/(M_pA.y-M_pB.y):0;
-		t3=(fabs(M_pA.z-M_pB.z)>0)?(P.z-M_pB.z)/(M_pA.z-M_pB.z):0;
+		Real toll(1.0e-7);
+		t1=(fabs(M_pA.x-M_pB.x)>toll*fabs(M_pA.x))?(P.x-M_pB.x)/(M_pA.x-M_pB.x):0.5;
+		t2=(fabs(M_pA.y-M_pB.y)>toll*fabs(M_pA.y))?(P.y-M_pB.y)/(M_pA.y-M_pB.y):0.5;
+		t3=(fabs(M_pA.z-M_pB.z)>toll*fabs(M_pA.z))?(P.z-M_pB.z)/(M_pA.z-M_pB.z):0.5;
 //
 		if (t1>=0 && t1<=1 && t2>=0 && t2<=1 && t3>=0 && t3<=1 ) {return true;}
 		else {return false;}

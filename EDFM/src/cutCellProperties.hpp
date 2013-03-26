@@ -79,7 +79,7 @@ public:
 
 	Real setIntArea(Hull & , gmm::size_type );
 
-	//Point3D setCG(std::vector<Point3D> &);
+	Point3D setCG(std::vector<Point3D> &);
 
 	Point3D setCG(Hull & , gmm::size_type );
 	

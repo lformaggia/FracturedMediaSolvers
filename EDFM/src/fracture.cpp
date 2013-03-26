@@ -327,12 +327,12 @@ if (tt>1) {cella.theta.push_back(0);}}
 		myfile<< "FRACTURE "<<i+1 <<std::endl;
 		if (!isAreaOK()) {myfile<<"ATTENZIONE: errore aree superiore al 2%"<<std::endl;}
 		myfile<<"Ne  "<<M_Ne<<std::endl;
-		myfile<<"N\tI\tJ\tK\tPV\tAREA\tDMEAN\tTMF"<<std::endl;
+		myfile<<"N\tI\tJ\tK\tPV\t\tAREA\t\tDMEAN\t\tTMF"<<std::endl;
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
 		{
-			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_areas[n]*this->aperture()<<"\t"<<M_areas[n]<<"\t"
-			<<M_Dmedio[n]<<"\t"<<M_TM[n]<<std::endl;	
+			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_areas[n]*this->aperture()<<"\t\t"<<M_areas[n]<<"\t\t"
+			<<M_Dmedio[n]<<"\t\t"<<M_TM[n]<<std::endl;	
 		}
 		
 		myfile<<"Transmissibility FF"<<std::endl;
@@ -342,7 +342,7 @@ if (tt>1) {cella.theta.push_back(0);}}
 		{
 			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_TH1X[n]<<"\t"<<M_TH1Y[n]<<"\t"
 			<<M_TH1Z[n]<<"\t"<<M_TH2X[n]<<"\t"<<M_TH2Y[n]<<"\t"
-			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
+			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<"\t"<<M_S1z[n].length()<<std::endl;	
 		}
 		
 		myfile<< "Intersections "<<std::endl;	

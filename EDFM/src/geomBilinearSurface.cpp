@@ -452,7 +452,17 @@ namespace Geometry
 // 		std::cout << " x[1]: " << x[1] << std::endl;
 // 		std::cout << " x[2]: " << x[2] << std::endl;
 	inter = this->param(x[0],x[1]);
-		if(it>=maxIter || fabs(x[0])>100 || fabs(x[1])>100 || fabs(x[2])>100 )
+	if( x[0]>(-toll) && x[0]<(1+toll) && x[1]>(-toll) && x[1]<(1+toll) )
+		{
+		
+// 		std::cout << " Intersection: " << inter << std::endl;
+		uv[0]=x[0];
+		uv[1]=x[1];
+		uv[2]=0.0;
+		
+		}
+
+		if(it>=maxIter)// || fabs(x[0])>100 || fabs(x[1])>100 || fabs(x[2])>100 )
 		{
  		//	std::cout << " Newton not convergent: no intersection found!" << std::endl;
 			inter.x = std::numeric_limits<Real>::quiet_NaN();
@@ -483,15 +493,7 @@ namespace Geometry
 // 		std::cout << " -- Newton Iterations: " << it << std::endl;
 		//commentato da anna per cercare anche le intersezioni virtuali
 	
-		if( x[0]>(-toll) && x[0]<(1+toll) && x[1]>(-toll) && x[1]<(1+toll) )
-		{
-		
-// 		std::cout << " Intersection: " << inter << std::endl;
-		uv[0]=x[0];
-		uv[1]=x[1];
-		uv[2]=0.0;
-		
-		}
+	
 		if (!s.isIn(inter)) {uv[2]=-1;}
 		
 	}

@@ -32,7 +32,6 @@ int main(){
 	
 	// (2) Points definition
 
-
 	Fractures lista("EP_longf_metriczp1.fab");
 //	Fractures lista("lista_mia3.fab");
 
