@@ -37,6 +37,7 @@ namespace Geometry
 class Fracture: public BilinearSurface {
 public:
 	struct IntFrac {
+	  gmm::size_type altra;
 	  Segment SMax;
 	  Point3D Normale;
 	  std::vector<gmm::size_type> M_i;
@@ -49,7 +50,9 @@ public:
 	  std::vector<Real> M_ay;
 	  std::vector<Real> M_az;
 	  std::vector<Real> M_dmedio;
+	  std::vector<Real> M_Tf1f2h;
 	  std::vector<Real> M_Tf1f2;
+
  	 } ; 
 	struct CellaF{     
 	std::vector<Point3D> puntiAree;
@@ -130,7 +133,7 @@ public:
 
 	void computeNe();
 
-	void exportFracture(std::ofstream & , gmm::size_type);
+	bool exportFracture(std::ofstream & , gmm::size_type);
 
 	inline void setMetric(bool isMetric) {M_isMetric=isMetric;}
 
@@ -139,7 +142,8 @@ public:
 	bool isAreaOK() ;
 
 	bool exportVtk(const std::string & ) const;
-
+	
+	void setInterTransm(gmm::size_type quale, gmm::size_type dove, Real quanto) {M_inter[quale].M_Tf1f2[dove]=quanto;}
 
 	Real CDARCY;
 	

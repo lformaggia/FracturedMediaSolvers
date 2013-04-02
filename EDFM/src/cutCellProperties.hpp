@@ -89,6 +89,8 @@ public:
 
 	Real setIntdist_linea(Hull &, gmm::size_type, Fracture::IntFrac);
 
+	Real setIntdist_linea(std::vector<Point3D>,Point3D, Fracture::IntFrac,Intersect::GridIntersections_Const_Iterator_Type &, bool);
+
 	inline CPgrid* getgridpointer() {return M_gridpointer;}
 
 	inline std::vector<Real>& getVolumes()  {return M_vol;}
@@ -99,10 +101,9 @@ public:
 
 	inline std::vector<Point3D>& getCG()  {return M_CG;}
 
-	inline std::vector<Segment>& getSx(gmm::size_type i)  {return (i==1)?M_S1x:M_S2x;}
-	inline std::vector<Segment>& getSy(gmm::size_type i)   {return (i==1)?M_S1y:M_S2y;}
-
-	inline std::vector<Segment>& getSz(gmm::size_type i)  {return (i==1)?M_S1z:M_S2z;}
+	inline std::vector<Segment>& getSx(gmm::size_type i)  {return (i==1)? M_S1x:M_S2x;}
+	inline std::vector<Segment>& getSy(gmm::size_type i)  {return (i==1)? M_S1y:M_S2y;}
+	inline std::vector<Segment>& getSz(gmm::size_type i)  {return (i==1)? M_S1z:M_S2z;}
 
 	inline gmm::size_type getNe() const {return M_Ne;}
 

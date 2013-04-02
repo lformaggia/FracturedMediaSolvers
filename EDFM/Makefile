@@ -1,7 +1,7 @@
 CXX = g++
 WARFLAGS = -Wall
-OPTFLAGS = -O3
-#OPTFLAGS = -g
+#OPTFLAGS = -O3
+OPTFLAGS = -g
 OMPFLAGS = -fopenmp
 CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) -I./src -I../external/include
 LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 

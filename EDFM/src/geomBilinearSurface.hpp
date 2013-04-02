@@ -333,6 +333,8 @@ public:
 
 	bool isIntersectedBy(BilinearSurface  altra, std::vector<Point3D> &) const; 
 
+	bool isEdgeIntersectedBy(gmm::size_type quale, Segment S, Point3D &) const;
+
 	bool exportVtk(const std::string & filename) const;
 	
 	//! Export triangulation in vtk format

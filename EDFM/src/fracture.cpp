@@ -98,7 +98,7 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 			if (tt<0 && rr<0){
 			cella.theta.push_back(2*3.14-acos(tt));}
 			}else{ if (tt<-1) {cella.theta.push_back(3.14);}
-if (tt>1) {cella.theta.push_back(0);}}
+			if (tt>1) {cella.theta.push_back(0);}}
 			}
 		
 	
@@ -295,21 +295,20 @@ if (tt>1) {cella.theta.push_back(0);}}
 	
 	void Fracture::setInt(gmm::size_type i, Fracture &altra, std::vector<Point3D> punti, bool completo){
 	UInt dove;
+	
 	if(completo==false){
 		M_isintby.push_back(i);
-
-}
+	}
 	else{
-
 	std::vector<gmm::size_type>::iterator it;
 
-  // iterator to vector element:
-  it = find (M_isintby.begin(), M_isintby.end(), i);
+ 	// iterator to vector element:
+        it = find (M_isintby.begin(), M_isintby.end(), i);
 	dove=it-M_isintby.begin();
 
 	}
 
-		IntFrac nuova;
+	IntFrac nuova;
 		
 	for (gmm::size_type kk=0; kk<punti.size();++kk)
 	{
@@ -323,6 +322,7 @@ if (tt>1) {cella.theta.push_back(0);}}
 	nuova.SMax=SS;
 	Point3D provv(SS.A());
 	provv=provv-SS.B();
+	nuova.altra=dove;
 	nuova.Normale=provv.cross(this->normal(0.5,0.5));
 
 	for (gmm::size_type ii=0; ii<M_ipos.size();++ii)
@@ -350,13 +350,16 @@ if (tt>1) {cella.theta.push_back(0);}}
 					Real TF1F2;
 					
 					nuova.M_dmedio.push_back(M_inter[dove].M_dmedio[ii]);
+		
 					Point3D diff(pp[0]);
 					diff=diff-pp[1];
-					TF1F2=CDARCY*M_perm*diff.norm()*M_aperture/nuova.M_dmedio[ii];
-					nuova.M_Tf1f2.push_back(TF1F2);
+					TF1F2=CDARCY*M_perm*diff.norm()*M_aperture/M_inter[dove].M_dmedio[ii];
+					
+					nuova.M_Tf1f2h.push_back(TF1F2);
+					nuova.M_Tf1f2.push_back(0);
 
 				}
-	
+
 				}
 			}
 		}
@@ -367,9 +370,10 @@ if (tt>1) {cella.theta.push_back(0);}}
 
 		}
 
+
 	}
 
-	void Fracture::exportFracture(std::ofstream & myfile, gmm::size_type i)
+	bool Fracture::exportFracture(std::ofstream & myfile, gmm::size_type i)
 	{
 		myfile<< "FRACTURE "<<i+1 <<std::endl;
 		if (!isAreaOK()) {myfile<<"ATTENZIONE: errore aree superiore al 2%"<<std::endl;}
@@ -389,7 +393,7 @@ if (tt>1) {cella.theta.push_back(0);}}
 		{
 			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_TH1X[n]<<"\t"<<M_TH1Y[n]<<"\t"
 			<<M_TH1Z[n]<<"\t"<<M_TH2X[n]<<"\t"<<M_TH2Y[n]<<"\t"
-			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<"\t"<<M_S1z[n].length()<<std::endl;	
+			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
 		}
 		
 		myfile<<"Transmissibility FF"<<std::endl;
@@ -410,12 +414,12 @@ if (tt>1) {cella.theta.push_back(0);}}
 		if (M_isintby.size()>0){
 			for (gmm::size_type ff=0;ff<M_isintby.size();++ff)
 			{
-				myfile<<M_isintby[ff]+1<<"   "<<std::endl;
-				myfile<<"MY_EL\t"<<" OTHER_EL\t"<<"i\t"<<"j\t"<<"k\t"<<  "dmedio\t"<<"Tf1f2"<<std::endl;
+				myfile<<M_isintby[ff]+1<<"   "<<M_inter[ff].altra<<std::endl;
+				myfile<<"MY_EL\t"<<"OTHER_EL\t"<<"i\t"<<"j\t"<<"k\t"<<  "dmedio\t"<<"Tf1f2h\t"<<"Tf1f2_ave"<<std::endl;
 				for (gmm::size_type kk=0; kk<M_inter[ff].M_i.size();++kk)
 				{
-					myfile<<M_inter[ff].Which1[kk]+1<<"\t"<<M_inter[ff].Which2[kk]+1<<"\t"<<M_inter[ff].M_i[kk]<<
-					"  "<<M_inter[ff].M_j[kk]<<"\t"<<M_inter[ff].M_k[kk]<<"\t"<<M_inter[ff].M_dmedio[kk]<<"\t"<<M_inter[ff].M_Tf1f2[kk]<<std::endl;
+					myfile<<M_inter[ff].Which1[kk]+1<<"\t"<<M_inter[ff].Which2[kk]+1<<"\t\t"<<M_inter[ff].M_i[kk]<<
+					" \t "<<M_inter[ff].M_j[kk]<<"\t"<<M_inter[ff].M_k[kk]<<"\t"<<M_inter[ff].M_dmedio[kk]<<"\t"<<M_inter[ff].M_Tf1f2h[kk]<<"\t"<<M_inter[ff].M_Tf1f2[kk]<<std::endl;
 				}
 			}
 		}

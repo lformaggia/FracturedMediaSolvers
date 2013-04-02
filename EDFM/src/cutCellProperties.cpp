@@ -55,12 +55,18 @@ namespace Geometry
 		{
 		counter+=1;
 		}
+for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
+				
+				std::vector<Real> ooo(counter,0.);
+				M_dmedioint.push_back(ooo);
+}
 		for(Intersect::GridIntersections_Const_Iterator_Type it=M_iteratorcellsbegin;
 			it!=M_iteratorcellsend; ++it)
 		{	M_Ne=M_Ne+1;
 			M_i.push_back(it->second.i());
 			M_j.push_back(it->second.j());
 			M_k.push_back(it->second.k());
+			CPcell cella(M_gridpointer->cell((*it).second.i(),(*it).second.j(),(*it).second.k()));
 
 			std::vector<Point3D> punti1(this->getIntPoints(it));
 			std::vector<bool> puntiIsReal(this->getIsIntPointReal(it));
@@ -75,7 +81,9 @@ namespace Geometry
 			Aa.y=Aa.y/Real(npunti_faglia);
 			Aa.z=Aa.z/Real(npunti_faglia);
 
-			Point3D no(M_faultpointer->normal(0,0));
+			Point3D no(M_faultpointer->normal(0.5,0.5));
+			Real typicalL;
+			typicalL=(cella.getVertex(1)-cella.getVertex(2)).norm();
 			std::vector<Real> uv(M_faultpointer->inv_param(Aa, no));
 	
 			std::vector<Point3D> punti2(punti1);
@@ -89,10 +97,11 @@ namespace Geometry
 			location2 = std::find( puntiIsReal.begin(), puntiIsReal.end(), true);
 
 			buildIntSegments( it);
-
+			bool isPartial(false);
 			if (location2!=puntiIsReal.end()){
 				if (location!=puntiIsReal.end()){
 					puntiAreaNew=this->addPoints4area(puntiarea,puntiIsReal, it); //il pizzino
+					isPartial=true;
 				
 				}
 				else
@@ -105,7 +114,7 @@ namespace Geometry
 				M_puntiAree.push_back(puntiAreaNew);
 
 	
-				puntiAreaNew.push_back(this->setCG(puntiAreaNew)+no);
+				puntiAreaNew.push_back(this->setCG(puntiAreaNew)+no*typicalL);
 			      
 				Hull faccia(puntiAreaNew);
 
@@ -114,19 +123,21 @@ namespace Geometry
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
 					M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
 				}
-
+puntiAreaNew.pop_back();
 				for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				
-				std::vector<Real> ooo(counter,0.);
-				M_dmedioint.push_back(ooo);
+			//	std::vector<Real> ooo(counter,0.);
+			//	M_dmedioint.push_back(ooo);
 				Real dmediosingolo(0);
 				if (faccia.getNtetra()>0)
+				
 				{	
-					dmediosingolo=this->setIntdist_linea(faccia, puntiAreaNew.size()-1, M_faultpointer->inter()[i]);
-					
+					dmediosingolo=this->setIntdist_linea(puntiAreaNew, no, M_faultpointer->inter()[i],it, isPartial);
+				
 				}
 					
-					M_dmedioint[i][M_Ne-1]=dmediosingolo;		
+					M_dmedioint[i][M_Ne-1]=dmediosingolo;	
+					
 				}
 
 			}
@@ -717,6 +728,151 @@ Real CProp::setIntdist_linea(Hull &calimero,  gmm::size_type npunti_faglia, Frac
 		}
 	
 		return Intd/Area;
+}
+
+Real CProp::setIntdist_linea(std::vector<Point3D> puntiarea, Point3D normale, Fracture::IntFrac intersezione,Intersect::GridIntersections_Const_Iterator_Type & it, bool isPartial)
+{	
+	Real Intd(0);	
+	Real Area(0);
+	Point3D normale_linea;
+	normale_linea=normale.cross(intersezione.SMax.A()-intersezione.SMax.B());
+	CPcell cella(M_gridpointer->cell((*it).second.i(),(*it).second.j(),(*it).second.k()));
+	std::vector<Point3D> puntilinea;
+	for (gmm::size_type ff=0; ff<6;++ff){
+	   Point3D medio;
+ 	   if (cella.intersectTheFace(intersezione.SMax, ff,   medio) && intersezione.SMax.isIn(medio)) {puntilinea.push_back(medio);}
+	}
+
+
+	if (puntilinea.size()==1){
+		if (isPartial){
+			Point3D medio(intersezione.SMax.A());
+			if (cella.isIn(medio)) {puntilinea.push_back(medio); }	
+			Point3D medio2(intersezione.SMax.B());
+			if (cella.isIn(medio2)) {puntilinea.push_back(medio2);}		
+
+		}
+		else
+		{
+			Segment SSMax;
+			SSMax.setA(2*intersezione.SMax.A()-intersezione.SMax.B());
+			SSMax.setB(2*intersezione.SMax.B()-intersezione.SMax.A());
+			for (gmm::size_type ff=0; ff<6;++ff){
+			   Point3D medio;
+ 			   if (cella.intersectTheFace(SSMax, ff,   medio)) {puntilinea.push_back(medio); }
+			}
+		}
+	}
+
+
+
+	//seleziono i punti da una parte
+	std::vector<Point3D> puntisin;
+	for (gmm::size_type i=0; i<puntiarea.size();++i){
+		Point3D diff(puntiarea[i]-intersezione.SMax.A());
+		if (diff.dot(normale_linea)>0)
+		{
+			puntisin.push_back(puntiarea[i]);		
+		}
+
+	}
+//seleziono i punti dall'altra parte
+	std::vector<Point3D> puntidx;
+	for (gmm::size_type i=0; i<puntiarea.size();++i){
+		Point3D diff(puntiarea[i]-intersezione.SMax.A());
+		if (diff.dot(normale_linea)<0)
+		{
+			puntidx.push_back(puntiarea[i]);		
+		}
+
+	}
+	if (puntisin.size()>0 && puntidx.size()>0 && puntilinea.size()>=2){	
+	for (gmm::size_type ii=0;ii<puntilinea.size();++ii){
+	puntisin.push_back(puntilinea[ii]);
+	}
+	
+	
+	puntisin.push_back(puntisin[0]+normale*intersezione.SMax.length());
+
+	//chiamo qhull
+	Hull guscio1(puntisin);
+	gmm::size_type npunti_faglia=puntisin.size()-1;
+	//calcolo tutto a sin
+
+	for (gmm::size_type i=0; i<guscio1.getNtetra();++i){
+			std::vector<gmm::size_type> punti_tetra(guscio1.getPointsSimplex(i));
+			gmm::size_type cont(0);
+			std::vector<gmm::size_type> quali;
+			for (gmm::size_type j=0; j<punti_tetra.size();++j){
+				if (punti_tetra[j]<npunti_faglia) {
+					cont+=1;
+					quali.push_back(punti_tetra[j]);
+				}
+			}
+		
+			if (cont==3){
+	
+				Triangle t(guscio1.getPoint(quali[0]),guscio1.getPoint(quali[1]),guscio1.getPoint(quali[2]));
+				std::vector<Real> pesi(t.getGaussWeights(4));
+			Real Intdprovv(0);
+			std::vector<Point3D> nodi(t.getGaussNodes(4));
+			for (gmm::size_type j=0; j<nodi.size();++j){
+				Point3D diff;
+				diff=intersezione.SMax.A()-nodi[j];
+			
+				Intdprovv=Intdprovv + pesi[j]*gmm::abs(diff.dot(intersezione.Normale))/intersezione.Normale.norm();
+
+			}
+		Area=Area+t.area();
+		Intd=Intd + Intdprovv*t.area();
+			}	
+		}
+	}
+
+
+	if (puntidx.size()>0 && puntisin.size()>0 && puntilinea.size()>=2){ 
+	for (gmm::size_type ii=0;ii<puntilinea.size();++ii){
+	puntidx.push_back(puntilinea[ii]);
+	}
+
+	puntidx.push_back(puntidx[0]+normale*intersezione.SMax.length());
+
+	//chiamo qhull
+	Hull guscio2(puntidx);
+	gmm::size_type npunti_faglia=puntidx.size()-1;
+	//calcolo tutto a dx
+	for (gmm::size_type i=0; i<guscio2.getNtetra();++i){
+			std::vector<gmm::size_type> punti_tetra(guscio2.getPointsSimplex(i));
+			gmm::size_type cont(0);
+			std::vector<gmm::size_type> quali;
+			for (gmm::size_type j=0; j<punti_tetra.size();++j){
+				if (punti_tetra[j]<npunti_faglia) {
+					cont+=1;
+					quali.push_back(punti_tetra[j]);
+				}
+			}
+		
+			if (cont==3){
+	
+				Triangle t(guscio2.getPoint(quali[0]),guscio2.getPoint(quali[1]),guscio2.getPoint(quali[2]));
+				std::vector<Real> pesi(t.getGaussWeights(4));
+			Real Intdprovv(0);
+			std::vector<Point3D> nodi(t.getGaussNodes(4));
+			for (gmm::size_type j=0; j<nodi.size();++j){
+				Point3D diff;
+				diff=intersezione.SMax.A()-nodi[j];
+			
+				Intdprovv=Intdprovv + pesi[j]*gmm::abs(diff.dot(intersezione.Normale))/intersezione.Normale.norm();
+
+			}
+		Area=Area+t.area();
+		Intd=Intd + Intdprovv*t.area();
+			}	
+		}
+	}
+
+return Intd/Area;
+
 }
 
 } // namespace Geometry

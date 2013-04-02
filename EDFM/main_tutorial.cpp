@@ -1,5 +1,5 @@
 #include "./src/CPgeom.hpp"
-#include <GetPot.hpp>
+
 
   extern "C" {
 #ifdef _MSC_VER
@@ -18,57 +18,26 @@
 #include "gmm/gmm.h"
 #include <stdlib.h>
 #include <sstream>
-
-void printHelp(){
-  using std::cout;
-  using std::endl;
-  cout<<"*** Line Options ***"<<endl;
-  cout<<"[-h  --help] This help"<<endl;
-  cout<<"[InputFile=string] Input file name (data.pot)"<<endl<<endl;
-}
-
-int main(int argc, char** argv){ 
+int main(){ 
 	 
 	// (0) load namespace
 	using namespace Geometry;
 	using namespace Intersect;
-	// Process help
-	GetPot key_input(argc,argv);
-	if (key_input.search(2, "--help", "-h")){
-	  printHelp();
-	  exit(0);
-	}
-	std::string parameterFile=key_input("InputFile","data.pot");
 	
-	GetPot   cl(parameterFile);
-	std::string gridFile=cl("GridFile","");
-	if(gridFile==std::string(""))
-	  {
-	    std::cerr<<"Wrong grid file "<<gridFile<<std::endl;
-	    std::exit(1);
-	  }
-	std::string fractureFile=cl("FractureFile","");
-	if(fractureFile==std::string(""))
-	  {
-	    std::cerr<<"Wrong fracture file "<<fractureFile<<std::endl;
-	    std::exit(1);
-	  }
 	// (1) Import grid
-//	CPgrid grid("./data/EP_3D_grid.GRDECL",0);
-	CPgrid grid(gridFile,0);
-		
-//	CPgrid grid("./data/gridTest",0);
 	
-	// (2) Points definition
-
-<<<<<<< HEAD
-	Fractures lista("EP_longf_metriczp1.fab");
-=======
-
-	Fractures lista(fractureFile);
->>>>>>> luca
-//	Fractures lista("lista_mia3.fab");
-
+	std::ifstream nomifile;
+	double conv_z;
+	nomifile.open("./data/nomifile");
+	std::string nomegriglia, nomefratture, conv;
+	getline(nomifile,nomegriglia);
+	getline(nomifile,nomefratture);
+	getline(nomifile,conv);
+	conv_z=atof(conv.c_str());
+std::cout << conv_z<<std::endl;
+	CPgrid grid(nomegriglia.c_str(),0);
+	Fractures lista(nomefratture,conv_z);
+	
 	std::vector<GridIntersections> intMegaStore;	
 	std::vector<CProp> propStore;	
 
@@ -93,9 +62,9 @@ int main(int argc, char** argv){
 		newton_FOR3(f,grid,intersectionStore);
 		intMegaStore.push_back(intersectionStore);
 
-		std::stringstream ss4 (std::stringstream::in | std::stringstream::out);
+		/*std::stringstream ss4 (std::stringstream::in | std::stringstream::out);
 	        ss4<< "./data/Tutorial/intersections"<<i<<".vtk";
-		intersectionStore.exportVtk(ss4.str());
+		intersectionStore.exportVtk(ss4.str());*/
 	}
 
 	lista.computeIntersections(0);
@@ -116,7 +85,7 @@ int main(int argc, char** argv){
 		ss<< "./data/Tutorial/fault"<<i<<".vtk";
 		f.exportVtk(ss.str());
 	
-		std::stringstream ss1 (std::stringstream::in | std::stringstream::out);
+	/*	std::stringstream ss1 (std::stringstream::in | std::stringstream::out);
 	        ss1<< "./data/Tutorial/grid_Aree"<<i<<".vtk";
 		grid.exportVtk(ss1.str(), propfaglia.getAreas(),"area",0);
 	     
@@ -126,7 +95,7 @@ int main(int argc, char** argv){
 		
 		std::stringstream ss3 (std::stringstream::in | std::stringstream::out);
 	        ss3<< "./data/Tutorial/grid_d"<<i<<".vtk";
-		grid.exportVtk(ss3.str(), propfaglia.getDmedio(),"d",0);
+		grid.exportVtk(ss3.str(), propfaglia.getDmedio(),"d",0);*/
 
 	}
 

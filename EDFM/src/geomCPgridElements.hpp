@@ -205,7 +205,7 @@ public:
 	 */
 	inline std::vector<Point3D> & getVerticesVector()
 		{ return M_vertex; }
-	
+
 	//! Get vector of vertices (const version)
 	/*!
 	 * @return A constant references to the vector storing the vertices

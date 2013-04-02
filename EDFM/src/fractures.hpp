@@ -34,7 +34,7 @@ public:
 	Fractures();
 	
 	//! Constructor
-	Fractures(const std::string );
+	Fractures(const std::string , Real);
 	
 	//! Destructor
 	virtual ~Fractures();
@@ -44,6 +44,7 @@ public:
 	//inline std::vector<Fracture> getfractures() const {return M_fractures;}
 	//inline Fracture getfracture(gmm::size_type i) const {return M_fractures[i];}
 
+	void setInterFTransm();
 
 	gmm::size_type M_nfractures;
 	std::vector<Fracture> M_fractures;

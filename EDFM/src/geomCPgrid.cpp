@@ -54,6 +54,15 @@
 			}
 		}
 
+		for (gmm::size_type ii=0;ii<M_coord.size()/3;++ii){
+			gmm::size_type i(3*ii);
+			Point3D p(M_coord[i],M_coord[i+1],M_coord[i+2]);
+			Point3D pp(this->applyShear(tan(0./180*3.14), 1, p));
+			M_coord[i]=pp.x;
+			M_coord[i+1]=pp.y;
+			M_coord[i+2]=pp.z;
+		}
+
 		
 		nval = 8*M_Nx*M_Ny*M_Nz;
 		std::string nomefile2("data/");
@@ -163,6 +172,15 @@
 		return cell;
 	}
       
+//-----------------------------------------------------------------
+	Point3D CPgrid::applyShear(const Real m, gmm::size_type direction, Point3D punto)
+	{	Point3D puntonew(punto);
+		if (direction==1)
+		{	puntonew.x=punto.x+m*punto.z;
+		}
+		return puntonew;
+	}
+
 //-----------------------------------------------------------------
 	void CPgrid::whereIs(Point3D & p,  std::vector<UInt> & sol) const 
 	{

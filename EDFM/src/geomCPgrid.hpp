@@ -125,6 +125,8 @@ public:
 	 */
         CPcell cell(const UInt & i, const UInt & j, const UInt & k) const; 
 
+	Point3D applyShear(const Real m, gmm::size_type direction, Point3D);
+
         void whereIs(Point3D &, std::vector<UInt> &) const;
 
 	void buildBB(Point3D , Point3D, Point3D, Point3D, std::vector<UInt> &) const;

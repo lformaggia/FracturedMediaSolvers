@@ -590,6 +590,27 @@ namespace Geometry
 		else {return false;}
 	
 	}
+
+	bool BilinearSurface::isEdgeIntersectedBy(gmm::size_type quale, Segment S, Point3D &risultato) const
+	{
+		Segment L1(M_pA,M_pB),L2(M_pB,M_pC),L3(M_pC,M_pD),L4(M_pD,M_pA);
+		if (quale==1)
+		{
+			if (L1.intersectTheSegment(S, risultato) ){return true;}
+		}
+		if (quale==2)
+		{
+			if (L2.intersectTheSegment(S, risultato) ){return true;}
+		}if (quale==3)
+		{
+			if (L3.intersectTheSegment(S, risultato) ){return true;}
+		}if (quale==4)
+		{
+			if (L4.intersectTheSegment(S, risultato) ){return true;}
+		}
+		return false;
+	}
+
 	
 	bool BilinearSurface::exportVtk(const std::string & fileName) const
 	{

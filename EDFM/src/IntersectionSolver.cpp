@@ -94,9 +94,6 @@ void IntersectionSolver::operator()
 				case EDGEMAP :
 					f.approxIntersectionWithGrid_EDGEMAP(g,gridInter,M_stdDivision);
 					break;
-			        case FOR3OPT :
-			        std::cerr<<"FOR3OPT NON IMPLEMENTATA"<<std::endl;
-                                std::exit(1);
 			}
 			break;
 		case APPROXNEWTON :
@@ -108,9 +105,6 @@ void IntersectionSolver::operator()
 				case EDGEMAP :
 					f.approxNewtonIntersectionWithGrid_EDGEMAP(g,gridInter,M_toll,M_maxIter);
 					break;
-			        case FOR3OPT :
-			        std::cerr<<"FOR3OPT NON IMPLEMENTATA"<<std::endl;
-                                std::exit(1);
 			}
 			break;
 		case APPROXREFINED :
@@ -122,10 +116,6 @@ void IntersectionSolver::operator()
 				case EDGEMAP :
 					f.approxRefinedIntersectionWithGrid_EDGEMAP(g,gridInter,M_toll);
 					break;
-			        case FOR3OPT :
-			        std::cerr<<"FOR3OPT NON IMPLEMENTATA"<<std::endl;
-                                std::exit(1);
-
 			}
 			break;
 	}
