@@ -34,7 +34,7 @@ int main(){
 	getline(nomifile,nomefratture);
 	getline(nomifile,conv);
 	conv_z=atof(conv.c_str());
-std::cout << conv_z<<std::endl;
+
 	CPgrid grid(nomegriglia.c_str(),0);
 	Fractures lista(nomefratture,conv_z);
 	
