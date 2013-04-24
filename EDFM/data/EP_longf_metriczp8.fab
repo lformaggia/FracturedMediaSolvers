@@ -1,0 +1,38 @@
+BEGIN FORMAT
+    Format = Ascii
+    Length_Unit = M
+    XAxis = East
+    Scale = 2286.96
+    No_Fractures = 1
+    No_TessFractures = 0
+    No_Nodes = 32
+    No_RockBlocks = 0
+    No_NodesRockBlock = 0
+    No_Properties = 3
+END FORMAT
+
+BEGIN PROPERTIES
+    Prop1    =    (Real*4)"Permeability"
+    Prop2    =    (Real*4)"Compressibility"
+    Prop3    =    (Real*4)"Aperture"
+END PROPERTIES
+
+BEGIN SETS
+    Set1    =    "Discrete fractures"
+END SETS
+
+BEGIN FRACTURE
+    1    4    1    1e+006    3.40282e+038    0.01
+    1    9597971.4024    5144820.70749    4300
+    2    9597419.15656    5146130.32053    4300
+    3    9597419.15656    5146130.32053    4100
+    4    9597971.4024    5144820.70749    4100
+    0    0.921426425812    0.388552881619    -0
+END FRACTURE
+
+BEGIN TESSFRACTURE
+END TESSFRACTURE
+
+BEGIN ROCKBLOCK
+END ROCKBLOCK
+
