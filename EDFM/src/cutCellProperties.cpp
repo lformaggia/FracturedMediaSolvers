@@ -55,6 +55,7 @@ namespace Geometry
 		{
 		counter+=1;
 		}
+
 for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				
 				std::vector<Real> ooo(counter,0.);
@@ -62,7 +63,9 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 }
 		for(Intersect::GridIntersections_Const_Iterator_Type it=M_iteratorcellsbegin;
 			it!=M_iteratorcellsend; ++it)
-		{	M_Ne=M_Ne+1;
+		{	
+			M_Ne=M_Ne+1;
+			
 			M_i.push_back(it->second.i());
 			M_j.push_back(it->second.j());
 			M_k.push_back(it->second.k());
@@ -96,10 +99,12 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 			location = std::find( puntiIsReal.begin(), puntiIsReal.end(), false);
 			location2 = std::find( puntiIsReal.begin(), puntiIsReal.end(), true);
 
-			buildIntSegments( it);
+			buildIntSegments(it);
+
 			bool isPartial(false);
-			if (location2!=puntiIsReal.end()){
-				if (location!=puntiIsReal.end()){
+			if (true){//(location2!=puntiIsReal.end()){
+
+				if (true){//(location!=puntiIsReal.end()){
 					puntiAreaNew=this->addPoints4area(puntiarea,puntiIsReal, it); //il pizzino
 					isPartial=true;
 				
@@ -123,17 +128,16 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
 					M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
 				}
-puntiAreaNew.pop_back();
+				puntiAreaNew.pop_back();
 				for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				
-			//	std::vector<Real> ooo(counter,0.);
-			//	M_dmedioint.push_back(ooo);
 				Real dmediosingolo(0);
-				if (faccia.getNtetra()>0)
+			
+				if (faccia.getNtetra()>0 )
 				
 				{	
 					dmediosingolo=this->setIntdist_linea(puntiAreaNew, no, M_faultpointer->inter()[i],it, isPartial);
-				
+					
 				}
 					
 					M_dmedioint[i][M_Ne-1]=dmediosingolo;	
@@ -167,6 +171,9 @@ puntiAreaNew.pop_back();
 			}
 			
 		}
+	
+
+
 	}
 
 //--------------segmenti di intersezione........................................
@@ -212,7 +219,7 @@ puntiAreaNew.pop_back();
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (isXreal1[0]==false && isXreal1[1]==false)
+			if (false)// (isXreal1[0]==false && isXreal1[1]==false)
 			{
 				puntiX1[0]=PP;
 				puntiX1[1]=PP;
@@ -267,7 +274,7 @@ puntiAreaNew.pop_back();
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (isYreal1[0]==false && isYreal1[1]==false)
+			if (false)//(isYreal1[0]==false && isYreal1[1]==false)
 			{
 				puntiY1[0]=PP;
 				puntiY1[1]=PP;
@@ -324,7 +331,7 @@ puntiAreaNew.pop_back();
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (isZreal1[0]==false && isZreal1[1]==false)
+			if (false)//(isZreal1[0]==false && isZreal1[1]==false)
 			{
 				puntiZ1[0]=PP;
 				puntiZ1[1]=PP;
@@ -378,7 +385,7 @@ puntiAreaNew.pop_back();
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (isXreal2[0]==false && isXreal2[1]==false)
+			if (false)//(isXreal2[0]==false && isXreal2[1]==false)
 			{
 				puntiX2[0]=PP;
 				puntiX2[1]=PP;
@@ -432,7 +439,7 @@ puntiAreaNew.pop_back();
 		{	
 			bool giafatto(false);
 			Point3D comodo;
-			if (isYreal2[0]==false && isYreal2[1]==false)
+			if (false)//(isYreal2[0]==false && isYreal2[1]==false)
 			{
 				puntiY2[0]=PP;
 				puntiY2[1]=PP;
@@ -489,7 +496,7 @@ puntiAreaNew.pop_back();
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (isZreal2[0]==false && isZreal2[1]==false)
+			if (false)// (isZreal2[0]==false && isZreal2[1]==false)
 			{
 				puntiZ2[0]=PP;
 				puntiZ2[1]=PP;
@@ -672,7 +679,7 @@ if (linea.intersectTheSegment(quattro,medio)) {puntiareaNew.push_back(medio);}
 		}
 	}
 }
-if( cella.isIn(A)) {puntiareaNew.push_back(A);}
+if( cella.isIn(A)) {puntiareaNew.push_back(A); }
 if(cella.isIn(B)) {puntiareaNew.push_back(B); }
 if(cella.isIn(C)) {puntiareaNew.push_back(C); }
 if(cella.isIn(D)) {puntiareaNew.push_back(D); }
@@ -737,34 +744,7 @@ Real CProp::setIntdist_linea(std::vector<Point3D> puntiarea, Point3D normale, Fr
 	Point3D normale_linea;
 	normale_linea=normale.cross(intersezione.SMax.A()-intersezione.SMax.B());
 	CPcell cella(M_gridpointer->cell((*it).second.i(),(*it).second.j(),(*it).second.k()));
-	std::vector<Point3D> puntilinea;
-	for (gmm::size_type ff=0; ff<6;++ff){
-	   Point3D medio;
- 	   if (cella.intersectTheFace(intersezione.SMax, ff,   medio) && intersezione.SMax.isIn(medio)) {puntilinea.push_back(medio);}
-	}
-
-
-	if (puntilinea.size()==1){
-		if (isPartial){
-			Point3D medio(intersezione.SMax.A());
-			if (cella.isIn(medio)) {puntilinea.push_back(medio); }	
-			Point3D medio2(intersezione.SMax.B());
-			if (cella.isIn(medio2)) {puntilinea.push_back(medio2);}		
-
-		}
-		else
-		{
-			Segment SSMax;
-			SSMax.setA(2*intersezione.SMax.A()-intersezione.SMax.B());
-			SSMax.setB(2*intersezione.SMax.B()-intersezione.SMax.A());
-			for (gmm::size_type ff=0; ff<6;++ff){
-			   Point3D medio;
- 			   if (cella.intersectTheFace(SSMax, ff,   medio)) {puntilinea.push_back(medio); }
-			}
-		}
-	}
-
-
+	std::vector<Point3D> puntilinea,puntilineaprovv;
 
 	//seleziono i punti da una parte
 	std::vector<Point3D> puntisin;
@@ -776,19 +756,41 @@ Real CProp::setIntdist_linea(std::vector<Point3D> puntiarea, Point3D normale, Fr
 		}
 
 	}
-//seleziono i punti dall'altra parte
+	//seleziono i punti dall'altra parte
 	std::vector<Point3D> puntidx;
 	for (gmm::size_type i=0; i<puntiarea.size();++i){
 		Point3D diff(puntiarea[i]-intersezione.SMax.A());
-		if (diff.dot(normale_linea)<0)
+		if (diff.dot(normale_linea)<=0)
 		{
 			puntidx.push_back(puntiarea[i]);		
 		}
 
 	}
-	if (puntisin.size()>0 && puntidx.size()>0 && puntilinea.size()>=2){	
+
+	Segment SSMax;
+	SSMax.setA(20*intersezione.SMax.A()-19*intersezione.SMax.B());
+	SSMax.setB(20*intersezione.SMax.B()-19*intersezione.SMax.A());
+	
+	for (gmm::size_type i=0; i<puntisin.size();++i){
+		for (gmm::size_type j=0; j<puntidx.size();++j){
+			
+				Point3D A(puntisin[i]), B(puntidx[j]), medio;
+				Segment SS(A,B);
+				SSMax.intersectTheSegment(SS,medio);	
+				if (SS.isIn(medio)&&cella.isIn(medio)) {puntilineaprovv.push_back(medio); }
+		}
+	}
+	
+	if (puntilineaprovv.size()>=2){
+		Segment SSS(maxSegment(puntilineaprovv));
+		puntilinea.push_back(SSS.A());
+		puntilinea.push_back(SSS.B());
+	}
+
+	if (puntisin.size()>0){	
 	for (gmm::size_type ii=0;ii<puntilinea.size();++ii){
 	puntisin.push_back(puntilinea[ii]);
+
 	}
 	
 	
@@ -797,6 +799,7 @@ Real CProp::setIntdist_linea(std::vector<Point3D> puntiarea, Point3D normale, Fr
 	//chiamo qhull
 	Hull guscio1(puntisin);
 	gmm::size_type npunti_faglia=puntisin.size()-1;
+
 	//calcolo tutto a sin
 
 	for (gmm::size_type i=0; i<guscio1.getNtetra();++i){
@@ -830,7 +833,7 @@ Real CProp::setIntdist_linea(std::vector<Point3D> puntiarea, Point3D normale, Fr
 	}
 
 
-	if (puntidx.size()>0 && puntisin.size()>0 && puntilinea.size()>=2){ 
+	if (puntidx.size()>0 ){
 	for (gmm::size_type ii=0;ii<puntilinea.size();++ii){
 	puntidx.push_back(puntilinea[ii]);
 	}
@@ -870,6 +873,7 @@ Real CProp::setIntdist_linea(std::vector<Point3D> puntiarea, Point3D normale, Fr
 			}	
 		}
 	}
+
 
 return Intd/Area;
 

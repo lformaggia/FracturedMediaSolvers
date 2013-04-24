@@ -166,7 +166,7 @@ namespace Geometry
 							for (Intersect::CellIntersections_Iterator_Type cc=cellInter.begin();cc!=cellInter.end();++cc){
 								if ((*cc).first<100) {counter=counter+1;}
 							}
-							if(cellInter.size()>0 && counter>0)
+							if(cellInter.size()>0 )//&& counter>0)
 							{
 								#pragma omp critical
 								{ gridInter.insert(cellInter); }

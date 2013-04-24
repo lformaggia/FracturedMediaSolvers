@@ -27,12 +27,13 @@ namespace Geometry
 	Fracture::Fracture(const Point3D & a, const Point3D & b, const Point3D & c, const Point3D & d) :
 			BilinearSurface(a,b,c,d)
 		{ this->setLmax();
-CDARCY=(M_isMetric==true)?0.008527:0.001127;
+
+
  }
 	
 	Fracture::Fracture(const BilinearSurface & b) : BilinearSurface(b)
 		{ this->setLmax(); 
-CDARCY=(M_isMetric==true)?0.008527:0.001127;}		
+}		
 
 
 	Fracture::~Fracture() {}
@@ -46,15 +47,17 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 	void Fracture::setGeoProp(CProp & geoprop)
 	{
+	
 		M_gridpointer=geoprop.getgridpointer();
 		M_Ne=0;
+		std::vector<gmm::size_type> dove_area;
 		for (gmm::size_type i=0; i<geoprop.getI().size();++i){
 			gmm::size_type NN= geoprop.getI()[i]-1+(geoprop.getJ()[i]-1)*geoprop.getNx()+(geoprop.getK()[i]-1)*geoprop.getNx()*geoprop.getNy()+1;
 			Real aa(geoprop.getAreas()[NN]);
 			if (aa>0){
 			M_Ne=M_Ne+1;
 			M_areas.push_back(aa);
-
+			dove_area.push_back(i);
 			M_Dmedio.push_back(geoprop.getDmedio()[NN]);
 			M_CG.push_back(geoprop.getCG()[NN]);
 			M_S1x.push_back(geoprop.getSx(1)[i]);
@@ -114,10 +117,14 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 		if (M_isintby.size()>0){
 		for (gmm::size_type j=0;j<M_isintby.size();++j){
 			for (gmm::size_type k=0; k<geoprop.getMdmedioInt(j).size();++k){
-			M_inter[j].M_dmedio.push_back(geoprop.getMdmedioInt(j)[k]); 
+gmm::size_type NN= geoprop.getI()[k]-1+(geoprop.getJ()[k]-1)*geoprop.getNx()+(geoprop.getK()[k]-1)*geoprop.getNx()*geoprop.getNy()+1;
+			if (geoprop.getAreas()[NN]>0){
+			M_inter[j].M_dmedio.push_back(geoprop.getMdmedioInt(j)[k]);
+			} 
 		}
 		}		
 		}
+this->sortCG_Y();
 	}
 
 	void Fracture::setNormaltoEdges()
@@ -232,46 +239,69 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 		}
 
 		for (gmm::size_type i=0; i<M_S1x.size();++i)
-		{ 	Neigh_cell provv;
+		{ 	Neigh_cell provv,provvH,provvV;
 			provv.nnc=0;
+			provvH.nnc=0;
+			provvV.nnc=0;
 			for (gmm::size_type j=0; j<M_S1x.size();++j && j!=i)
 			{
 				if (M_ipos[j]==M_ipos[i]+1 && M_jpos[i]==M_jpos[j] && M_kpos[i]==M_kpos[j]) {
 				provv.nnc+=1;
+				provvH.nnc+=1;
 				provv.vicini.push_back(j);
+				provvH.vicini.push_back(j);
 				provv.TFF.push_back(M_TX[i]);
+				provvH.TFF.push_back(M_TX[i]);
 				}
 				if (M_jpos[j]==M_jpos[i]+1 && M_ipos[i]==M_ipos[j] && M_kpos[i]==M_kpos[j]) {
 				provv.nnc+=1;
 				provv.vicini.push_back(j);
 				provv.TFF.push_back(M_TY[i]);
+				provvH.nnc+=1;
+				provvH.vicini.push_back(j);
+				provvH.TFF.push_back(M_TY[i]);
 				}
 			
-				if (M_kpos[j]==M_kpos[i]+1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j]) {
-				provv.nnc+=1;
-				provv.vicini.push_back(j);
-				provv.TFF.push_back(M_TZ[i]);
-				}
+				
 
 				if (M_ipos[j]==M_ipos[i]-1 && M_jpos[i]==M_jpos[j] && M_kpos[i]==M_kpos[j] && M_TX[j]>0) {
 				provv.nnc+=1;
 				provv.vicini.push_back(j);
 				provv.TFF.push_back(M_TX[j]);
+				provvH.nnc+=1;
+				provvH.vicini.push_back(j);
+				provvH.TFF.push_back(M_TX[j]);
 				}
 				if (M_jpos[j]==M_jpos[i]-1 && M_ipos[i]==M_ipos[j] && M_kpos[i]==M_kpos[j] && M_TY[j]>0) {
 				provv.nnc+=1;
 				provv.vicini.push_back(j);
 				provv.TFF.push_back(M_TY[j]);
+				provvH.nnc+=1;
+				provvH.vicini.push_back(j);
+				provvH.TFF.push_back(M_TY[j]);
 				}
 
-			
+				if (M_kpos[j]==M_kpos[i]+1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j]) {
+				provv.nnc+=1;
+				provv.vicini.push_back(j);
+				provv.TFF.push_back(M_TZ[i]);
+				provvV.nnc+=1;
+				provvV.vicini.push_back(j);
+				provvV.TFF.push_back(M_TZ[i]);
+				}
 				if (M_kpos[j]==M_kpos[i]-1 && M_jpos[i]==M_jpos[j] && M_ipos[i]==M_ipos[j] &&  M_TZ[j]>0) {
 				provv.nnc+=1;
 				provv.vicini.push_back(j);
 				provv.TFF.push_back(M_TZ[j]);
+				provvV.nnc+=1;
+				provvV.vicini.push_back(j);
+				provvV.TFF.push_back(M_TZ[j]);
 				}
 			}
 		      	M_vicine.push_back(provv);
+			M_vicineH.push_back(provvH);
+			M_vicineV.push_back(provvV);
+		
 		}
 		
 		
@@ -324,7 +354,8 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 	provv=provv-SS.B();
 	nuova.altra=dove;
 	nuova.Normale=provv.cross(this->normal(0.5,0.5));
-
+	std::vector<gmm::size_type> altraSortCG(altra.getCGsort());
+	
 	for (gmm::size_type ii=0; ii<M_ipos.size();++ii)
 		{
 			for (gmm::size_type jj=0; jj<altra.M_ii().size();++jj )
@@ -341,8 +372,16 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 					nuova.M_k.push_back(M_kpos[ii]);
 					nuova.Which1.push_back(ii);
 					nuova.Which2.push_back(jj);
-					
-					
+				
+					if (completo==true){
+					nuova.Which1sorted.push_back(find(M_sortCG.begin(),M_sortCG.end(),ii)-M_sortCG.begin());
+					nuova.Which2sorted.push_back(find(altraSortCG.begin(),altraSortCG.end(),jj)-altraSortCG.begin());
+					}
+					else{
+					nuova.Which1sorted.push_back(0);
+					nuova.Which2sorted.push_back(0);
+					}
+
 					
 					nuova.M_ax.push_back(fabs(pp[0].x-pp[1].x));
 					nuova.M_ay.push_back(fabs(pp[0].y-pp[1].y));
@@ -353,6 +392,7 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 		
 					Point3D diff(pp[0]);
 					diff=diff-pp[1];
+				//std::cout << M_kpos[ii]<<"  "<<diff.norm()<<std::endl;
 					TF1F2=CDARCY*M_perm*diff.norm()*M_aperture/M_inter[dove].M_dmedio[ii];
 					
 					nuova.M_Tf1f2h.push_back(TF1F2);
@@ -373,27 +413,31 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 	}
 
-	bool Fracture::exportFracture(std::ofstream & myfile, gmm::size_type i)
-	{
+/*	bool Fracture::exportFracture(std::ofstream & myfile, gmm::size_type i)
+	{		std::cout << i<<std::endl;
+	
+		this->sortCG_Y();
 		myfile<< "FRACTURE "<<i+1 <<std::endl;
 		if (!isAreaOK()) {myfile<<"ATTENZIONE: errore aree superiore al 2%"<<std::endl;}
 		myfile<<"Ne  "<<M_Ne<<std::endl;
 		myfile<<"N\tI\tJ\tK\tPV\t\tAREA\t\tDMEAN\t\tTMF"<<std::endl;
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
-		{
-			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_areas[n]*this->aperture()<<"\t\t"<<M_areas[n]<<"\t\t"
-			<<M_Dmedio[n]<<"\t\t"<<M_TM[n]<<std::endl;	
+		{	
+			gmm::size_type nn(M_sortCG[n]);
+			myfile<<nn+1<<"\t"<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<"\t"<<M_areas[nn]*this->aperture()<<"\t\t"<<M_areas[nn]<<"\t\t"
+			<<M_Dmedio[nn]<<"\t\t"<<M_TM[nn]<<"\t"<<M_S1x[nn].length()<<"\t"<<M_S1y[nn].length()<<"\t"<<M_S2x[nn].length()<<"\t"<<M_S2y[nn].length()<<std::endl;	
 		}
 		
-		myfile<<"Transmissibility FF"<<std::endl;
+	/*	myfile<<"Transmissibility FF"<<std::endl;
 		myfile<<"N\tI\tJ\tK\tThalfX1\tThalfY1\tThalfZ1\tThalfX2\tThalfY2\tThalfZ2\tTX\tTY\tTZ"<<std::endl;
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
 		{
-			myfile<<n+1<<"\t"<<M_ipos[n]<<"\t"<<M_jpos[n]<<"\t"<<M_kpos[n]<<"\t"<<M_TH1X[n]<<"\t"<<M_TH1Y[n]<<"\t"
-			<<M_TH1Z[n]<<"\t"<<M_TH2X[n]<<"\t"<<M_TH2Y[n]<<"\t"
-			<<M_TH2Z[n]<<"\t"<<M_TX[n]<<"\t"<<M_TY[n]<<"\t"<<M_TZ[n]<<std::endl;	
+			gmm::size_type nn(M_sortCG[n]);
+			myfile<<nn+1<<"\t"<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<"\t"<<M_TH1X[nn]<<"\t"<<M_TH1Y[nn]<<"\t"
+			<<M_TH1Z[nn]<<"\t"<<M_TH2X[nn]<<"\t"<<M_TH2Y[nn]<<"\t"
+			<<M_TH2Z[nn]<<"\t"<<M_TX[nn]<<"\t"<<M_TY[nn]<<"\t"<<M_TZ[nn]<<"\t"<<M_S1z[nn].length()<<std::endl;	
 		}
 		
 		myfile<<"Transmissibility FF"<<std::endl;
@@ -401,20 +445,37 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
 		{
-			myfile<<n+1<<"\t"<<M_vicine[n].nnc<<"\t";
-			for (gmm::size_type k=0; k<M_vicine[n].nnc; ++k)
+			gmm::size_type nn(M_sortCG[n]);
+			myfile<<nn+1<<"\t"<<M_vicine[nn].nnc<<"\t";
+			for (gmm::size_type k=0; k<M_vicine[nn].nnc; ++k)
 			{
-				myfile<<M_vicine[n].vicini[k]+1<<"\t"<<M_vicine[n].TFF[k]<<"\t\t";
+				myfile<<M_vicine[nn].vicini[k]+1<<"\t"<<M_vicine[nn].TFF[k]<<"\t\t";
 			}	
 			myfile<<std::endl;
+		}*/
+
+		/*myfile<<"\nNN connections"<<std::endl;
+		myfile<<"i\tj\tk\t\tN_nnc\n"<<std::endl;
+
+		for (gmm::size_type n=0;n<M_Ne;++n)
+		{
+			gmm::size_type nn(M_sortCG[n]);
+			myfile<<nn+1<<"\t"<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<"\t\t"<<M_vicine[nn].nnc<<"\n";
+			for (gmm::size_type k=0; k<M_vicine[nn].nnc; ++k)
+			{	gmm::size_type vic(M_vicine[nn].vicini[k]);
+				gmm::size_type nvic(M_sortCG[vic]);
+				myfile<<"\t"<<M_ipos[vic]<<"\t"<<M_jpos[vic]<<"\t"<<M_kpos[vic]<<"\t"<<M_vicine[nn].TFF[k]<<"\n";
+			}	
+			myfile<<"--------------------------------------------------------\n";
 		}
+
 
 		myfile<< "Intersections "<<std::endl;	
 		
 		if (M_isintby.size()>0){
 			for (gmm::size_type ff=0;ff<M_isintby.size();++ff)
 			{
-				myfile<<M_isintby[ff]+1<<"   "<<M_inter[ff].altra<<std::endl;
+				myfile<<M_isintby[ff]+1<<std::endl;
 				myfile<<"MY_EL\t"<<"OTHER_EL\t"<<"i\t"<<"j\t"<<"k\t"<<  "dmedio\t"<<"Tf1f2h\t"<<"Tf1f2_ave"<<std::endl;
 				for (gmm::size_type kk=0; kk<M_inter[ff].M_i.size();++kk)
 				{
@@ -430,13 +491,101 @@ CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 			
 	
+	}*/
+//--------------------------------------------nuovo--------------------------------------
+
+	bool Fracture::exportFracture2(std::ofstream & myfile, gmm::size_type i)
+	{		
+	
+		
+		myfile<< "FRACTURE "<<i+1 <<std::endl;
+		if (!isAreaOK()) {myfile<<"ATTENZIONE: errore aree superiore al 2%"<<std::endl;}
+		myfile<<"Ne  "<<M_Ne<<std::endl;
+		myfile<<"Nf\tNcella\ti\tj\tk\tPV\t\tAREA\t\tDMEAN\t\tTMF"<<std::endl;
+
+		for (gmm::size_type n=0;n<M_Ne;++n)
+		{	
+			gmm::size_type nn(M_sortCG[n]);
+			myfile<<i+1<<"\t"<<n+1<<"\t("<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<")\t"<<M_areas[nn]*this->aperture()<<"\t\t"<<M_areas[nn]<<"\t\t"
+			<<M_Dmedio[nn]<<"\t\t"<<M_TM[nn]<<std::endl;//"\t"<<M_L1x[nn].norm()<<"\t"<<M_L1z[nn].norm()<<std::endl;
+		}
+		
+	
+		myfile<<"\nNN connections Horizontal"<<std::endl;
+		myfile<<"NF\tNc\ti\tj\tk\t---------\tNF\tNc\ti\tj\tk\t\t T\n"<<std::endl;
+
+		for (gmm::size_type n=0;n<M_Ne;++n)
+		{
+			gmm::size_type nn(M_sortCG[n]);
+			if (M_vicineH[nn].nnc>0){
+
+
+		
+			for (gmm::size_type k=0; k<M_vicineH[nn].nnc; ++k)
+			{	
+				
+				gmm::size_type vic(M_vicineH[nn].vicini[k]);
+				gmm::size_type nvic(find(M_sortCG.begin(),M_sortCG.end(),vic)-M_sortCG.begin());
+				if (nvic>n){
+				myfile<<i+1<<"\t"<<n+1<<"\t("<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<")\t---------\t";
+				myfile<<i+1<<"\t"<<nvic+1<<"\t("<<M_ipos[vic]<<"\t"<<M_jpos[vic]<<"\t"<<M_kpos[vic]<<")\t\t"<<M_vicineH[nn].TFF[k]<<"\n";
+				}
+			}	
+			}
+			
+		}
+		myfile<<"--------------------------------------------------------\n";
+
+		myfile<<"\nNN connections Vertical"<<std::endl;
+		myfile<<"NF\tNc\ti\tj\tk\t---------\tNF\tNc\ti\tj\tk\t\t T\n"<<std::endl;
+		std::vector<gmm::size_type>  fatti;
+		for (gmm::size_type n=0;n<M_Ne;++n)
+		{
+			gmm::size_type nn(M_sortCG[n]);
+			if (M_vicineV[nn].nnc>0){
+			for (gmm::size_type k=0; k<M_vicineV[nn].nnc; ++k)
+			{	
+				gmm::size_type vic(M_vicineV[nn].vicini[k]);
+				gmm::size_type nvic(find(M_sortCG.begin(),M_sortCG.end(),vic)-M_sortCG.begin());
+				if (nvic>n){
+				myfile<<i+1<<"\t"<<n+1<<"\t("<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<")\t---------\t";
+				myfile<<i+1<<"\t"<<nvic+1<<"\t("<<M_ipos[vic]<<"\t"<<M_jpos[vic]<<"\t"<<M_kpos[vic]<<")\t\t"<<M_vicineV[nn].TFF[k]<<"\n";
+				}
+			}	
+			}
+			
+		}
+		myfile<<"--------------------------------------------------------\n";
+
+		myfile<< "Intersections "<<std::endl;	
+		
+		if (M_isintby.size()>0){
+			for (gmm::size_type ff=0;ff<M_isintby.size();++ff)
+			{
+				myfile<<"WITH\t"<<M_isintby[ff]+1<<std::endl;
+				myfile<<"Nf1\tNc1\t---------\tNf2\tNc2\t\tdmedio\tTf1f2"<<std::endl;
+				for (gmm::size_type kk=0; kk<M_inter[ff].M_i.size();++kk)
+				{
+				
+					myfile<<i+1<<"\t"<< M_inter[ff].Which1sorted[kk]+1<<"\t---------\t"<<M_isintby[ff]+1<<"\t"<<M_inter[ff].Which2sorted[kk]+1<<"\t\t"<<M_inter[ff].M_dmedio[kk]<<"\t"<<M_inter[ff].M_Tf1f2[kk]<<std::endl;
+				}
+			}
+		}
+		else {
+			myfile<< "NONE"<<std::endl;
+		}
+
+
+			
+	
 	}
+
 
 Segment maxSegment(std::vector<Point3D> & punti)
 	{
 		Real dist;
 		Point3D diff;
-		UInt i, j;
+		UInt i(0), j(0);
 		for (gmm::size_type ii=0;ii<punti.size();++ii)
 		{
 			for (gmm::size_type jj=0;jj<punti.size();++jj)
@@ -450,7 +599,7 @@ Segment maxSegment(std::vector<Point3D> & punti)
 			}	
 
 		}
-		// LF: Sicuri che i e j vengano sempre assegnati???
+		
 	Segment S(punti[i],punti[j]);
 	return S;	
 	}
@@ -543,4 +692,42 @@ bool Fracture::isAreaOK()
 	else {return true;}
 }
 
-} // namespace Geometry
+void Fracture::sortCG_Y()
+{	if (M_CG.size()>0){
+	std::vector<Real> ycg(M_CG.size(),0.0);
+	
+	for (gmm::size_type i=0; i<ycg.size();++i)
+	{
+		ycg[i]=(M_CG[i].y);
+	}
+
+	gmm::size_type mink(*(std::min_element(M_kpos.begin(), M_kpos.end())));
+	gmm::size_type maxk(*(std::max_element(M_kpos.begin(), M_kpos.end())));
+
+	Real minimo(*(std::min_element(ycg.begin(), ycg.end()))), minimovar;
+	gmm::size_type wmax(std::max_element(ycg.begin(), ycg.end())-ycg.begin());
+
+	minimovar=minimo-0.001;
+	
+	for (gmm::size_type kk=mink;kk<=maxk;++kk){
+	
+		for (gmm::size_type k=0; k<ycg.size();++k)
+		{
+		if (M_kpos[k]==kk){
+		Real minimo2(ycg[wmax]+1.);
+		gmm::size_type where(0);
+		for (gmm::size_type i=0; i<ycg.size();++i)
+		{
+			if (ycg[i]<minimo2 && ycg[i]>minimovar && M_kpos[i]==kk && find(M_sortCG.begin(),M_sortCG.end(),i)==M_sortCG.end()) {minimo2=ycg[i]; where=i;}
+		}
+		
+		M_sortCG.push_back(where);
+		minimovar=ycg[where];
+		}}
+		minimovar=minimo-.001;
+	}
+}
+	
+}
+
+} // namespace Geometry(find(M_sortCG.begin(),M_sortCG.end(),ii)-M_sortCG.begin());

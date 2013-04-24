@@ -29,10 +29,11 @@ namespace Geometry
 		M_Triangulated(0), M_TriangulationToll(), M_TriangulatedSurface() {}
 	
 	BilinearSurface::BilinearSurface(const Point3D & a, const Point3D & b,
-									 const Point3D & c, const Point3D & d ) :
+									 const Point3D & c, const Point3D & d) :
 		M_pA(a), M_pB(b), M_pC(c), M_pD(d),
 		M_Triangulated(0), M_TriangulationToll(), M_TriangulatedSurface()
 	{ this->setLmax(); }
+
 		
 	BilinearSurface::BilinearSurface(const BilinearSurface & b) :
 		M_pA(b.A()), M_pB(b.B()), M_pC(b.C()), M_pD(b.D()),

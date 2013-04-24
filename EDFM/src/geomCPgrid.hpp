@@ -57,7 +57,7 @@ public:
 	 * @param filename The Eclipse data file with grid informations
 	 * @param scriptWithSpecialChar Set TRUE if the Eclipse data file is generated on windows
 	 */
-    CPgrid(const std::string & filename, const bool & scriptWithSpecialChar=1);
+    CPgrid(const std::string & filename, const bool & scriptWithSpecialChar=1, std::string direzione="x", Real angle=0);
 	
 	//! Destructor
 	~CPgrid();
@@ -125,9 +125,7 @@ public:
 	 */
         CPcell cell(const UInt & i, const UInt & j, const UInt & k) const; 
 
-	Point3D applyShear(const Real m, gmm::size_type direction, Point3D);
-
-        void whereIs(Point3D &, std::vector<UInt> &) const;
+	void whereIs(Point3D &, std::vector<UInt> &) const;
 
 	void buildBB(Point3D , Point3D, Point3D, Point3D, std::vector<UInt> &) const;
 	

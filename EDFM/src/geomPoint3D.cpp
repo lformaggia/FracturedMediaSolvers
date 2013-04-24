@@ -47,6 +47,18 @@ namespace Geometry
 // ==================================================
 // Operators
 // ==================================================
+	Point3D apply_shear(Point3D p, const Real angle, std::string direction)
+	{	Point3D puntonew(p.x,p.y,p.z);
+		Real m(tan(angle/180*3.14));
+		if (direction=="x")
+		{	puntonew.x=p.x+m*p.z;
+		}
+		if (direction=="y")
+		{	puntonew.y=p.y+m*p.z;
+		}
+		return puntonew;
+	}
+
 	bool Point3D::operator==( const Point3D & b)
 	{
 		if (fabs(x-b.x)<1.0e-5 &&fabs(y-b.y)<1.0e-5 &&fabs(z-b.z)<1.0e-5 )		
@@ -162,6 +174,7 @@ namespace Geometry
 		return 0;
 	}
 
+	
 	
 	
 } // namespace Geometry

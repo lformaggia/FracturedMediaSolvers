@@ -45,6 +45,8 @@ public:
 	  std::vector<gmm::size_type> M_k;
 	  std::vector<gmm::size_type> Which1;
 	  std::vector<gmm::size_type> Which2;
+	  std::vector<gmm::size_type> Which1sorted;
+	  std::vector<gmm::size_type> Which2sorted;
 	  std::vector<Point3D> puntiInt;
 	  std::vector<Real> M_ax;
 	  std::vector<Real> M_ay;
@@ -133,9 +135,10 @@ public:
 
 	void computeNe();
 
-	bool exportFracture(std::ofstream & , gmm::size_type);
+	//bool exportFracture(std::ofstream & , gmm::size_type);
+	bool exportFracture2(std::ofstream & , gmm::size_type);
 
-	inline void setMetric(bool isMetric) {M_isMetric=isMetric;}
+	inline void setMetric(bool isMetric) {M_isMetric=isMetric; CDARCY=(M_isMetric==true)?0.008527:0.001127;}
 
 	inline std::vector<IntFrac> inter() {return M_inter;}
 
@@ -146,6 +149,9 @@ public:
 	void setInterTransm(gmm::size_type quale, gmm::size_type dove, Real quanto) {M_inter[quale].M_Tf1f2[dove]=quanto;}
 
 	Real CDARCY;
+
+	void sortCG_Y(); 	
+	std::vector<gmm::size_type> getCGsort() {return M_sortCG;}
 	
 private:
 	CPgrid* M_gridpointer; 
@@ -160,7 +166,10 @@ private:
 	std::vector<gmm::size_type> M_ipos;
 	std::vector<gmm::size_type> M_jpos;
 	std::vector<gmm::size_type> M_kpos;
+	std::vector<gmm::size_type> M_sortCG;
 	std::vector<Neigh_cell> M_vicine;
+	std::vector<Neigh_cell> M_vicineH;
+	std::vector<Neigh_cell> M_vicineV;
 	std::vector<Real> M_areas;
 	std::vector<Real> M_Dmedio;
 	std::vector<Point3D> M_CG;

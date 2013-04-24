@@ -310,7 +310,7 @@ v5=1./6.*lato3.dot(provv);
 return fabs(v1)+fabs(v2)+fabs(v3)+fabs(v4)+fabs(v5);
 }
 
-bool CPcell::isIn(Point3D & punto1) const
+bool CPcell::isIn(Point3D & punto1, Real toll ) const
 {//ciclo sulle facce
 int f1[4]={0,1,2,3};
 int f2[4]={4,5,6,7};
@@ -337,7 +337,7 @@ vol2+=1./6.*fabs(provv.dot(lato3));
 
 }
 
-if (fabs(vol1-vol2)<1.0e-5*vol1){
+if (fabs(vol1-vol2)<toll*vol1){
 return true;}
 else{
 return false;}

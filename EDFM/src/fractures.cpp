@@ -15,7 +15,7 @@
 
 namespace Geometry
 {
-	Fractures::Fractures(const std::string nomefile, Real conv_z){
+	Fractures::Fractures(const std::string nomefile, Real conv_z, std::string direzione, Real angle){
 		
 		std::ifstream myfile;
 		std::string line;
@@ -87,7 +87,8 @@ namespace Geometry
 			}
 			if (n_punti==5) {punti.pop_back();}
 			
-			Fracture frattura(punti[0], punti[1], punti[2], punti[3]);
+			Fracture frattura(apply_shear(punti[0],angle, direzione), apply_shear(punti[1],angle, direzione), apply_shear(punti[2],angle, direzione), apply_shear(punti[3],angle, direzione));
+			
 			frattura.setMetric(M_isMetric);
 			M_fractures.push_back(frattura);
 			M_fractures[i].setProperties(perm, compr, aperture);
@@ -102,18 +103,22 @@ namespace Geometry
 	{
 	
 	for (gmm::size_type i=0; i<M_nfractures;++i){
-
+		
 		for (gmm::size_type j=0; j<M_nfractures;++j){
 		std::vector<Point3D> puntiint;
 		bool primo(M_fractures[i].isIntersectedBy(M_fractures[j], puntiint));
 		bool secondo( M_fractures[j].isIntersectedBy(M_fractures[i], puntiint));
-			
-			if ((primo||secondo) && (i!=j))
+		if (puntiint.size()>0)	{	
+		Segment SS(maxSegment(puntiint));
+	
+			if ((primo||secondo) && (i!=j) && (M_fractures[i].areaFault()>0) && (M_fractures[j].areaFault()>0) && SS.length()>0)
 					{
 						M_fractures[i].setInt(j, M_fractures[j], puntiint, completo);
 					
 					}			
 		}
+		}
+		
 	}
 	if (completo==true){
 		this->setInterFTransm(); //calcolo delle medie armoniche.
@@ -233,10 +238,26 @@ for (gmm::size_type i=0; i< M_nfractures; ++i)
 	}//ciclo su quelle che interseca
 }//fine ciclo sulle fratture
 
+}
 
-
-
-
+void Fractures::exportIntersectionMatrix(std::ofstream & myfile)
+{
+	for (gmm::size_type i=0;i<M_nfractures;++i)
+	{
+		for (gmm::size_type j=0;j<M_nfractures;++j)
+		{
+			std::vector<gmm::size_type> intersezioni(this->M_fractures[i].getIsInt());
+			if(find(intersezioni.begin(), intersezioni.end(),j)!=intersezioni.end())
+			{
+				myfile<<1<<"\t";
+			}
+			else
+			{
+				myfile<<0<<"\t";
+			}
+		}
+		myfile<<"\n";
+	}
 }
 
 } // namespace Geometry

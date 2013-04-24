@@ -275,7 +275,7 @@ public:
 	 */
 	void showMe(std::ostream  & out=std::cout) const ;
 	
-	bool isIn(Point3D & ) const;
+	bool isIn(Point3D &, Real toll=1.0e-2 ) const;
 
 	bool intersectTheFace(Segment ,  int ,   Point3D & ) const ;
 

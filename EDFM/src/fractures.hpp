@@ -34,7 +34,7 @@ public:
 	Fractures();
 	
 	//! Constructor
-	Fractures(const std::string , Real);
+	Fractures(const std::string , Real, std::string, Real);
 	
 	//! Destructor
 	virtual ~Fractures();
@@ -49,11 +49,12 @@ public:
 	gmm::size_type M_nfractures;
 	std::vector<Fracture> M_fractures;
 	bool M_isMetric;
-	
+	void exportIntersectionMatrix(std::ofstream & );
 };
 
 void readPoints(std::string line, Real &, Real &, Real &);
 void readProperties(std::string line, gmm::size_type &, Real &, Real &, Real &);
+
 } // namespace Geometry
 
 #endif /* GEOMFAULT_HPP_ */

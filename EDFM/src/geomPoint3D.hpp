@@ -143,6 +143,7 @@ struct Point3D{
     Real z;
 };
 
+Point3D apply_shear(Point3D p, const Real m, std::string direction);
 //! @name External Operators
 //@{
 
