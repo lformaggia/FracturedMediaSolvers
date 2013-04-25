@@ -20,10 +20,10 @@ INSTALLDIR = $(PWD)/lib
 all:
 	@echo
 	@echo To install the library use:
-	@echo >make install
+	@echo make install
 	@echo  "(to remove: >make uninstall)"
 	@echo To install the dev version in the current directory use:
-	@echo >make libdev
+	@echo make libdev
 	@echo  "(to remove: >make clean & >make clean_lib)"
 	@echo
 

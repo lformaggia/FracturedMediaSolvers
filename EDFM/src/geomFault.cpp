@@ -11,7 +11,7 @@
 //#include "/usr/lib/gcc/x86_64-unknown-linux-gnu/4.7.1/include/omp.h"
  
 #include "geomFault.hpp"
-
+#include "bbox.hpp"
 
 namespace Geometry
 {
@@ -179,47 +179,77 @@ namespace Geometry
 		}
 	}
 
-	void Fault::newtonIntersectionWithGrid_FOR3OPT
-		(const CPgrid & g, Intersect::GridIntersections & gridInter,
-		 const Real & toll, const UInt & maxIter) const
-	{	
-		std::vector<UInt> BB;			
-		g.buildBB(this->A(),this->B(),this->C(),this->D(),BB);
-		UInt LX,RX,LY,RY,LZ,RZ;
-		LX=(BB[0]>0)? BB[0]:1;
-LY=(BB[2]>0)? BB[2]:1;
-LZ=(BB[4]>0)? BB[4]:1;
-		RX=(BB[1]<g.Nx()+1)? BB[1]:g.Nx();
-RY=(BB[3]<g.Ny()+1)? BB[3]:g.Ny();
-RZ=(BB[5]<g.Nz()+1)? BB[5]:g.Ny();
-		std::cout << LX<<"  "<<RX<<"  "<<LY<<"  "<<RY<<"  "<<LZ <<"  "<<RZ<<std::endl;
-		#pragma omp parallel shared(g,gridInter,toll, maxIter)
+  void Fault::newtonIntersectionWithGrid_FOR3OPT
+  (const CPgrid & g, Intersect::GridIntersections & gridInter,
+   ADT::ADTree const * tree,
+   const Real & toll, const UInt & maxIter) const
+  {	
+    double vmin[3];
+    double vmax[3];
+    // Find bounding box of the fault.
+    vmin[0]=std::min(this->A().x,
+		     std::min(this->B().x,
+			      std::min(this->C().x,this->D().x)
+			      )
+		     );
+    vmin[1]=std::min(this->A().y,
+		     std::min(this->B().y,
+			      std::min(this->C().y,this->D().y)
+			      )
+		     );
+    vmin[2]=std::min(this->A().z,
+		     std::min(this->B().z,
+			      std::min(this->C().x,this->D().z)
+			      )
+		     );
+    vmax[0]=std::max(this->A().x,
+		     std::max(this->B().x,
+			      std::max(this->C().x,this->D().x)
+			      )
+		     );
+    vmax[1]=std::max(this->A().y,
+		     std::max(this->B().y,
+			      std::max(this->C().y,this->D().y)
+			      )
+		     );
+    vmax[2]=std::max(this->A().z,
+		     std::max(this->B().z,
+			      std::max(this->C().x,this->D().z)
+			      )
+		     );
+    
+    ADT::BBox<3> box(vmin,vmax);
+    std::vector<int> listFound; 
+    // Use binary tree search
+    tree->search(box,listFound);
+    std::cout<<"Found  "<<listFound.size()<< 
+      " possible intersections  "<<std::endl;
+#pragma omp parallel shared(g,gridInter,toll, maxIter,tree,listFound)
+    {
+      Intersect::CellIntersections cellInter;
+      std::vector<int> keys(3);// cambiare in unsigned
+#pragma omp for schedule(dynamic,1)
+      for(unsigned int it=0;
+	  it<listFound.size();++it)
+	{
+	  keys=tree->getNode(listFound[it]).getkeys();
+	  UInt i=keys[0];
+	  UInt j=keys[1];
+	  UInt k=keys[2];
+	  if( g.cell(i,j,k).getActnum() )
+	    {
+	      this->newtonIntersectionWithCell(g.cell(i,j,k), cellInter, toll, maxIter);
+	      if(cellInter.size()>0)
 		{
-			Intersect::CellIntersections cellInter;
-		
-			#pragma omp for schedule(dynamic,1)
-			for(UInt i=LX; i<=RX; ++i)
-			{
-				for(UInt j=LY; j<=RY; ++j)
-				{
-					for(UInt k=LZ; k<=RZ; ++k)
-					{
-						if( g.cell(i,j,k).getActnum() )
-						{
-							this->newtonIntersectionWithCell(g.cell(i,j,k), cellInter, toll, maxIter);
-							if(cellInter.size()>0)
-							{
-								#pragma omp critical
-								{ gridInter.insert(cellInter); }
-							}
-							cellInter.clearIntersections();
-						}
-					}
-				}
-			}
+#pragma omp critical
+		  { gridInter.insert(cellInter); }
 		}
+	      cellInter.clearIntersections();
+	    }
 	}
-	
+    }
+  }
+
 	
 	void Fault::approxIntersectionWithGrid_FOR3
 		(const CPgrid & g, Intersect::GridIntersections & gridInter,

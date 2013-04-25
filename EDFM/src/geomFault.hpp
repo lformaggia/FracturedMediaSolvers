@@ -19,7 +19,7 @@
 #include "interGridIntersections.hpp"
 #include "interGridEdgeMap.hpp"
 #include "interGridIntersectionMap.hpp"
-
+#include "adtree.hpp"
 
 namespace Geometry
 {
@@ -160,6 +160,7 @@ public:
 
 	void newtonIntersectionWithGrid_FOR3OPT
 		(const CPgrid & g, Intersect::GridIntersections & gridInter,
+		 ADT::ADTree const *,
 		 const Real & toll=eps, const UInt & maxIter=60) const;
 	
 	//! Compute approximated intersection with a Corner Point grid

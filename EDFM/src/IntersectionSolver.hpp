@@ -19,6 +19,8 @@
 #include "geomFault.hpp"
 #include "interCellIntersections.hpp"
 #include "interGridIntersections.hpp"
+#include <memory>
+#include "adtree.hpp"
 
 using namespace Geometry;
 
@@ -166,6 +168,7 @@ private:
 	Real M_toll;
 	UInt M_maxIter;
 	bool M_stdDivision;
+        mutable std::auto_ptr<ADT::ADTree> M_tree_ptr;
 };
 
  

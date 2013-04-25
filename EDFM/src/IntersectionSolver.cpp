@@ -16,7 +16,7 @@
 // Constructors & Destructor
 // ==================================================
 IntersectionSolver::IntersectionSolver(IntersectionAlgorithm alg, GridStrategy strategy) :
-		M_alg(alg), M_strategy(strategy), M_toll(1e-10), M_maxIter(60), M_stdDivision(1) {}
+  M_alg(alg), M_strategy(strategy), M_toll(1e-10), M_maxIter(60), M_stdDivision(1),M_tree_ptr(0) {}
 		
 IntersectionSolver::~IntersectionSolver() {}
 
@@ -69,6 +69,8 @@ switch(M_strategy)
 void IntersectionSolver::operator()
 	(Fault & f, const CPgrid & g, Intersect::GridIntersections & gridInter) const
 {
+  static bool isfirst(true);
+  // For the optimised option we need the tree search structure
 	switch(M_alg)
 	{
 		case NEWTON :
@@ -77,8 +79,18 @@ void IntersectionSolver::operator()
 				case FOR3 :
 					f.newtonIntersectionWithGrid_FOR3(g,gridInter,M_toll,M_maxIter);
 					break;
-				case FOR3OPT :
-					f.newtonIntersectionWithGrid_FOR3OPT(g,gridInter,M_toll,M_maxIter);
+			        case FOR3OPT :
+				  /* The first time the method is called we need to set up
+				     the range search tree.  
+				     @warning If we operate on a new grid we must create a new IntersectionSolver object!
+				  */
+				  
+				  if (isfirst)
+				    {
+				    this->M_tree_ptr.reset(new ADT::ADTree(g));
+				    isfirst=false;
+				    }
+				  f.newtonIntersectionWithGrid_FOR3OPT(g,gridInter,M_tree_ptr.get(),M_toll,M_maxIter);
 					break;
 				case EDGEMAP :
 					f.newtonIntersectionWithGrid_EDGEMAP(g,gridInter,M_toll,M_maxIter);
