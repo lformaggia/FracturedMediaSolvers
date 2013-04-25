@@ -20,10 +20,15 @@ int main()
     double vmin[3];
     double vmax[3];
     Geometry::CPcell cell =
-      grid.cell (3, 2, 1);
-    const std::vector<Geometry::Point3D>&
+      grid.cell (1, 1, 1);
+    const std::vector<Geometry::Point3D>
+      cellVerticesa = cell.getVerticesVector();
+    cell=grid.cell (2, 2, 2);
+    std::vector<Geometry::Point3D>
       cellVertices = cell.getVerticesVector();
+    cellVertices.insert(cellVertices.end(),cellVerticesa.begin(),cellVerticesa.end());
     numVertices = cellVertices.size();
+    std::cout<<"Num vertices="<<numVertices<<std::endl;
     std::vector<double> xcoor[3];
     xcoor[0].reserve (numVertices);
     xcoor[1].reserve (numVertices);
@@ -40,6 +45,7 @@ int main()
 	vmax[l] = *std::max_element (xcoor[l].begin(), xcoor[l].end() );
       }
     BBox<3> box (vmin, vmax); 
+    std::cout<<box<<std::endl;
     std::vector<int> listFound;
     bool yes=tree.search(box,listFound);
     vector<int> keys(3);
