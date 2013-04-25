@@ -199,7 +199,7 @@ namespace Geometry
 		     );
     vmin[2]=std::min(this->A().z,
 		     std::min(this->B().z,
-			      std::min(this->C().x,this->D().z)
+			      std::min(this->C().z,this->D().z)
 			      )
 		     );
     vmax[0]=std::max(this->A().x,
@@ -214,7 +214,7 @@ namespace Geometry
 		     );
     vmax[2]=std::max(this->A().z,
 		     std::max(this->B().z,
-			      std::max(this->C().x,this->D().z)
+			      std::max(this->C().z,this->D().z)
 			      )
 		     );
     
