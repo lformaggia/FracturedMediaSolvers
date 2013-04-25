@@ -16,7 +16,7 @@
 // Constructors & Destructor
 // ==================================================
 IntersectionSolver::IntersectionSolver(IntersectionAlgorithm alg, GridStrategy strategy) :
-  M_alg(alg), M_strategy(strategy), M_toll(1e-10), M_maxIter(60), M_stdDivision(1),M_tree_ptr(0) {}
+  M_alg(alg), M_strategy(strategy), M_toll(1e-10), M_maxIter(60), M_stdDivision(1){}
 		
 IntersectionSolver::~IntersectionSolver() {}
 
@@ -87,10 +87,10 @@ void IntersectionSolver::operator()
 				  
 				  if (isfirst)
 				    {
-				    this->M_tree_ptr.reset(new ADT::ADTree(g));
+				      G_tree_ptr.reset(new ADT::ADTree(g));
 				    isfirst=false;
 				    }
-				  f.newtonIntersectionWithGrid_FOR3OPT(g,gridInter,M_tree_ptr.get(),M_toll,M_maxIter);
+				  f.newtonIntersectionWithGrid_FOR3OPT(g,gridInter,G_tree_ptr.get(),M_toll,M_maxIter);
 					break;
 				case EDGEMAP :
 					f.newtonIntersectionWithGrid_EDGEMAP(g,gridInter,M_toll,M_maxIter);
