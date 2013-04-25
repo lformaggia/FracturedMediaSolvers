@@ -429,7 +429,7 @@ this->sortCG_Y();
 			<<M_Dmedio[nn]<<"\t\t"<<M_TM[nn]<<"\t"<<M_S1x[nn].length()<<"\t"<<M_S1y[nn].length()<<"\t"<<M_S2x[nn].length()<<"\t"<<M_S2y[nn].length()<<std::endl;	
 		}
 		
-	/*	myfile<<"Transmissibility FF"<<std::endl;
+		myfile<<"Transmissibility FF"<<std::endl;
 		myfile<<"N\tI\tJ\tK\tThalfX1\tThalfY1\tThalfZ1\tThalfX2\tThalfY2\tThalfZ2\tTX\tTY\tTZ"<<std::endl;
 
 		for (gmm::size_type n=0;n<M_Ne;++n)
@@ -575,7 +575,7 @@ this->sortCG_Y();
 			myfile<< "NONE"<<std::endl;
 		}
 
-
+		return true;
 			
 	
 	}
