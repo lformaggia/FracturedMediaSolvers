@@ -99,7 +99,7 @@ int main(int argc, char** argv){
 		if (ff.areaFault()>0){
 	
 		// (5) Solver definition
-		IntersectionSolver newton_FOR3(NEWTON,FOR3);
+		IntersectionSolver newton_FOR3(NEWTON,FOR3OPT);
 	
 		// (6) Set solver properties
 		newton_FOR3.setMaxIteration(100);
