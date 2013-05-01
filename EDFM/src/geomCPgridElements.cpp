@@ -12,7 +12,7 @@
  
 #include "geomCPgridElements.hpp"
 #include "geomCPgrid.hpp"
-
+#include "trilinearElement.hpp"
 
 namespace Geometry
 {
@@ -310,7 +310,12 @@ v5=1./6.*lato3.dot(provv);
 return fabs(v1)+fabs(v2)+fabs(v3)+fabs(v4)+fabs(v5);
 }
 
-bool CPcell::isIn(Point3D & punto1, Real toll ) const
+  /*
+    Testing the new algorithm. To get the old algorithm back
+    compile with -DOLDISIN.
+   */
+#ifdef OLDISIN
+bool CPcell::isIn(Point3D const & punto1, Real toll ) const
 {//ciclo sulle facce
 int f1[4]={0,1,2,3};
 int f2[4]={4,5,6,7};
@@ -342,6 +347,22 @@ return true;}
 else{
 return false;}
 }
+#else
+  /*! New version: it uses Newton iterations.
+   */
+bool CPcell::isIn(Point3D const & punto1, Real toll ) const
+{
+  // build the trilinear element
+  TrilinearElement element(*this);
+  // A proxy for the inverse mapping
+  InverseMapping invmap(element);
+  // The result
+  InvMapResult image=invmap(punto1.x,punto1.y,punto1.z);
+  // Use only the information about the inside/outside
+  return image.inside;
+}
+
+#endif
 
 bool CPcell::intersectTheFace(Segment S,  int quale,   Point3D & risultato) const
 	{
