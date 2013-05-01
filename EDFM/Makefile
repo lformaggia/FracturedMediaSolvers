@@ -1,6 +1,6 @@
 CXX = g++
 WARFLAGS = -Wall
-#OPTFLAGS = -O3
+#OPTFLAGS = -O3 -DNDEBUG
 OPTFLAGS = -g
 OMPFLAGS = -fopenmp
 CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) -I./src -I../external/include
