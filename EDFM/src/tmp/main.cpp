@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include "adtree.hpp"
+#include "implHypParab.hpp"
 int main()
 {
     using namespace std;
@@ -68,6 +69,20 @@ int main()
       {
 	cout<<"No intersecting cells"<<endl;
       }
+    
+    Point3D P00(0,0,0);
+    Point3D P01(0,1,0);
+    Point3D P11(1,1,0);
+    Point3D P10(1,0,0);
+    bilinerarPatchPoints patch={P00,P10,P11,P10};
+    double x(0),y(0),z(0);
+    while(x!=-1. || y!=-1. || z!= -1.)
+      {
+	cout<<" Give Me x y and z (-1 -1 -1 to end)"<<endl;
+	cin>>x>>y>>z;
+	cout<<implHypParab(patch, x, y, z)<<endl;
+      }
+    
 }
 
 
