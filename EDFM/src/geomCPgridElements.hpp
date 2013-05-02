@@ -289,7 +289,7 @@ public:
     If outside, InvMapResult.direction[3] tells if it is on the right (1) or on the left (-1) of
     the corresponding coordinate axis. Useful to drive bisection techniques. 
    */
-  InvMapResult isIn2(Point3D const & punto1, Real toll ) const;
+  InvMapResult isIn2(Point3D const & punto1) const;
     
     bool intersectTheFace(Segment ,  int ,   Point3D & ) const ;
 

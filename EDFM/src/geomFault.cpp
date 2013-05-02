@@ -13,6 +13,7 @@
 #include "geomFault.hpp"
 #include "bbox.hpp"
 
+
 namespace Geometry
 {
 	// --------------------   Class Fault   --------------------
@@ -313,6 +314,51 @@ namespace Geometry
 		}
 	}
 	
+  /* New bisection version */
+  void Fault::newtonIntersectionWithGrid_BISECTION(
+						   const CPgrid & g, Intersect::GridIntersections & gridInter,
+						   const Real & toll, const UInt & maxIter) const
+  {	
+    std::vector<UInt> BB;			
+    g.buildBB(this->A(),this->B(),this->C(),this->D(),BB);
+    UInt LX,RX,LY,RY,LZ,RZ;
+    LX=(BB[0]>0)? BB[0]:1;
+    LY=(BB[2]>0)? BB[2]:1;
+    LZ=(BB[4]>0)? BB[4]:1;
+    RX=(BB[1]<g.Nx()+1)? BB[1]:g.Nx();
+    RY=(BB[3]<g.Ny()+1)? BB[3]:g.Ny();
+    RZ=(BB[5]<g.Nz()+1)? BB[5]:g.Ny();
+    std::cout << LX<<"  "<<RX<<"  "<<LY<<"  "<<RY<<"  "<<LZ <<"  "<<RZ<<std::endl;
+#pragma omp parallel shared(g,gridInter,toll, maxIter)
+    {
+      Intersect::CellIntersections cellInter;
+      
+#pragma omp for schedule(dynamic,1)
+      for(UInt i=LX; i<=RX; ++i)
+	{
+	  for(UInt j=LY; j<=RY; ++j)
+	    {
+	      for(UInt k=LZ; k<=RZ; ++k)
+		{
+		  if( g.cell(i,j,k).getActnum() )
+		    {
+		      this->newtonIntersectionWithCell(g.cell(i,j,k), cellInter, toll, maxIter);
+		      if(cellInter.size()>0)
+			{
+#pragma omp critical
+			  { gridInter.insert(cellInter); }
+			}
+		      cellInter.clearIntersections();
+		    }
+		}
+	    }
+	}
+    }
+  }
+  
+  /* end new bisection version */
+
+
 	void Fault::approxRefinedIntersectionWithGrid_FOR3
 		(const CPgrid & g, Intersect::GridIntersections & gridInter,
 		 const Real & toll)

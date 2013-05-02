@@ -8,10 +8,10 @@
  */
 
 #include <iomanip>
-
+#include <stdexcept>
 #include "geomCPgrid.hpp"
 #include "EclipseFileTranslator.hpp"
- 
+#include "trilinearElement.hpp" 
  
  namespace Geometry
 {
@@ -173,59 +173,69 @@
 	}
       
 
-//-----------------------------------------------------------------
-	void CPgrid::whereIs(Point3D & p,  std::vector<UInt> & sol) const 
-	{
-		bool in(false);
-		UInt iL(1),iR(M_Nx),jL(1),jR(M_Ny),kL(M_Nz),kR(1);
-		UInt iM,jM,kM;
-		
-		if (p.x<M_gridBB[0] ||  p.y<M_gridBB[2] ||  p.z<M_gridBB[4] ) 
-		{
-			in=true; 
-			sol[0]=0;
-			sol[1]=0;
-			sol[2]=M_Nz+1;
-		}
+  //-----------------------------------------------------------------
+  void CPgrid::whereIs(Point3D & p,  std::vector<UInt> & sol) const 
+  {
+    InvMapResult in;
+    UInt iL(1),iR(M_Nx),jL(1),jR(M_Ny),kL(M_Nz),kR(1);
+    UInt iM(1),jM(1),kM(1);
+    UInt iMOld(0),jMOld(0),kMOld(0);
+    in.inside=false;
 
-		if (p.x>M_gridBB[1] ||  p.y>M_gridBB[3] || p.z>M_gridBB[5] ) 
-		{
-			in=true; 
-			sol[0]=M_Nx+1;
-			sol[1]=M_Ny+1;
-			sol[2]=0;
-		}
-
-		while (in==false)
-		{
-			iM=0.5*(iL+iR);
-			jM=0.5*(jL+jR);
-			kM=0.5*(kL+kR);
-			
-			sol[0]=iM;
-			sol[1]=jM;
-			sol[2]=kM;
-		
-			CPcell cc(cell(iM,jM,kM));
-
-			in=cc.isIn(p);
-			
-			if (in==false && iM==M_Nx-1) {iM=M_Nx;}
-			if (in==false && jM==M_Ny-1) {jM=M_Ny;}
-			if (in==false && kM==M_Nz-1) {kM=M_Nz;}
-
-			if (p.x<cc.getVertex(1).x) {iR=iM;}
-			if (p.x>cc.getVertex(8).x) {iL=iM;}
-			if (p.y<cc.getVertex(1).y) {jR=jM;}
-			if (p.y>cc.getVertex(8).y) {jL=jM;}
-		 	if (p.z<cc.getVertex(8).z) {kR=kM;}
-			if (p.z>cc.getVertex(1).z) {kL=kM;}
-		
-		}
-		
-	}
-
-	void CPgrid::buildBB(Point3D A, Point3D B, Point3D C, Point3D D, std::vector<UInt> & BB ) const
+    // First iteration is always carried out!
+    iM=std::floor(0.5*(iL+iR)+0.5);
+    jM=std::floor(0.5*(jL+jR)+0.5);
+    kM=std::floor(0.5*(kL+kR)+0.5);
+    
+    iM=std::max(std::min(iM,1u),M_Nx);
+    jM=std::max(std::min(jM,1u),M_Ny);
+    kM=std::max(std::min(kM,1u),M_Nz);
+    
+    do{
+      
+      sol[0]=iM;
+      sol[1]=jM;
+      sol[2]=kM;
+      
+      CPcell cc(cell(iM,jM,kM));
+      
+      in=cc.isIn2(p);
+      // if is inside it is OK!!! No waste of time
+      if(in.inside)break;
+      
+      /* NON CAPISCO!
+	 if (!in.inside)
+	 {
+	 if (iM==M_Nx-1) {iM=M_Nx;}
+	 if (jM==M_Ny-1) {jM=M_Ny;}
+	 if (kM==M_Nz-1) {kM=M_Nz;}
+	 }
+      */
+      if (in.direction[1]==-1) {iR=iM;}
+      if (in.direction[1]== 1) {iL=iM;}
+      if (in.direction[2]==-1) {jR=jM;}
+      if (in.direction[2]== 1) {jL=jM;}
+      if (in.direction[3]==-1) {kR=kM;}
+      if (in.direction[3]== 1) {kL=kM;}
+      
+      iMOld=iM;
+      jMOld=jM;
+      kMOld=kM;
+      
+      iM=std::floor(0.5*(iL+iR)+0.5);
+      jM=std::floor(0.5*(jL+jR)+0.5);
+      kM=std::floor(0.5*(kL+kR)+0.5);
+      
+      iM=std::max(std::min(iM,1u),M_Nx);
+      jM=std::max(std::min(jM,1u),M_Ny);
+      kM=std::max(std::min(kM,1u),M_Nz);
+    }
+    while (!in.inside && (iMOld!=iM || jMOld!=jM || kMOld!=kM) );
+     
+    if (!in.inside) throw std::runtime_error("Cannot locate cell containing point in isIn2()");
+  }
+  
+  void CPgrid::buildBB(Point3D A, Point3D B, Point3D C, Point3D D, std::vector<UInt> & BB ) const
 	{
 		std::vector<UInt> II;
 		std::vector<UInt> JJ;

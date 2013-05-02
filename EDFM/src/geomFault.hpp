@@ -162,7 +162,16 @@ public:
 		(const CPgrid & g, Intersect::GridIntersections & gridInter,
 		 ADT::ADTree const *,
 		 const Real & toll=eps, const UInt & maxIter=60) const;
+  //! Computes approximated intersection with a Corner Point grid
+	/*!  
+	  It uses a bisection algorithm. It employs the new isIn2() method
+	  of CPCell, based on inverting the trilinear map.
+	 */
 	
+        void newtonIntersectionWithGrid_BISECTION
+	(const CPgrid & g, Intersect::GridIntersections & gridInter,
+	 const Real & toll=eps, const UInt & maxIter=60) const;
+
 	//! Compute approximated intersection with a Corner Point grid
 	/*!
 	 * The fault is approximated with two triangles.
