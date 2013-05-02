@@ -25,7 +25,7 @@
 namespace Geometry
 {	
 class CPgrid;	// Forward declaration
-
+  class InvMapResult; // Forward declaration
 /*!
 		@class CPpillar
 		
@@ -274,14 +274,28 @@ public:
 	 * @param out Specify the output format (std::cout by default)
 	 */
 	void showMe(std::ostream  & out=std::cout) const ;
-	
-	bool isIn(Point3D const &, Real toll=1.0e-2 ) const;
+  /*! Check if a point is inside the cell.  
 
-	bool intersectTheFace(Segment ,  int ,   Point3D & ) const ;
+    If the cpp macro ODISIN is NOT set at compile time it uses the new
+    method with Newton iterations.
+  */
+    bool isIn(Point3D const &, Real toll=1.0e-2 ) const;
+  /*! Check if a point is inside the cell.  
 
-	bool segmentIntersectCell(Segment S, std::vector<Point3D> &vettpunti)  const;
+    New version: it uses Newton iterations.
+    It also returns the full information, useful for locating where
+    the target point punto1 lays w.r.t. the element. In particular
+    InvMapResult.inside tells if point is inside or outside the element.
+    If outside, InvMapResult.direction[3] tells if it is on the right (1) or on the left (-1) of
+    the corresponding coordinate axis. Useful to drive bisection techniques. 
+   */
+  InvMapResult isIn2(Point3D const & punto1, Real toll ) const;
+    
+    bool intersectTheFace(Segment ,  int ,   Point3D & ) const ;
 
-	double set_volume() const;
+  bool segmentIntersectCell(Segment S, std::vector<Point3D> &vettpunti)  const;
+  
+  double set_volume() const;
 
 	//@}
 	

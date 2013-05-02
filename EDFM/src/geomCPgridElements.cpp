@@ -355,7 +355,7 @@ bool CPcell::isIn(Point3D const & punto1, Real toll ) const
   // build the trilinear element
   TrilinearElement element(*this);
   // A proxy for the inverse mapping
-  InverseMapping invmap(element);
+  InverseMapping invmap(element,true);
   // The result
   InvMapResult image=invmap(punto1.x,punto1.y,punto1.z);
   // Use only the information about the inside/outside
@@ -363,6 +363,26 @@ bool CPcell::isIn(Point3D const & punto1, Real toll ) const
 }
 
 #endif
+  /*! New version: it uses Newton iterations.
+    
+    It also returns the full information, useful for locating where
+    the target point punto1 lays w.r.t. the element. In particular
+    InvMapResult.inside tells if point is inside or outside the element.
+    If outside, InvMapResult.direction[3] tells if it is on the right (1) or on the left (-1) of
+    the corresponding coordinate axis. Useful to drive bisection techniques. 
+   */
+InvMapResult CPcell::isIn2(Point3D const & punto1, Real toll ) const
+{
+  // build the trilinear element
+  TrilinearElement element(*this);
+  // A proxy for the inverse mapping
+  InverseMapping invmap(element,true);
+  // The result
+  InvMapResult image=invmap(punto1.x,punto1.y,punto1.z);
+  // Use only the information about the inside/outside
+  return image;
+}
+
 
 bool CPcell::intersectTheFace(Segment S,  int quale,   Point3D & risultato) const
 	{
