@@ -109,7 +109,17 @@ namespace Geometry{
   */
   class InverseMapping{
   public:
-    InverseMapping(TrilinearElement const & element);
+    //! COntructor takes a TrilinearElement
+    /*!
+      The second argument is a bool and it works like that:
+     if true the call operator () returns if the target point
+     is outside the element bounding box, with no further computations.
+     If instead onlyin=false than in the case of target outside the
+     bounding box, a single Newton iteration is carried out all the same
+     to identify the location of the target point with respect to the
+     given element.
+     */
+    InverseMapping(TrilinearElement const & element,bool onlyin=false);
     static InvMapOption getInvMapOption()
     {
       return M_options;
@@ -121,6 +131,7 @@ namespace Geometry{
     InvMapResult operator () (double const & x, double const & y, double const & z)const;
   private:
     TrilinearElement const & M_element;
+    bool M_onlyin;
     double M_BBmin[3];
     double M_BBmax[3];
     Point3D M_target;

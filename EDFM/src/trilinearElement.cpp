@@ -31,14 +31,14 @@ namespace Geometry
 
   TrilinearElement::TrilinearElement(const CPcell & cell): my_J(3,3)
   {
-    M_points[0]=cell.getVertex(5);
-    M_points[1]=cell.getVertex(6);
-    M_points[2]=cell.getVertex(7);
-    M_points[3]=cell.getVertex(8);
-    M_points[4]=cell.getVertex(1);
-    M_points[5]=cell.getVertex(2);
-    M_points[6]=cell.getVertex(3);
-    M_points[7]=cell.getVertex(4);
+    M_points[0]=cell.getVertex(1);
+    M_points[1]=cell.getVertex(2);
+    M_points[2]=cell.getVertex(3);
+    M_points[3]=cell.getVertex(4);
+    M_points[4]=cell.getVertex(5);
+    M_points[5]=cell.getVertex(6);
+    M_points[6]=cell.getVertex(7);
+    M_points[7]=cell.getVertex(8);
   }
    
   Point3D TrilinearElement::map(double const & xx, double const & yy, double const & zz)const
@@ -99,7 +99,7 @@ namespace Geometry
     return my_J;
   }
   
-  InverseMapping::InverseMapping(TrilinearElement const & element):M_element(element)
+  InverseMapping::InverseMapping(TrilinearElement const & element,bool onlyin):M_element(element),M_onlyin(onlyin)
   {
     M_BBmin[0]=M_BBmax[0]=M_element.M_points[0].x;
     M_BBmin[1]=M_BBmax[1]=M_element.M_points[0].y;
@@ -134,21 +134,24 @@ namespace Geometry
     // Eliminate trivial case: target outside bounding box.
     bool outside(false);
     double in[3]={x,y,z};
+    // Change tolerance if needed. @todo It should be stored as static variable.
+    // I want to avoid a too large tolerance that would lead 
+    // to false positive.
+    const double tolerance=1.e-8;
     for (unsigned int i=0;i<3;++i)
       {
 	if(in[i] <M_BBmin[i])
 	  {
 	    outside=true;
-	    res.direction[i]=-1;
+	    break;
 	  }
 	else if(in[i] >M_BBmax[i])
 	  {
 	    outside=true;
-	    res.direction[i]=1;
+	    break;
 	  }
-	else res.direction[i]=0;
       }
-    if (outside)
+    if (outside && ! this->M_onlyin)
       {
 	res.converged=false;
 	res.numIter=0;
@@ -188,6 +191,13 @@ namespace Geometry
 	lastValue.x=lastValue.x+delta[0];
 	lastValue.y=lastValue.y+delta[1];
 	lastValue.z=lastValue.z+delta[2];
+	// if it was declared outside make sure that the found point
+	// is indeed out of the unit hexa, otherwise the indication on where it lays
+	// cannot be set. It's an orrible if statement, I know.
+	if(outside && (   lastValue.x<-tolerance || lastValue.x>1.+tolerance
+		       || lastValue.y<-tolerance || lastValue.y>1.+tolerance
+		       || lastValue.z<-tolerance || lastValue.z>1.+tolerance  )
+	   )break;
       }
     
     res.converged=
@@ -199,10 +209,8 @@ namespace Geometry
     in[0]=lastValue.x;
     in[1]=lastValue.y;
     in[2]=lastValue.z;
-    // No tolernace, change if needed.
-    // I want ot avoid a too large tolerance that would lead 
-    // to false positive
-    const double tolerance=1.e-8;
+    
+    // Check again if it is outside
     for (unsigned int i=0;i<3;++i)
       {
 	if(in[i] <-tolerance)
