@@ -1,9 +1,14 @@
 CXX = g++
 WARFLAGS = -Wall
-#OPTFLAGS = -O3 -DNDEBUG
-OPTFLAGS = -g
+OPTFLAGS = -O3 -DNDEBUG
+#OPTFLAGS = -g
+#OPTFLAGS = -g 
+CPPFLAGS=
+# Use verbose for extra info
+#CPPFLAGS=-DVERBOSE
 OMPFLAGS = -fopenmp
-CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) -I./src -I../external/include
+#OMPFLAGS = 
+CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) $(CPPFLAGS) -I./src -I../external/include
 LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 
 LDLIBS=-L../external/lib -lqhull $(OMPFLAGS)
 LOG_LINKER = link.log
