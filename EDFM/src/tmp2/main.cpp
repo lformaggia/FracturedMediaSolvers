@@ -18,6 +18,8 @@ int main()
   CPcell cell(points);
   TrilinearElement element(cell);
   InverseMapping invmap(element);
+  Point3D pippo(grid.cell(3,3,3).getVertex(2));
+  cout<<pippo.x<<" "<<pippo.y<<" "<<pippo.z<<endl;
   while(x!=-1. || y!=-1. || z!= -1.)
     {
       cout<<" Give Me x y and z (-1 -1 -1 to end)"<<endl;
