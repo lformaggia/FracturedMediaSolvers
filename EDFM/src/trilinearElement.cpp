@@ -15,8 +15,20 @@
 namespace Geometry
 {
   //! Default values for inverse map algorithm
+  /* Description in the hpp file. Her just a reminder:
+    {
+    double iteratesTolerance;
+    double residualTolerance;
+    unsigned int maxIter;
+    double bboxTolerance;
+    double parameterSpaceBBTolerance;
+    double pinchTolerance;
+
+    important: bboxTolerance>parameterSpaceBBTolerance
+  }
+   */
   const InvMapOption defaultMapOption=
-    {1.e-6, 1.e-6,20,0.02};
+    {1.e-6, 1.e-6,20,0.001,1.e-04,1.e-04};
   
   InvMapOption InverseMapping::M_options=defaultMapOption;
   
@@ -84,7 +96,7 @@ namespace Geometry
     // X derivatives: \partial x/\partial xx_{j=0,2}
     DERIVATIVEX(x,0,0) ;
     DERIVATIVEX(x,0,1) ;	
-    DERIVATIVEX(x,0,2) ;		
+    DERIVATIVEX(x,0,2) ;	
     
     // Y derivatives: \partial y/\partial xx_{j=0,2}
     DERIVATIVEX(y,1,0) ;
@@ -134,10 +146,9 @@ namespace Geometry
     // Eliminate trivial case: target outside bounding box.
     bool outside(false);
     double in[3]={x,y,z};
-    // Change tolerance if needed. @todo It should be stored as static variable.
-    // I want to avoid a too large tolerance that would lead 
-    // to false positive.
-    const double tolerance=1.e-8;
+    // Change tolerance if needed. 
+    // I use a reference to save typing.
+    const double & tolerance(InverseMapping::M_options.parameterSpaceBBTolerance);
     for (unsigned int i=0;i<3;++i)
       {
 	if(in[i] <M_BBmin[i])
@@ -165,9 +176,13 @@ namespace Geometry
     Point3D result(0.,0.,0.);
     Point3D Fx(0.,0.,0.);
     std::vector<double> fvalue(3);
+    std::vector<double> fvalue_scaled(3);
     std::vector<double> delta(3);
     double res_iter=1.e+30;
     double res_resi=1.e+30;
+    bool pinchout(false);
+    double xlim,ylim,zlim;
+    // Start Newton iteration
     while(iteration++ < InverseMapping::M_options.maxIter
 	  && res_iter > InverseMapping::M_options.iteratesTolerance
 	  && res_resi > InverseMapping::M_options.residualTolerance
@@ -179,21 +194,75 @@ namespace Geometry
 	fvalue[0]=Fx.x;
 	fvalue[1]=Fx.y;
 	fvalue[2]=Fx.z;
-	res_resi=gmm::vect_norm2(fvalue);
+	for (unsigned int kk=0;kk<3;++kk)fvalue_scaled[kk]=fvalue[kk]/(M_BBmax[kk]-M_BBmin[kk]);
+	// Residual norm
+	res_resi=gmm::vect_norm2(fvalue_scaled);
 	// Let's spare us a useless linear solution
-	if(res_iter <= InverseMapping::M_options.iteratesTolerance)break;
+	if(res_resi <= InverseMapping::M_options.residualTolerance)break;
+	gmm::dense_matrix<double> Jacobian(this->M_element.J(lastValue.x,lastValue.y,lastValue.z));
+
+	// JACOBIAN SCALING
+	// Diagonal scaling not only betters Gauss elimination stability but also reduces
+	// Jacobian to a matrix with positive (hopefully dominant) diagonal terms.
+	// i and j coord should be fine (pinch out only in z)
+	//for (unsigned int kj=0;kj<2;++kj)
+	// {
+	//   double scal=1.0/Jacobian(kj,kj);
+	//    Jacobian(kj,0)*=scal;
+	//    Jacobian(kj,1)*=scal;
+	//    Jacobian(kj,2)*=scal;
+	//    fvalue[kj]*=scal;
+	//  }
+
+	// Now take care of k. Possible pinchouts
+	double Jkk   = Jacobian(2,2); //Dz/Dk
+	if (pinchout||
+	    std::abs(Jkk)<=
+	    InverseMapping::M_options.pinchTolerance*(M_BBmax[2]-M_BBmin[2]))
+	  {
+	    // Pinchout!!
+	    pinchout=true;
+	    Jacobian(2,0)=0.0;
+	    Jacobian(2,1)=0.0;
+	    Jacobian(2,2)=1.0;
+	    Jacobian(0,2)=0.0;
+	    Jacobian(1,2)=0.0;
+	    fvalue[2]=0.0;
+	  }
+	/// DEBUG
+
+#ifdef VERBOSE
+	std::cout<<" Jacobian ="<<Jacobian<<std::endl;
+	std::cout<<" Determinant"<<gmm::lu_det(Jacobian)<<std::endl;
+#endif
 	// COmpute Jacobian (infact is minus jacobian for Newton iterates!)
 	gmm::lu_solve(
-		      this->M_element.J(lastValue.x,lastValue.y,lastValue.z),
+		      Jacobian,
 		      delta,
 		      fvalue);
+	// Limit to bounding box (too far from BB the mapping may degenerate and we are not interested)
+	xlim=std::max(-4.0*tolerance,std::min(1.0+4.0*tolerance,lastValue.x+delta[0]));
+	ylim=std::max(-4.0*tolerance,std::min(1.0+4.0*tolerance,lastValue.y+delta[1]));
+	// Limit z from 0 and 1 if pinchout
+	if(!pinchout)
+	  zlim=std::max(-4.0*tolerance,std::min(1.0+4.0*tolerance,lastValue.z+delta[2]));
+	else
+	  zlim=std::max(0.0,std::min(1.0,lastValue.z+delta[2]));
+	// Recompute delta
+	delta[0]    = xlim-lastValue.x;
+	delta[1]    = ylim-lastValue.y;
+	delta[2]    = zlim-lastValue.z;
+	// Compute dispacement 
 	res_iter=gmm::vect_norm2(delta);
-	lastValue.x=lastValue.x+delta[0];
-	lastValue.y=lastValue.y+delta[1];
-	lastValue.z=lastValue.z+delta[2];
+	// Adjourn iterate
+	lastValue.x=xlim;
+	lastValue.y=ylim;
+	lastValue.z=zlim;
+
 	// if it was declared outside make sure that the found point
 	// is indeed out of the unit hexa, otherwise the indication on where it lays
-	// cannot be set. It's an orrible if statement, I know.
+	// cannot be set. It's an orrible if statement, I know. 
+	// @todo take it out!! not needed anymore!
 	if(outside && (   lastValue.x<-tolerance || lastValue.x>1.+tolerance
 		       || lastValue.y<-tolerance || lastValue.y>1.+tolerance
 		       || lastValue.z<-tolerance || lastValue.z>1.+tolerance  )
@@ -203,7 +272,7 @@ namespace Geometry
     res.converged=
       res_resi <= InverseMapping::M_options.residualTolerance ||
       res_iter <= InverseMapping::M_options.iteratesTolerance;
-    res.finalPoint=lastValue;
+    res.finalPoint=this->M_element.map(lastValue.x,lastValue.y,lastValue.z);
     res.numIter=iteration;
     
     in[0]=lastValue.x;
@@ -211,6 +280,7 @@ namespace Geometry
     in[2]=lastValue.z;
     
     // Check again if it is outside
+    // Direction of exit may be needed by certain search algorithms.
     for (unsigned int i=0;i<3;++i)
       {
 	if(in[i] <-tolerance)
@@ -225,7 +295,11 @@ namespace Geometry
 	  }
 	else res.direction[i]=0;
       }
-    res.inside=!outside;
+    
+    if (!pinchout)
+      res.inside=!outside;
+    else
+      res.inside=!outside && fvalue_scaled[2]<=InverseMapping::M_options.residualTolerance;
     return res;
   }
 }

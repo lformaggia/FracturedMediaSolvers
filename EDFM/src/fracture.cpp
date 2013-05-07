@@ -324,7 +324,7 @@ this->sortCG_Y();
 	}
 	
 	void Fracture::setInt(gmm::size_type i, Fracture &altra, std::vector<Point3D> punti, bool completo){
-	UInt dove;
+	  UInt dove(0);
 	
 	if(completo==false){
 		M_isintby.push_back(i);
@@ -583,7 +583,7 @@ this->sortCG_Y();
 
 Segment maxSegment(std::vector<Point3D> & punti)
 	{
-		Real dist;
+	  Real dist(0);
 		Point3D diff;
 		UInt i(0), j(0);
 		for (gmm::size_type ii=0;ii<punti.size();++ii)

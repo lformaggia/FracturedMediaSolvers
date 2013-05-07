@@ -13,7 +13,15 @@
 #include "domain.hpp"
 #include "header.hpp"
 #include "treenode.hpp"
-#include "geomCPgrid.hpp"
+
+// Forward declaration to sort out some
+// circular dependencies. Indeed we should take out
+// explicit dependencies on CPGrid here and do a cleaner programming.
+// ... but I am lazy.
+
+namespace Geometry{
+class CPgrid;
+}
 
 namespace ADT
 {

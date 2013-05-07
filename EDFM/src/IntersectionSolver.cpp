@@ -69,7 +69,6 @@ switch(M_strategy)
 void IntersectionSolver::operator()
 	(Fault & f, const CPgrid & g, Intersect::GridIntersections & gridInter) const
 {
-  static bool isfirst(true);
   // For the optimised option we need the tree search structure
 	switch(M_alg)
 	{
@@ -84,13 +83,7 @@ void IntersectionSolver::operator()
 				     the range search tree.  
 				     @warning If we operate on a new grid we must create a new IntersectionSolver object!
 				  */
-				  
-				  if (isfirst)
-				    {
-				      G_tree_ptr.reset(new ADT::ADTree(g));
-				    isfirst=false;
-				    }
-				  f.newtonIntersectionWithGrid_FOR3OPT(g,gridInter,G_tree_ptr.get(),M_toll,M_maxIter);
+				    f.newtonIntersectionWithGrid_FOR3OPT(g,gridInter,M_toll,M_maxIter);
 					break;
 				case EDGEMAP :
 					f.newtonIntersectionWithGrid_EDGEMAP(g,gridInter,M_toll,M_maxIter);

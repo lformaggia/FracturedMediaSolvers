@@ -9,6 +9,7 @@
 
 #include <iomanip>
 #include <stdexcept>
+#include <memory>
 #include "geomCPgrid.hpp"
 #include "EclipseFileTranslator.hpp"
 #include "trilinearElement.hpp" 
@@ -174,13 +175,15 @@
       
 
   //-----------------------------------------------------------------
-  void CPgrid::whereIs(Point3D & p,  std::vector<UInt> & sol) const 
+  /*     OLD VERSION USES BISECTION 
+    void CPgrid::whereIs(Point3D const & p,  std::vector<UInt> & sol) const 
   {
-    InvMapResult in;
-    UInt iL(1),iR(M_Nx),jL(1),jR(M_Ny),kL(M_Nz),kR(1);
-    UInt iM(1),jM(1),kM(1);
-    UInt iMOld(0),jMOld(0),kMOld(0);
-    in.inside=false;
+  InvMapResult in;
+   
+  UInt iL(1),iR(M_Nx),jL(1),jR(M_Ny),kL(M_Nz),kR(1);
+  UInt iM(1),jM(1),kM(1);
+  UInt iMOld(0),jMOld(0),kMOld(0);
+  in.inside=false;
 
     // First iteration is always carried out!
     iM=std::floor(0.5*(iL+iR)+0.5);
@@ -203,20 +206,19 @@
       // if is inside it is OK!!! No waste of time
       if(in.inside)break;
       
-      /* NON CAPISCO!
-	 if (!in.inside)
-	 {
-	 if (iM==M_Nx-1) {iM=M_Nx;}
-	 if (jM==M_Ny-1) {jM=M_Ny;}
-	 if (kM==M_Nz-1) {kM=M_Nz;}
-	 }
-      */
-      if (in.direction[1]==-1) {iR=iM;}
-      if (in.direction[1]== 1) {iL=iM;}
-      if (in.direction[2]==-1) {jR=jM;}
-      if (in.direction[2]== 1) {jL=jM;}
-      if (in.direction[3]==-1) {kR=kM;}
-      if (in.direction[3]== 1) {kL=kM;}
+      // NON CAPISCO!
+	// if (!in.inside)
+	// {
+	// if (iM==M_Nx-1) {iM=M_Nx;}
+	// if (jM==M_Ny-1) {jM=M_Ny;}
+	// if (kM==M_Nz-1) {kM=M_Nz;}
+	// }
+      if (in.direction[0]==-1) {iR=iM;}
+      if (in.direction[0]== 1) {iL=iM;}
+      if (in.direction[1]==-1) {jR=jM;}
+      if (in.direction[1]== 1) {jL=jM;}
+      if (in.direction[2]==-1) {kR=kM;}
+      if (in.direction[2]== 1) {kL=kM;}
       
       iMOld=iM;
       jMOld=jM;
@@ -234,9 +236,64 @@
      
     if (!in.inside) throw std::runtime_error("Cannot locate cell containing point in isIn2()");
   }
+*/
+  //-----------------------------------------------------------------
+  // New version used search tree
+  void CPgrid::whereIs(Point3D const & p,  std::vector<UInt> & sol) const 
+  {
+    ADT::ADTree const * tree(this->searchTree());
+    volatile bool found;
+    double vmin[3];
+    double vmax[3];
+    vmin[0]=vmax[0]=p.x;
+    vmin[1]=vmax[1]=p.y;
+    vmin[2]=vmax[2]=p.z;
+    ADT::BBox<3> box(vmin,vmax);
+    std::vector<int> listFound; 
+    tree->search(box,listFound);
+#ifdef VERBOSE
+    std::cout<<"Found  "<<listFound.size()<< 
+      " possible containing cells  "<<std::endl;
+#endif
+#pragma omp parallel shared(tree,listFound,sol,found)
+    {
+      std::vector<int> keys(3);
+#pragma omp for
+      for(unsigned int it=0;
+	  it<listFound.size();++it)
+	{
+#pragma omp flush (found)
+	  if(!found)
+	    {
+	      keys=tree->getNode(listFound[it]).getkeys();
+	      UInt i=static_cast<UInt>(keys[0]);
+	      UInt j=static_cast<UInt>(keys[1]);
+	      UInt k=static_cast<UInt>(keys[2]);
+	      CPcell cc(cell(i,j,k));
+	      //bool in=cc.isIn(p);
+	      InvMapResult in=cc.isIn2(p);
+	      // if is inside it is OK!!! 
+	      if(in.inside)
+		{
+#pragma omp critical
+		  {
+		    found=true;
+#ifdef VERBOSE
+		    std::cout<<in<<std::endl;
+#endif
+		    sol[0]=i;
+		    sol[1]=j;
+		    sol[2]=k;
+		  }
+		}
+	    }
+	}
+    }	  
+    if (!found) throw std::runtime_error("Cannot locate cell containing point in isIn2()");
+  }
   
   void CPgrid::buildBB(Point3D A, Point3D B, Point3D C, Point3D D, std::vector<UInt> & BB ) const
-	{
+  {
 		std::vector<UInt> II;
 		std::vector<UInt> JJ;
 		std::vector<UInt> KK;
@@ -455,7 +512,7 @@
 				{
 					for(UInt e=1; e<=8; ++e)
 					{
-						//p = this->cell(i,j,k).getVertex(e);
+						//p = this->celli,j,k).getVertex(e);
 						filestr << this->cell(i,j,k).getVertex(e).x << " "
 								<< this->cell(i,j,k).getVertex(e).y << " "
 								<< this->cell(i,j,k).getVertex(e).z << std::endl;

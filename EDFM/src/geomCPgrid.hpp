@@ -14,10 +14,11 @@
 #include<iostream>
 #include<string>
 #include<fstream>
-
+#include<memory>
 #include "TypeDefinition.hpp"
 #include "geomCPgridElements.hpp"
 #include "geomCPgridFields.hpp"
+#include "adtree.hpp"
 #include <iterator>
 
 namespace Geometry
@@ -125,7 +126,7 @@ public:
 	 */
         CPcell cell(const UInt & i, const UInt & j, const UInt & k) const; 
 
-	void whereIs(Point3D &, std::vector<UInt> &) const;
+	void whereIs(Point3D const &, std::vector<UInt> &) const;
 
 	void buildBB(Point3D , Point3D, Point3D, Point3D, std::vector<UInt> &) const;
 	
@@ -229,7 +230,20 @@ public:
 						 std::string  &data, const bool specialChar=1, int skip=0);
 	
 	//@}
-	
+  //! To get the search tree
+  /*!
+    It is a 'logical const' method. In fact it may change the state by  operating
+    on the mutable member G_tree_ptr.
+    @note This method can be called ONLY after the construction of the CPgrid has been completed.
+    @todo If you want to make thing supersafe you should add a G_tree_ptr.reset() statement at the end of all
+    methods that change the state of the CPgrid.
+   */
+     ADT::ADTree const * searchTree() const
+  {
+    // Create the tree on the fly
+    if (G_tree_ptr.get() == 0)G_tree_ptr.reset(new ADT::ADTree(*this));
+    return G_tree_ptr.get();
+  }
 private:
     UInt M_Nx,M_Ny,M_Nz;
     std::vector<Real> M_gridBB;
@@ -240,6 +254,12 @@ private:
     PermeabilityField M_permeability;
 	bool M_tranDefined;
 	TransmissibilityField M_transmissibility;
+  //!For spatial search. 
+  /*!
+    Mutable because it might be generated also on constant objects.
+  */
+  mutable std::auto_ptr<ADT::ADTree> G_tree_ptr;
+
 };
 
 

@@ -11,7 +11,6 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include "geomCPgrid.hpp"
 
 namespace ADT
 {

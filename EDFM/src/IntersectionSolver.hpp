@@ -19,13 +19,7 @@
 #include "geomFault.hpp"
 #include "interCellIntersections.hpp"
 #include "interGridIntersections.hpp"
-#include <memory>
-#include "adtree.hpp"
 
-// I need a global variable
-namespace{
-  std::auto_ptr<ADT::ADTree> G_tree_ptr;
-}
 using namespace Geometry;
 
 	/*!

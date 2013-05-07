@@ -182,9 +182,9 @@ namespace Geometry
 
   void Fault::newtonIntersectionWithGrid_FOR3OPT
   (const CPgrid & g, Intersect::GridIntersections & gridInter,
-   ADT::ADTree const * tree,
    const Real & toll, const UInt & maxIter) const
   {	
+    ADT::ADTree const * tree(g.searchTree());
     double vmin[3];
     double vmax[3];
     // Find bounding box of the fault.

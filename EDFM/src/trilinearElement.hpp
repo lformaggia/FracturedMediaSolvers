@@ -21,10 +21,26 @@ namespace Geometry{
     unsigned int maxIter;
     
     /*! Bounding box tolerance.
+      
       If the seeked point is outside a bounding box the newton method
       is simply stopped
      */
     double bboxTolerance;
+
+    /*! Parameter space tolerance.
+
+      It is another bounding box tolerance, but in the parameter space. 
+      Different from bboxTolerance since it is usually more strict.
+     */
+    double parameterSpaceBBTolerance;
+
+    /*! Pinch out detector tolerance .
+
+      If \f$|\partial z/\partial \hat{z}| < punch \Delta_z\f$ the point is
+      considered a pinchout and a special procedure is activated.
+      Here \f$\Delta_z\f$  is the bounding box width in the z direction.
+     */
+    double pinchTolerance;
   };
     
 

@@ -1,6 +1,7 @@
 #include <stack>
 #include <exception>
 #include "adtree.hpp"
+#include "geomCPgrid.hpp"
 namespace ADT
 {
   ADTree::ADTree (Geometry::CPgrid const& grid)
@@ -30,7 +31,10 @@ namespace ADT
                 cellKeys[1] = static_cast<int> (j);
                 cellKeys[2] = static_cast<int> (k);
                 Geometry::CPcell cell =
-                    grid.cell (i, j, k);
+                   grid.cell (i, j, k);
+		// Skip not active cells
+		if (cell.getActnum()==0u)break;
+		
                 const std::vector<Geometry::Point3D>&
                 cellVertices = cell.getVerticesVector();
                 numVertices = cellVertices.size();
