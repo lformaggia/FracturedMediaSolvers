@@ -4,6 +4,8 @@
 #include <string>
 #include "adtree.hpp"
 #include "implHypParab.hpp"
+#include "geomCPgrid.hpp"
+#include <stdexcept>
 int main()
 {
     using namespace std;
@@ -11,6 +13,7 @@ int main()
     using namespace Geometry;
     string gridfile ("../../data/EP_3D_grid.GRDECL");
     CPgrid grid (gridfile);
+    /*
     ADTree tree (grid);
     cout << " Tree has been created" << std::endl << std::flush;
     cout << tree << std::endl;
@@ -75,14 +78,36 @@ int main()
     Point3D P11(1,1,0);
     Point3D P10(1,0,0);
     bilinerarPatchPoints patch={P00,P10,P11,P10};
+    */
     double x(0),y(0),z(0);
-    while(x!=-1. || y!=-1. || z!= -1.)
+    std::vector<UInt> sol(3);
+    grid.cell(3,2,1).showMe(std::cout);
+    std::vector<Point3D> points;
+    points.push_back(grid.cell(3,3,3).getVertex(2));
+    points.push_back(grid.cell(3,3,3).getVertex(1));
+    points.push_back(grid.cell(4,2,1).getVertex(5));
+    points.push_back(grid.cell(3,3,6).getVertex(2));
+    points.push_back(grid.cell(3,3,3).getVertex(8));
+    //cout<<pippo.x<<" "<<pippo.y<<" "<<pippo.z<<endl;
+
+    //    while(x!=-1. || y!=-1. || z!= -1.)
+    for(auto i : points)
       {
-	cout<<" Give Me x y and z (-1 -1 -1 to end)"<<endl;
-	cin>>x>>y>>z;
-	cout<<implHypParab(patch, x, y, z)<<endl;
+	//	cout<<" Give Me x y and z (-1 -1 -1 to end)"<<endl;
+	//cin>>x>>y>>z;
+	x=i.x;
+	y=i.y;
+	z=i.z;
+	cout <<"target"<<x<<" "<<y<<" "<<z<<endl;
+	try{
+	  grid.whereIs(Point3D(x,y,z),sol);
+	  }
+	catch (std::runtime_error const & e)
+	  {
+	    cout<<"POINT NOT IN GRID"<<std::endl;
+	  }
+	cout<<sol[0]<<" "<<sol[1]<<" "<<sol[2]<<endl;
       }
     
 }
-
 

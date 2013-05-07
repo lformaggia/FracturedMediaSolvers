@@ -38,8 +38,7 @@ CPPFLAGS=-I. -I.. -I../../../external/include
 OPTFLAGS=-g
 CXXFLAGS=$(OPTFLAGS) -Wall -std=c++0x 
 LDFLAGS=$(OPTFLAGS)
-LDLIBS=-L../../lib -lCPgeom
-
+LDLIBS=-L../../lib -lCPgeom -Wl,-rpath=../../lib
 all: $(DEPEND) $(EXEC)
 
 clean:
