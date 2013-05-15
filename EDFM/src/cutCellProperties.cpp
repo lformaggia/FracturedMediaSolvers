@@ -127,6 +127,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				{	
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
 					M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
+
 				}
 				puntiAreaNew.pop_back();
 				for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
@@ -327,14 +328,20 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 	if (puntiZ1.size()==2)
 	{
 		Segment provv(puntiZ1[0],puntiZ1[1]);
+		gmm::size_type cont(0);
 		for (gmm::size_type i=0;i<4;++i)
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (false)//(isZreal1[0]==false && isZreal1[1]==false)
+			if (isZreal1[0]==false && isZreal1[1]==false && cont<2)
 			{
-				puntiZ1[0]=PP;
-				puntiZ1[1]=PP;
+				//puntiZ1[0]=PP;
+				//puntiZ1[1]=PP;
+				if (latiFaglia[i].intersectTheSegment(provv,comodo)&& provv.isIn(comodo))
+					{ std::cout << "----------------------"<<std::endl;
+						puntiZ1[cont]=comodo;
+						cont=cont+1;
+					}
 			}
 			else
 			{
@@ -492,14 +499,20 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 	if (puntiZ2.size()==2)
 	{
 		Segment provv(puntiZ2[0],puntiZ2[1]);
+		gmm::size_type cont(0);
 		for (gmm::size_type i=0;i<4;++i)
 		{
 			bool giafatto(false);
 			Point3D comodo;
-			if (false)// (isZreal2[0]==false && isZreal2[1]==false)
+			if  (isZreal2[0]==false && isZreal2[1]==false && cont<2)
 			{
-				puntiZ2[0]=PP;
-				puntiZ2[1]=PP;
+				//puntiZ2[0]=PP;
+				//puntiZ2[1]=PP;
+				if(latiFaglia[i].intersectTheSegment(provv,comodo)&& provv.isIn(comodo))
+					{
+						puntiZ2[cont]=comodo;
+						cont=cont+1;
+					}
 			}
 			else
 			{
