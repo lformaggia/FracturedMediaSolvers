@@ -64,8 +64,10 @@ public:
         return *this;
     }
     //! Checks if two bboxes intersect each other
-    bool intersect (BBox const& rhs) const;
-
+    inline bool intersect (BBox const& rhs) const;
+  
+  //! Fattens BBox with an absolute tolerance.
+    inline void fatten(const double & absTolerance);
 private:
     //! xmin,ymix,zmin,xmax...
     double M_coordinates[2 * PhysicalDimensions];
@@ -125,6 +127,17 @@ bool BBox<PhysicalDimensions>::intersect (BBox const& rhs) const
     }
     return true;
 }
+
+template<unsigned int PhysicalDimensions>
+void BBox<PhysicalDimensions>::fatten(const double & absTolerance)
+{
+  for (unsigned int i=0 ;i<PhysicalDimensions;++i)
+    {
+      M_coordinates[i]                   -=absTolerance;
+      M_coordinates[i+PhysicalDimensions]+=absTolerance;
+    }
+}
+
 
 template <unsigned int PhysicalDimensions>
 std::ostream& operator << (std::ostream& out, BBox<PhysicalDimensions>
