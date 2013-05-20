@@ -223,8 +223,10 @@ namespace Geometry
     std::vector<int> listFound; 
     // Use binary tree search
     tree->search(box,listFound);
+#ifdef VERBOSE
     std::cout<<"Found  "<<listFound.size()<< 
       " possible intersections  "<<std::endl;
+#endif
 #pragma omp parallel shared(g,gridInter,toll, maxIter,tree,listFound)
     {
       Intersect::CellIntersections cellInter;
