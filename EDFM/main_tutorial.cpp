@@ -82,6 +82,10 @@ int main(int argc, char** argv){
 	std::vector<GridIntersections> intMegaStore;	
 	std::vector<CProp> propStore;	
 
+	GridStrategy strategy(FOR3);
+	if (cl("isOPT","no")=="yes"){	
+		strategy=FOR3OPT;
+	}
 	// ciclo sulle fratture
 	Timings::Chrono calcoloint, calcologeom, esportazione;
 	calcoloint.start();
@@ -99,7 +103,7 @@ int main(int argc, char** argv){
 		if (ff.areaFault()>0){
 	
 		// (5) Solver definition
-		IntersectionSolver newton_FOR3(NEWTON,FOR3OPT);
+		IntersectionSolver newton_FOR3(NEWTON,strategy);
 	
 		// (6) Set solver properties
 		newton_FOR3.setMaxIteration(100);

@@ -40,7 +40,7 @@ namespace Geometry
 	        char provv11[1];
 		line.copy(provv11, 1, pos11+2);
 
-		if (std::string(provv11)==std::string("M")) {M_isMetric=true; std::cout << "METRICO"<<std::endl;}
+		if (provv11[0]=='M') {M_isMetric=true; std::cout << "METRICO"<<std::endl;}
 		while(myfile.good() && flag==0){
 	
 			getline (myfile,line);
