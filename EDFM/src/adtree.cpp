@@ -33,7 +33,7 @@ namespace ADT
                 Geometry::CPcell cell =
                    grid.cell (i, j, k);
 		// Skip not active cells
-		if (cell.getActnum()==0u)break;
+		if (cell.getActnum()==0u)continue;
 		
                 const std::vector<Geometry::Point3D>&
                 cellVertices = cell.getVerticesVector();
@@ -209,6 +209,8 @@ int ADTree::addtreenode (TreeNode const& node)
 
   bool ADTree::search (BBox<3> region, std::vector<int>& found) const
 {
+  
+    const double fatTolerance(2.e-6);
     // Start preorder traversal at level 0 (root).
     int ipoi = _data[0].getchild (0);
     int ipoiNext = 0;
@@ -219,7 +221,8 @@ int ADTree::addtreenode (TreeNode const& node)
     std::vector<double> const& scale (_header.domainscal() );
     // scale region
     region.transform (& (origin[0]), & (scale[0]) );
-
+    // To avoid foating point problems
+    region.fatten(fatTolerance);
     // xl is the origin point for searching.
     std::vector<double> xl (dimt, 0.0);
 

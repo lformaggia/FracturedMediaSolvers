@@ -71,9 +71,15 @@ protected:
      *    \param[in] lev The given level.
      *    \param[in] dim The number of dimensions used for the search.
      */
-    inline double delta (int const& lev, int const& dim) const
+  /*    inline double delta (int const& lev, int const& dim) const
     {
         return std::pow (0.5, int (lev / dim) + 1);
+	}*/
+    inline double delta (int const& lev, int const& dim) const
+    {
+      double res(0.5);
+      for (int i=0;i<int (lev / dim);++i)res*=0.5;
+      return res;
     }
 public:
   /*!  Constructor froma corner point grid.
