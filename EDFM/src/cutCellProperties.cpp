@@ -114,7 +114,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 					puntiAreaNew=puntiarea;
 				}
 
-				//M_CG[(*it).first]=this->setCG(puntiAreaNew);
+				M_CG[(*it).first]=this->setCG(puntiAreaNew);
 	
 				M_puntiAree.push_back(puntiAreaNew);
 
@@ -126,8 +126,10 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				if (faccia.getNtetra()>0)
 				{	
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
+				
+					if (puntiAreaNew.size()-1>4){
 					M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
-
+					}
 				}
 				puntiAreaNew.pop_back();
 				for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
@@ -615,6 +617,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 			CG=CG+punti[i];
 
 		}
+std::cout << punti.size()<<std::endl;
 		CG.x=(1./Real(punti.size()))*CG.x;
 		CG.y=(1./Real(punti.size()))*CG.y;
 		CG.z=(1./Real(punti.size()))*CG.z;
