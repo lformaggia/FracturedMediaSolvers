@@ -2,7 +2,7 @@
 #GridFile=./data/CP_grid.GRDECL         #nome fine della griglia
 #GridFile=./data/Cartesian_grid.GRDECL         #nome fine della griglia
 GridFile=./data/EP_Cart_metric.GRDECL      
-FractureFile=EP_longf_metriczp1.fab    #nome del file con le fratturec
+FractureFile=EP_longf_metriczp_test.fab    #nome del file con le fratturec
 
 #GridFile=./data/gridTest      
 #FractureFile=lista_mia.fab    #nome del file con le fratturec
@@ -13,7 +13,7 @@ FractureFile=EP_longf_metriczp1.fab    #nome del file con le fratturec
 #FractureFile=rim_640_feet_vshort.fab   
 #FractureFile=frac.fab    
 conv_z=1   #=1 se le z della griglia e delle fratture sono concordi, altrimenti =-1 e converte 
-isOPT=no
+isOPT=yes
 
 #-----------distorsione della griglia e delle fratture-------------------------------
 
@@ -21,19 +21,21 @@ theta_x=0  #angolo di distorsione in gradi
 theta_y=0
 direzione=x
 
-theta_xF=0  #angolo di distorsione in gradi
+theta_xF=20  #angolo di distorsione in gradi
 theta_yF=0
 direzioneF=x
 
+rotate_z=yes
+
 #----------------------cosa voglio esportare-----------------------------------------
 
-exportFractures=no
+exportFractures=yes
 exportFrGrids=yes
-exportGeoprop=yes
+exportGeoprop=no
 exportIntersections=no
 exportGrid=yes
 
 #-------------------percorso dei file di output---------------------------------------
 
-outpath=./output_CG3
+outpath=./output_opt
 

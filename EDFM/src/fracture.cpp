@@ -507,7 +507,7 @@ this->sortCG_Y();
 		{	
 			gmm::size_type nn(M_sortCG[n]);
 			myfile<<i+1<<"\t"<<n+1<<"\t("<<M_ipos[nn]<<"\t"<<M_jpos[nn]<<"\t"<<M_kpos[nn]<<")\t"<<M_areas[nn]*this->aperture()<<"\t\t"<<M_areas[nn]<<"\t\t"
-			<<M_Dmedio[nn]<<"\t\t"<<M_TM[nn]<<"\t\t"<<M_CG[nn]<<std::endl;//"\t"<<M_L1x[nn].norm()<<"\t"<<M_L1z[nn].norm()<<std::endl;
+			<<M_Dmedio[nn]<<"\t\t"<<M_TM[nn]<<std::endl;//"\t"<<M_L1x[nn].norm()<<"\t"<<M_L1z[nn].norm()<<std::endl;
 		}
 		
 	

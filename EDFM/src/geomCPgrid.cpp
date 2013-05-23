@@ -22,7 +22,7 @@
 // ==================================================
 // Constructors & Destructor
 // ==================================================
-    CPgrid::CPgrid(const std::string & filename, const bool & scriptWithSpecialChar, std::string direzione, Real angle) :
+    CPgrid::CPgrid(const std::string & filename, const bool & scriptWithSpecialChar, std::string direzione, Real angle,  bool rotate_z) :
 		M_permDefined(0), M_tranDefined(0)
 	{
 		std::vector<UInt> buf;
@@ -55,14 +55,7 @@
 			}
 		}
 
-		for (gmm::size_type ii=0;ii<M_coord.size()/3;++ii){
-			gmm::size_type i(3*ii);
-			Point3D p(M_coord[i],M_coord[i+1],M_coord[i+2]);
-			Point3D pp(apply_shear(p,angle, direzione));
-			M_coord[i]=pp.x;
-			M_coord[i+1]=pp.y;
-			M_coord[i+2]=pp.z;
-		}
+		
 
 		
 		nval = 8*M_Nx*M_Ny*M_Nz;
@@ -110,6 +103,27 @@
 		M_permeability.setDim(M_Nx,M_Ny,M_Nz);
 		M_permeability.setIsotropy();
 		M_transmissibility.setDim(M_Nx,M_Ny,M_Nz);
+
+		if (rotate_z)
+		{	
+			CPcell cc3(this->cell(1,1,M_Nz));
+			Point3D p1(cc3.getVertex(1)),p2(cc3.getVertex(2));
+			Real theta(-atan((p2.y-p1.y)/(p2.x-p1.x)));
+					
+			for (gmm::size_type ii=0;ii<M_coord.size()/3;++ii){
+				gmm::size_type i(3*ii);
+				Point3D ppp(M_coord[i],M_coord[i+1],M_coord[i+2]);
+				ppp=ppp-p1;
+				M_coord[i+2]=ppp.z + p1.z;
+				M_coord[i]=ppp.x*cos(theta)-ppp.y*sin(theta) + p1.x;
+				M_coord[i+1]=sin(theta)*ppp.x + cos(theta)*ppp.y + p1.y;
+				Point3D p(M_coord[i],M_coord[i+1],M_coord[i+2]);
+				Point3D pp(apply_shear(p,angle, direzione));
+				M_coord[i]=pp.x;
+				M_coord[i+1]=pp.y;
+				M_coord[i+2]=pp.z;
+			}
+		}
 	}
 
 	CPgrid::~CPgrid() {}

@@ -34,7 +34,7 @@ public:
 	Fractures();
 	
 	//! Constructor
-	Fractures(const std::string , Real, std::string, Real);
+	Fractures(const std::string nomefile, Real conv_z=1, std::string direzione="x", Real angle=0);
 	
 	//! Destructor
 	virtual ~Fractures();

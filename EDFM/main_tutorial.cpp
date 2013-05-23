@@ -59,8 +59,12 @@ int main(int argc, char** argv){
 	  }
 	Real conv_z=cl("conv_z",1);
 	
+	bool rotate_z(false);
+
+	if (cl("rotate_z","no")=="yes") {rotate_z=true;} 
+
 	std::string direzione=cl("direzione", "x");
-	Real angle;
+	Real angle;;
 	std::string direzioneF=cl("direzioneF", "x");
 	Real angleF;
 	if (direzione=="x") {angle=cl("theta_x",0);}
@@ -69,7 +73,7 @@ int main(int argc, char** argv){
 	if (direzioneF=="y") {angleF=cl("theta_yF",0);}
 
 	
-	CPgrid grid(gridFile,0,direzione, angle);
+	CPgrid grid(gridFile,0,direzione, angle, rotate_z);
 	if (cl("exportGrid","no")=="yes"){	
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
 	ss<<outpath<<"/grid.vtk";

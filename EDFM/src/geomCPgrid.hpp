@@ -58,7 +58,7 @@ public:
 	 * @param filename The Eclipse data file with grid informations
 	 * @param scriptWithSpecialChar Set TRUE if the Eclipse data file is generated on windows
 	 */
-    CPgrid(const std::string & filename, const bool & scriptWithSpecialChar=1, std::string direzione="x", Real angle=0);
+    CPgrid(const std::string & filename, const bool & scriptWithSpecialChar=1, std::string direzione="x", Real angle=0, bool rotate_z=false);
 	
 	//! Destructor
 	~CPgrid();

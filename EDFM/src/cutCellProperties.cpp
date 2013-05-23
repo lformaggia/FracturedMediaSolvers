@@ -127,8 +127,8 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				{	
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
 				
-					if (puntiAreaNew.size()-1>4){
-					M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
+					if (location!=puntiIsReal.end()){
+						M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
 					}
 				}
 				puntiAreaNew.pop_back();
@@ -340,7 +340,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				//puntiZ1[0]=PP;
 				//puntiZ1[1]=PP;
 				if (latiFaglia[i].intersectTheSegment(provv,comodo)&& provv.isIn(comodo))
-					{ std::cout << "----------------------"<<std::endl;
+					{ 
 						puntiZ1[cont]=comodo;
 						cont=cont+1;
 					}
@@ -617,7 +617,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 			CG=CG+punti[i];
 
 		}
-std::cout << punti.size()<<std::endl;
+
 		CG.x=(1./Real(punti.size()))*CG.x;
 		CG.y=(1./Real(punti.size()))*CG.y;
 		CG.z=(1./Real(punti.size()))*CG.z;
