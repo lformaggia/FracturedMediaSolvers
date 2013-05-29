@@ -30,19 +30,21 @@ namespace Timings{
   void Chrono::start(){
     using namespace std;
     tms temp;
-    times(&temp);
+    _ct1=times(&temp);
     _t1 = (temp.tms_utime+temp.tms_stime);
-    _ct1= temp.tms_cutime+temp.tms_cstime;
+    //_ct1= temp.tms_cutime+temp.tms_cstime;
   }
   
   void Chrono::stop()
   {
     using namespace std;
     tms temp;
-    times(&temp);
+    //times(&temp);
+    _wallTime=
+      double(times(&temp)-_ct1)/_CPS;
     _cpuTime= double((temp.tms_utime+temp.tms_stime)-_t1)/_CPS;
-    _wallTime=_cpuTime+
-      double(temp.tms_cutime+temp.tms_cstime-_ct1)/_CPS;
+    //_wallTime=_cpuTime+
+    //  double(temp.tms_cutime+temp.tms_cstime-_ct1)/_CPS;
   }
 
 std::ostream & operator <<(std::ostream & out,Chrono const &c)
