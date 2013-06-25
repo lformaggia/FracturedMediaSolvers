@@ -1,0 +1,3 @@
+[submodule "eni-kafres-grid"]
+	path = eni-kafres-grid
+	url = ssh://gitolite@moxoff-gitolite/eni-kafres-grid.git
