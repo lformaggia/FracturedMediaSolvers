@@ -68,6 +68,7 @@ namespace Geometry
     	       if (npunti == 4) {
       			gmm::resize(M_simplexes, 4, 1);
       			for (gmm::size_type i=0; i <= 3; ++i) M_simplexes(i, 0) = i;
+			
 			exitcode=false;
     		}
 	       

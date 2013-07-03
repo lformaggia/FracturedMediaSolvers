@@ -16,7 +16,7 @@
 // Constructors & Destructor
 // ==================================================
 IntersectionSolver::IntersectionSolver(IntersectionAlgorithm alg, GridStrategy strategy) :
-  M_alg(alg), M_strategy(strategy), M_toll(1e-10), M_maxIter(60), M_stdDivision(1){}
+  M_alg(alg), M_strategy(strategy), M_toll(1e-8), M_maxIter(60), M_stdDivision(1){}
 		
 IntersectionSolver::~IntersectionSolver() {}
 

@@ -87,6 +87,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 			Point3D no(M_faultpointer->normal(0.5,0.5));
 			Real typicalL;
 			typicalL=(cella.getVertex(1)-cella.getVertex(2)).norm();
+			
 			std::vector<Real> uv(M_faultpointer->inv_param(Aa, no));
 	
 			std::vector<Point3D> punti2(punti1);
@@ -122,7 +123,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				puntiAreaNew.push_back(this->setCG(puntiAreaNew)+no*typicalL);
 			      
 				Hull faccia(puntiAreaNew);
-
+if (it->second.i()==62 && it->second.j()==27 && it->second.k()==3) {std::cout <<npunti_faglia<<std::endl; }
 				if (faccia.getNtetra()>0)
 				{	
 					M_aree[(*it).first]=this->setIntArea(faccia, puntiAreaNew.size()-1);
@@ -131,6 +132,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 						M_CG[(*it).first]=this->setCG(faccia, puntiAreaNew.size()-1);
 					}
 				}
+				
 				puntiAreaNew.pop_back();
 				for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				
@@ -589,7 +591,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 	}
 	
 	Real CProp::setIntArea(Hull & calimero, gmm::size_type npunti_faglia){
-		Real Area(0);
+		Real Area(0);	
 		for (gmm::size_type i=0; i<calimero.getNtetra();++i){
 			std::vector<gmm::size_type> punti_tetra(calimero.getPointsSimplex(i));
 			gmm::size_type cont(0);
@@ -606,6 +608,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				Area=Area+t.area();
 			}	
 		}
+		
 		return Area;
 	}
 

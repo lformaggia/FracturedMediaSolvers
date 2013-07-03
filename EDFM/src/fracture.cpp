@@ -124,7 +124,14 @@ gmm::size_type NN= geoprop.getI()[k]-1+(geoprop.getJ()[k]-1)*geoprop.getNx()+(ge
 		}
 		}		
 		}
+if ((this->A().y == this->B().y) && (this->A().y== this->C().y) &&  (this->C().y== this->D().y)){
+
+this->sortCG_X();
+}
+else
+{
 this->sortCG_Y();
+}
 	}
 
 	void Fracture::setNormaltoEdges()
@@ -699,6 +706,44 @@ void Fracture::sortCG_Y()
 	for (gmm::size_type i=0; i<ycg.size();++i)
 	{
 		ycg[i]=(M_CG[i].y);
+	}
+
+	gmm::size_type mink(*(std::min_element(M_kpos.begin(), M_kpos.end())));
+	gmm::size_type maxk(*(std::max_element(M_kpos.begin(), M_kpos.end())));
+
+	Real minimo(*(std::min_element(ycg.begin(), ycg.end()))), minimovar;
+	gmm::size_type wmax(std::max_element(ycg.begin(), ycg.end())-ycg.begin());
+
+	minimovar=minimo-0.001;
+	
+	for (gmm::size_type kk=mink;kk<=maxk;++kk){
+	
+		for (gmm::size_type k=0; k<ycg.size();++k)
+		{
+		if (M_kpos[k]==kk){
+		Real minimo2(ycg[wmax]+1.);
+		gmm::size_type where(0);
+		for (gmm::size_type i=0; i<ycg.size();++i)
+		{
+			if (ycg[i]<minimo2 && ycg[i]>minimovar && M_kpos[i]==kk && find(M_sortCG.begin(),M_sortCG.end(),i)==M_sortCG.end()) {minimo2=ycg[i]; where=i;}
+		}
+		
+		M_sortCG.push_back(where);
+		minimovar=ycg[where];
+		}}
+		minimovar=minimo-.001;
+	}
+}
+	
+}
+
+void Fracture::sortCG_X()
+{	if (M_CG.size()>0){
+	std::vector<Real> ycg(M_CG.size(),0.0);
+	
+	for (gmm::size_type i=0; i<ycg.size();++i)
+	{
+		ycg[i]=(M_CG[i].x);
 	}
 
 	gmm::size_type mink(*(std::min_element(M_kpos.begin(), M_kpos.end())));

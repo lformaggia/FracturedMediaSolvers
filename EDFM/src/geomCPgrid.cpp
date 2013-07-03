@@ -117,8 +117,9 @@
 				M_coord[i+2]=ppp.z + p1.z;
 				M_coord[i]=ppp.x*cos(theta)-ppp.y*sin(theta) + p1.x;
 				M_coord[i+1]=sin(theta)*ppp.x + cos(theta)*ppp.y + p1.y;
+				Point3D centro(0.5*M_gridBB[0] + 0.5*M_gridBB[1], 0.5*M_gridBB[2] + 0.5*M_gridBB[3],0.5*M_gridBB[4] + 0.5*M_gridBB[5]);
 				Point3D p(M_coord[i],M_coord[i+1],M_coord[i+2]);
-				Point3D pp(apply_shear(p,angle, direzione));
+				Point3D pp(apply_shear(p-centro,angle, direzione)+centro);
 				M_coord[i]=pp.x;
 				M_coord[i+1]=pp.y;
 				M_coord[i+2]=pp.z;

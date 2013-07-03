@@ -74,6 +74,7 @@ int main(int argc, char** argv){
 
 	
 	CPgrid grid(gridFile,0,direzione, angle, rotate_z);
+	
 	if (cl("exportGrid","no")=="yes"){	
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
 	ss<<outpath<<"/grid.vtk";
@@ -87,7 +88,7 @@ int main(int argc, char** argv){
 	std::vector<CProp> propStore;	
 
 	GridStrategy strategy(FOR3);
-	if (cl("isOPT","no")=="yes"){	
+	if (cl("isOPT","yes")=="yes"){	
 		strategy=FOR3OPT;
 	}
 	// ciclo sulle fratture

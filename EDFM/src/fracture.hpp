@@ -151,6 +151,7 @@ public:
 	Real CDARCY;
 
 	void sortCG_Y(); 	
+	void sortCG_X(); 	
 	std::vector<gmm::size_type> getCGsort() {return M_sortCG;}
 	
 private:

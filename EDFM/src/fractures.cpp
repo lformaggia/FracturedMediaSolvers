@@ -86,9 +86,12 @@ namespace Geometry
 			punti.push_back(D);
 			}
 			if (n_punti==5) {punti.pop_back();}
+			Point3D centro(0.25*punti[0]+0.25*punti[1]+0.25*punti[2]+0.25*punti[3]);
 			
-			Fracture frattura(apply_shear(punti[0],angle, direzione), apply_shear(punti[1],angle, direzione), apply_shear(punti[2],angle, direzione), apply_shear(punti[3],angle, direzione));
-			
+			Fracture frattura(apply_shear(punti[0]-centro,angle, direzione)+centro, apply_shear(punti[1]-centro,angle, direzione)+centro, apply_shear(punti[2]-centro,angle, direzione)+centro, apply_shear(punti[3]-centro,angle, direzione)+centro);
+			//punti[1]=punti[1]+punti[0];
+		 	//punti[2]=punti[2]+punti[0];
+			//punti[3]=punti[3]+punti[0];
 			frattura.setMetric(M_isMetric);
 			M_fractures.push_back(frattura);
 			M_fractures[i].setProperties(perm, compr, aperture);
