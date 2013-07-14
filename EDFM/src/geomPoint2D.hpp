@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef GEOMPOINT3D_HPP_
-#define GEOMPOINT3D_HPP_
+#ifndef GEOMPOINT2D_HPP_
+#define GEOMPOINT2D_HPP_
 
 #include<iostream>
 #include<cmath>
