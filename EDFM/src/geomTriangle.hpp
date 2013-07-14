@@ -16,7 +16,7 @@
 #include "TypeDefinition.hpp"
 #include "geomPoint3D.hpp"
 #include "geomSegment.hpp"
-
+#include "tolerances.hpp"
 
 namespace Geometry
 {

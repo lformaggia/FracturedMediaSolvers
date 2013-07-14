@@ -8,7 +8,7 @@
  */
 
 #include "geomPoint3D.hpp"
-
+#include "tolerances.hpp"
 namespace Geometry
 {
 	

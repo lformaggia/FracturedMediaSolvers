@@ -15,10 +15,18 @@
 namespace EDFM_Tolerances
 {
   //! A base tolerance.
-  Real const BASE_TOLERANCE=1.e-8;
+  Real const BASE_TOLERANCE=1.e-10;
   //! Used in Newton algorithms.
-  Real const NEWTON_TOLERANCE=1.e-6;
+  Real const NEWTON_TOLERANCE=1.e-8;
   //! For alignement of points
   Real const ALIGNMENT_TOLERANCE=1.e-5;
 }// end namespace EDFM_Tolerances
+
+//! Defining the zero limit
+/*!
+  Only for backward compatibility. Dangerous becouse eps is a common name.
+  @note Should be taken away from here. Use the namespace for tolerances!.
+ */
+const Real eps =  EDFM_Tolerances::BASE_TOLERANCE;
+
 #endif

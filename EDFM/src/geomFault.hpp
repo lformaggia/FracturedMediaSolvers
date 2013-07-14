@@ -20,7 +20,7 @@
 #include "interGridEdgeMap.hpp"
 #include "interGridIntersectionMap.hpp"
 #include "adtree.hpp"
-
+#include "tolerances.hpp"
 namespace Geometry
 {
 	/*!
