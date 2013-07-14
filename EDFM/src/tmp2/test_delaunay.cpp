@@ -1,4 +1,6 @@
 #include "delaunay.hpp"
+#include "geomPoint3D.hpp"
+#include "geomBilinearSurface.hpp"
 #include <iostream>
 
 int main()
@@ -49,4 +51,15 @@ int main()
     {
       cout<<pippo[i]<<endl;
     }
+  cout<<"Testing bilinear surfaces"<<endl;
+  Point3D a3(0., 0., -10.);
+  Point3D b3(10., 0., 0.);
+  Point3D c3(10., 10., 0.);
+  Point3D d3(0., 10., 10.);
+  BilinearSurface surf(a3,b3,c3,d3);
+  Point3D where=surf.param(0.3,0.1);
+  vector<Real> uv;
+  Point3D result=surf.projection(where,uv);
+  cout<<where<<" "<<result<<endl;
+  cout<<uv[0]<<" " <<uv[1]<<endl;
 }
