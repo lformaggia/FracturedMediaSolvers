@@ -61,6 +61,8 @@ $(OBJS): $(SRCS)
 $(DEPEND): $(SRCS)
 	g++ $(CPPFLAGS) -MM $(SRCS) -MF $(DEPEND)
 
+test_delaunay: ../delaunay.cpp ../geomPoint2D.cpp test_delaunay.cpp ../delaunay.hpp
+	g++ $(CXXFLAGS) $(CPPFLAGS) ../delaunay.cpp ../geomPoint2D.cpp -g test_delaunay.cpp -o test_delaunay
 -include $(DEPEND)
 
 
