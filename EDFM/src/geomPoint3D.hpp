@@ -38,35 +38,35 @@ namespace Geometry
 		It is also possible to print the point by using << operator.
     	
     */
-struct Point3D{
-	
-	//! @name Constructor & Destructor
-	//@{
-		
-	//! Empty constructor
-	Point3D();
-	
-	//! Constructor, getting the coordinates
-	/*!
-	 * @param a The x coordinate
-	 * @param b The y coordinate
-	 * @param c The z coordinate
-	 */
-	Point3D(const Real & a, const Real & b, const Real & c);
-	
-	//! Copy constructor
-	/*!
-	 * @param p The point copied in the new object
-	 */
-	Point3D(const Point3D & p);
-	
-	//! Destructor
-	~Point3D();
-	
-	//@}
-	
-	
-	//! @name Methods
+  struct Point3D{
+    
+    //! @name Constructor & Destructor
+    //@{
+    
+    //! Empty constructor
+    Point3D();
+    
+    //! Constructor, getting the coordinates
+    /*!
+     * @param a The x coordinate
+     * @param b The y coordinate
+     * @param c The z coordinate
+     */
+    Point3D(const Real & a, const Real & b, const Real & c);
+    
+    //! Copy constructor
+    /*!
+     * @param p The point copied in the new object
+     */
+    Point3D(const Point3D & p);
+    
+    //! Destructor
+    ~Point3D();
+    
+    //@}
+    
+    
+    //! @name Methods
 	//@{
 	
 	//! Dot products
