@@ -527,8 +527,6 @@ namespace Geometry
     
     // Metric matrix
     Real G[2][2];
-    // Matrix H = Hession
-    Point3D H[2][2];
     // Matrix A
     Real A[2][2];
     
@@ -539,12 +537,11 @@ namespace Geometry
     UInt it=0;
     
     // Hessian
-    // d^2r_1/du^2 d^2r_1/dudv
-    // d^2r_2/dudv d^2r_2/dv^2
-    H[0][0]=Point3D(0.,0.,0.);
-    H[0][1]=M_pA-M_pB+M_pC-M_pD;
-    H[1][0]=H[0][1];
-    H[1][1]=Point3D(0.,0.,0.);
+    // d^2r/du^2 d^2r/dudv
+    // d^2r/dudv d^2r/dv^2
+    // It is a bilinear surface, only non zero element is Huv
+    // Huv = Hessian(0,1)=Hessian(1,0)
+    Point3D Huv(M_pA-M_pB+M_pC-M_pD);
     
     // Initial point in parameter space
     x[0]=0.5;
@@ -569,7 +566,7 @@ namespace Geometry
 
 	// Build Matrix
 	A[0][0]=G[0][0];
-	A[0][1]=G[0][1]+distance.dot(H[0][1]);
+	A[0][1]=G[0][1]+distance.dot(Huv);
 	A[1][0]=A[0][1];
 	A[1][1]=G[1][1];
 	// Build b = -F
@@ -577,8 +574,8 @@ namespace Geometry
 	b[1] = -distance.dot(rv);
 	// Solving linear sistem (Cramer's rule)
 	detA=1.0/(A[0][0]*A[1][1]-A[0][1]*A[1][0]);
-	dx[1]=detA*(A[1][1]*b[0]-A[1][0]*b[1]);
-	dx[2]=detA*(A[0][0]*b[1]-A[0][1]*b[0]);
+	dx[0]=detA*(A[1][1]*b[0]-A[1][0]*b[1]);
+	dx[1]=detA*(A[0][0]*b[1]-A[0][1]*b[0]);
 	
 	normRes = std::sqrt( dx[0]*dx[0] + dx[1]*dx[1]);
 	x[0] += dx[0];
