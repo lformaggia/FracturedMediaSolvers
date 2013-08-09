@@ -71,7 +71,7 @@ namespace Geometry
 			M_kpos.push_back(geoprop.getK()[i]);
 
 			CellaF cella;
-
+			// Ordina i punti.
 			for (gmm::size_type kk=0; kk<geoprop.getPoints(i).size();++kk){
 			cella.puntiAree.push_back(geoprop.getPoints(i)[kk]);
 			
