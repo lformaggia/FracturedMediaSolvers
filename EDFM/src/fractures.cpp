@@ -19,13 +19,13 @@ namespace Geometry
 		
 		std::ifstream myfile;
 		std::string line;
-		std::string nomefile1("data/");
-		nomefile1.append(nomefile);
+		//std::string nomefile1("data/");
+		//nomefile1.append(nomefile);
 
-		myfile.open(nomefile1.c_str());
+		myfile.open(nomefile.c_str());
 		if(myfile.fail())
 		  {
-		    std::cerr<<"Error opening file "<<nomefile1<<std::endl;
+		    std::cerr<<"Error opening file "<<nomefile<<std::endl;
 		    std::exit(1);
 		  }
 
