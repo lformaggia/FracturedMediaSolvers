@@ -114,14 +114,14 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 				{
 					puntiAreaNew=puntiarea;
 				}
-
+				// computing baricenter as average.
 				M_CG[(*it).first]=this->setCG(puntiAreaNew);
 	
 				M_puntiAree.push_back(puntiAreaNew);
 
 	
 				puntiAreaNew.push_back(this->setCG(puntiAreaNew)+no*typicalL);
-			      
+				// WRAPPER QHULL
 				Hull faccia(puntiAreaNew);
 if (it->second.i()==62 && it->second.j()==27 && it->second.k()==3) {std::cout <<npunti_faglia<<std::endl; }
 				if (faccia.getNtetra()>0)
