@@ -45,7 +45,7 @@ namespace Geometry
 	CProp::~CProp() {}
 
 //--------------settare le proprietà--------------------
-
+  
 	void CProp::setProperties(){
 	
 	M_Ne=0;
@@ -70,8 +70,9 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 			M_j.push_back(it->second.j());
 			M_k.push_back(it->second.k());
 			CPcell cella(M_gridpointer->cell((*it).second.i(),(*it).second.j(),(*it).second.k()));
-
+			// Intersection points
 			std::vector<Point3D> punti1(this->getIntPoints(it));
+			// Real vs false intersection points.
 			std::vector<bool> puntiIsReal(this->getIsIntPointReal(it));
 	
 			gmm::size_type npunti_faglia(punti1.size());
@@ -88,7 +89,7 @@ for (gmm::size_type i=0; i<M_faultpointer->getIsInt().size(); ++i){
 			Real typicalL;
 			typicalL=(cella.getVertex(1)-cella.getVertex(2)).norm();
 			
-			std::vector<Real> uv(M_faultpointer->inv_param(Aa, no));
+			std::vector<Real> uv(M_faultpointer->inv_param(Aa));
 	
 			std::vector<Point3D> punti2(punti1);
 			
