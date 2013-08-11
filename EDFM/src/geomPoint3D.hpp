@@ -14,7 +14,7 @@
 #include<cmath>
 
 #include "TypeDefinition.hpp"
-
+#include "tolerances.hpp"
 
 namespace Geometry
 {
@@ -105,14 +105,22 @@ namespace Geometry
 	
 	//! @name Operators
 	//@{
-		
+
+        //! Equality operator
+        /*!
+	  It compares two points using a tolerance.
+	  @param b Point to be compared.
+	  @return true if points are nearer than the tolerance
+	  @note It does not compy with the semantic of the equality operator. It should be
+	  changed asap by introducing a method instead.
+	 */
+	bool operator==( const Point3D & b);
+
 	//! Add a point to <b>this</b>
 	/*!
 	 * @param b The added point
 	 * @return The operation result (a point)
 	 */
-	bool operator==( const Point3D & b);
-
 	Point3D & operator+=( const Point3D & b);
 	
 	//! Subtract a point to <b>this</b>
@@ -197,6 +205,15 @@ Point3D const operator/(const Point3D & p, const Real & a);
  * @return The stream object on which the action is performed (ostr)
  */
 std::ostream& operator<<(std::ostream & ostr, const Point3D & p);
+
+//! Less-than operator
+/*!
+ * implements a lexicografic almost ordering
+ * @param A the first point
+ * @param B the second point
+ * @return true if A is "smaller" than B according to a quasi-lexicografic ordering.
+ * @note This operator does not comply with the good ordering rule. It must be changed asap.
+ */
 
 bool operator<(const Point3D & A, const Point3D & B);
 

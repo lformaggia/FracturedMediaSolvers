@@ -61,7 +61,8 @@ namespace Geometry
 
 	bool Point3D::operator==( const Point3D & b)
 	{
-		if (fabs(x-b.x)<1.0e-5 &&fabs(y-b.y)<1.0e-5 &&fabs(z-b.z)<1.0e-5 )		
+	  const Real & eps=EDFM_Tolerances::ALIGNMENT_TOLERANCE;
+		if (fabs(x-b.x)<eps &&fabs(y-b.y)<eps &&fabs(z-b.z)<eps )		
 		return true;
 		else
 		return false;
@@ -151,26 +152,27 @@ namespace Geometry
 	
 	bool operator<(const Point3D & A, const Point3D & B)
 	{
-		if( A.x-B.x < -eps )
-			return 1;
-		if( A.x-B.x > eps )
-			return 0;
-		if( std::fabs(A.x-B.x) < eps)
+	  Real const eps=0.e0;
+	  if( A.x-B.x < -eps )
+	    return 1;
+	  if( A.x-B.x > eps )
+	    return 0;
+	  if( std::fabs(A.x-B.x) <= eps)
+	    {
+	      if( A.y-B.y < -eps )
+		return 1;
+	      if( A.y-B.y > eps )
+		return 0;
+	      if( std::fabs(A.y-B.y) <= eps)
 		{
-			if( A.y-B.y < -eps )
-				return 1;
-			if( A.y-B.y > eps )
-				return 0;
-			if( std::fabs(A.y-B.y) < eps)
-			{
-				if( A.z-B.z < -eps )
-					return 1;
-				if( A.z-B.z > eps )
-					return 0;
-				if( std::fabs(A.z-B.z) < eps)
-					return 0;
-			}
+		  if( A.z-B.z < -eps )
+		    return 1;
+		  if( A.z-B.z > eps )
+		    return 0;
+		  if( std::fabs(A.z-B.z) <= eps)
+		    return 0;
 		}
+	    }
 		return 0;
 	}
 
