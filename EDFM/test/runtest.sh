@@ -12,6 +12,7 @@ function run
     /bin/rm -f ${logfile}
     mkdir ${outdir}
     ./main_test InputFile=${datafile} > ${logfile}
+    echo "******    CHECKING FILES   ******"
     for f in `ls ${outdir}`;  do
 	filename=`basename $f`
 	gunzip ${outtestdir}/${filename}.gz
