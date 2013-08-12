@@ -55,7 +55,7 @@ namespace Geometry
 // ==================================================
 // Operators
 // ==================================================
-  bool Point2D::operator==( const Point2D & b)
+  bool Point2D::operator==( const Point2D & b)const
   {
     // This is dangerous (LF)
     if (fabs(x-b.x)<1.0e-5 &&fabs(y-b.y)<1.0e-5)		

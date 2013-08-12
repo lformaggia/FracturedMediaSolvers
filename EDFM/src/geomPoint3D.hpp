@@ -114,7 +114,7 @@ namespace Geometry
 	  @note It does not compy with the semantic of the equality operator. It should be
 	  changed asap by introducing a method instead.
 	 */
-	bool operator==( const Point3D & b);
+	bool operator==( const Point3D & b) const;
 
 	//! Add a point to <b>this</b>
 	/*!

@@ -59,7 +59,7 @@ namespace Geometry
 		return puntonew;
 	}
 
-	bool Point3D::operator==( const Point3D & b)
+	bool Point3D::operator==( const Point3D & b)const
 	{
 	  const Real & eps=EDFM_Tolerances::ALIGNMENT_TOLERANCE;
 		if (fabs(x-b.x)<eps &&fabs(y-b.y)<eps &&fabs(z-b.z)<eps )		

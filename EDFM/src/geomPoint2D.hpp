@@ -124,7 +124,7 @@ struct Point2D{
 	 * @param b The added point
 	 * @return The operation result (a point)
 	 */
-	bool operator==( const Point2D & b);
+	bool operator==( const Point2D & b)const;
 
 	Point2D & operator+=( const Point2D & b);
 	
