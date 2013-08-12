@@ -12,6 +12,7 @@
 
 #include<iostream>
 #include<cmath>
+#include<vector>
 
 #include "TypeDefinition.hpp"
 
@@ -46,13 +47,21 @@ struct Point2D{
 	//! Empty constructor
 	Point2D();
 	
-	//! Constructor, getting the coordinates
+	//! Constructor, passing the coordinates
 	/*!
 	 * @param a The x coordinate
 	 * @param b The y coordinate
 	 */
 	Point2D(const Real & a, const Real & b);
 	
+	//! Constructor, passing a vector
+	/*!
+	 * This constructor allows conversion std::vector<Real>->Point2D
+	 * @param v The coordinates in a std::vector
+	 * @pre v.size()>1
+	 */
+  Point2D(std::vector<Real> const &v);
+
 	//! Copy constructor
 	/*!
 	 * @param p The point copied in the new object
