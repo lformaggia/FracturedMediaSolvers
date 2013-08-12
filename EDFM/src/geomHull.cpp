@@ -172,7 +172,7 @@ M_Ntetra=0;
 	}  //fine chiamata a qhull
 
 
-	Real Hull::getVolume(){
+	Real Hull::getVolume() const{
 		Real volume(0);
 		for (unsigned int ntr=0; ntr<M_simplexes.ncols();++ntr){
 			Tetra tetraedrino(this->getTetra()[ntr]);
@@ -181,7 +181,8 @@ M_Ntetra=0;
 	return volume;
 	}
 
-	std::vector<gmm::size_type> Hull::getPointsSimplex(gmm::size_type quale){
+	std::vector<gmm::size_type> Hull::getPointsSimplex(gmm::size_type quale)
+	const{
 		std::vector<gmm::size_type> punti_tetra;
 		for (gmm::size_type i=0; i<4;++i){
 			punti_tetra.push_back(this->M_simplexes(i,quale));

@@ -78,13 +78,13 @@ public:
 	
 	bool call_qhull(gmm::size_type & , gmm::dense_matrix<gmm::size_type> &, std::vector<coordT> &);
 
-	inline std::vector<Tetra> getTetra() {return M_tetra;}
+	inline std::vector<Tetra> getTetra() const {return M_tetra;}
 
-	inline Tetra getTetra(gmm::size_type i) {return M_tetra[i];}
+	inline Tetra getTetra(gmm::size_type i) const{return M_tetra[i];}
 
-	Real getVolume();
+	Real getVolume()const;
 
-	std::vector<gmm::size_type> getPointsSimplex(gmm::size_type );
+	std::vector<gmm::size_type> getPointsSimplex(gmm::size_type ) const;
 
 private:
 	gmm::dense_matrix<gmm::size_type> M_simplexes;
