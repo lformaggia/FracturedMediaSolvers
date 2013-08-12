@@ -159,10 +159,19 @@ namespace Geometry
 		return inter;
 	}
 	
-	bool Segment::isIn(Point3D P) const 
+  Real  Segment::inv_param(const Point3D & p) const
+  {
+    Point3D vAP(p.x-M_pA.x,p.y-M_pA.y,p.z-M_pA.z);
+    Point3D vAB(M_pB.x-M_pA.x,M_pB.y-M_pA.y,M_pB.z-M_pA.z);
+    return vAP.dot(vAB)/(vAB.x*vAB.x+vAB.y*vAB.y+vAB.z*vAB.z);
+    
+  }
+
+
+	bool Segment::isIn(Point3D const & P) const 
 	{	
 		Real t1,t2,t3;
-		Real toll(1.0e-7);
+		Real const & toll(EDFM_Tolerances::POINT_IN_SEGMENT);
 		t1=(fabs(M_pA.x-M_pB.x)>toll*fabs(M_pA.x))?(P.x-M_pB.x)/(M_pA.x-M_pB.x):0.5;
 		t2=(fabs(M_pA.y-M_pB.y)>toll*fabs(M_pA.y))?(P.y-M_pB.y)/(M_pA.y-M_pB.y):0.5;
 		t3=(fabs(M_pA.z-M_pB.z)>toll*fabs(M_pA.z))?(P.z-M_pB.z)/(M_pA.z-M_pB.z):0.5;
@@ -272,5 +281,132 @@ namespace Geometry
 			return s1Sup < s2Sup;
 		return s1Inf < s2Inf;
 	}
+
+
+// --------------------   Class Segment2D   --------------------
+
+  
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+	Segment2D::Segment2D() : M_pA(), M_pB() {}
+	
+	Segment2D::Segment2D(const Point2D & a, const Point2D & b) : M_pA(a), M_pB(b) {}
+	
+	Segment2D::Segment2D(const Segment2D & s) : M_pA(s.A()), M_pB(s.B()) {}
+	
+	Segment2D::~Segment2D() {}
+	
+// ==================================================
+// Methods
+// ==================================================
+
+  bool Segment2D::intersectTheSegment(const Segment2D & S, 
+					Point2D & risultato) const 
+  {
+    Point2D S1_pA(this->M_pA);
+    Point2D S1_pB(this->M_pB);
+    Point2D S2_pA(S.A());
+    Point2D S2_pB(S.B());
+    Real bbox[4];
+    // Find bounding box
+    bbox[0]=std::min(S1_pA.x,(std::min(S1_pB.x,std::min(S2_pA.x,S2_pB.x))));
+    bbox[1]=std::min(S1_pA.y,(std::min(S1_pB.y,std::min(S2_pA.y,S2_pB.y))));
+    bbox[2]=std::max(S1_pA.x,(std::max(S1_pB.x,std::max(S2_pA.x,S2_pB.x))));
+    bbox[3]=std::max(S1_pA.y,(std::max(S1_pB.y,std::max(S2_pA.y,S2_pB.y))));
+    // Origin and scaling factors
+    Point2D origin(bbox[0],bbox[1]);
+    Real factors[2];
+    factors[0]=std::max(EDFM_Tolerances::SEGMENT2D_INTERSECTION_TOLERANCE,bbox[2]-bbox[0]);
+    factors[1]=std::max(EDFM_Tolerances::SEGMENT2D_INTERSECTION_TOLERANCE,bbox[3]-bbox[1]);
+    // Change points so that we are operating in the unitary box
+    S1_pA.scale(origin,factors);
+    S1_pB.scale(origin,factors);
+    S2_pA.scale(origin,factors);
+    S2_pB.scale(origin,factors);
+    
+    // Build matrix 
+    Real A[2][2];
+    A[0][0]=S1_pB.x-S1_pA.x;
+    A[0][1]=S2_pA.x-S2_pB.x;
+    A[1][0]=S1_pB.y-S1_pA.y;
+    A[1][1]=S2_pA.y-S2_pB.y;
+    Real det=A[0][0]*A[1][1]-A[0][1]*A[1][0];
+    // Parallel segments.
+    if (std::fabs(det)<EDFM_Tolerances::SEGMENT2D_INTERSECTION_TOLERANCE)
+      {
+	Point2D normal(S1_pB.y-S1_pA.y,S1_pA.x-S1_pB.x);
+	normal /=normal.norm();
+	Real dist=std::fabs(Point2D(S1_pA-S2_pA).dot(normal));
+	if(dist>EDFM_Tolerances::POINT_IN_SEGMENT)
+	  {
+	    return false;
+	  }
+	// I need to check all points!
+	if(this->isIn(S.A()))
+	  {
+	    risultato=S.A();
+	    return true;
+	  }
+	if(this->isIn(S.B()))
+	  {
+	    risultato=S.B();
+	    return true;
+	  }
+	if(S.isIn(this->A()))
+	  {
+	    risultato=this->A();
+	    return true;
+	  }
+	if(S.isIn(this->B()))
+	  {
+	    risultato=this->B();
+	    return true;
+	  }
+	return false;
+      }
+    // Not parallel segments.
+    double t[2];
+    t[0]=( A[1][1]*(S2_pA.x-S1_pA.x)-A[0][1]*(S2_pA.y-S1_pA.y))/det;
+    t[1]=(-A[1][0]*(S2_pA.x-S1_pA.x)+A[0][0]*(S2_pA.y-S1_pA.y))/det;
+    //if parametric coordinates outside [0,1] no intersection
+    if(
+       t[0]<-EDFM_Tolerances::POINT_IN_SEGMENT   || 
+       t[0]>1+EDFM_Tolerances::POINT_IN_SEGMENT ||
+       t[1]<-EDFM_Tolerances::POINT_IN_SEGMENT   || 
+       t[1]>1+EDFM_Tolerances::POINT_IN_SEGMENT)
+      {
+	return false;
+      }
+    // It should be irrelevant how we compute the point
+    risultato=t[0]*S1_pB+(1.0-t[0])*S1_pA;
+    // Scale back to physical coordinates.
+    risultato.scaleBack(origin,factors);
+    return true;
+  }
+  
+
+  Real  Segment2D::inv_param(const Point2D & p) const
+  {
+    Point2D vAP(p.x-M_pA.x,p.y-M_pA.y);
+    Point2D vAB(M_pB.x-M_pA.x,M_pB.y-M_pA.y);
+    return vAP.dot(vAB)/(vAB.x*vAB.x+vAB.y*vAB.y);
+  }
+
+  bool Segment2D::isIn(Point2D const & P) const 
+  {	
+    Real t=this->inv_param(P);
+    if(
+       t<-EDFM_Tolerances::POINT_IN_SEGMENT   || 
+       t>1+EDFM_Tolerances::POINT_IN_SEGMENT) return false;
+    Point2D Check=this->param(t);
+    Real dist=Segment2D(P,Check).length();
+    if (dist<EDFM_Tolerances::POINT_IN_SEGMENT*this->length())
+      return true;
+    else
+      return false;
+  }
+    
+  
 
 } // namespace Geometry

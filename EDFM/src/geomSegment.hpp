@@ -17,6 +17,7 @@
 
 #include "TypeDefinition.hpp"
 #include "geomPoint3D.hpp"
+#include "geomPoint2D.hpp"
 
 
 namespace Geometry
@@ -118,6 +119,13 @@ public:
 	inline Point3D param(const Real & l) const
 		{ return l*M_pB+(1-l)*M_pA; }
 	
+  //! Inverse parametric equation
+  /*!
+   * @param p The point
+   * @return The parametric coordinate of the projected point.
+   */
+  Real inv_param(const Point3D & p) const;
+
 	//! Segment length
 	/*!
 	 * It computes the length of the segment
@@ -129,7 +137,14 @@ public:
 							(M_pA.z - M_pB.z)*(M_pA.z - M_pB.z)	); }
 	
 
-	bool intersectTheSegment(const Segment &, Point3D &) const;
+  //! Test intersection with another Segment.
+  /*!
+   * It tests wheter the segment interesects another segment. It uses a tolerance.
+   * @param seg  The segment the intersection has to be tested.
+   * @param p    The intersection point (if found). If not found the value is meaningless
+   * @return  true if intersection is found.2
+   */
+	bool intersectTheSegment(const Segment & seg, Point3D &p) const;
 
 	//! Test intersection with a plane
 	/*!
@@ -153,7 +168,12 @@ public:
 	 */	
 	Point3D intersectionWithThePlaneOf(const Triangle & t) const;
 
-	bool isIn(Point3D) const;
+  //! Asserts whether a point is inside the given segment.
+  /*!
+    @param P The Point.
+    @return true if the point is inside the segment.
+   */
+	bool isIn(Point3D const & P) const;
 	
 	//! Export in vtk format
 	/*!
@@ -197,6 +217,140 @@ bool operator<(const Segment & s1, const Segment & s2);
 
 //@}
 
+  
+//! 2D segment class
+/*!
+  This class implements the concept of a 2D Segment.
+  It stores the two extremal 2D points in M_pA and M_pB.
+  
+  The class provides methods to compute the segment length and
+  to evaluate the segment parametrization for different values
+  of the parameter.
+  
+  It is also possible to test for the existence of intersections
+  between the segment and another segment.
+  
+*/
+class Segment2D
+{
+public:
+	//! @name Constructor & Destructor
+	//@{
+		
+	//! Empty constructor
+	Segment2D();
+	
+	//! Constructor, getting the extremal points
+	/*!
+	 * @param a The first point
+	 * @param b The second point
+	 */
+	Segment2D(const Point2D & a, const Point2D & b);
+	
+	//! Copy constructor
+	/*!
+	 * @param s The segment copied in the new object
+	 */
+	Segment2D(const Segment2D & s);
+	
+	//! Destructor
+	virtual ~Segment2D();
+	
+	//@}
+	
+	//! @name Get Methods
+	//@{
+		
+	//! Get point A
+	/*!
+	 * @return The end point A
+	 */
+	Point2D A() const { return M_pA; }
+	
+	//! Get point B
+	/*!
+	 * @return The extreme point B
+	 */
+	Point2D B() const { return M_pB; }
+	
+	//@}
+	
+	//! @name Set Methods
+	//@{
+		
+	//! Set point A
+	/*!
+	 * @param p The new value for the end point A
+	 */
+	void setA(const Point2D & p) { M_pA = p; }
+	
+	//! Set point B
+	/*!
+	 * @param p The new value for the end point B
+	 */
+	void setB(const Point2D & p) { M_pB = p; }
+	
+	//@}
+	
+	//! @name Methods
+	//@{
+	
+	//! Parametric equation
+	/*!
+	 * It is the parametrization of the segment.
+	 * @param l The parameter value (range [0,1])
+	 * @return The point corresponding to the parameter value
+	 */
+	Point2D param(const Real & l) const
+		{ return l*M_pB+(1-l)*M_pA; }
+	
+	//! Inverse parametric equation
+	/*!
+	 * @param p The point
+	 * @return The parametric coordinate
+	 */
+  Real inv_param(const Point2D & p) const;
+
+	//! Segment2D length
+	/*!
+	 * It computes the length of the segment
+	 * @return The length of the segment
+	 */
+	inline Real length() const
+		{ 
+		  return std::sqrt( (M_pA.x - M_pB.x)*(M_pA.x - M_pB.x) +
+				    (M_pA.y - M_pB.y)*(M_pA.y - M_pB.y)); 
+		}
+	
+  //! Test intersection with another Segment2D.
+  /*!
+   * It tests wheter the segment interesects another segment. It uses a tolerance.
+   * @param seg  The segment the intersection has to be tested.
+   * @param p    The intersection point (if found). If not found the value is meaningless
+   * @return  true if intersection is found.2
+   */
+  bool intersectTheSegment(const Segment2D & seg, Point2D &p) const;
+
+  //! Asserts whether a point is inside the given segment.
+  /*!
+    @param P The Point.
+    @return true if the point is inside the segment.
+   */
+  bool isIn(Point2D const & P) const;
+  
+  //! Display general information about the content of the class
+  /*!
+   * List of things displayed in the class
+   * @param out Specify the output format (std::cout by default)
+   */
+  void showMe(std::ostream & out=std::cout) const;
+  
+  //@}
+  
+private:
+	Point2D M_pA;
+	Point2D M_pB;
+};
 
 } // namespace Geometry
 

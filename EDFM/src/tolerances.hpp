@@ -20,6 +20,10 @@ namespace EDFM_Tolerances
   Real const NEWTON_TOLERANCE=1.e-8;
   //! For alignement of points
   Real const ALIGNMENT_TOLERANCE=1.e-5;
+  //! TO assess if a point belong to a segment
+  Real const POINT_IN_SEGMENT=1.0e-7;
+  //! 2D Segment Intersection tolerance
+  Real const SEGMENT2D_INTERSECTION_TOLERANCE=1.0e-16;
 }// end namespace EDFM_Tolerances
 
 //! Defining the zero limit
