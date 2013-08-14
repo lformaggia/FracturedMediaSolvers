@@ -60,8 +60,7 @@ namespace Geometry
 // ==================================================
   bool Point2D::operator==( const Point2D & b)const
   {
-    // This is dangerous (LF)
-    if (fabs(x-b.x)<1.0e-5 &&fabs(y-b.y)<1.0e-5)		
+    if (fabs(x-b.x)==0. &&fabs(y-b.y)==0.)		
       return true;
     else
       return false;
@@ -146,6 +145,7 @@ namespace Geometry
   
   bool operator<(const Point2D & A, const Point2D & B)
   {
+    const Real eps=0.0;
     if( A.x-B.x < -eps )
       return 1;
     if( A.x-B.x > eps )
