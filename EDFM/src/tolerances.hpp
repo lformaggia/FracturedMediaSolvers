@@ -24,6 +24,8 @@ namespace EDFM_Tolerances
   Real const POINT_IN_SEGMENT=1.0e-7;
   //! 2D Segment Intersection tolerance
   Real const SEGMENT2D_INTERSECTION_TOLERANCE=1.0e-16;
+  //! Tolerance for coincident 2Dpoints.
+  Real const POINT2DCOINCIDENT=1.e-05;
 }// end namespace EDFM_Tolerances
 
 //! Defining the zero limit
