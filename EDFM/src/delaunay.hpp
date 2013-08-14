@@ -130,13 +130,23 @@ namespace Geometry
     bool operator()(Point2D const & a, Point2D const & b, Point2D const & c) const;
     //! Decimates a vector of 2D points.
     /*!
-      It elemiminates triplet of points that are aligned canceling
+      It identifies the points that are aligned canceling
+      the middle one.
+      
+      \param point The points to be decimated.
+      \return vector of bool of the same lenght as the input. true if point is decimated.
+    */
+    std::vector<bool> decimated_list(const std::vector<Point2D> points) const;
+    //! Decimates a vector of 2D points.
+    /*!
+      It elimiminates points that are aligned canceling
       the middle one.
       
       \param point The points to be decimated.
       \return The decimated points.
     */
     std::vector<Point2D> decimate(const std::vector<Point2D> points) const;
+
   private:
     Real const M_tol;
   };

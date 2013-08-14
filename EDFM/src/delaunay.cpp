@@ -377,27 +377,41 @@ namespace Geometry
   { 
     return std::fabs(area(a,b,c)) < M_tol*diameter2(a,b,c);
   }
+
+  std::vector<bool> 
+  Aligned::decimated_list(const std::vector<Point2D> points) const
+  {
+    std::vector<bool> eliminated(points.size(),false);
+    Aligned const & self(*this);
+    unsigned int i(0),j(1),k(2);
+    for (unsigned int ii=0; ii<points.size();++ii)
+      {
+	if(self(points[i],points[j],points[k]))
+	  {
+	    eliminated[j]=true;
+	    j=k;
+	  }
+	else
+	  {
+	    i=j;
+	    j=k;
+	  }
+	++k;
+	k= k % points.size();
+      }// end for
+    return eliminated;
+  }// end decimated_list
   
   std::vector<Point2D> 
   Aligned::decimate(const std::vector<Point2D> points) const
   {
-    std::vector<bool> eliminated(points.size(),false);
-    Aligned const & self(*this);
-    unsigned int count(points.size());
-    for (unsigned int i=0; i<points.size();++i)
-      {
-	unsigned int j=(i+1) % points.size();
-	unsigned int k=(j+1) % points.size();
-	if(self(points[i],points[j],points[k]))
-	  {
-	    --count;
-	    eliminated[j]=true;
-	  }
-      }// end for
+    std::vector<bool> eliminated=decimated_list(points);
+    unsigned int count(0);
+    for (unsigned int i=0; i<points.size();++i) 
+      if (!eliminated[i]) ++count;
     std::vector<Point2D> result;
     if (count == 0) return result;
     result.reserve(count);
-
     for (unsigned int i=0; i<points.size();++i)
       if(!eliminated[i])result.push_back(points[i]);
     return result;
