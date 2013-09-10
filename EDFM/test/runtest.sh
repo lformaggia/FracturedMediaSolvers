@@ -15,15 +15,19 @@ function run
     echo "******    CHECKING FILES   ******"
     for f in `ls ${outdir}`;  do
 	filename=`basename $f`
+	#echo -n "comparing ${outdir}/$filename with ${outtestdir}/${filename}"
 	gunzip ${outtestdir}/${filename}.gz
 	diff -q ${outdir}/$filename ${outtestdir}/${filename}
-	if test ! $?
+	if test $? -ne 0
 	then
 	    status=1
+	    #echo
+#	else
+	 #  echo "... ok!"
 	fi
 	gzip -9 ${outtestdir}/${filename}
     done
-    if test ! ${status}
+    if test ${status} -eq 1
     then
 	echo "TEST FAILED"    
     else

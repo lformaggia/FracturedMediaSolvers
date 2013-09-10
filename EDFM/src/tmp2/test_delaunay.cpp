@@ -1,6 +1,7 @@
 #include "delaunay.hpp"
 #include "geomPoint3D.hpp"
 #include "geomBilinearSurface.hpp"
+#include "geomSegment.hpp"
 #include <iostream>
 
 int main()
@@ -62,4 +63,15 @@ int main()
   Point3D result=surf.projection(where,uv);
   cout<<where<<" "<<result<<endl;
   cout<<uv[0]<<" " <<uv[1]<<endl;
+  cout<<" *************** TESTING SEGMENTS *******************"<<std::endl;
+  Segment2D A(Point2D(0,0),Point2D(1,1));
+  Segment2D B(Point2D(1.001,0),Point2D(1.001,10));
+  Point2D Result;
+  bool intersect=A.intersectTheSegment(B,Result);
+  std::cout<<intersect<<std::endl;
+  if(intersect)Result.showMe();
+  cout<<A.isIn(Result)<<endl;
+  cout<<A.isIn(Point2D(5.0,5.0))<<endl;
+  
+
 }

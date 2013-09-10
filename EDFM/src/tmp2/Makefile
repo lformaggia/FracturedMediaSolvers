@@ -27,7 +27,7 @@ OBJS = $(SRCS:.cpp=.o)
 HEADERS=$(wildcard *.hpp)
 #
 exe_sources=$(filter main%.cpp,$(SRCS))
-EXEC=$(exe_sources:.cpp=)
+EXEC=test_delaunay
 
 #========================== ORA LA DEFINIZIONE DEGLI OBIETTIVI
 .phony= all clean distclean doc
@@ -54,7 +54,7 @@ distclean:
 doc:
 	doxygen $(DOXYFILE)
 
-$(EXEC): $(OBJS)
+#$(EXEC): $(OBJS)
 
 $(OBJS): $(SRCS)
 
