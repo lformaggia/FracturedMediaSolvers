@@ -3,7 +3,7 @@ BEGIN FORMAT
     Length_Unit = M
     XAxis = East
     Scale = 2286.96
-    No_Fractures = 3
+    No_Fractures = 1
     No_TessFractures = 0
     No_Nodes = 32
     No_RockBlocks = 0

@@ -150,16 +150,16 @@ namespace Geometry
 	// and we compute puntiAreaNew_uv using the inverse transformation inv_param() 
 	// defined in BilenearSurface.
 	std::vector<Point2D> puntiAreaNew_uv;
-	std::vector<Point3D> puntiAreaNew = this->addPoints4area (puntiarea, puntiIsReal, it, puntiAreaNew_uv); //il pizzino
+	std::vector<Point3D> puntiAreaNew =this->addPoints4area (puntiarea, puntiIsReal, it, puntiAreaNew_uv); //il pizzino
 
 	isPartial = true;
       
         // computing baricenter as average.
 	M_CG[ (*it).first] = this->setCG (puntiAreaNew);
-
+std::cout<<"sono qui   "<<puntiAreaNew.size()<<std::endl;
 	// We will decimate the points but first we compute a triangulation, used for the area computation
 	if (puntiAreaNew_uv.size()>=3)
-	  {
+	  { 
 	    std::vector<IdTriplet> elements_uv;
 	    // Triangulating the convex hull
 	    delaun(puntiAreaNew_uv,elements_uv);
@@ -743,6 +743,7 @@ namespace Geometry
     {
       Triangle t (points[elements[i][0]], points[elements[i][1]],points[elements[i][2]]);
       Area = Area + t.area();
+std::cout << t.area()<<std::endl;
     }
     return Area;
   }
@@ -1066,35 +1067,51 @@ namespace Geometry
 	  }
       }
     // We need to eliminate "coincident points"
-    if(puntiareaNew.size()<=1)return puntiareaNew;
+    if(puntiareaNew.size()<=1) return puntiareaNew;
 
     std::set<Point2DAndId> cleanupPoints;
     for (unsigned int i=0;i<puntiareaNew_uv.size();++i)
       {
 	cleanupPoints.insert(Point2DAndId(puntiareaNew_uv[i],i));
       }
-    std::vector<bool> eliminated(puntiareaNew_uv.size(),true);
+    std::vector<bool> eliminated(puntiareaNew_uv.size(),false);
     std::set<Point2DAndId>::const_iterator kt=cleanupPoints.begin();
     std::set<Point2DAndId>::const_iterator jt=kt;
     ++jt;
-    for (;jt!=cleanupPoints.end();++jt)
+   /* for (;jt!=cleanupPoints.end();++jt)
       {
 	Real diff=(kt->Point()-jt->Point()).norm();
+
 	if(diff>EDFM_Tolerances::POINT2DCOINCIDENT)
 	  {
 	    eliminated[jt->id]=false;
 	    kt=jt;
 	  }
-      }
+      }*/
+
+    for (unsigned int i=0; i<puntiareaNew.size();++i)
+	{
+	    for (unsigned int j=i+1; j<puntiareaNew.size();++j)
+		{
+			Real diff=(puntiareaNew[i]-puntiareaNew[j]).norm();
+			if(diff<EDFM_Tolerances::POINT2DCOINCIDENT)
+			  {
+	 	    eliminated[j]=true;
+		  }
+		}
+	}	
     unsigned int counter(0);
+
     for (unsigned int i=0;i<puntiareaNew.size();++i)
+{
       if(!eliminated[i])
 	{
 	  puntiareaNew[counter]=puntiareaNew[i];
 	  puntiareaNew_uv[counter]=puntiareaNew_uv[i];
 	  ++counter;
 	}
-       
+}
+       std::cout << counter<<std::endl;
     puntiareaNew.resize(counter);
     puntiareaNew_uv.resize(counter);
 
