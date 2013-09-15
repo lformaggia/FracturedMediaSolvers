@@ -1,0 +1,24 @@
+Francesco Della Porta
+Pacs Project: Readme file
+
+Questo codice implementa un solutore a volumi finiti per flussi di Darcy in mezzi porosi.
+Qui sono implementati solo alcuni casi test.
+
+La prima operazione da fare e' cambiare all'interno del makefile la directory in cui si trovano le Eigen. Se la libreria CGAL che si possiede, si trova in una posizione particolare, aggiungere a CGALLIB -L$(path_to_CGAL).
+A questo punto e' possibile digitare:
+
+make library
+
+questo comando mette il codice implementato da L. Turconi in una libreria. E copia gli header.
+All'interno della cartella con il makefile bisogna creare una cartella chiamata Darcy_vtk per ospitare i file salvati dagli eseguibili.
+
+
+Dopo questa operazione scrivendo make compaiono le possibile operazioni. Fra queste quelle che permettono di creare gli eseguibilisono le seguenti:
+-scrivendo make Test viene creato l'eseguibile mainTest. Questo eseguibile puo' ricevere dei parametri. Digitare ./mainTest -h per maggiori informazioni.
+-scrivendo make Oil viene creato un eseguibile diverso chiamato makeOil. Quest'ultimo stampa a video delle informazioni sulla mesh e poi risolve su una griglia raffinata con fratture il problema di Darcy. L'esecuzione di questo programma richiede tempo, in quanto l'adattazione della griglia fatta dalla classe Mesh2D di L. Turconi nella presente versione non e' ancora performante. Purtroppo non sono in possesso dell'ultima versione piu' efficiente.
+
+
+Se si vuole, si puo' cambiare la voce ROOT_FOLDER nel makefile, mettendo una directory a piacere. All'interno di questa pero' bisogna creare una cartella headers e una cartella lib dove mettere le librerie e gli headers. Dentro quest'ultima va creata anche una cartella src_Turconi.
+A questo punto, e' possibile digitare make install per spostare gli header nella directory selezionata.
+
+Inoltre e' possibile decidere se chiamare make con DEBUG=yes o DEBUG=no che ottimizza il codice.
