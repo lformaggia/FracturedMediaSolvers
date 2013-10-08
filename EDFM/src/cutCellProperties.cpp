@@ -1,19 +1,16 @@
-/*!
-*  @file geomTetra.cpp
-*  @brief Class for Tetra in 3D space (definition).
-*
-*
-*/
-
 #include<cmath>
 #include<limits>
 #include<fstream>
 #include<iomanip>
 #include<vector>
 #include<algorithm>
+#include <fstream>
 #include "cutCellProperties.hpp"
 #include "reorder.hpp"
 namespace{
+  // < TO BE COMEMNTED OUT
+  std::ofstream logfile("log.dat");
+  // >
   //! A helper function to store a point and its id
   struct Point2DAndId{
     Point2DAndId(Geometry::Point2D const &p, unsigned int i):
@@ -143,20 +140,40 @@ namespace Geometry
 
 	bool isPartial (false);
 	//
+	// < TO BE COMMENTED OUT>
 	//std::vector<Point3D> puntiAreaNew_old = this->addPoints4area (puntiarea, puntiIsReal, it); //il pizzino
+	//std::vector<Point2D> puntiAreaNew_uv_old;
+	//puntiAreaNew_uv_old.reserve(puntiAreaNew_old.size());
+	//for (int k=0;k<puntiAreaNew_old.size();++k)puntiAreaNew_uv_old.push_back(Point2D(M_faultpointer->inv_param (puntiAreaNew_old[k])) );
+	//>
 	// New algorithm. Intersections to identify new points
 	// is made on the parameter plane and not in the physical
 	// space. It is more correct. In alterative we use the old routine
 	// and we compute puntiAreaNew_uv using the inverse transformation inv_param() 
 	// defined in BilenearSurface.
 	std::vector<Point2D> puntiAreaNew_uv;
+	     puntiIsReal.clear();
 	std::vector<Point3D> puntiAreaNew =this->addPoints4area (puntiarea, puntiIsReal, it, puntiAreaNew_uv); //il pizzino
+	//< To be commented out
+	/*
+	  logfile<<"*********  NEW SET NEW POINTS****************"<<std::endl;
+	  for (int k=0 ;k<puntiAreaNew.size();++k)
+	  {
+	  logfile<<puntiAreaNew[k]<<"***"<<puntiAreaNew_uv[k]<<std::endl;
+	  }
+	  logfile<<"*********  OLD POINTS****************"<<std::endl;
+	  for (int k=0 ;k<puntiAreaNew_old.size();++k)
+	  {
+	    logfile<<puntiAreaNew_old[k]<<"***"<<puntiAreaNew_uv_old[k]<<std::endl;
+	  }
+	*/
+	//>
 
 	isPartial = true;
       
         // computing baricenter as average.
 	M_CG[ (*it).first] = this->setCG (puntiAreaNew);
-std::cout<<"sono qui   "<<puntiAreaNew.size()<<std::endl;
+        //std::cout<<"sono qui   "<<puntiAreaNew.size()<<std::endl;
 	// We will decimate the points but first we compute a triangulation, used for the area computation
 	if (puntiAreaNew_uv.size()>=3)
 	  { 
@@ -743,7 +760,7 @@ std::cout<<"sono qui   "<<puntiAreaNew.size()<<std::endl;
     {
       Triangle t (points[elements[i][0]], points[elements[i][1]],points[elements[i][2]]);
       Area = Area + t.area();
-std::cout << t.area()<<std::endl;
+      //std::cout << t.area()<<std::endl;
     }
     return Area;
   }
@@ -962,10 +979,10 @@ std::cout << t.area()<<std::endl;
     std::vector<Point2D> puntiarea_uv;
     puntiarea_uv.reserve(npunti);
 
-    // Loops on all interection points to get uv coordinates
+    // Loops on all intersection points to get uv coordinates
     for (gmm::size_type i = 0; i < npunti; ++i)puntiarea_uv.push_back(Point2D(M_faultpointer->inv_param(puntiarea[i])));
 
-    // Loops on all intersection points to get uv coordinates
+    // Loops on all intersection points 
     for (gmm::size_type i = 0; i < npunti; ++i)
       {
 	// Loops on all intersection points
@@ -1111,7 +1128,7 @@ std::cout << t.area()<<std::endl;
 	  ++counter;
 	}
 }
-       std::cout << counter<<std::endl;
+    //std::cout << counter<<std::endl;
     puntiareaNew.resize(counter);
     puntiareaNew_uv.resize(counter);
 
