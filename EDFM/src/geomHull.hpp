@@ -1,14 +1,14 @@
 /*!
- *	@file geomTriangle.hpp
- *	@brief Class for Triangle in 3D space.
+ *  @file geomTriangle.hpp
+ *  @brief Class for Triangle in 3D space.
  *
- *	@author Luca Turconi <lturconi@gmail.com>
+ *  @author Luca Turconi <lturconi@gmail.com>
  *  @date 22-09-2012
  *
  */
 
 #ifndef GEOMHULL_HPP_
-#define GEOMHULL_HPP_ 
+#define GEOMHULL_HPP_
 
 #include<iostream>
 #include<string>
@@ -19,7 +19,7 @@
 #include "geomTetra.hpp"
 #include "gmm/gmm.h"
 
-  extern "C" {
+extern "C" {
 #ifdef _MSC_VER
 # include <libqhull/qhull_a.h>
 #else
@@ -36,65 +36,80 @@
 namespace Geometry
 {
 
-	/*!
-		@class Hull
-		
-		@author Anna Scotti
-		
-    	*/
-class Hull
-{
-public:
+  /*!
+    @class Hull
 
-	//! @name Constructor & Destructor
-	//@{
-		
-	//! Empty constructor
-	Hull();
-	
-	//! Constructor, getting the simplexes matrix
+    @author Anna Scotti
 
-	Hull(const gmm::dense_matrix<gmm::size_type>, const std::vector<coordT>);
+      */
+  class Hull
+  {
+  public:
 
-	Hull(std::vector<coordT>);
+    //! @name Constructor & Destructor
+    //@{
 
-	Hull(std::vector<Point3D>);
-	
-	//! Destructor
-	virtual ~Hull();
-	
-	//@}
-	
-	//! @name Get Methods
-	//@{
-		
-	//! Get vertex A
-	/*!
-	 * @return The vertex A
-	 */
-	inline gmm::size_type getNtetra() const {return M_Ntetra;}
-	inline Point3D getPoint(gmm::size_type & i) const { return M_points[i]; }
-	inline gmm::dense_matrix<gmm::size_type> getSimplexes() const { return M_simplexes; }
-	
-	bool call_qhull(gmm::size_type & , gmm::dense_matrix<gmm::size_type> &, std::vector<coordT> &);
+    //! Empty constructor
+    Hull();
 
-	inline std::vector<Tetra> getTetra() const {return M_tetra;}
+    //! Constructor, getting the simplexes matrix
 
-	inline Tetra getTetra(gmm::size_type i) const{return M_tetra[i];}
+    Hull (const gmm::dense_matrix<gmm::size_type>, const std::vector<coordT>);
 
-	Real getVolume()const;
+    Hull (std::vector<coordT>);
 
-	std::vector<gmm::size_type> getPointsSimplex(gmm::size_type ) const;
+    Hull (std::vector<Point3D>);
 
-private:
-	gmm::dense_matrix<gmm::size_type> M_simplexes;
-	std::vector<Point3D> M_points;
-	std::vector<Tetra> M_tetra;
-	gmm::size_type M_Ntetra;
-};
+    //! Destructor
+    virtual ~Hull();
 
-	
-	
+    //@}
+
+    //! @name Get Methods
+    //@{
+
+    //! Get vertex A
+    /*!
+     * @return The vertex A
+     */
+    inline gmm::size_type getNtetra() const
+    {
+      return M_Ntetra;
+    }
+    inline Point3D getPoint (gmm::size_type& i) const
+    {
+      return M_points[i];
+    }
+    inline gmm::dense_matrix<gmm::size_type> getSimplexes() const
+    {
+      return M_simplexes;
+    }
+
+    bool call_qhull (gmm::size_type& , gmm::dense_matrix<gmm::size_type>&, std::vector<coordT>&);
+
+    inline std::vector<Tetra> getTetra() const
+    {
+      return M_tetra;
+    }
+
+    inline Tetra getTetra (gmm::size_type i) const
+    {
+      return M_tetra[i];
+    }
+
+    Real getVolume() const;
+
+    std::vector<gmm::size_type> getPointsSimplex (gmm::size_type ) const;
+
+  private:
+    gmm::dense_matrix<gmm::size_type> M_simplexes;
+    std::vector<Point3D> M_points;
+    std::vector<Tetra> M_tetra;
+    gmm::size_type M_Ntetra;
+  };
+
+
+
 } // namespace Geometry
 
 #endif /* GEOMTRIANGLE_HPP_ */

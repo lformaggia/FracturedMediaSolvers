@@ -24,10 +24,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <iostream> // used because of operator<<
 #include <unistd.h>
 
-namespace Timings{
-  
+namespace Timings
+{
+
   class Chrono
-  { 
+  {
     clock_t _t1;
     clock_t _ct1;
     double _wallTime;
@@ -35,7 +36,7 @@ namespace Timings{
     static const long _CPS;
   public:
 
-    friend std::ostream & operator <<(std::ostream &,Chrono const &);
+    friend std::ostream& operator << (std::ostream&, Chrono const&);
 
     Chrono();
     //! Starts counting time
@@ -43,9 +44,15 @@ namespace Timings{
     //! Stops counting time
     void stop();
     //!Outputs wall time
-    inline double wallTime() const{return _wallTime;}
+    inline double wallTime() const
+    {
+      return _wallTime;
+    }
     //!Outputs CPU time
-    inline double cpuTime() const {return _cpuTime;}
+    inline double cpuTime() const
+    {
+      return _cpuTime;
+    }
     //! Pretty print
   };
 }

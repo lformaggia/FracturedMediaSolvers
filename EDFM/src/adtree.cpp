@@ -5,8 +5,8 @@
 namespace ADT
 {
   ADTree::ADTree (Geometry::CPgrid const& grid)
-{
-  Domain<Geometry::CPgrid> mydom (grid);
+  {
+    Domain<Geometry::CPgrid> mydom (grid);
     int numCells = grid.Nx() * grid.Ny() * grid.Nz();
     Header<Geometry::CPgrid> myhead =
       createtreeheader<Geometry::CPgrid> (numCells, 3, mydom);
@@ -23,47 +23,47 @@ namespace ADT
     double vmax[3];
     for (unsigned int i = 1; i <= grid.Nx(); ++i)
     {
-        for (unsigned int j = 1; j <= grid.Ny(); ++j)
+      for (unsigned int j = 1; j <= grid.Ny(); ++j)
+      {
+        for (unsigned int k = 1; k <= grid.Nz(); ++k)
         {
-            for (unsigned int k= 1; k <= grid.Nz(); ++k)
-            {
-                cellKeys[0] = static_cast<int> (i);
-                cellKeys[1] = static_cast<int> (j);
-                cellKeys[2] = static_cast<int> (k);
-                Geometry::CPcell cell =
-                   grid.cell (i, j, k);
-		// Skip not active cells
-		if (cell.getActnum()==0u)continue;
-		
-                const std::vector<Geometry::Point3D>&
-                cellVertices = cell.getVerticesVector();
-                numVertices = cellVertices.size();
-		std::vector<double> xcoor[3];
-                xcoor[0].reserve (numVertices);
-                xcoor[1].reserve (numVertices);
-                xcoor[2].reserve (numVertices);
-                for (std::vector<Geometry::Point3D>::const_iterator it = cellVertices.begin(); it != cellVertices.end(); ++it)
-                {
-                    xcoor[0].push_back (it->x);
-                    xcoor[1].push_back (it->y);
-                    xcoor[2].push_back (it->z);
-                }
-                for (unsigned int l = 0; l < 3; ++l)
-                {
-                    vmin[l] = *std::min_element (xcoor[l].begin(), xcoor[l].end() );
-                    vmax[l] = *std::max_element (xcoor[l].begin(), xcoor[l].end() );
-                }
-                BBox<3> box (vmin, vmax);
-                box.transform (origin_ptr, scale_ptr);
-                this->addtreenode (TreeNode (box, cellKeys) );
-            }
+          cellKeys[0] = static_cast<int> (i);
+          cellKeys[1] = static_cast<int> (j);
+          cellKeys[2] = static_cast<int> (k);
+          Geometry::CPcell cell =
+            grid.cell (i, j, k);
+          // Skip not active cells
+          if (cell.getActnum() == 0u) continue;
+
+          const std::vector<Geometry::Point3D>&
+          cellVertices = cell.getVerticesVector();
+          numVertices = cellVertices.size();
+          std::vector<double> xcoor[3];
+          xcoor[0].reserve (numVertices);
+          xcoor[1].reserve (numVertices);
+          xcoor[2].reserve (numVertices);
+          for (std::vector<Geometry::Point3D>::const_iterator it = cellVertices.begin(); it != cellVertices.end(); ++it)
+          {
+            xcoor[0].push_back (it->x);
+            xcoor[1].push_back (it->y);
+            xcoor[2].push_back (it->z);
+          }
+          for (unsigned int l = 0; l < 3; ++l)
+          {
+            vmin[l] = *std::min_element (xcoor[l].begin(), xcoor[l].end() );
+            vmax[l] = *std::max_element (xcoor[l].begin(), xcoor[l].end() );
+          }
+          BBox<3> box (vmin, vmax);
+          box.transform (origin_ptr, scale_ptr);
+          this->addtreenode (TreeNode (box, cellKeys) );
         }
+      }
     }
-}
+  }
 
 
-int ADTree::adtrb (TreeNode const& node)
-{
+  int ADTree::adtrb (TreeNode const& node)
+  {
     /*
      * We will trasverse the tree in preorder fashion.
      * ipoi and ifth will store the location of the current node
@@ -91,10 +91,10 @@ int ADTree::adtrb (TreeNode const& node)
     typedef TreeNode::Shape Shape;
     Shape  x (node.boundingBox() );
     for (int id = 0; id < dimt; ++id)
-        if (x[id] > 1.0 || x[id] < 0.0)
-        {
-            throw std::runtime_error ("Node is not within domain bounds");
-        }
+      if (x[id] > 1.0 || x[id] < 0.0)
+      {
+        throw std::runtime_error ("Node is not within domain bounds");
+      }
     /* x now stores the scaled coordinated of the object's bounding
      * box: x_i \in (0,1)
      */
@@ -108,43 +108,43 @@ int ADTree::adtrb (TreeNode const& node)
     short int edge = 0;
     while (ipoi != 0)
     {
-        // Get the current dimension.
-        int id = searchdim (currentlev, dimt);
+      // Get the current dimension.
+      int id = searchdim (currentlev, dimt);
 
-        /*
-         * We take advantage of the fact that we are only descending
-         * the tree. Then we recursively multiply by 2 the coordinate.
-         */
-        x[id] *= 2.;
-        ifth = ipoi;
+      /*
+       * We take advantage of the fact that we are only descending
+       * the tree. Then we recursively multiply by 2 the coordinate.
+       */
+      x[id] *= 2.;
+      ifth = ipoi;
 
-        if (x[id] < 1.)
-            // Go to the left.
-        {
-            edge = 0;
-        }
-        else
-        {
-            // Go to the right.
-            edge = 1;
-            --x[id];
-        }
-        // Next level.
-        ++currentlev;
-        ipoi = _data[ifth].getchild (edge);
+      if (x[id] < 1.)
+        // Go to the left.
+      {
+        edge = 0;
+      }
+      else
+      {
+        // Go to the right.
+        edge = 1;
+        --x[id];
+      }
+      // Next level.
+      ++currentlev;
+      ipoi = _data[ifth].getchild (edge);
     }
 
     if ( iava == iend )
     {
-        /*
-         * The list of available node is empty, so we have to put the new node
-         * in the yet unassigned portion of the vector storing the tree.
-         */
-        _data.push_back (node);
+      /*
+       * The list of available node is empty, so we have to put the new node
+       * in the yet unassigned portion of the vector storing the tree.
+       */
+      _data.push_back (node);
     }
     else
     {
-        _data[iava] = node;
+      _data[iava] = node;
     }
 
     // Add the node in the next available location.
@@ -156,13 +156,13 @@ int ADTree::adtrb (TreeNode const& node)
     ++nele;
     if (iava == 0)
     {
-        if ( iend > _header.gettreeloc() )
-        {
-            // Not enough space.
-            throw TreeAlloc<Shape>();
-        }
-        ++iend;
-        iava = iend;
+      if ( iend > _header.gettreeloc() )
+      {
+        // Not enough space.
+        throw TreeAlloc<Shape>();
+      }
+      ++iend;
+      iava = iend;
     }
 
     /*
@@ -180,37 +180,37 @@ int ADTree::adtrb (TreeNode const& node)
     _header.setnele (nele);
     if (currentlev > _header.gettreelev() )
     {
-        _header.settreelev (currentlev);
+      _header.settreelev (currentlev);
     }
 
     return ipoi;
-}
+  }
 
-int ADTree::addtreenode (TreeNode const& node)
-{
+  int ADTree::addtreenode (TreeNode const& node)
+  {
     try
     {
-        int iloc = adtrb (node);
-        return iloc;
+      int iloc = adtrb (node);
+      return iloc;
     }
     catch (TreeAlloc<TreeNode::Shape>)
     {
-        // Handle a TreeAlloc exception.
-        std::cout << "warning! not enough space" << std::endl;
-        std::cout << "increasing tree memory locations up to 1.5 * number of current locations..." << std::endl;
-        int locv = _header.gettreeloc();
-        int delta = int (locv / 2);
-        _header.settreeloc (locv + delta);
-        _data.resize (_header.gettreeloc() + 1);
-        int iloc = adtrb (node);
-        return iloc;
+      // Handle a TreeAlloc exception.
+      std::cout << "warning! not enough space" << std::endl;
+      std::cout << "increasing tree memory locations up to 1.5 * number of current locations..." << std::endl;
+      int locv = _header.gettreeloc();
+      int delta = int (locv / 2);
+      _header.settreeloc (locv + delta);
+      _data.resize (_header.gettreeloc() + 1);
+      int iloc = adtrb (node);
+      return iloc;
     }
-}
+  }
 
   bool ADTree::search (BBox<3> region, std::vector<int>& found) const
-{
-  
-    const double fatTolerance(2.e-6);
+  {
+
+    const double fatTolerance (2.e-6);
     // Start preorder traversal at level 0 (root).
     int ipoi = _data[0].getchild (0);
     int ipoiNext = 0;
@@ -222,7 +222,7 @@ int ADTree::addtreenode (TreeNode const& node)
     // scale region
     region.transform (& (origin[0]), & (scale[0]) );
     // To avoid foating point problems
-    region.fatten(fatTolerance);
+    region.fatten (fatTolerance);
     // xl is the origin point for searching.
     std::vector<double> xl (dimt, 0.0);
 
@@ -234,16 +234,16 @@ int ADTree::addtreenode (TreeNode const& node)
     found.clear();
 
     int lev = 0;
-    
+
     // Check if the region is external to the domain
     for (int i = 0; i < dimp; ++i)
+    {
+      if (region[i] > 1.0 || region[i + dimp] < 0.0)
       {
-	if(region[i]>1.0 || region[i+dimp]<0.0)
-	  {
-            return false;
-	  }
+        return false;
       }
-    
+    }
+
     /*
      * To traverse a non-empty binary tree in preorder,
      * perform the following operations recursively at each node, starting with the root node:
@@ -253,190 +253,190 @@ int ADTree::addtreenode (TreeNode const& node)
      */
     while (ipoi != 0)
     {
-        do
+      do
+      {
+        BBox<3> const& xel = _data[ipoi].boundingBox();
+        bool flag = region.intersect (xel);
+        if (flag)
         {
-            BBox<3> const& xel = _data[ipoi].boundingBox();
-            bool flag = region.intersect (xel);
-            if (flag)
-            {
-                found.push_back (ipoi);
-            }
-
-            // Traverse left subtree.
-            ipoiNext = _data[ipoi].getchild (0);
-
-            // Check if subtree intersects box.
-            if (ipoiNext != 0)
-            {
-                int id = searchdim (lev, dimt);
-                double amov = delta (lev, dimt);
-
-                if (id < dimp)
-                {
-                    if (xl[id] > region[id + dimp])
-                    {
-                        ipoiNext = 0;
-                    }
-                }
-                else
-                {
-                    if (xl[id] + amov < region[id - dimp])
-                    {
-                        ipoiNext = 0;
-                    }
-                }
-            }
-
-            /*
-             * Left subtree is neither null nor 'external'.
-             * Push info onto the stack.
-             */
-            if (ipoiNext != 0)
-            {
-                helper.ipoi = ipoi;
-                helper.xl = xl;
-                helper.lev = lev;
-                _stack.push (helper);
-                ipoi = ipoiNext;
-                ++lev;
-            }
+          found.push_back (ipoi);
         }
-        while (ipoiNext != 0);
 
-        // Traverse right subtree.
-        ++lev;
-        ipoi = _data[ipoi].getchild (1);
-        do
+        // Traverse left subtree.
+        ipoiNext = _data[ipoi].getchild (0);
+
+        // Check if subtree intersects box.
+        if (ipoiNext != 0)
         {
-            while (ipoi == 0)
-            {
-                // If right_link is null we have to get the point from the stack.
-                if (_stack.empty() )
-                {
-                    return !found.empty();
-                }
-                helper = _stack.top();
-                _stack.pop();
-                ipoi = _data[helper.ipoi].getchild (1);
-                xl = helper.xl;
-                lev = helper.lev+1;
-            }
+          int id = searchdim (lev, dimt);
+          double amov = delta (lev, dimt);
 
-            /*
-             * Check if the subtree intersects box. Otherwise set right_link = 0,
-             * pop new node from the stack and adjourn level.
-             *
-             * lev-1 is the level of the parent node, which directs the search.
-             */
-            int id = searchdim (lev - 1, dimt);
-            double amov = delta (lev - 1, dimt);
-	    
-            // Reset xl (we have just traversed the tree to the right).
-            xl[id] += amov;
-
-            // Check if the subtree intersects box.
-            double x1 = xl[id];
-            double x2 = xl[id] + amov;
-            if (id < dimp)
+          if (id < dimp)
+          {
+            if (xl[id] > region[id + dimp])
             {
-                if (x1 > region[id + dimp])
-                {
-                    ipoi = 0;
-                }
+              ipoiNext = 0;
             }
-            else
+          }
+          else
+          {
+            if (xl[id] + amov < region[id - dimp])
             {
-                if (x2 < region[id - dimp])
-                {
-                    ipoi = 0;
-                }
+              ipoiNext = 0;
             }
+          }
         }
-        while (ipoi == 0);
+
+        /*
+         * Left subtree is neither null nor 'external'.
+         * Push info onto the stack.
+         */
+        if (ipoiNext != 0)
+        {
+          helper.ipoi = ipoi;
+          helper.xl = xl;
+          helper.lev = lev;
+          _stack.push (helper);
+          ipoi = ipoiNext;
+          ++lev;
+        }
+      }
+      while (ipoiNext != 0);
+
+      // Traverse right subtree.
+      ++lev;
+      ipoi = _data[ipoi].getchild (1);
+      do
+      {
+        while (ipoi == 0)
+        {
+          // If right_link is null we have to get the point from the stack.
+          if (_stack.empty() )
+          {
+            return !found.empty();
+          }
+          helper = _stack.top();
+          _stack.pop();
+          ipoi = _data[helper.ipoi].getchild (1);
+          xl = helper.xl;
+          lev = helper.lev + 1;
+        }
+
+        /*
+         * Check if the subtree intersects box. Otherwise set right_link = 0,
+         * pop new node from the stack and adjourn level.
+         *
+         * lev-1 is the level of the parent node, which directs the search.
+         */
+        int id = searchdim (lev - 1, dimt);
+        double amov = delta (lev - 1, dimt);
+
+        // Reset xl (we have just traversed the tree to the right).
+        xl[id] += amov;
+
+        // Check if the subtree intersects box.
+        double x1 = xl[id];
+        double x2 = xl[id] + amov;
+        if (id < dimp)
+        {
+          if (x1 > region[id + dimp])
+          {
+            ipoi = 0;
+          }
+        }
+        else
+        {
+          if (x2 < region[id - dimp])
+          {
+            ipoi = 0;
+          }
+        }
+      }
+      while (ipoi == 0);
 
     }
 
     return !found.empty();
-}
+  }
 
 
-void ADTree::deltreenode (int const& index)
-{
+  void ADTree::deltreenode (int const& index)
+  {
     if (index < _header.getiend() )
     {
-        int nele = _header.getnele();
-        int ipoi = index;
-        int iava = _header.getiava();
-        int ifth = _data[ipoi].getfather();
+      int nele = _header.getnele();
+      int ipoi = index;
+      int iava = _header.getiava();
+      int ifth = _data[ipoi].getfather();
 
-        --nele;
-        int lchild = _data[ipoi].getchild (0);
-        int rchild = _data[ipoi].getchild (1);
-        int whichchild;
+      --nele;
+      int lchild = _data[ipoi].getchild (0);
+      int rchild = _data[ipoi].getchild (1);
+      int whichchild;
 
-        if (_data[ifth].getchild (0) == ipoi)
+      if (_data[ifth].getchild (0) == ipoi)
+      {
+        whichchild = 0;
+      }
+      else
+      {
+        whichchild = 1;
+      }
+
+      if ( (lchild == 0) && (rchild == 0) )
+      {
+        // If the location is already a leaf, we can just release it.
+        _data[ifth].setchild (whichchild, 0);
+      }
+      else
+      {
+        int ipoiNext = ipoi;
+        int flag = 0;
+        int il = _data[ipoiNext].getchild (0);
+        int ir = _data[ipoiNext].getchild (1);
+        // Traverse the tree to find an empty leaf.
+        while ( (il != 0) || (ir != 0) )
         {
-            whichchild = 0;
+          il = _data[ipoiNext].getchild (0);
+          ir = _data[ipoiNext].getchild (1);
+          if (il != 0)
+          {
+            flag = 0;
+            ipoiNext = il;
+          }
+          else if (ir != 0)
+          {
+            flag = 1;
+            ipoiNext = ir;
+          }
         }
-        else
+        _data[ifth].setchild (whichchild, ipoiNext);
+        int foo_f = _data[ipoiNext].getfather();
+        _data[foo_f].setchild (flag, 0);
+        if (ipoiNext != lchild)
         {
-            whichchild = 1;
+          _data[ipoiNext].setchild (0, lchild);
         }
-
-        if ( (lchild == 0) && (rchild == 0) )
+        if (ipoiNext != rchild)
         {
-            // If the location is already a leaf, we can just release it.
-            _data[ifth].setchild (whichchild, 0);
+          _data[ipoiNext].setchild (1, rchild);
         }
-        else
-        {
-            int ipoiNext = ipoi;
-            int flag = 0;
-            int il = _data[ipoiNext].getchild (0);
-            int ir = _data[ipoiNext].getchild (1);
-            // Traverse the tree to find an empty leaf.
-            while ( (il != 0) || (ir != 0) )
-            {
-                il = _data[ipoiNext].getchild (0);
-                ir = _data[ipoiNext].getchild (1);
-                if (il != 0)
-                {
-                    flag = 0;
-                    ipoiNext = il;
-                }
-                else if (ir != 0)
-                {
-                    flag = 1;
-                    ipoiNext = ir;
-                }
-            }
-            _data[ifth].setchild (whichchild, ipoiNext);
-            int foo_f = _data[ipoiNext].getfather();
-            _data[foo_f].setchild (flag, 0);
-            if (ipoiNext != lchild)
-            {
-                _data[ipoiNext].setchild (0, lchild);
-            }
-            if (ipoiNext != rchild)
-            {
-                _data[ipoiNext].setchild (1, rchild);
-            }
-        }
+      }
 
-        // Add the erased location to iava
-        _data[ipoi].setchild (0, iava);
-        _data[ipoi].setchild (1, 0);
+      // Add the erased location to iava
+      _data[ipoi].setchild (0, iava);
+      _data[ipoi].setchild (1, 0);
 
-        // Store back header informations.
-        _header.setiava (ipoi);
-        _header.setnele (nele);
+      // Store back header informations.
+      _header.setiava (ipoi);
+      _header.setnele (nele);
     }
-}
+  }
 
-std::ostream& operator<< (std::ostream& ostr, ADTree const& myadt)
-{
+  std::ostream& operator<< (std::ostream& ostr, ADTree const& myadt)
+  {
     ostr << myadt._header;
 
     return ostr;
-}
+  }
 }// end namespace ADT

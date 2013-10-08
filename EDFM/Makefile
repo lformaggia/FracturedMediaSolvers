@@ -7,7 +7,7 @@ CPPFLAGS=
 # Use verbose for extra info
 #CPPFLAGS=-DVERBOSE
 OMPFLAGS = -fopenmp
-OMPFLAGS = 
+#OMPFLAGS = 
 CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) $(CPPFLAGS) -I./src -I../external/include
 LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 
 LDLIBS=-L../external/lib -lqhull $(OMPFLAGS)

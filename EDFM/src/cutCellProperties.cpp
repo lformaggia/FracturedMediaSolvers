@@ -7,32 +7,34 @@
 #include <fstream>
 #include "cutCellProperties.hpp"
 #include "reorder.hpp"
-namespace{
+namespace
+{
   // < TO BE COMEMNTED OUT
-  std::ofstream logfile("log.dat");
+  std::ofstream logfile ("log.dat");
   // >
   //! A helper function to store a point and its id
-  struct Point2DAndId{
-    Point2DAndId(Geometry::Point2D const &p, unsigned int i):
-      Point_ptr(&p),id(i){}
-    Point2DAndId(Point2DAndId const & p):Point_ptr(p.Point_ptr),id(p.id){}
-    Point2DAndId & operator =(Point2DAndId const & p)
+  struct Point2DAndId
+  {
+    Point2DAndId (Geometry::Point2D const& p, unsigned int i) :
+      Point_ptr (&p), id (i) {}
+    Point2DAndId (Point2DAndId const& p) : Point_ptr (p.Point_ptr), id (p.id) {}
+    Point2DAndId& operator = (Point2DAndId const& p)
     {
-      Point_ptr=p.Point_ptr;
-      id=p.id;
+      Point_ptr = p.Point_ptr;
+      id = p.id;
       return *this;
     }
-    Geometry::Point2D const & Point()const
+    Geometry::Point2D const& Point() const
     {
       return *Point_ptr;
     }
-    Geometry::Point2D const * Point_ptr;
+    Geometry::Point2D const* Point_ptr;
     unsigned int id;
   };
-  
-  bool operator < (Point2DAndId const & a, Point2DAndId const & b)
+
+  bool operator < (Point2DAndId const& a, Point2DAndId const& b)
   {
-    return a.Point()<b.Point();
+    return a.Point() < b.Point();
   }
 }
 
@@ -77,235 +79,235 @@ namespace Geometry
     gmm::size_type counter (0);
     for (Intersect::GridIntersections_Const_Iterator_Type it = M_iteratorcellsbegin;
          it != M_iteratorcellsend; ++it)
-      {
-	counter += 1;
-      }
+    {
+      counter += 1;
+    }
 
     for (gmm::size_type i = 0; i < M_faultpointer->getIsInt().size(); ++i)
-      {
+    {
 
-	std::vector<Real> ooo (counter, 0.);
-	M_dmedioint.push_back (ooo);
-      }
+      std::vector<Real> ooo (counter, 0.);
+      M_dmedioint.push_back (ooo);
+    }
 
     // Loop on cells interested by the intersection
     for (Intersect::GridIntersections_Const_Iterator_Type it = M_iteratorcellsbegin;
          it != M_iteratorcellsend; ++it)
+    {
+      M_Ne = M_Ne + 1;
+
+      M_i.push_back (it->second.i() );
+      M_j.push_back (it->second.j() );
+      M_k.push_back (it->second.k() );
+      // Create the cell
+      CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
+      // Intersection points: true and virtual
+      std::vector<Point3D> punti1 (this->getIntPoints (it) );
+      // True vs virtial intersection points.
+      std::vector<bool> puntiIsReal (this->getIsIntPointReal (it) );
+
+      gmm::size_type npunti_faglia (punti1.size() );
+
+      Point3D Aa (punti1[0]);
+      // Compute baricenter of all intersection points
+      for (gmm::size_type i = 1; i < punti1.size(); ++i)
       {
-	M_Ne = M_Ne + 1;
-
-	M_i.push_back (it->second.i() );
-	M_j.push_back (it->second.j() );
-	M_k.push_back (it->second.k() );
-	// Create the cell
-	CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
-	// Intersection points: true and virtual
-	std::vector<Point3D> punti1 (this->getIntPoints (it) );
-	// True vs virtial intersection points.
-	std::vector<bool> puntiIsReal (this->getIsIntPointReal (it) );
-      
-	gmm::size_type npunti_faglia (punti1.size() );
-
-	Point3D Aa (punti1[0]);
-	// Compute baricenter of all intersection points
-	for (gmm::size_type i = 1; i < punti1.size(); ++i)
-	  {
-	    Aa = Aa + punti1[i];
-	  }
-	Aa.x = Aa.x / Real (npunti_faglia);
-	Aa.y = Aa.y / Real (npunti_faglia);
-	Aa.z = Aa.z / Real (npunti_faglia);
-
-	// Compute normal
-	Point3D no (M_faultpointer->normal (0.5, 0.5) );
-	//Real typicalL;
-	// A reference length
-	//typicalL = (cella.getVertex (1) - cella.getVertex (2) ).norm();
-
-	std::vector<Real> uv (M_faultpointer->inv_param (Aa) );
-
-	std::vector<Point3D> punti2 (punti1);
-
-	std::vector<Point3D> puntiarea (punti1);
-	std::vector<bool>::iterator location;
-	std::vector<bool>::iterator  location2;
-
-	// Here we partition "real" intersection points with "virtual" ones
-	// Of course the idea is that thet are consecutively grouped into
-	// puntiIsReal
-	location = std::find ( puntiIsReal.begin(), puntiIsReal.end(), false);
-	location2 = std::find ( puntiIsReal.begin(), puntiIsReal.end(), true);
-
-	buildIntSegments (it);
-
-	bool isPartial (false);
-	//
-	// < TO BE COMMENTED OUT>
-	//std::vector<Point3D> puntiAreaNew_old = this->addPoints4area (puntiarea, puntiIsReal, it); //il pizzino
-	//std::vector<Point2D> puntiAreaNew_uv_old;
-	//puntiAreaNew_uv_old.reserve(puntiAreaNew_old.size());
-	//for (int k=0;k<puntiAreaNew_old.size();++k)puntiAreaNew_uv_old.push_back(Point2D(M_faultpointer->inv_param (puntiAreaNew_old[k])) );
-	//>
-	// New algorithm. Intersections to identify new points
-	// is made on the parameter plane and not in the physical
-	// space. It is more correct. In alterative we use the old routine
-	// and we compute puntiAreaNew_uv using the inverse transformation inv_param() 
-	// defined in BilenearSurface.
-	std::vector<Point2D> puntiAreaNew_uv;
-	     puntiIsReal.clear();
-	std::vector<Point3D> puntiAreaNew =this->addPoints4area (puntiarea, puntiIsReal, it, puntiAreaNew_uv); //il pizzino
-	//< To be commented out
-	/*
-	  logfile<<"*********  NEW SET NEW POINTS****************"<<std::endl;
-	  for (int k=0 ;k<puntiAreaNew.size();++k)
-	  {
-	  logfile<<puntiAreaNew[k]<<"***"<<puntiAreaNew_uv[k]<<std::endl;
-	  }
-	  logfile<<"*********  OLD POINTS****************"<<std::endl;
-	  for (int k=0 ;k<puntiAreaNew_old.size();++k)
-	  {
-	    logfile<<puntiAreaNew_old[k]<<"***"<<puntiAreaNew_uv_old[k]<<std::endl;
-	  }
-	*/
-	//>
-
-	isPartial = true;
-      
-        // computing baricenter as average.
-	M_CG[ (*it).first] = this->setCG (puntiAreaNew);
-        //std::cout<<"sono qui   "<<puntiAreaNew.size()<<std::endl;
-	// We will decimate the points but first we compute a triangulation, used for the area computation
-	if (puntiAreaNew_uv.size()>=3)
-	  { 
-	    std::vector<IdTriplet> elements_uv;
-	    // Triangulating the convex hull
-	    delaun(puntiAreaNew_uv,elements_uv);
-	    // Compute area
-	    M_aree[ (*it).first] = this->setIntArea (elements_uv,puntiAreaNew);
-	    // Now order 
-	    std::vector<unsigned int> bPoints_list=orderedBoundaryPoints(elements_uv);
-	    std::vector<Point3D> puntiAreaNew_reordered;
-	    std::vector<Point2D> puntiAreaNew_uv_reordered;
-
-	    // Old way of reordering
-	    puntiAreaNew_reordered.reserve(bPoints_list.size());
-	    puntiAreaNew_uv_reordered.reserve(bPoints_list.size());
-	    /// Reorder points so that they are anticlockwise (in the param. space)
-	    for(std::vector<unsigned int>::const_iterator itt=bPoints_list.begin();itt!=bPoints_list.end();++itt)
-	      {
-		puntiAreaNew_reordered.push_back(puntiAreaNew[*itt]);
-		puntiAreaNew_uv_reordered.push_back(puntiAreaNew_uv[*itt]);
-	      }
-	    // Put back in the original vectors.
-	    puntiAreaNew.swap(puntiAreaNew_reordered);
-	    puntiAreaNew_uv.swap(puntiAreaNew_uv_reordered);
-	    
-	    // New way of reordering. Cleaner but not working at the moment!
-	    //	    Utility::reorder(bPoints_list.begin(),bPoints_list.end(),puntiAreaNew.begin());
-	    //Utility::reorder(bPoints_list.begin(),bPoints_list.end(),puntiAreaNew_uv.begin());
-	    // This statement is left since it was present before. @note (check!)
-	    if (location != puntiIsReal.end() )
-	      {
-		// Eliminate points that are aligned on a line in the parameter space.
-		Aligned align;
-		std::vector<bool> decimated=
-		  align.decimated_list(puntiAreaNew_uv);
-		// ReUse puntiAreaNew_reordered for the decimated points
-		puntiAreaNew_uv_reordered.clear();
-		puntiAreaNew_reordered.clear();
-		for (unsigned int i=0;i<puntiAreaNew.size();++i)
-		  {
-		    if(!decimated[i])
-		      {
-		      puntiAreaNew_reordered.push_back(puntiAreaNew[i]);
-		      puntiAreaNew_uv_reordered.push_back(puntiAreaNew_uv[i]);
-		      }
-		  }
-		// Computes barycenter using the decimated points.
-		M_CG[ (*it).first] = this->setCG (puntiAreaNew_reordered);
-	    // Uncomment if you want to use  the decimated points everywhere
-	    // puntiAreaNew.swap(puntiAreaNew_reordered);
-	      }
-	  }
-	else
-	  {
-	    M_aree[ (*it).first] = 0.0;
-	  }
-	// Save points for later use 
-	
-	// @note we are saving all points. We need to understand if we need to save just the
-	// decimated ones instead! Moreover, Points are now ordered, no need to order them again
-	// in other routines (check!).	
-	M_puntiAree.push_back (puntiAreaNew);
-	
-	// @note Everything continues as before... until I do not understand what is the purpose of
-	// all this part. Looks rather convolute (check!).
-
-	// Add a off-plane point to generate 3D convex hull with QHull
-	//puntiAreaNew.push_back (this->setCG (puntiAreaNew) + no * typicalL);
-	// WRAPPER QHULL
-	//Hull faccia (puntiAreaNew);
-	// ! For debugging
-	//        if (it->second.i() == 62 && it->second.j() == 27 && it->second.k() == 3)
-        //{
-	// std::cout << npunti_faglia << std::endl;
-        //}
-        //puntiAreaNew.pop_back();
-	
-        for (gmm::size_type i = 0; i < M_faultpointer->getIsInt().size(); ++i)
-	  {
-	    
-	    Real dmediosingolo (0);
-	    
-	    //if (faccia.getNtetra() > 0 )
-	    if (puntiAreaNew.size() > 2 )
-	      {
-		// This beats me! 
-		dmediosingolo = this->setIntdist_linea (puntiAreaNew, no, M_faultpointer->inter() [i], it, isPartial);
-
-	      }
-
-	    M_dmedioint[i][M_Ne - 1] = dmediosingolo;
-
-	  }
-
-	Aa = M_CG[ (*it).first];
-	this->getCellPoints (it, punti1, 1, Aa);
-	
-	Hull calimero (punti1);
-	if (calimero.getNtetra() > 0)
-	  {
-	    M_vol[ (*it).first] += calimero.getVolume();
-	    M_dmedio[ (*it).first] += this->setIntd (calimero, Aa);
-	  }
-	
-	this->getCellPoints (it, punti2, -1, Aa);
-	
-	Hull calimero2 (punti2);
-	
-	if (calimero2.getNtetra() > 0)
-	  {
-	    M_vol[ (*it).first] += calimero2.getVolume();
-	    M_dmedio[ (*it).first] += this->setIntd (calimero2, Aa);
-	  }
-	
-	if (M_vol[ (*it).first] > 0)
-	  {
-	    M_dmedio[ (*it).first] = M_dmedio[ (*it).first] / M_vol[ (*it).first];
-	  }
-	else
-	  {
-	    M_dmedio[ (*it).first] = 0;
-	  }
-	
+        Aa = Aa + punti1[i];
       }
-    
-    
-    
+      Aa.x = Aa.x / Real (npunti_faglia);
+      Aa.y = Aa.y / Real (npunti_faglia);
+      Aa.z = Aa.z / Real (npunti_faglia);
+
+      // Compute normal
+      Point3D no (M_faultpointer->normal (0.5, 0.5) );
+      //Real typicalL;
+      // A reference length
+      //typicalL = (cella.getVertex (1) - cella.getVertex (2) ).norm();
+
+      std::vector<Real> uv (M_faultpointer->inv_param (Aa) );
+
+      std::vector<Point3D> punti2 (punti1);
+
+      std::vector<Point3D> puntiarea (punti1);
+      std::vector<bool>::iterator location;
+      std::vector<bool>::iterator  location2;
+
+      // Here we partition "real" intersection points with "virtual" ones
+      // Of course the idea is that thet are consecutively grouped into
+      // puntiIsReal
+      location = std::find ( puntiIsReal.begin(), puntiIsReal.end(), false);
+      location2 = std::find ( puntiIsReal.begin(), puntiIsReal.end(), true);
+
+      buildIntSegments (it);
+
+      bool isPartial (false);
+      //
+      // < TO BE COMMENTED OUT>
+      //std::vector<Point3D> puntiAreaNew_old = this->addPoints4area (puntiarea, puntiIsReal, it); //il pizzino
+      //std::vector<Point2D> puntiAreaNew_uv_old;
+      //puntiAreaNew_uv_old.reserve(puntiAreaNew_old.size());
+      //for (int k=0;k<puntiAreaNew_old.size();++k)puntiAreaNew_uv_old.push_back(Point2D(M_faultpointer->inv_param (puntiAreaNew_old[k])) );
+      //>
+      // New algorithm. Intersections to identify new points
+      // is made on the parameter plane and not in the physical
+      // space. It is more correct. In alterative we use the old routine
+      // and we compute puntiAreaNew_uv using the inverse transformation inv_param()
+      // defined in BilenearSurface.
+      std::vector<Point2D> puntiAreaNew_uv;
+      puntiIsReal.clear();
+      std::vector<Point3D> puntiAreaNew = this->addPoints4area (puntiarea, puntiIsReal, it, puntiAreaNew_uv); //il pizzino
+      //< To be commented out
+      /*
+        logfile<<"*********  NEW SET NEW POINTS****************"<<std::endl;
+        for (int k=0 ;k<puntiAreaNew.size();++k)
+        {
+        logfile<<puntiAreaNew[k]<<"***"<<puntiAreaNew_uv[k]<<std::endl;
+        }
+        logfile<<"*********  OLD POINTS****************"<<std::endl;
+        for (int k=0 ;k<puntiAreaNew_old.size();++k)
+        {
+          logfile<<puntiAreaNew_old[k]<<"***"<<puntiAreaNew_uv_old[k]<<std::endl;
+        }
+      */
+      //>
+
+      isPartial = true;
+
+      // computing baricenter as average.
+      M_CG[ (*it).first] = this->setCG (puntiAreaNew);
+      //std::cout<<"sono qui   "<<puntiAreaNew.size()<<std::endl;
+      // We will decimate the points but first we compute a triangulation, used for the area computation
+      if (puntiAreaNew_uv.size() >= 3)
+      {
+        std::vector<IdTriplet> elements_uv;
+        // Triangulating the convex hull
+        delaun (puntiAreaNew_uv, elements_uv);
+        // Compute area
+        M_aree[ (*it).first] = this->setIntArea (elements_uv, puntiAreaNew);
+        // Now order
+        std::vector<unsigned int> bPoints_list = orderedBoundaryPoints (elements_uv);
+        std::vector<Point3D> puntiAreaNew_reordered;
+        std::vector<Point2D> puntiAreaNew_uv_reordered;
+
+        // Old way of reordering
+        puntiAreaNew_reordered.reserve (bPoints_list.size() );
+        puntiAreaNew_uv_reordered.reserve (bPoints_list.size() );
+        /// Reorder points so that they are anticlockwise (in the param. space)
+        for (std::vector<unsigned int>::const_iterator itt = bPoints_list.begin(); itt != bPoints_list.end(); ++itt)
+        {
+          puntiAreaNew_reordered.push_back (puntiAreaNew[*itt]);
+          puntiAreaNew_uv_reordered.push_back (puntiAreaNew_uv[*itt]);
+        }
+        // Put back in the original vectors.
+        puntiAreaNew.swap (puntiAreaNew_reordered);
+        puntiAreaNew_uv.swap (puntiAreaNew_uv_reordered);
+
+        // New way of reordering. Cleaner but not working at the moment!
+        //      Utility::reorder(bPoints_list.begin(),bPoints_list.end(),puntiAreaNew.begin());
+        //Utility::reorder(bPoints_list.begin(),bPoints_list.end(),puntiAreaNew_uv.begin());
+        // This statement is left since it was present before. @note (check!)
+        if (location != puntiIsReal.end() )
+        {
+          // Eliminate points that are aligned on a line in the parameter space.
+          Aligned align;
+          std::vector<bool> decimated =
+            align.decimated_list (puntiAreaNew_uv);
+          // ReUse puntiAreaNew_reordered for the decimated points
+          puntiAreaNew_uv_reordered.clear();
+          puntiAreaNew_reordered.clear();
+          for (unsigned int i = 0; i < puntiAreaNew.size(); ++i)
+          {
+            if (!decimated[i])
+            {
+              puntiAreaNew_reordered.push_back (puntiAreaNew[i]);
+              puntiAreaNew_uv_reordered.push_back (puntiAreaNew_uv[i]);
+            }
+          }
+          // Computes barycenter using the decimated points.
+          M_CG[ (*it).first] = this->setCG (puntiAreaNew_reordered);
+          // Uncomment if you want to use  the decimated points everywhere
+          // puntiAreaNew.swap(puntiAreaNew_reordered);
+        }
+      }
+      else
+      {
+        M_aree[ (*it).first] = 0.0;
+      }
+      // Save points for later use
+
+      // @note we are saving all points. We need to understand if we need to save just the
+      // decimated ones instead! Moreover, Points are now ordered, no need to order them again
+      // in other routines (check!).
+      M_puntiAree.push_back (puntiAreaNew);
+
+      // @note Everything continues as before... until I do not understand what is the purpose of
+      // all this part. Looks rather convolute (check!).
+
+      // Add a off-plane point to generate 3D convex hull with QHull
+      //puntiAreaNew.push_back (this->setCG (puntiAreaNew) + no * typicalL);
+      // WRAPPER QHULL
+      //Hull faccia (puntiAreaNew);
+      // ! For debugging
+      //        if (it->second.i() == 62 && it->second.j() == 27 && it->second.k() == 3)
+      //{
+      // std::cout << npunti_faglia << std::endl;
+      //}
+      //puntiAreaNew.pop_back();
+
+      for (gmm::size_type i = 0; i < M_faultpointer->getIsInt().size(); ++i)
+      {
+
+        Real dmediosingolo (0);
+
+        //if (faccia.getNtetra() > 0 )
+        if (puntiAreaNew.size() > 2 )
+        {
+          // This beats me!
+          dmediosingolo = this->setIntdist_linea (puntiAreaNew, no, M_faultpointer->inter() [i], it, isPartial);
+
+        }
+
+        M_dmedioint[i][M_Ne - 1] = dmediosingolo;
+
+      }
+
+      Aa = M_CG[ (*it).first];
+      this->getCellPoints (it, punti1, 1, Aa);
+
+      Hull calimero (punti1);
+      if (calimero.getNtetra() > 0)
+      {
+        M_vol[ (*it).first] += calimero.getVolume();
+        M_dmedio[ (*it).first] += this->setIntd (calimero, Aa);
+      }
+
+      this->getCellPoints (it, punti2, -1, Aa);
+
+      Hull calimero2 (punti2);
+
+      if (calimero2.getNtetra() > 0)
+      {
+        M_vol[ (*it).first] += calimero2.getVolume();
+        M_dmedio[ (*it).first] += this->setIntd (calimero2, Aa);
+      }
+
+      if (M_vol[ (*it).first] > 0)
+      {
+        M_dmedio[ (*it).first] = M_dmedio[ (*it).first] / M_vol[ (*it).first];
+      }
+      else
+      {
+        M_dmedio[ (*it).first] = 0;
+      }
+
+    }
+
+
+
   }
-  
+
   //--------------segmenti di intersezione........................................
-  
+
   void CProp::buildIntSegments (Intersect::GridIntersections_Const_Iterator_Type& it)
   {
     std::vector<Point3D> puntiX1, puntiY1, puntiZ1;
@@ -707,7 +709,7 @@ namespace Geometry
 
   //--------------prendere per ogni cella i punti sopra o sotto la faglia-------------------
 
-  void CProp::getCellPoints (Intersect::GridIntersections_Const_Iterator_Type& it, std::vector <Point3D>& punti, int  ispositive, Point3D const & puntosurf) const
+  void CProp::getCellPoints (Intersect::GridIntersections_Const_Iterator_Type& it, std::vector <Point3D>& punti, int  ispositive, Point3D const& puntosurf) const
   {
     CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
     //    int puntis(punti.size());
@@ -726,7 +728,7 @@ namespace Geometry
 
   }
 
-  Real CProp::setIntArea (Hull const & calimero, gmm::size_type npunti_faglia)const
+  Real CProp::setIntArea (Hull const& calimero, gmm::size_type npunti_faglia) const
   {
     Real Area (0);
     for (gmm::size_type i = 0; i < calimero.getNtetra(); ++i)
@@ -753,12 +755,12 @@ namespace Geometry
     return Area;
   }
 
-  Real CProp::setIntArea (std::vector<IdTriplet> const & elements,std::vector<Point3D> const & points)const
+  Real CProp::setIntArea (std::vector<IdTriplet> const& elements, std::vector<Point3D> const& points) const
   {
     Real Area (0);
     for (gmm::size_type i = 0; i < elements.size(); ++i)
     {
-      Triangle t (points[elements[i][0]], points[elements[i][1]],points[elements[i][2]]);
+      Triangle t (points[elements[i][0]], points[elements[i][1]], points[elements[i][2]]);
       Area = Area + t.area();
       //std::cout << t.area()<<std::endl;
     }
@@ -766,7 +768,7 @@ namespace Geometry
   }
 
 
-  Point3D CProp::setCG (std::vector<Point3D> const & punti)const
+  Point3D CProp::setCG (std::vector<Point3D> const& punti) const
   {
     Point3D CG (0, 0, 0);
 
@@ -783,7 +785,7 @@ namespace Geometry
     return CG;
   }
 
-  Point3D CProp::setCG (Hull const & calimero, gmm::size_type npunti_faglia)const
+  Point3D CProp::setCG (Hull const& calimero, gmm::size_type npunti_faglia) const
   {
     Point3D CG (0, 0, 0);
     Real Area (0);
@@ -811,7 +813,7 @@ namespace Geometry
     return CG / Area;
   }
 
-  Real CProp::setIntd (Hull const & calimero, Point3D const & Aa)const
+  Real CProp::setIntd (Hull const& calimero, Point3D const& Aa) const
   {
     Real Intd (0);
     Tetra t (calimero.getTetra (0) );
@@ -833,7 +835,7 @@ namespace Geometry
     return Intd;
   }
 
-  std::vector<Point3D> CProp::addPoints4area (std::vector<Point3D> const & puntiarea, std::vector<bool> const & puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it)const
+  std::vector<Point3D> CProp::addPoints4area (std::vector<Point3D> const& puntiarea, std::vector<bool> const& puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it) const
   {
 
     CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
@@ -857,19 +859,19 @@ namespace Geometry
     // Loops on all interection points
     for (gmm::size_type i = 0; i < npunti; ++i)
     {
-    // Loops on all interection points
+      // Loops on all interection points
       for (gmm::size_type j = i + 1; j < npunti; ++j)
       {
-	// If at least one point is vistual/real and we are not 
-	// taking the same point
-	// @note Point3D::operator == does not comply with the semantic
-	// of a equality operator. Is what we want here? 
-	// We really want not to consider points that are too nearby? Or we want
-	// strict equality?
+        // If at least one point is vistual/real and we are not
+        // taking the same point
+        // @note Point3D::operator == does not comply with the semantic
+        // of a equality operator. Is what we want here?
+        // We really want not to consider points that are too nearby? Or we want
+        // strict equality?
         if (puntiIsReal[i] != puntiIsReal[j] && ! (puntiarea[i] == puntiarea[j]) )
         {
           Point3D medio;
-	  // !Add new points
+          // !Add new points
           Segment linea (puntiarea[i], puntiarea[j]);
           if (linea.intersectTheSegment (uno, medio) )
           {
@@ -907,8 +909,8 @@ namespace Geometry
     {
       puntiareaNew.push_back (D);
     }
-    
-    // a points at the intersection between fracture boundary and 
+
+    // a points at the intersection between fracture boundary and
     // cell faces
     for (gmm::size_type ff = 0; ff < 6; ++ff)
     {
@@ -944,7 +946,7 @@ namespace Geometry
     return puntiareaNew;
   }
 
-  std::vector<Point3D> CProp::addPoints4area (std::vector<Point3D> const & puntiarea, std::vector<bool> const & puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it, std::vector<Point2D> & puntiareaNew_uv)const
+  std::vector<Point3D> CProp::addPoints4area (std::vector<Point3D> const& puntiarea, std::vector<bool> const& puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it, std::vector<Point2D>& puntiareaNew_uv) const
   {
 
     CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
@@ -959,10 +961,10 @@ namespace Geometry
     Point3D D (M_faultpointer->D() );
 
     // In the parameter space
-    Point2D A_uv(0.,0.);
-    Point2D B_uv(1.,0.);
-    Point2D C_uv(1.,1.);
-    Point2D D_uv(0.,1.);
+    Point2D A_uv (0., 0.);
+    Point2D B_uv (1., 0.);
+    Point2D C_uv (1., 1.);
+    Point2D D_uv (0., 1.);
 
     // Segmenti che definiscono il bordi del patch nello
     // spazio fisico
@@ -977,191 +979,191 @@ namespace Geometry
     Segment2D quattro_uv (D_uv, A_uv);
 
     std::vector<Point2D> puntiarea_uv;
-    puntiarea_uv.reserve(npunti);
+    puntiarea_uv.reserve (npunti);
 
     // Loops on all intersection points to get uv coordinates
-    for (gmm::size_type i = 0; i < npunti; ++i)puntiarea_uv.push_back(Point2D(M_faultpointer->inv_param(puntiarea[i])));
+    for (gmm::size_type i = 0; i < npunti; ++i) puntiarea_uv.push_back (Point2D (M_faultpointer->inv_param (puntiarea[i]) ) );
 
-    // Loops on all intersection points 
+    // Loops on all intersection points
     for (gmm::size_type i = 0; i < npunti; ++i)
+    {
+      // Loops on all intersection points
+      for (gmm::size_type j = i + 1; j < npunti; ++j)
       {
-	// Loops on all intersection points
-	for (gmm::size_type j = i + 1; j < npunti; ++j)
-	  {
-	    // If at least one point is vistual/real and we are not 
-	    // taking the same point
-	    // @note Point3D::operator == does not comply with the semantic
-	    // of a equality operator. Is what we want here? 
-	    // We really want not to consider points that are too nearby? Or we want
-	    // strict equality?
-	    if (puntiIsReal[i] != puntiIsReal[j] && ! (puntiarea[i] == puntiarea[j]) )
-	      {
-		Point2D medio_uv;
-		// !Add new points
+        // If at least one point is vistual/real and we are not
+        // taking the same point
+        // @note Point3D::operator == does not comply with the semantic
+        // of a equality operator. Is what we want here?
+        // We really want not to consider points that are too nearby? Or we want
+        // strict equality?
+        if (puntiIsReal[i] != puntiIsReal[j] && ! (puntiarea[i] == puntiarea[j]) )
+        {
+          Point2D medio_uv;
+          // !Add new points
 
-		Segment2D linea (puntiarea_uv[i], puntiarea_uv[j]);
-		if (linea.intersectTheSegment (uno_uv, medio_uv) )
-		  {
-		    puntiareaNew.push_back (M_faultpointer->param(medio_uv.x,medio_uv.y));
-		    puntiareaNew_uv.push_back (medio_uv);
-		  }
-		if (linea.intersectTheSegment (due_uv, medio_uv) )
-		  {
-		    puntiareaNew.push_back (M_faultpointer->param(medio_uv.x,medio_uv.y));
-		    puntiareaNew_uv.push_back (medio_uv);
-		  }
-		if (linea.intersectTheSegment (tre_uv, medio_uv) )
-		  {
-		    puntiareaNew.push_back (M_faultpointer->param(medio_uv.x,medio_uv.y));
-		    puntiareaNew_uv.push_back (medio_uv);
+          Segment2D linea (puntiarea_uv[i], puntiarea_uv[j]);
+          if (linea.intersectTheSegment (uno_uv, medio_uv) )
+          {
+            puntiareaNew.push_back (M_faultpointer->param (medio_uv.x, medio_uv.y) );
+            puntiareaNew_uv.push_back (medio_uv);
+          }
+          if (linea.intersectTheSegment (due_uv, medio_uv) )
+          {
+            puntiareaNew.push_back (M_faultpointer->param (medio_uv.x, medio_uv.y) );
+            puntiareaNew_uv.push_back (medio_uv);
+          }
+          if (linea.intersectTheSegment (tre_uv, medio_uv) )
+          {
+            puntiareaNew.push_back (M_faultpointer->param (medio_uv.x, medio_uv.y) );
+            puntiareaNew_uv.push_back (medio_uv);
 
-		  }
-		if (linea.intersectTheSegment (quattro_uv, medio_uv) )
-		  {
-		    puntiareaNew.push_back (M_faultpointer->param(medio_uv.x,medio_uv.y));
-		    puntiareaNew_uv.push_back (medio_uv);
-		  }
-	      }
-	  }
+          }
+          if (linea.intersectTheSegment (quattro_uv, medio_uv) )
+          {
+            puntiareaNew.push_back (M_faultpointer->param (medio_uv.x, medio_uv.y) );
+            puntiareaNew_uv.push_back (medio_uv);
+          }
+        }
       }
+    }
     // Add extrema if in cell
     if ( cella.isIn (A) )
-      {
-	puntiareaNew.push_back (A);
-	puntiareaNew_uv.push_back(A_uv);
-      }
+    {
+      puntiareaNew.push_back (A);
+      puntiareaNew_uv.push_back (A_uv);
+    }
     if (cella.isIn (B) )
-      {
-	puntiareaNew.push_back (B);
-	puntiareaNew_uv.push_back(B_uv);
-      }
+    {
+      puntiareaNew.push_back (B);
+      puntiareaNew_uv.push_back (B_uv);
+    }
     if (cella.isIn (C) )
-      {
-	puntiareaNew.push_back (C);
-	puntiareaNew_uv.push_back(C_uv);
-      }
+    {
+      puntiareaNew.push_back (C);
+      puntiareaNew_uv.push_back (C_uv);
+    }
     if (cella.isIn (D) )
-      {
-	puntiareaNew.push_back (D);
-	puntiareaNew_uv.push_back(D_uv);
-      }
-    
-    // a points at the intersection between fracture boundary and 
+    {
+      puntiareaNew.push_back (D);
+      puntiareaNew_uv.push_back (D_uv);
+    }
+
+    // a points at the intersection between fracture boundary and
     // cell faces
     for (gmm::size_type ff = 0; ff < 6; ++ff)
-      {
-	Point3D medio;
+    {
+      Point3D medio;
 
-	if (cella.intersectTheFace (uno, ff,   medio) )
-	  {
-	    puntiareaNew.push_back (medio);
-	    puntiareaNew_uv.push_back(Point2D(M_faultpointer->inv_param(medio)));
-	  }
-	if (cella.intersectTheFace (due, ff,   medio) )
-	  {
-	    puntiareaNew.push_back (medio);
-	    puntiareaNew_uv.push_back(Point2D(M_faultpointer->inv_param(medio)));
-	  }
-	if (cella.intersectTheFace (tre, ff,   medio) )
-	  {
-	    puntiareaNew.push_back (medio);
-	    puntiareaNew_uv.push_back(Point2D(M_faultpointer->inv_param(medio)));
-	  }
-	if (cella.intersectTheFace (quattro, ff,   medio) )
-	  {
-	    puntiareaNew.push_back (medio);
-	    puntiareaNew_uv.push_back(Point2D(M_faultpointer->inv_param(medio)));
-	  }
+      if (cella.intersectTheFace (uno, ff,   medio) )
+      {
+        puntiareaNew.push_back (medio);
+        puntiareaNew_uv.push_back (Point2D (M_faultpointer->inv_param (medio) ) );
       }
+      if (cella.intersectTheFace (due, ff,   medio) )
+      {
+        puntiareaNew.push_back (medio);
+        puntiareaNew_uv.push_back (Point2D (M_faultpointer->inv_param (medio) ) );
+      }
+      if (cella.intersectTheFace (tre, ff,   medio) )
+      {
+        puntiareaNew.push_back (medio);
+        puntiareaNew_uv.push_back (Point2D (M_faultpointer->inv_param (medio) ) );
+      }
+      if (cella.intersectTheFace (quattro, ff,   medio) )
+      {
+        puntiareaNew.push_back (medio);
+        puntiareaNew_uv.push_back (Point2D (M_faultpointer->inv_param (medio) ) );
+      }
+    }
 
     // Add all the real points
     for (gmm::size_type i = 0; i < npunti; ++i)
+    {
+      if (puntiIsReal[i] == true)
       {
-	if (puntiIsReal[i] == true)
-	  {
-	    puntiareaNew.push_back (puntiarea[i]);
-	    puntiareaNew_uv.push_back(puntiarea_uv[i]);
-	  }
+        puntiareaNew.push_back (puntiarea[i]);
+        puntiareaNew_uv.push_back (puntiarea_uv[i]);
       }
+    }
     // We need to eliminate "coincident points"
-    if(puntiareaNew.size()<=1) return puntiareaNew;
+    if (puntiareaNew.size() <= 1) return puntiareaNew;
 
     std::set<Point2DAndId> cleanupPoints;
-    for (unsigned int i=0;i<puntiareaNew_uv.size();++i)
-      {
-	cleanupPoints.insert(Point2DAndId(puntiareaNew_uv[i],i));
-      }
-    std::vector<bool> eliminated(puntiareaNew_uv.size(),false);
-    std::set<Point2DAndId>::const_iterator kt=cleanupPoints.begin();
-    std::set<Point2DAndId>::const_iterator jt=kt;
+    for (unsigned int i = 0; i < puntiareaNew_uv.size(); ++i)
+    {
+      cleanupPoints.insert (Point2DAndId (puntiareaNew_uv[i], i) );
+    }
+    std::vector<bool> eliminated (puntiareaNew_uv.size(), false);
+    std::set<Point2DAndId>::const_iterator kt = cleanupPoints.begin();
+    std::set<Point2DAndId>::const_iterator jt = kt;
     ++jt;
-   /* for (;jt!=cleanupPoints.end();++jt)
+    /* for (;jt!=cleanupPoints.end();++jt)
+       {
+    Real diff=(kt->Point()-jt->Point()).norm();
+
+    if(diff>EDFM_Tolerances::POINT2DCOINCIDENT)
+     {
+       eliminated[jt->id]=false;
+       kt=jt;
+     }
+       }*/
+
+    for (unsigned int i = 0; i < puntiareaNew.size(); ++i)
+    {
+      for (unsigned int j = i + 1; j < puntiareaNew.size(); ++j)
       {
-	Real diff=(kt->Point()-jt->Point()).norm();
+        Real diff = (puntiareaNew[i] - puntiareaNew[j]).norm();
+        if (diff < EDFM_Tolerances::POINT2DCOINCIDENT)
+        {
+          eliminated[j] = true;
+        }
+      }
+    }
+    unsigned int counter (0);
 
-	if(diff>EDFM_Tolerances::POINT2DCOINCIDENT)
-	  {
-	    eliminated[jt->id]=false;
-	    kt=jt;
-	  }
-      }*/
-
-    for (unsigned int i=0; i<puntiareaNew.size();++i)
-	{
-	    for (unsigned int j=i+1; j<puntiareaNew.size();++j)
-		{
-			Real diff=(puntiareaNew[i]-puntiareaNew[j]).norm();
-			if(diff<EDFM_Tolerances::POINT2DCOINCIDENT)
-			  {
-	 	    eliminated[j]=true;
-		  }
-		}
-	}	
-    unsigned int counter(0);
-
-    for (unsigned int i=0;i<puntiareaNew.size();++i)
-{
-      if(!eliminated[i])
-	{
-	  puntiareaNew[counter]=puntiareaNew[i];
-	  puntiareaNew_uv[counter]=puntiareaNew_uv[i];
-	  ++counter;
-	}
-}
+    for (unsigned int i = 0; i < puntiareaNew.size(); ++i)
+    {
+      if (!eliminated[i])
+      {
+        puntiareaNew[counter] = puntiareaNew[i];
+        puntiareaNew_uv[counter] = puntiareaNew_uv[i];
+        ++counter;
+      }
+    }
     //std::cout << counter<<std::endl;
-    puntiareaNew.resize(counter);
-    puntiareaNew_uv.resize(counter);
+    puntiareaNew.resize (counter);
+    puntiareaNew_uv.resize (counter);
 
     return puntiareaNew;
   }
 
   Real CProp::setIntdist_linea (std::vector<IdTriplet> const &
-				calimero,  std::vector<Point3D> const & pointArea, Fracture::IntFrac const & intersezione) const
+                                calimero,  std::vector<Point3D> const& pointArea, Fracture::IntFrac const& intersezione) const
   {
     Real Intd (0);
     Real Area (0);
     for (gmm::size_type i = 0; i < calimero.size(); ++i)
     {
-      
-      Triangle t (pointArea[calimero[i][0]], 
-		  pointArea[calimero[i][1]], 
-		  pointArea[calimero[i][2]]);
+
+      Triangle t (pointArea[calimero[i][0]],
+                  pointArea[calimero[i][1]],
+                  pointArea[calimero[i][2]]);
       std::vector<Real> pesi (t.getGaussWeights (4) );
       Real Intdprovv (0);
       std::vector<Point3D> nodi (t.getGaussNodes (4) );
       for (gmm::size_type j = 0; j < nodi.size(); ++j)
-        {
-          Point3D diff= intersezione.SMax.A() - nodi[j];
-          Intdprovv = Intdprovv + pesi[j] * gmm::abs (diff.dot (intersezione.Normale) ) / intersezione.Normale.norm();
+      {
+        Point3D diff = intersezione.SMax.A() - nodi[j];
+        Intdprovv = Intdprovv + pesi[j] * gmm::abs (diff.dot (intersezione.Normale) ) / intersezione.Normale.norm();
 
-        }
+      }
       Area = Area + t.area();
       Intd = Intd + Intdprovv * t.area();
     }
     return Intd / Area;
   }
 
-  Real CProp::setIntdist_linea (Hull const & calimero,  gmm::size_type npunti_faglia, Fracture::IntFrac const & intersezione) const
+  Real CProp::setIntdist_linea (Hull const& calimero,  gmm::size_type npunti_faglia, Fracture::IntFrac const& intersezione) const
   {
     Real Intd (0);
     Real Area (0);
@@ -1202,7 +1204,7 @@ namespace Geometry
     return Intd / Area;
   }
 
-  Real CProp::setIntdist_linea (std::vector<Point3D> const & puntiarea, Point3D const & normale, Fracture::IntFrac const & intersezione, Intersect::GridIntersections_Const_Iterator_Type& it, bool isPartial)const
+  Real CProp::setIntdist_linea (std::vector<Point3D> const& puntiarea, Point3D const& normale, Fracture::IntFrac const& intersezione, Intersect::GridIntersections_Const_Iterator_Type& it, bool isPartial) const
   {
     Real Intd (0);
     Real Area (0);
@@ -1400,7 +1402,7 @@ namespace Geometry
       std::vector<Point3D> punti1 (this->getIntPoints (it) );
       // True vs virtial intersection points.
       std::vector<bool> puntiIsReal (this->getIsIntPointReal (it) );
-      
+
       gmm::size_type npunti_faglia (punti1.size() );
 
       Point3D Aa (punti1[0]);
@@ -1455,28 +1457,28 @@ namespace Geometry
 
         M_puntiAree.push_back (puntiAreaNew);
 
-	// Add a off-plane point to generate 3D convex hull with QHull
+        // Add a off-plane point to generate 3D convex hull with QHull
         puntiAreaNew.push_back (this->setCG (puntiAreaNew) + no * typicalL);
         // WRAPPER QHULL
         Hull faccia (puntiAreaNew);
-	// ! For debugging
-	//        if (it->second.i() == 62 && it->second.j() == 27 && it->second.k() == 3)
+        // ! For debugging
+        //        if (it->second.i() == 62 && it->second.j() == 27 && it->second.k() == 3)
         //{
-	// std::cout << npunti_faglia << std::endl;
+        // std::cout << npunti_faglia << std::endl;
         //}
         if (faccia.getNtetra() > 0)
         {
-	  // Computes area
+          // Computes area
           M_aree[ (*it).first] = this->setIntArea (faccia, puntiAreaNew.size() - 1);
 
           if (location != puntiIsReal.end() )
           {
-	    // Computes barycenter
+            // Computes barycenter
             M_CG[ (*it).first] = this->setCG (faccia, puntiAreaNew.size() - 1);
           }
         }
 
-	// Take out last point (could have been done earlier 
+        // Take out last point (could have been done earlier
         puntiAreaNew.pop_back();
         for (gmm::size_type i = 0; i < M_faultpointer->getIsInt().size(); ++i)
         {
@@ -1486,7 +1488,7 @@ namespace Geometry
           if (faccia.getNtetra() > 0 )
 
           {
-	    // This beats me! 
+            // This beats me!
             dmediosingolo = this->setIntdist_linea (puntiAreaNew, no, M_faultpointer->inter() [i], it, isPartial);
 
           }

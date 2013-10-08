@@ -1,7 +1,7 @@
 /*!
  *  @file cutCellProperies.hpp
  *  @author Luca Turconi <lturconi@gmail.com>
- *  @author Anna Scotti <annascotti@hotmail.com> 
+ *  @author Anna Scotti <annascotti@hotmail.com>
  *  @author Luca Formaggia <luca.formaggia@gmail.com>
  *  @date 22-08-2013
  *
@@ -79,22 +79,22 @@ namespace Geometry
 
     void buildIntSegments (Intersect::GridIntersections_Const_Iterator_Type& it);
 
-    void getCellPoints (Intersect::GridIntersections_Const_Iterator_Type&, std::vector<Point3D>&, int , Point3D const &)  const;
+    void getCellPoints (Intersect::GridIntersections_Const_Iterator_Type&, std::vector<Point3D>&, int , Point3D const&)  const;
 
-    Real setIntArea (Hull const & , gmm::size_type ) const;
+    Real setIntArea (Hull const& , gmm::size_type ) const;
     //! Computes the area of a grid of triangles
     /*!
     @param points Vector of points
     @param elements Vector of integere triplets identifing the triangular elements.
     @return The sum of the area of all triangles.
     */
-    Real setIntArea (std::vector<IdTriplet> const & elements,std::vector<Point3D> const & points)const;
+    Real setIntArea (std::vector<IdTriplet> const& elements, std::vector<Point3D> const& points) const;
 
-    Point3D setCG (std::vector<Point3D> const &)const;
+    Point3D setCG (std::vector<Point3D> const&) const;
 
-    Point3D setCG (Hull const & , gmm::size_type )const;
+    Point3D setCG (Hull const& , gmm::size_type ) const;
 
-    Real setIntd (Hull const & , Point3D const &) const;
+    Real setIntd (Hull const& , Point3D const&) const;
 
     //! Find  points for the computation of area and baricenter of the intersection.
     /*!
@@ -102,9 +102,9 @@ namespace Geometry
       with the purpose of calculating the area of the intersecting region and its center.
       @param puntiarea The intersection points (real and virtual) found by the Newton algorithm.
       @param puntiIsReal True if the intersection point is a real one.
-      @param it Iterator to the intersection 
+      @param it Iterator to the intersection
      */
-    std::vector<Point3D> addPoints4area (std::vector<Point3D> const & puntiarea, std::vector<bool> const & puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it)const;
+    std::vector<Point3D> addPoints4area (std::vector<Point3D> const& puntiarea, std::vector<bool> const& puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it) const;
 
     //! Find  points for the computation of area and baricenter of the intersection.
     /*!
@@ -115,13 +115,13 @@ namespace Geometry
       @param puntiuv Parametric coordinates of the point.
       @param it Iterator to the intersection.
      */
-    std::vector<Point3D> addPoints4area (std::vector<Point3D> const & puntiarea, std::vector<bool> const & puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it, std::vector<Point2D> & puntiuv) const;
+    std::vector<Point3D> addPoints4area (std::vector<Point3D> const& puntiarea, std::vector<bool> const& puntiIsReal, Intersect::GridIntersections_Const_Iterator_Type& it, std::vector<Point2D>& puntiuv) const;
 
-    Real setIntdist_linea (std::vector<IdTriplet> const &, std::vector<Point3D> const & , Fracture::IntFrac const &) const;
+    Real setIntdist_linea (std::vector<IdTriplet> const&, std::vector<Point3D> const& , Fracture::IntFrac const&) const;
 
-Real setIntdist_linea (Hull const &, gmm::size_type, Fracture::IntFrac const &) const;
+    Real setIntdist_linea (Hull const&, gmm::size_type, Fracture::IntFrac const&) const;
 
-    Real setIntdist_linea (std::vector<Point3D> const &, Point3D const &, Fracture::IntFrac const & , Intersect::GridIntersections_Const_Iterator_Type&, bool)const ;
+    Real setIntdist_linea (std::vector<Point3D> const&, Point3D const&, Fracture::IntFrac const& , Intersect::GridIntersections_Const_Iterator_Type&, bool) const ;
 
     inline CPgrid* getgridpointer()
     {
@@ -166,11 +166,11 @@ Real setIntdist_linea (Hull const &, gmm::size_type, Fracture::IntFrac const &) 
       return M_Ne;
     }
 
-    inline std::vector<Real> getMdmedioInt (gmm::size_type i)const
+    inline std::vector<Real> getMdmedioInt (gmm::size_type i) const
     {
       return M_dmedioint[i];
     }
-    inline vettPoints getPoints (gmm::size_type i)const
+    inline vettPoints getPoints (gmm::size_type i) const
     {
       return M_puntiAree[i];
     }
