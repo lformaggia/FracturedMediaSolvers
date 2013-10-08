@@ -64,9 +64,9 @@ int main(int argc, char** argv){
 	if (cl("rotate_z","no")=="yes") {rotate_z=true;} 
 
 	std::string direzione=cl("direzione", "x");
-	Real angle;;
+	Real angle(0.);
 	std::string direzioneF=cl("direzioneF", "x");
-	Real angleF;
+	Real angleF(0.);
 	if (direzione=="x") {angle=cl("theta_x",0);}
 	if (direzione=="y") {angle=cl("theta_y",0);}
 	if (direzioneF=="x") {angleF=cl("theta_xF",0);}
@@ -132,7 +132,11 @@ int main(int argc, char** argv){
 		Fracture ff(lista.M_fractures[i]);
 		Fault f(ff);
 		CProp propfaglia(intMegaStore[i], &grid, &ff);
+#ifdef OLD_PROPERTIES
+		propfaglia.setProperties_old();
+#else
 		propfaglia.setProperties();
+#endif
 		propStore.push_back(propfaglia);
 	}
 
