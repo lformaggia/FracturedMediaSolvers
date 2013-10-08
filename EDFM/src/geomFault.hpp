@@ -26,7 +26,7 @@ namespace Geometry
   /*!
     @class Fault
 
-    @author Luca Turconi <lturconi@gmail.com>
+    @author Luca Turconi <lturconi@gmail.com>, Anna Scotti
 
       This class implements the concept of Fault.
 

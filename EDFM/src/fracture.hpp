@@ -24,13 +24,13 @@ namespace Geometry
 {
   class CProp;
   /*!
-    @class Fault
+    @class Fracture
 
     @author Luca Turconi <lturconi@gmail.com>
 
-      This class implements the concept of Fault.
+      This class implements the concept of a fracture.
 
-      A fault is essentially a bilinear surface.
+      A fructure is essentially a bilinear surface.
       It provides additional methods to compute intersections with Corner Point
       cells and Corner Point grids.
 

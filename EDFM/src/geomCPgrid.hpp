@@ -26,7 +26,7 @@ namespace Geometry
   /*!
     @class CPgrid
 
-    @author Luca Turconi <lturconi@gmail.com>
+    @author Luca Turconi <lturconi@gmail.com>, Anna Scotti, Luca Formaggia
 
       This class implements the concept of Corner Point grid.
 

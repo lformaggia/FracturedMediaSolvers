@@ -1,8 +1,8 @@
-/*
- * TypeDefnition.hpp
- *
- *  Created on: 25 Apr 2012
- *      Author: luca
+/*!
+ * @file TypeDefiunition.hpp
+ * @brief It defines basic types
+ * @author: luca turconi 2013
+`* 
  */
 
 #ifndef TYPEDEFNITION_HPP_
@@ -11,8 +11,7 @@
 //! Type for real numbers
 typedef double Real;
 
-//! Type for real numbers
+//! Type for unsigned integer numbers
 typedef unsigned int UInt;
-
 
 #endif /* TYPEDEFNITION_HPP_ */

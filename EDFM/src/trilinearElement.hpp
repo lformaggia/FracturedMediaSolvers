@@ -7,6 +7,10 @@
 namespace Geometry
 {
   //! Options for the inverse map problem.
+  /*!
+    This structure defines the options to be used for the problem of finding
+    the inverse map.
+   */
   struct InvMapOption
   {
     //! Tolerance on the iterates.

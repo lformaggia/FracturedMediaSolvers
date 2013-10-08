@@ -25,7 +25,7 @@ namespace Geometry
   /*!
     @class BilinearSurface
 
-    @author Luca Turconi <lturconi@gmail.com>
+    @author Luca Turconi <lturconi@gmail.com>, Luca Formaggia
 
     This class implements the concept of bilinear surface.
     It stores the four points generating the surface: M_pA, M_pB, M_pC, M_pD.

@@ -39,6 +39,8 @@ namespace Geometry
   /*!
     @class Hull
 
+    @brief It implements the interface to the QHull library.
+
     @author Anna Scotti
 
       */

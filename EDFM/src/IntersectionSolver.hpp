@@ -2,7 +2,7 @@
 *  @file IntersectionSolver.hpp
 *  @brief Wrapper class for solve intersection problems.
 *
-*  @author Luca Turconi <lturconi@gmail.com>
+*  @author Luca Turconi <lturconi@gmail.com>, Anna Scotti <anna.scotti@polimi.it>
 *  @date 22-09-2012
 *
 */

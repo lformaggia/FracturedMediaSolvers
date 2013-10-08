@@ -26,7 +26,8 @@ namespace Geometry
     @class Tetra
 
     @author Anna Scotti
-
+    
+    It implements a tetrahedron.
 
     */
   class Tetra
@@ -145,8 +146,10 @@ namespace Geometry
       return 1. / 6.*fabs ( ( (M_pB - M_pA).cross (M_pC - M_pA) ).dot (M_pD - M_pA) );
     }
 
+    //! Returns Gauss node for numerical integration.
     std::vector<Point3D> getGaussNodes();
 
+    //! Returns Gauss weights for numerical integration.
     std::vector<Real> getGaussWeights();
 
   private:

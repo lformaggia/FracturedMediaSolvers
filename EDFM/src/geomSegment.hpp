@@ -2,7 +2,7 @@
 *  @file geomSegment.hpp
 *  @brief Class for Line in 3D space.
 *
-*  @author Luca Turconi <lturconi@gmail.com>
+*  @author Luca Turconi <lturconi@gmail.com>, Luca Formaggia
 *  @date 22-09-2012
 *
 */

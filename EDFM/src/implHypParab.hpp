@@ -2,8 +2,9 @@
 #define HH_IMPLHYPPARAB_HH
 #include "geomPoint3D.hpp"
 /*! \file implHypParab.hpp
-
-  We implement an implicit representation of a bilinear surface patch.
+  \author Luca Formaggia
+  
+  \brief It implements an implicit representation of a bilinear surface patch.
 */
 namespace Geometry
 {

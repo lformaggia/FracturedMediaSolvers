@@ -1,6 +1,6 @@
 /*!
-*  @file geomFault.hpp
-*  @brief Class for Fault.
+*  @file fracture.hpp
+*  @brief Class for fractures.
 *
 *  @author Luca Turconi <lturconi@gmail.com>
 *  @date 22-09-2012
@@ -24,7 +24,11 @@
 
 namespace Geometry
 {
-
+  
+  //! It stores a set of  fractures.
+  /*!
+    A fracture is defined by four points.
+   */
   class Fractures
   {
   public:
@@ -41,6 +45,7 @@ namespace Geometry
     virtual ~Fractures();
 
     void computeIntersections (bool );
+    //! Returns the number of fractures
     inline gmm::size_type getNfractures() const
     {
       return M_nfractures;
@@ -49,7 +54,7 @@ namespace Geometry
     //inline Fracture getfracture(gmm::size_type i) const {return M_fractures[i];}
 
     void setInterFTransm();
-
+    
     gmm::size_type M_nfractures;
     std::vector<Fracture> M_fractures;
     bool M_isMetric;

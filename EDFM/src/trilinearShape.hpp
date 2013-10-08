@@ -6,26 +6,29 @@ namespace Geometry
 {
 
   /*! Shape functions for linear elements.
-
+    
     End nodes are numbered 0 and 1 and passed as template argument.
   */
 
   template <unsigned short I>
   inline double linearShape (double const& x);
 
+  //! Full specialization.
   template<>
   inline double linearShape<0> (double const& x)
   {
     return (1.0 - x);
   }
 
+  //! Full specialization.
   template<>
   inline double linearShape<1> (double const& x)
   {
     return x;
   }
 
-  /*!\f$ \partial\psi_I/\partial x\f$.
+  /*!
+    \f$ \partial\psi_I/\partial x\f$.
    */
   template<unsigned short I>
   inline const double  linearShapeDer (double const& x);
@@ -46,19 +49,22 @@ namespace Geometry
 
     We use the following node numbering
 
+\verbatim
          6 ________________.7
           /.              /!
-   / .             / !
+         / .             / !
        4!---------------!5 !
-  !  .            !  !
-  !  .            !  !
-  !  .2...........! .!3
-  !.              ! /
+        !  .            !  !
+        !  .            !  !
+        !  .2...........! .!3
+        !.              ! /
       0 _________________/1
+
+\endverbatim
 
       and its binary representation K-> K mod(2),K/2 mod 2, K/4 mod 2.
 
-      Node number (in its decimal representation) is passed as
+      Node numbering (in its decimal representation) is passed as
       template argument. Its binary representation is used to select
       the appropriate linear shape functions (since a trilinear
       function is the product of three linear shape functions).
