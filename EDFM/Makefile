@@ -20,7 +20,7 @@ HEADERS = $(wildcard ./src/*.hpp)
 LIBDIR=$(PWD)/lib
 INSTALLDIR = $(PWD)/lib
 
-.PHONY = install libdev tests doc uninstall clean clean_lib clean_doc all old_properties
+.PHONY : install libdev tests doc uninstall clean clean_lib clean_doc all old_properties doc
 
 all:
 	@echo
