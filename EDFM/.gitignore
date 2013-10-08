@@ -3,3 +3,5 @@
 *.so
 *~
 main_tutorial
+doc
+#*#

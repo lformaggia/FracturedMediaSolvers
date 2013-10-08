@@ -39,50 +39,50 @@ template<class Shape>
 class TreeDomainError: public TreeLogicError<Shape>
 {
 protected:
-    /// Number of logical locations currently used in the tree plus 1.
-    int nelep1;
-    /// Size of the array storing the coordinates of the object which is out of domain.
-    int csize;
-    /// Coordinates of the object which is out of domain.
-    std::vector<double> outobj;
+  /// Number of logical locations currently used in the tree plus 1.
+  int nelep1;
+  /// Size of the array storing the coordinates of the object which is out of domain.
+  int csize;
+  /// Coordinates of the object which is out of domain.
+  std::vector<double> outobj;
 public:
-    /** A constructor.
-     *
-     */
-    TreeDomainError (int const& np1, int const& size, double const* const coord);
-    /// Returns number of logical locations currently used in the tree plus 1.
-    inline int getnelep1() const
-    {
-        return nelep1;
-    }
-    /** Output operator.
-     *
-     *  It outputs coordinates of the object which is out of domain.
-     */
-    template<class T>
-    friend std::ostream& operator<< (std::ostream& ostr, TreeDomainError<T> const& de);
+  /** A constructor.
+   *
+   */
+  TreeDomainError (int const& np1, int const& size, double const* const coord);
+  /// Returns number of logical locations currently used in the tree plus 1.
+  inline int getnelep1() const
+  {
+    return nelep1;
+  }
+  /** Output operator.
+   *
+   *  It outputs coordinates of the object which is out of domain.
+   */
+  template<class T>
+  friend std::ostream& operator<< (std::ostream& ostr, TreeDomainError<T> const& de);
 };
 
 template<class Shape>
 TreeDomainError<Shape>::TreeDomainError (int const& np1, int const& size, double const* const coord) :
-    nelep1 (np1), csize (size)
+  nelep1 (np1), csize (size)
 {
-    outobj.reserve (csize);
-    for (int i = 0; i < csize; ++i)
-    {
-        outobj.push_back (coord[i]);
-    }
+  outobj.reserve (csize);
+  for (int i = 0; i < csize; ++i)
+  {
+    outobj.push_back (coord[i]);
+  }
 }
 
 template<class Shape>
 std::ostream& operator<< (std::ostream& ostr, TreeDomainError<Shape> const& de)
 {
-    for (int i = 0; i < de.csize; ++i)
-    {
-        ostr << "Coordinate " << i + 1 << ": " << de.outobj[i] << std::endl;
-    }
+  for (int i = 0; i < de.csize; ++i)
+  {
+    ostr << "Coordinate " << i + 1 << ": " << de.outobj[i] << std::endl;
+  }
 
-    return ostr;
+  return ostr;
 }
 
 /** \class TreeLengthError
@@ -100,26 +100,26 @@ template<class Shape>
 class LocLengthError: public TreeLengthError<Shape>
 {
 protected:
-    /// Maximum tree memory locations available.
-    int max_tree_loc;
-    /// Tree memory locations needed.
-    int tree_loc;
+  /// Maximum tree memory locations available.
+  int max_tree_loc;
+  /// Tree memory locations needed.
+  int tree_loc;
 public:
-    /** A constructor.
-     *
-     *  Initialize the number of the required tree locations.
-     */
-    LocLengthError (int const& mtree, int const& ntree) : max_tree_loc (mtree), tree_loc (ntree) {}
-    /// Gets the maximum number of tree memory locations available.
-    inline int const getmaxtreeloc() const
-    {
-        return max_tree_loc;
-    }
-    /// Gets the number of tree memory locations needed.
-    inline int const gettreeloc() const
-    {
-        return tree_loc;
-    }
+  /** A constructor.
+   *
+   *  Initialize the number of the required tree locations.
+   */
+  LocLengthError (int const& mtree, int const& ntree) : max_tree_loc (mtree), tree_loc (ntree) {}
+  /// Gets the maximum number of tree memory locations available.
+  inline int const getmaxtreeloc() const
+  {
+    return max_tree_loc;
+  }
+  /// Gets the number of tree memory locations needed.
+  inline int const gettreeloc() const
+  {
+    return tree_loc;
+  }
 };
 
 /** \class TreeRuntimeError
@@ -138,19 +138,19 @@ template<class Shape>
 class LevRuntimeError: public TreeRuntimeError<Shape>
 {
 protected:
-    /// Maximum tree levels.
-    static int max_tree_lev;
+  /// Maximum tree levels.
+  static int max_tree_lev;
 public:
-    /// Sets the maximum number of tree levels.
-    inline static void setmaxtreelev (int const& mlev)
-    {
-        max_tree_lev = mlev;
-    }
-    /// Gets the maximum number of tree levels.
-    inline static int getmaxtreelev()
-    {
-        return max_tree_lev;
-    }
+  /// Sets the maximum number of tree levels.
+  inline static void setmaxtreelev (int const& mlev)
+  {
+    max_tree_lev = mlev;
+  }
+  /// Gets the maximum number of tree levels.
+  inline static int getmaxtreelev()
+  {
+    return max_tree_lev;
+  }
 };
 
 template<class Shape>

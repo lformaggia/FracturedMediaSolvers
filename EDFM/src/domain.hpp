@@ -14,13 +14,13 @@
 
 namespace ADT
 {
-/** \class Domain
- *  \brief It defines geometric limits of a set of points.
- */
-template<class Shape>
-class Domain
-{
-protected:
+  /** \class Domain
+   *  \brief It defines geometric limits of a set of points.
+   */
+  template<class Shape>
+  class Domain
+  {
+  protected:
     /// Origin of the object's bounding box = min(coord(*,1:number of points)).
     std::vector<double> origin;
     /// Scaling factors = 1./(max(coord(*,1:number of points)) - min(coord(*,1:number of points))).
@@ -29,7 +29,7 @@ protected:
     static double tolerance;
     /// Minimum difference between coordinates allowed.
     static double mindiff;
-public:
+  public:
     /** Default constructor.
      *
      *  It's fundamental in creating an ADTree object from a MeshFile::ff2dmesh or a MeshFile::ff3dmesh object.
@@ -52,32 +52,32 @@ public:
     /// Sets the tolerance being applied to the object's bounding box.
     inline static void settolerance (double const& tol)
     {
-        tolerance = tol;
+      tolerance = tol;
     }
     /// Gets the tolerance being applied to the object's bounding box.
     inline static double gettolerance()
     {
-        return tolerance;
+      return tolerance;
     }
     /// Sets the minimum difference between coordinates allowed.
     inline static void setmindiff (double const& md)
     {
-        mindiff = md;
+      mindiff = md;
     }
     /// Gets the minimum difference between coordinates allowed.
     inline static double getmindiff()
     {
-        return mindiff;
+      return mindiff;
     }
     /// Gets the i-th coordinate of the origin of the domain's bounding box.
     std::vector<double> const& orig () const
     {
-        return origin;
+      return origin;
     }
     /// Gets the i-th scaling factor of the domain's bounding box.
     std::vector<double> const& scal () const
     {
-        return scalingfactors;
+      return scalingfactors;
     }
     /** Output operator.
      *
@@ -85,104 +85,104 @@ public:
      */
     template<class S>
     friend std::ostream& operator<< (std::ostream&, Domain<S> const&);
-};
+  };
 
-template<class T>
-double Domain<T>::tolerance = 1.e-3;
+  template<class T>
+  double Domain<T>::tolerance = 1.e-3;
 
-template<class T>
-double Domain<T>::mindiff = std::numeric_limits<double>::min();
+  template<class T>
+  double Domain<T>::mindiff = std::numeric_limits<double>::min();
 
-// template<class T>
-// Domain<T>::Domain (std::vector<std::vector<double> > const& coord)
-// {
-//     int ndimp = T::dp();
-//     origin.resize (T::dt() );
-//     scalingfactors.resize (T::dt() );
+  // template<class T>
+  // Domain<T>::Domain (std::vector<std::vector<double> > const& coord)
+  // {
+  //     int ndimp = T::dp();
+  //     origin.resize (T::dt() );
+  //     scalingfactors.resize (T::dt() );
 
-//     /* Find geometric limits.
-//      *
-//      * If loops are put outside for loops in order to improve performance.
-//      */
-//     if (ndimp == int (coord.size() ) )
-//     {
-//         // T is equal to Point<NDIMP>, Triangle<NDIMP> or Tetrahedron.
-//         if (T::dp() == T::dt() )
-//         {
-//             // T is equal to Point<NDIMP>
-//             for (int i = 0; i < ndimp; ++i)
-//             {
-//                 origin[i] = * (std::min_element (coord[i].begin(), coord[i].end() ) );
-//                 scalingfactors[i] = * (std::max_element (coord[i].begin(), coord[i].end() ) );
+  //     /* Find geometric limits.
+  //      *
+  //      * If loops are put outside for loops in order to improve performance.
+  //      */
+  //     if (ndimp == int (coord.size() ) )
+  //     {
+  //         // T is equal to Point<NDIMP>, Triangle<NDIMP> or Tetrahedron.
+  //         if (T::dp() == T::dt() )
+  //         {
+  //             // T is equal to Point<NDIMP>
+  //             for (int i = 0; i < ndimp; ++i)
+  //             {
+  //                 origin[i] = * (std::min_element (coord[i].begin(), coord[i].end() ) );
+  //                 scalingfactors[i] = * (std::max_element (coord[i].begin(), coord[i].end() ) );
 
-//                 // Add the tolerance.
-//                 double delta = scalingfactors[i] - origin[i];
-//                 origin[i] -= delta * gettolerance();
-//                 scalingfactors[i] += delta * gettolerance();
+  //                 // Add the tolerance.
+  //                 double delta = scalingfactors[i] - origin[i];
+  //                 origin[i] -= delta * gettolerance();
+  //                 scalingfactors[i] += delta * gettolerance();
 
-//                 delta = scalingfactors[i] - origin[i];
-//                 scalingfactors[i] = 1. / std::max (delta, getmindiff() );
-//             }
-//         }
-//         else
-//         {
-//             // T is equal to Triangle<NDIMP> or Tetrahedron.
-//             for (int i = 0; i < ndimp; ++i)
-//             {
-//                 origin[i] = * (std::min_element (coord[i].begin(), coord[i].end() ) );
-//                 scalingfactors[i] = * (std::max_element (coord[i].begin(), coord[i].end() ) );
+  //                 delta = scalingfactors[i] - origin[i];
+  //                 scalingfactors[i] = 1. / std::max (delta, getmindiff() );
+  //             }
+  //         }
+  //         else
+  //         {
+  //             // T is equal to Triangle<NDIMP> or Tetrahedron.
+  //             for (int i = 0; i < ndimp; ++i)
+  //             {
+  //                 origin[i] = * (std::min_element (coord[i].begin(), coord[i].end() ) );
+  //                 scalingfactors[i] = * (std::max_element (coord[i].begin(), coord[i].end() ) );
 
-//                 // Add the tolerance.
-//                 double delta = scalingfactors[i] - origin[i];
-//                 origin[i] -= delta * gettolerance();
-//                 scalingfactors[i] += delta * gettolerance();
+  //                 // Add the tolerance.
+  //                 double delta = scalingfactors[i] - origin[i];
+  //                 origin[i] -= delta * gettolerance();
+  //                 scalingfactors[i] += delta * gettolerance();
 
-//                 delta = scalingfactors[i] - origin[i];
-//                 scalingfactors[i] = 1. / std::max (delta, getmindiff() );
+  //                 delta = scalingfactors[i] - origin[i];
+  //                 scalingfactors[i] = 1. / std::max (delta, getmindiff() );
 
-//                 /* Repeat the limits because tree dimension is in fact 2 * physical space dimension
-//                  * because the tree contains triangle or tetrahedron bounding boxes.
-//                  */
-//                 origin[i + ndimp] = origin[i];
-//                 scalingfactors[i + ndimp] = scalingfactors[i];
-//             }
-//         }
-//     }
-//     else
-//     {
-//         // T is equal to Box<NDIMP>.
-//         for (int i = 0; i < ndimp; ++i)
-//         {
-//             origin[i] = * (std::min_element (coord[i].begin(), coord[i].end() ) );
+  //                 /* Repeat the limits because tree dimension is in fact 2 * physical space dimension
+  //                  * because the tree contains triangle or tetrahedron bounding boxes.
+  //                  */
+  //                 origin[i + ndimp] = origin[i];
+  //                 scalingfactors[i + ndimp] = scalingfactors[i];
+  //             }
+  //         }
+  //     }
+  //     else
+  //     {
+  //         // T is equal to Box<NDIMP>.
+  //         for (int i = 0; i < ndimp; ++i)
+  //         {
+  //             origin[i] = * (std::min_element (coord[i].begin(), coord[i].end() ) );
 
-//             /* This statement is necessary when representing a rectangle with the corner having
-//              * minimum coordinates and the opposite one.
-//              */
-//             scalingfactors[i] = * (std::max_element (coord[i + ndimp].begin(), coord[i + ndimp].end() ) );
+  //             /* This statement is necessary when representing a rectangle with the corner having
+  //              * minimum coordinates and the opposite one.
+  //              */
+  //             scalingfactors[i] = * (std::max_element (coord[i + ndimp].begin(), coord[i + ndimp].end() ) );
 
-//             // Add the tolerance.
-//             double delta = scalingfactors[i] - origin[i];
-//             origin[i] -= delta * gettolerance();
-//             scalingfactors[i] += delta * gettolerance();
+  //             // Add the tolerance.
+  //             double delta = scalingfactors[i] - origin[i];
+  //             origin[i] -= delta * gettolerance();
+  //             scalingfactors[i] += delta * gettolerance();
 
-//             delta = scalingfactors[i] - origin[i];
-//             scalingfactors[i] = 1. / std::max (delta, getmindiff() );
+  //             delta = scalingfactors[i] - origin[i];
+  //             scalingfactors[i] = 1. / std::max (delta, getmindiff() );
 
-//             /* Repeat the limits because tree dimension is in fact 2 * physical space dimension
-//              * because because a box is defined by two points.
-//              */
-//             origin[i + ndimp] = origin[i];
-//             scalingfactors[i + ndimp] = scalingfactors[i];
-//         }
-//     }
-// }
-
-
+  //             /* Repeat the limits because tree dimension is in fact 2 * physical space dimension
+  //              * because because a box is defined by two points.
+  //              */
+  //             origin[i + ndimp] = origin[i];
+  //             scalingfactors[i + ndimp] = scalingfactors[i];
+  //         }
+  //     }
+  // }
 
 
-template<class T>
-std::ostream& operator<< (std::ostream& ostr, Domain<T> const& d)
-{
+
+
+  template<class T>
+  std::ostream& operator<< (std::ostream& ostr, Domain<T> const& d)
+  {
     ostr << std::endl << std::endl;
     ostr << "Domain" << std::endl;
     ostr << "------" << std::endl << std::endl;
@@ -190,18 +190,18 @@ std::ostream& operator<< (std::ostream& ostr, Domain<T> const& d)
     int dimp (3);
     for (int i = 0; i < dimp; ++i)
     {
-        ostr << "x" << i + 1 << "_min = " << d.origin[i] << std::endl;
+      ostr << "x" << i + 1 << "_min = " << d.origin[i] << std::endl;
     }
     ostr << std::endl;
 
     for (int i = 0; i < dimp; ++i)
     {
-        ostr << "x" << i + 1 << "_max = " << d.origin[i] + 1. / d.scalingfactors[i] << std::endl;
+      ostr << "x" << i + 1 << "_max = " << d.origin[i] + 1. / d.scalingfactors[i] << std::endl;
     }
     ostr << std::endl;
 
     return ostr;
-}
+  }
 }// end namespace ADT
 
 

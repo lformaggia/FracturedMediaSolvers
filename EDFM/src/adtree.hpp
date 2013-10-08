@@ -19,24 +19,25 @@
 // explicit dependencies on CPGrid here and do a cleaner programming.
 // ... but I am lazy.
 
-namespace Geometry{
-class CPgrid;
+namespace Geometry
+{
+  class CPgrid;
 }
 
 namespace ADT
 {
-/** \class ADTree
- *  \brief Alternating binary range searching tree.
- */
-class ADTree
-{
-protected:
+  /** \class ADTree
+   *  \brief Alternating binary range searching tree.
+   */
+  class ADTree
+  {
+  protected:
     //! a helper structure
     struct Helper
     {
       std::vector<double> xl;
-        int ipoi;
-        int lev;
+      int ipoi;
+      int lev;
     };
     /** The header.
      *
@@ -64,31 +65,31 @@ protected:
      */
     inline int searchdim (int const& lev, int const& dim) const
     {
-        return (lev % dim);
+      return (lev % dim);
     }
     /** Finds delta associated to division at a given level.
      *
      *    \param[in] lev The given level.
      *    \param[in] dim The number of dimensions used for the search.
      */
-  /*    inline double delta (int const& lev, int const& dim) const
-    {
-        return std::pow (0.5, int (lev / dim) + 1);
-	}*/
+    /*    inline double delta (int const& lev, int const& dim) const
+      {
+          return std::pow (0.5, int (lev / dim) + 1);
+    }*/
     inline double delta (int const& lev, int const& dim) const
     {
-      double res(0.5);
-      for (int i=0;i<int (lev / dim);++i)res*=0.5;
+      double res (0.5);
+      for (int i = 0; i < int (lev / dim); ++i) res *= 0.5;
       return res;
     }
-public:
-  /*!  Constructor froma corner point grid.
-   */
-  ADTree (Geometry::CPgrid const & grid);
+  public:
+    /*!  Constructor froma corner point grid.
+     */
+    ADTree (Geometry::CPgrid const& grid);
     /// Returns a reference to the tree header.
-  inline Header<Geometry::CPgrid> const& gettreeheader() const
+    inline Header<Geometry::CPgrid> const& gettreeheader() const
     {
-        return _header;
+      return _header;
     }
     /** Adds a node to the tree.
      *    It calls the handlers of the exceptions that can be thrown by adtrb().
@@ -107,7 +108,7 @@ public:
      */
     TreeNode const&   getNode (int const& loc) const
     {
-        return _data[loc];
+      return _data[loc];
     }
     /** Finds all points or (bounding) boxes that intersect a given
      * box.
@@ -122,6 +123,6 @@ public:
     void deltreenode (int const& index);
     /// Outputs informations contained in the tree header.
     friend std::ostream& operator<< (std::ostream& ostr, ADTree const& myadt);
-};
+  };
 }// end namespace
 #endif /* ADTREE_HPP_ */

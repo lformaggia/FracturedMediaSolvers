@@ -57,3 +57,8 @@ E' possibile generare la documentazione della libreria in formato html lanciando
 
 Per rimuovere la documentazione basta lanciare il comando:
 > make clean_doc
+
+
+NOTA: Per calcolare le proprieta` delle faglie con l'algoritmo precedente lanciare 
+
+make old_properties

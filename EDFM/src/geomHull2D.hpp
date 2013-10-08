@@ -1,14 +1,14 @@
 /*!
- *	@file geomTriangle.hpp
- *	@brief Class for Triangle in 3D space.
+ *  @file geomTriangle.hpp
+ *  @brief Class for Triangle in 3D space.
  *
- *	@author Luca Turconi <lturconi@gmail.com>
+ *  @author Luca Turconi <lturconi@gmail.com>
  *  @date 22-09-2012
  *
  */
 
 #ifndef GEOMHULL2D_HPP_
-#define GEOMHULL2D_HPP_ 
+#define GEOMHULL2D_HPP_
 
 #include<iostream>
 #include<string>
@@ -20,12 +20,12 @@
 #include "geomFault.hpp"
 #include "gmm/gmm.h"
 
-  extern "C" {
+extern "C" {
 #ifdef _MSC_VER
 # include <libqhull/libqhull.h>
 #else
 # include <libqhull/libqhull.h>
-//# include <qhull/mem.h>
+  //# include <qhull/mem.h>
 # include <libqhull/qset.h>
 # include <libqhull/geom.h>
 # include <libqhull/merge.h>
@@ -37,61 +37,76 @@
 namespace Geometry
 {
 
-	/*!
-		@class Hull
-		
-		@author Anna Scotti
-		
-    	*/
-class Hull2D
-{
-public:
+  /*!
+    @class Hull
 
-	//! @name Constructor & Destructor
-	//@{
-		
-	//! Empty constructor
-	Hull2D();
-	
-	//! Constructor, getting the simplexes matrix
+    @author Anna Scotti
 
-	Hull2D(std::vector<Point3D>, Fault*);
+      */
+  class Hull2D
+  {
+  public:
 
-	//! Destructor
-	virtual ~Hull2D();
-	
-	//@}
-	
-	//! @name Get Methods
-	//@{
-		
-	//! Get vertex A
-	/*!
-	 * @return The vertex A
-	 */
-	inline gmm::size_type getNtriangle() const {return M_Ntriangle;}
-	inline Point3D getPoint(gmm::size_type & i) const { return M_points[i]; }
-	inline gmm::dense_matrix<gmm::size_type> getSimplexes() const { return M_simplexes; }
-	
-	bool call_qhull2D(gmm::size_type & , gmm::dense_matrix<gmm::size_type> &, std::vector<coordT> &);
+    //! @name Constructor & Destructor
+    //@{
 
-	inline std::vector<Triangle> getTriangle() {return M_triangle;}
+    //! Empty constructor
+    Hull2D();
 
-	inline Triangle getTriangle(gmm::size_type i) {return M_triangle[i];}
+    //! Constructor, getting the simplexes matrix
 
-	Real getArea();
+    Hull2D (std::vector<Point3D>, Fault*);
 
-	std::vector<gmm::size_type> getPointsSimplex(gmm::size_type );
+    //! Destructor
+    virtual ~Hull2D();
 
-private:
-	gmm::dense_matrix<gmm::size_type> M_simplexes;
-	std::vector<Point3D> M_points;
-	std::vector<Triangle> M_triangle;
-	gmm::size_type M_Ntriangle;
-};
+    //@}
 
-	
-	
+    //! @name Get Methods
+    //@{
+
+    //! Get vertex A
+    /*!
+     * @return The vertex A
+     */
+    inline gmm::size_type getNtriangle() const
+    {
+      return M_Ntriangle;
+    }
+    inline Point3D getPoint (gmm::size_type& i) const
+    {
+      return M_points[i];
+    }
+    inline gmm::dense_matrix<gmm::size_type> getSimplexes() const
+    {
+      return M_simplexes;
+    }
+
+    bool call_qhull2D (gmm::size_type& , gmm::dense_matrix<gmm::size_type>&, std::vector<coordT>&);
+
+    inline std::vector<Triangle> getTriangle()
+    {
+      return M_triangle;
+    }
+
+    inline Triangle getTriangle (gmm::size_type i)
+    {
+      return M_triangle[i];
+    }
+
+    Real getArea();
+
+    std::vector<gmm::size_type> getPointsSimplex (gmm::size_type );
+
+  private:
+    gmm::dense_matrix<gmm::size_type> M_simplexes;
+    std::vector<Point3D> M_points;
+    std::vector<Triangle> M_triangle;
+    gmm::size_type M_Ntriangle;
+  };
+
+
+
 } // namespace Geometry
 
 #endif /* GEOMTRIANGLE_HPP_ */

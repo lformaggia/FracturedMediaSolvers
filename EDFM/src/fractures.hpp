@@ -1,11 +1,11 @@
- /*!
- *	@file geomFault.hpp
- *	@brief Class for Fault.
- *
- *	@author Luca Turconi <lturconi@gmail.com>
- *  @date 22-09-2012
- *
- */
+/*!
+*  @file geomFault.hpp
+*  @brief Class for Fault.
+*
+*  @author Luca Turconi <lturconi@gmail.com>
+*  @date 22-09-2012
+*
+*/
 
 #ifndef FRACTURES_HPP_
 #define FRACTURES_HPP_
@@ -25,35 +25,39 @@
 namespace Geometry
 {
 
-class Fractures {
-public:
-	//! @name Constructor & Destructor
-	//@{
-		
-	//! Empty constructor
-	Fractures();
-	
-	//! Constructor
-	Fractures(const std::string nomefile, Real conv_z=1, std::string direzione="x", Real angle=0);
-	
-	//! Destructor
-	virtual ~Fractures();
-	
-	void computeIntersections(bool );
-	inline gmm::size_type getNfractures() const {return M_nfractures;}
-	//inline std::vector<Fracture> getfractures() const {return M_fractures;}
-	//inline Fracture getfracture(gmm::size_type i) const {return M_fractures[i];}
+  class Fractures
+  {
+  public:
+    //! @name Constructor & Destructor
+    //@{
 
-	void setInterFTransm();
+    //! Empty constructor
+    Fractures();
 
-	gmm::size_type M_nfractures;
-	std::vector<Fracture> M_fractures;
-	bool M_isMetric;
-	void exportIntersectionMatrix(std::ofstream & );
-};
+    //! Constructor
+    Fractures (const std::string nomefile, Real conv_z = 1, std::string direzione = "x", Real angle = 0);
 
-void readPoints(std::string line, Real &, Real &, Real &);
-void readProperties(std::string line, gmm::size_type &, Real &, Real &, Real &);
+    //! Destructor
+    virtual ~Fractures();
+
+    void computeIntersections (bool );
+    inline gmm::size_type getNfractures() const
+    {
+      return M_nfractures;
+    }
+    //inline std::vector<Fracture> getfractures() const {return M_fractures;}
+    //inline Fracture getfracture(gmm::size_type i) const {return M_fractures[i];}
+
+    void setInterFTransm();
+
+    gmm::size_type M_nfractures;
+    std::vector<Fracture> M_fractures;
+    bool M_isMetric;
+    void exportIntersectionMatrix (std::ofstream& );
+  };
+
+  void readPoints (std::string line, Real&, Real&, Real&);
+  void readProperties (std::string line, gmm::size_type&, Real&, Real&, Real&);
 
 } // namespace Geometry
 

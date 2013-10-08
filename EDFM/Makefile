@@ -1,7 +1,7 @@
 CXX = g++
 WARFLAGS = -Wall
 OPTFLAGS = -O3 -DNDEBUG
-#OPTFLAGS = -g
+#OPTFLAGS = -g -fno-inline
 #OPTFLAGS = -g 
 CPPFLAGS=
 # Use verbose for extra info
@@ -20,22 +20,28 @@ HEADERS = $(wildcard ./src/*.hpp)
 LIBDIR=$(PWD)/lib
 INSTALLDIR = $(PWD)/lib
 
-.PHONY = install libdev tests doc uninstall clean clean_lib clean_doc
+.PHONY = install libdev tests doc uninstall clean clean_lib clean_doc all old_properties
 
 all:
 	@echo
 	@echo To install the library use:
 	@echo make install
 	@echo  "(to remove: >make uninstall)"
-	@echo To install the dev version in the current directory use:
-	@echo make libdev
-	@echo  "(to remove: >make clean & >make clean_lib)"
+	@echo  "(to remove all object files: >make clean & >make clean_lib)"
 	@echo
-
+	@echo  "to compile the program:"
+	@echo  "make main_edfm"
+	@echo  "to compile the program with the old procedule:"
+	@echo  "make old_properties"
+	@echo  " to create the documentation"
+	@echo  " make doc"
 doc:
 	doxygen Doxyfile
 
 install: $(INSTALLDIR)/libCPgeom.so.1.0
+
+old_properties:
+	$(MAKE) main_edfm -DOLD_PROPERTIES
 
 $(INSTALLDIR)/libCPgeom.so.1.0: $(OBJ)
 	$(CXX) $(LDFLAGS) -shared -Wl,-soname,libCPgeom.so.1 -o libCPgeom.so.1.0 $(OBJ) $(LDLIBS)
@@ -52,32 +58,12 @@ libdev: install
 #	ln -s libCPgeom.so.1.0 libCPgeom.so.1	# soname
 #	ln -s libCPgeom.so.1.0 libCPgeom.so	# link name
 
-tests: main_anna main_tutorial 
-#main_Bashkirian main_testRefined main_tutorial 
 
-main_anna: main_anna.o
-	$(CXX) $(LDFLAGS) -o main_anna main_anna.o  $(LDLIBS) -L -lCPgeom 
+main_edfm: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm.o  
+	$(CXX) $(LDFLAGS) -o main_edfm main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
 
-main_anna.o: main_anna.cpp
-	$(CXX) $(CXXFLAGS) -c -o main_anna.o main_anna.cpp
-
-main_tutorial: $(INSTALLDIR)/libCPgeom.so.1.0 main_tutorial.o  
-	$(CXX) $(LDFLAGS) -o main_tutorial main_tutorial.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
-
-main_tutorial.o: main_tutorial.cpp
-	$(CXX) $(CXXFLAGS) -c -o main_tutorial.o main_tutorial.cpp
-
-main_Bashkirian: main_Bashkirian.o chrono.o
-	$(CXX) $(LDFLAGS) -o main_Bashkirian main_Bashkirian.o $(LDLIBS) -lCPgeom
-
-main_Bashkirian.o: main_Bashkirian.cpp
-	$(CXX) $(CXXFLAGS) -c -o main_Bashkirian.o main_Bashkirian.cpp
-
-main_testRefined: main_testRefined.o
-	$(CXX) $(LDFLAGS) -o main_testRefined main_testRefined.o  $(LDLIBS) -lCPgeom
-
-main_testRefined.o: main_testRefined.cpp
-	$(CXX) $(CXXFLAGS) -c -o main_testRefined.o main_testRefined.cpp
+main_edfm.o: main_edfm.cpp
+	$(CXX) $(CXXFLAGS) -c -o main_edfm.o main_edfm.cpp
 
 $(OBJ): %.o: %.cpp $(HEADERS)
 	$(CXX) -c $(CXXFLAGS) -fPIC $< -o $@

@@ -27,7 +27,7 @@ OBJS = $(SRCS:.cpp=.o)
 HEADERS=$(wildcard *.hpp)
 #
 exe_sources=$(filter main%.cpp,$(SRCS))
-EXEC=$(exe_sources:.cpp=)
+EXEC=test_delaunay
 
 #========================== ORA LA DEFINIZIONE DEGLI OBIETTIVI
 .phony= all clean distclean doc
@@ -54,13 +54,15 @@ distclean:
 doc:
 	doxygen $(DOXYFILE)
 
-$(EXEC): $(OBJS)
+#$(EXEC): $(OBJS)
 
 $(OBJS): $(SRCS)
 
 $(DEPEND): $(SRCS)
 	g++ $(CPPFLAGS) -MM $(SRCS) -MF $(DEPEND)
 
+test_delaunay: ../delaunay.cpp ../geomPoint2D.cpp test_delaunay.cpp ../delaunay.hpp
+	g++ -g $(CXXFLAGS) $(CPPFLAGS) test_delaunay.cpp ../delaunay.cpp ../geomPoint2D.cpp ../geomBilinearSurface.cpp   $(LDLIBS) -o test_delaunay
 -include $(DEPEND)
 
 

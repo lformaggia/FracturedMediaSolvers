@@ -1,11 +1,11 @@
- /*!
- *	@file CPgeom.hpp
- *	@brief This file includes all the tools provided by CPgeom library.
- *
- *	@author Luca Turconi <lturconi@gmail.com>
- *  @date 22-09-2012
- *
- */
+/*!
+*  @file CPgeom.hpp
+*  @brief This file includes all the tools provided by CPgeom library.
+*
+*  @author Luca Turconi <lturconi@gmail.com>
+*  @date 22-09-2012
+*
+*/
 
 #include "TypeDefinition.hpp"
 #include "EclipseFileTranslator.hpp"

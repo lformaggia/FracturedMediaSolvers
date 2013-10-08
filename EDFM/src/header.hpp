@@ -16,22 +16,22 @@
 
 namespace ADT
 {
-/** \class Header
- *  \brief It contains general information about the tree.
- *  \param  T The template parameter expresses the criterion for building the tree depending on whether you have to store points or boxes. \n
- *              So, you have:
- *              <ul>
- *              <li> T = Point<NDIMP>, in the first case
- *              <li> T = Box<NDIMP>, in the second case
- *              </ul>
- *              where NDIMP is the number of physical space dimensions.
- *
- *  Default copy constructor and default destructor work fine.
- */
-template<class T>
-class Header
-{
-protected:
+  /** \class Header
+   *  \brief It contains general information about the tree.
+   *  \param  T The template parameter expresses the criterion for building the tree depending on whether you have to store points or boxes. \n
+   *              So, you have:
+   *              <ul>
+   *              <li> T = Point<NDIMP>, in the first case
+   *              <li> T = Box<NDIMP>, in the second case
+   *              </ul>
+   *              where NDIMP is the number of physical space dimensions.
+   *
+   *  Default copy constructor and default destructor work fine.
+   */
+  template<class T>
+  class Header
+  {
+  protected:
     /// Tree memory locations.
     int tree_loc;
     /// Tree levels.
@@ -79,7 +79,7 @@ protected:
     /// Tries to set the number of tree memory locations (throws a
     /// LocLengthError exception if nt is out of range).
     void stml (int const& nt);
-public:
+  public:
     /** Default constructor.
      *
      *  It's fundamental in creating an ADTree object from a MeshFile::ff2dmesh or a MeshFile::ff3dmesh object.
@@ -88,74 +88,74 @@ public:
     /// Gets the number of tree memory locations.
     inline int gettreeloc() const
     {
-        return tree_loc;
+      return tree_loc;
     }
     /// Sets the number of tree memory locations (handles a LocLengthError exception).
     void settreeloc (int const& nt);
     /// Gets the number of tree levels.
     inline int gettreelev() const
     {
-        return tree_lev;
+      return tree_lev;
     }
     /// Sets the number of tree levels.
     inline void settreelev (int const& nl)
     {
-        tree_lev = nl;
+      tree_lev = nl;
     }
     /// Gets the number of physical space dimension.
     inline int getndimp() const
     {
-        return ndimp;
+      return ndimp;
     }
     /// Gets the number of pieces of information carried by the tree.
     inline int getnkey() const
     {
-        return nkey;
+      return nkey;
     }
     /// Gets the number of dimensions used for the search.
     inline int getndimt() const
     {
-        return ndimt;
+      return ndimt;
     }
     /// Gets the number of logical locations currently used in the tree.
     inline int getnele() const
     {
-        return nele;
+      return nele;
     }
     /// Sets the number of logical locations currently used in the tree.
     inline void setnele (int const& ne)
     {
-        nele = ne;
+      nele = ne;
     }
     /// Gets the next available location in the stack.
     inline int getiava() const
     {
-        return iava;
+      return iava;
     }
     /// Sets the next available location in the stack.
     inline void setiava (int const& ia)
     {
-        iava = ia;
+      iava = ia;
     }
     /// Gets the next available location in the tree free store.
     inline int getiend() const
     {
-        return iend;
+      return iend;
     }
     /// Sets the next available location in the tree free store.
     inline void setiend (int const& ie)
     {
-        iend = ie;
+      iend = ie;
     }
     /// Gets the i-th coordinate of the origin of the tree's bounding box.
-  std::vector<double> const& domainorig () const
+    std::vector<double> const& domainorig () const
     {
-        return tree_domain.orig ();
+      return tree_domain.orig ();
     }
     /// Gets the i-th scaling factor of the tree's bounding box.
     std::vector<double> const& domainscal () const
     {
-        return tree_domain.scal ();
+      return tree_domain.scal ();
     }
     /** Output operator.
      *
@@ -180,40 +180,40 @@ public:
      */
     template<class S>
     friend Header<S> createtreeheader (int const& nt, int const& nk, Domain<S> const& d);
-};
+  };
 
-template<class T>
-Header<T>::Header (int const& ntree, int const& nk, Domain<T> const& d) :
+  template<class T>
+  Header<T>::Header (int const& ntree, int const& nk, Domain<T> const& d) :
     tree_loc (ntree), tree_lev (0), ndimp (3), nkey (nk), ndimt (6), nele (0), iava (1), iend (1), tree_domain (d)
-{
+  {
 
     std::vector<TreeNode> foo;
     if (foo.max_size() < unsigned (tree_loc + 1) )
-        /* If there is no enough space to store the requested nodes and
-         * the tree head, a LocLengthError exception is thrown.
-         */
+      /* If there is no enough space to store the requested nodes and
+       * the tree head, a LocLengthError exception is thrown.
+       */
     {
-        throw (LocLengthError<T> (foo.max_size(), tree_loc) );
+      throw (LocLengthError<T> (foo.max_size(), tree_loc) );
     }
-}
+  }
 
-template<class T>
-void Header<T>::stml (int const& nt)
-{
+  template<class T>
+  void Header<T>::stml (int const& nt)
+  {
     std::vector<TreeNode> foo;
     if (foo.max_size() < unsigned (nt + 1) )
-        /* If there is no enough space to store the requested nodes and
-         * the tree head, a LocLengthError exception is thrown.
-         */
+      /* If there is no enough space to store the requested nodes and
+       * the tree head, a LocLengthError exception is thrown.
+       */
     {
-        throw (LocLengthError<T> (foo.max_size(), nt) );
+      throw (LocLengthError<T> (foo.max_size(), nt) );
     }
     tree_loc = nt;
-}
+  }
 
-template<class T>
-std::ostream& operator<< (std::ostream& ostr, Header<T> const& head)
-{
+  template<class T>
+  std::ostream& operator<< (std::ostream& ostr, Header<T> const& head)
+  {
     ostr << std::endl << std::endl;
     ostr << "General informations about the tree" << std::endl;
     ostr << "----------------------------------" << std::endl << std::endl;
@@ -226,43 +226,43 @@ std::ostream& operator<< (std::ostream& ostr, Header<T> const& head)
     ostr << head.tree_domain << std::endl;
 
     return ostr;
-}
+  }
 
-template<class T>
-Header<T> createtreeheader (int const& nt, int const& nk, Domain<T> const& d)
-{
+  template<class T>
+  Header<T> createtreeheader (int const& nt, int const& nk, Domain<T> const& d)
+  {
     try
     {
-        Header<T> hd (nt, nk, d);
-        return hd;
+      Header<T> hd (nt, nk, d);
+      return hd;
     }
     catch (LocLengthError<T> lo)
     {
-        std::cout << std::endl << std::endl;
-        std::cout << "warning!	createtreeheader : max dimension exceeded" << std::endl;
-        std::cout << "the limit is " << lo.getmaxtreeloc() - 1
-                  << " while needed at least " << lo.gettreeloc() << std::endl;
-        std::exit (EXIT_FAILURE);
+      std::cout << std::endl << std::endl;
+      std::cout << "warning!	createtreeheader : max dimension exceeded" << std::endl;
+      std::cout << "the limit is " << lo.getmaxtreeloc() - 1
+                << " while needed at least " << lo.gettreeloc() << std::endl;
+      std::exit (EXIT_FAILURE);
     }
-}
+  }
 
-template<class T>
-void Header<T>::settreeloc (int const& nt)
-{
+  template<class T>
+  void Header<T>::settreeloc (int const& nt)
+  {
     try
     {
-        stml (nt);
+      stml (nt);
     }
     catch (LocLengthError<T> lo)
     {
-        std::cout << std::endl << std::endl;
-        std::cout << "warning!	settreeloc : max dimension exceeded" << std::endl;
-        std::cout << "the limit is " << lo.getmaxtreeloc() - 1
-                  << " while requested " << lo.gettreeloc() << std::endl;
-        std::cout << "increasing tree memory locations up to the limit" << std::endl;
-        stml (lo.getmaxtreeloc() - 1);
+      std::cout << std::endl << std::endl;
+      std::cout << "warning!	settreeloc : max dimension exceeded" << std::endl;
+      std::cout << "the limit is " << lo.getmaxtreeloc() - 1
+                << " while requested " << lo.gettreeloc() << std::endl;
+      std::cout << "increasing tree memory locations up to the limit" << std::endl;
+      stml (lo.getmaxtreeloc() - 1);
     }
-}
+  }
 
 }// end namspace ADT
 
