@@ -1,64 +1,41 @@
-FILE README: CPgeom.so.1.0
+EDFM V1.0
+Authors: Luca Formaggia, Anna Scotti, Politecnico di Milano, Milano, Italy
+         Luca Turconi, MOXOFF S.r.L, Milano, Italy
 
-Il makefile offre diverse possibilità per compilare e installare la libreria.
+COMPILATION INSTRUCTION
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Installare libCPgeom %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The software has been compiled on g++ V4.6.1 and is written in standard C++98.
+It is provided with a simple Makefile
 
-Lanciando il comando
-> make install
-la libreria viene installata nella directory di sitema "/usr/lib".
-In questo caso vengono anche complilati tutti i casi test:
-main_testRefined, main_Bashkirian, main_tutorial.
-Gli eseguibili sono disponibili nella directory corrente.
+The steps to be followed are the following
 
-Per disinstallare la libreria eseguire il comando:
-> make uninstall
+make install will create in the ./lib directory both the static and the shared version of the library
+make main_edfm creates the executable
+make doc creates in the doc directory the reference manual (requires DoxyGen installed)
+make clean cleans the object files
+make clean_lib cleans the libraries
+make clean_doc cleans documentation in the doc directory
+make dist_clean cleans everything
 
-IMPORTANTE: per eseguire questo comando bisogna prima acquisire i privilegi necessari. (sudo)
+make old_propertis is needed only for debugging: it uses an different technique to calculate properties"
+ depending on the type of compilation desired
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Installare libCPgeom-dev %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Inside the Makefile there are different lines that can be commented/uncommented to obtain different behavior:
 
-Lanciando il comando
-> make libdev
-la libreria viene creata nella directory corrente.
-Sarà così possibile utilizzarla per compilare dei nuovi codici senza intaccare
-le directory di sistema.
+# Optimised version
+#OPTFLAGS = -O3 -DNDEBUG
+# For debugging
+#OPTFLAGS = -g -fno-inline
 
-Per compilare tutti i casi test insieme lanciare il comando:
-> make tests
-Per compilare i singoli casi test basta lanciare il comando:
-> make main_<NOMEDELTEST>
+# Use verbose for extra info
+#CPPFLAGS=-DVERBOSE
 
-In questo caso, la libreria non risulta installata nelle directory di sistema.
-Per eseguire i casi test è necessario quindi esportare la directory corrente
-tra quelle in cui vengono ricercate le libreria dinamiche.
-Per farlo basta lanciare il comando:
-> export LD_LIBRARY_PATH=.
-I casi test possono a questo punto essere lanciati:
-> ./main_<NOMEDELTEST>
+# Activate OpenMP
+#OMPFLAGS = -fopenmp
+# When debugging take away openmp
+#OMPFLAGS = 
 
-Lanciando il comando:
-> make clean
-verranno cancellati tutti i file oggetto e gli eseguibili dei test.
-
-Per rimuovere la libreria dalla directory corrente, lanciare il comando:
-> make clean_lib
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Creazione della documentazione Doxygen %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-E' possibile generare la documentazione della libreria in formato html lanciando il comando:
-> make doc
-
-Per rimuovere la documentazione basta lanciare il comando:
-> make clean_doc
-
-
-NOTA: Per calcolare le proprieta` delle faglie con l'algoritmo precedente lanciare 
-
-make old_properties
+# Release version
+#LDFLAGS= $(OPTFLAGS) 
+# For development version we hard link the loading of shared libs
+#LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 

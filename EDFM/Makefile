@@ -1,14 +1,20 @@
 CXX = g++
-WARFLAGS = -Wall
+WARFLAGS = -Wall -pedantic
+# Optimised version
 OPTFLAGS = -O3 -DNDEBUG
+# For debugging
 #OPTFLAGS = -g -fno-inline
-#OPTFLAGS = -g 
 CPPFLAGS=
 # Use verbose for extra info
 #CPPFLAGS=-DVERBOSE
+# Activate OpenMP
 OMPFLAGS = -fopenmp
+# When debugging take away openmp
 #OMPFLAGS = 
 CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) $(CPPFLAGS) -I./src -I../external/include
+# Release version
+#LDFLAGS= $(OPTFLAGS) 
+# For development version we hard link the loading of shared libs
 LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 
 LDLIBS=-L../external/lib -lqhull $(OMPFLAGS)
 LOG_LINKER = link.log
@@ -26,22 +32,25 @@ all:
 	@echo
 	@echo To install the library use:
 	@echo make install
-	@echo  "(to remove: >make uninstall)"
-	@echo  "(to remove all object files: >make clean & >make clean_lib)"
+	@echo  "to remove: >make uninstall)"
+	@echo  "to remove all object files: make clean"
+	@echo  "to remove library flies files: make clean_lib"
+	@echo  "to remove doc files: make clean_doc"
+	@echo  "to remove all object, libs and doc: make dist_clean"
 	@echo
 	@echo  "to compile the program:"
 	@echo  "make main_edfm"
-	@echo  "to compile the program with the old procedule:"
+	@echo  "to create the documentation"
+	@echo  "make doc"
+	@echo  "to compile the program with the old procedure:"
 	@echo  "make old_properties"
-	@echo  " to create the documentation"
-	@echo  " make doc"
 doc:
 	doxygen Doxyfile
 
 install: $(INSTALLDIR)/libCPgeom.so.1.0
 
 old_properties:
-	$(MAKE) main_edfm -DOLD_PROPERTIES
+	$(MAKE) main_edfm_old 
 
 $(INSTALLDIR)/libCPgeom.so.1.0: $(OBJ)
 	$(CXX) $(LDFLAGS) -shared -Wl,-soname,libCPgeom.so.1 -o libCPgeom.so.1.0 $(OBJ) $(LDLIBS)
@@ -62,8 +71,14 @@ libdev: install
 main_edfm: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm.o  
 	$(CXX) $(LDFLAGS) -o main_edfm main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
 
+main_edfm_old: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm_old.o  
+	$(CXX) $(LDFLAGS) -o main_edfm_old main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
+
+main_edfm_old.o: main_edfm.cpp
+	$(CXX) $(CXXFLAGS) -DOLD_PROPERTIES -c -o main_edfm_old.o main_edfm.cpp
+
 main_edfm.o: main_edfm.cpp
-	$(CXX) $(CXXFLAGS) -c -o main_edfm.o main_edfm.cpp
+	$(CXX) $(CXXFLAGS) -c -o main_edfm_old.o main_edfm.cpp
 
 $(OBJ): %.o: %.cpp $(HEADERS)
 	$(CXX) -c $(CXXFLAGS) -fPIC $< -o $@
@@ -83,7 +98,9 @@ clean:
 	@rm -f main_anna
 
 clean_lib:
-	@rm -f libCPgeom.so*
+	@rm -f lib/libCPgeom.*
+
+dist_clean: clean clean_lib clean_doc
 
 uninstall:
 	rm -f $(INSTALLDIR)libCPgeom.so
