@@ -56,10 +56,12 @@ namespace Geometry
       {
         pos = line.find_first_of ("0123456789");
         pos1 = line.find_last_of ("0123456789");
-        char provv[pos1 - pos];
-        gmm::size_type length = line.copy (provv, pos1 + 1 - pos , pos);
-        provv[length] = '\0';
-        M_nfractures = atoi (provv);
+	//        char provv[pos1 - pos];
+        //gmm::size_type length = line.copy (provv, pos1 + 1 - pos , pos);
+        //provv[length] = '\0';
+	std::string temp=line.substr(pos,pos1+1-pos);
+        //M_nfractures = atoi (provv);
+        M_nfractures = atoi (temp.c_str());
       }
       pos = line.find ("BEGIN FRACTURE");
       if (pos != std::string::npos)
@@ -159,28 +161,34 @@ namespace Geometry
     gmm::size_type found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     gmm::size_type found2 = line.find_last_of (" ");
-    char provv[found - found2];
-    gmm::size_type length = line.copy (provv, found - found2 , found2 + 1);
-    provv[length] = '\0';
-    pz = atof (provv);
+    std::string temp=line.substr(found2+1,found-found2);
+    //char provv[found - found2];
+    //    gmm::size_type length = line.copy (provv, found - found2 , found2 + 1);
+    //provv[length] = '\0';
+    //pz = atof (provv);
+    pz = atof (temp.c_str());
     line.resize (found2 + 1);
 
     found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     found2 = line.find_last_of (" ");
-    char provv1[found - found2];
-    length = line.copy (provv1, found - found2 , found2 + 1);
-    provv1[length] = '\0';
-    py = atof (provv1);
+    //char provv1[found - found2];
+    //length = line.copy (provv1, found - found2 , found2 + 1);
+    temp=line.substr(found2+1,found-found2);
+    //    provv1[length] = '\0';
+    //py = atof (provv1);
+    py = atof (temp.c_str());
     line.resize (found2 + 1);
 
     found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     found2 = line.find_last_of (" ");
-    char provv2[found - found2];
-    length = line.copy (provv2, found - found2 , found2 + 1);
-    provv2[length] = '\0';
-    px = atof (provv2);
+    temp=line.substr(found2+1,found-found2);
+    //char provv2[found - found2];
+    // length = line.copy (provv2, found - found2 , found2 + 1);
+    //provv2[length] = '\0';
+    //px = atof (provv2);
+    px=atof(temp.c_str());
   }
 
   void readProperties (std::string line, gmm::size_type& n_points, Real& perm, Real&  compr, Real& aperture)
@@ -188,28 +196,35 @@ namespace Geometry
     gmm::size_type found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     gmm::size_type found2 = line.find_last_of (" ");
-    char provv[found - found2];
-    gmm::size_type length = line.copy (provv, found - found2 , found2 + 1);
-    provv[length] = '\0';
-    aperture = atof (provv);
+    std::string temp=line.substr(found2+1,found-found2);
+    //char provv[found - found2];
+    //gmm::size_type length = line.copy (provv, found - found2 , found2 + 1);
+    //provv[length] = '\0';
+    //aperture = atof (provv);
+    aperture=atof(temp.c_str());
     line.resize (found2 + 1);
 
     found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     found2 = line.find_last_of (" ");
-    char provv1[found - found2];
-    length = line.copy (provv1, found - found2 , found2 + 1);
-    provv1[length] = '\0';
-    compr = atof (provv1);
+    temp=line.substr(found2+1,found-found2);
+    //char provv1[found - found2];
+    //length = line.copy (provv1, found - found2 , found2 + 1);
+    //provv1[length] = '\0';
+    //compr = atof (provv1);
+    compr = atof (temp.c_str());
     line.resize (found2 + 1);
 
     found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     found2 = line.find_last_of (" ");
-    char provv2[found - found2];
-    length = line.copy (provv2, found - found2 , found2 + 1);
-    provv2[length] = '\0';
-    perm = atof (provv2);
+    temp  = line.substr(found2+1,found-found2);
+    //char provv2[found - found2];
+    //length = line.copy (provv2, found - found2 , found2 + 1);
+    //provv2[length] = '\0';
+    //perm = atof (provv2);
+    perm = atof (temp.c_str());
+    
     line.resize (found2 + 1);
 
     found = line.find_last_of ("0123456789");
@@ -220,10 +235,12 @@ namespace Geometry
     found = line.find_last_of ("0123456789");
     line.resize (found + 1);
     found2 = line.find_last_of (" ");
-    char provv3[found - found2];
-    length = line.copy (provv3, found - found2 , found2 + 1);
-    provv3[length] = '\0';
-    n_points = atoi (provv3);
+    temp =  line.substr(found2+1,found-found2);
+    //char provv3[found - found2];
+    //length = line.copy (provv3, found - found2 , found2 + 1);
+    //provv3[length] = '\0';
+    //n_points = atoi (provv3);
+    n_points = atoi (temp.c_str());
 
     line.resize (found2 + 1);
   }
