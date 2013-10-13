@@ -44,6 +44,8 @@ int main(int argc, char** argv){
 	GetPot   cl(parameterFile);
 
 	std::string outpath=cl("outpath","");
+	bool noOutput=(outpath == std::string(""));
+	if(noOutput) std::cout<<" No output directory specified. No output will be produced"<<std::endl;
 	
 	std::string gridFile=cl("GridFile","");
 	if(gridFile==std::string(""))
@@ -82,7 +84,7 @@ int main(int argc, char** argv){
 	}
 
 	Fractures lista(fractureFile,conv_z, direzioneF, angleF);
-	std::cout << "Creata la lista delle fratture"<<std::endl;
+	std::cout << "List of fractures has been created"<<std::endl;
 		
 	std::vector<GridIntersections> intMegaStore;	
 	std::vector<CProp> propStore;	
@@ -122,7 +124,7 @@ int main(int argc, char** argv){
 	}
 	calcoloint.stop();
 	
-	std::cout << "Calcolate tutte le intersezioni con la griglia in  "<<calcoloint <<std::endl;
+	std::cout << "All intersections computed in "<<calcoloint <<std::endl;
 
 	lista.computeIntersections(0);
 	
@@ -150,67 +152,82 @@ int main(int argc, char** argv){
 	lista.computeIntersections(1);
 
 	calcologeom.stop();
-	std::cout << "Calcolate tutte le proprietà delle fratture in  "<<calcologeom <<std::endl;
+	std::cout << "All fracture properties computed in "<<calcologeom <<std::endl;
 
-
-	esportazione.start();
-	for (gmm::size_type i=0; i<lista.M_nfractures;++i){
+	if(!noOutput)
+	  {
+	    esportazione.start();
+	    for (gmm::size_type i=0; i<lista.M_nfractures;++i){
+	      
+	      Fracture ff(lista.M_fractures[i]);
+	      Fault f(ff);
+	      
+	      if (cl("exportIntersections","no")=="yes"){	
+		std::stringstream ss4 (std::stringstream::in | std::stringstream::out);
+		ss4<< outpath<<"/intersections"<<i+1<<".vtk";
+		intMegaStore[i].exportVtk(ss4.str());
+	      }
+	      
+	      // (8) Export solutions
+	      
+	      if (cl("exportFractures","no")=="yes"){		
+		std::stringstream ss (std::stringstream::in | std::stringstream::out);
+		ss<< outpath<<"/fault"<<i+1<<".vtk";
+		f.exportVtk(ss.str());
+	      }
+	      if (cl("exportGeoprop","no")=="yes"){	
+		std::stringstream ss1 (std::stringstream::in | std::stringstream::out);
+		ss1<< outpath<< "/grid_Aree"<<i+1<<".vtk";
+		grid.exportVtk(ss1.str(), propStore[i].getAreas(),"area",0);
 		
-		Fracture ff(lista.M_fractures[i]);
-		Fault f(ff);
-
-		if (cl("exportIntersections","no")=="yes"){	
-			std::stringstream ss4 (std::stringstream::in | std::stringstream::out);
-		        ss4<< outpath<<"/intersections"<<i+1<<".vtk";
-			intMegaStore[i].exportVtk(ss4.str());
-		}
-
-		// (8) Export solutions
+		std::stringstream ss2 (std::stringstream::in | std::stringstream::out);
+		ss2<< outpath<<"/grid_vol"<<i+1<<".vtk";
+		grid.exportVtk(ss2.str(), propStore[i].getVolumes(),"volumi",0);
 		
-		if (cl("exportFractures","no")=="yes"){		
-			std::stringstream ss (std::stringstream::in | std::stringstream::out);
-			ss<< outpath<<"/fault"<<i+1<<".vtk";
-			f.exportVtk(ss.str());
-		}
-		if (cl("exportGeoprop","no")=="yes"){	
-			std::stringstream ss1 (std::stringstream::in | std::stringstream::out);
-	       		ss1<< outpath<< "/grid_Aree"<<i+1<<".vtk";
-			grid.exportVtk(ss1.str(), propStore[i].getAreas(),"area",0);
-	     
-			std::stringstream ss2 (std::stringstream::in | std::stringstream::out);
-		        ss2<< outpath<<"/grid_vol"<<i+1<<".vtk";
-			grid.exportVtk(ss2.str(), propStore[i].getVolumes(),"volumi",0);
-			
-			std::stringstream ss3 (std::stringstream::in | std::stringstream::out);
-		        ss3<< outpath<<"/grid_d"<<i+1<<".vtk";
-			grid.exportVtk(ss3.str(), propStore[i].getDmedio(),"d",0);
-		}
-		if (cl("exportFrGrids","no")=="yes"){		
+		std::stringstream ss3 (std::stringstream::in | std::stringstream::out);
+		ss3<< outpath<<"/grid_d"<<i+1<<".vtk";
+		grid.exportVtk(ss3.str(), propStore[i].getDmedio(),"d",0);
+	      }
+	      if (cl("exportFrGrids","no")=="yes"){		
 		std::stringstream ss4 (std::stringstream::in | std::stringstream::out);
 	        ss4<<outpath<< "/meshF"<<i+1<<".vtk";
 		(lista.M_fractures[i]).exportVtk(ss4.str());
-	}
-
-	}
-
-	for (gmm::size_type i=0;i<lista.M_nfractures;++i){
-	std::stringstream ss5 (std::stringstream::in | std::stringstream::out);
-	ss5<< outpath <<"/frattura"<<i+1<<".txt";
-	std::ofstream myfile;
-	myfile.open(ss5.str().c_str());
-	(lista.M_fractures[i]).exportFracture2(myfile,i);
-	myfile.close();
-	}
-
-	std::stringstream ss6 (std::stringstream::in | std::stringstream::out);
-	ss6<< outpath <<"/intMatrix.txt";
-	std::ofstream myfile;
-	myfile.open(ss6.str().c_str());
-	lista.exportIntersectionMatrix(myfile);
-
-	esportazione.stop();
-	std::cout << "Esportazione in  "<<esportazione <<std::endl;
-	
+	      }
+	      
+	    }
+	    
+	    for (gmm::size_type i=0;i<lista.M_nfractures;++i){
+	      std::stringstream ss5 (std::stringstream::in | std::stringstream::out);
+	      ss5<< outpath <<"/frattura"<<i+1<<".txt";
+	      std::ofstream myfile;
+	      myfile.open(ss5.str().c_str());
+	      if(myfile.fail())
+		{
+		  std::cerr<<"Error opening file "<<ss5.str()<<std::endl;
+		}
+	      else
+		{
+		  (lista.M_fractures[i]).exportFracture2(myfile,i);
+		}
+	      myfile.close();
+	    }
+	    
+	    std::stringstream ss6 (std::stringstream::in | std::stringstream::out);
+	    ss6<< outpath <<"/intMatrix.txt";
+	    std::ofstream myfile;
+	    myfile.open(ss6.str().c_str());
+	      if(myfile.fail())
+		{
+		  std::cerr<<"Error opening file "<<ss6.str()<<std::endl;
+		}
+	      else
+		{
+		  lista.exportIntersectionMatrix(myfile);
+		}
+	      myfile.close();
+	    esportazione.stop();
+	    std::cout << "Export in  "<<esportazione <<std::endl;
+	  }
 	
 	return 0;
 	
