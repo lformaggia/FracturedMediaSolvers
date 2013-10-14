@@ -1,3 +1,6 @@
 [submodule "eni-kafres-grid"]
 	path = eni-kafres-grid
 	url = ssh://gitolite@moxoff-gitolite/eni-kafres-grid.git
+[submodule "GPRS"]
+	path = GPRS
+	url = ssh://gitolite@gitserver.mate.polimi.it/eniGPRS
