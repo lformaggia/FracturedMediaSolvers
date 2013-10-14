@@ -92,10 +92,7 @@ clean_doc:
 clean:
 	@rm -f *.o
 	@rm -f ./src/*.o
-	@rm -f main_Bashkirian
-	@rm -f main_tutorial
-	@rm -f main_testRefined
-	@rm -f main_anna
+	@rm -f main_edfm
 
 clean_lib:
 	@rm -f lib/libCPgeom.*
