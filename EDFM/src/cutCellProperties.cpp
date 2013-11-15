@@ -762,7 +762,6 @@ namespace Geometry
     {
       Triangle t (points[elements[i][0]], points[elements[i][1]], points[elements[i][2]]);
       Area = Area + t.area();
-      //std::cout << t.area()<<std::endl;
     }
     return Area;
   }
@@ -777,11 +776,11 @@ namespace Geometry
       CG = CG + punti[i];
 
     }
-
+    if (punti.size()>0){
     CG.x = (1. / Real (punti.size() ) ) * CG.x;
     CG.y = (1. / Real (punti.size() ) ) * CG.y;
     CG.z = (1. / Real (punti.size() ) ) * CG.z;
-
+    }
     return CG;
   }
 
@@ -982,8 +981,10 @@ namespace Geometry
     puntiarea_uv.reserve (npunti);
 
     // Loops on all intersection points to get uv coordinates
-    for (gmm::size_type i = 0; i < npunti; ++i) puntiarea_uv.push_back (Point2D (M_faultpointer->inv_param (puntiarea[i]) ) );
-
+    for (gmm::size_type i = 0; i < npunti; ++i) 
+    {
+	puntiarea_uv.push_back (Point2D (M_faultpointer->inv_param (puntiarea[i]) ) );
+    }
     // Loops on all intersection points
     for (gmm::size_type i = 0; i < npunti; ++i)
     {
@@ -1154,6 +1155,7 @@ namespace Geometry
       for (gmm::size_type j = 0; j < nodi.size(); ++j)
       {
         Point3D diff = intersezione.SMax.A() - nodi[j];
+
         Intdprovv = Intdprovv + pesi[j] * gmm::abs (diff.dot (intersezione.Normale) ) / intersezione.Normale.norm();
 
       }
@@ -1236,11 +1238,11 @@ namespace Geometry
 
     }
 
-    Segment SSMax;
+   Segment SSMax;
     SSMax.setA (20 * intersezione.SMax.A() - 19 * intersezione.SMax.B() );
     SSMax.setB (20 * intersezione.SMax.B() - 19 * intersezione.SMax.A() );
 
-    for (gmm::size_type i = 0; i < puntisin.size(); ++i)
+  /*   for (gmm::size_type i = 0; i < puntisin.size(); ++i)
     {
       for (gmm::size_type j = 0; j < puntidx.size(); ++j)
       {
@@ -1248,22 +1250,28 @@ namespace Geometry
         Point3D A (puntisin[i]), B (puntidx[j]), medio;
         Segment SS (A, B);
         SSMax.intersectTheSegment (SS, medio);
-        if (SS.isIn (medio) && cella.isIn (medio) )
+	
+	if (SS.isIn (medio))// && cella.isIn (medio) )
         {
-          puntilineaprovv.push_back (medio);
+         puntilineaprovv.push_back (medio);
         }
+	  
       }
-    }
+    }*/
 
-    if (puntilineaprovv.size() >= 2)
-    {
-      Segment SSS (maxSegment (puntilineaprovv) );
+     std::vector<Point3D> pp;
+     if (cella.segmentIntersectCell (SSMax, pp)){
+
+
+    if (pp.size() >= 2)
+    {// std::cout << "trovati 2"<<std::endl;
+      Segment SSS (maxSegment (pp) );
       puntilinea.push_back (SSS.A() );
       puntilinea.push_back (SSS.B() );
     }
-
+    }
     if (puntisin.size() > 0)
-    {
+    { //std::cout << "sin"<<puntisin.size() <<std::endl;
       for (gmm::size_type ii = 0; ii < puntilinea.size(); ++ii)
       {
         puntisin.push_back (puntilinea[ii]);
@@ -1295,7 +1303,7 @@ namespace Geometry
 
         if (cont == 3)
         {
-
+	
           Triangle t (guscio1.getPoint (quali[0]), guscio1.getPoint (quali[1]), guscio1.getPoint (quali[2]) );
           std::vector<Real> pesi (t.getGaussWeights (4) );
           Real Intdprovv (0);
@@ -1316,7 +1324,8 @@ namespace Geometry
 
 
     if (puntidx.size() > 0 )
-    {
+        {// std::cout << "dex"<<puntidx.size() <<std::endl;
+ 
       for (gmm::size_type ii = 0; ii < puntilinea.size(); ++ii)
       {
         puntidx.push_back (puntilinea[ii]);
@@ -1328,6 +1337,7 @@ namespace Geometry
       Hull guscio2 (puntidx);
       gmm::size_type npunti_faglia = puntidx.size() - 1;
       //calcolo tutto a dx
+
       for (gmm::size_type i = 0; i < guscio2.getNtetra(); ++i)
       {
         std::vector<gmm::size_type> punti_tetra (guscio2.getPointsSimplex (i) );
@@ -1362,8 +1372,7 @@ namespace Geometry
         }
       }
     }
-
-
+//std::cout << Intd/Area<<std::endl;
     return Intd / Area;
 
   }
@@ -1490,10 +1499,11 @@ namespace Geometry
           {
             // This beats me!
             dmediosingolo = this->setIntdist_linea (puntiAreaNew, no, M_faultpointer->inter() [i], it, isPartial);
-
+	
           }
 
-          M_dmedioint[i][M_Ne - 1] = dmediosingolo;
+		M_dmedioint[i][M_Ne-1] = dmediosingolo;
+	  
 
         }
 
