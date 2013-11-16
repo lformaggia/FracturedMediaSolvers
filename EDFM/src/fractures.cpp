@@ -133,7 +133,7 @@ namespace Geometry
         {
           Segment SS (maxSegment (puntiint) );
 
-          if ( (primo || secondo) && (i != j) && (M_fractures[i].areaFault() > 0) && (M_fractures[j].areaFault() > 0) && SS.length() > 0)
+          if ( (primo || secondo) && (i != j) && (M_fractures[i].areaFault() > 0) && (M_fractures[j].areaFault() > 0) && SS.length() > 	                		 		       EDFM_Tolerances::POINT2DCOINCIDENT)
           {
             M_fractures[i].setInt (j, M_fractures[j], puntiint, completo);
 

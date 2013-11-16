@@ -1,17 +1,36 @@
 #GridFile=./data/GRID_FINE_no_map.GRDECL         #nome fine della griglia
+#FractureFile=./data/frac.fab  
+
+#----------------------------------
+ 
+GridFile=./data/Frac_24_10_13/Grid_150x150.GRDECL         #nome fine della griglia
+FractureFile=./data/Frac_24_10_13/Frac_rev_23_10_13_feet.fab
+ 
+#----------------------------------
+
+#GridFile=./data/gridTest      
+#FractureFile=./data/lista_mia2.fab    #nome del file con le fratturec
+
+#---------------------------------------------
+
+#GridFile=./data/EP_Cart_metric.GRDECL      
+#FractureFile=./data/EP_longf_metriczp.fab    #nome del file con le fratturec
+
+#----------------------------------------------
+
 #GridFile=./data/CP_grid_fine.GRDECL         #nome fine della griglia
+#FractureFile=./data/Long_fracture_rim_412_feetS.fab
+
 #GridFile=./data/Cartesian_grid.GRDECL         #nome fine della griglia
 #GridFile=./data/EP_Cart_metric.GRDECL      
-#FractureFile=EP_longf_metriczp.fab    #nome del file con le fratturec
 
-GridFile=./data/gridTest      
-FractureFile=./data/lista_mia2.fab    #nome del file con le fratturec
+
 
 #FractureFile=fract_new_well_metric.fab    #nome del file con le fratturec
-#FractureFile=fract_new_well_metric_vertS.fab    #nome del file con le fratturec
+#FractureFile=./data/fract_new_well_metric_vertS.fab    #nome del file con le fratturec
 #FractureFile=Long_fracture_rim_412_feet.fab
 #FractureFile=Long_fracture_rim_640_feet.fab   
-#FractureFile=frac.fab    
+
 #FractureFile=Rim_76_hf3.fab    
 conv_z=1   #=1 se le z della griglia e delle fratture sono concordi, altrimenti =-1 e converte 
 isOPT=yes
@@ -32,8 +51,8 @@ rotate_z=no
 
 exportFractures=yes
 exportFrGrids=yes
-exportGeoprop=yes
-exportIntersections=yes
+exportGeoprop=no
+exportIntersections=no
 exportGrid=yes
 
 #-------------------percorso dei file di output---------------------------------------

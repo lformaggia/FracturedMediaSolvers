@@ -56,8 +56,13 @@ namespace Geometry
     for (gmm::size_type i = 0; i < geoprop.getI().size(); ++i)
     {
       gmm::size_type NN = geoprop.getI() [i] - 1 + (geoprop.getJ() [i] - 1) * geoprop.getNx() + (geoprop.getK() [i] - 1) * geoprop.getNx() * geoprop.getNy() + 1;
+     
+      CPcell cella (M_gridpointer->cell (geoprop.getI() [i], geoprop.getJ() [i], geoprop.getK() [i]) );
+      Point3D a(cella.getVerticesVector()[0]-cella.getVerticesVector()[1]);
+      Point3D b(cella.getVerticesVector()[0]-cella.getVerticesVector()[3]);
+
       Real aa (geoprop.getAreas() [NN]);
-      if (aa > 0)
+      if (aa > EDFM_Tolerances::SMALL_AREA*abs(a.norm()*b.norm()))
       {
         M_Ne = M_Ne + 1;
         M_areas.push_back (aa);
@@ -153,9 +158,12 @@ namespace Geometry
       for (gmm::size_type j = 0; j < M_isintby.size(); ++j)
       {
         for (gmm::size_type k = 0; k < geoprop.getMdmedioInt (j).size(); ++k)
-        {
-          gmm::size_type NN = geoprop.getI() [k] - 1 + (geoprop.getJ() [k] - 1) * geoprop.getNx() + (geoprop.getK() [k] - 1) * geoprop.getNx() * geoprop.getNy() + 1;
-          if (geoprop.getAreas() [NN] > 0)
+        {  
+	  gmm::size_type NN = geoprop.getI() [k] - 1 + (geoprop.getJ() [k] - 1) * geoprop.getNx() + (geoprop.getK() [k] - 1) * geoprop.getNx() * geoprop.getNy() + 1;
+           CPcell cella (M_gridpointer->cell (geoprop.getI() [k], geoprop.getJ() [k], geoprop.getK() [k]) );
+            Point3D a(cella.getVerticesVector()[0]-cella.getVerticesVector()[1]);
+            Point3D b(cella.getVerticesVector()[0]-cella.getVerticesVector()[3]);
+	  if (geoprop.getAreas() [NN] >EDFM_Tolerances::SMALL_AREA*abs(a.norm()*b.norm()))
           {
             M_inter[j].M_dmedio.push_back (geoprop.getMdmedioInt (j) [k]);
           }
@@ -298,7 +306,7 @@ namespace Geometry
       for (gmm::size_type j = 0; j < M_S1x.size(); ++j && j != i)
       {
         if (M_ipos[j] == M_ipos[i] + 1 && M_jpos[i] == M_jpos[j] && M_kpos[i] == M_kpos[j])
-        {
+        { 
           TT = 1. / (1. / M_TH2X[i] + 1. / M_TH1X[j]);
         }
       }
@@ -419,7 +427,6 @@ namespace Geometry
   void Fracture::setInt (gmm::size_type i, Fracture& altra, std::vector<Point3D> punti, bool completo)
   {
     UInt dove (0);
-
     if (completo == false)
     {
       M_isintby.push_back (i);
@@ -443,6 +450,7 @@ namespace Geometry
     }
 
     Segment SS (maxSegment (punti) );
+    Segment SSinv(SS.B(), SS.A());
     //  Point3D AA(0,0,0);
     //  Segment SS(AA,AA);
     nuova.SMax = SS;
@@ -457,13 +465,12 @@ namespace Geometry
       for (gmm::size_type jj = 0; jj < altra.M_ii().size(); ++jj )
       {
         if (M_ipos[ii] == altra.M_ii() [jj] && M_jpos[ii] == altra.M_jj() [jj] && M_kpos[ii] == altra.M_kk() [jj])
-        {
-
+        { 
           CPcell CC (M_gridpointer->cell (M_ipos[ii], M_jpos[ii], M_kpos[ii]) );
           std::vector<Point3D> pp;
-          if (CC.segmentIntersectCell (SS, pp) )
+          if (CC.segmentIntersectCell (SS, pp) || CC.segmentIntersectCell (SSinv, pp))
           {
-
+	  
             nuova.M_i.push_back (M_ipos[ii]);
             nuova.M_j.push_back (M_jpos[ii]);
             nuova.M_k.push_back (M_kpos[ii]);
@@ -613,7 +620,7 @@ namespace Geometry
     {
       gmm::size_type nn (M_sortCG[n]);
       myfile << i + 1 << "\t" << n + 1 << "\t(" << M_ipos[nn] << "\t" << M_jpos[nn] << "\t" << M_kpos[nn] << ")\t" << M_areas[nn]*this->aperture() << "\t\t" << M_areas[nn] << "\t\t"
-             << M_Dmedio[nn] << "\t\t" << M_TM[nn] << std::endl; //"\t"<<M_L1x[nn].norm()<<"\t"<<M_L1z[nn].norm()<<std::endl;
+             << M_Dmedio[nn] << "\t\t" << M_TM[nn] <<std::endl;// "\t\t"<<M_S1x[nn].length()<<"\t\t"<<M_S2x[nn].length()<<std::endl;
     }
 
 
@@ -675,8 +682,8 @@ namespace Geometry
       {
         myfile << "WITH\t" << M_isintby[ff] + 1 << std::endl;
         myfile << "Nf1\tNc1\t---------\tNf2\tNc2\t\tdmedio\tTf1f2" << std::endl;
-        for (gmm::size_type kk = 0; kk < M_inter[ff].M_i.size(); ++kk)
-        {
+       for (gmm::size_type kk = 0; kk < M_inter[ff].M_i.size(); ++kk)
+        { 
 
           myfile << i + 1 << "\t" << M_inter[ff].Which1sorted[kk] + 1 << "\t---------\t" << M_isintby[ff] + 1 << "\t" << M_inter[ff].Which2sorted[kk] + 1 << "\t\t" << M_inter[ff].M_dmedio[kk] << "\t" << M_inter[ff].M_Tf1f2[kk] << std::endl;
         }
@@ -847,8 +854,8 @@ namespace Geometry
             gmm::size_type where (0);
             for (gmm::size_type i = 0; i < ycg.size(); ++i)
             {
-              if (ycg[i] < minimo2 && ycg[i] > minimovar && M_kpos[i] == kk && find (M_sortCG.begin(), M_sortCG.end(), i) == M_sortCG.end() )
-              {
+              if (ycg[i] < minimo2 && ycg[i] > minimovar && M_kpos[i] == kk && find (M_sortCG.begin(), M_sortCG.end(), i) == M_sortCG.end()  )
+              { 
                 minimo2 = ycg[i];
                 where = i;
               }
@@ -862,7 +869,7 @@ namespace Geometry
       }
     }
 
-  }
+  } 
 
   void Fracture::sortCG_X()
   {

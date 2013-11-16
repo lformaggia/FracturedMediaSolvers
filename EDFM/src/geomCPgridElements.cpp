@@ -440,7 +440,7 @@ namespace Geometry
     std::vector<Real> uv_point (3, 0.);
 
     //  risultato=faccia.approxIntersectionWith(S);
-    faccia.newtonIntersectionWith_uv (S, uv_point, 1e-10, 100);
+    faccia.newtonIntersectionWith_uv (S, uv_point, EDFM_Tolerances::NEWTON_TOLERANCE, 100);
     risultato = faccia.param (uv_point[0], uv_point[1]);
     if (uv_point[2] == 0)
     {
@@ -458,14 +458,14 @@ namespace Geometry
     {
       Point3D ris;
       if (this->intersectTheFace (S, i, ris) )
-      {
+      { 
         vettpunti.push_back (ris);
       }
     }
     if (vettpunti.size() < 2)
     {
-      if (this->isIn (A) ) vettpunti.push_back (A);
-      if (this->isIn (B) ) vettpunti.push_back (B);
+      if (this->isIn (A) ) {vettpunti.push_back (A); }
+      if (this->isIn (B) ) {vettpunti.push_back (B); }
     }
     if (vettpunti.size() > 1)
     {

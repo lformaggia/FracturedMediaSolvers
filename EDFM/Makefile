@@ -72,13 +72,13 @@ main_edfm: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm.o
 	$(CXX) $(LDFLAGS) -o main_edfm main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
 
 main_edfm_old: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm_old.o  
-	$(CXX) $(LDFLAGS) -o main_edfm_old main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
+	$(CXX) $(LDFLAGS) -o main_edfm_old main_edfm_old.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
 
 main_edfm_old.o: main_edfm.cpp
 	$(CXX) $(CXXFLAGS) -DOLD_PROPERTIES -c -o main_edfm_old.o main_edfm.cpp
 
 main_edfm.o: main_edfm.cpp
-	$(CXX) $(CXXFLAGS) -c -o main_edfm_old.o main_edfm.cpp
+	$(CXX) $(CXXFLAGS) -c -o main_edfm.o main_edfm.cpp
 
 $(OBJ): %.o: %.cpp $(HEADERS)
 	$(CXX) -c $(CXXFLAGS) -fPIC $< -o $@

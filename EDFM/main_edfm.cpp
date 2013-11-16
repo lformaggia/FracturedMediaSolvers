@@ -127,7 +127,7 @@ int main(int argc, char** argv){
 	std::cout << "All intersections computed in "<<calcoloint <<std::endl;
 
 	lista.computeIntersections(0);
-	
+
 	calcologeom.start();
 	for (gmm::size_type i=0; i<lista.M_nfractures;++i){
 
