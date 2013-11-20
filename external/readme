@@ -32,9 +32,9 @@ cmake-gui (or other software to compile cmake files).
 You can then run again make clean. The libraries and headers will be in $EXTERNAL/lib and $EXTERNAL/
 
 
-EXCEPTION:
+OTHER UTILITIES:
 
 library gmm is formed just by header files, so i is stored in include/gmm/
 GetPot is a header file and is stored in include/Getpot
-
+The directory fpe contains utilities to activate floating point exception. A copy is stored also in include/ to be able to include it in the code if necessary
 
