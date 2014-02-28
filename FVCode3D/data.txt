@@ -1,0 +1,29 @@
+#------------------------------#
+#    Data file for FVCode3D    #
+#------------------------------#
+
+## input
+[mesh]
+mesh_dir	= ./data/
+mesh_file	= grid3.grid
+
+## output
+[output]
+output_dir	= ./results/
+output_file	= sol
+
+## problem parameter
+[problem]
+type		= steady # steady or unsteady 
+
+## fluid parameters
+[fluid]
+mobility	= 1.
+
+## boundary conditions
+[bc]
+theta		= 45.
+
+## Other
+[miscellaneous]
+verbose		= 1

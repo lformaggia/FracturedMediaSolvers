@@ -9,5 +9,8 @@
 #include "core/basic_type.hpp"
 #include "geometry/Point3D.hpp"
 #include "core/chrono.hpp"
+#include "GetPot"
+
+typedef	std::function<Real (Geometry::Point3D point)> Func;
 
 #endif /* TYPEDEFNITION_HPP_ */

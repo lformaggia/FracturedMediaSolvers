@@ -7,7 +7,7 @@
 #include "mesh/Properties.hpp"
 #include "utility/converter.hpp"
 
-void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties)
+void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties, const Real theta)
 {
 	Geometry::FractureNetwork3D FN(mesh);
 	std::vector<Geometry::Fracture3D> fracturesVector;
@@ -17,7 +17,7 @@ void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesM
 	Real max;
 	UInt compMax;
 
-	extractBC(mesh,properties);
+	extractBC(mesh,properties, theta);
 
 	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
@@ -44,12 +44,11 @@ void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesM
 	mesh.addFractureNetwork(FN);
 }
 
-void extractBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties)
+void extractBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties, const Real theta)
 {
 	Geometry::Point3D normal, center, centerFace;
 	Real max;
 	UInt compMax;
-	Real theta = 45;
 
 	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{

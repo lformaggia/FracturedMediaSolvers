@@ -14,6 +14,7 @@
 #include <memory>
 #include <iomanip>
 #include <utility>
+#include <functional>
 #include <tuple>
 
 #include <Eigen/Sparse>

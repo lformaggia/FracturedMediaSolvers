@@ -81,20 +81,20 @@ INSTALL(FILES ${LIB_HEADERS} DESTINATION ${INSTALL_INCLUDE})
 
 # Add data file
 add_custom_command(
-	TARGET fvdarcy3d POST_BUILD        		# Adds a post-build event to MyTest
-	#COMMAND ${CMAKE_COMMAND} -E copy_if_different  	# which executes "cmake - E copy_if_different..."
-	#"${PROJECT_SOURCE_DIR}/data.txt"     		# <--this is in-file
-	#"${PROJECT_BINARY_DIR}/data.txt"		# <--this is out-file path
-	COMMAND ${CMAKE_COMMAND} -E copy_if_different  	# which executes "cmake - E copy_if_different..."
-	"${PROJECT_SOURCE_DIR}/Readme"		# <--this is in-file
-	"${PROJECT_BINARY_DIR}/Readme"		# <--this is out-file path
+	TARGET fvcode.exe POST_BUILD        		# Adds a post-build event to MyTest
 	
-	IF(NOTEXISTS "${PROJECT_BINARY_DIR}/data/")
-		COMMAND ${CMAKE_COMMAND} -E make_directory data
-	ENDIF(NOTEXISTS "${PROJECT_BINARY_DIR}/data/")
+	IF(NOT EXISTS ${PROJECT_SOURCE_DIR}/data.txt)
+		COMMAND ${CMAKE_COMMAND} -E copy	  	# which executes "cmake - E copy_if_different..."
+		${PROJECT_SOURCE_DIR}/data.txt     		# <--this is in-file
+		${PROJECT_BINARY_DIR}/data.txt			# <--this is out-file path
+	ENDIF(NOT EXISTS ${PROJECT_SOURCE_DIR}/data.txt)
+	
+	COMMAND ${CMAKE_COMMAND} -E copy	  	# which executes "cmake - E copy_if_different..."
+	${PROJECT_SOURCE_DIR}/README			# <--this is in-file
+	${PROJECT_BINARY_DIR}/README			# <--this is out-file path
+	
+	COMMAND ${CMAKE_COMMAND} -E make_directory data
 
-	IF(NOTEXISTS "${PROJECT_BINARY_DIR}/results/")
-		COMMAND ${CMAKE_COMMAND} -E make_directory results
-	ENDIF(NOTEXISTS "${PROJECT_BINARY_DIR}/results/")
+	COMMAND ${CMAKE_COMMAND} -E make_directory results
 
 	)

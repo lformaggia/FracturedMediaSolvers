@@ -25,13 +25,13 @@ class QuadratureRule
 public:
 
 	typedef typename Geometry::Point3D Generic_Point;
-	typedef typename std::unique_ptr< QuadratureRule > QuadratureRuleHandler;
+	typedef typename std::unique_ptr<QuadratureRule> QuadratureRuleHandler;
 
 	//! Clone method for the class
 	/*!
 	 * It is used to pass the QuadratureRule to a class Quadrature
 	 */
-	virtual std::unique_ptr<QuadratureRule> clone() const =0;
+	virtual std::unique_ptr<QuadratureRule> clone() const = 0;
 
 	//! Method apply
 	/*!
@@ -62,7 +62,7 @@ public:
 	/*!
 	 * It is used to pass the QuadratureRule to a class Quadrature
 	 */
-    std::unique_ptr<QuadratureRule > clone() const;
+    std::unique_ptr<QuadratureRule> clone() const;
 
 	//! Method apply
 	/*!
@@ -71,7 +71,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	Real apply (const std::vector<Generic_Point> & pointVector, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const;
+	virtual Real apply(const std::vector<Generic_Point> & pointVector, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const;
 
 	//! Destructor
     virtual ~CentroidQuadrature(){};

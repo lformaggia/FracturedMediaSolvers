@@ -1,0 +1,25 @@
+---How to install---
+
+Create build directories:
+
+ > mkdir FVCode3D-build
+ > cd FVCode3D-build
+ > mkdir eigen-build
+ > cd eigen-build
+
+Compile eigen:
+
+ > cmake ../../FVCode3D/eigen
+ > make
+
+Compile FVCode3D:
+
+ > cd FVCode3D-build
+ > cmake ../FVCode3D
+ > make
+
+---Documentation---
+
+To generate documentation launch
+
+ > make doc

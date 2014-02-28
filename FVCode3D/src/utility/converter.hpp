@@ -16,9 +16,10 @@ class PropertiesMap;
  * Add the BCs and the fracture network
  * @param mesh reference to a Geometry::Mesh3D
  * @param properties reference to a Geometry::PropertiesMap
+ * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
  * @pre import grid file by means of the TPFA Standard format
  */
-void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties);
+void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & propertie, const Real theta = 0.);
 
 //! Generate the BC ids from a standard TPFA file format
 /*!
@@ -26,9 +27,10 @@ void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesM
  * The id is set by considering the maximum component and the sign of the normal of a boundary facet.
  * @param mesh reference to a Geometry::Mesh3D
  * @param properties reference to a Geometry::PropertiesMap
+ * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
  * @pre import grid file by means of the TPFA Standard format
  */
-void extractBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties);
+void extractBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties, const Real theta = 0.);
 
 //! Save a grid file as an improved TPFA format, by adding the lacking data
 /*!

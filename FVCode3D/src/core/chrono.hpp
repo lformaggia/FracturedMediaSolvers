@@ -2,6 +2,7 @@
  *	@file chrono.hpp
  *	@brief This class implements a simple chronometer.
  */
+
 #ifndef CHRONO_HPP_
 #define CHRONO_HPP_
 
