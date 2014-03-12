@@ -21,12 +21,12 @@ public:
 	//! Define the problem type
 	/*!
 	 * @enum ProblemType
-	 * This enumerator allows to select the problem type: steady or unsteady
+	 * This enumerator allows to select the problem type: steady or pseudo-steady state
 	 */
 	enum ProblemType
 	{
-		steady		= 0,
-		unsteady	= 1
+		steady			= 0,
+		pseudoSteady	= 1
 	};
 
 	//! Constructor
@@ -64,6 +64,12 @@ public:
 	 * @return the type of the problem
 	 */
 	ProblemType getProblemType() const { return M_type; }
+
+	//! Test if fractures are enabled
+	/*!
+	 * @return true if the fractures are enabled
+	 */
+	bool fractureOn() const { return M_fracturesOn; }
 
 	//! Get mobility of the fluid
 	/*!
@@ -110,6 +116,8 @@ protected:
 	std::string M_outputFile;
 	//! Type of the problem
 	ProblemType M_type;
+	//! Enable or disable fractures
+	bool M_fracturesOn;
 	//! Mobility of the fluid
 	Real M_mobility;
 	//! Angle used to rotate along z-axis the domain. It is used only to compute the normal for detecting BC!

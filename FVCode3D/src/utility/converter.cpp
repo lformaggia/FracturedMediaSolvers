@@ -7,82 +7,7 @@
 #include "mesh/Properties.hpp"
 #include "utility/converter.hpp"
 
-void readTPFAStandardAsTPFAWithBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties, const Real theta)
-{
-	Geometry::FractureNetwork3D FN(mesh);
-	std::vector<Geometry::Fracture3D> fracturesVector;
-	std::map<UInt, Geometry::Fracture3D> fracturesMap;
-	std::map<UInt, Geometry::Fracture3D>::iterator itF;
-	Geometry::Point3D normal, center, centerFace;
-	Real max;
-	UInt compMax;
-
-	extractBC(mesh,properties, theta);
-
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
-	{
-		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
-		{
-			itF = fracturesMap.find(it->second.getZoneCode());
-			if (itF != fracturesMap.end())
-				itF->second.push_back(it->first);
-			else
-			{
-				fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(mesh) );
-				fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
-				fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
-			}
-		}
-	}
-
-	fracturesVector.reserve(fracturesMap.size());
-	for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
-		fracturesVector.push_back(itF->second);
-
-	FN.addFractures(fracturesVector);
-
-	mesh.addFractureNetwork(FN);
-}
-
-void extractBC(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties, const Real theta)
-{
-	Geometry::Point3D normal, center, centerFace;
-	Real max;
-	UInt compMax;
-
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
-	{
-		if (it->second.getSeparatedCells().size() == 1)
-		{
-			mesh.getCellsMap().at(*(it->second.getSeparatedCells().begin())).computeCentroid();
-			center = mesh.getCellsMap().at(*(it->second.getSeparatedCells().begin())).getCentroid();
-
-			it->second.computeCentroid();
-			centerFace = it->second.getCentroid();
-			normal = it->second.computeNormal();
-			center -= centerFace;
-			center.normalize();
-
-			if(normal * center > 0.)
-				normal = -normal;
-
-			normal = Geometry::rotateOf(normal, theta);
-
-			max = std::max(std::fabs(normal.x()), std::fabs(normal.y()));
-			compMax = std::fabs(normal.x()) > std::fabs(normal.y()) ? 0 : 1;
-
-			max = std::max(max, std::fabs(normal.z()));
-			compMax = max > std::fabs(normal.z()) ? compMax : 2;
-
-			if(normal[compMax]>0.)
-				it->second.setBorderID(2*compMax+1);
-			else
-				it->second.setBorderID(2*compMax+2);
-		}
-	}
-}
-
-void convertFromTPFAStandardToTPFAWithBC(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties)
+void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties)
 {
 	std::fstream file;
 
@@ -103,7 +28,6 @@ void convertFromTPFAStandardToTPFAWithBC(const std::string filename, Geometry::M
 	UInt nNodes, nFacets, nCells, nZones, nFractures, volumeCorrection=1;
 	UInt nodesFacet, facetsCell, facetsFracture;
 	UInt i, j;
-	Real aperture, porosity, permeability;
 
 	std::vector<Geometry::Point3D> & nodesRef = mesh.getNodesVector();
 	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();

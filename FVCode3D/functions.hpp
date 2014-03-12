@@ -13,9 +13,6 @@ Func fZero = [](Geometry::Point3D p){ return 0.; };
 Func fOne = [](Geometry::Point3D p){ return 1.; };
 Func fMinusOne = [](Geometry::Point3D p){ return -1.; };
 
-Func Source = fZero;
-Func Sink = fZero;
-
 /* grid2 */
 //Func SourceGrid2 = [](Geometry::Point3D p)
 //	{return 100*( (
@@ -55,22 +52,25 @@ Func Sink = fZero;
 //	};
 
 /* grid3 orthogonal to fractures */
-//Func SourceOGrid3 = [](Geometry::Point3D p)
-//	{return 100*( (
-//					(p.x()-3.15185e7)*(p.x()-3.15185e7) +
-//					(p.y()-1.6913e7 )*(p.y()-1.6913e7 ) +
-//					(p.z()+1.80e4   )*(p.z()+1.80e4   )
-//				  ) <=5e4
-//				);
-//	};
-//
-//Func SinkOGrid3 = [](Geometry::Point3D p)
-//	{return -100*( (
-//					 (p.x()-3.15185e7)*(p.x()-3.15185e7) +
-//		     	 	 (p.y()-1.6874e7 )*(p.y()-1.6874e7 ) +
-//		     	 	 (p.z()+1.635e4  )*(p.z()+1.635e4  )
-//		     	   ) <=5e4
-//				 );
-//	};
+Func SourceOGrid3 = [](Geometry::Point3D p)
+	{return 1*( (
+					(p.x()-3.15185e7)*(p.x()-3.15185e7) +
+					(p.y()-1.6913e7 )*(p.y()-1.6913e7 ) +
+					(p.z()+1.80e4   )*(p.z()+1.80e4   )
+				  ) <=1e6
+				);
+	};
+
+Func SinkOGrid3 = [](Geometry::Point3D p)
+	{return -1*( (
+					 (p.x()-3.15185e7)*(p.x()-3.15185e7) +
+		     	 	 (p.y()-1.6874e7 )*(p.y()-1.6874e7 ) +
+		     	 	 (p.z()+1.635e4  )*(p.z()+1.635e4  )
+		     	   ) <=1e6
+				 );
+	};
+
+Func Source = fZero;
+Func Sink = fZero;
 
 #endif /* FUNCTIONS_HPP_ */

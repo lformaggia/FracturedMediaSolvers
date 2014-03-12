@@ -68,7 +68,6 @@ void Rigid_Mesh::CellsVectorBuilder (Generic_Mesh & generic_mesh, std::map<UInt,
 	{
 		for (auto it = generic_mesh.getCellsMap().begin(); it != generic_mesh.getCellsMap().end(); ++it)
 		{
-			it->second.computeCentroid();
 			M_cells.push_back(Cell(it->second, this, it->first));
 		}
 	}
@@ -77,7 +76,6 @@ void Rigid_Mesh::CellsVectorBuilder (Generic_Mesh & generic_mesh, std::map<UInt,
 		UInt position = 0;
 		for (auto it = generic_mesh.getCellsMap().begin(); it != generic_mesh.getCellsMap().end(); ++it)
 		{
-			it->second.computeCentroid();
 			old_to_new_map[it->first] = position;
 			M_cells.push_back(Cell(it->second, this, position));
 			++position;
@@ -89,7 +87,7 @@ void Rigid_Mesh::CellsVectorBuilder (Generic_Mesh & generic_mesh, std::map<UInt,
 void Rigid_Mesh::AdjustCellNeighbors ( const std::map<UInt, UInt> & old_to_new_map )
 {
 	for (auto it = M_cells.begin(); it != M_cells.end(); ++it)
-		for (auto Neighbors_it = it->M_Neighbors_Ids.begin(); Neighbors_it != it->M_Neighbors_Ids.end(); ++ Neighbors_it)
+		for (auto Neighbors_it = it->M_neighborsIds.begin(); Neighbors_it != it->M_neighborsIds.end(); ++ Neighbors_it)
 			*(Neighbors_it) = old_to_new_map.at(*(Neighbors_it));
 }
 
@@ -116,7 +114,6 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 				nodes_fracture_map[Fracture_Juncture(*(vertex_it), *(vertex_it2))].emplace_back(it->getId());
 		}
 
-		++vertex_it;
 		vertex_it2 = it->getFacet().getVertexesIds().begin();
 
 		//The if state is necessary in order to order the vertexes!!
@@ -149,7 +146,6 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 			}
 		}
 
-		++vertex_it;
 		vertex_it2 = it->getFacet().getVertexesIds().begin();
 
 		//The if state is necessary in order to order the vertexes!!
@@ -157,6 +153,7 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 			m_junct = std::make_pair(*(vertex_it), *(vertex_it2));
 		else
 			m_junct = std::make_pair(*(vertex_it2), *(vertex_it));
+
 		if (nodes_fracture_map.at(m_junct).size() > 1)
 		{
 			it->Fracture_Neighbors[m_junct] = nodes_fracture_map.at(m_junct);
@@ -165,6 +162,7 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 			it->Fracture_Neighbors[m_junct].erase(find_it);
 		}
 	}
+
 }
 
 void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_mapCells, std::map<UInt,UInt> & old_to_new_mapFacets, Generic_Mesh & generic_mesh)
@@ -188,7 +186,7 @@ void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_m
 				std::get<3>(fracture_Ids) = it->second.getZoneCode();
 
 				M_fractureFacets.push_back(
-					Fracture_Facet(fracture_Ids, it->second.getRepresentedFractureIds(), this, generic_mesh)
+					Fracture_Facet(fracture_Ids, it->second.getRepresentedFractureIds(), this)
 				);
 				++fractureId;
 			}
@@ -223,7 +221,7 @@ void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_m
 				std::get<3>(fracture_Ids) = it->second.getZoneCode();
 
 				M_fractureFacets.push_back(
-					Fracture_Facet( fracture_Ids, it->second.getRepresentedFractureIds(), this, generic_mesh)
+					Fracture_Facet( fracture_Ids, it->second.getRepresentedFractureIds(), this)
 				);
 				++fractureId;
 			}
@@ -245,7 +243,7 @@ void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_m
 void Rigid_Mesh::AdjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFacets)
 {
 	for (auto it = M_cells.begin(); it != M_cells.end(); ++it)
-		for (auto Facets_it = it->M_Facets_Ids.begin(); Facets_it != it->M_Facets_Ids.end(); ++ Facets_it)
+		for (auto Facets_it = it->M_facetsIds.begin(); Facets_it != it->M_facetsIds.end(); ++ Facets_it)
 			*(Facets_it) = old_to_new_mapFacets.at(*(Facets_it));
 }
 
@@ -296,53 +294,26 @@ const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::v
 // ==================================================
 
 Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
-	M_mesh(mesh), M_Id(m_id), M_Vertexes_Ids(generic_facet.getVertexesVector()), M_size(generic_facet.area())
+	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVertexesVector()), M_area(generic_facet.area()),
+	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal())
 {
 	if(!M_mesh->M_renumber)
 		for(auto it = generic_facet.getSeparatedCells().begin(); it != generic_facet.getSeparatedCells().end(); ++it)
-			M_separatedCells_Ids.emplace_back(*it);
+			M_separatedCellsIds.emplace_back(*it);
 	else
 		for(auto it = generic_facet.getSeparatedCells().begin(); it != generic_facet.getSeparatedCells().end(); ++it)
-			M_separatedCells_Ids.emplace_back(old_to_new_map.at(*it));
-	computeCenter();
-	computeUnsignedNormal();
+			M_separatedCellsIds.emplace_back(old_to_new_map.at(*it));
 }
 
 Rigid_Mesh::Facet::Facet(const Facet & facet):
-	M_mesh(facet.getMesh()), M_Id(facet.getId()), M_Vertexes_Ids(facet.getVertexesIds()),
-	M_separatedCells_Ids(facet.getSeparatedCellsIds()), M_size(facet.size()), M_center(facet.getCenter()),
-	M_UnsignedNormal(facet.getUnsignedNormal()){}
+	M_mesh(facet.getMesh()), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
+	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
+	M_unsignedNormal(facet.getUnsignedNormal()){}
 
 Rigid_Mesh::Facet::Facet(const Facet & facet, Geometry::Rigid_Mesh * const mesh):
-	M_mesh(mesh), M_Id(facet.getId()), M_Vertexes_Ids(facet.getVertexesIds()),
-	M_separatedCells_Ids(facet.getSeparatedCellsIds()), M_size(facet.size()), M_center(facet.getCenter()),
-	M_UnsignedNormal(facet.getUnsignedNormal()){}
-
-
-// ==================================================
-// Protected Methods
-// ==================================================
-
-void Rigid_Mesh::Facet::computeCenter()
-{
-	UInt N = M_Vertexes_Ids.size();
-	Generic_Point sum(0. ,0. ,0.);
-	for(UInt j = 0; j < N; ++j)
-		sum = sum + (M_mesh->getNodesVector()[M_Vertexes_Ids[j]])/N;
-	M_center =  sum;
-}
-
-void Rigid_Mesh::Facet::computeUnsignedNormal()
-{
-	Generic_Vector tangent_1, tangent_2;
-	tangent_1 = M_mesh->getNodesVector()[M_Vertexes_Ids[1]] - M_mesh->getNodesVector()[M_Vertexes_Ids[0]];
-	tangent_2 = M_mesh->getNodesVector()[M_Vertexes_Ids[2]] - M_mesh->getNodesVector()[M_Vertexes_Ids[0]];
-
-	Generic_Vector normal( crossProduct(tangent_1, tangent_2) );
-	normal.normalize();
-
-	M_UnsignedNormal = normal;
-}
+	M_mesh(mesh), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
+	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
+	M_unsignedNormal(facet.getUnsignedNormal()){}
 
 // ==================================================
 // Methods
@@ -351,23 +322,23 @@ void Rigid_Mesh::Facet::computeUnsignedNormal()
 void Rigid_Mesh::Facet::showMe(std::ostream & out) const
 {
 	out << "Type = Facet3D: " << std::endl;
-	out << "ID: " << M_Id << std::endl;
+	out << "ID: " << M_id << std::endl;
 	out << "M_mesh = " << M_mesh << std::endl;
-	out << "Number of Nodes: " << M_Vertexes_Ids.size()<<" : "<<std::endl;
+	out << "Number of Nodes: " << M_vertexesIds.size()<<" : "<<std::endl;
 	UInt counter=1;
-	for(auto j = M_Vertexes_Ids.begin(); j!=M_Vertexes_Ids.end(); ++j)
+	for(auto j = M_vertexesIds.begin(); j!=M_vertexesIds.end(); ++j)
 	{
 		out << "M_idP"<<counter<<" = " <<*(j)<<"\t";
 		++counter;
 	}
 	out << std::endl;
-	out << "Size: " << M_size << std::endl;
+	out << "Size: " << M_area << std::endl;
 	out << "Center: ";
-	M_mesh->showPoint(M_center, out);
-	out << "M_separatedCells : size = " << M_separatedCells_Ids.size();
+	M_mesh->showPoint(M_centroid, out);
+	out << "M_separatedCells : size = " << M_separatedCellsIds.size();
 	out << "    [ ";
-	if( !M_separatedCells_Ids.empty() )
-		for( auto it = M_separatedCells_Ids.begin(); it != M_separatedCells_Ids.end(); ++it )
+	if( !M_separatedCellsIds.empty() )
+		for( auto it = M_separatedCellsIds.begin(); it != M_separatedCellsIds.end(); ++it )
 			out << *it << " ";
 	out << "] " << std::endl;
 }
@@ -380,27 +351,27 @@ void Rigid_Mesh::Facet::showMe(std::ostream & out) const
 
 Rigid_Mesh::Cell::Cell( const Generic_Cell & generic_cell, Geometry::Rigid_Mesh * const mesh, const UInt m_id):
 	M_mesh(mesh), M_Id(m_id), M_zoneCode(generic_cell.getZoneCode()),
-	M_Vertexes_Ids(generic_cell.getVertexesVector()), M_volume(0.)
+	M_vertexesIds(generic_cell.getVertexesVector()),
+	M_centroid(generic_cell.getCentroid()),
+	M_volume(generic_cell.volume())
 {
 	for(auto it = generic_cell.getFacetsSet().begin(); it != generic_cell.getFacetsSet().end(); ++it)
-		M_Facets_Ids.emplace_back(*it);
+		M_facetsIds.emplace_back(*it);
 	for(auto it = generic_cell.getNeighborsSet().begin(); it != generic_cell.getNeighborsSet().end(); ++it)
-		M_Neighbors_Ids.emplace_back(*it);
-	M_centroid = generic_cell.getCentroid();
-	M_volume = generic_cell.volume();
+		M_neighborsIds.emplace_back(*it);
 }
 
 Rigid_Mesh::Cell::Cell(const Cell & cell, Geometry::Rigid_Mesh * const mesh):
-	M_mesh(mesh), M_Id(cell.getId()), M_Vertexes_Ids(cell.getVertexesIds()),
-	M_Neighbors_Ids(cell.getNeighborsIds()), M_Facets_Ids(cell.getFacetsIds()),
-	M_centroid(cell.getCentroid()), M_volume(cell.getVolume()), M_zoneCode(cell.getZoneCode())
-{}
+	M_mesh(mesh), M_Id(cell.getId()), M_zoneCode(cell.getZoneCode()),
+	M_vertexesIds(cell.getVertexesIds()), M_facetsIds(cell.getFacetsIds()),
+	M_neighborsIds(cell.getNeighborsIds()), M_centroid(cell.getCentroid()),
+	M_volume(cell.getVolume()) {}
 
 Rigid_Mesh::Cell::Cell(const Cell & cell):
-	M_mesh(cell.getMesh()), M_Id(cell.getId()), M_Vertexes_Ids(cell.getVertexesIds()),
-	M_Neighbors_Ids(cell.getNeighborsIds()), M_Facets_Ids(cell.getFacetsIds()),
-	M_centroid(cell.getCentroid()), M_volume(cell.getVolume()), M_zoneCode(cell.getZoneCode())
-{}
+	M_mesh(cell.getMesh()), M_Id(cell.getId()), M_zoneCode(cell.getZoneCode()),
+	M_vertexesIds(cell.getVertexesIds()), M_facetsIds(cell.getFacetsIds()),
+	M_neighborsIds(cell.getNeighborsIds()), M_centroid(cell.getCentroid()),
+	M_volume(cell.getVolume()) {}
 
 // ==================================================
 // Methods
@@ -411,9 +382,9 @@ void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
 	out << "Type = Cell3D :" << std::endl;
 	out << "ID: " << M_Id << std::endl;
 	out << "M_mesh = " << M_mesh << std::endl;
-	out << "Number of Nodes: " << M_Vertexes_Ids.size()<<" : "<<std::endl;
+	out << "Number of Nodes: " << M_vertexesIds.size()<<" : "<<std::endl;
 	UInt counter=1;
-	for(auto j = M_Vertexes_Ids.begin(); j!=M_Vertexes_Ids.end(); ++j)
+	for(auto j = M_vertexesIds.begin(); j!=M_vertexesIds.end(); ++j)
 	{
 		out << "M_idP"<<counter<<" = " <<*(j)<<"\t";
 		++counter;
@@ -422,10 +393,10 @@ void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
 	out << "Volume: " << M_volume << std::endl;
 	out << "Centroid: ";
 	M_mesh->showPoint(M_centroid, out);
-	out << "M_Neighbors_Ids : size = " << M_Neighbors_Ids.size();
+	out << "M_Neighbors_Ids : size = " << M_neighborsIds.size();
 	out << "    [ ";
-	if( !M_Neighbors_Ids.empty() )
-		for( auto it = M_Neighbors_Ids.begin(); it != M_Neighbors_Ids.end(); ++it )
+	if( !M_neighborsIds.empty() )
+		for( auto it = M_neighborsIds.begin(); it != M_neighborsIds.end(); ++it )
 			out << *it << " ";
 	out << "] " << std::endl;
 }
@@ -475,7 +446,7 @@ Rigid_Mesh::Border_Facet::Border_Facet(const Border_Facet & border_facet):
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Fracture_Facet::Fracture_Facet(const std::tuple<UInt,UInt,UInt,UInt> facet_Ids, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh, Generic_Mesh & generic_mesh):
+Rigid_Mesh::Fracture_Facet::Fracture_Facet(const std::tuple<UInt,UInt,UInt,UInt> facet_Ids, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh):
 	Facet_ID(std::get<0>(facet_Ids), std::get<3>(facet_Ids), mesh), Cells_number(std::get<2>(facet_Ids)), M_Id(std::get<1>(facet_Ids))
 {
 	for (auto it = fracture_Ids.begin(); it != fracture_Ids.end(); ++it)
@@ -483,13 +454,15 @@ Rigid_Mesh::Fracture_Facet::Fracture_Facet(const std::tuple<UInt,UInt,UInt,UInt>
 }
 
 Rigid_Mesh::Fracture_Facet::Fracture_Facet(const Fracture_Facet & fracture_facet, Geometry::Rigid_Mesh * const mesh):
-	Facet_ID(fracture_facet.getFacetId(), fracture_facet.getZoneCode(), mesh), Cells_number(fracture_facet.getCellsnumber()),
-	M_Id(fracture_facet.getId()),
-	Fracture_Ids(fracture_facet.getFractureIds()), Fracture_Neighbors(fracture_facet.getFractureNeighbors()) {}
+	Facet_ID(fracture_facet.getFacetId(), fracture_facet.getZoneCode(), mesh),
+	Cells_number(fracture_facet.getCellsnumber()), M_Id(fracture_facet.getId()),
+	Fracture_Ids(fracture_facet.getFractureIds()),
+	Fracture_Neighbors(fracture_facet.getFractureNeighbors()) {}
 
 Rigid_Mesh::Fracture_Facet::Fracture_Facet(const Fracture_Facet & fracture_facet):
-	Facet_ID(fracture_facet.getFacetId(), fracture_facet.getZoneCode(), fracture_facet.getMesh()), Cells_number(fracture_facet.getCellsnumber()),
-	M_Id(fracture_facet.getId()),
-	Fracture_Ids(fracture_facet.getFractureIds()), Fracture_Neighbors(fracture_facet.getFractureNeighbors()) {}
+	Facet_ID(fracture_facet.getFacetId(), fracture_facet.getZoneCode(), fracture_facet.getMesh()),
+	Cells_number(fracture_facet.getCellsnumber()), M_Id(fracture_facet.getId()),
+	Fracture_Ids(fracture_facet.getFractureIds()),
+	Fracture_Neighbors(fracture_facet.getFractureNeighbors()) {}
 
 }// namespace Geometry

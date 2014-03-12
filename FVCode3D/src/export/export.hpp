@@ -46,6 +46,7 @@ public:
 	typedef Geometry::Rigid_Mesh::Cell Cell;
 	typedef Geometry::Rigid_Mesh::Facet Facet;
 	typedef Geometry::Rigid_Mesh::Fracture_Facet Fracture_Facet;
+	typedef Geometry::Rigid_Mesh::Fracture_Juncture Fracture_Juncture;
 
 	//! Contructor
 	Exporter(){}
@@ -70,6 +71,13 @@ public:
 	 * @param filename name of the file
 	 */
 	virtual void exportMeshWithFractures(const Mesh3D & mesh, const std::string filename) = 0;
+
+	//! Export the fracture junctures
+	/*!
+	 * @param mesh reference of a Geometry::Rigid_Mesh
+	 * @param filename name of the file
+	 */
+	virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename) = 0;
 
 	//! Export the solution on cells and fracture facets in a single file
 	/*!
@@ -143,6 +151,13 @@ public:
 	 */
 	virtual void exportMeshWithFractures(const Mesh3D & mesh, const std::string filename);
 
+	//! Export the fracture junctures
+	/*!
+	 * @param mesh reference of a Geometry::Rigid_Mesh
+	 * @param filename name of the file
+	 */
+	virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename);
+
 	//! Export the solution on cells and fracture facets in a single file
 	/*!
 	 * @param mesh reference of a Geometry::Rigid_Mesh
@@ -197,6 +212,8 @@ public:
 	virtual void exportFractures(const Mesh3D & mesh, const std::string filename);
 
 	virtual void exportMeshWithFractures(const Mesh3D & mesh, const std::string filename);
+
+	virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename);
 
 	virtual void exportSolution(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol);
 

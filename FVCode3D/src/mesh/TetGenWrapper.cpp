@@ -100,4 +100,39 @@ Real TetGenWrapper::computeVolume()
 	return M_volume;
 }
 
+Point3D TetGenWrapper::computeCenterOfMass()
+{
+	M_centerOfMass.setValues(0.,0.,0.);
+	const UInt nEle = M_elements.size();
+	std::vector<Point3D> tmp(4);
+	Real tmpVol, totVol = 0.;
+
+	for(UInt i=0; i<nEle; ++i)
+	{
+		tmp[0] = M_outNodes[M_elements[i][0]];
+		tmp[1] = M_outNodes[M_elements[i][1]];
+		tmp[2] = M_outNodes[M_elements[i][2]];
+		tmp[3] = M_outNodes[M_elements[i][3]];
+		tmpVol = tetrahedronVolume(tmp);
+		totVol += tmpVol;
+		M_centerOfMass += tmpVol * (tmp[0] + tmp[1] + tmp[2] + tmp[3]) / 4.;
+	}
+
+	M_centerOfMass /= totVol;
+
+	return M_centerOfMass;
+}
+
+const std::vector<Point3D> TetGenWrapper::getElement(const UInt i) const
+{
+	std::vector<Point3D> points(4);
+
+	points[0] = M_outNodes[M_elements[i][0]];
+	points[1] = M_outNodes[M_elements[i][1]];
+	points[2] = M_outNodes[M_elements[i][2]];
+	points[3] = M_outNodes[M_elements[i][3]];
+
+	return points;
+}
+
 }// namespace Geometry

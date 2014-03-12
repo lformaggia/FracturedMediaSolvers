@@ -23,7 +23,7 @@ void MassMatrix::assemble()
 	for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
 	{
 		// set mass term of the fracture
-		volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().size();
+		volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 		porosity = M_properties.getProperties(facet_it.getZoneCode()).M_porosity;
 
 		Matrix_elements.emplace_back(Triplet (facet_it.getIdasCell(), facet_it.getIdasCell(), porosity * volume));

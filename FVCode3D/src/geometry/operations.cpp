@@ -28,6 +28,11 @@ Point3D rotateOf(const Point3D & p, const Real angleDeg)
 	return Point3D(x,y,p.z());
 }
 
+Real triangleArea(const Point3D & A, const Point3D & B, const Point3D & C)
+{
+	return crossProduct(B-A,C-A).norm() / 2.;
+}
+
 Real tetrahedronVolume(const std::vector<Point3D> & nodes)
 {
 	return std::fabs( dotProduct( nodes[2]-nodes[3] , crossProduct(nodes[0]-nodes[3],nodes[1]-nodes[3]) ) ) / 6.;

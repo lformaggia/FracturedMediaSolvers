@@ -13,8 +13,6 @@
 #include "core/TypeDefinition.hpp"
 #include "mesh/Rigid_Mesh.hpp"
 
-class Rigid_mesh;
-
 namespace Darcy
 {
 

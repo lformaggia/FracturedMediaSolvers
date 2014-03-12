@@ -39,7 +39,7 @@ public:
 	 * @return the vector b
 	 */
 	const Vector & getb() const
-		{ return M_A; }
+		{ return M_b; }
 
 	//! Get the solution
 	/*!

@@ -4,6 +4,7 @@
  */
 
 #include "mesh/Mesh3D.hpp"
+#include "geometry/operations.hpp"
 
 #include <boost/lexical_cast.hpp>
 
@@ -21,18 +22,20 @@ namespace Geometry{
 // Constructors & Destructor
 // ==================================================
 Mesh3D::Facet3D::Facet3D() :
- 				M_mesh(), M_idVertex(), M_separatedCells(), M_representedFractureIds(),
- 				M_borderId(0), M_zone(0) {}
+ 		M_mesh(0), M_borderId(0), M_zone(0) {}
 
 Mesh3D::Facet3D::Facet3D(const Facet3D & facet) :
-  				M_mesh(facet.getMesh()), M_idVertex(facet.getVertexesVector()),
-  				M_separatedCells(facet.getSeparatedCells()),
-  				M_representedFractureIds(facet.getRepresentedFractureIds()),
-  				M_borderId(facet.getBorderId()),
-  				M_zone(facet.getZoneCode()) {}
+  		M_mesh(facet.getMesh()), M_idVertex(facet.getVertexesVector()),
+  		M_separatedCells(facet.getSeparatedCells()),
+  		M_representedFractureIds(facet.getRepresentedFractureIds()),
+		M_centroid(facet.getCentroid()),
+		M_borderId(facet.getBorderId()), M_zone(facet.getZoneCode()) {}
 
 Mesh3D::Facet3D::Facet3D(Geometry::Mesh3D * const mesh, const std::vector<UInt> & vertices, const UInt zone, const UInt borderId) :
-				M_mesh(mesh), M_idVertex(vertices), M_separatedCells(), M_representedFractureIds(), M_borderId(borderId), M_zone(zone) {}
+				M_mesh(mesh), M_idVertex(vertices), M_borderId(borderId), M_zone(zone)
+{
+	computeCentroid();
+}
 
 // ==================================================
 // Methods
@@ -67,18 +70,22 @@ Real Mesh3D::Facet3D::area() const
 
 void Mesh3D::Facet3D::computeCentroid()
 {
-	Real x(0), y(0), z(0);
-	for(std::vector<UInt>::iterator it = M_idVertex.begin();
-			it != M_idVertex.end(); ++it)
+	UInt N = M_idVertex.size();
+	Real tmpArea, totArea = 0.;
+
+	for (UInt j = 1; j < N-1; ++j)
 	{
-		x += M_mesh->getNodesVector()[*it].x();
-		y += M_mesh->getNodesVector()[*it].y();
-		z += M_mesh->getNodesVector()[*it].z();
+		tmpArea = triangleArea(	M_mesh->getNodesVector()[M_idVertex[0]],
+								M_mesh->getNodesVector()[M_idVertex[j]],
+								M_mesh->getNodesVector()[M_idVertex[j+1]]);
+		totArea += tmpArea;
+		M_centroid += tmpArea * (	M_mesh->getNodesVector()[M_idVertex[0]] +
+										M_mesh->getNodesVector()[M_idVertex[j]] +
+										M_mesh->getNodesVector()[M_idVertex[j+1]]
+									) / 3.;
 	}
 
-	M_centroid = Geometry::Point3D( x/M_idVertex.size(),
-									y/M_idVertex.size(),
-									z/M_idVertex.size());
+	M_centroid /= totArea;
 }
 
 void Mesh3D::Facet3D::showMe(std::ostream  & out) const
@@ -112,21 +119,16 @@ void Mesh3D::Facet3D::showMe(std::ostream  & out) const
 // Constructors & Destructor
 // ==================================================
 Mesh3D::Cell3D::Cell3D() :
-		M_mesh(0), M_centroid( Geometry::Point3D(0.,0.,0.) ), M_volume(0.), M_zone(0) {}
+		M_mesh(0), M_volume(0.), M_zone(0) {}
 
 Mesh3D::Cell3D::Cell3D(const Cell3D & cell) :
 		M_mesh(cell.getMesh()), M_idVertexes(cell.getVertexesVector()),
-		M_idFacets(cell.getFacetsSet()),
-		M_idNeighbors(cell.getNeighborsSet()), M_centroid(cell.getCentroid()),
-		M_volume(0.), M_zone(cell.getZoneCode())
-{
-	volume();
-}
+		M_idFacets(cell.getFacetsSet()), M_idNeighbors(cell.getNeighborsSet()),
+		M_centroid(cell.getCentroid()),
+		M_volume(cell.volume()), M_zone(cell.getZoneCode()) {}
 
 Mesh3D::Cell3D::Cell3D( const Geometry::Mesh3D * mesh, const std::vector<UInt> & facets, const UInt zone ) :
-		M_mesh(mesh), M_idFacets(facets.begin(), facets.end()),
-		M_centroid( Geometry::Point3D(0.,0.,0.) ), M_volume(0.),
-		M_zone(zone)
+		M_mesh(mesh), M_idFacets(facets.begin(), facets.end()), M_zone(zone)
 {
 	Facet3D f;
 
@@ -139,8 +141,7 @@ Mesh3D::Cell3D::Cell3D( const Geometry::Mesh3D * mesh, const std::vector<UInt> &
 	sort(M_idVertexes.begin(), M_idVertexes.end());
 	M_idVertexes.erase( unique( M_idVertexes.begin(), M_idVertexes.end() ), M_idVertexes.end() );
 
-	computeCentroid();
-	volume();
+	computeVolumeAndCentroid();
 }
 
 // ==================================================
@@ -198,63 +199,38 @@ bool Mesh3D::Cell3D::hasNeighborsThroughFacet( const UInt & facetId, UInt & idNe
 	return found;
 }
 
-void Mesh3D::Cell3D::computeCentroid()
+void Mesh3D::Cell3D::computeVolumeAndCentroid()
 {
-	Real x(0), y(0), z(0);
-	for(std::vector<UInt>::iterator it = M_idVertexes.begin();
-			it != M_idVertexes.end(); ++it)
+	std::vector<Point3D> nodes;
+	std::vector< std::vector<UInt> > facets;
+	std::map<UInt, UInt> globalToLocal;
+
+	const UInt nNodes = vertexesNumber();
+	const UInt nFacets = facetsNumber();
+	UInt nodesFacet, i, j;
+	std::set<UInt>::iterator it;
+
+	nodes.resize( nNodes );
+	facets.resize( nFacets );
+
+	for(i=0; i < nNodes; ++i)
 	{
-		x += M_mesh->getNodesVector()[*it].x();
-		y += M_mesh->getNodesVector()[*it].y();
-		z += M_mesh->getNodesVector()[*it].z();
+		nodes[i] = M_mesh->getNodesVector()[M_idVertexes[i]];
+		globalToLocal.insert(std::make_pair(M_idVertexes[i], i));
 	}
 
-	M_centroid = Geometry::Point3D( x/M_idVertexes.size(),
-			y/M_idVertexes.size(),
-			z/M_idVertexes.size());
-}
-
-Real Mesh3D::Cell3D::volume()
-{
-	if (!M_volume)
+	for(i=0, it=M_idFacets.begin(); it != M_idFacets.end(); ++i, ++it)
 	{
-		std::vector<Point3D> nodes;
-		std::vector< std::vector<UInt> > facets;
-		std::map<UInt, UInt> globalToLocal;
-
-		const UInt nNodes = vertexesNumber();
-		const UInt nFacets = facetsNumber();
-		UInt nodesFacet, i, j;
-		std::set<UInt>::iterator it;
-
-		nodes.resize( nNodes );
-		facets.resize( nFacets );
-
-		for(i=0; i < nNodes; ++i)
-		{
-			nodes[i] = M_mesh->getNodesVector()[M_idVertexes[i]];
-			globalToLocal.insert(std::make_pair(M_idVertexes[i], i));
-			//std::cout<<"nodes["<<i<<"]: "<<nodes[i].x()<<" "<<nodes[i].y()<<" "<<nodes[i].z()<<std::endl;
-		}
-
-		for(i=0, it=M_idFacets.begin(); it != M_idFacets.end(); ++i, ++it)
-		{
-			nodesFacet = M_mesh->getFacetsMap().at(*it).getNumberOfPoints();
-			facets[i].resize(nodesFacet);
-			//std::cout<<"Faccia "<<i<<std::endl;
-			for(j=0; j < nodesFacet; ++j)
-			{
-				facets[i][j] = globalToLocal[ M_mesh->getFacetsMap().at(*it).getVertexesVector()[j] ];
-				//std::cout<<"\tfacets["<<j<<"]: "<<facets[i][j]<<std::endl;
-			}
-		}
-
-		TetGenWrapper TG(nodes, facets);
-		TG.generateMesh();
-		M_volume = TG.computeVolume();
+		nodesFacet = M_mesh->getFacetsMap().at(*it).getNumberOfPoints();
+		facets[i].resize(nodesFacet);
+		for(j=0; j < nodesFacet; ++j)
+			facets[i][j] = globalToLocal[ M_mesh->getFacetsMap().at(*it).getVertexesVector()[j] ];
 	}
 
-	return M_volume;
+	TetGenWrapper TG(nodes, facets);
+	TG.generateMesh();
+	M_volume = TG.computeVolume();
+	M_centroid = TG.computeCenterOfMass();
 }
 
 void Mesh3D::Cell3D::showMe(std::ostream & out) const
@@ -275,7 +251,8 @@ void Mesh3D::Cell3D::showMe(std::ostream & out) const
 // ==================================================
 // Constructors & Destructor
 // ==================================================
-Mesh3D::Mesh3D(): M_fn(*this) {}
+Mesh3D::Mesh3D():
+		M_fn(*this) {}
 
 Mesh3D::Mesh3D(const Geometry::Mesh3D & mesh):
 		M_fn(mesh.getFn()), M_nodes(mesh.getNodesVector()),

@@ -357,6 +357,13 @@ public:
 		const Geometry::Point3D & getCentroid() const
 			{ return M_centroid; }
 
+		//! Return the volume (const)
+		/*!
+		 * @return the volume of the cell
+		 */
+		Real volume() const
+			{ return M_volume; }
+
 		//! Get the zone code
 		/*!
 		 * @return the zone code of the cell
@@ -418,21 +425,11 @@ public:
 		 */
 		bool hasNeighborsThroughFacet( const UInt & facetId, UInt & idNeighbor) const;
 
-		//! Computes the cell centroid and stores it in the M_centroid variable
-		void computeCentroid();
-
-		//! Return the volume (const)
+		//! Computes the volume and the centroid of the cell
 		/*!
-		 * @return the volume of the cell
+		 * @return the volume and the ccentroid of the cell
 		 */
-		Real volume() const
-			{ return M_volume; }
-
-		//! Computes the volume of the cell
-		/*!
-		 * @return the volume of the cell
-		 */
-		Real volume();
+		void computeVolumeAndCentroid();
 
 		//! Display general information about the content of the class
 		/*!

@@ -21,7 +21,7 @@ StiffMatrix::Generic_Point StiffMatrix::border_center(Fracture_Juncture fj) cons
 Real StiffMatrix::Findfracturesalpha (const Fracture_Juncture fj, const UInt n_Id) const
 {
 	Generic_Point borderCenter = border_center(fj);
-	Generic_Point cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCenter();
+	Generic_Point cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCentroid();
 
 	Real A = M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_aperture * (this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]).norm();
 	Real k = M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_permeability;
@@ -41,7 +41,7 @@ Real StiffMatrix::Findfracturesalpha (const Fracture_Juncture fj, const UInt n_I
 
 Real StiffMatrix::Findalpha (const UInt & cellId, Facet_ID * const facet) const
 {
-	Generic_Point facetCenter = facet->getCenter();
+	Generic_Point facetCenter = facet->getCentroid();
 	Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
  	Generic_Vector normal = facet->getUNormal();
 	Real alpha;
@@ -59,7 +59,7 @@ Real StiffMatrix::Findalpha (const UInt & cellId, Facet_ID * const facet) const
 
 Real StiffMatrix::FindDirichletalpha (const UInt & cellId, Facet_ID * const facet) const
 {
-	Generic_Point facetCenter = facet->getCenter();
+	Generic_Point facetCenter = facet->getCentroid();
 	Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
 	Real alpha;
 	Real D;
@@ -127,7 +127,7 @@ void StiffMatrix::assemble()
 		Matrix_elements.emplace_back(Triplet (facet_it.getIdasCell(), neighbor2id, -Q2f));
 		Matrix_elements.emplace_back(Triplet (facet_it.getIdasCell(), facet_it.getIdasCell(), Q2f));
 
-		for (auto juncture_it : facet_it.getFractureNeighbors ())
+		for (auto juncture_it : facet_it.getFractureNeighbors())
 		{
 			alphaF = Findfracturesalpha (juncture_it.first, facet_it.getId());
 
@@ -158,8 +158,9 @@ void StiffMatrix::assemble()
 
 		if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
 		{
-			// Nella cond di bordo c'è già il contributo della permeabilità
-			Q1o = m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCenter()) * facet_it.getSize();
+			// Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
+			Q1o = m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
+
 			_b->operator()(neighbor1id) += Q1o;
 		}
 		else if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
@@ -169,7 +170,7 @@ void StiffMatrix::assemble()
 
 			T12 = alpha1*alpha2/(alpha1 + alpha2);
 			Q12 = T12 * M_properties.getMobility();
-			Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCenter());
+			Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 
 			Matrix_elements.emplace_back(Triplet (neighbor1id, neighbor1id, Q12));
 			_b->operator()(neighbor1id) = _b->operator()(neighbor1id) + Q1o;

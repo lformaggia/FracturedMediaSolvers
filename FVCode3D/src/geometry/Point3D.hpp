@@ -67,6 +67,8 @@ public:
 
 	friend Point3D operator*(const Point3D & p, const Real r);
 
+	friend Point3D operator*(const Real r, const Point3D & p);
+
 	friend Point3D operator/(const Point3D & p, const Real r);
 
 	friend Real dotProduct(const Point3D & p1, const Point3D & p2);

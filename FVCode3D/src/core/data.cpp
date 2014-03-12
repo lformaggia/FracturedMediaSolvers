@@ -17,6 +17,8 @@ Data::Data(const std::string dataFileName)
 
 	M_type = static_cast<ProblemType>( dataFile("problem/type", steady) );
 
+	M_fracturesOn = dataFile("problem/fracturesOn", true);
+
 	M_mobility = dataFile("fluid/mobility", 1.);
 
 	M_theta = dataFile("bc/theta", 0.);
@@ -40,13 +42,14 @@ void Data::showMe( std::ostream & output ) const
 		case steady:
 			output << "steady" << std::endl;
 			break;
-		case unsteady:
-			output << "unsteady" << std::endl;
+		case pseudoSteady:
+			output << "pseudo-steady" << std::endl;
 			break;
 		default:
-			output << "unsteady" << std::endl;
+			output << "pseudo-steady" << std::endl;
 			break;
 	}
+	output << "Fractures On: " << M_fracturesOn << std::endl;
 
 	output << "Mobility: " << M_mobility << std::endl;
 

@@ -36,13 +36,36 @@ public:
 	 */
 	Real computeVolume();
 
+	//! Compute the center of mass of the polyhedron by considering a constant density
+	/*!
+	 * C = 1/|Omega| int_\Omega x dx
+	 * @return the center of mass
+	 * @pre call generateMesh()
+	 */
+	Point3D computeCenterOfMass();
+
 	//! Get the volume of the mesh
 	/*!
 	 * @return the volume of the polyhedron
 	 * @pre call computeVolume()
 	 */
 	Real getVolume() const
-		{ return M_volume; };
+		{ return M_volume; }
+
+	//! Get the center of mass of the polyhedron
+	/*!
+	 * @return the center of mass of the polyhedron
+	 * @pre call computeCenterOfMass()
+	 */
+	Real getCenterOfMass() const
+		{ return M_volume; }
+
+	//! Get i-th element
+	/*!
+	 * @param i i-th element
+	 * @return vector that contains the 4 points that define the tetrahedron
+	 */
+	const std::vector<Point3D> getElement(const UInt i) const;
 
 	//! Destructor
 	~TetGenWrapper() {};
@@ -62,6 +85,8 @@ private:
 	std::vector< std::vector<UInt> > M_elements;
 	//! Volume of the mesh
 	Real M_volume;
+	//! Center of mass
+	Point3D M_centerOfMass;
 
 };
 

@@ -43,12 +43,13 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Create Importer..." << std::flush;
-	ImporterTPFAStandard importer(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+//	ImporterTPFA importer(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+	ImporterForSolver importer(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
 	std::cout << " done." << std::endl;
 
 
 	std::cout << "Import grid file..." << std::flush;
-	importer.import();
+	importer.import(data.fractureOn());
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -67,7 +68,7 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Set labels on boundary & add Fractures..." << std::flush;
-	readTPFAStandardAsTPFAWithBC(mesh, propMap, data.getTheta());
+	importer.addBCAndFractures(data.getTheta());
 	std::cout << " done." << std::endl;
 
 	std::cout << "Compute facet ids of the fractures..." << std::flush;
@@ -79,10 +80,10 @@ int main(int argc, char * argv[])
 
 	std::cout << "Export..." << std::flush;
 	ExporterVTU exporter;
-	exporter.exportMesh(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh.vtu");
-	exporter.exportFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_fractures.vtu");
-	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
-	convertFromTPFAStandardToTPFAWithBC(data.getOutputDir() + data.getOutputFile() + "_bc.grid", mesh, propMap);
+//	exporter.exportMesh(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh.vtu");
+//	exporter.exportFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_fractures.vtu");
+//	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
+//	saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_bc.grid", mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -91,8 +92,8 @@ int main(int argc, char * argv[])
 	std::cout << "Add BCs..." << std::flush;
 	Darcy::BoundaryConditions::BorderBC backBC	(1, Darcy::Neumann, fZero );
 	Darcy::BoundaryConditions::BorderBC frontBC	(2, Darcy::Neumann, fZero );
-	Darcy::BoundaryConditions::BorderBC leftBC	(3, Darcy::Neumann, fOne );
-	Darcy::BoundaryConditions::BorderBC rightBC (4, Darcy::Neumann, fMinusOne );
+	Darcy::BoundaryConditions::BorderBC leftBC	(3, Darcy::Dirichlet, fOne );
+	Darcy::BoundaryConditions::BorderBC rightBC	(4, Darcy::Dirichlet, fMinusOne );
 	Darcy::BoundaryConditions::BorderBC upBC	(5, Darcy::Neumann, fZero );
 	Darcy::BoundaryConditions::BorderBC downBC	(6, Darcy::Neumann, fZero );
 
@@ -111,7 +112,7 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Assembling rigid mesh..." << std::flush;
+	std::cout << "Assemble rigid mesh..." << std::flush;
 	Geometry::Rigid_Mesh myrmesh(mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
@@ -120,7 +121,14 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Assembling stiffness matrix..." << std::flush;
+	std::cout << "Export Fracture Junctures..." << std::flush;
+//	exporter.exportFractureJunctures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_junc.vtu");
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+
+	std::cout << "Assemble stiffness matrix..." << std::flush;
 	Darcy::StiffMatrix S(myrmesh, BC);
 	S.assemble();
 	std::cout << " done." << std::endl << std::endl;
@@ -128,7 +136,7 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Assembling source/sink term..." << std::flush;
+	std::cout << "Assemble source/sink term..." << std::flush;
 
 	Darcy::Quadrature quad(myrmesh, Darcy::CentroidQuadrature(), Darcy::CentroidQuadrature());
 	Eigen::VectorXd f1(S.getSize());

@@ -142,49 +142,49 @@ public:
 		 * @return a reference to a vector of the facet vertexes ids
 		 */
 		const std::vector<UInt> & getVertexesIds () const
-			{ return M_Vertexes_Ids; }
+			{ return M_vertexesIds; }
 
 		//! Get Vertexes number (const)
 		/*!
 		 * @return the number of the vertexes of the Facet
 		 */
 		UInt vertexesNumber() const
-			{ return M_Vertexes_Ids.size (); }
+			{ return M_vertexesIds.size (); }
 
-		//! Get center (const)
+		//! Get centroid (const)
 		/*!
-		 * @return the center of gravity of the Facet
+		 * @return reference to the centroid of the Facet
 		 */
-		Generic_Point getCenter () const
-			{ return M_center; }
+		const Generic_Point & getCentroid () const
+			{ return M_centroid; }
 
 		//! Get unsigned Normal (const)
 		/*!
 		 * @return the unsigned normal vector to the Facet
 		 */
 		Generic_Vector getUnsignedNormal () const
-			{ return M_UnsignedNormal; }
+			{ return M_unsignedNormal; }
 
 		//! Get separated Cells ids (const)
 		/*!
 		 * @return a vector reference with the ids of the cells separated from the Facet
 		 */
 		const std::vector<UInt> & getSeparatedCellsIds () const
-			{ return M_separatedCells_Ids; }
+			{ return M_separatedCellsIds; }
 
-		//! Get size (const)
+		//! Get the area of the facet (const)
 		/*!
-		 * @return the size of the Facet (the area)
+		 * @return the area of the Facet
 		 */
-		Real size () const
-			{ return M_size; }
+		Real area() const
+			{ return M_area; }
 
 		//! Get Id (const)
 		/*!
 		 * @return the id of the Facet in the containing Rigid_Mesh
 		 */
-		UInt getId () const
-			{ return M_Id; }
+		UInt getId() const
+			{ return M_id; }
 		//@}
 
 		//! @name Methods
@@ -201,26 +201,18 @@ public:
 		//! The pointer to the Rigid_Mesh containing the Facet
 		Geometry::Rigid_Mesh * M_mesh;
 		//! The Facet id in the containing Rigid_Mesh
-		UInt M_Id;
+		UInt M_id;
 		//! The vector of the ids of the Facet's Vertexes
-		std::vector<UInt> M_Vertexes_Ids;
+		std::vector<UInt> M_vertexesIds;
 		//! The vector of the ids of the Cells separated by Facet
-		std::vector<UInt> M_separatedCells_Ids;
+		std::vector<UInt> M_separatedCellsIds;
 		//! The area of the Facet
-		Real M_size;
-		//! The center of gravity of the Facet
-		Generic_Point M_center;
+		Real M_area;
+		//! The centroid of the Facet
+		Generic_Point M_centroid;
 		//! The unsigned normal-vector to the Facet
-		Generic_Vector M_UnsignedNormal;
+		Generic_Vector M_unsignedNormal;
 
-	protected:
-		//! @name Protected-Methods
-		//@{
-		//! Computes the unsigned normal to the Facet
-		void computeUnsignedNormal ();
-		//! Is a function called by constructor which computes the center of the Facet
-		void computeCenter ();
-		//@}
 	};
 
 	//! Class that implements a Cell
@@ -285,23 +277,23 @@ public:
 		 * @return a reference to a vector which contains the ids of the Cell's vertices
 		 */
 		const std::vector<UInt> & getVertexesIds () const
-			{ return M_Vertexes_Ids; }
+			{ return M_vertexesIds; }
 
 		//! Get Facets ids (const)
 		/*!
 		 * @return a reference to a vector which contains the ids of the Facets
 		 */
 		const std::vector<UInt> & getFacetsIds () const
-			{ return M_Facets_Ids; }
+			{ return M_facetsIds; }
 
 		//! Get Neighbors ids (const)
 		/*!
 		 * @return a reference to a vector which contains the ids of the neighour Cells
 		 */
 		const std::vector<UInt> & getNeighborsIds () const
-			{ return M_Neighbors_Ids; }
+			{ return M_neighborsIds; }
 
-		//! Get Centroid (const)
+		//! Get centroid (const)
 		/*!
 		 * @return a reference to the centroid of the Cell
 		 */
@@ -313,21 +305,21 @@ public:
 		 * @return the number of the vertexes of the Cell
 		 */
 		UInt vertexesNumber() const
-			{ return M_Vertexes_Ids.size (); }
+			{ return M_vertexesIds.size (); }
 
 		//! Get Facets number (const)
 		/*!
 		 * @return the number of the facets of the Cell
 		 */
 		UInt facetsNumber() const
-			{ return M_Facets_Ids.size (); }
+			{ return M_facetsIds.size (); }
 
 		//! Get neighbours number (const)
 		/*!
 		 * @return the number of neighbours of the Cell
 		 */
 		UInt neighborsNumber() const
-			{ return M_Neighbors_Ids.size (); }
+			{ return M_neighborsIds.size (); }
 
 		//! Get volume (const)
 		/*!
@@ -364,12 +356,12 @@ public:
 		//! Zone code of the Cell
 		UInt M_zoneCode;
 		//! The vector of the ids of the Cell's Vertexes
-		std::vector<UInt> M_Vertexes_Ids;
+		std::vector<UInt> M_vertexesIds;
 		//! The vector of the ids of the Facets
-		std::vector<UInt> M_Facets_Ids;
+		std::vector<UInt> M_facetsIds;
 		//! The vector of the ids of the Cells neighbors
-		std::vector<UInt> M_Neighbors_Ids;
-		//! The center of gravity of the Cell
+		std::vector<UInt> M_neighborsIds;
+		//! The centroid of the Cell
 		Generic_Point M_centroid;
 		//! The volume of the Cell
 		Real M_volume;
@@ -450,17 +442,17 @@ public:
 		
 		//! Get center (const)
 		/*!
-		 * @return the center of gravity of the Facet whose id is contained in the class
+		 * @return the centroid of the Facet whose id is contained in the class
 		 */
-		const Generic_Point getCenter () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getCenter();}
+		const Generic_Point getCentroid () const
+			{return M_mesh->getFacetsVector()[Facet_Id].getCentroid();}
 		
 		//! Get size (const)
 		/*!
 		 * @return the size of the Facet whose id is contained in the class
 		 */
 		Real getSize () const
-			{return M_mesh->getFacetsVector()[Facet_Id].size();}
+			{return M_mesh->getFacetsVector()[Facet_Id].area();}
 		
 		//! Get separated cells (const)
 		/*!
@@ -578,9 +570,8 @@ public:
 			@param facet_Ids is a triplet: 1. id of a Facet of a Rigid_Mesh 2. id as Fracture_Facet 3. number of cells in Rigid_Mesh 4. Zone Code
 			@param fracture_Ids is a vector with the ids of the fractures represented by the Facet.
 			@param mesh is a pointer to the mesh to which the facet belongs
-			@param generic_mesh is a constant pointer to a Generic_Mesh
 		*/
-		Fracture_Facet(const std::tuple<UInt,UInt,UInt,UInt> facet_Ids, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh, Generic_Mesh & generic_mesh);
+		Fracture_Facet(const std::tuple<UInt,UInt,UInt,UInt> facet_Ids, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Facet given a fracture_facet belonging to another Rigid_Mesh.
 		/*!
@@ -730,8 +721,8 @@ public:
 	 */
 	Real getMaxFacetSize () const
 	{ 
-		auto comp=[](Facet f1, Facet f2){return f1.size()<f2.size();};
-		return std::max_element(M_facets.begin(),M_facets.end(), comp)->size(); 
+		auto comp=[](Facet f1, Facet f2){return f1.area()<f2.area();};
+		return std::max_element(M_facets.begin(),M_facets.end(), comp)->area();
 	}
 
 	//! Get size of smallest facet (const)
@@ -740,8 +731,8 @@ public:
 	 */
 	Real getMinFacetSize () const
 	{ 
-		auto comp=[](Facet f1, Facet f2){return f1.size()<f2.size();};
-		return std::min_element(M_facets.begin(),M_facets.end(), comp)->size(); 
+		auto comp=[](Facet f1, Facet f2){return f1.area()<f2.area();};
+		return std::min_element(M_facets.begin(),M_facets.end(), comp)->area();
 	}
 
 	//! Get average size of facet (const)
@@ -751,7 +742,7 @@ public:
 	Real getAveFacetSize () const
 	{ 	
 		Real ave = 0;
-		auto sum = [&ave](Facet f1){ave+=f1.size();};
+		auto sum = [&ave](Facet f1){ave+=f1.area();};
 		for(auto it: M_facets) sum(it);
 		return ave/M_facets.size();
 	}

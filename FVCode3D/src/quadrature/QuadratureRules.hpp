@@ -13,6 +13,8 @@
 
 #include "core/TypeDefinition.hpp"
 
+class Rigid_Mesh;
+
 namespace Darcy{
 
 //! Class that implements a quadrature rule
@@ -24,8 +26,10 @@ class QuadratureRule
 {
 public:
 
-	typedef typename Geometry::Point3D Generic_Point;
-	typedef typename std::unique_ptr<QuadratureRule> QuadratureRuleHandler;
+	typedef Geometry::Point3D Generic_Point;
+	typedef Geometry::Rigid_Mesh::Cell Cell;
+	typedef Geometry::Rigid_Mesh::Facet Facet;
+	typedef std::unique_ptr<QuadratureRule> QuadratureRuleHandler;
 
 	//! Clone method for the class
 	/*!
@@ -33,23 +37,31 @@ public:
 	 */
 	virtual std::unique_ptr<QuadratureRule> clone() const = 0;
 
-	//! Method apply
+	//! Method apply for cells
 	/*!
-	@param pointVector A vector of the vertexes of a cell
-	@param volume The volume of the cell
+	@param cell the cell to integrate over
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	virtual Real apply(const std::vector<Generic_Point> & pointVector, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const = 0;
+	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & Integrand) const = 0;
 
-	//! destructor
-	virtual ~QuadratureRule(){};
+	//! Method apply for facets
+	/*!
+	@param facet the facet to integrate over
+	@param volume volume of the facet
+	@param Integrand The function we want to integrate
+	@return the approximation of the integral of Integrand on the facet
+	 */
+	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const = 0;
+
+	//! Destructor
+	virtual ~QuadratureRule() {};
 };
 
-//! MidPoint Quadrature rule for a generic polyhedron
+//! MidPoint Quadrature rule for a generic polyhedron/polygon
 /*!
 	@class CentroidQuadrature
-	This class is a quadrature rule for an arbitrary polyhedron
+	This class is a quadrature rule for an arbitrary polyhedron/polygon
 */
 class CentroidQuadrature : public QuadratureRule
 {
@@ -64,14 +76,22 @@ public:
 	 */
     std::unique_ptr<QuadratureRule> clone() const;
 
-	//! Method apply
+	//! Method apply for cells
 	/*!
-	@param pointVector A vector of the vertexes of a cell
-	@param volume The volume of the cell
+	@param cell the cell to integrate over
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	virtual Real apply(const std::vector<Generic_Point> & pointVector, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const;
+	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & Integrand) const;
+
+	//! Method apply for facets
+	/*!
+	@param facet the facet to integrate over
+	@param volume volume of the facet
+	@param Integrand The function we want to integrate
+	@return the approximation of the integral of Integrand on the facet
+	 */
+	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const;
 
 	//! Destructor
     virtual ~CentroidQuadrature(){};

@@ -13,11 +13,12 @@ IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-set (CMAKE_CXX_FLAGS "-std=c++11 -Wall -Wextra -pedantic -frounding-math" CACHE STRING "g++ Compiler Flags for All Builds" FORCE)
+set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math" CACHE STRING "g++ Compiler Flags for All Builds" FORCE)
 
 # release and debug mode -Wno-deprecated
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for RELEASE" FORCE)
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g" CACHE STRING "g++ Compiler Flags for DEBUG" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for Release" FORCE)
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -O0 -g" CACHE STRING "g++ Compiler Flags for Debug" FORCE)
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for RelWithDebInfo" FORCE)
 
 # install directory
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/../install CACHE PATH "Install directory" FORCE)
@@ -81,13 +82,11 @@ INSTALL(FILES ${LIB_HEADERS} DESTINATION ${INSTALL_INCLUDE})
 
 # Add data file
 add_custom_command(
-	TARGET fvcode.exe POST_BUILD        		# Adds a post-build event to MyTest
+	TARGET fvcode.exe POST_BUILD        		# Adds a post-build event to fvcode.exe
 	
-	IF(NOT EXISTS ${PROJECT_SOURCE_DIR}/data.txt)
-		COMMAND ${CMAKE_COMMAND} -E copy	  	# which executes "cmake - E copy_if_different..."
-		${PROJECT_SOURCE_DIR}/data.txt     		# <--this is in-file
-		${PROJECT_BINARY_DIR}/data.txt			# <--this is out-file path
-	ENDIF(NOT EXISTS ${PROJECT_SOURCE_DIR}/data.txt)
+	COMMAND ${CMAKE_COMMAND} -E copy	  	# which executes "cmake - E copy..."
+	${PROJECT_SOURCE_DIR}/data.txt     		# <--this is in-file
+	${PROJECT_BINARY_DIR}/data.txt			# <--this is out-file path
 	
 	COMMAND ${CMAKE_COMMAND} -E copy	  	# which executes "cmake - E copy_if_different..."
 	${PROJECT_SOURCE_DIR}/README			# <--this is in-file

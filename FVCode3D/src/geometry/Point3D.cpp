@@ -148,6 +148,11 @@ Point3D operator*(const Point3D & p, const Real r)
 	return mul;
 }
 
+Point3D operator*(const Real r, const Point3D & p)
+{
+	return operator*(p,r);
+}
+
 Point3D operator/(const Point3D & p, const Real r){
 	Point3D div(p);
 	div /= r;

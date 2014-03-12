@@ -11,27 +11,38 @@
 class Mesh3D;
 class PropertiesMap;
 
-//! Class used to read TPFA format files.
+//! Class used to read files.
 /*!
- * @class ImporterTPFA
- * This is a base abstract class that allows to read TPFA format files.
+ * @class Importer
+ * This is a base abstract class that allows to import files.
  */
-class ImporterTPFA
+class Importer
 {
 public:
 
 	//! Constructor
 	/*!
 	 * Constructor from a grid file
-	 * @param filename filename of the .grid file
+	 * @param filename filename of the file
 	 * @param mesh reference to a Geometry::Mesh3D
 	 * @param proporties reference to a Geometry::PropertiesMap
 	 */
-	ImporterTPFA(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+	Importer(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
 		M_filename(filename), M_mesh(mesh), M_properties(properties) {}
 
 	//! Import from a grid file
-	virtual void import() = 0;
+	/*!
+	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+	 */
+	virtual void import(bool fracturesOn) = 0;
+
+	//! Add the lacking data
+	/*!
+	 * Add the BCs and the fracture network
+	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
+	 * @pre import the file
+	 */
+	virtual void addBCAndFractures(const Real theta = 0.);
 
 	//! Get filename
 	/*!
@@ -55,9 +66,18 @@ public:
 		{ return M_properties; }
 
 	//! Destructor
-	virtual ~ImporterTPFA(){};
+	virtual ~Importer(){};
 
 protected:
+
+	//! Generate the BC ids from a standard TPFA file format
+	/*!
+	 * Add the BCs ids to the boundary facets.
+	 * The id is set by considering the maximum component and the sign of the normal of a boundary facet.
+	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
+	 * @pre import the file
+	 */
+	virtual void extractBC(const Real theta = 0.);
 
 	//! Filename
 	std::string M_filename;
@@ -69,6 +89,48 @@ protected:
 private:
 
 	//! No default constructor
+	Importer();
+
+	//! No copy-constructor
+	Importer(const Importer &);
+
+	//! No assignment operator
+	Importer & operator=(const Importer &);
+
+};
+
+//! Class used to read a standard TPFA format file.
+/*!
+ * @class ImporterTPFA
+ * This class allows to read a standard TPFA format files.
+ */
+class ImporterTPFA : public Importer
+{
+public:
+
+	//! Constructor
+	/*!
+	 * Constructor from a grid file
+	 * @param filename filename of the .grid file
+	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param proporties reference to a Geometry::PropertiesMap
+	 */
+	ImporterTPFA(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+		Importer(filename, mesh, properties) {}
+
+	//! Import from a standard grid file
+	/*!
+	 * Read points, polygons, polyhedra, zone properties
+	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+	 */
+	virtual void import(bool fracturesOn = true);
+
+	//! Destructor
+	virtual ~ImporterTPFA(){};
+
+private:
+
+	//! No default constructor
 	ImporterTPFA();
 
 	//! No copy-constructor
@@ -76,87 +138,47 @@ private:
 
 	//! No assignment operator
 	ImporterTPFA & operator=(const ImporterTPFA &);
-
 };
 
-//! Class used to read a standard TPFA format file.
+//! Class used to read files optimized for the solver.
 /*!
- * @class ImporterTPFAStandard
- * This class allows to read a standard TPFA format files.
+ * @class ImporterForSolver
+ * This class allows to read files optimized for the solver.
+ * This format contains also the BC id for each polygon and the fracture network.
  */
-class ImporterTPFAStandard : public ImporterTPFA
+class ImporterForSolver : public Importer
 {
 public:
 
 	//! Constructor
 	/*!
-	 * Constructor from a grid file
-	 * @param filename filename of the .grid file
+	 * Constructor from a file
+	 * @param filename filename of the file
 	 * @param mesh reference to a Geometry::Mesh3D
 	 * @param proporties reference to a Geometry::PropertiesMap
 	 */
-	ImporterTPFAStandard(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
-		ImporterTPFA(filename, mesh, properties) {}
+	ImporterForSolver(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+		Importer(filename, mesh, properties) {}
 
-	//! Import from a standard grid file
-	/*!
-	 * Read points, polygons, polyhedra, zone properties
-	 */
-	virtual void import();
-
-	//! Destructor
-	virtual ~ImporterTPFAStandard(){};
-
-private:
-
-	//! No default constructor
-	ImporterTPFAStandard();
-
-	//! No copy-constructor
-	ImporterTPFAStandard(const ImporterTPFAStandard &);
-
-	//! No assignment operator
-	ImporterTPFAStandard & operator=(const ImporterTPFAStandard &);
-};
-
-//! Class used to read an improved version of a TPFA format file.
-/*!
- * @class ImporterTPFAWithBC
- * This class allows to read an improved version TPFA format files.
- * In fact, this format contains also the BC id for each polygon and the fracture network.
- */
-class ImporterTPFAWithBC : public ImporterTPFA
-{
-public:
-
-	//! Constructor
-	/*!
-	 * Constructor from a grid file
-	 * @param filename filename of the .grid file
-	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param proporties reference to a Geometry::PropertiesMap
-	 */
-	ImporterTPFAWithBC(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
-		ImporterTPFA(filename, mesh, properties) {}
-
-	//! Import from a grid file with boundary conditions and fracture network
+	//! Import from a file with boundary conditions and fracture network
 	/*!
 	 * Read points, polygons, polyhedra, zone properties, BC ids, fracture network
+	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
 	 */
-	virtual void import();
+	virtual void import(bool fracturesOn = true);
 
 	//! Destructor
-	virtual ~ImporterTPFAWithBC(){};
+	virtual ~ImporterForSolver(){};
 
 private:
 	//! No default constructor
-	ImporterTPFAWithBC();
+	ImporterForSolver();
 
 	//! No copy-constructor
-	ImporterTPFAWithBC(const ImporterTPFAWithBC &);
+	ImporterForSolver(const ImporterForSolver &);
 
 	//! No assignment operator
-	ImporterTPFAWithBC & operator=(const ImporterTPFAWithBC &);
+	ImporterForSolver & operator=(const ImporterForSolver &);
 
 };
 
