@@ -1,0 +1,19 @@
+# Compiled source #
+###################
+*.Po
+*.a
+*.o
+*.so
+
+# Temporary files #
+###################
+*~
+.deps/*.Po
+.deps
+*.swp
+
+# Eclipse files #
+#################
+.cproject
+.project
+.settings/org.eclipse.cdt.codan.core.prefs
