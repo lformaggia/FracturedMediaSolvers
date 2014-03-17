@@ -240,15 +240,21 @@ void ImporterForSolver::import(bool fracturesOn)
 			file >> buffer;
 		file >> bcId;
 		file >> isFrac;
-		file >> aperture;
-		file >> porosity;
-		for(UInt j=0; j<6; ++j)
-			if (j<permSize)
-				file >> permeability;
-			else
-				file >> buffer;
+
+		if(isFrac)
+		{
+			file >> aperture;
+			file >> porosity;
+			for(UInt j=0; j<6; ++j)
+				if (j<permSize)
+					file >> permeability;
+				else
+					file >> buffer;
+		}
+
 		facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, isFrac*static_cast<UInt>(fracturesOn)*zone, bcId) );
-		if (isFrac*static_cast<UInt>(fracturesOn)){
+		if (isFrac*static_cast<UInt>(fracturesOn))
+		{
 			prop.setProperties(aperture, porosity, permeability);
 			M_properties.setZone(zone, prop);
 			zone++;
@@ -270,7 +276,7 @@ void ImporterForSolver::import(bool fracturesOn)
 
 		for(UInt j=0; j < facetsCell; ++j)
 			file >> tmp[j];
-		file >> buffer;
+
 		file >> porosity;
 		for(UInt j=0; j<6; ++j)
 			if (j<permSize)
@@ -297,12 +303,13 @@ void ImporterForSolver::import(bool fracturesOn)
 		tmp.resize(facetsFracture);
 		for(j=0; j < facetsFracture; ++j)
 			file >> tmp[j];
-		FN.emplace_back(Geometry::Fracture3D(M_mesh, tmp, i));
+		if(facetsFracture>0)
+			FN.emplace_back(Geometry::Fracture3D(M_mesh, tmp, i));
 		//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
 		for(j=0; j<facetsFracture; ++j)
 		{
-			//M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_permeability = 1000;
-			//M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_aperture = 1;
+//			M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_permeability = 1000;
+//			M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_aperture = 1;
 		}
 	}
 

@@ -75,13 +75,16 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 
 		file << facetsRef[i].getBorderId() << " ";
 		file << facetsRef[i].isFracture() << " ";
-		file << std::scientific << std::setprecision(10);
-		file << properties.getProperties(facetsRef[i].getZoneCode()).M_aperture << " ";
-		file << properties.getProperties(facetsRef[i].getZoneCode()).M_porosity << " ";
-		file << properties.getProperties(facetsRef[i].getZoneCode()).M_permeability << " ";
-		for(j=0; j < 4; ++j)
-			file << "0" << " ";
-		file << "0" << std::endl;
+		if(facetsRef[i].isFracture())
+		{
+			file << std::scientific << std::setprecision(10);
+			file << properties.getProperties(facetsRef[i].getZoneCode()).M_aperture << " ";
+			file << properties.getProperties(facetsRef[i].getZoneCode()).M_porosity << " ";
+			file << properties.getProperties(facetsRef[i].getZoneCode()).M_permeability << " ";
+			for(j=0; j < 4; ++j)
+				file << "0" << " ";
+			file << "0" << std::endl;
+		}
 	}
 	file << std::endl;
 	file << std::scientific << std::setprecision(0);
@@ -98,7 +101,6 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 		for(std::set<UInt>::const_iterator it = cellsRef[i].getFacetsSet().begin(); it != cellsRef[i].getFacetsSet().end(); ++it)
 			file << *it << " ";
 
-		file << "0" << " ";
 		file << std::scientific << std::setprecision(10);
 		file << properties.getProperties(cellsRef[i].getZoneCode()).M_porosity << " ";
 		file << properties.getProperties(cellsRef[i].getZoneCode()).M_permeability << " ";

@@ -10,7 +10,7 @@
 #include "mesh/Mesh3D.hpp"
 #include "mesh/Properties.hpp"
 #include "import/import.hpp"
-#include "export/export.hpp"
+#include "export/exportVTU.hpp"
 #include "utility/converter.hpp"
 
 int main(int argc, char * argv[])
