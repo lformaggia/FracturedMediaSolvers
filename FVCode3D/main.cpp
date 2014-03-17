@@ -43,13 +43,16 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Create Importer..." << std::flush;
-//	ImporterTPFA importer(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
-	ImporterForSolver importer(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+	Importer * importer = 0;
+	if(data.getMeshType() == Data::MeshFormatType::TPFA)
+		importer = new ImporterTPFA(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+	else if(data.getMeshType() == Data::MeshFormatType::forSolver)
+		importer = new ImporterForSolver(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
 	std::cout << " done." << std::endl;
 
 
 	std::cout << "Import grid file..." << std::flush;
-	importer.import(data.fractureOn());
+	importer->import(data.fractureOn());
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -67,8 +70,17 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Set labels on boundary & add Fractures..." << std::flush;
-	importer.addBCAndFractures(data.getTheta());
+	std::cout << "Set labels on boundary" << std::flush;
+	if(data.getMeshType() == Data::MeshFormatType::TPFA)
+	{
+		std::cout << " & add Fractures..." << std::flush;
+		importer->addBCAndFractures(data.getTheta());
+	}
+	else if(data.getMeshType() == Data::MeshFormatType::forSolver)
+	{
+		std::cout << "..." << std::flush;
+		importer->extractBC(data.getTheta());
+	}
 	std::cout << " done." << std::endl;
 
 	std::cout << "Compute facet ids of the fractures..." << std::flush;
@@ -80,10 +92,12 @@ int main(int argc, char * argv[])
 
 	std::cout << "Export..." << std::flush;
 	ExporterVTU exporter;
-//	exporter.exportMesh(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh.vtu");
-//	exporter.exportFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_fractures.vtu");
-//	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
-//	saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_bc.grid", mesh, propMap);
+	exporter.exportMesh(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh.vtu");
+	exporter.exportFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_fractures.vtu");
+	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
+	exporter.exportWithProperties(mesh, propMap, data.getOutputDir() + data.getOutputFile() + "_prop.vtu");
+//	if(data.getMeshType() == Data::MeshFormatType::TPFA)
+//		saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_new.grid", mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -122,7 +136,7 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Export Fracture Junctures..." << std::flush;
-//	exporter.exportFractureJunctures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_junc.vtu");
+	exporter.exportFractureJunctures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_junc.vtu");
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -181,15 +195,13 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Export Property..." << std::flush;
-	exporter.exportWithProperties(myrmesh, data.getOutputDir() + data.getOutputFile() + "_perm.vtu", Permeability);
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Export Property..." << std::flush;
-	exporter.exportWithProperties(myrmesh, data.getOutputDir() + data.getOutputFile() + "_poro.vtu", Porosity);
+	exporter.exportWithProperties(myrmesh, data.getOutputDir() + data.getOutputFile() + "_APP.vtu", Aperture | Permeability | Porosity);
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
+	delete importer;
+	
 	chrono.stop();
 
 	return 0;

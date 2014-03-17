@@ -1,0 +1,14 @@
+#------------------------------------#
+#    Data file for converterToVTU    #
+#------------------------------------#
+
+## input
+[mesh]
+mesh_dir	= ./data/
+mesh_file	= provaSolver.grid
+mesh_type	= forSolver	# TPFA or forSolver
+
+## output
+[output]
+output_dir	= ./results/
+output_file	= sol

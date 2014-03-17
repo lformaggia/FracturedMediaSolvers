@@ -34,8 +34,8 @@ void Importer::addBCAndFractures(const Real theta)
 				fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
 			}
 			//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
-			M_properties.getProperties(it->second.getZoneCode()).M_permeability += 1000;
-			M_properties.getProperties(it->second.getZoneCode()).M_aperture += 1;
+			//M_properties.getProperties(it->second.getZoneCode()).M_permeability = 1000;
+			//M_properties.getProperties(it->second.getZoneCode()).M_aperture = 1;
 		}
 	}
 
@@ -298,11 +298,12 @@ void ImporterForSolver::import(bool fracturesOn)
 		for(j=0; j < facetsFracture; ++j)
 			file >> tmp[j];
 		FN.emplace_back(Geometry::Fracture3D(M_mesh, tmp, i));
-//		for(j=0; j<facetsFracture; ++j)
-//		{
-//			M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_permeability += 1000;
-//			M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_aperture += 1;
-//		}
+		//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
+		for(j=0; j<facetsFracture; ++j)
+		{
+			//M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_permeability = 1000;
+			//M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_aperture = 1;
+		}
 	}
 
 	file.close();

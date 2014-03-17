@@ -23,9 +23,9 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 		return;
 	}
 
-	std::cout << std::endl << " Converting TPFA Standard in TPFA with BC... " << std::endl;
+	std::cout << std::endl << " Converting from TPFA to solver format... " << std::endl;
 
-	UInt nNodes, nFacets, nCells, nZones, nFractures, volumeCorrection=1;
+	UInt nNodes, nFacets, nCells, nFractures;
 	UInt nodesFacet, facetsCell, facetsFracture;
 	UInt i, j;
 
@@ -37,60 +37,81 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 	nNodes = nodesRef.size();
 	nFacets = facetsRef.size();
 	nCells = cellsRef.size();
-	nZones = properties.getNumberOfZone();
 	nFractures = FN.size();
 
+	file << std::scientific << std::setprecision(0);
+
 	// Save header
-	file << nNodes << " ";
-	file << nFacets << " ";
-	file << nCells << " ";
-	file << nZones << " ";
-	file << nFractures << " ";
-	file << volumeCorrection << std::endl;
+	file << "# Mesh3D SolverDataFile" << std::endl << std::endl;
 
 	// Save nodes
+	file << "POINTS" << std::endl;
+	file << nNodes << std::endl;
+	file << std::scientific << std::setprecision(10);
 	for(i=0; i < nNodes; ++i)
 	{
 		file << nodesRef[i].x() << " ";
 		file << nodesRef[i].y() << " ";
 		file << nodesRef[i].z() << std::endl;
 	}
+	file << std::endl;
+	file << std::scientific << std::setprecision(0);
 
 	// Save facets
+	file << "FACETS" << std::endl;
+	file << nFacets << std::endl;
 	for(i=0; i < nFacets; ++i)
 	{
+		file << std::scientific << std::setprecision(0);
 		nodesFacet = facetsRef[i].getNumberOfPoints();
 		file << nodesFacet << " ";
 
-		for(UInt j=0; j < nodesFacet; ++j)
+		for(j=0; j < nodesFacet; ++j)
 			file << facetsRef[i].getIdVertex(j) << " ";
 
-		file << facetsRef[i].getZoneCode() << " ";
-		file << facetsRef[i].getBorderId() << std::endl;
+		file << facetsRef[i].getSeparatedCells().size() << " ";
+		for(std::set<UInt>::const_iterator it = facetsRef[i].getSeparatedCells().begin(); it != facetsRef[i].getSeparatedCells().end(); ++it)
+			file << *it << " ";
+
+		file << facetsRef[i].getBorderId() << " ";
+		file << facetsRef[i].isFracture() << " ";
+		file << std::scientific << std::setprecision(10);
+		file << properties.getProperties(facetsRef[i].getZoneCode()).M_aperture << " ";
+		file << properties.getProperties(facetsRef[i].getZoneCode()).M_porosity << " ";
+		file << properties.getProperties(facetsRef[i].getZoneCode()).M_permeability << " ";
+		for(j=0; j < 4; ++j)
+			file << "0" << " ";
+		file << "0" << std::endl;
 	}
+	file << std::endl;
+	file << std::scientific << std::setprecision(0);
 
 	// Save cells
+	file << "CELLS" << std::endl;
+	file << nCells << std::endl;
 	for(i=0; i < nCells; ++i)
 	{
+		file << std::scientific << std::setprecision(0);
 		facetsCell = cellsRef[i].getNumberOfFacets();
 		file << facetsCell << " ";
 
 		for(std::set<UInt>::const_iterator it = cellsRef[i].getFacetsSet().begin(); it != cellsRef[i].getFacetsSet().end(); ++it)
 			file << *it << " ";
 
-		file << cellsRef[i].getZoneCode() << std::endl;
+		file << "0" << " ";
+		file << std::scientific << std::setprecision(10);
+		file << properties.getProperties(cellsRef[i].getZoneCode()).M_porosity << " ";
+		file << properties.getProperties(cellsRef[i].getZoneCode()).M_permeability << " ";
+		for(j=0; j < 4; ++j)
+			file << "0" << " ";
+		file << "0" << std::endl;
 	}
-
-	// Save properties
-	for(std::map<UInt,Geometry::Properties>::const_iterator it = properties.getProperties().begin(); it != properties.getProperties().end(); ++it)
-	{
-		file << it->first << " ";
-		file << it->second.M_aperture << " ";
-		file << it->second.M_porosity << " ";
-		file << it->second.M_permeability << std::endl;
-	}
+	file << std::endl;
+	file << std::scientific << std::setprecision(0);
 
 	// Save fracture network
+	file << "FRACTURE_NETWORK" << std::endl;
+	file << nFractures << std::endl;
 	for(i=0; i < nFractures; ++i)
 	{
 		facetsFracture = FN.getFracture(i).getNumberOfFractureFacets();

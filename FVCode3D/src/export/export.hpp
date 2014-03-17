@@ -7,9 +7,11 @@
 #define EXPORT_HPP_
 
 #include "core/TypeDefinition.hpp"
+#include "mesh/Rigid_Mesh.hpp"
 
 class Mesh3D;
 class Rigid_Mesh;
+class PropertiesMap;
 
 //! Flag for exporter
 /*!
@@ -18,14 +20,14 @@ class Rigid_Mesh;
  */
 enum PropertiesToExport
 {
-	ZoneCode 		= 0x01,
-	Aperture		= 0x02,
-	Permeability	= 0x04,
-	Porosity		= 0x08,
-	BorderID		= 0x10,
-	Pressure		= 0x20,
-	Velocity		= 0x40,
-	Other			= 0x80,
+	ZoneCode 		= 0x001,
+	IsFrac			= 0x002,
+	Aperture		= 0x004,
+	Porosity		= 0x008,
+	Permeability	= 0x010,
+	BorderID		= 0x020,
+	ElementID		= 0x040,
+	Other			= 0x080,
 };
 
 //! Class to export mesh, fractures, solution and properties.
@@ -41,6 +43,7 @@ public:
 	typedef Geometry::Mesh3D Mesh3D;
 	typedef Geometry::Mesh3D::Cell3D Cell3D;
 	typedef Geometry::Mesh3D::Facet3D Facet3D;
+	typedef Geometry::PropertiesMap PropertiesMap;
 
 	typedef Geometry::Rigid_Mesh Rigid_Mesh;
 	typedef Geometry::Rigid_Mesh::Cell Cell;
@@ -97,22 +100,31 @@ public:
 
 	//! Export the a specific property on cells and fracture facets
 	/*!
+	 * @param mesh reference of a Geometry::Mesh3D
+	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param filename name of the file
+	 * @param propertiesType flag used to select which properties to export
+	 * @param property pointer to a generic property
+	 */
+	virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
+
+	//! Export all properties defined on cells and fracture facets
+	/*!
+	 * @param mesh reference of a Geometry::Mesh3D
+	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param filename name of the file
+	 */
+	virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename) = 0;
+
+	//! Export the a specific property on cells and fracture facets
+	/*!
 	 * @param mesh reference of a Geometry::Rigid_Mesh
 	 * @param filename name of the file
 	 * @param propertiesType flag used to select which properties to export
 	 * @param property pointer to a generic property
 	 */
-	virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
-
-	//! Export the a specific property on cells and fracture facets
-	/*!
-	 * @param mesh reference of a Geometry::Mesh3D
-	 * @param filename name of the file
-	 * @param propertiesType flag used to select which properties to export
-	 * @param property pointer to a generic property
-	 */
-	virtual void exportWithProperties(const Mesh3D & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
-
+	virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
+	
 	//! Destructor
 	virtual ~Exporter(){};
 
@@ -174,22 +186,31 @@ public:
 	 */
 	virtual void exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol);
 
+	//! Export the a specific property on cells and fracture facets
+	/*!
+	 * @param mesh reference of a Geometry::Mesh3D
+	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param filename name of the file
+	 * @param propertiesType flag used to select which properties to export
+	 * @param property pointer to a generic property
+	 */
+	virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL);
+
+	//! Export all properties defined on cells and fracture facets
+	/*!
+	 * @param mesh reference of a Geometry::Mesh3D
+	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param filename name of the file
+	 */
+	virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename);
+
 	//! Export the solution on fracture facets
 	/*!
 	 * @param mesh reference of a Geometry::Rigid_Mesh
 	 * @param filename name of the file
 	 * @param sol Eigen vector that contain the solution (cells + fracture facets)
 	 */
-	virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property = NULL ) ;
-
-	//! Export the a specific property on cells and fracture facets
-	/*!
-	 * @param mesh reference of a Geometry::Mesh3D
-	 * @param filename name of the file
-	 * @param propertiesType flag used to select which properties to export
-	 * @param property pointer to a generic property
-	 */
-	virtual void exportWithProperties(const Mesh3D & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property = NULL);
+	virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) ;
 
 	//! Destrcutor
 	virtual ~ExporterVTU() {};
@@ -219,9 +240,11 @@ public:
 
 	virtual void exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol);
 
-	virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property = NULL );
-
-	virtual void exportWithProperties(const Mesh3D & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property = NULL);
+	virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL);
+	
+	virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename);
+	
+	virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL );
 
 	virtual ~ExporterVTK() {};
 };

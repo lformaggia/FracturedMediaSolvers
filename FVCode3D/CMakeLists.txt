@@ -6,7 +6,7 @@ project (FVCode)
 SET(CMAKE_VERBOSE_MAKEFILE TRUE CACHE BOOL "Verbose Makefile" FORCE)
 SET(CMAKE_COLOR_MAKEFILE TRUE CACHE BOOL "Colored Makefile" FORCE)
 
-ENABLE_TESTING()
+#ENABLE_TESTING()
 
 # compiler stuff
 IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
@@ -58,17 +58,18 @@ set_target_properties(fvcode PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
 
 # Create executable and link libraries
 add_executable(fvcode.exe main.cpp )
-#target_link_libraries(fvcode.exe fvcode CGAL gmp tet)
 target_link_libraries(fvcode.exe fvcode tet)
 
 
 # Add subdirectories with examples
-add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tests)
+# add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 
 # Add documentation
 add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/doc)
 
+# Add tools
+add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tools)
 
 # Install
 INSTALL(TARGETS fvcode.exe fvcode
@@ -91,8 +92,12 @@ add_custom_command(
 	COMMAND ${CMAKE_COMMAND} -E copy	  	# which executes "cmake - E copy_if_different..."
 	${PROJECT_SOURCE_DIR}/README			# <--this is in-file
 	${PROJECT_BINARY_DIR}/README			# <--this is out-file path
+
+        COMMAND ln -sf
+        "${PROJECT_SOURCE_DIR}/data"
+        "${PROJECT_BINARY_DIR}"
 	
-	COMMAND ${CMAKE_COMMAND} -E make_directory data
+#	COMMAND ${CMAKE_COMMAND} -E make_directory data
 
 	COMMAND ${CMAKE_COMMAND} -E make_directory results
 

@@ -13,8 +13,7 @@ class PropertiesMap;
 
 //! Save a file as a file for solver format
 /*!
- * Save mesh, fractures and properties.
- * Further, add the BCs and the fracture network.
+ * Save mesh, properties and fractures.
  * @param filename name of the file
  * @param mesh reference to a Geometry::Mesh3D
  * @param properties reference to a Geometry::PropertiesMap

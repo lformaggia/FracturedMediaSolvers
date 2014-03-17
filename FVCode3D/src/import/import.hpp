@@ -25,7 +25,7 @@ public:
 	 * Constructor from a grid file
 	 * @param filename filename of the file
 	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param proporties reference to a Geometry::PropertiesMap
+	 * @param properties reference to a Geometry::PropertiesMap
 	 */
 	Importer(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
 		M_filename(filename), M_mesh(mesh), M_properties(properties) {}
@@ -43,6 +43,15 @@ public:
 	 * @pre import the file
 	 */
 	virtual void addBCAndFractures(const Real theta = 0.);
+
+	//! Generate the BC ids from a standard TPFA file format
+	/*!
+	 * Add the BCs ids to the boundary facets.
+	 * The id is set by considering the maximum component and the sign of the normal of a boundary facet.
+	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
+	 * @pre import the file
+	 */
+	virtual void extractBC(const Real theta = 0.);
 
 	//! Get filename
 	/*!
@@ -69,15 +78,6 @@ public:
 	virtual ~Importer(){};
 
 protected:
-
-	//! Generate the BC ids from a standard TPFA file format
-	/*!
-	 * Add the BCs ids to the boundary facets.
-	 * The id is set by considering the maximum component and the sign of the normal of a boundary facet.
-	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
-	 * @pre import the file
-	 */
-	virtual void extractBC(const Real theta = 0.);
 
 	//! Filename
 	std::string M_filename;
@@ -113,7 +113,7 @@ public:
 	 * Constructor from a grid file
 	 * @param filename filename of the .grid file
 	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param proporties reference to a Geometry::PropertiesMap
+	 * @param properties reference to a Geometry::PropertiesMap
 	 */
 	ImporterTPFA(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
 		Importer(filename, mesh, properties) {}
@@ -155,7 +155,7 @@ public:
 	 * Constructor from a file
 	 * @param filename filename of the file
 	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param proporties reference to a Geometry::PropertiesMap
+	 * @param properties reference to a Geometry::PropertiesMap
 	 */
 	ImporterForSolver(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
 		Importer(filename, mesh, properties) {}
