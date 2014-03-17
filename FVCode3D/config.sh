@@ -19,6 +19,8 @@ else
     echo "Usign an absolute path: ${SOURCE_FOLDER}"
 fi
 
+NUM_PROC=`nproc`
+
 mkdir -p FVCode3D-build
 
 pushd FVCode3D-build > /dev/null
@@ -32,7 +34,7 @@ pushd FVCode3D-build > /dev/null
         -DCMAKE_BUILD_TYPE=DEBUG
 #        -DCMAKE_BUILD_TYPE=RELEASE
 
-    make
+    make -j${NUM_PROC}
 
 popd > /dev/null
 
