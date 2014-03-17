@@ -16,6 +16,8 @@
 #include <utility>
 #include <functional>
 #include <tuple>
+#include <string>
+#include <map>
 
 #include <Eigen/Sparse>
 
@@ -29,10 +31,16 @@ typedef uint64_t UInt;
 typedef int64_t Int;
 
 //! bit-flag with up to 8 different flags
-typedef unsigned char Flag8bit;
+typedef uint8_t Flag8bit;
+
+//! bit-flag with up to 16 different flags
+typedef uint16_t Flag16bit;
 
 //! bit-flag with up to 32 different flags
 typedef uint32_t Flag32bit;
+
+//! bit-flag with up to 64 different flags
+typedef uint64_t Flag64bit;
 
 //! PI
 const Real _PI_ = std::atan(1)*4;

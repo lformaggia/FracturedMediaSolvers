@@ -29,9 +29,20 @@ public:
 		pseudoSteady	= 1
 	};
 
+	//! Define the format of the input mesh
+	/*!
+	 * @enum MeshFormatType
+	 * This enumerator allows to select the format type of the mesh: TPFA(old) or forSolver(new)
+	 */
+	enum MeshFormatType
+	{
+		TPFA			= 0,
+		forSolver		= 1
+	};
+
 	//! Constructor
 	/*!
-	 * @dataFileName name of the data file
+	 * @param dataFileName name of the data file
 	 */
 	Data(const std::string dataFileName);
 
@@ -47,6 +58,12 @@ public:
 	 */
 	const std::string getMeshFile() const { return M_meshFile; }
 
+	//! Get the format type of the mesh
+	/*!
+	 * @return the format type of the mesh
+	 */
+	MeshFormatType getMeshType() const { return M_meshType; }
+	
 	//! Get the output directory
 	/*!
 	 * @return the string that contains the output directory
@@ -63,7 +80,7 @@ public:
 	/*!
 	 * @return the type of the problem
 	 */
-	ProblemType getProblemType() const { return M_type; }
+	ProblemType getProblemType() const { return M_problemType; }
 
 	//! Test if fractures are enabled
 	/*!
@@ -110,12 +127,14 @@ protected:
 	std::string M_meshDir;
 	//! Mesh file
 	std::string M_meshFile;
+	//! Format Type
+	MeshFormatType M_meshType;
 	//! Output directory
 	std::string M_outputDir;
 	//! Output file
 	std::string M_outputFile;
 	//! Type of the problem
-	ProblemType M_type;
+	ProblemType M_problemType;
 	//! Enable or disable fractures
 	bool M_fracturesOn;
 	//! Mobility of the fluid
@@ -126,5 +145,31 @@ protected:
 	bool M_verbose;
 
 };
+
+template <class T>
+class EnumParser
+{
+public:
+	EnumParser(){};
+
+	T parse(const std::string & str) const
+	{ 
+		typename std::map<std::string, T>::const_iterator it = enumMap.find(str);
+		if (it == enumMap.end())
+		{	
+			std::cerr << "This enum does not exist!" << std::endl;
+			exit(0);
+		}
+		return it->second;
+	}
+private:
+	std::map<std::string, T> enumMap;
+};
+
+template<>
+EnumParser<Data::ProblemType>::EnumParser();
+
+template<>
+EnumParser<Data::MeshFormatType>::EnumParser();
 
 #endif /* DATA_HPP_ */

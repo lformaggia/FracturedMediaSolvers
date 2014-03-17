@@ -1,0 +1,13 @@
+#---------------------------------------#
+#    Data file for converterToSolver    #
+#---------------------------------------#
+
+## input
+[mesh]
+mesh_dir	= ./data/
+mesh_file	= grid1.grid
+
+## output
+[output]
+output_dir	= ./results/
+output_file	= grid1

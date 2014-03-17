@@ -155,12 +155,18 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
 	filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nCells << "\">" << std::endl;
 
 	// CellData
-	filestr << "\t\t\t<CellData Scalars=\"cellID\">" << std::endl;
+	filestr << "\t\t\t<CellData Scalars=\"scalars\">" << std::endl;
 	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
 	filestr << std::scientific << std::setprecision(0);
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
 		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
 			filestr << it->getFractureFacetsId()[i] << std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"fractureID\" format=\"ascii\">" << std::endl;
+	filestr << std::scientific << std::setprecision(0);
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			filestr << it->getId() << std::endl;
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 	filestr << "\t\t\t</CellData>" << std::endl;
 
@@ -238,6 +244,8 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
 	const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
 	const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+	std::set<UInt> ids;
+	std::set<UInt>::const_iterator itSet;
 	UInt nPoints = nodes.size();
 	UInt nCells = cells.size();
 	UInt nFractures = 0;
@@ -245,7 +253,10 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	UInt offsets = 0, faceOffsets = 0;
 
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
-		nFractures += it->getNumberOfFractureFacets();
+		for(UInt i=0; i<it->getNumberOfFractureFacets(); ++i)
+		  ids.insert(it->getFractureFacetsId()[i]);
+	nFractures = ids.size();
+	ids.clear();
 
 	nTotal = nCells + nFractures;
 
@@ -261,9 +272,8 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	filestr << std::scientific << std::setprecision(0);
 	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
 		filestr << it->first << std::endl;
-	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
-		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
-			filestr << "-1" << std::endl;
+	for(UInt i=0; i<nFractures; ++i )
+		filestr << "-1" << std::endl;
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 
 	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
@@ -271,8 +281,18 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
 		filestr << "-1" << std::endl;
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
 		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
-			filestr << it->getFractureFacetsId()[i] << std::endl;
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				filestr << it->getFractureFacetsId()[i] << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 	filestr << "\t\t\t</CellData>" << std::endl;
 
@@ -298,13 +318,19 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	}
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
 	{
-		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
 		{
-			for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
-				filestr << *jt << " ";
-			filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+					filestr << *jt << " ";
+				filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
 		}
 	}
+	ids.clear();
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 
 	//  Offsets
@@ -316,12 +342,18 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	}
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
 	{
-		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
 		{
-			offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
-			filestr << offsets << std::endl;
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+				filestr << offsets << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
 		}
 	}
+	ids.clear();
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 
 	//  Types
@@ -345,15 +377,21 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	}
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
 	{
-		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
 		{
-			filestr << "1" << std::endl;
-			filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
-			for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
-				filestr << *jt << " ";
-			filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				filestr << "1" << std::endl;
+				filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
+				for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+					filestr << *jt << " ";
+				filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
 		}
 	}
+	ids.clear();
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 
 	//  Faceoffsets
@@ -367,12 +405,18 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 	}
 	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
 	{
-		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
 		{
-			faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
-			filestr << faceOffsets << std::endl;
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+				filestr << faceOffsets << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
 		}
 	}
+	ids.clear();
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 	filestr << "\t\t\t</Cells>" << std::endl;
 
@@ -405,7 +449,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
 	const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
 	UInt nPoints = 0;
 	UInt nCells = 0;
-	UInt offsets = 0, faceOffsets = 0;
+	UInt offsets = 0;
 	UInt count = 0;
 
 	std::set<UInt> localPoints;
@@ -513,7 +557,7 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
 	filestr << "\t\t\t<CellData Scalars=\"Pressure\">" << std::endl;
 	filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Pressure\" format=\"ascii\">" << std::endl;
 	filestr << std::scientific << std::setprecision(10);
-	for( UInt i = 0; i < sol.size(); ++i )
+	for( UInt i = 0; i < nTotal; ++i )
 		filestr << sol[i] << std::endl;
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 	filestr << "\t\t\t</CellData>" << std::endl;
@@ -640,6 +684,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
 	UInt nPoints = nodes.size();
 	UInt nCells = cells.size();
 	UInt nFractures = mesh.getFractureFacetsIdsVector().size();
+	UInt nTotal = nCells + nFractures;
 	UInt offsets = 0, faceOffsets = 0;
 
 	// Header
@@ -652,7 +697,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
 	filestr << "\t\t\t<CellData Scalars=\"Pressure\">" << std::endl;
 	filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Pressure\" format=\"ascii\">" << std::endl;
 	filestr << std::scientific << std::setprecision(10);
-	for( UInt i = nCells; i < sol.size(); ++i )
+	for( UInt i = nCells; i < nTotal; ++i )
 		filestr << sol[i] << std::endl;
 	filestr << "\t\t\t\t</DataArray>" << std::endl;
 	filestr << "\t\t\t</CellData>" << std::endl;
@@ -725,7 +770,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
 	filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property)
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
 {
 	std::fstream filestr;
 
@@ -741,7 +786,602 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
 		return;
 	}
 
-	std::vector<Real> * prop(0);
+	std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
+
+	const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+	const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+	const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+	const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+	std::set<UInt> ids;
+	std::set<UInt>::const_iterator itSet;
+	UInt nPoints = nodes.size();
+	UInt nCells = cells.size();
+	UInt nFractures = 0;
+	UInt nTotal;
+	UInt offsets = 0, faceOffsets = 0;
+
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
+		for(UInt i=0; i<it->getNumberOfFractureFacets(); ++i)
+		  ids.insert(it->getFractureFacetsId()[i]);
+	nFractures = ids.size();
+	ids.clear();
+	
+	nTotal = nCells + nFractures;
+
+	// Header
+	filestr << "<?xml version=\"1.0\"?>" << std::endl;
+	filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+	filestr << "\t<UnstructuredGrid>" << std::endl;
+	filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nTotal << "\">" << std::endl;
+	filestr << std::scientific << std::setprecision(10);
+
+	// CellData
+	filestr << "\t\t\t<CellData Scalars=\"Prop\">" << std::endl;
+	if(propertiesType & ZoneCode)
+	{
+		filestr << std::scientific << std::setprecision(0);
+		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"zoneCode\" format=\"ascii\">" << std::endl;
+		for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+			filestr << it->second.getZoneCode() << std::endl;
+		for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		{
+			for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			{
+				itSet = ids.find(it->getFractureFacetsId()[i]);
+				if(itSet == ids.end())
+				{
+					filestr << facets.at(it->getFractureFacetsId()[i]).getZoneCode() << std::endl;
+					ids.insert(it->getFractureFacetsId()[i]);
+				}
+			}
+		}
+		ids.clear();
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & IsFrac)
+	{
+		filestr << std::scientific << std::setprecision(0);
+		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"isFrac\" format=\"ascii\">" << std::endl;
+		for(UInt i=0; i < nCells; ++i )
+			filestr << "0" << std::endl;
+		for(UInt i=0; i < nFractures; ++i )
+			filestr << "1" << std::endl;
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Aperture)
+	{
+		filestr << std::scientific << std::setprecision(10);
+		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
+		for(UInt i=0; i < nCells; ++i )
+			filestr << "-1" << std::endl;
+		for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		{
+			for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			{
+				itSet = ids.find(it->getFractureFacetsId()[i]);
+				if(itSet == ids.end())
+				{
+					filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_aperture << std::endl;
+					ids.insert(it->getFractureFacetsId()[i]);
+				}
+			}
+		}
+		ids.clear();
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Porosity)
+	{
+		filestr << std::scientific << std::setprecision(10);
+		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
+		for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+			filestr << properties.getProperties(it->second.getZoneCode()).M_porosity << std::endl;
+		for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		{
+			for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			{
+				itSet = ids.find(it->getFractureFacetsId()[i]);
+				if(itSet == ids.end())
+				{
+					filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_porosity << std::endl;
+					ids.insert(it->getFractureFacetsId()[i]);
+				}
+			}
+		}
+		ids.clear();
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Permeability)
+	{
+		filestr << std::scientific << std::setprecision(10);
+		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
+		for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+			filestr << properties.getProperties(it->second.getZoneCode()).M_permeability << std::endl;
+		for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		{
+			for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			{
+				itSet = ids.find(it->getFractureFacetsId()[i]);
+				if(itSet == ids.end())
+				{
+				      filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_permeability << std::endl;
+				      ids.insert(it->getFractureFacetsId()[i]);
+				}
+			}
+		}
+		ids.clear();
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & BorderID)
+	{
+		filestr << std::scientific << std::setprecision(0);
+		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderID\" format=\"ascii\">" << std::endl;
+		for(UInt i=0; i < nCells; ++i )
+			filestr << "0" << std::endl;
+		for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		{
+			for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			{
+				itSet = ids.find(it->getFractureFacetsId()[i]);
+				if(itSet == ids.end())
+				{
+					filestr << facets.at(it->getFractureFacetsId()[i]).getBorderId() << std::endl;
+					ids.insert(it->getFractureFacetsId()[i]);
+				}
+			}
+		}
+		ids.clear();
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & ElementID)
+	{
+		filestr << std::scientific << std::setprecision(0);
+		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"cellID\" format=\"ascii\">" << std::endl;
+		for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+			filestr << it->first << std::endl;
+		for(UInt i=0; i < nFractures; ++i )
+			filestr << "-1" << std::endl;
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
+		for(UInt i=0; i < nCells; ++i )
+			filestr << "-1" << std::endl;
+		for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+		{
+			for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+			{
+				itSet = ids.find(it->getFractureFacetsId()[i]);
+				if(itSet == ids.end())
+				{
+					filestr << it->getFractureFacetsId()[i] << std::endl;
+					ids.insert(it->getFractureFacetsId()[i]);
+				}
+			}
+		}
+		ids.clear();
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Other)
+	{
+		filestr << std::scientific << std::setprecision(10);
+		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"prop\" format=\"ascii\">" << std::endl;
+		for( UInt i=0; i < nTotal ; ++i )
+			filestr << (*property)[i] << std::endl;
+		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	filestr << "\t\t\t</CellData>" << std::endl;
+
+	filestr << std::scientific << std::setprecision(10);
+
+	// Points
+	filestr << "\t\t\t<Points>" << std::endl;
+	filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+	for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+		filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	filestr << "\t\t\t</Points>" << std::endl;
+
+	// Cells
+	filestr << "\t\t\t<Cells>" << std::endl;
+	//  Connectivity
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+			filestr << *jt << " ";
+		filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+					filestr << *jt << " ";
+				filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Offsets
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		offsets += it->second.vertexesNumber();
+		filestr << offsets << std::endl;
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+				filestr << offsets << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Types
+	filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+	for( UInt i=0; i < nTotal ; ++i )
+		filestr << "42" << std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Faces
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"faces\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		filestr << it->second.facetsNumber() << std::endl;
+		for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
+		{
+			filestr << facets.at(*jt).getNumberOfPoints() << std::endl;
+			for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVertexesVector().begin(); kt != facets.at(*jt).getVertexesVector().end()-1; ++kt )
+				filestr << *kt << " ";
+			filestr << *(facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+		}
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				filestr << "1" << std::endl;
+				filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
+				for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+					filestr << *jt << " ";
+				filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Faceoffsets
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"faceoffsets\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		faceOffsets += 1 + it->second.facetsNumber();
+		for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
+			faceOffsets += facets.at(*jt).getNumberOfPoints();
+		filestr << faceOffsets << std::endl;
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+				filestr << faceOffsets << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	filestr << "\t\t\t</Cells>" << std::endl;
+
+	filestr << "\t\t</Piece>" << std::endl;
+	filestr << "\t</UnstructuredGrid>" << std::endl;
+	filestr << "\t</VTKFile>" << std::endl;
+
+	filestr.close();
+}
+
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename)
+{
+	std::fstream filestr;
+
+	filestr.open (filename.c_str(), std::ios_base::out);
+
+	if (filestr.is_open())
+	{
+		std::cout << std::endl << " File: " << filename << ", successfully opened";
+	}
+	else
+	{
+		std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+		return;
+	}
+
+	std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
+
+	const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+	const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+	const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+	const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+	std::set<UInt> ids;
+	std::set<UInt>::const_iterator itSet;
+	UInt nPoints = nodes.size();
+	UInt nCells = cells.size();
+	UInt nFractures = 0;
+	UInt nTotal;
+	UInt offsets = 0, faceOffsets = 0;
+
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
+		for(UInt i=0; i<it->getNumberOfFractureFacets(); ++i)
+		  ids.insert(it->getFractureFacetsId()[i]);
+	nFractures = ids.size();
+	ids.clear();
+	
+	nTotal = nCells + nFractures;
+
+	// Header
+	filestr << "<?xml version=\"1.0\"?>" << std::endl;
+	filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+	filestr << "\t<UnstructuredGrid>" << std::endl;
+	filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nTotal << "\">" << std::endl;
+	filestr << std::scientific << std::setprecision(10);
+
+	// CellData
+	filestr << "\t\t\t<CellData Scalars=\"PropScal\">" << std::endl;
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"isFrac\" format=\"ascii\">" << std::endl;
+	for(UInt i=0; i < nCells; ++i )
+		filestr << "0" << std::endl;
+	for(UInt i=0; i < nFractures; ++i )
+		filestr << "1" << std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
+	for(UInt i=0; i < nCells; ++i )
+		filestr << "-1" << std::endl;
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+			      filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_aperture << std::endl;
+			      ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
+	for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+		filestr << properties.getProperties(it->second.getZoneCode()).M_porosity << std::endl;
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+			      filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_porosity << std::endl;
+			      ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
+	for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+		filestr << properties.getProperties(it->second.getZoneCode()).M_permeability << std::endl;
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+			      filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_permeability << std::endl;
+			      ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	filestr << std::scientific << std::setprecision(0);
+
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"cellID\" format=\"ascii\">" << std::endl;
+	for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+		filestr << it->first << std::endl;
+	for(UInt i=0; i < nFractures; ++i )
+		filestr << "-1" << std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
+	for(UInt i=0; i < nCells; ++i )
+		filestr << "-1" << std::endl;
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				filestr << it->getFractureFacetsId()[i] << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	filestr << "\t\t\t</CellData>" << std::endl;
+
+	filestr << std::scientific << std::setprecision(10);
+
+	// Points
+	filestr << "\t\t\t<Points>" << std::endl;
+	filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+	for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+		filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	filestr << "\t\t\t</Points>" << std::endl;
+
+	// Cells
+	filestr << "\t\t\t<Cells>" << std::endl;
+	//  Connectivity
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+			filestr << *jt << " ";
+		filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+					filestr << *jt << " ";
+				filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Offsets
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		offsets += it->second.vertexesNumber();
+		filestr << offsets << std::endl;
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+				filestr << offsets << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Types
+	filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+	for( UInt i=0; i < nTotal ; ++i )
+		filestr << "42" << std::endl;
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Faces
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"faces\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		filestr << it->second.facetsNumber() << std::endl;
+		for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
+		{
+			filestr << facets.at(*jt).getNumberOfPoints() << std::endl;
+			for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVertexesVector().begin(); kt != facets.at(*jt).getVertexesVector().end()-1; ++kt )
+				filestr << *kt << " ";
+			filestr << *(facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+		}
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				filestr << "1" << std::endl;
+				filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
+				for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+					filestr << *jt << " ";
+				filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+	//  Faceoffsets
+	filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"faceoffsets\" format=\"ascii\">" << std::endl;
+	for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+	{
+		faceOffsets += 1 + it->second.facetsNumber();
+		for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
+			faceOffsets += facets.at(*jt).getNumberOfPoints();
+		filestr << faceOffsets << std::endl;
+	}
+	for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+	{
+		for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
+		{
+			itSet = ids.find(it->getFractureFacetsId()[i]);
+			if(itSet == ids.end())
+			{
+				faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+				filestr << faceOffsets << std::endl;
+				ids.insert(it->getFractureFacetsId()[i]);
+			}
+		}
+	}
+	ids.clear();
+	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	filestr << "\t\t\t</Cells>" << std::endl;
+
+	filestr << "\t\t</Piece>" << std::endl;
+	filestr << "\t</UnstructuredGrid>" << std::endl;
+	filestr << "\t</VTKFile>" << std::endl;
+
+	filestr.close();
+}
+
+void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
+{
+	std::fstream filestr;
+
+	filestr.open (filename.c_str(), std::ios_base::out);
+
+	if (filestr.is_open())
+	{
+		std::cout << std::endl << " File: " << filename << ", successfully opened";
+	}
+	else
+	{
+		std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+		return;
+	}
 
 	std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
 
@@ -749,64 +1389,12 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
 	const std::vector<Facet> & facets = mesh.getFacetsVector();
 	const std::vector<Cell> & cells = mesh.getCellsVector();
 	const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
+	const PropertiesMap & properties = mesh.getPropertiesMap();
 	UInt nPoints = nodes.size();
 	UInt nCells = cells.size();
 	UInt nFractures = mesh.getFractureFacetsIdsVector().size();
 	UInt nTotal = nCells + nFractures;
 	UInt offsets = 0, faceOffsets = 0;
-
-	if(propertiesType == Other)
-		prop = const_cast<std::vector<Real> *>(property);
-	if(propertiesType == ZoneCode)
-	{
-		prop = new std::vector<Real>;
-		prop->reserve(nTotal);
-
-		for(std::vector<Cell>::const_iterator it = mesh.getCellsVector().begin() ; it != mesh.getCellsVector().end(); ++it)
-			prop->push_back(it->getZoneCode());
-		for(std::vector<Fracture_Facet>::const_iterator it = mesh.getFractureFacetsIdsVector().begin() ; it != mesh.getFractureFacetsIdsVector().end(); ++it)
-			prop->push_back(it->getZoneCode());
-	}
-	if(propertiesType == Aperture)
-	{
-		prop = new std::vector<Real>;
-		prop->reserve(nTotal);
-
-		for(std::vector<Cell>::const_iterator it = mesh.getCellsVector().begin() ; it != mesh.getCellsVector().end(); ++it)
-			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_aperture );
-		for(std::vector<Fracture_Facet>::const_iterator it = mesh.getFractureFacetsIdsVector().begin() ; it != mesh.getFractureFacetsIdsVector().end(); ++it)
-			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_aperture );
-	}
-	if(propertiesType == Permeability)
-	{
-		prop = new std::vector<Real>;
-		prop->reserve(nTotal);
-
-		for(std::vector<Cell>::const_iterator it = mesh.getCellsVector().begin() ; it != mesh.getCellsVector().end(); ++it)
-			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_permeability );
-		for(std::vector<Fracture_Facet>::const_iterator it = mesh.getFractureFacetsIdsVector().begin() ; it != mesh.getFractureFacetsIdsVector().end(); ++it)
-			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_permeability );
-	}
-	if(propertiesType == Porosity)
-	{
-		prop = new std::vector<Real>;
-		prop->reserve(nTotal);
-
-		for(std::vector<Cell>::const_iterator it = mesh.getCellsVector().begin() ; it != mesh.getCellsVector().end(); ++it)
-			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_porosity );
-		for(std::vector<Fracture_Facet>::const_iterator it = mesh.getFractureFacetsIdsVector().begin() ; it != mesh.getFractureFacetsIdsVector().end(); ++it)
-			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_porosity );
-	}
-//	if(propertiesType == BorderID)
-//	{
-//		prop = new std::vector<Real>;
-//		prop->reserve(nTotal);
-//
-//		for(std::vector<Cell>::const_iterator it = mesh.getCellsVector().begin() ; it != mesh.getCellsVector().end(); ++it)
-//			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_porosity );
-//		for(std::vector<Fracture_Facet>::const_iterator it = mesh.getFractureFacetsIdsVector().begin() ; it != mesh.getFractureFacetsIdsVector().end(); ++it)
-//			prop->push_back( mesh.getPropertiesMap().getProperties(it->getZoneCode()).M_porosity );
-//	}
 
 	// Header
 	filestr << "<?xml version=\"1.0\"?>" << std::endl;
@@ -816,11 +1404,92 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
 
 	// CellData
 	filestr << "\t\t\t<CellData Scalars=\"Prop\">" << std::endl;
-	filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Prop\" format=\"ascii\">" << std::endl;
-	filestr << std::scientific << std::setprecision(10);
-	for( UInt i = 0; i < prop->size(); ++i )
-		filestr << (*prop)[i] << std::endl;
-	filestr << "\t\t\t\t</DataArray>" << std::endl;
+	if(propertiesType & ZoneCode)
+	{
+		filestr << std::scientific << std::setprecision(0);
+ 		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"zoneCode\" format=\"ascii\">" << std::endl;
+ 		for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+ 			filestr << it->getZoneCode() << std::endl;
+ 		for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+ 			filestr << it->getZoneCode() << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & IsFrac)
+	{
+		filestr << std::scientific << std::setprecision(0);
+ 		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"isFrac\" format=\"ascii\">" << std::endl;
+ 		for(UInt i=0; i < nCells; ++i )
+ 			filestr << "0" << std::endl;
+ 		for(UInt i=0; i < nFractures; ++i )
+ 			filestr << "1" << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Aperture)
+	{
+		filestr << std::scientific << std::setprecision(10);
+ 		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
+ 		for(UInt i=0; i < nCells; ++i )
+ 			filestr << "-1" << std::endl;
+ 		for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+ 			filestr << properties.getProperties(it->getZoneCode()).M_aperture << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Porosity)
+	{
+		filestr << std::scientific << std::setprecision(10);
+ 		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
+ 		for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+ 			filestr << properties.getProperties(it->getZoneCode()).M_porosity << std::endl;
+ 		for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+ 			filestr <<  properties.getProperties(it->getZoneCode()).M_porosity << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Permeability)
+	{
+		filestr << std::scientific << std::setprecision(10);
+ 		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
+ 		for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+ 			filestr << properties.getProperties(it->getZoneCode()).M_permeability << std::endl;
+ 		for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+ 			filestr <<  properties.getProperties(it->getZoneCode()).M_permeability << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & BorderID)
+	{
+		filestr << std::scientific << std::setprecision(0);
+ 		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderID\" format=\"ascii\">" << std::endl;
+ 		for(UInt i=0; i < nCells; ++i )
+ 			filestr << "0" << std::endl;
+ 		for(UInt i=0; i < nFractures; ++i )
+ 			filestr <<  "0" << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & ElementID)
+	{
+		filestr << std::scientific << std::setprecision(0);
+ 		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"cellID\" format=\"ascii\">" << std::endl;
+ 		for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+ 			filestr << it->getId() << std::endl;
+ 		for(UInt i=0; i < nFractures; ++i )
+ 			filestr << "-1" << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+ 		filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
+ 		for(UInt i=0; i < nCells; ++i )
+ 			filestr << "-1" << std::endl;
+ 		for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+ 		{
+ 			filestr << it->getFacetId() << std::endl;
+ 		}
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
+	if(propertiesType & Other)
+	{
+		filestr << std::scientific << std::setprecision(10);
+ 		filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"prop\" format=\"ascii\">" << std::endl;
+ 		for( UInt i=0; i < nTotal ; ++i )
+ 			filestr << (*property)[i] << std::endl;
+ 		filestr << "\t\t\t\t</DataArray>" << std::endl;
+	}
 	filestr << "\t\t\t</CellData>" << std::endl;
 
 	filestr << std::scientific << std::setprecision(10);
@@ -918,15 +1587,6 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
 	filestr << "\t</VTKFile>" << std::endl;
 
 	filestr.close();
-
-	if(propertiesType != Other)
-		delete prop;
-
-}
-
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property)
-{
-	// TODO
 }
 
 
@@ -960,12 +1620,17 @@ void ExporterVTK::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
 	// TODO
 }
 
-void ExporterVTK::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property)
+void ExporterVTK::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
 {
 	// TODO
 }
 
-void ExporterVTK::exportWithProperties(const Mesh3D & mesh, const std::string filename, const Flag8bit propertiesType, const std::vector<Real> * property)
+void ExporterVTK::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename)
+{
+	// TODO
+}
+
+void ExporterVTK::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
 {
 	// TODO
 }

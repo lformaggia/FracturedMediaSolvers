@@ -8,10 +8,10 @@
 #include "Matrix.hpp"
 
 SparseMatrix::SparseMatrix():
-		M_file(0), M_nonZeros(0), M_options(Store) {}
+		M_nonZeros(0), M_options(Store), M_file(0) {}
 
 SparseMatrix::SparseMatrix(const Flag8bit options, const std::string filename):
-		M_file(0), M_filename(filename), M_nonZeros(0), M_options(options | SaveOnFile)
+		M_nonZeros(0), M_options(options | SaveOnFile), M_filename(filename), M_file(0)
 {
 	M_file = new std::ofstream;
 	M_file->open(M_filename.c_str(), std::ios_base::out);
