@@ -21,10 +21,10 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -O0 -g" CACHE STRING "g++ Com
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for RelWithDebInfo" FORCE)
 
 # install directory
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/../install CACHE PATH "Install directory" FORCE)
-set(INSTALL_BIN ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Install: bin subdirectory" FORCE)
-set(INSTALL_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib CACHE PATH "Install: library subdirectory" FORCE)
-set(INSTALL_INCLUDE ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Install: include subdirectory" FORCE)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/../install CACHE PATH "Install directory")
+set(INSTALL_BIN ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Install: bin subdirectory")
+set(INSTALL_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib CACHE PATH "Install: library subdirectory")
+set(INSTALL_INCLUDE ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Install: include subdirectory")
 
 # Eigen path
 find_path(EIGEN_PATH NAMES signature_of_eigen3_matrix_library PATHS /usr/local/include/eigen3 DOC "Eigen Directory")

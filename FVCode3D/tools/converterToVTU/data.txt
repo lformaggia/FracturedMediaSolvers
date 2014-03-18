@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= provaSolver.grid
+mesh_file	= test.grid
 mesh_type	= forSolver	# TPFA or forSolver
 
 ## output

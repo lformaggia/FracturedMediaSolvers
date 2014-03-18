@@ -520,7 +520,6 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr.close();
 }
 
-
 void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol)
 {
     std::fstream filestr;
