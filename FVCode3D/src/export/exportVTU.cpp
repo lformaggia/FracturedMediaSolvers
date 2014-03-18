@@ -1025,8 +1025,8 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                  filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_aperture << std::endl;
-                  ids.insert(it->getFractureFacetsId()[i]);
+            	filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_aperture << std::endl;
+            	ids.insert(it->getFractureFacetsId()[i]);
             }
         }
     }

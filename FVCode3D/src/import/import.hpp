@@ -99,10 +99,10 @@ private:
 
 };
 
-//! Class used to read a standard TPFA format file.
+//! Class used to read a standard TPFA format file (.grid).
 /*!
  * @class ImporterTPFA
- * This class allows to read a standard TPFA format files.
+ * This class allows to read a standard TPFA format file (.grid).
  */
 class ImporterTPFA : public Importer
 {
@@ -140,10 +140,10 @@ private:
 	ImporterTPFA & operator=(const ImporterTPFA &);
 };
 
-//! Class used to read files optimized for the solver.
+//! Class used to read files optimized for the solver (.fvg).
 /*!
  * @class ImporterForSolver
- * This class allows to read files optimized for the solver.
+ * This class allows to read files optimized for the solver (.fvg).
  * This format contains also the BC id for each polygon and the fracture network.
  */
 class ImporterForSolver : public Importer

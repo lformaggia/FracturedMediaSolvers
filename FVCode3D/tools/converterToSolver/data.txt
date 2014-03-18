@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= grid1.grid
+mesh_file	= grid1.grid # must be a TPFA format file (.grid)
 
 ## output
 [output]

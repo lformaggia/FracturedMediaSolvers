@@ -20,6 +20,9 @@ int main(int argc, char * argv[])
 
 	std::cout << "Read Data..." << std::flush;
 	Data data(dataFileName);
+	data.setMeshType(Data::MeshFormatType::TPFA);
+	data.fractureOn(true);
+	data.verbose(true);
 	std::cout << " done." << std::endl;
 
 	std::cout << std::endl;
@@ -56,7 +59,7 @@ int main(int argc, char * argv[])
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Save as solver format..." << std::flush;
-	saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + ".grid", mesh, propMap);
+	saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + ".fvg", mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
 	return 0;

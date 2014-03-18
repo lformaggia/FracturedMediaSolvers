@@ -11,7 +11,7 @@
 class Mesh3D;
 class PropertiesMap;
 
-//! Save a file as a file for solver format
+//! Save a file as a file for solver format (.fvg)
 /*!
  * Save mesh, properties and fractures.
  * @param filename name of the file

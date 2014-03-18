@@ -251,7 +251,6 @@ void ImporterForSolver::import(bool fracturesOn)
 				else
 					file >> buffer;
 		}
-
 		facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, isFrac*static_cast<UInt>(fracturesOn)*zone, bcId) );
 		if (isFrac*static_cast<UInt>(fracturesOn))
 		{

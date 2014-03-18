@@ -32,7 +32,7 @@ public:
 	//! Define the format of the input mesh
 	/*!
 	 * @enum MeshFormatType
-	 * This enumerator allows to select the format type of the mesh: TPFA(old) or forSolver(new)
+	 * This enumerator allows to select the format type of the mesh: TPFA(.grid) or forSolver(.fvg)
 	 */
 	enum MeshFormatType
 	{
@@ -46,6 +46,9 @@ public:
 	 */
 	Data(const std::string dataFileName);
 
+	//! @name Get methods
+	//@{
+
 	//! Get the directory of the mesh
 	/*!
 	 * @return the string that contains the directory of the mesh
@@ -58,12 +61,18 @@ public:
 	 */
 	const std::string getMeshFile() const { return M_meshFile; }
 
+	//! Get the extension of the mesh format type
+	/*!
+	 * @return the extension of the format type of the mesh
+	 */
+	const std::string getMeshExtension() const { return M_meshExt; }
+
 	//! Get the format type of the mesh
 	/*!
 	 * @return the format type of the mesh
 	 */
 	MeshFormatType getMeshType() const { return M_meshType; }
-	
+
 	//! Get the output directory
 	/*!
 	 * @return the string that contains the output directory
@@ -106,6 +115,81 @@ public:
 	 */
 	bool verbose() const { return M_verbose; }
 
+	//@}
+
+	//! @name Set methods
+	//@{
+
+	//! Set the directory of the mesh
+	/*!
+	 * @param dir the string that contains the directory of the mesh
+	 */
+	void setMeshDir(const std::string dir) { M_meshDir = dir; }
+
+	//! Set the file of the mesh
+	/*!
+	 * @param file the string that contains the file of the mesh
+	 */
+	void setMeshFile(const std::string file) { M_meshFile = file; }
+
+	//! Set the extension of the mesh format type
+	/*!
+	 * @param ext the extension of the format type of the mesh
+	 * @post modifies the mesh type
+	 */
+	void setMeshExtension(const std::string ext);
+
+	//! Set the format type of the mesh
+	/*!
+	 * @param type the format type of the mesh
+	 * @post modifies the mesh extension
+	 */
+	void setMeshType(const MeshFormatType type);
+	
+	//! Set the output directory
+	/*!
+	 * @param dir the string that contains the output directory
+	 */
+	void setOutputDir(const std::string dir) { M_outputDir = dir; }
+
+	//! Set the output file name
+	/*!
+	 * @param file the string that contains the output file name
+	 */
+	void setOutputFile(const std::string file) { M_outputFile = file; }
+
+	//! Set the problem type
+	/*!
+	 * @param type the type of the problem
+	 */
+	void setProblemType(const ProblemType type) { M_problemType = type; };
+
+	//! Enable or disable the fractures
+	/*!
+	 * @param fracture true to enable the fractures
+	 */
+	void fractureOn(bool fracture) { M_fracturesOn = fracture; }
+
+	//! Set mobility of the fluid
+	/*!
+	 * @param mobility the mobility of the fluid
+	 */
+	void setMobility(const Real mobility) { M_mobility = mobility; }
+
+	//! Set theta angle
+	/*!
+	 * @param theta the angle theta used to identify the BC ids
+	 */
+	void setTheta(const Real theta) { M_theta = theta; }
+
+	//! Enable or disable verbosity
+	/*!
+	 * @param verbose true to enable verbosity
+	 */
+	void verbose(const bool verbose) { M_verbose = verbose; }
+
+	//@}
+
 	//! Show a summary of the data
 	/*!
 	 * @param output output stream. Default = std::cout
@@ -127,6 +211,8 @@ protected:
 	std::string M_meshDir;
 	//! Mesh file
 	std::string M_meshFile;
+	//! Mesh file
+	std::string M_meshExt;
 	//! Format Type
 	MeshFormatType M_meshType;
 	//! Output directory

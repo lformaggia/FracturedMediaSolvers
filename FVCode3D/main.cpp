@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
 	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
 	exporter.exportWithProperties(mesh, propMap, data.getOutputDir() + data.getOutputFile() + "_prop.vtu");
 //	if(data.getMeshType() == Data::MeshFormatType::TPFA)
-//		saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_new.grid", mesh, propMap);
+//		saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_new.fvg", mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
