@@ -22,13 +22,13 @@ Data::Data(const std::string dataFileName)
 
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
 
-	M_fracturesOn = dataFile("problem/fracturesOn", true);
+	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
 
 	M_mobility = dataFile("fluid/mobility", 1.);
 
 	M_theta = dataFile("bc/theta", 0.);
 
-	M_verbose = dataFile("miscellaneous/verbose", true);
+	M_verbose = static_cast<bool>(dataFile("miscellaneous/verbose", 1));
 }
 
 void Data::setMeshExtension(const std::string ext)
