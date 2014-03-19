@@ -9,15 +9,17 @@
 #include "core/data.hpp"
 #include "mesh/Rigid_Mesh.hpp"
 #include "mesh/Properties.hpp"
-#include "assembler/stiffness.hpp"
-#include "assembler/mass.hpp"
 #include "boundaryCondition/BC.hpp"
 #include "quadrature/Quadrature.hpp"
 #include "import/import.hpp"
 #include "export/exportVTU.hpp"
 #include "utility/converter.hpp"
 #include "solver/solver.hpp"
+#include "problem/problem.hpp"
+#include "problem/darcySteady.hpp"
 #include "functions.hpp"
+
+typedef DarcySteady<EigenCholesky, CentroidQuadrature, CentroidQuadrature> DarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -104,14 +106,14 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	Darcy::BoundaryConditions::BorderBC backBC	(1, Darcy::Neumann, fZero );
-	Darcy::BoundaryConditions::BorderBC frontBC	(2, Darcy::Neumann, fZero );
-	Darcy::BoundaryConditions::BorderBC leftBC	(3, Darcy::Dirichlet, fOne );
-	Darcy::BoundaryConditions::BorderBC rightBC	(4, Darcy::Dirichlet, fMinusOne );
-	Darcy::BoundaryConditions::BorderBC upBC	(5, Darcy::Neumann, fZero );
-	Darcy::BoundaryConditions::BorderBC downBC	(6, Darcy::Neumann, fZero );
+	BoundaryConditions::BorderBC backBC	(1, Neumann, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Neumann, fZero );
+	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fOne );
+	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fMinusOne );
+	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
 
-	std::vector<Darcy::BoundaryConditions::BorderBC> borders;
+	std::vector<BoundaryConditions::BorderBC> borders;
 
 	borders.push_back( backBC );
 	borders.push_back( frontBC );
@@ -120,7 +122,7 @@ int main(int argc, char * argv[])
 	borders.push_back( upBC );
 	borders.push_back( downBC );
 
-	Darcy::BoundaryConditions BC(borders);
+	BoundaryConditions BC(borders);
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -142,53 +144,23 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Assemble stiffness matrix..." << std::flush;
-	Darcy::StiffMatrix S(myrmesh, BC);
-	S.assemble();
+	std::cout << "Build problem..." << std::flush;
+	DarcyPb darcy(myrmesh, BC, SS);
 	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
-
-	std::cout << "Assemble source/sink term..." << std::flush;
-
-	Darcy::Quadrature quad(myrmesh, Darcy::CentroidQuadrature(), Darcy::CentroidQuadrature());
-	Eigen::VectorXd f1(S.getSize());
-	Eigen::VectorXd f2(S.getSize());
-	Eigen::VectorXd f(S.getSize());
-	f1 = quad.CellIntegrate(Source);
-	f2 = quad.CellIntegrate(Sink);
-	f = f1 + f2;
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
-
-	std::cout << "Define problem..." << std::flush;
-	SpMat A = S.getMatrix() ;
-	Eigen::VectorXd b;
-	b = S.getBCVector() + f;
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
 
 	std::cout << "Solve problem..." << std::flush;
-
-	EigenCholesky solver(A,b);
-	solver.solve();
-	const Vector & x = solver.getSolution();
+	darcy.solve();
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
 	std::cout << "Export Solution..." << std::flush;
-	exporter.exportSolution(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution.vtu", x);
+	exporter.exportSolution(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution.vtu", darcy.getSolver().getSolution());
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Export Solution on Fractures..." << std::flush;
-	exporter.exportSolutionOnFractures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution_f.vtu", x);
+	exporter.exportSolutionOnFractures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution_f.vtu", darcy.getSolver().getSolution());
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
