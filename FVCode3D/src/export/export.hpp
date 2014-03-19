@@ -51,7 +51,7 @@ public:
     typedef Geometry::Rigid_Mesh::Fracture_Facet Fracture_Facet;
     typedef Geometry::Rigid_Mesh::Fracture_Juncture Fracture_Juncture;
 
-    //! Contructor
+    //! Constructor
     Exporter(){}
 
     //! Export the mesh (only cells)

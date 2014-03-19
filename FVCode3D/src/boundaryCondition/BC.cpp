@@ -6,9 +6,6 @@
 #include "mesh/Mesh3D.hpp"
 #include "boundaryCondition/BC.hpp"
 
-namespace Darcy
-{
-
 BoundaryConditions::BoundaryConditions(std::vector<BorderBC> & borderbc)
 {
 	for(std::vector<BorderBC>::const_iterator it = borderbc.begin(); it != borderbc.end(); ++it)
@@ -17,5 +14,3 @@ BoundaryConditions::BoundaryConditions(std::vector<BorderBC> & borderbc)
 	for(std::map<UInt,BorderBC>::iterator it = BordersBCMap.begin(); it != BordersBCMap.end(); ++it)
 		it->second.m_bcContainer = this;
 }
-
-} // namespace Darcy

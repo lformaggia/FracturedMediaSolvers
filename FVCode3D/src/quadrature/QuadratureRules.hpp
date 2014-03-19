@@ -15,8 +15,6 @@
 
 class Rigid_Mesh;
 
-namespace Darcy{
-
 //! Class that implements a quadrature rule
 /*!
 	@class QuadratureRule
@@ -97,7 +95,5 @@ public:
     virtual ~CentroidQuadrature(){};
 
 };
-
-} // namespace Darcy
 
 #endif

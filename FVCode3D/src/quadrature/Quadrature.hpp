@@ -17,9 +17,6 @@
 class Rigid_mesh;
 class PropertiesMap;
 
-namespace Darcy
-{
-
 //! Class that implements method to integrate function over the mesh
 /*!
 	@class Quadrature
@@ -101,7 +98,7 @@ public:
 protected:
 	//! A reference to a Geometry::Rigid_Mesh
 	const Geometry::Rigid_Mesh & M_mesh;
-	//! A referemce to a Geometry::PropertiesMap
+	//! A reference to a Geometry::PropertiesMap
 	const Geometry::PropertiesMap & M_properties;
 	//! The number of cells in M_mesh
 	UInt M_size;
@@ -110,7 +107,5 @@ protected:
 	//! A pointer to a QuadratureRule which is used to integrate on fractures
 	QR_Handler M_fractureQuadrature;
 };
-
-} // namespace Darcy
 
 #endif

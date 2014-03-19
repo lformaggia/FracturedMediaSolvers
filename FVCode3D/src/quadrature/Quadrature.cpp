@@ -7,9 +7,6 @@
 #include "mesh/Properties.hpp"
 #include "quadrature/Quadrature.hpp"
 
-namespace Darcy
-{
-
 Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh):
 	 M_mesh (rigid_mesh), M_properties(rigid_mesh.getPropertiesMap()),
 	 M_size (rigid_mesh.getCellsVector().size()+ rigid_mesh.getFractureFacetsIdsVector().size()),
@@ -118,5 +115,3 @@ Real Quadrature::Integrate(const std::function<Real(Generic_Point)>& Integrand)
 		integral += result (it);
 	return integral;
 }
-
-} // namespace Darcy

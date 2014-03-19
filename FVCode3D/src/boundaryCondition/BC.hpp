@@ -15,8 +15,6 @@
 
 class Mesh3D;
 
-namespace Darcy{
-
 //! Select the type of the BC
 /*!
 	@enum BCType
@@ -135,7 +133,5 @@ protected:
 	//! Map of BorderBC. First -> BC id, second -> BorderBC
 	std::map<UInt,BorderBC> BordersBCMap;
 };
-
-}// namespace Darcy
 
 #endif
