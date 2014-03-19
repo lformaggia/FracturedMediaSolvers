@@ -41,7 +41,7 @@ public:
 		@param rigid_mesh A Geometry::Rigid_Mesh used to build the matrix
 		@param BC Boundary conditions given in the container Darcy::BoundaryConditions
 	*/
-	StiffMatrix(const Geometry::Rigid_Mesh & rigid_mesh, BoundaryConditions & Bc):
+	StiffMatrix(const Geometry::Rigid_Mesh & rigid_mesh, const BoundaryConditions & Bc):
 		MatrixHandler(rigid_mesh), _b (new Vector(this->M_size)),
 		M_properties(rigid_mesh.getPropertiesMap()), m_Bc(Bc) {}
 	//! No Copy-Constructor
@@ -114,7 +114,7 @@ protected:
 	//! A reference to a Geometry::PropertiesMap
 	const Geometry::PropertiesMap & M_properties;
 	//! The container of the BCs
-	BoundaryConditions & m_Bc;
+	const BoundaryConditions & m_Bc;
 };
 
 } // namespace Darcy
