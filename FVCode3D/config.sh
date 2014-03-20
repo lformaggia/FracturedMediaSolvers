@@ -29,6 +29,7 @@ pushd FVCode3D-build > /dev/null
 
     cmake ${SOURCE_FOLDER} \
         -DEIGEN_PATH:PATH=${mkEigenInc} \
+        -DSUITESPARSE_PATH:PATH=${mkSuitesparseHome} \
         -DCMAKE_CXX_COMPILER=${mkCxxCompiler} \
         -DCMAKE_C_COMPILER=${mkCCompiler} \
         -DCMAKE_BUILD_TYPE=DEBUG
