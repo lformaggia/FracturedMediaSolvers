@@ -4,6 +4,7 @@
  */
 
 #include "solver/solver.hpp"
+#include <Eigen/UmfPackSupport>
 
 void EigenCholesky::solve()
 {
@@ -17,4 +18,10 @@ void EigenLU::solve()
     lu.analyzePattern(M_A);
     lu.factorize(M_A);
     M_x = lu.solve(M_b);
+} // solve
+
+void EigenUmfPack::solve()
+{
+    Eigen::UmfPackLU<SpMat> lu( M_A );
+    M_x = lu.solve( M_b );
 } // solve

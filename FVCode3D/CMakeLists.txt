@@ -13,7 +13,7 @@ IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math" CACHE STRING "g++ Compiler Flags for All Builds" FORCE)
+set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math -lumfpack" CACHE STRING "g++ Compiler Flags for All Builds" FORCE)
 
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for Release" FORCE)
@@ -29,21 +29,26 @@ set(INSTALL_INCLUDE ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Install: include
 # Eigen path
 find_path(EIGEN_PATH NAMES signature_of_eigen3_matrix_library PATHS /usr/local/include/eigen3 DOC "Eigen Directory")
 
+# Suitesparse path
+find_path(SUITESPARSE_PATH NAMES signature_of_suitesparse_matrix_library PATHS /usr/local/include/suitesparse DOC "Suitesparse Directory")
+
 
 # Make sure the compiler can find include files.
-include_directories (	
-			${CMAKE_CURRENT_SOURCE_DIR}
-			${CMAKE_CURRENT_SOURCE_DIR}/src
-			${CMAKE_CURRENT_SOURCE_DIR}/include
-			${EIGEN_PATH}
-		    )
+include_directories (
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            ${CMAKE_CURRENT_SOURCE_DIR}/src
+            ${CMAKE_CURRENT_SOURCE_DIR}/include
+            ${EIGEN_PATH}
+            ${SUITESPARSE_PATH}/include
+            )
 
 
 # Make sure the linker can find the library.
 link_directories (
-			${CMAKE_CURRENT_BINARY_DIR}/lib
-			${CMAKE_CURRENT_SOURCE_DIR}/lib
-		 )
+            ${CMAKE_CURRENT_BINARY_DIR}/lib
+            ${CMAKE_CURRENT_SOURCE_DIR}/lib
+            ${SUITESPARSE_PATH}/lib
+         )
 
 
 # Create static library

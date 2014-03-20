@@ -8,7 +8,7 @@
 
 #include "core/TypeDefinition.hpp"
 
-//!
+//! Class Solver
 /*!
  * @class Solver
  * This is a base abstract class that implements a linear solver for the system Ax=b.
@@ -84,6 +84,12 @@ protected:
 
 };
 
+//! Class EigenCholesky
+/*!
+ * @class EigenCholesky
+ * This class implements a linear solver for the system Ax=b.
+ * It uses the Cholesky factorization on a SPD matrix.
+ */
 class EigenCholesky : public Solver
 {
 public:
@@ -107,6 +113,12 @@ public:
 
 };
 
+//! Class EigenLU
+/*!
+ * @class EigenLU
+ * This class implements a linear solver for the system Ax=b.
+ * It uses the LU factorization on a square matrix.
+ */
 class EigenLU : public Solver
 {
 public:
@@ -121,12 +133,41 @@ public:
 
     //! Solve the linear system
     /*!
-     * Solve the linear system Ax=b by means of a Cholesky factorization.
+     * Solve the linear system Ax=b by means of a LU factorization.
      */
     virtual void solve();
 
     //! Destructor
     virtual ~EigenLU() {}
+
+};
+
+//! Class EigenUmfPack
+/*!
+ * @class EigenUmfPack
+ * This class implements a linear solver for the system Ax=b.
+ * It uses the LU factorization on a square matrix (from UmfPack).
+ */
+class EigenUmfPack : public Solver
+{
+public:
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    EigenUmfPack(const SpMat & A, const Vector & b):
+        Solver(A,b) {}
+
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b by means of a UmfPack factorization.
+     */
+    virtual void solve();
+
+    //! Destructor
+    virtual ~EigenUmfPack() {}
 
 };
 
