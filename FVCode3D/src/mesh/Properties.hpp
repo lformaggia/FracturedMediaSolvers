@@ -382,14 +382,14 @@ class PropertiesMap
 public:
 
 	//! Empty constructor
-	PropertiesMap():M_mobility(0.) {};
+	PropertiesMap():M_mobility(0.), M_compressibility(0.) {};
 
 	//! Constructor
 	/*!
 	 * @param mobility mobility of the fluid
 	 */
-	PropertiesMap(const Real mobility):
-		M_mobility(mobility) {};
+	PropertiesMap(const Real mobility, const Real compressibility = 0.):
+		M_mobility(mobility), M_compressibility(compressibility) {};
 
 	//! Get the number of zones
 	/*!
@@ -404,6 +404,13 @@ public:
 	 */
 	Real getMobility() const
 		{ return M_mobility; };
+
+	//! Get the compressbility
+	/*!
+	 * @return the compressibility
+	 */
+	Real getCompressibility() const
+		{ return M_compressibility; };
 
 	//! Get the map of properties (const)
 	/*!
@@ -448,7 +455,14 @@ public:
 	 * @param the mobility of the fluid
 	 */
 	void setMobility(const Real mobility)
-		{ M_mobility =  mobility; };
+		{ M_mobility = mobility; };
+
+	//! Set the compressibility
+	/*!
+	 * @param the compressibility
+	 */
+	void setCompressibility(const Real compressibility)
+		{ M_compressibility = compressibility; };
 
 	//! Destructor
 	~PropertiesMap() {};
@@ -460,6 +474,9 @@ private:
 
 	//! Mobility of the fluid.
 	Real M_mobility;
+
+	//! Compressibility.
+	Real M_compressibility;
 };
 
 } //namespace Geometry

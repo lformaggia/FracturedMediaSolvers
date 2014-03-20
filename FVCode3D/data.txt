@@ -21,6 +21,7 @@ fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
 ## fluid parameters
 [fluid]
 mobility	= 1.
+compressibility	= 0.
 
 ## boundary conditions
 [bc]

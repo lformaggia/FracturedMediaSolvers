@@ -8,7 +8,7 @@
 Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
 	M_outputDir("./results/"), M_outputFile("sol"), M_problemType(steady),
-	M_fracturesOn(true), M_mobility(1.), M_theta(0.), M_verbose(true)
+	M_fracturesOn(true), M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
 {}
 
 Data::Data(const std::string dataFileName)
@@ -31,6 +31,8 @@ Data::Data(const std::string dataFileName)
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
 
 	M_mobility = dataFile("fluid/mobility", 1.);
+
+	M_compressibility = dataFile("fluid/compressibility", 0.);
 
 	M_theta = dataFile("bc/theta", 0.);
 
@@ -102,6 +104,8 @@ void Data::showMe( std::ostream & output ) const
 	output << "Fractures On: " << M_fracturesOn << std::endl;
 
 	output << "Mobility: " << M_mobility << std::endl;
+
+	output << "Compressibility: " << M_compressibility << std::endl;
 
 	output << "Theta: " << M_theta << std::endl;
 

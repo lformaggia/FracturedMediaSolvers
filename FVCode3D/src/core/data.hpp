@@ -120,6 +120,12 @@ public:
 	 */
 	Real getMobility() const { return M_mobility; }
 
+	//! Get compressibility
+	/*!
+	 * @return the compressibility
+	 */
+	Real getCompressibility() const { return M_compressibility; }
+
 	//! Get theta angle
 	/*!
 	 * @return the angle theta used to identify the BC ids
@@ -193,6 +199,12 @@ public:
 	 */
 	void setMobility(const Real mobility) { M_mobility = mobility; }
 
+	//! Set compressibility
+	/*!
+	 * @param compressibility the compressibility
+	 */
+	void setCompressibility(const Real compressibility) { M_compressibility = compressibility; }
+
 	//! Set theta angle
 	/*!
 	 * @param theta the angle theta used to identify the BC ids
@@ -236,6 +248,8 @@ protected:
 	bool M_fracturesOn;
 	//! Mobility of the fluid
 	Real M_mobility;
+	//! Compressibility
+	Real M_compressibility;
 	//! Angle used to rotate along z-axis the domain. It is used only to compute the normal for detecting BC!
 	Real M_theta;
 	//! Verbose
