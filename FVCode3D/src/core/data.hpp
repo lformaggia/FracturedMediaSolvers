@@ -40,11 +40,28 @@ public:
 		forSolver		= 1
 	};
 
-	//! Constructor
+	//! @name Constructors
+	//@{
+
+	//! Default constructor
+	/*!
+	 * Initialize the data
+	 */
+	Data();
+
+	//! Constructor from file
 	/*!
 	 * @param dataFileName name of the data file
 	 */
 	Data(const std::string dataFileName);
+
+	//! Copy constructor
+	/*!
+	 * @param data reference of a Data
+	 */
+	Data(const Data & data);
+
+	//@}
 
 	//! @name Get methods
 	//@{
@@ -200,12 +217,6 @@ public:
 	~Data() {}
 
 protected:
-
-	//! No empty constructor
-	Data();
-
-	//! No copy constructor
-	Data(const Data &);
 
 	//! Mesh directory
 	std::string M_meshDir;

@@ -5,6 +5,12 @@
 
 #include "core/data.hpp"
 
+Data::Data():
+	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
+	M_outputDir("./results/"), M_outputFile("sol"), M_problemType(steady),
+	M_fracturesOn(true), M_mobility(1.), M_theta(0.), M_verbose(true)
+{}
+
 Data::Data(const std::string dataFileName)
 {
 	EnumParser<MeshFormatType> parserMeshType;
