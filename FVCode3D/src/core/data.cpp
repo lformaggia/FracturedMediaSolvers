@@ -8,7 +8,8 @@
 Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
 	M_outputDir("./results/"), M_outputFile("sol"), M_problemType(steady),
-	M_fracturesOn(true), M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
+	M_fracturesOn(true), M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
+	M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
 {}
 
 Data::Data(const std::string dataFileName)
@@ -27,11 +28,12 @@ Data::Data(const std::string dataFileName)
 	M_outputFile = dataFile("output/output_file", "sol");
 
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
-
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
+	M_initTime = dataFile("problem/initial_time", 0.);
+	M_endTime = dataFile("problem/end_time", 1.);
+	M_timeStep = dataFile("problem/time_step", 0.1);
 
 	M_mobility = dataFile("fluid/mobility", 1.);
-
 	M_compressibility = dataFile("fluid/compressibility", 0.);
 
 	M_theta = dataFile("bc/theta", 0.);
@@ -103,9 +105,17 @@ void Data::showMe( std::ostream & output ) const
 	}
 	output << "Fractures On: " << M_fracturesOn << std::endl;
 
+	if(M_problemType == pseudoSteady)
+	{
+		output << "Initial time: " << M_initTime << std::endl;
+		output << "End time: " << M_endTime << std::endl;
+		output << "Time step: " << M_timeStep << std::endl;
+	}
+
 	output << "Mobility: " << M_mobility << std::endl;
 
-	output << "Compressibility: " << M_compressibility << std::endl;
+	if(M_problemType == pseudoSteady)
+		output << "Compressibility: " << M_compressibility << std::endl;
 
 	output << "Theta: " << M_theta << std::endl;
 

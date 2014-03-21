@@ -114,6 +114,24 @@ public:
 	 */
 	bool fractureOn() const { return M_fracturesOn; }
 
+	//! Get the initial time
+	/*!
+	 * @return the initial time
+	 */
+	Real getInitialTime() const { return M_initTime; }
+
+	//! Get the end time
+	/*!
+	 * @return the end time
+	 */
+	Real getEndTime() const { return M_endTime; }
+
+	//! Get the time step
+	/*!
+	 * @return the time step
+	 */
+	Real getTimeStep() const { return M_timeStep; }
+
 	//! Get mobility of the fluid
 	/*!
 	 * @return the mobility of the fluid
@@ -193,6 +211,24 @@ public:
 	 */
 	void fractureOn(bool fracture) { M_fracturesOn = fracture; }
 
+	//! Set the initial time
+	/*!
+	 * @param time the initial time
+	 */
+	void setInitialTime(const Real time) { M_initTime = time; }
+
+	//! Set the final time
+	/*!
+	 * @param time the final time
+	 */
+	void setEndTime(const Real time) { M_endTime = time; }
+
+	//! Set the time step
+	/*!
+	 * @param time the time step
+	 */
+	void setTimeStep(const Real time) { M_timeStep = time; }
+
 	//! Set mobility of the fluid
 	/*!
 	 * @param mobility the mobility of the fluid
@@ -246,6 +282,12 @@ protected:
 	ProblemType M_problemType;
 	//! Enable or disable fractures
 	bool M_fracturesOn;
+	//! Initial time, used for time-dependent problem
+	Real M_initTime;
+	//! Final time, used for time-dependent problem
+	Real M_endTime;
+	//! Time step, used for time-dependent problem
+	Real M_timeStep;
 	//! Mobility of the fluid
 	Real M_mobility;
 	//! Compressibility
