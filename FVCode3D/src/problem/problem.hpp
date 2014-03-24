@@ -12,21 +12,21 @@
 
 class Quadrature;
 
-template<class Solver, class QRMatrix, class QRFracture>
+template <class Solver, class QRMatrix, class QRFracture>
 class Problem
 {
 public:
 
 	typedef Geometry::Rigid_Mesh Rigid_Mesh;
 
-	Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f):
-		M_mesh(mesh), M_bc(bc), M_f(f), M_quadrature(nullptr), M_solver(nullptr) {};
+	Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
+		M_mesh(mesh), M_bc(bc), M_func(func), M_quadrature(nullptr), M_solver(nullptr) {};
 
 	const Rigid_Mesh & getMesh() const { return M_mesh; }
 
 	const BoundaryConditions & getBC() const { return M_bc; }
 
-	const Func & getF() const { return M_f; }
+	const Func & getF() const { return M_func; }
 
 	const Quadrature & getQuadrature() const { return *M_quadrature; }
 
@@ -40,7 +40,7 @@ protected:
 
 	const Rigid_Mesh & M_mesh;
 	const BoundaryConditions & M_bc;
-	const Func & M_f;
+	const Func & M_func;
 	std::unique_ptr<Quadrature> M_quadrature;
 	std::unique_ptr<Solver> M_solver;
 

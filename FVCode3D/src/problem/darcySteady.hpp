@@ -11,15 +11,15 @@
 #include "solver/solver.hpp"
 #include "assembler/stiffness.hpp"
 
-template<class Solver, class QRMatrix, class QRFracture>
+template <class Solver, class QRMatrix, class QRFracture>
 class DarcySteady : public Problem<Solver, QRMatrix, QRFracture>
 {
 public:
 
 	typedef Geometry::Rigid_Mesh Rigid_Mesh;
 
-	DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f):
-		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, f) {};
+	DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
+		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func) {};
 
 	virtual void solve();
 
@@ -41,11 +41,11 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
 	Darcy::StiffMatrix S(this->M_mesh, this->M_bc);
 	S.assemble();
 
-	Eigen::VectorXd f(S.getSize());
-	f = this->M_quadrature->CellIntegrate(this->M_f);
+	Vector f(S.getSize());
+	f = this->M_quadrature->CellIntegrate(this->M_func);
 
 	SpMat A = S.getMatrix();
-	Eigen::VectorXd b;
+	Vector b;
 	b = S.getBCVector() + f;
 
 	this->M_solver.reset( new Solver(A,b) );

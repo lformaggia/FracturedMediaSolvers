@@ -17,9 +17,12 @@
 #include "solver/solver.hpp"
 #include "problem/problem.hpp"
 #include "problem/darcySteady.hpp"
+#include "problem/darcyPseudoSteady.hpp"
 #include "functions.hpp"
 
+typedef Problem<EigenCholesky, CentroidQuadrature, CentroidQuadrature> Pb;
 typedef DarcySteady<EigenCholesky, CentroidQuadrature, CentroidQuadrature> DarcyPb;
+typedef DarcyPseudoSteady<EigenCholesky, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -40,7 +43,7 @@ int main(int argc, char * argv[])
 
 	std::cout << "Define Mesh and Properties..." << std::flush;
 	Geometry::Mesh3D mesh;
-	Geometry::PropertiesMap propMap(data.getMobility());
+	Geometry::PropertiesMap propMap(data.getMobility(), data.getCompressibility());
 	std::cout << " done." << std::endl;
 
 
@@ -106,12 +109,12 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Neumann, fZero );
-	BoundaryConditions::BorderBC frontBC(2, Neumann, fZero );
-	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fOne );
-	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fMinusOne );
-	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
+	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
+	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fZero );
+	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fZero );
+	BoundaryConditions::BorderBC upBC	(5, Dirichlet, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Dirichlet, fZero );
 
 	std::vector<BoundaryConditions::BorderBC> borders;
 
@@ -145,22 +148,66 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Build problem..." << std::flush;
-	DarcyPb darcy(myrmesh, BC, SS);
+	Pb * darcy;
+	if(data.getProblemType() == Data::ProblemType::steady)
+		darcy = new DarcyPb(myrmesh, BC, SS);
+	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
+		darcy = new PseudoDarcyPb(myrmesh, BC, SS, data);
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Solve problem..." << std::flush;
-	darcy.solve();
+	if(data.getProblemType() == Data::ProblemType::steady)
+		darcy->solve();
+	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
+	{
+		dynamic_cast<PseudoDarcyPb *>(darcy)->initialize();
+		UInt iter=0;
+
+		std::cout << std::endl << " ... initial solution, t = " << data.getInitialTime() << " ..." << std::endl;
+
+		std::stringstream ss;
+		ss << data.getOutputDir() + data.getOutputFile() + "_solution_";
+		ss << iter;
+		ss << ".vtu";
+		exporter.exportSolution(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
+		ss.str(std::string());
+		ss << data.getOutputDir() + data.getOutputFile() + "_solution_f_";
+		ss << iter;
+		ss << ".vtu";
+		exporter.exportSolutionOnFractures(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
+		std::cout << "  done." << std::endl << std::endl;
+
+		++iter;
+
+		for(Real t = data.getInitialTime() + data.getTimeStep() ; t <= data.getEndTime(); t+=data.getTimeStep(), ++iter)
+		{
+			std::cout << " ... at t = " << t << " ..." << std::endl;
+			darcy->solve();
+			ss.str(std::string());
+			std::cout << " Export Solution" << std::flush;
+			ss << data.getOutputDir() + data.getOutputFile() + "_solution_";
+			ss << iter;
+			ss << ".vtu";
+			exporter.exportSolution(myrmesh, ss.str(), darcy->getSolver().getSolution());
+			ss.str(std::string());
+			ss << data.getOutputDir() + data.getOutputFile() + "_solution_f_";
+			ss << iter;
+			ss << ".vtu";
+			exporter.exportSolutionOnFractures(myrmesh, ss.str(), darcy->getSolver().getSolution());
+			std::cout << "  done." << std::endl << std::endl;
+		}
+	}
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
 	std::cout << "Export Solution..." << std::flush;
-	exporter.exportSolution(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution.vtu", darcy.getSolver().getSolution());
+	exporter.exportSolution(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Export Solution on Fractures..." << std::flush;
-	exporter.exportSolutionOnFractures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution_f.vtu", darcy.getSolver().getSolution());
+	exporter.exportSolutionOnFractures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -172,6 +219,7 @@ int main(int argc, char * argv[])
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
+	delete darcy;
 	delete importer;
 	
 	chrono.stop();

@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= grid1.grid
+mesh_file	= grid2.grid
 mesh_type	= .grid		# .grid or .fvg
 
 ## output
@@ -18,8 +18,8 @@ output_file	= sol
 type		= pseudoSteady	# steady or pseudoSteady 
 fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
 initial_time	= 0.
-end_time	= 1.
-time_step	= 0.1
+end_time	= 2.e6
+time_step	= 1.e5
 
 ## fluid parameters
 [fluid]
