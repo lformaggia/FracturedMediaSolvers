@@ -1,6 +1,6 @@
 /*!
- *	@file darcySteady.hpp
- *	@brief Class that defines and solves the Darcy's problem at steady state.
+ *  @file darcySteady.hpp
+ *  @brief Class that defines and solves the Darcy's problem at steady state.
  */
 
 #ifndef DARCYSTEADY_HPP_
@@ -24,73 +24,65 @@ class DarcySteady : public Problem<Solver, QRMatrix, QRFracture>
 {
 public:
 
-	//! Typedef for Rigid_Mesh
-	/*!
-	 * @typedef Rigid_Mesh
-	 * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
-	 */
-	typedef Geometry::Rigid_Mesh Rigid_Mesh;
+    //! Typedef for Rigid_Mesh
+    /*!
+     * @typedef Rigid_Mesh
+     * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
+     */
+    typedef Geometry::Rigid_Mesh Rigid_Mesh;
 
-	//! Constructor
-	/*!
-	 * @param mesh reference to a Geometry::Rigid_mesh
-	 * @param bc reference to a BoundaryConditions
-	 * @param func reference to a Func
-	 */
-	DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
-		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func) {};
+    //! No default constructor
+    DarcySteady() = delete;
 
-	//! Assemble method
-	/*!
-	 * Build the stiffness matrix and the right hand side.
-	 */
-	virtual void assemble();
+    //! No copy constructor
+    DarcySteady(const DarcySteady &) = delete;
 
-	//! Solve method
-	/*!
-	 * Solve the system Ax=b.
-	 * @pre call assemble().
-	 */
-	virtual void solve();
+    //! Constructor
+    /*!
+     * @param mesh reference to a Geometry::Rigid_mesh
+     * @param bc reference to a BoundaryConditions
+     * @param func reference to a Func
+     */
+    DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
+        Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func) {};
 
-	//! Destructor
-	virtual ~DarcySteady() {};
+    //! Assemble method
+    /*!
+     * Build the stiffness matrix and the right hand side.
+     */
+    virtual void assemble();
 
-private:
+    //! Solve method
+    /*!
+     * Solve the system Ax=b.
+     * @pre call assemble().
+     */
+    virtual void solve();
 
-	//! No default constructor
-	DarcySteady();
-
-	//! No copy constructor
-	DarcySteady(const DarcySteady &);
-
-	//! Sparse matrix A from the linear system Ax=b
-	SpMat M_A;
-	//! Vector b from the linear system Ax=b
-	Vector M_b;
-
+    //! Destructor
+    virtual ~DarcySteady() {};
 };
 
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
 {
-	this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
+    this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-	Darcy::StiffMatrix S(this->M_mesh, this->M_bc);
-	S.assemble();
+    Darcy::StiffMatrix S(this->M_mesh, this->M_bc);
+    S.assemble();
 
-	Vector f(S.getSize());
-	f = this->M_quadrature->CellIntegrate(this->M_func);
+    Vector f(S.getSize());
+    f = this->M_quadrature->CellIntegrate(this->M_func);
 
-	M_A = S.getMatrix();
-	M_b = S.getBCVector() + f;
+    this->M_A = S.getMatrix();
+    this->M_b = S.getBCVector() + f;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
 {
-	this->M_solver.reset( new Solver(M_A, M_b) );
-	this->M_solver->solve();
+    this->M_solver.reset( new Solver(this->M_A, this->M_b) );
+    this->M_solver->solve();
 }
 
 #endif /* DARCYSTEADY_HPP_ */
