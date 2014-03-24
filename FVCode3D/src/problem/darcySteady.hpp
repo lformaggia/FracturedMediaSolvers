@@ -11,30 +11,68 @@
 #include "solver/solver.hpp"
 #include "assembler/stiffness.hpp"
 
+//! Class that defines the steady-state Darcy problem
+/*!
+ * @class DarcySteady
+ * This class defines the steady-state Darcy problem given a mesh, boundary conditions and source term.
+ * It defines the assemble and the solve method.
+ * The first template indicates the Solver used to solve the linear system,
+ * the second and third template parameter indicate the quadrature rule for the matrix and fracture respectively.
+ */
 template <class Solver, class QRMatrix, class QRFracture>
 class DarcySteady : public Problem<Solver, QRMatrix, QRFracture>
 {
 public:
 
+	//! Typedef for Rigid_Mesh
+	/*!
+	 * @typedef Rigid_Mesh
+	 * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
+	 */
 	typedef Geometry::Rigid_Mesh Rigid_Mesh;
 
+	//! Constructor
+	/*!
+	 * @param mesh reference to a Geometry::Rigid_mesh
+	 * @param bc reference to a BoundaryConditions
+	 * @param func reference to a Func
+	 */
 	DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
 		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func) {};
 
+	//! Assemble method
+	/*!
+	 * Build the stiffness matrix and the right hand side.
+	 */
+	virtual void assemble();
+
+	//! Solve method
+	/*!
+	 * Solve the system Ax=b.
+	 * @pre call assemble().
+	 */
 	virtual void solve();
 
+	//! Destructor
 	virtual ~DarcySteady() {};
 
 private:
 
+	//! No default constructor
 	DarcySteady();
 
+	//! No copy constructor
 	DarcySteady(const DarcySteady &);
+
+	//! Sparse matrix A from the linear system Ax=b
+	SpMat M_A;
+	//! Vector b from the linear system Ax=b
+	Vector M_b;
 
 };
 
 template <class Solver, class QRMatrix, class QRFracture>
-void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
+void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
 {
 	this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
@@ -44,11 +82,14 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
 	Vector f(S.getSize());
 	f = this->M_quadrature->CellIntegrate(this->M_func);
 
-	SpMat A = S.getMatrix();
-	Vector b;
-	b = S.getBCVector() + f;
+	M_A = S.getMatrix();
+	M_b = S.getBCVector() + f;
+}
 
-	this->M_solver.reset( new Solver(A,b) );
+template <class Solver, class QRMatrix, class QRFracture>
+void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
+{
+	this->M_solver.reset( new Solver(M_A, M_b) );
 	this->M_solver->solve();
 }
 

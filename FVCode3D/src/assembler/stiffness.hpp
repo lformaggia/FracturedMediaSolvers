@@ -29,7 +29,17 @@ namespace Darcy
 class StiffMatrix: public MatrixHandler
 {
 
+	//! Typedef for std::pair<UInt,UInt>
+	/*!
+		@typedef Fracture_Juncture
+   		This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
+   	*/
 	typedef std::pair<UInt,UInt> Fracture_Juncture;
+	//! Typedef for Geometry::Rigid_Mesh::Facet_ID
+	/*!
+		@typedef Facet_ID
+   		This type definition permits to treat Geometry::Rigid_Mesh::Facet_ID as a Facet_ID.
+   	*/
 	typedef Geometry::Rigid_Mesh::Facet_ID Facet_ID;
 
 public:

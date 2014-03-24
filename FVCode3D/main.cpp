@@ -157,7 +157,10 @@ int main(int argc, char * argv[])
 
 	std::cout << "Solve problem..." << std::flush;
 	if(data.getProblemType() == Data::ProblemType::steady)
-		darcy->solve();
+	{
+		darcy->assembleAndSolve();
+		//darcy->solve();
+	}
 	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
 	{
 		dynamic_cast<PseudoDarcyPb *>(darcy)->initialize();
@@ -182,7 +185,8 @@ int main(int argc, char * argv[])
 		for(Real t = data.getInitialTime() + data.getTimeStep() ; t <= data.getEndTime(); t+=data.getTimeStep(), ++iter)
 		{
 			std::cout << " ... at t = " << t << " ..." << std::endl;
-			darcy->solve();
+			darcy->assembleAndSolve();
+			//darcy->solve();
 			ss.str(std::string());
 			std::cout << " Export Solution" << std::flush;
 			ss << data.getOutputDir() + data.getOutputFile() + "_solution_";
