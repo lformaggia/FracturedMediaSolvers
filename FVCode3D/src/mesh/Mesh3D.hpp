@@ -575,6 +575,13 @@ public:
 	 */
 	void updateCellsWithNeighbors();
 
+	//! Find the facet id given the list of the nodes
+	/*!
+	 * @param nodes vector of nodes that define the facet
+	 * @return the id of the facet
+	 */ 
+	UInt getFacetFromNodes(std::vector<UInt> & nodes);
+	
 	//! Export the mesh in vtu format
 	/*!
 	 * (Use paraview to open the vtu file)

@@ -289,6 +289,42 @@ void Mesh3D::updateCellsWithNeighbors()
 	}
 }
 
+UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
+{
+	std::set<UInt> nodesIds(nodes.begin(), nodes.end());
+	std::set<UInt> facetsIds;
+	std::map<UInt,Facet3D>::const_iterator itF;
+	std::set<UInt>::const_iterator it, it2;
+	bool found = true;
+	UInt idFacet;
+
+	for(itF = M_facets.begin(); itF != M_facets.end(); ++itF)
+	{
+		found = true;
+		idFacet = itF->first;
+		facetsIds.clear();
+		facetsIds.insert(itF->second.getVertexesVector().begin(), itF->second.getVertexesVector().end());
+		for(it = facetsIds.begin(), it2 = nodesIds.begin(); it != facetsIds.end(); ++it, ++it2)
+		{
+			if( *it != *it2 )
+			{
+				found = false;
+				break;
+			}
+		}
+		if(found)
+			break;
+	}
+	
+	if(!found)
+	{
+		std::cerr << "Facet not found!" << std::endl;
+		exit(0);
+	}
+	
+	return idFacet;
+}
+
 bool Mesh3D::exportVtu(const std::string & filename) const
 {
 	std::fstream filestr;
