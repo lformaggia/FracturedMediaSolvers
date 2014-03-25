@@ -83,8 +83,9 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 			file << properties.getProperties(facetsRef[i].getZoneCode()).M_permeability << " ";
 			for(j=0; j < 4; ++j)
 				file << "0" << " ";
-			file << "0" << std::endl;
+			file << "0";
 		}
+		file << std::endl;
 	}
 	file << std::endl;
 	file << std::scientific << std::setprecision(0);
