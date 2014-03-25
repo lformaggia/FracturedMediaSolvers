@@ -5,17 +5,17 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= grid2.grid
-mesh_type	= .grid		# .grid or .fvg
+mesh_file	= second.fvg
+mesh_type	= .fvg		# .grid or .fvg or .mesh
 
 ## output
 [output]
 output_dir	= ./results/
-output_file	= sol
+output_file	= second
 
 ## problem parameter
 [problem]
-type		= pseudoSteady	# steady or pseudoSteady 
+type		= steady	# steady or pseudoSteady 
 fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
 initial_time	= 0.
 end_time	= 2.e6
@@ -28,7 +28,7 @@ compressibility	= 1.
 
 ## boundary conditions
 [bc]
-theta		= 45.
+theta		= 0.
 
 ## Other
 [miscellaneous]
