@@ -58,6 +58,9 @@ void Data::setMeshType(const MeshFormatType type)
 		case forSolver:
 			M_meshExt = ".fvg";
 			break;
+		case Medit:
+			M_meshExt = ".mesh";
+			break;
 		default:
 			exit(0);
 			break;
@@ -81,6 +84,9 @@ void Data::showMe( std::ostream & output ) const
 			break;
 		case forSolver:
 			output << "forSolver" << std::endl;
+			break;
+		case Medit:
+			output << "Medit" << std::endl;
 			break;
 		default:
 			exit(0);
@@ -136,4 +142,5 @@ EnumParser<Data::MeshFormatType>::EnumParser()
 {
     enumMap[".grid"] = Data::MeshFormatType::TPFA;
     enumMap[".fvg"] = Data::MeshFormatType::forSolver;
+    enumMap[".mesh"] = Data::MeshFormatType::Medit;
 }

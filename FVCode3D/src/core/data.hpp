@@ -37,7 +37,8 @@ public:
 	enum MeshFormatType
 	{
 		TPFA			= 0,
-		forSolver		= 1
+		forSolver		= 1,
+		Medit			= 2
 	};
 
 	//! @name Constructors

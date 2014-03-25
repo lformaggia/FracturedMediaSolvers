@@ -1,4 +1,4 @@
-/*!
+	/*!
  *	@file import.cpp
  *	@brief Classes for loading files (definitions).
  */
@@ -9,44 +9,6 @@
 
 #include <utility>
 #include <map>
-
-void Importer::addBCAndFractures(const Real theta)
-{
-	Geometry::FractureNetwork3D FN(M_mesh);
-	std::vector<Geometry::Fracture3D> fracturesVector;
-	std::map<UInt, Geometry::Fracture3D> fracturesMap;
-	std::map<UInt, Geometry::Fracture3D>::iterator itF;
-	Geometry::Point3D normal, center, centerFace;
-
-	extractBC(theta);
-
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
-	{
-		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
-		{
-			itF = fracturesMap.find(it->second.getZoneCode());
-			if (itF != fracturesMap.end())
-				itF->second.push_back(it->first);
-			else
-			{
-				fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(M_mesh) );
-				fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
-				fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
-			}
-			//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
-			//M_properties.getProperties(it->second.getZoneCode()).M_permeability = 1000;
-			//M_properties.getProperties(it->second.getZoneCode()).M_aperture = 1;
-		}
-	}
-
-	fracturesVector.reserve(fracturesMap.size());
-	for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
-		fracturesVector.push_back(itF->second);
-
-	FN.addFractures(fracturesVector);
-
-	M_mesh.addFractureNetwork(FN);
-}
 
 void Importer::extractBC(const Real theta)
 {
@@ -84,6 +46,148 @@ void Importer::extractBC(const Real theta)
 	}
 }
 
+void Importer::addBCAndFractures(const Real theta)
+{
+	extractBC(theta);
+	addFractures();
+}
+
+void ImporterMedit::import(bool fracturesOn)
+{
+	std::ifstream file;
+	file.open(M_filename.c_str(), std::ios_base::in);
+	if(!file)
+	{
+		std::cerr << "File not opened!" << std::endl;
+		exit(0);
+	}
+
+	UInt nNodes, nFacets, nCells;
+	UInt zone, maxZone, bcId;
+	UInt i, j;
+	Real x, y, z;
+	std::vector<UInt> tmp, tmpNodes(3), tmpFacets(4);
+	std::set<UInt> zones;
+	std::string buffer = "";
+
+	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
+	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+
+	Geometry::Properties prop;
+	
+	// Read nodes
+	const std::string s2findN = "Vertices";
+	while(buffer!=s2findN)
+		getline(file, buffer);
+
+	file >> nNodes;
+	nodesRef.resize(nNodes);
+
+	for(i=0; i < nNodes; ++i)
+	{
+		file >> x; file >> y; file >> z;
+		file >> buffer;
+		nodesRef[i] = Geometry::Point3D(x,y,z);
+	}
+	
+	// Read facets
+	const std::string s2findT = "Triangles";
+	while(buffer!=s2findT)
+		getline(file, buffer);
+	
+	file >> nFacets;
+
+	tmp.resize(3);
+	for(i=0; i < nFacets; ++i)
+	{
+		for(UInt j=0; j < 3; ++j)
+		{
+			file >> tmp[j];
+			tmp[j]--;
+		}
+		file >> zone;
+		bcId = zone <= 1000 ? 1 : 0;
+		zone = (zone > 1000) && (zone <= 2000) ? zone : 0;
+		facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, (zone)*static_cast<UInt>(fracturesOn), bcId) );
+		if(zone > 1 && fracturesOn && zones.find(zone) == zones.end())
+		{
+			prop.setProperties(1., 1., 1.);
+			M_properties.setZone(zone, prop);
+		}
+	}
+	tmp.clear();
+	
+	// Read cells
+	const std::string s2findE = "Tetrahedra";
+	while(buffer!=s2findE)
+		getline(file, buffer);
+	
+	file >> nCells;
+	
+	maxZone = *std::max_element(zones.begin(), zones.end());
+	prop.setProperties(1., 1., 1.);
+	M_properties.setZone(maxZone+1, prop);
+	
+	tmp.resize(4);
+	for(i=0; i < nCells; ++i)
+	{		
+		// get the nodes that define the cell
+		for(UInt j=0; j < 4; ++j)
+		{
+			file >> tmp[j];
+			tmp[j]--;
+		}
+		file >> buffer;
+		
+		// costruisco le facce della cella partendo dai nodi
+		for(j=0; j < 4; ++j)
+		{
+			tmpNodes[0] = tmp[j % 4];
+			tmpNodes[1] = tmp[(j+1) % 4];
+			tmpNodes[2] = tmp[(j+2) % 4];
+			tmpFacets[j] = M_mesh.getFacetFromNodes(tmpNodes);
+		}
+		
+		cellsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmpFacets, maxZone+1) );
+	}
+	tmp.clear();
+
+	file.close();
+}
+
+void ImporterMedit::addFractures()
+{
+	Geometry::FractureNetwork3D FN(M_mesh);
+	std::vector<Geometry::Fracture3D> fracturesVector;
+	std::map<UInt, Geometry::Fracture3D> fracturesMap;
+	std::map<UInt, Geometry::Fracture3D>::iterator itF;
+	Geometry::Point3D normal, center, centerFace;
+
+	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+	{
+		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
+		{
+			itF = fracturesMap.find(it->second.getZoneCode());
+			if (itF != fracturesMap.end())
+				itF->second.push_back(it->first);
+			else
+			{
+				fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(M_mesh) );
+				fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
+				fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
+			}
+		}
+	}
+
+	fracturesVector.reserve(fracturesMap.size());
+	for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
+		fracturesVector.push_back(itF->second);
+
+	FN.addFractures(fracturesVector);
+
+	M_mesh.addFractureNetwork(FN);
+}
 
 void ImporterTPFA::import(bool fracturesOn)
 {
@@ -95,8 +199,8 @@ void ImporterTPFA::import(bool fracturesOn)
 		exit(0);
 	}
 
-	UInt nNodes, nFacets, nCells, nZones, nFractures, volumeCorrection;
-	UInt nodesFacet, facetsCell, facetsFracture, bcId=0;
+	UInt nNodes, nFacets, nCells, nZones, volumeCorrection;
+	UInt nodesFacet, facetsCell, bcId=0;
 	Int zone;
 	UInt i, j;
 	Real x, y, z;
@@ -106,7 +210,6 @@ void ImporterTPFA::import(bool fracturesOn)
 	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
 	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
 	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
-	Geometry::FractureNetwork3D & FN = M_mesh.getFn();
 
 	Geometry::Properties prop;
 
@@ -115,7 +218,6 @@ void ImporterTPFA::import(bool fracturesOn)
 	file >> nFacets;
 	file >> nCells;
 	file >> nZones;
-	nFractures = 0;
 	file >> volumeCorrection;
 
 	// Read nodes
@@ -133,7 +235,7 @@ void ImporterTPFA::import(bool fracturesOn)
 		file >> nodesFacet;
 		tmp.resize(nodesFacet);
 
-		for(UInt j=0; j < nodesFacet; ++j)
+		for(j=0; j < nodesFacet; ++j)
 			file >> tmp[j];
 		file >> zone;
 		facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, (zone+1)*static_cast<UInt>(fracturesOn), bcId) );
@@ -145,7 +247,7 @@ void ImporterTPFA::import(bool fracturesOn)
 		file >> facetsCell;
 		tmp.resize(facetsCell);
 
-		for(UInt j=0; j < facetsCell; ++j)
+		for(j=0; j < facetsCell; ++j)
 			file >> tmp[j];
 		file >> zone;
 		cellsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, zone+1) );
@@ -167,17 +269,43 @@ void ImporterTPFA::import(bool fracturesOn)
 		M_properties.setZone(zone+1, prop);
 	}
 
-	// Read fracture network
-	for(i=0; i < nFractures; ++i)
+	file.close();
+}
+
+void ImporterTPFA::addFractures()
+{
+	Geometry::FractureNetwork3D FN(M_mesh);
+	std::vector<Geometry::Fracture3D> fracturesVector;
+	std::map<UInt, Geometry::Fracture3D> fracturesMap;
+	std::map<UInt, Geometry::Fracture3D>::iterator itF;
+	Geometry::Point3D normal, center, centerFace;
+
+	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
 	{
-		file >> facetsFracture;
-		tmp.resize(facetsFracture);
-		for(j=0; j < facetsFracture; ++j)
-			file >> tmp[j];
-		FN.emplace_back(Geometry::Fracture3D(M_mesh, tmp, i));
+		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
+		{
+			itF = fracturesMap.find(it->second.getZoneCode());
+			if (itF != fracturesMap.end())
+				itF->second.push_back(it->first);
+			else
+			{
+				fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(M_mesh) );
+				fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
+				fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
+			}
+			//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
+			//M_properties.getProperties(it->second.getZoneCode()).M_permeability = 1000;
+			//M_properties.getProperties(it->second.getZoneCode()).M_aperture = 1;
+		}
 	}
 
-	file.close();
+	fracturesVector.reserve(fracturesMap.size());
+	for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
+		fracturesVector.push_back(itF->second);
+
+	FN.addFractures(fracturesVector);
+
+	M_mesh.addFractureNetwork(FN);
 }
 
 void ImporterForSolver::import(bool fracturesOn)

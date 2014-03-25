@@ -36,14 +36,6 @@ public:
 	 */
 	virtual void import(bool fracturesOn) = 0;
 
-	//! Add the lacking data
-	/*!
-	 * Add the BCs and the fracture network
-	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
-	 * @pre import the file
-	 */
-	virtual void addBCAndFractures(const Real theta = 0.);
-
 	//! Generate the BC ids from a standard TPFA file format
 	/*!
 	 * Add the BCs ids to the boundary facets.
@@ -52,7 +44,22 @@ public:
 	 * @pre import the file
 	 */
 	virtual void extractBC(const Real theta = 0.);
-
+	
+	//! Add the fractures network
+	/*!
+	 * Add the fracture network
+	 * @pre import the file
+	 */
+	virtual void addFractures() = 0;
+	
+	//! Add the lacking data
+	/*!
+	 * Add the BCs and the fracture network
+	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
+	 * @pre import the file
+	 */
+	virtual void addBCAndFractures(const Real theta = 0.);
+	
 	//! Get filename
 	/*!
 	 * @return the filename
@@ -99,6 +106,54 @@ private:
 
 };
 
+//! Class used to read a Medit format file (.mesh).
+/*!
+ * @class ImporterMedit
+ * This class allows to read a Medit format file (.mesh).
+ */
+class ImporterMedit : public Importer
+{
+public:
+
+	//! Constructor
+	/*!
+	 * Constructor from a medit file
+	 * @param filename filename of the .mesh file
+	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param properties reference to a Geometry::PropertiesMap
+	 */
+	ImporterMedit(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+		Importer(filename, mesh, properties) {}
+
+	//! Import from a .mesh file
+	/*!
+	 * Read points, polygons, polyhedra
+	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+	 */
+	virtual void import(bool fracturesOn = true);
+	
+	//! Add the fractures network
+	/*!
+	 * Add the fracture network
+	 * @pre import the file
+	 */
+	virtual void addFractures();
+	
+	//! Destructor
+	virtual ~ImporterMedit(){};
+
+private:
+
+	//! No default constructor
+	ImporterMedit();
+
+	//! No copy-constructor
+	ImporterMedit(const ImporterMedit &);
+
+	//! No assignment operator
+	ImporterMedit & operator=(const ImporterMedit &);
+};
+
 //! Class used to read a standard TPFA format file (.grid).
 /*!
  * @class ImporterTPFA
@@ -125,6 +180,13 @@ public:
 	 */
 	virtual void import(bool fracturesOn = true);
 
+	//! Add the fractures network
+	/*!
+	 * Add the fracture network
+	 * @pre import the file
+	 */
+	virtual void addFractures();
+	
 	//! Destructor
 	virtual ~ImporterTPFA(){};
 
@@ -166,7 +228,7 @@ public:
 	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
 	 */
 	virtual void import(bool fracturesOn = true);
-
+	
 	//! Destructor
 	virtual ~ImporterForSolver(){};
 
@@ -179,6 +241,11 @@ private:
 
 	//! No assignment operator
 	ImporterForSolver & operator=(const ImporterForSolver &);
+	
+	//! Hidden
+	void addFractures(){};
+	//! Hidden
+	using Importer::addBCAndFractures;
 
 };
 
