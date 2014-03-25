@@ -10,6 +10,8 @@
 
 namespace Geometry{
 
+class Mesh3D;	
+	
 //! Permeability
 /*!
  * @class Permeability
@@ -441,6 +443,23 @@ public:
 	 */
 	Properties & getProperties(const UInt zone)
 		{ return M_properties[zone]; };
+
+	//! Set the same property on all the porous medium
+	/*!
+	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param porosity Porosity of the matrix.
+	 * @param permeability Permeability of the matrix
+	 */
+	void setPropertiesOnMatrix(const Mesh3D & mesh, const Real porosity, const Real permeability);
+
+	//! Set the same property on all the fractures
+	/*!
+	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param aperture Aperture of the fractures
+	 * @param porosity Porosity of the fractures
+	 * @param permeability Permeability of the fractures
+	 */
+	void setPropertiesOnFractures(const Mesh3D & mesh, const Real aperture, const Real porosity, const Real permeability);
 
 	//! Set the properties of a selected zone
 	/*!
