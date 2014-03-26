@@ -31,7 +31,7 @@ enum TimeScheme
  * The first template indicates the Solver used to solve the linear system,
  * the second and third template parameter indicate the quadrature rule for the matrix and fracture respectively,
  * the last template parameter indicates the time scheme to employ.
- * 
+ *
  * The generic template class is only declared, but not defined.
  * Each time scheme requires a specialization.
  */
@@ -51,6 +51,12 @@ public:
 	 */
 	typedef Geometry::Rigid_Mesh Rigid_Mesh;
 
+    //! No default constructor
+	DarcyPseudoSteady() = delete;
+
+	//! No copy constructor
+	DarcyPseudoSteady(const DarcyPseudoSteady &) = delete;
+
 	//! Constructor
 	/*!
 	 * @param mesh reference to a Geometry::Rigid_mesh
@@ -66,7 +72,7 @@ public:
 	//! Get the previous solution
 	/*!
 	 * @return constant reference vector to the previous solution
-	 */ 
+	 */
 	const Vector & getOldSolution() const { return M_xOld; }
 
 	//! Initialize the matrices
@@ -111,11 +117,6 @@ protected:
 	//! Vector that contains the source/sink term
 	Vector M_f;
 
-	//! Sparse matrix A from the linear system Ax=b
-	SpMat M_A;
-	//! Eigen vector b from the linear system Ax=b
-	Vector M_b;
-
 	//! Pointer to the mass matrix
 	std::unique_ptr<Darcy::MassMatrix> M_M;
 	//! Pointer to the stiffness matrix
@@ -123,15 +124,6 @@ protected:
 
 	//! Number of time step
 	UInt M_nStep;
-
-private:
-
-	//! No default constructor
-	DarcyPseudoSteady();
-
-	//! No copy constructor
-	DarcyPseudoSteady(const DarcyPseudoSteady &);
-
 };
 
 //! Specialization class that defines the pseudo-steady-state Darcy problem for the BDF2 time scheme
@@ -146,6 +138,12 @@ public:
 	 * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
 	 */
 	typedef Geometry::Rigid_Mesh Rigid_Mesh;
+
+	//! No default constructor
+	DarcyPseudoSteady() = delete;
+
+	//! No copy constructor
+	DarcyPseudoSteady(const DarcyPseudoSteady &) = delete;
 
 	//! Constructor
 	/*!
@@ -162,13 +160,13 @@ public:
 	//! Get the previous solution
 	/*!
 	 * @return constant reference vector to the previous solution
-	 */ 
+	 */
 	const Vector & getOldSolution() const { return M_xOld; }
 
 	//! Get the solution two steps before
 	/*!
 	 * @return constant reference vector to the solution two steps before
-	 */ 
+	 */
 	const Vector & getOldOldSolution() const { return M_xOldOld; }
 
 	//! Initialize the matrices
@@ -178,7 +176,7 @@ public:
 	 * To be called only once.
 	 */
 	virtual void initialize();
-	
+
 	//! Assemble method
 	/*!
 	 * Update the previous solutions and build the right hand side.
@@ -215,11 +213,6 @@ protected:
 	//! Vector that contains the source/sink term
 	Vector M_f;
 
-	//! Sparse matrix A from the linear system Ax=b
-	SpMat M_A;
-	//! Eigen vector b from the linear system Ax=b
-	Vector M_b;
-
 	//! Pointer to the mass matrix
 	std::unique_ptr<Darcy::MassMatrix> M_M;
 	//! Pointer to the stiffness matrix
@@ -227,15 +220,6 @@ protected:
 
 	//! Number of time step
 	UInt M_nStep;
-
-private:
-
-	//! No default constructor
-	DarcyPseudoSteady();
-
-	//! No copy constructor
-	DarcyPseudoSteady(const DarcyPseudoSteady &);
-
 };
 
 template <class Solver, class QRMatrix, class QRFracture>
@@ -250,7 +234,7 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::initialize()
 	M_S.reset( new Darcy::StiffMatrix(this->M_mesh, this->M_bc) );
 	M_S->assemble();
 
-	M_A = M_S->getMatrix() + M_M->getMatrix();
+	this->M_A = M_S->getMatrix() + M_M->getMatrix();
 
 	M_f.resize(M_S->getSize());
 	M_f = this->M_quadrature->CellIntegrate(this->M_func);
@@ -266,13 +250,13 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::assemble()
 {
         M_xOld = *M_x;
 
-        M_b = M_S->getBCVector() + M_f + M_M->getMatrix() * M_xOld;
+        this->M_b = M_S->getBCVector() + M_f + M_M->getMatrix() * M_xOld;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::solve()
 {
-	this->M_solver.reset( new Solver(M_A,M_b) );
+	this->M_solver.reset( new Solver(this->M_A,this->M_b) );
 	this->M_solver->solve();
 
 	M_x = &(this->M_solver->getSolution());
@@ -291,7 +275,7 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::initialize()
 	M_S.reset( new Darcy::StiffMatrix(this->M_mesh, this->M_bc) );
 	M_S->assemble();
 
-	M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
+	this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
 
 	//std::cout << std::endl;
 	//std::cout<<"S norm: " << M_S->getMatrix().norm() << std::endl;
@@ -319,13 +303,13 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::assemble()
         M_xOldOld = M_xOld;
         M_xOld = *M_x;
 
-        M_b = M_S->getBCVector() + M_f + 2 * M_M->getMatrix() * M_xOld - (1./2.) * M_M->getMatrix() * M_xOldOld;
+        this->M_b = M_S->getBCVector() + M_f + 2 * M_M->getMatrix() * M_xOld - (1./2.) * M_M->getMatrix() * M_xOldOld;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::solve()
 {
-	this->M_solver.reset( new Solver(M_A,M_b) );
+	this->M_solver.reset( new Solver(this->M_A,this->M_b) );
 	this->M_solver->solve();
 
 	M_x = &(this->M_solver->getSolution());
