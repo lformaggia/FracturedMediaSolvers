@@ -110,11 +110,11 @@ int main(int argc, char * argv[])
 
 	std::cout << "Add BCs..." << std::flush;
 	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
-	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
-	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fZero );
-	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fZero );
-	BoundaryConditions::BorderBC upBC	(5, Dirichlet, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Dirichlet, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fOne );
+	BoundaryConditions::BorderBC leftBC	(3, Neumann, fZero );
+	BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
+	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
 
 	std::vector<BoundaryConditions::BorderBC> borders;
 
@@ -157,10 +157,7 @@ int main(int argc, char * argv[])
 
 	std::cout << "Solve problem..." << std::flush;
 	if(data.getProblemType() == Data::ProblemType::steady)
-	{
 		darcy->assembleAndSolve();
-		//darcy->solve();
-	}
 	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
 	{
 		dynamic_cast<PseudoDarcyPb *>(darcy)->initialize();
@@ -186,7 +183,6 @@ int main(int argc, char * argv[])
 		{
 			std::cout << " ... at t = " << t << " ..." << std::endl;
 			darcy->assembleAndSolve();
-			//darcy->solve();
 			ss.str(std::string());
 			std::cout << " Export Solution" << std::flush;
 			ss << data.getOutputDir() + data.getOutputFile() + "_solution_";
@@ -229,4 +225,56 @@ int main(int argc, char * argv[])
 	chrono.stop();
 
 	return 0;
+	/*
+	GetPot command_line(argc,argv);
+	const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
+
+	std::cout << "Read Data..." << std::flush;
+	Data data(dataFileName);
+	data.fractureOn(true);
+	data.verbose(true);
+	std::cout << " done." << std::endl;
+
+	std::cout << std::endl;
+	data.showMe();
+	std::cout << std::endl;
+
+	std::cout << "Define Mesh and Properties..." << std::flush;
+	Geometry::Mesh3D mesh;
+	Geometry::PropertiesMap propMap(data.getMobility());
+	std::cout << " done." << std::endl;
+
+	std::cout << "Create Importer..." << std::flush;
+	ImporterMedit importer(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+	std::cout << " done." << std::endl;
+
+	std::cout << "Import grid file..." << std::flush;
+	importer.import(data.fractureOn());
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Compute separated cells..." << std::flush;
+	mesh.updateFacetsWithCells();
+	std::cout << " done." << std::endl;
+
+	std::cout << "Compute neighboring cells..." << std::flush;
+	mesh.updateCellsWithNeighbors();
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Set labels on boundary & add Fractures..." << std::flush;
+	importer.addBCAndFractures(data.getTheta());
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Compute facet ids of the fractures..." << std::flush;
+	mesh.updateFacetsWithFractures();
+	std::cout << " done." << std::endl << std::endl;
+
+	propMap.setPropertiesOnMatrix(mesh, 0.25, 100);
+	propMap.setPropertiesOnFractures(mesh, 0.1, 1, 100000);
+	
+	std::cout << "Save as solver format..." << std::flush;
+	saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + ".fvg", mesh, propMap);
+	std::cout << " done." << std::endl << std::endl;
+
+	return 0;
+	*/
 }
