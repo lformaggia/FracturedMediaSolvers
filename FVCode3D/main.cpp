@@ -103,6 +103,7 @@ int main(int argc, char * argv[])
 	exporter.exportFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_fractures.vtu");
 	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
 	exporter.exportWithProperties(mesh, propMap, data.getOutputDir() + data.getOutputFile() + "_prop.vtu");
+	exporter.exportWireframe(mesh, data.getOutputDir() + data.getOutputFile() + "_wire.vtu");
 //	if(data.getMeshType() == Data::MeshFormatType::TPFA)
 //		saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_new.fvg", mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;

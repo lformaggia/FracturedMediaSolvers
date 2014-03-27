@@ -58,6 +58,7 @@ int main(int argc, char * argv[])
     exporter.exportFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_fractures.vtu");
     exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
     exporter.exportWithProperties(mesh, propMap, data.getOutputDir() + data.getOutputFile() + "_prop.vtu");
+    exporter.exportWireframe(mesh, data.getOutputDir() + data.getOutputFile() + "_wire.vtu");
     std::cout << " done." << std::endl << std::endl;
 
     return 0;
