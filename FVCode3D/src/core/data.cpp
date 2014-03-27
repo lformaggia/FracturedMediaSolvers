@@ -8,7 +8,9 @@
 Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
 	M_outputDir("./results/"), M_outputFile("sol"), M_problemType(steady),
-	M_fracturesOn(true), M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
+	M_fracturesOn(true), M_permMatrix(0.), M_poroMatrix(0.),
+	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
+	M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
 	M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
 {}
 
@@ -29,6 +31,13 @@ Data::Data(const std::string dataFileName)
 
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
+
+	M_permMatrix = dataFile("problem/perm_matrix", 1e2);
+	M_poroMatrix = dataFile("problem/poro_matrix", 0.25);
+	M_permFrac = dataFile("problem/perm_frac", 1e5);
+	M_poroFrac = dataFile("problem/poro_frac", 1.);
+	M_aperFrac = dataFile("problem/aper_frac", 0.1);
+
 	M_initTime = dataFile("problem/initial_time", 0.);
 	M_endTime = dataFile("problem/end_time", 1.);
 	M_timeStep = dataFile("problem/time_step", 0.1);

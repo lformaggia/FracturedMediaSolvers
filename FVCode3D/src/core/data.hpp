@@ -115,6 +115,36 @@ public:
 	 */
 	bool fractureOn() const { return M_fracturesOn; }
 
+	//! Get the permeability in the porous medium
+	/*!
+	 * @return the permeability in the porous medium
+	 */
+	Real getMatrixPermeability() const { return M_permMatrix; }
+
+	//! Get the porosity in the porous medium
+	/*!
+	 * @return the porosity in the porous medium
+	 */
+	Real getMatrixPorosity() const { return M_poroMatrix; }
+
+	//! Get the permeability in the fracture
+	/*!
+	 * @return the permeability in the fracture
+	 */
+	Real getFracturePermeability() const { return M_permFrac; }
+
+	//! Get the porosity in the fracture
+	/*!
+	 * @return the porosity in the fracture
+	 */
+	Real getFracturePorosity() const { return M_poroFrac; }
+
+	//! Get the aperture in the fracture
+	/*!
+	 * @return the aperture in the fracture
+	 */
+	Real getFractureAperture() const { return M_aperFrac; }
+
 	//! Get the initial time
 	/*!
 	 * @return the initial time
@@ -212,6 +242,36 @@ public:
 	 */
 	void fractureOn(bool fracture) { M_fracturesOn = fracture; }
 
+	//! Set the permeability in the porous medium
+	/*!
+	 * @param the permeability in the porous medium
+	 */
+	void setMatrixPermeability(const Real perm) { M_permMatrix = perm; }
+
+	//! Set the porosity in the porous medium
+	/*!
+	 * @param the porosity in the porous medium
+	 */
+	void setMatrixPorosity(const Real poro) { M_poroMatrix = poro; }
+
+	//! Set the permeability in the fracture
+	/*!
+	 * @param the permeability in the fracture
+	 */
+	void setFracturePermeability(const Real perm) { M_permFrac = perm; }
+
+	//! Set the porosity in the fracture
+	/*!
+	 * @param the porosity in the fracture
+	 */
+	void setFracturePorosity(const Real poro) { M_poroFrac = poro; }
+
+	//! Set the aperture in the fracture
+	/*!
+	 * @param the aperture in the fracture
+	 */
+	void setFractureAperture(const Real aper) { M_aperFrac = aper; }
+
 	//! Set the initial time
 	/*!
 	 * @param time the initial time
@@ -283,6 +343,16 @@ protected:
 	ProblemType M_problemType;
 	//! Enable or disable fractures
 	bool M_fracturesOn;
+	//! Permeability in the porous medium
+	Real M_permMatrix;
+	//! Porosity in the porous medium
+	Real M_poroMatrix;
+	//! Permeability in the fractures
+	Real M_permFrac;
+	//! Porosity in the fractures
+	Real M_poroFrac;
+	//! Aperture in the fractures
+	Real M_aperFrac;
 	//! Initial time, used for time-dependent problem
 	Real M_initTime;
 	//! Final time, used for time-dependent problem
