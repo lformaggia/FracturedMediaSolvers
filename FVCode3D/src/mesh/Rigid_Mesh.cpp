@@ -140,8 +140,7 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 			if (nodes_fracture_map.at(m_junct).size() > 1)
 			{
 				it->Fracture_Neighbors[m_junct] = nodes_fracture_map.at(m_junct);
-				auto find_it = std::find(it->Fracture_Neighbors[m_junct].begin(),
-						it->Fracture_Neighbors[m_junct].end(), it->getId());
+				auto find_it = std::find(it->Fracture_Neighbors[m_junct].begin(), it->Fracture_Neighbors[m_junct].end(), it->getId());
 				it->Fracture_Neighbors[m_junct].erase(find_it);
 			}
 		}

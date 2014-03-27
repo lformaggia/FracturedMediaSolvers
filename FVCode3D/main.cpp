@@ -26,6 +26,7 @@ typedef DarcyPseudoSteady<EigenCholesky, CentroidQuadrature, CentroidQuadrature,
 
 int main(int argc, char * argv[])
 {
+
 	GetPot command_line(argc,argv);
 	const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
 
@@ -225,6 +226,7 @@ int main(int argc, char * argv[])
 	chrono.stop();
 
 	return 0;
+
 	/*
 	GetPot command_line(argc,argv);
 	const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
@@ -268,7 +270,7 @@ int main(int argc, char * argv[])
 	mesh.updateFacetsWithFractures();
 	std::cout << " done." << std::endl << std::endl;
 
-	propMap.setPropertiesOnMatrix(mesh, 0.25, 100);
+	propMap.setPropertiesOnMatrix(mesh, 0.25, 10);
 	propMap.setPropertiesOnFractures(mesh, 0.1, 1, 100000);
 	
 	std::cout << "Save as solver format..." << std::flush;
@@ -277,4 +279,82 @@ int main(int argc, char * argv[])
 
 	return 0;
 	*/
+/*	
+	GetPot command_line(argc,argv);
+	const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
+
+	Chrono chrono;
+	chrono.start();
+
+	std::cout << "Read Data..." << std::flush;
+	Data data(dataFileName);
+	std::cout << " done." << std::endl;
+
+	std::cout << std::endl;
+	data.showMe();
+	std::cout << std::endl;
+
+
+	std::cout << "Define Mesh and Properties..." << std::flush;
+	Geometry::Mesh3D mesh;
+	Geometry::PropertiesMap propMap(data.getMobility(), data.getCompressibility());
+	std::cout << " done." << std::endl;
+
+
+	std::cout << "Create Importer..." << std::flush;
+	Importer * importer = 0;
+	if(data.getMeshType() == Data::MeshFormatType::TPFA)
+		importer = new ImporterTPFA(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+	else if(data.getMeshType() == Data::MeshFormatType::forSolver)
+		importer = new ImporterForSolver(data.getMeshDir() + data.getMeshFile(), mesh, propMap);
+	std::cout << " done." << std::endl;
+
+
+	std::cout << "Import grid file..." << std::flush;
+	importer->import(data.fractureOn());
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+
+	std::cout << "Compute separated cells..." << std::flush;
+	mesh.updateFacetsWithCells();
+	std::cout << " done." << std::endl;
+
+
+	std::cout << "Compute neighboring cells..." << std::flush;
+	mesh.updateCellsWithNeighbors();
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+
+	std::cout << "Set labels on boundary" << std::flush;
+	if(data.getMeshType() == Data::MeshFormatType::TPFA)
+	{
+		std::cout << " & add Fractures..." << std::flush;
+		importer->addBCAndFractures(data.getTheta());
+	}
+	else if(data.getMeshType() == Data::MeshFormatType::forSolver)
+	{
+		std::cout << "..." << std::flush;
+		importer->extractBC(data.getTheta());
+	}
+	std::cout << " done." << std::endl;
+
+	std::cout << "Compute facet ids of the fractures..." << std::flush;
+	mesh.updateFacetsWithFractures();
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+	propMap.setPropertiesOnMatrix(mesh, 0.25, 1000);
+	//propMap.setPropertiesOnFractures(mesh, 0.1, 1, 100000);
+
+	std::cout << "Save as solver format..." << std::flush;
+	saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + ".fvg", mesh, propMap);
+	std::cout << " done." << std::endl << std::endl;
+	
+	return 0;
+*/
 }

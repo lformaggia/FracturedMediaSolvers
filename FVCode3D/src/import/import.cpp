@@ -75,7 +75,7 @@ void ImporterMedit::import(bool fracturesOn)
 	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
 
 	Geometry::Properties prop;
-	
+
 	// Read nodes
 	const std::string s2findN = "Vertices";
 	while(buffer!=s2findN)
@@ -117,7 +117,7 @@ void ImporterMedit::import(bool fracturesOn)
 		}
 	}
 	tmp.clear();
-	
+
 	// Read cells
 	const std::string s2findE = "Tetrahedra";
 	while(buffer!=s2findE)
