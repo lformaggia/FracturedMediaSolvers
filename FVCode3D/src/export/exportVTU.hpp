@@ -40,6 +40,13 @@ public:
      */
     virtual void exportMeshWithFractures(const Mesh3D & mesh, const std::string filename);
 
+    //! Export the wireframe
+    /*!
+     * @param mesh reference of a Geometry::Mesh3D
+     * @param filename name of the file
+     */
+    virtual void exportWireframe(const Mesh3D & mesh, const std::string filename);
+    
     //! Export the fracture junctures
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh

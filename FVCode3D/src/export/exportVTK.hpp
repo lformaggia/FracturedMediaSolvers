@@ -26,8 +26,10 @@ public:
 
     virtual void exportMeshWithFractures(const Mesh3D & mesh, const std::string filename);
 
+    virtual void exportWireframe(const Mesh3D & mesh, const std::string filename);
+    
     virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename);
-
+    
     template <typename VectorType>
     void exportSolution(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol);
 

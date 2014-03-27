@@ -428,6 +428,130 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr.close();
 }
 
+void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename)
+{
+    std::fstream filestr;
+
+    filestr.open (filename.c_str(), std::ios_base::out);
+
+    if (filestr.is_open())
+    {
+        std::cout << std::endl << " File: " << filename << ", successfully opened";
+    }
+    else
+    {
+        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << std::endl << " Exporting Wireframe in Vtu format... " << std::endl;
+
+    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+    std::map< std::pair<UInt,UInt>, bool > edges;
+    std::map< std::pair<UInt,UInt>, bool >::const_iterator itSet;
+    UInt edgesFacet = 0;
+    UInt nPoints = nodes.size();
+    UInt nEdges = 0, offsets = 0;
+
+    for(std::map<UInt, Facet3D>::const_iterator it = facets.begin(); it != facets.end(); ++it)
+    {
+	edgesFacet = it->second.getNumberOfPoints();
+        for(UInt i=0; i<edgesFacet-1; ++i)
+	{
+	    if(it->second.getIdVertex(i) < it->second.getIdVertex(i+1))
+	    {
+		itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(i), it->second.getIdVertex(i+1)) );
+		if(itSet == edges.end())
+		    edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(i), it->second.getIdVertex(i+1)), it->second.isFracture()));
+		else if(it->second.isFracture() == true)
+		    edges[std::pair<UInt,UInt>(it->second.getIdVertex(i), it->second.getIdVertex(i+1))] = true;
+	    }
+	    else
+	    {
+		itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(i+1), it->second.getIdVertex(i)) );
+		if(itSet == edges.end())
+		    edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(i+1), it->second.getIdVertex(i)), it->second.isFracture()));
+		else if(it->second.isFracture() == true)
+		    edges[std::pair<UInt,UInt>(it->second.getIdVertex(i+1), it->second.getIdVertex(i))] = true;
+	    }
+	}
+	if(it->second.getIdVertex(edgesFacet-1) < it->second.getIdVertex(0))
+	{
+	    itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(edgesFacet-1), it->second.getIdVertex(0)) );
+	    if(itSet == edges.end())
+	        edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(edgesFacet-1), it->second.getIdVertex(0)), it->second.isFracture()));
+	    else if(it->second.isFracture() == true)
+	        edges[std::pair<UInt,UInt>(it->second.getIdVertex(edgesFacet-1), it->second.getIdVertex(0))] = true;
+	}
+	else
+	{
+	    itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(0), it->second.getIdVertex(edgesFacet-1)) );
+	    if(itSet == edges.end())
+	        edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(0), it->second.getIdVertex(edgesFacet-1)), it->second.isFracture()));
+	    else if(it->second.isFracture() == true)
+	        edges[std::pair<UInt,UInt>(it->second.getIdVertex(0), it->second.getIdVertex(edgesFacet-1))] = true;
+	}
+    }
+    nEdges = edges.size();
+
+    // Header
+    filestr << "<?xml version=\"1.0\"?>" << std::endl;
+    filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+    filestr << "\t<UnstructuredGrid>" << std::endl;
+    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nEdges << "\">" << std::endl;
+    
+    // CellData
+    filestr << "\t\t\t<CellData Scalars=\"scalars\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"isFrac\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(0);
+    for(itSet = edges.begin(); itSet != edges.end(); ++itSet )
+        filestr << itSet->second << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</CellData>" << std::endl;
+
+    filestr << std::scientific << std::setprecision(10);
+
+    // Points
+    filestr << "\t\t\t<Points>" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+        filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Points>" << std::endl;
+
+    // Cells
+    filestr << "\t\t\t<Cells>" << std::endl;
+    //  Connectivity
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+    for(itSet = edges.begin(); itSet != edges.end(); ++itSet )
+        filestr << itSet->first.first << " " << itSet->first.second << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Offsets
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+    for(UInt i=0; i < nEdges; ++i )
+    {
+        offsets += 2;
+        filestr << offsets << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Types
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+    for( UInt i=0; i < nEdges ; ++i )
+        filestr << "3" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    
+    filestr << "\t\t\t</Cells>" << std::endl;
+
+    filestr << "\t\t</Piece>" << std::endl;
+    filestr << "\t</UnstructuredGrid>" << std::endl;
+    filestr << "\t</VTKFile>" << std::endl;
+
+    filestr.close();
+}
+
 void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename)
 {
     std::fstream filestr;

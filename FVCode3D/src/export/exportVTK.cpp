@@ -19,6 +19,11 @@ void ExporterVTK::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     // TODO
 }
 
+void ExporterVTK::exportWireframe(const Mesh3D & mesh, const std::string filename)
+{
+    // TODO
+}
+
 void ExporterVTK::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename)
 {
     // TODO
