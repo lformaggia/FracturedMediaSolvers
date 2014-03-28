@@ -70,6 +70,22 @@ public:
 	 	@return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell 
 	 */
 	Vector CellIntegrate (const std::function<Real(Generic_Point)> & func);
+    //! Integrate a function and return the integral cell by cell, only in the porous matrix
+    /*!
+        @param Integrand A function which returns a scalar
+        @return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell
+        of the porous matrix
+        @note The vector contains all the problem entries, fractures included which are zero
+     */
+    Vector CellIntegrateMatrix (const std::function<Real(Generic_Point)> & func);
+    //! Integrate a function and return the integral cell by cell, only in the fractures
+    /*!
+        @param Integrand A function which returns a scalar
+        @return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell,
+        of the fractures
+        @note The vector contains all the problem entries, the entries of the matrix are zero
+     */
+    Vector CellIntegrateFractures (const std::function<Real(Generic_Point)> & func);
 	//! Integrate discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
