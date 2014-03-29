@@ -112,10 +112,10 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
-	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fOne );
-	BoundaryConditions::BorderBC leftBC	(3, Neumann, fZero );
-	BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
+	BoundaryConditions::BorderBC backBC	(1, Neumann, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Neumann, fZero );
+	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fOne );
+	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fZero );
 	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
 	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
 
@@ -153,7 +153,7 @@ int main(int argc, char * argv[])
 	std::cout << "Build problem..." << std::flush;
 	Pb * darcy;
 	if(data.getProblemType() == Data::ProblemType::steady)
-		darcy = new DarcyPb(myrmesh, BC, SS);
+		darcy = new DarcyPb(myrmesh, BC, SS, data);
 	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
 		darcy = new PseudoDarcyPb(myrmesh, BC, SS, data);
 	std::cout << " done." << std::endl << std::endl;
