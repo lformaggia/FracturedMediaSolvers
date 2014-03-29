@@ -12,6 +12,8 @@
 #include "assembler/stiffness.hpp"
 #include "assembler/mass.hpp"
 
+class Data;
+
 //! Select the time scheme
 /*!
  * @enum TimeScheme
@@ -19,8 +21,8 @@
  */
 enum TimeScheme
 {
-	Implicit,
-	BDF2
+	Implicit = 0,
+	BDF2 = 1
 };
 
 //! Class that defines the pseudo-steady-state Darcy problem
@@ -65,7 +67,7 @@ public:
 	 * @param data reference to a Data class
 	 */
 	DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
-		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func),
+		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func, data),
 		M_tInit(data.getInitialTime()), M_tEnd(data.getEndTime()), M_tStep(data.getTimeStep()),
 		M_x(nullptr), M_M(nullptr), M_nStep(0) {};
 
@@ -153,7 +155,7 @@ public:
 	 * @param data reference to a Data class
 	 */
 	DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const Data & data):
-		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, f),
+		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, f, data),
 		M_tInit(data.getInitialTime()), M_tEnd(data.getEndTime()), M_tStep(data.getTimeStep()),
 		M_x(nullptr), M_M(nullptr), M_nStep(0) {};
 
@@ -237,7 +239,10 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::initialize()
 	this->M_A = M_S->getMatrix() + M_M->getMatrix();
 
 	M_f.resize(M_S->getSize());
-	M_f = this->M_quadrature->CellIntegrate(this->M_func);
+	if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
+		M_f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+	if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
+		M_f += this->M_quadrature->CellIntegrateFractures(this->M_func);
 
 	M_xOld = Vector::Constant(M_M->getSize(), 0.);
 	M_x = &M_xOld;
@@ -248,9 +253,9 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::initialize()
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::assemble()
 {
-        M_xOld = *M_x;
+	M_xOld = *M_x;
 
-        this->M_b = M_S->getBCVector() + M_f + M_M->getMatrix() * M_xOld;
+	this->M_b = M_S->getBCVector() + M_f + M_M->getMatrix() * M_xOld;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
@@ -277,22 +282,15 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::initialize()
 
 	this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
 
-	//std::cout << std::endl;
-	//std::cout<<"S norm: " << M_S->getMatrix().norm() << std::endl;
-	//std::cout<<"A norm: " << M_A.norm() << std::endl;
-
 	M_f.resize(M_S->getSize());
-	M_f = this->M_quadrature->CellIntegrate(this->M_func);
-
-	//std::cout<<"func norm: " << M_f.norm() << std::endl;
+	if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
+		M_f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+	if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
+		M_f += this->M_quadrature->CellIntegrateFractures(this->M_func);
 
 	M_xOldOld = Vector::Constant(M_M->getSize(), 0.);
 	M_xOld = Vector::Constant(M_M->getSize(), 0.);
 	M_x = &M_xOld;
-
-	//std::cout<<"Sol OldOld norm: " << M_xOldOld.norm() << std::endl;
-	//std::cout<<"Sol Old norm: " << M_xOld.norm() << std::endl;
-	//std::cout<<"Sol norm: " << M_x->norm() << std::endl;
 
 	M_nStep = (M_tEnd - M_tInit) / M_tStep;
 }
@@ -300,10 +298,10 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::initialize()
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::assemble()
 {
-        M_xOldOld = M_xOld;
-        M_xOld = *M_x;
+	M_xOldOld = M_xOld;
+	M_xOld = *M_x;
 
-        this->M_b = M_S->getBCVector() + M_f + 2 * M_M->getMatrix() * M_xOld - (1./2.) * M_M->getMatrix() * M_xOldOld;
+	this->M_b = M_S->getBCVector() + M_f + 2 * M_M->getMatrix() * M_xOld - (1./2.) * M_M->getMatrix() * M_xOldOld;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
@@ -313,13 +311,6 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::solve()
 	this->M_solver->solve();
 
 	M_x = &(this->M_solver->getSolution());
-
-	//std::cout<<"S norm: " << M_S->getMatrix().norm() << std::endl;
-	//std::cout<<"A norm: " << M_A.norm() << std::endl;
-
-	//std::cout<<"Sol OldOld norm: " << M_xOldOld.norm() << std::endl;
-	//std::cout<<"Sol Old norm: " << M_xOld.norm() << std::endl;
-	//std::cout<<"Sol norm: " << M_x->norm() << std::endl;
 }
 
 #endif /* DARCYPSEUDOSTEADY_HPP_ */

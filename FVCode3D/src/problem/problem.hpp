@@ -11,6 +11,7 @@
 #include "boundaryCondition/BC.hpp"
 
 class Quadrature;
+class Data;
 
 //! Class that defines a generic problem
 /*!
@@ -44,8 +45,8 @@ public:
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
-        M_mesh(mesh), M_bc(bc), M_func(func), M_quadrature(nullptr), M_solver(nullptr) {};
+    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
+        M_mesh(mesh), M_bc(bc), M_func(func), M_ssOn(data.getSourceSinkOn()), M_quadrature(nullptr), M_solver(nullptr) {};
 
     //! @name Get Methods
     //@{
@@ -67,6 +68,12 @@ public:
      */
     const Func & getF() const { return M_func; }
 
+    //! Get where the source/sink term is applied
+    /*!
+     * @return where the source/sink term is applied
+     */
+    Data::SourceSinkOn getSourceSinkOn() const { return M_ssOn; }
+
     //! Get the class Quadrature
     /*!
      * @return a constant reference to the class Quadrature
@@ -86,6 +93,7 @@ public:
     //! Solve method
     virtual void solve() = 0;
 
+    //! Assemble and solve
     virtual void assembleAndSolve() { assemble(); solve(); }
 
     //! Destructor
@@ -99,6 +107,8 @@ protected:
     const BoundaryConditions & M_bc;
     //! Constant reference to the source/sink function
     const Func & M_func;
+    //! Indicates where the source/sink term is applied
+    const Data::SourceSinkOn M_ssOn;
     //! Pointer to the quadrature class
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class

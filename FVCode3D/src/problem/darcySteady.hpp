@@ -11,6 +11,8 @@
 #include "solver/solver.hpp"
 #include "assembler/stiffness.hpp"
 
+class Data;
+
 //! Class that defines the steady-state Darcy problem
 /*!
  * @class DarcySteady
@@ -43,8 +45,8 @@ public:
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func):
-        Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func) {};
+    DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
+        Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func, data) {};
 
     //! Assemble method
     /*!
@@ -72,7 +74,10 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
     S.assemble();
 
     Vector f(S.getSize());
-    f = this->M_quadrature->CellIntegrate(this->M_func);
+    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
+    	f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
+    	f += this->M_quadrature->CellIntegrateFractures(this->M_func);
 
     this->M_A = S.getMatrix();
     this->M_b = S.getBCVector() + f;
