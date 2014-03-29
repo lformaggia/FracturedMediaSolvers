@@ -41,6 +41,18 @@ public:
 		Medit			= 2
 	};
 
+	//! Define where apply the source/sink term
+	/*!
+	 * @enum SourceSinkOn
+	 * This enumerator allows to select where apply the source/sink term: only on matrix, only on fractures or both.
+	 */
+	enum SourceSinkOn
+	{
+		Matrix			= 0,
+		Fractures		= 1,
+		Both			= 2
+	};
+
 	//! @name Constructors
 	//@{
 
@@ -114,6 +126,12 @@ public:
 	 * @return true if the fractures are enabled
 	 */
 	bool fractureOn() const { return M_fracturesOn; }
+
+    //! Get where the source/sink term is applied
+    /*!
+     * @return where the source/sink term is applied
+     */
+    SourceSinkOn getSourceSinkOn() const { return M_ssOn; }
 
 	//! Get the permeability in the porous medium
 	/*!
@@ -242,6 +260,12 @@ public:
 	 */
 	void fractureOn(bool fracture) { M_fracturesOn = fracture; }
 
+    //! Set where the source/sink term is applied
+    /*!
+     * @param ssOn where the source/sink term is applied
+     */
+    void setSourceSinkOn(const SourceSinkOn ssOn) { M_ssOn = ssOn; }
+
 	//! Set the permeability in the porous medium
 	/*!
 	 * @param the permeability in the porous medium
@@ -343,6 +367,8 @@ protected:
 	ProblemType M_problemType;
 	//! Enable or disable fractures
 	bool M_fracturesOn;
+	//! Where the source/sink term is applied
+	SourceSinkOn M_ssOn;
 	//! Permeability in the porous medium
 	Real M_permMatrix;
 	//! Porosity in the porous medium
@@ -395,5 +421,8 @@ EnumParser<Data::ProblemType>::EnumParser();
 
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser();
+
+template<>
+EnumParser<Data::SourceSinkOn>::EnumParser();
 
 #endif /* DATA_HPP_ */

@@ -8,7 +8,7 @@
 Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
 	M_outputDir("./results/"), M_outputFile("sol"), M_problemType(steady),
-	M_fracturesOn(true), M_permMatrix(0.), M_poroMatrix(0.),
+	M_fracturesOn(true), M_ssOn(Both), M_permMatrix(0.), M_poroMatrix(0.),
 	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
 	M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
 	M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
@@ -18,6 +18,7 @@ Data::Data(const std::string dataFileName)
 {
 	EnumParser<MeshFormatType> parserMeshType;
 	EnumParser<ProblemType> parserProblemType;
+	EnumParser<SourceSinkOn> parserSourceSinkOn;
   
 	GetPot dataFile((dataFileName).c_str());
 
@@ -31,6 +32,7 @@ Data::Data(const std::string dataFileName)
 
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
+	M_ssOn = parserSourceSinkOn.parse( dataFile("problem/sourceOn", "all") );
 
 	M_permMatrix = dataFile("problem/perm_matrix", 1e2);
 	M_poroMatrix = dataFile("problem/poro_matrix", 0.25);
@@ -119,6 +121,23 @@ void Data::showMe( std::ostream & output ) const
 			break;
 	}
 	output << "Fractures On: " << M_fracturesOn << std::endl;
+	
+	output << "Source/Sink on: ";
+	switch(M_ssOn)
+	{
+		case Matrix:
+			output << "matrix" << std::endl;
+			break;
+		case Fractures:
+			output << "fractures" << std::endl;
+			break;
+		case Both:
+			output << "all" << std::endl;
+			break;
+		default:
+			exit(0);
+			break;
+	}
 
 	if(M_problemType == pseudoSteady)
 	{
@@ -152,4 +171,12 @@ EnumParser<Data::MeshFormatType>::EnumParser()
     enumMap[".grid"] = Data::MeshFormatType::TPFA;
     enumMap[".fvg"] = Data::MeshFormatType::forSolver;
     enumMap[".mesh"] = Data::MeshFormatType::Medit;
+}
+
+template<>
+EnumParser<Data::SourceSinkOn>::EnumParser()
+{
+    enumMap["matrix"] = Data::SourceSinkOn::Matrix;
+    enumMap["fractures"] = Data::SourceSinkOn::Fractures;
+    enumMap["all"] = Data::SourceSinkOn::Both;
 }

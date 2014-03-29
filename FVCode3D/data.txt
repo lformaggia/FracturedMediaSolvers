@@ -5,20 +5,21 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= second.fvg
-mesh_type	= .fvg		# .grid or .fvg or .mesh
+mesh_file	= grid2.grid
+mesh_type	= .grid		# .grid or .fvg or .mesh
 
 ## output
 [output]
 output_dir	= ./results/
-output_file	= second
+output_file	= sol
 
 ## problem parameter
 [problem]
 type		= steady	# steady or pseudoSteady 
 fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
+sourceOn	= all		# all, matrix, fractures
 initial_time	= 0.
-end_time	= 2.e6
+end_time	= 10.e6
 time_step	= 1.e5
 
 ## fluid parameters
@@ -28,7 +29,7 @@ compressibility	= 1.
 
 ## boundary conditions
 [bc]
-theta		= 0.
+theta		= 45.
 
 ## Other
 [miscellaneous]
