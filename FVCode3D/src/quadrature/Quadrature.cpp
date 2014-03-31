@@ -144,8 +144,6 @@ Vector Quadrature::CellIntegrateFractures (const std::function<Real(Generic_Poin
 {
     UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
     Vector result( Vector::Zero(N) );
-    Real partRes;
-    UInt NeighboursId;
 
     for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
     {
