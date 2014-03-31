@@ -4,7 +4,6 @@
  */
 
 #include "solver/solver.hpp"
-#include <Eigen/UmfPackSupport>
 
 void EigenCholesky::solve()
 {

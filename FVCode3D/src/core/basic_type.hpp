@@ -20,6 +20,7 @@
 #include <map>
 
 #include <Eigen/Sparse>
+#include <Eigen/UmfPackSupport>
 
 //! Type for real numbers
 typedef double Real;

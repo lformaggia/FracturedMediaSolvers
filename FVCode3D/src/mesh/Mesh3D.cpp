@@ -296,7 +296,7 @@ UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
 	std::map<UInt,Facet3D>::const_iterator itF;
 	std::set<UInt>::const_iterator it, it2;
 	bool found = true;
-	UInt idFacet;
+	UInt idFacet = 0;
 
 	for(itF = M_facets.begin(); itF != M_facets.end(); ++itF)
 	{
