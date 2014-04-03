@@ -5,13 +5,13 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= grid2.grid
-mesh_type	= .grid		# .grid or .fvg or .mesh
+mesh_file	= cartesian.fvg
+mesh_type	= .fvg		# .grid or .fvg or .mesh
 
 ## output
 [output]
 output_dir	= ./results/
-output_file	= sol
+output_file	= cartesian
 
 ## problem parameter
 [problem]
@@ -29,7 +29,7 @@ compressibility	= 1.
 
 ## boundary conditions
 [bc]
-theta		= 45.
+theta		= 0.
 
 ## Other
 [miscellaneous]

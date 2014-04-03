@@ -9,6 +9,7 @@
 #include "core/data.hpp"
 #include "mesh/Rigid_Mesh.hpp"
 #include "mesh/Properties.hpp"
+#include "mesh/cartesianGrid.hpp"
 #include "boundaryCondition/BC.hpp"
 #include "quadrature/Quadrature.hpp"
 #include "import/import.hpp"
