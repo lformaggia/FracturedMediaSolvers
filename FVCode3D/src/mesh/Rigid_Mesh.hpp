@@ -62,10 +62,22 @@ public:
 	typedef Mesh3D::Cell3D Generic_Cell;
 	//! Typedef for std::pair<UInt,UInt>
 	/*!
+		@typedef Generic_Edge
+   		This type definition permits to treat a pair of Points as a Generic_Edge.
+   	*/
+	typedef std::pair<UInt,UInt> Generic_Edge;
+	//! Typedef for std::pair<UInt,UInt>
+	/*!
 		@typedef Fracture_Juncture
    		This type definition permits to handle a pair of Points as a juncture between to facets.
    	*/
 	typedef std::pair<UInt,UInt> Fracture_Juncture;
+	//! Typedef for std::pair<UInt,UInt>
+	/*!
+		@typedef Fracture_Tip
+   		This type definition permits to handle a pair of Points as a tip of a facet.
+   	*/
+	typedef std::pair<UInt,UInt> Fracture_Tip;
 	//! Typedef for std::vector<Point3D>
 	/*!
 		@typedef Generic_Border
@@ -84,6 +96,113 @@ public:
    		This type definition permits to treat Generic_Point as a Point.
    	*/
 	typedef Generic_Point Point;
+
+	//! Class that implements a Edge
+	/*!
+		@class Edge
+   		This class implements the concept of Edge of a Rigid_Mesh.
+   	*/
+	class Edge{
+
+	public:
+
+		//! @name Constructor & Destructor
+		//@{
+
+		//! Constructor for an Edge from a pair of points.
+		/*!
+			@param generic_edge is a edge
+			@param mesh is a constant pointer to the mesh to which the Edge belongs
+			@param id is the Id of the edge in the Rigid_Mesh
+		*/
+		Edge (const Generic_Edge & generic_edge, Geometry::Rigid_Mesh * const mesh, const UInt id);
+
+		//! Copy constructor for a Edge from a Edge of another Rigid_Mesh
+		/*!
+		 * @param edge reference to a Edge
+		 * @param mesh is a constant pointer to the mesh to which the Edge belongs
+		 */
+		Edge (const Edge & edge, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Edge from a Edge
+		/*!
+		 * @param edge reference to a Edge
+		 */
+		Edge (const Edge & edge);
+
+		//! No empty constructor
+		Edge () = delete;
+
+		//! Destructor
+		~Edge () = default;
+
+		//@}
+
+		//! @name Get Methods
+		//@{
+
+		//! Get vertexes Ids (const)
+		/*!
+		 * @return a reference to a pair of the edge vertexes ids
+		 */
+		const Generic_Edge & getEdge () const
+			{ return M_edge; }
+
+		//! Get mesh
+		/*!
+		 * @return a const pointer to the related mesh
+		 */
+		Geometry::Rigid_Mesh * getMesh () const
+			{ return M_mesh; }
+
+		//! Get Id (const)
+		/*!
+		 * @return the id of the Edge in the containing Rigid_Mesh
+		 */
+		UInt getId() const
+			{ return M_id; }
+		//@}
+
+		//! Get separated Facets ids (const)
+		/*!
+		 * @return a vector reference with the ids of the facets separated from the Edge
+		 */
+		const std::vector<UInt> & getSeparatedFacetsIds () const
+			{ return M_separatedFacetsIds; }
+
+		//! Get centroid (const)
+		/*!
+		 * @return reference to the centroid of the Edge
+		 */
+		const Generic_Point getCentroid () const;
+
+		//! Get the length of the edge (const)
+		/*!
+		 * @return the length of the Edge
+		 */
+		Real length() const;
+
+		//! @name Methods
+		//@{
+		//! Display general information about the Edge
+		/*!
+		 * @param out specify the output format (std::cout by default)
+		 */
+		void showMe (std::ostream & out=std::cout) const;
+
+		//@}
+
+	protected:
+		//! The pair of the ids of the Edge's Vertexes
+		const Generic_Edge M_edge;
+		//! The pointer to the Rigid_Mesh containing the Edge
+		Geometry::Rigid_Mesh * M_mesh;
+		//! The Edge id in the containing Rigid_Mesh
+		UInt M_id;
+		//! The vector of the ids of the Facets separated by Edge
+		std::vector<UInt> M_separatedFacetsIds;
+
+	};
 
 	//! Class that implements a Facet
 	/*!
@@ -367,6 +486,135 @@ public:
 		Real M_volume;
 	};
 
+	//! Class that handles the several types of edges
+	/*!
+		@class Edge_ID
+   		This class is a container of a Edge-Id.
+		This class is a base class.
+   	*/
+	class Edge_ID{
+
+	protected:
+		//! The Id of the referred Edge
+		UInt Edge_Id;
+		//! The pointer to the Rigid_Mesh containing the Edge
+		Rigid_Mesh * M_mesh;
+
+	public:
+		//! @name Constructor & Destructor
+		//@{
+
+		//! Constructor for a Edge_ID.
+		/*!
+			@param edge_id is the id of a Edge of a Rigid_Mesh.
+			@param mesh is a constant pointer to the mesh to which the Edge belongs
+		*/
+		Edge_ID(const UInt edge_id, Geometry::Rigid_Mesh * const mesh);
+
+		//! No empty constructor
+		Edge_ID () = delete;
+
+		//! Destructor
+		virtual ~Edge_ID () {};
+		//@}
+
+		//! @name Get Methods
+		//@{
+
+		//! Get mesh (const)
+		/*!
+		 * @return A const pointer to the mesh
+		 */
+		Geometry::Rigid_Mesh * getMesh () const
+			{ return M_mesh; }
+
+		//! Get Edge id (const)
+		/*!
+		 * @return the edge id contained in the class
+		 */
+		UInt getEdgeId () const
+			{return Edge_Id;}
+
+		//! Get Edge (const)
+		/*!
+		 * @return a reference to a Edge whose id is contained in the class
+		 */
+		const Rigid_Mesh::Edge & getEdge () const
+			{return M_mesh->getEdgesVector()[Edge_Id];}
+
+		//! Get center (const)
+		/*!
+		 * @return the centroid of the Edge whose id is contained in the class
+		 */
+		const Generic_Point getCentroid () const
+			{return M_mesh->getEdgesVector()[Edge_Id].getCentroid();}
+
+		//! Get size (const)
+		/*!
+		 * @return the size of the Edge whose id is contained in the class
+		 */
+		Real getSize () const
+			{return M_mesh->getEdgesVector()[Edge_Id].length();}
+
+		//! Get separated facets (const)
+		/*!
+		 * @return the id of the separated facets from Edge whose id is contained in the class
+		 */
+		const std::vector<UInt> & getSeparated () const
+			{return M_mesh->getEdgesVector()[Edge_Id].getSeparatedFacetsIds();}
+		//@}
+	};
+
+	//! Class that represents a border edge
+	/*!
+		@class Border_Edge
+   		This class is derived from the class Edge_ID.
+		This class contains the id of a edge which belongs to the border of the domain.
+   	*/
+	class Border_Edge: public Edge_ID {
+	protected:
+		//! Identifier of the border
+		UInt Border_Id;
+	public:
+		//! @name Constructor & Destructor
+		//@{
+
+		//! Constructor for a Border_Edge given an edge id and the relative border id
+		/*!
+			@param edge_id is the id of an Edge of a Rigid_Mesh
+			@param border_id is the id of the border to which the Edge belongs.
+			@param mesh is a pointer to the mesh to which the edge belongs
+		*/
+		Border_Edge (const UInt edge_Id, const UInt border_Id, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Border_Edge given a border_edge belonging to another Rigid_Mesh.
+		/*!
+		 * @param border_edge reference to a Border_Edge
+		 * @param mesh is a pointer to the mesh to which the edge belongs
+		 */
+		Border_Edge (const Border_Edge & border_edge, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Border_Edge given a border_edge.
+		/*!
+		 * @param e reference to a Border_Edge
+		 */
+		Border_Edge (const Border_Edge & e);
+
+		//! Destructor
+		~Border_Edge () = default;
+		//@}
+
+		//! @name Get Methods
+		//@{
+		//! Get border id (const)
+		/*!
+		 * @return the id of the border of the contained Edge
+		 */
+		UInt getBorderId() const
+			{return Border_Id;}
+		//@}
+	};
+
 	//! Class that handles the several types of facets
 	/*!
 		@class Facet_ID
@@ -463,7 +711,6 @@ public:
 		//@}
 	};
 
-
 public:
 	
 	//! Class that represents an interior facet (no fracture facet)
@@ -500,8 +747,8 @@ public:
 
 		//! Destructor
 		~Regular_Facet () = default;
-	};
 		//@}
+	};
 
 	//! Class that represents a border facet
 	/*!
@@ -627,6 +874,13 @@ public:
 		 */
 		const std::map<Fracture_Juncture, std::vector<UInt> > & getFractureNeighbors () const
 			{return Fracture_Neighbors;}
+
+		//! Get fracture tips (const)
+		/*!
+		 * @return a map that associate a juncture the ids of the neighboring Fracture_Facet
+		 */
+		const std::set<Fracture_Tip> & getFractureTips () const
+			{return Fracture_Tips;}
 		//@}
 
 		friend class Rigid_Mesh;
@@ -638,11 +892,12 @@ public:
 		UInt M_Id;
 		//! Ids of the represented fractures
 		std::vector<UInt> Fracture_Ids;
-		//! Map that associate a juncture the ids of the neighboring Fracture_Facet
+		//! Map that associates a juncture the ids of the neighboring Fracture_Facet
 		std::map<Fracture_Juncture, std::vector<UInt> > Fracture_Neighbors;
+		//! Map that associates a tip the ids of the neighboring Fracture_Facet
+		std::set<Fracture_Tip> Fracture_Tips;
 
 	};
-
 
 public:
 	//! @name Constructor & Destructor
@@ -680,6 +935,13 @@ public:
 	const std::vector<Point> & getNodesVector () const
 		{ return M_nodes; }
 
+	//! Get edges vector (const)
+	/*!
+	 * @return a reference to the vector that contains the edges of the mesh
+	 */
+	const std::vector<Edge> & getEdgesVector () const
+		{ return M_edges; }
+
 	//! Get facets vector (const)
 	/*!
 	 * @return a reference to the vector that contains the facets of the mesh
@@ -693,6 +955,13 @@ public:
 	 */
 	const std::vector<Cell> & getCellsVector () const
 		{ return M_cells; }
+
+	//! Get border edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the Border_Edge
+	 */
+	const std::vector<Border_Edge> & getBorderEdgesIdsVector () const
+		{ return M_borderEdges; }
 
 	//! Get internal facets ids vector (const)
 	/*!
@@ -844,10 +1113,15 @@ protected:
 	
 	//! Vector of Nodes
 	std::vector<Point> M_nodes;
+	//! Vector of Edges
+	std::vector<Edge> M_edges;
 	//! Vector of Facets
 	std::vector<Facet> M_facets;
 	//! Vector of Cells
 	std::vector<Cell> M_cells;
+
+	//! Vector of Border_Edge
+	std::vector<Border_Edge> M_borderEdges;
 
 	//! Vector of Regular_Facet
 	std::vector<Regular_Facet> M_internalFacets;

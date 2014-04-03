@@ -143,6 +143,8 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 				auto find_it = std::find(it->Fracture_Neighbors[m_junct].begin(), it->Fracture_Neighbors[m_junct].end(), it->getId());
 				it->Fracture_Neighbors[m_junct].erase(find_it);
 			}
+			else
+				it->Fracture_Tips.insert(static_cast<Fracture_Tip>(m_junct));
 		}
 
 		vertex_it2 = it->getFacet().getVertexesIds().begin();
@@ -156,10 +158,11 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 		if (nodes_fracture_map.at(m_junct).size() > 1)
 		{
 			it->Fracture_Neighbors[m_junct] = nodes_fracture_map.at(m_junct);
-			auto find_it = std::find(it->Fracture_Neighbors[m_junct].begin(),
-					it->Fracture_Neighbors[m_junct].end(), it->getId());
+			auto find_it = std::find(it->Fracture_Neighbors[m_junct].begin(), it->Fracture_Neighbors[m_junct].end(), it->getId());
 			it->Fracture_Neighbors[m_junct].erase(find_it);
 		}
+		else
+			it->Fracture_Tips.insert(static_cast<Fracture_Tip>(m_junct));
 	}
 
 }
@@ -267,7 +270,7 @@ void Rigid_Mesh::showPoint(const Point & generic_point, std::ostream & out) cons
 
 void Rigid_Mesh::showMe ( std::ostream & out ) const
 {
-	out << "Type = Mesh3D :"<< std::endl;
+	out << "Type = Mesh :"<< std::endl;
 	out << "code = " << this << std::endl;
 	out << "Number of Nodes: " << M_nodes.size() <<std::endl;
 	out << "Number of Cells: " << M_cells.size() <<std::endl;
@@ -284,6 +287,57 @@ const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::v
 	for (auto iter : pointsIds)
 		points.emplace_back(M_nodes[iter]);
 	return points;
+}
+
+// --------------------   Class Edge   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Edge::Edge (const Generic_Edge & generic_edge, Geometry::Rigid_Mesh * const mesh, const UInt id):
+		M_edge(generic_edge), M_mesh(mesh), M_id(id)
+{
+	// TODO compute separated facets
+}
+
+Rigid_Mesh::Edge::Edge (const Edge & edge, Geometry::Rigid_Mesh * const mesh):
+	M_edge(edge.getEdge()), M_mesh(mesh), M_id(edge.getId()),
+	M_separatedFacetsIds(edge.getSeparatedFacetsIds()){}
+
+Rigid_Mesh::Edge::Edge (const Edge & edge):
+	M_edge(edge.getEdge()), M_mesh(edge.getMesh()), M_id(edge.getId()),
+	M_separatedFacetsIds(edge.getSeparatedFacetsIds()){}
+
+const Rigid_Mesh::Generic_Point Rigid_Mesh::Edge::getCentroid () const
+{
+	Generic_Point first (M_mesh->getNodesVector()[M_edge.first]);
+	Generic_Point second (M_mesh->getNodesVector()[M_edge.second]);
+	return (first+second) / 2.;
+}
+
+Real Rigid_Mesh::Edge::length() const
+{
+	Generic_Point first (M_mesh->getNodesVector()[M_edge.first]);
+	Generic_Point second (M_mesh->getNodesVector()[M_edge.second]);
+	return (second-first).norm();
+}
+
+void Rigid_Mesh::Edge::showMe (std::ostream & out) const
+{
+	out << "Type = Edge: " << std::endl;
+	out << "ID: " << M_id << std::endl;
+	out << "M_mesh = " << M_mesh << std::endl;
+	out << "Edge: (" << M_edge.first << "," << M_edge.second << ")" << std::endl;
+	out << "Size: " << length() << std::endl;
+	out << "Center: ";
+	M_mesh->showPoint(getCentroid(), out);
+	out << "M_separatedFacets : size = " << M_separatedFacetsIds.size();
+	out << "    [ ";
+	if( !M_separatedFacetsIds.empty() )
+		for( auto it = M_separatedFacetsIds.begin(); it != M_separatedFacetsIds.end(); ++it )
+			out << *it << " ";
+	out << "] " << std::endl;
 }
 
 // --------------------   Class Facet   --------------------
@@ -320,7 +374,7 @@ Rigid_Mesh::Facet::Facet(const Facet & facet, Geometry::Rigid_Mesh * const mesh)
 
 void Rigid_Mesh::Facet::showMe(std::ostream & out) const
 {
-	out << "Type = Facet3D: " << std::endl;
+	out << "Type = Facet: " << std::endl;
 	out << "ID: " << M_id << std::endl;
 	out << "M_mesh = " << M_mesh << std::endl;
 	out << "Number of Nodes: " << M_vertexesIds.size()<<" : "<<std::endl;
@@ -378,7 +432,7 @@ Rigid_Mesh::Cell::Cell(const Cell & cell):
 
 void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
 {
-	out << "Type = Cell3D :" << std::endl;
+	out << "Type = Cell :" << std::endl;
 	out << "ID: " << M_Id << std::endl;
 	out << "M_mesh = " << M_mesh << std::endl;
 	out << "Number of Nodes: " << M_vertexesIds.size()<<" : "<<std::endl;
@@ -399,6 +453,30 @@ void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
 			out << *it << " ";
 	out << "] " << std::endl;
 }
+
+// --------------------   Class Facet_ID   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Edge_ID::Edge_ID(const UInt edge_id, Geometry::Rigid_Mesh * const mesh):
+	Edge_Id(edge_id), M_mesh(mesh){}
+
+// --------------------   Class Border_Facet   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Border_Edge::Border_Edge (const UInt edge_Id, const UInt border_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh), Border_Id(border_Id){}
+
+Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & border_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(border_edge.getEdgeId(), mesh), Border_Id(border_edge.getBorderId()){}
+
+Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & e):
+	Edge_ID(e.getEdgeId(), e.getMesh()), Border_Id(e.getBorderId()){}
 
 // --------------------   Class Facet_ID   --------------------
 
