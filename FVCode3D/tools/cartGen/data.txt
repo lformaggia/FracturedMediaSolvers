@@ -1,0 +1,25 @@
+#---------------------------------------#
+#    Data file for converterToSolver    #
+#---------------------------------------#
+
+## output
+[output]
+output_dir	= ./data/
+output_file	= cartesian
+
+## domain
+[domain]
+Lx	= 2.
+Ly	= 1.
+Lz	= 1.
+Nx	= 10
+Ny	= 5
+Nz	= 5
+
+## problem parameter
+[problem]
+perm_matrix	= 1e2
+poro_matrix	= 0.25
+perm_frac	= 1e5	
+poro_frac	= 1.
+aper_frac	= 0.1
