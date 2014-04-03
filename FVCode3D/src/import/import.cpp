@@ -1,6 +1,6 @@
-	/*!
- *	@file import.cpp
- *	@brief Classes for loading files (definitions).
+/*!
+ * @file import.cpp
+ * @brief Classes for loading files (definitions).
  */
 
 #include "mesh/Mesh3D.hpp"
