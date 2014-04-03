@@ -86,7 +86,8 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
 {
-    this->M_solver.reset( new Solver(this->M_A, this->M_b) );
+	this->M_solver->setA(this->M_A);
+	this->M_solver->setb(this->M_b);
     this->M_solver->solve();
 }
 

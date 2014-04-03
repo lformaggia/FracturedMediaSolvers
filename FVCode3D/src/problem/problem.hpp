@@ -45,8 +45,7 @@ public:
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
-        M_mesh(mesh), M_bc(bc), M_func(func), M_ssOn(data.getSourceSinkOn()), M_quadrature(nullptr), M_solver(nullptr) {};
+    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data);
 
     //! @name Get Methods
     //@{
@@ -85,6 +84,12 @@ public:
      * @return a constant reference to the Solver
      */
     const Solver & getSolver() const { return *M_solver; }
+    
+    //! Get the solver
+    /*!
+     * @return a reference to the Solver
+     */
+    Solver & getSolver() { return *M_solver; }
     //@}
 
     //! Assemble method
@@ -118,5 +123,12 @@ protected:
     //! Vector b from the linear system Ax=b
     Vector M_b;
 };
+
+template <class Solver, class QRMatrix, class QRFracture>
+Problem< Solver, QRMatrix, QRFracture >::Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
+    M_mesh(mesh), M_bc(bc), M_func(func), M_ssOn(data.getSourceSinkOn()), M_quadrature(nullptr), M_solver(nullptr)
+{
+	M_solver.reset( new Solver() );
+}
 
 #endif /* PROBLEM_HPP_ */

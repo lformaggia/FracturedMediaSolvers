@@ -261,7 +261,8 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::assemble()
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::solve()
 {
-	this->M_solver.reset( new Solver(this->M_A,this->M_b) );
+	this->M_solver->setA(this->M_A);
+	this->M_solver->setb(this->M_b);
 	this->M_solver->solve();
 
 	M_x = &(this->M_solver->getSolution());
@@ -307,7 +308,8 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::assemble()
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::solve()
 {
-	this->M_solver.reset( new Solver(this->M_A,this->M_b) );
+	this->M_solver->setA(this->M_A);
+	this->M_solver->setb(this->M_b);
 	this->M_solver->solve();
 
 	M_x = &(this->M_solver->getSolution());
