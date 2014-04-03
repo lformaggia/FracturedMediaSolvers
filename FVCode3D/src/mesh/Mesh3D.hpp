@@ -575,6 +575,9 @@ public:
 	 */
 	void updateCellsWithNeighbors();
 
+	//! Fill a map that associates to node ids of each facet the facet id
+	void buildNodesToFacetMap();
+
 	//! Find the facet id given the list of the nodes
 	/*!
 	 * @param nodes vector of nodes that define the facet
@@ -630,6 +633,8 @@ protected:
 	std::map<UInt,Facet3D> M_facets;
 	//! The map storing all the cells of the mesh
 	std::map<UInt,Cell3D> M_cells;
+	//! The map that associates to a vector of node ids a facet id
+	std::map<std::vector<UInt>, UInt> M_nodesToFacet;
 
 };
 

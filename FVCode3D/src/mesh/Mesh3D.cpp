@@ -289,31 +289,58 @@ void Mesh3D::updateCellsWithNeighbors()
 	}
 }
 
-UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
+void Mesh3D::buildNodesToFacetMap()
 {
-	std::set<UInt> nodesIds(nodes.begin(), nodes.end());
-	std::set<UInt> facetsIds;
 	std::map<UInt,Facet3D>::const_iterator itF;
-	std::set<UInt>::const_iterator it, it2;
-	bool found = true;
-	UInt idFacet = 0;
+	std::vector<UInt> nodes;
 
 	for(itF = M_facets.begin(); itF != M_facets.end(); ++itF)
 	{
-		found = true;
-		idFacet = itF->first;
-		facetsIds.clear();
-		facetsIds.insert(itF->second.getVertexesVector().begin(), itF->second.getVertexesVector().end());
-		for(it = facetsIds.begin(), it2 = nodesIds.begin(); it != facetsIds.end(); ++it, ++it2)
+		nodes = itF->second.getVertexesVector();
+		sort(nodes.begin(), nodes.end());
+		M_nodesToFacet.insert( std::pair<std::vector<UInt>, UInt>(nodes, itF->first) );
+	}
+}
+
+UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
+{
+	bool found = true;
+	UInt idFacet = 0;
+
+	if(M_nodesToFacet.empty())
+	{
+		std::set<UInt> nodesIds(nodes.begin(), nodes.end());
+		std::set<UInt> facetsIds;
+		std::map<UInt,Facet3D>::const_iterator itF;
+		std::set<UInt>::const_iterator it, it2;
+
+		for(itF = M_facets.begin(); itF != M_facets.end(); ++itF)
 		{
-			if( *it != *it2 )
+			found = true;
+			idFacet = itF->first;
+			facetsIds.clear();
+			facetsIds.insert(itF->second.getVertexesVector().begin(), itF->second.getVertexesVector().end());
+			for(it = facetsIds.begin(), it2 = nodesIds.begin(); it != facetsIds.end(); ++it, ++it2)
 			{
-				found = false;
-				break;
+				if( *it != *it2 )
+				{
+					found = false;
+					break;
+				}
 			}
+			if(found)
+				break;
 		}
-		if(found)
-			break;
+	}
+	else
+	{
+		std::map<std::vector<UInt>, UInt>::const_iterator itM;
+		sort(nodes.begin(), nodes.end());
+		itM = M_nodesToFacet.find(nodes);
+		if(itM == M_nodesToFacet.end())
+			found = false;
+		else
+			idFacet = itM->second;
 	}
 	
 	if(!found)
