@@ -151,16 +151,33 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Build problem..." << std::flush;
-	Pb * darcy;
+	Pb * darcy(nullptr);
 	if(data.getProblemType() == Data::ProblemType::steady)
 		darcy = new DarcyPb(myrmesh, BC, SS, data);
 	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
 		darcy = new PseudoDarcyPb(myrmesh, BC, SS, data);
 	std::cout << " done." << std::endl << std::endl;
 
+	if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+	{
+		dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setMaxIter(1000);
+		dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
+		std::cout<<"Iterativo"<<std::endl;
+	}
+	else
+		std::cout<<"Diretto"<<std::endl;
+	
 	std::cout << "Solve problem..." << std::flush;
 	if(data.getProblemType() == Data::ProblemType::steady)
+	{
 		darcy->assembleAndSolve();
+		if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+		{
+			std::cout << std::endl;
+			std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
+			std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
+		}
+	}
 	else if(data.getProblemType() == Data::ProblemType::pseudoSteady)
 	{
 		dynamic_cast<PseudoDarcyPb *>(darcy)->initialize();
@@ -186,6 +203,15 @@ int main(int argc, char * argv[])
 		{
 			std::cout << " ... at t = " << t << " ..." << std::endl;
 			darcy->assembleAndSolve();
+
+			if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+			{
+				std::cout << std::endl;
+				std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
+				std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
+				std::cout << std::endl;
+			}
+
 			ss.str(std::string());
 			std::cout << " Export Solution" << std::flush;
 			ss << data.getOutputDir() + data.getOutputFile() + "_solution_";
