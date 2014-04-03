@@ -115,6 +115,42 @@ public:
 	 */
 	const std::string getOutputFile() const { return M_outputFile; }
 
+	//! Get the domain dimension along x-axis
+	/*!
+	 * @return the domain dimension along x-axis
+	 */
+	Real getLx() const { return M_Lx; }
+
+	//! Get the domain dimension along y-axis
+	/*!
+	 * @return the domain dimension along y-axis
+	 */
+	Real getLy() const { return M_Ly; }
+
+	//! Get the domain dimension along z-axis
+	/*!
+	 * @return the domain dimension along z-axis
+	 */
+	Real getLz() const { return M_Lz; }
+
+	//! Get the number of cells along x-axis
+	/*!
+	 * @return the number of cells along x-axis
+	 */
+	Real getNx() const { return M_Nx; }
+
+	//! Get the number of cells along y-axis
+	/*!
+	 * @return the number of cells along y-axis
+	 */
+	Real getNy() const { return M_Ny; }
+
+	//! Get the number of cells along z-axis
+	/*!
+	 * @return the number of cells along z-axis
+	 */
+	Real getNz() const { return M_Nz; }
+
 	//! Get the problem type
 	/*!
 	 * @return the type of the problem
@@ -248,6 +284,42 @@ public:
 	 */
 	void setOutputFile(const std::string file) { M_outputFile = file; }
 
+	//! Set the domain dimension along x-axis
+	/*!
+	 * @param the domain dimension along x-axis
+	 */
+	void setLx(const Real Lx) { M_Lx = Lx; }
+
+	//! Set the domain dimension along y-axis
+	/*!
+	 * @param the domain dimension along y-axis
+	 */
+	void setLy(const Real Ly) { M_Ly = Ly; }
+
+	//! Set the domain dimension along z-axis
+	/*!
+	 * @param the domain dimension along z-axis
+	 */
+	void setLz(const Real Lz) { M_Lz = Lz; }
+
+	//! Set the number of cells along x-axis
+	/*!
+	 * @param the number of cells along x-axis
+	 */
+	void setNx(const Real Nx) { M_Nx = Nx; }
+
+	//! Set the number of cells along y-axis
+	/*!
+	 * @param the number of cells along y-axis
+	 */
+	void setNy(const Real Ny) { M_Ny = Ny; }
+
+	//! Set the number of cells along z-axis
+	/*!
+	 * @param the number of cells along z-axis
+	 */
+	void setNz(const Real Nz) { M_Nz = Nz; }
+
 	//! Set the problem type
 	/*!
 	 * @param type the type of the problem
@@ -363,6 +435,18 @@ protected:
 	std::string M_outputDir;
 	//! Output file
 	std::string M_outputFile;
+	//! Domain dimension along x-axis
+	Real M_Lx;
+	//! Domain dimension along y-axis
+	Real M_Ly;
+	//! Domain dimension along z-axis
+	Real M_Lz;
+	//! Number of cells along x-axis
+	UInt M_Nx;
+	//! Number of cells along y-axis
+	UInt M_Ny;
+	//! Number of cells along z-axis
+	UInt M_Nz;
 	//! Type of the problem
 	ProblemType M_problemType;
 	//! Enable or disable fractures

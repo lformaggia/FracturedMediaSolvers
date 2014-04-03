@@ -7,8 +7,10 @@
 
 Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
-	M_outputDir("./results/"), M_outputFile("sol"), M_problemType(steady),
-	M_fracturesOn(true), M_ssOn(Both), M_permMatrix(0.), M_poroMatrix(0.),
+	M_outputDir("./results/"), M_outputFile("sol"),
+	M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
+	M_problemType(steady), M_fracturesOn(true), M_ssOn(Both),
+	M_permMatrix(0.), M_poroMatrix(0.),
 	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
 	M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
 	M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
@@ -29,6 +31,13 @@ Data::Data(const std::string dataFileName)
 
 	M_outputDir = dataFile("output/output_dir", "./results/");
 	M_outputFile = dataFile("output/output_file", "sol");
+
+	M_Lx = dataFile("domain/Lx", 2.);
+	M_Ly = dataFile("domain/Ly", 1.);
+	M_Lz = dataFile("domain/Lz", 1.);
+	M_Nx = dataFile("domain/Nx", 10);
+	M_Ny = dataFile("domain/Ny", 5);
+	M_Nz = dataFile("domain/Nz", 5);
 
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
