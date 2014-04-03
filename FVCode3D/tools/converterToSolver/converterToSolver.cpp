@@ -65,8 +65,8 @@ int main(int argc, char * argv[])
 
 	if(data.getMeshType() == Data::MeshFormatType::Medit)
 	{
-		propMap.setPropertiesOnMatrix(mesh, 0.25, 10);
-		propMap.setPropertiesOnFractures(mesh, 0.1, 1, 100000);
+		propMap.setPropertiesOnMatrix(mesh, data.getMatrixPorosity(), data.getMatrixPermeability());
+		propMap.setPropertiesOnFractures(mesh, data.getFractureAperture(), data.getFracturePorosity(), data.getFracturePermeability());
 	}
 
 	std::cout << "Save as solver format..." << std::flush;
