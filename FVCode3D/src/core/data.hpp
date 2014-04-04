@@ -169,6 +169,18 @@ public:
      */
     SourceSinkOn getSourceSinkOn() const { return M_ssOn; }
 
+	//! Test if the pressure value inside the fractures is fixed or not
+	/*!
+	 * @return if true fix a pressure value inside the fractures
+	 */
+	bool pressuresInFractures() const { return M_setFracturesPressure; }
+
+	//! Get the pressure inside the fracture
+	/*!
+	 * @return the pressure inside the fracture
+	 */
+	Real getPressuresInFractures() const { return M_fracturesPressure; }
+
 	//! Get the permeability in the porous medium
 	/*!
 	 * @return the permeability in the porous medium
@@ -338,33 +350,45 @@ public:
      */
     void setSourceSinkOn(const SourceSinkOn ssOn) { M_ssOn = ssOn; }
 
+	//! Enable or disable the pressure value inside the fractures
+	/*!
+	 * @param fracPress if true fix a pressure value inside the fractures
+	 */
+	void pressuresInFractures(bool fracPress) { M_setFracturesPressure = fracPress; }
+
+	//! Set the pressure inside the fracture
+	/*!
+	 * @param press the pressure inside the fracture
+	 */
+	void setPressuresInFractures(const Real press) { M_fracturesPressure = press; }
+
 	//! Set the permeability in the porous medium
 	/*!
-	 * @param the permeability in the porous medium
+	 * @param perm the permeability in the porous medium
 	 */
 	void setMatrixPermeability(const Real perm) { M_permMatrix = perm; }
 
 	//! Set the porosity in the porous medium
 	/*!
-	 * @param the porosity in the porous medium
+	 * @param poro the porosity in the porous medium
 	 */
 	void setMatrixPorosity(const Real poro) { M_poroMatrix = poro; }
 
 	//! Set the permeability in the fracture
 	/*!
-	 * @param the permeability in the fracture
+	 * @param perm the permeability in the fracture
 	 */
 	void setFracturePermeability(const Real perm) { M_permFrac = perm; }
 
 	//! Set the porosity in the fracture
 	/*!
-	 * @param the porosity in the fracture
+	 * @param poro the porosity in the fracture
 	 */
 	void setFracturePorosity(const Real poro) { M_poroFrac = poro; }
 
 	//! Set the aperture in the fracture
 	/*!
-	 * @param the aperture in the fracture
+	 * @param aper the aperture in the fracture
 	 */
 	void setFractureAperture(const Real aper) { M_aperFrac = aper; }
 
@@ -453,6 +477,10 @@ protected:
 	bool M_fracturesOn;
 	//! Where the source/sink term is applied
 	SourceSinkOn M_ssOn;
+	//! If true fix the pressure inside the fractures
+	bool M_setFracturesPressure;
+	//! Pressure value inside the fractures
+	Real M_fracturesPressure;
 	//! Permeability in the porous medium
 	Real M_permMatrix;
 	//! Porosity in the porous medium

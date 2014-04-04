@@ -10,6 +10,7 @@ Data::Data():
 	M_outputDir("./results/"), M_outputFile("sol"),
 	M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
 	M_problemType(steady), M_fracturesOn(true), M_ssOn(Both),
+	M_setFracturesPressure(false), M_fracturesPressure(0.),
 	M_permMatrix(0.), M_poroMatrix(0.),
 	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
 	M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
@@ -42,6 +43,9 @@ Data::Data(const std::string dataFileName)
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
 	M_ssOn = parserSourceSinkOn.parse( dataFile("problem/sourceOn", "all") );
+
+	M_setFracturesPressure = static_cast<bool>(dataFile("problem/fracPressOn", 0));;
+	M_fracturesPressure = dataFile("problem/fracPress", 0.);
 
 	M_permMatrix = dataFile("problem/perm_matrix", 1e2);
 	M_poroMatrix = dataFile("problem/poro_matrix", 0.25);
@@ -146,6 +150,13 @@ void Data::showMe( std::ostream & output ) const
 		default:
 			exit(0);
 			break;
+	}
+
+	output << "Fix pressure in fractures: " << M_setFracturesPressure << std::endl;
+
+	if(M_setFracturesPressure)
+	{
+		output << "Fractures pressure: " << M_fracturesPressure << std::endl;
 	}
 
 	if(M_problemType == pseudoSteady)
