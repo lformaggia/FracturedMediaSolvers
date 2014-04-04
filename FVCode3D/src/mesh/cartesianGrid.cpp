@@ -117,6 +117,8 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 	std::cout<<"Cells"<<std::endl;
 	count = 0;
 
+	M_mesh.buildNodesToFacetMap();
+
 	// create cells
 	for(k=0; k < Nz; ++k)
 	{

@@ -129,6 +129,8 @@ void ImporterMedit::import(bool fracturesOn)
 	prop.setProperties(1., 1., 1.);
 	M_properties.setZone(maxZone+1, prop);
 	
+	M_mesh.buildNodesToFacetMap();
+
 	tmp.resize(4);
 	for(i=0; i < nCells; ++i)
 	{		
