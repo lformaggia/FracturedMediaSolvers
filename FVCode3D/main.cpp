@@ -163,10 +163,7 @@ int main(int argc, char * argv[])
 	{
 		dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setMaxIter(1000);
 		dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
-		std::cout<<"Iterativo"<<std::endl;
 	}
-	else
-		std::cout<<"Diretto"<<std::endl;
 	
 	std::cout << "Solve problem..." << std::flush;
 	if(data.getProblemType() == Data::ProblemType::steady)
