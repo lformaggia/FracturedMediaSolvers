@@ -19,6 +19,7 @@
 #include "problem/problem.hpp"
 #include "problem/darcySteady.hpp"
 #include "problem/darcyPseudoSteady.hpp"
+#include "assembler/fixPressureDofs.hpp"
 #include "functions.hpp"
 
 typedef Problem<EigenCholesky, CentroidQuadrature, CentroidQuadrature> Pb;
@@ -168,7 +169,13 @@ int main(int argc, char * argv[])
 	std::cout << "Solve problem..." << std::flush;
 	if(data.getProblemType() == Data::ProblemType::steady)
 	{
-		darcy->assembleAndSolve();
+		darcy->assemble();
+		if(data.pressuresInFractures())
+		{
+			FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
+			fpd.apply(data.getPressuresInFractures());
+		}
+		darcy->solve();
 		if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
 		{
 			std::cout << std::endl;
@@ -200,7 +207,13 @@ int main(int argc, char * argv[])
 		for(Real t = data.getInitialTime() + data.getTimeStep() ; t <= data.getEndTime(); t+=data.getTimeStep(), ++iter)
 		{
 			std::cout << " ... at t = " << t << " ..." << std::endl;
-			darcy->assembleAndSolve();
+			darcy->assemble();
+			if(data.pressuresInFractures())
+			{
+				FixPressureDofs<PseudoDarcyPb> fpd(dynamic_cast<PseudoDarcyPb *>(darcy));
+				fpd.apply(data.getPressuresInFractures());
+			}
+			darcy->solve();
 
 			if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
 			{
