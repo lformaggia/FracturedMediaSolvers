@@ -229,9 +229,11 @@ void CartesianGrid::addFractures(const std::map<UInt,UInt> & facetIdToZone)
 	std::map<UInt, Geometry::Fracture3D>::iterator itF;
 	Geometry::Point3D normal, center, centerFace;
 
-	// TODO setto a ciascuna faccia il zone code
+	for(std::map<UInt,UInt>::const_iterator it = facetIdToZone.begin(); it!= facetIdToZone.end(); ++it)
+		if(facetsRef.find(it->first) != facetsRef.end())
+			facetsRef[it->first].setZoneCode(it->second);
 
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = facetsRef.begin(); it != facetsRef.end(); ++it)
 	{
 		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
 		{
