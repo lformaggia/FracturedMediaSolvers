@@ -50,11 +50,22 @@ int main(int argc, char * argv[])
 	cart.extractBC();
 	std::cout << " done." << std::endl;
 
-	//// create here the map "facetIdToZone"
-	// std::map<UInt,UInt> facetIdToZone;
-	// ...
-	//// then call "addFractures()"
-	// cart.addFractures(facetIdToZone)
+	// create here the map "facetIdToZone"
+	// Don't use "1" as zone code, it is reserved to the matrix!
+	// Example:
+	std::map<UInt,UInt> facetIdToZone;
+	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
+	{
+		Geometry::Point3D centroid = it->second.getCentroid();
+		if( centroid[0] > 0 && centroid[0] < 2 &&
+			centroid[1] > 0 && centroid[1] < 1 &&
+			centroid[2] > 0 && centroid[2] < 1)
+		{
+			facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
+		}
+	}
+	// then call "addFractures()"
+	cart.addFractures(facetIdToZone);
 
 	std::cout << "Compute facet ids of the fractures..." << std::flush;
 	mesh.updateFacetsWithFractures();
