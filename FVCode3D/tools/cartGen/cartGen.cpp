@@ -57,11 +57,40 @@ int main(int argc, char * argv[])
 	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
 		Geometry::Point3D centroid = it->second.getCentroid();
-		if( centroid[0] > 0 && centroid[0] < 2 &&
-			centroid[1] > 0 && centroid[1] < 1 &&
-			centroid[2] > 0 && centroid[2] < 1)
+		// along x
+		for(Real thresh = 0.1; thresh<2 ; thresh+=0.1)
 		{
-			facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
+			if(centroid[0] != 1.)
+			{
+				if( centroid[0] > thresh-0.01 && centroid[0] < thresh + 0.01 &&
+					centroid[1] > 0.06 && centroid[1] < 0.94 &&
+					centroid[2] > 0.06 && centroid[2] < 0.94)
+				{
+					facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
+				}
+			}
+		}
+		// along y
+		for(Real thresh = 0.1; thresh<1; thresh+=0.1)
+		{
+			Geometry::Point3D centroid = it->second.getCentroid();
+			if( centroid[0] > 0.06 && centroid[0] < 1.94 &&
+				centroid[1] > thresh-0.01 && centroid[1] < thresh + 0.01 &&
+				centroid[2] > 0.06 && centroid[2] < 0.94)
+			{
+				facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
+			}
+		}
+		// along z
+		for(Real thresh = 0.1; thresh<1; thresh+=0.1)
+		{
+			Geometry::Point3D centroid = it->second.getCentroid();
+			if( centroid[0] > 0.06 && centroid[0] < 1.94 &&
+				centroid[1] > 0.06 && centroid[1] < 0.94 &&
+				centroid[2] > thresh-0.01 && centroid[2] < thresh + 0.01)
+			{
+				facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
+			}
 		}
 	}
 	// then call "addFractures()"

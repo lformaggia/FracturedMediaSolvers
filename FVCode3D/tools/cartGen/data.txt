@@ -12,14 +12,14 @@ output_file	= cartesian
 Lx	= 2.
 Ly	= 1.
 Lz	= 1.
-Nx	= 10
-Ny	= 5
-Nz	= 5
+Nx	= 20
+Ny	= 10
+Nz	= 10
 
 ## problem parameter
 [problem]
-perm_matrix	= 1e2
+perm_matrix	= 1
 poro_matrix	= 0.25
 perm_frac	= 1e5	
 poro_frac	= 1.
-aper_frac	= 0.1
+aper_frac	= 1e-3
