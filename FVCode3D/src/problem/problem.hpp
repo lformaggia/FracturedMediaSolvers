@@ -90,6 +90,18 @@ public:
      * @return a reference to the Solver
      */
     Solver & getSolver() { return *M_solver; }
+
+    //! Get the matrix A
+    /*!
+     * @return the matrix A
+     */
+    SpMat & getA() { return M_A; }
+
+    //! Get the RHS
+    /*!
+     * @return the vector b
+     */
+    Vector & getb() { return M_b; }
     //@}
 
     //! Assemble method
