@@ -54,13 +54,14 @@ int main(int argc, char * argv[])
 	// Don't use "1" as zone code, it is reserved to the matrix!
 	// Example:
 	std::map<UInt,UInt> facetIdToZone;
+	/*
 	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
 		Geometry::Point3D centroid = it->second.getCentroid();
 		// along x
 		for(Real thresh = 0.1; thresh<2 ; thresh+=0.1)
 		{
-			if(centroid[0] != 1.)
+			if(centroid[0] > 1. + 0.05 || centroid[0] < 1. - 0.05)
 			{
 				if( centroid[0] > thresh-0.01 && centroid[0] < thresh + 0.01 &&
 					centroid[1] > 0.06 && centroid[1] < 0.94 &&
@@ -73,7 +74,6 @@ int main(int argc, char * argv[])
 		// along y
 		for(Real thresh = 0.1; thresh<1; thresh+=0.1)
 		{
-			Geometry::Point3D centroid = it->second.getCentroid();
 			if( centroid[0] > 0.06 && centroid[0] < 1.94 &&
 				centroid[1] > thresh-0.01 && centroid[1] < thresh + 0.01 &&
 				centroid[2] > 0.06 && centroid[2] < 0.94)
@@ -84,10 +84,23 @@ int main(int argc, char * argv[])
 		// along z
 		for(Real thresh = 0.1; thresh<1; thresh+=0.1)
 		{
-			Geometry::Point3D centroid = it->second.getCentroid();
 			if( centroid[0] > 0.06 && centroid[0] < 1.94 &&
 				centroid[1] > 0.06 && centroid[1] < 0.94 &&
 				centroid[2] > thresh-0.01 && centroid[2] < thresh + 0.01)
+			{
+				facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
+			}
+		}
+	}*/
+
+	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
+	{
+		Geometry::Point3D centroid = it->second.getCentroid();
+		// along x
+		for(Real thresh = 0.1; thresh<2 ; thresh+=0.1)
+		{
+			if( centroid[0] >= 0.5 && centroid[0] <= 1.5 &&
+				centroid[2] > 0.5 - 0.05 && centroid[2] < 0.5 + 0.05)
 			{
 				facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
 			}

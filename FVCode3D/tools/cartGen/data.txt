@@ -12,9 +12,9 @@ output_file	= cartesian
 Lx	= 2.
 Ly	= 1.
 Lz	= 1.
-Nx	= 20
-Ny	= 10
-Nz	= 10
+Nx	= 26
+Ny	= 13
+Nz	= 13
 
 ## problem parameter
 [problem]
