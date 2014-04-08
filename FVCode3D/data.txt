@@ -5,13 +5,13 @@
 ## input
 [mesh]
 mesh_dir	= ./data/
-mesh_file	= cartesian.fvg
-mesh_type	= .fvg		# .grid or .fvg or .mesh
+mesh_file	= grid2.grid
+mesh_type	= .grid		# .grid or .fvg or .mesh
 
 ## output
 [output]
 output_dir	= ./results/
-output_file	= cartesian
+output_file	= sol
 
 ## problem parameter
 [problem]
@@ -19,7 +19,7 @@ type		= steady	# steady or pseudoSteady
 fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
 sourceOn	= all		# all, matrix, fractures
 fracPressOn	= 0		# 1 set pressure inside fracture, 0 otherwise
-fracPress	= 0.
+fracPress	= 1.
 initial_time	= 0.
 end_time	= 10.e6
 time_step	= 1.e5
@@ -31,7 +31,7 @@ compressibility	= 1.
 
 ## boundary conditions
 [bc]
-theta		= 0.
+theta		= 45.
 
 ## Other
 [miscellaneous]

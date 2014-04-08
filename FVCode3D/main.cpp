@@ -22,9 +22,9 @@
 #include "assembler/fixPressureDofs.hpp"
 #include "functions.hpp"
 
-typedef Problem<EigenCholesky, CentroidQuadrature, CentroidQuadrature> Pb;
-typedef DarcySteady<EigenCholesky, CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<EigenCholesky, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
+typedef Problem<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> Pb;
+typedef DarcySteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> DarcyPb;
+typedef DarcyPseudoSteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -106,6 +106,7 @@ int main(int argc, char * argv[])
 	exporter.exportMeshWithFractures(mesh, data.getOutputDir() + data.getOutputFile() + "_mesh_fracture.vtu");
 	exporter.exportWithProperties(mesh, propMap, data.getOutputDir() + data.getOutputFile() + "_prop.vtu");
 	exporter.exportWireframe(mesh, data.getOutputDir() + data.getOutputFile() + "_wire.vtu");
+	exporter.exportTetrahedralMesh(mesh, data.getOutputDir() + data.getOutputFile() + "_tet.vtu");
 //	if(data.getMeshType() == Data::MeshFormatType::TPFA)
 //		saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + "_new.fvg", mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
@@ -114,12 +115,12 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Neumann, fZero );
-	BoundaryConditions::BorderBC frontBC(2, Neumann, fZero );
-	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fOne );
+	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
+	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fZero );
 	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fZero );
-	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
+	BoundaryConditions::BorderBC upBC	(5, Dirichlet, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Dirichlet, fZero );
 
 	std::vector<BoundaryConditions::BorderBC> borders;
 
