@@ -137,7 +137,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
         return;
     }
 
-    std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
+    std::cout << std::endl << " Exporting Tetrahedral Mesh3D in Vtu format... " << std::endl;
 
     const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
