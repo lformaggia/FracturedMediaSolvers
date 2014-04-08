@@ -26,6 +26,13 @@ public:
      */
     virtual void exportMesh(const Mesh3D & mesh, const std::string filename);
 
+    //! Export a tetrahedral mesh (only cells)
+    /*!
+     * @param mesh reference of a Geometry::Mesh3D
+     * @param filename name of the file
+     */
+    virtual void exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename);
+
     //! Export the fracture facets
     /*!
      * @param mesh reference of a Geometry::Mesh3D

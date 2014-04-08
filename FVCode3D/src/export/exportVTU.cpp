@@ -121,6 +121,90 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     filestr.close();
 }
 
+void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename)
+{
+    std::fstream filestr;
+
+    filestr.open (filename.c_str(), std::ios_base::out);
+
+    if (filestr.is_open())
+    {
+        std::cout << std::endl << " File: " << filename << ", successfully opened";
+    }
+    else
+    {
+        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
+
+    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+    UInt nPoints = nodes.size();
+    UInt nCells = cells.size();
+    UInt offsets = 0;
+
+    // Header
+    filestr << "<?xml version=\"1.0\"?>" << std::endl;
+    filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+    filestr << "\t<UnstructuredGrid>" << std::endl;
+    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nCells << "\">" << std::endl;
+
+    // CellData
+    filestr << "\t\t\t<CellData Scalars=\"cellID\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"cellID\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(0);
+    for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+        filestr << it->first << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</CellData>" << std::endl;
+
+    filestr << std::scientific << std::setprecision(10);
+
+    // Points
+    filestr << "\t\t\t<Points>" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+        filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Points>" << std::endl;
+
+    // Cells
+    filestr << "\t\t\t<Cells>" << std::endl;
+    //  Connectivity
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+    for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+    {
+        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+            filestr << *jt << " ";
+        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Offsets
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+    for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
+    {
+        offsets += it->second.vertexesNumber();
+        filestr << offsets << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Types
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+    for( UInt i=0; i < nCells ; ++i )
+        filestr << "10" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Cells>" << std::endl;
+
+    filestr << "\t\t</Piece>" << std::endl;
+    filestr << "\t</UnstructuredGrid>" << std::endl;
+    filestr << "\t</VTKFile>" << std::endl;
+
+    filestr.close();
+}
+
 void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename)
 {
     std::fstream filestr;
