@@ -20,7 +20,6 @@ int main(int argc, char * argv[])
 
 	std::cout << "Read Data..." << std::flush;
 	Data data(dataFileName);
-	data.setMeshType(Data::MeshFormatType::TPFA);
 	data.fractureOn(true);
 	data.verbose(true);
 	std::cout << " done." << std::endl;
