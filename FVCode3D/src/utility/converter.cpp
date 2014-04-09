@@ -23,7 +23,7 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 		return;
 	}
 
-	std::cout << std::endl << " Converting from TPFA to solver format... " << std::endl;
+	std::cout << std::endl << " Save as solver format... " << std::endl;
 
 	UInt nNodes, nFacets, nCells, nFractures;
 	UInt nodesFacet, facetsCell, facetsFracture;
@@ -123,6 +123,78 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 		for(j=0; j < facetsFracture-1; ++j)
 			file << FN.getFracture(i).getFractureFacetsId()[j] << " ";
 		file << FN.getFracture(i).getFractureFacetsId()[facetsFracture-1] << std::endl;
+	}
+
+	file.close();
+}
+
+void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh)
+{
+	std::fstream file;
+
+	file.open (filename.c_str(), std::ios_base::out);
+
+	if (file.is_open())
+	{
+		std::cout << std::endl << " File: " << filename << ", successfully opened";
+	}
+	else
+	{
+		std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+		return;
+	}
+
+	std::cout << std::endl << " Save as Medit format... " << std::endl;
+
+	UInt nNodes, nFacets, nCells;
+	UInt i, zone;
+
+	std::vector<Geometry::Point3D> & nodesRef = mesh.getNodesVector();
+	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+
+	nNodes = nodesRef.size();
+	nFacets = facetsRef.size();
+	nCells = cellsRef.size();
+
+	file << "MeshVersionFormatted 1" << std::endl;
+	file << std::endl;
+	file << "Dimension" << std::endl << "3" << std::endl;
+	file << std::endl;
+	file << "Vertices" << std::endl;
+	file << nNodes << std::endl;
+
+	for(i=0; i<nNodes; ++i)
+	{
+		file << nodesRef[i].x() << "  ";
+		file << nodesRef[i].y() << "  ";
+		file << nodesRef[i].z() << "  ";
+		file << "0" << std::endl;
+	}
+
+	file << std::endl;
+	file << "Triangles" << std::endl;
+	file << nFacets << std::endl;
+	for(i=0; i<nFacets; ++i)
+	{
+		file << facetsRef.at(i).getVertexesVector()[0] + 1 << "  ";
+		file << facetsRef.at(i).getVertexesVector()[1] + 1 << "  ";
+		file << facetsRef.at(i).getVertexesVector()[2] + 1 << "  ";
+		zone = facetsRef.at(i).isBorderFacet() ? 1 : 0 ;
+		zone = facetsRef.at(i).isFracture() ? 1001 : zone ;
+		file << zone << std::endl;
+	}
+
+	file << std::endl;
+	file << "Tetrahedra" << std::endl;
+	file << nCells << std::endl;
+	for(i=0; i<nCells; ++i)
+	{
+		file << cellsRef.at(i).getVertexesVector()[0] + 1 << "  ";
+		file << cellsRef.at(i).getVertexesVector()[1] + 1 << "  ";
+		file << cellsRef.at(i).getVertexesVector()[2] + 1 << "  ";
+		file << cellsRef.at(i).getVertexesVector()[3] + 1 << "  ";
+		file << "0" << std::endl;
 	}
 
 	file.close();

@@ -11,7 +11,7 @@
 class Mesh3D;
 class PropertiesMap;
 
-//! Save a file as a file for solver format (.fvg)
+//! Save a file in solver format (.fvg)
 /*!
  * Save mesh, properties and fractures.
  * @param filename name of the file
@@ -20,5 +20,14 @@ class PropertiesMap;
  * @pre import the file
  */
 void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties);
+
+//! Save a file in Medit format (.mesh)
+/*!
+ * Save mesh and fractures(as a suitable label).
+ * @param filename name of the file
+ * @param mesh reference to a Geometry::Mesh3D
+ * @pre import the file
+ */
+void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh);
 
 #endif /* CONVERTER_HPP_ */
