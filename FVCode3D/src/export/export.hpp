@@ -61,6 +61,13 @@ public:
      */
     virtual void exportMesh(const Mesh3D & mesh, const std::string filename) = 0;
 
+    //! Export a tetrahedral mesh (only cells)
+    /*!
+     * @param mesh reference of a Geometry::Mesh3D
+     * @param filename name of the file
+     */
+    virtual void exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename) = 0;
+
     //! Export the fracture facets
     /*!
      * @param mesh reference of a Geometry::Mesh3D
@@ -124,12 +131,11 @@ public:
      */
     virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename) = 0;
 
-    //! Export the a specific property on cells and fracture facets
+    //! Export the solution on fracture facets
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
-     * @param propertiesType flag used to select which properties to export
-     * @param property pointer to a generic property
+     * @param sol Eigen vector that contain the solution (cells + fracture facets)
      */
     virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
 
