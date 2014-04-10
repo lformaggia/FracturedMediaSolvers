@@ -68,8 +68,8 @@ public:
 	 */
 	DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
 		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func, data),
-		M_tInit(data.getInitialTime()), M_tEnd(data.getEndTime()), M_tStep(data.getTimeStep()),
-		M_x(nullptr), M_M(nullptr), M_nStep(0) {};
+		M_tStep(data.getTimeStep()),
+		M_x(nullptr), M_M(nullptr) {};
 
 	//! Get the previous solution
 	/*!
@@ -105,10 +105,6 @@ public:
 
 protected:
 
-	//! Initial time
-	Real M_tInit;
-	//! Final time
-	Real M_tEnd;
 	//! Time step
 	Real M_tStep;
 
@@ -123,9 +119,6 @@ protected:
 	std::unique_ptr<Darcy::MassMatrix> M_M;
 	//! Pointer to the stiffness matrix
 	std::unique_ptr<Darcy::StiffMatrix> M_S;
-
-	//! Number of time step
-	UInt M_nStep;
 };
 
 //! Specialization class that defines the pseudo-steady-state Darcy problem for the BDF2 time scheme
@@ -156,8 +149,8 @@ public:
 	 */
 	DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const Data & data):
 		Problem<Solver, QRMatrix, QRFracture>(mesh, bc, f, data),
-		M_tInit(data.getInitialTime()), M_tEnd(data.getEndTime()), M_tStep(data.getTimeStep()),
-		M_x(nullptr), M_M(nullptr), M_nStep(0) {};
+		M_tStep(data.getTimeStep()),
+		M_x(nullptr), M_M(nullptr) {};
 
 	//! Get the previous solution
 	/*!
@@ -199,10 +192,6 @@ public:
 
 protected:
 
-	//! Initial time
-	Real M_tInit;
-	//! Final time
-	Real M_tEnd;
 	//! Time step
 	Real M_tStep;
 
@@ -219,9 +208,6 @@ protected:
 	std::unique_ptr<Darcy::MassMatrix> M_M;
 	//! Pointer to the stiffness matrix
 	std::unique_ptr<Darcy::StiffMatrix> M_S;
-
-	//! Number of time step
-	UInt M_nStep;
 };
 
 template <class Solver, class QRMatrix, class QRFracture>
@@ -246,8 +232,6 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::initialize()
 
 	M_xOld = Vector::Constant(M_M->getSize(), 0.);
 	M_x = &M_xOld;
-
-	M_nStep = (M_tEnd - M_tInit) / M_tStep;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
@@ -292,8 +276,6 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::initialize()
 	M_xOldOld = Vector::Constant(M_M->getSize(), 0.);
 	M_xOld = Vector::Constant(M_M->getSize(), 0.);
 	M_x = &M_xOld;
-
-	M_nStep = (M_tEnd - M_tInit) / M_tStep;
 }
 
 template <class Solver, class QRMatrix, class QRFracture>
