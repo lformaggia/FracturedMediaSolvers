@@ -49,6 +49,7 @@ public:
     typedef Geometry::Rigid_Mesh::Cell Cell;
     typedef Geometry::Rigid_Mesh::Facet Facet;
     typedef Geometry::Rigid_Mesh::Fracture_Facet Fracture_Facet;
+    typedef Geometry::Rigid_Mesh::Fracture_Tip Fracture_Tip;
     typedef Geometry::Rigid_Mesh::Fracture_Juncture Fracture_Juncture;
 
     //! Constructor
@@ -95,6 +96,13 @@ public:
      * @param filename name of the file
      */
     virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename) = 0;
+
+    //! Export the fracture tips
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     */
+    virtual void exportFractureTips(const Rigid_Mesh & mesh, const std::string filename) = 0;
 
     //! Export the solution on cells and fracture facets in a single file
     /*!
