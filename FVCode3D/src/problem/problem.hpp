@@ -6,12 +6,12 @@
 #ifndef PROBLEM_HPP_
 #define PROBLEM_HPP_
 
+#include "core/data.hpp"
 #include "core/TypeDefinition.hpp"
 #include "mesh/Rigid_Mesh.hpp"
 #include "boundaryCondition/BC.hpp"
 
 class Quadrature;
-class Data;
 
 //! Class that defines a generic problem
 /*!
@@ -45,7 +45,7 @@ public:
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data);
+    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data);
 
     //! @name Get Methods
     //@{
@@ -84,7 +84,7 @@ public:
      * @return a constant reference to the Solver
      */
     const Solver & getSolver() const { return *M_solver; }
-    
+
     //! Get the solver
     /*!
      * @return a reference to the Solver
@@ -137,10 +137,11 @@ protected:
 };
 
 template <class Solver, class QRMatrix, class QRFracture>
-Problem< Solver, QRMatrix, QRFracture >::Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
-    M_mesh(mesh), M_bc(bc), M_func(func), M_ssOn(data.getSourceSinkOn()), M_quadrature(nullptr), M_solver(nullptr)
+Problem< Solver, QRMatrix, QRFracture >::Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func &
+                                                 func, const DataPtr_Type & data):
+    M_mesh(mesh), M_bc(bc), M_func(func), M_ssOn(data->getSourceSinkOn()), M_quadrature(nullptr), M_solver(nullptr)
 {
-	M_solver.reset( new Solver() );
+    M_solver.reset( new Solver() );
 }
 
 #endif /* PROBLEM_HPP_ */

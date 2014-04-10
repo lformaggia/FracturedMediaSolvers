@@ -6,12 +6,12 @@
 #ifndef DARCYSTEADY_HPP_
 #define DARCYSTEADY_HPP_
 
+#include "core/data.hpp"
 #include "problem/problem.hpp"
 #include "quadrature/Quadrature.hpp"
 #include "solver/solver.hpp"
 #include "assembler/stiffness.hpp"
 
-class Data;
 
 //! Class that defines the steady-state Darcy problem
 /*!
@@ -45,7 +45,7 @@ public:
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const Data & data):
+    DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data):
         Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func, data) {};
 
     //! Assemble method
@@ -75,9 +75,9 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
 
     Vector f(S.getSize());
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
-    	f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+        f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
-    	f += this->M_quadrature->CellIntegrateFractures(this->M_func);
+        f += this->M_quadrature->CellIntegrateFractures(this->M_func);
 
     this->M_A = S.getMatrix();
     this->M_b = S.getBCVector() + f;
@@ -86,8 +86,8 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
 template <class Solver, class QRMatrix, class QRFracture>
 void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
 {
-	this->M_solver->setA(this->M_A);
-	this->M_solver->setb(this->M_b);
+    this->M_solver->setA(this->M_A);
+    this->M_solver->setb(this->M_b);
     this->M_solver->solve();
 }
 
