@@ -64,7 +64,7 @@ void FixPressureDofs<ProblemType>::apply(const Real pressure)
     b.tail( dofFractures ).setConstant( weight * pressure );
 
     for(UInt index = dofPorousMatrix; index < dofTotal; ++index )
-        A.coeffRef( index, index ) = weigth;
+        A.coeffRef( index, index ) = weight;
 
     A.prune(0.);
 }
