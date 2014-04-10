@@ -61,6 +61,13 @@ public:
      */
     virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename);
 
+    //! Export the fracture tips
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     */
+    virtual void exportFractureTips(const Rigid_Mesh & mesh, const std::string filename);
+
     //! Export the solution on cells and fracture facets in a single file
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh

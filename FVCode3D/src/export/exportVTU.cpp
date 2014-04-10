@@ -728,6 +728,98 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr.close();
 }
 
+void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename)
+{
+    std::fstream filestr;
+
+    filestr.open (filename.c_str(), std::ios_base::out);
+
+    if (filestr.is_open())
+    {
+        std::cout << std::endl << " File: " << filename << ", successfully opened";
+    }
+    else
+    {
+        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << std::endl << " Exporting Fracture Tips in Vtu format... " << std::endl;
+
+    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
+    UInt nPoints = 0;
+    UInt nCells = 0;
+    UInt offsets = 0;
+    UInt count = 0;
+
+    std::set<UInt> localPoints;
+    std::set<Fracture_Tip, Geometry::less< std::pair<UInt,UInt> > > fracturesTips;
+    std::map<UInt,UInt> GlobalToLocal;
+
+    // Compute # of fracture tips
+    for (auto fractureFacet_it = fractures.begin(); fractureFacet_it != fractures.end(); ++fractureFacet_it)
+    {
+        for(auto tips_it = fractureFacet_it->getFractureTips().begin(); tips_it != fractureFacet_it->getFractureTips().end(); ++tips_it )
+        {
+            localPoints.insert(tips_it->first);
+            localPoints.insert(tips_it->second);
+            fracturesTips.insert( std::make_pair(tips_it->first,tips_it->second) );
+        }
+    }
+    nCells = fracturesTips.size();
+    nPoints = localPoints.size();
+
+    // Header
+    filestr << "<?xml version=\"1.0\"?>" << std::endl;
+    filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+    filestr << "\t<UnstructuredGrid>" << std::endl;
+    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nCells << "\">" << std::endl;
+
+    filestr << std::scientific << std::setprecision(10);
+
+    // Points
+    filestr << "\t\t\t<Points>" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    for(std::set<UInt>::const_iterator it = localPoints.begin(); it != localPoints.end(); ++it )
+    {
+        GlobalToLocal.insert( std::make_pair(*it, count++) );
+        filestr << nodes[*it].x() << " " << nodes[*it].y() << " " << nodes[*it].z() <<std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Points>" << std::endl;
+
+    // Cells
+    filestr << "\t\t\t<Cells>" << std::endl;
+    //  Connectivity
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+    for(std::set<Fracture_Tip, Geometry::less< std::pair<UInt,UInt> > >::const_iterator it = fracturesTips.begin(); it != fracturesTips.end(); ++it )
+        filestr << GlobalToLocal[it->first] << " " << GlobalToLocal[it->second] << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Offsets
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+    for(std::set<Fracture_Tip, Geometry::less< std::pair<UInt,UInt> > >::const_iterator it = fracturesTips.begin(); it != fracturesTips.end(); ++it )
+    {
+        offsets += 2;
+        filestr << offsets << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Types
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+    for( UInt i=0; i < nCells ; ++i )
+        filestr << "3" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Cells>" << std::endl;
+
+    filestr << "\t\t</Piece>" << std::endl;
+    filestr << "\t</UnstructuredGrid>" << std::endl;
+    filestr << "\t</VTKFile>" << std::endl;
+
+    filestr.close();
+}
+
 void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol)
 {
     std::fstream filestr;
