@@ -103,7 +103,6 @@ public:
    		This class implements the concept of Edge of a Rigid_Mesh.
    	*/
 	class Edge{
-
 	public:
 
 		//! @name Constructor & Destructor
@@ -191,6 +190,8 @@ public:
 		void showMe (std::ostream & out=std::cout) const;
 
 		//@}
+
+		friend Rigid_Mesh;
 
 	protected:
 		//! The pair of the ids of the Edge's Vertexes
@@ -572,20 +573,16 @@ public:
 		This class contains the id of a edge which belongs to the border of the domain.
    	*/
 	class Border_Edge: public Edge_ID {
-	protected:
-		//! Identifier of the border
-		UInt Border_Id;
 	public:
 		//! @name Constructor & Destructor
 		//@{
 
-		//! Constructor for a Border_Edge given an edge id and the relative border id
+		//! Constructor for a Border_Edge given an edge id
 		/*!
 			@param edge_id is the id of an Edge of a Rigid_Mesh
-			@param border_id is the id of the border to which the Edge belongs.
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Border_Edge (const UInt edge_Id, const UInt border_Id, Geometry::Rigid_Mesh * const mesh);
+		Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Edge given a border_edge belonging to another Rigid_Mesh.
 		/*!
@@ -602,16 +599,6 @@ public:
 
 		//! Destructor
 		~Border_Edge () = default;
-		//@}
-
-		//! @name Get Methods
-		//@{
-		//! Get border id (const)
-		/*!
-		 * @return the id of the border of the contained Edge
-		 */
-		UInt getBorderId() const
-			{return Border_Id;}
 		//@}
 	};
 
@@ -877,7 +864,7 @@ public:
 
 		//! Get fracture tips (const)
 		/*!
-		 * @return a map that associate a juncture the ids of the neighboring Fracture_Facet
+		 * @return a set of tips of the current fracture
 		 */
 		const std::set<Fracture_Tip> & getFractureTips () const
 			{return Fracture_Tips;}
@@ -894,9 +881,8 @@ public:
 		std::vector<UInt> Fracture_Ids;
 		//! Map that associates a juncture the ids of the neighboring Fracture_Facet
 		std::map<Fracture_Juncture, std::vector<UInt> > Fracture_Neighbors;
-		//! Map that associates a tip the ids of the neighboring Fracture_Facet
+		//! Set of tips of the current fracture
 		std::set<Fracture_Tip> Fracture_Tips;
-
 	};
 
 public:
@@ -1088,6 +1074,9 @@ protected:
 	 * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Generic_Mesh to the id in the Rigid_Mesh
 	 */	
 	void FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
+
+	//! Builds the vector of edges. It is called by constructor
+	void EdgesVectorBuilder();
 
 	//! Builds the vector of facets. It is called by constructor
 	/*!

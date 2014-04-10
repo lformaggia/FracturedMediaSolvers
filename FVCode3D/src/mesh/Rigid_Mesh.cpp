@@ -25,6 +25,7 @@ Rigid_Mesh::Rigid_Mesh (Generic_Mesh & generic_mesh, const PropertiesMap & prop,
 	FacetsVectorsBuilder(generic_mesh, old_to_new_mapCells, old_to_new_mapFacets);
 	if(M_renumber)
 		AdjustCellFacets(old_to_new_mapFacets);
+	EdgesVectorBuilder();
 }
 
 Rigid_Mesh::Rigid_Mesh(const Rigid_Mesh & mymesh):
@@ -164,7 +165,6 @@ void Rigid_Mesh::FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::
 		else
 			it->Fracture_Tips.insert(static_cast<Fracture_Tip>(m_junct));
 	}
-
 }
 
 void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_mapCells, std::map<UInt,UInt> & old_to_new_mapFacets, Generic_Mesh & generic_mesh)
@@ -249,6 +249,56 @@ void Rigid_Mesh::AdjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFac
 			*(Facets_it) = old_to_new_mapFacets.at(*(Facets_it));
 }
 
+void Rigid_Mesh::EdgesVectorBuilder()
+{
+	UInt edgeId = 0;
+
+	std::map<Generic_Edge, std::vector<UInt> > edgesMap;
+
+	// loop only over the border facet! Modify this if you want to store all edges
+	for(auto it = M_borderFacets.begin(); it != M_borderFacets.end(); ++it)
+	{
+		auto vertex_it  = it->getFacet().getVertexesIds().begin();
+		auto vertex_it2 = vertex_it;
+		++vertex_it2;
+
+		for( ; vertex_it2 != it->getFacet().getVertexesIds().end(); ++vertex_it, ++vertex_it2)
+		{
+			if (*(vertex_it) < *(vertex_it2))
+			{
+				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+				edgesMap.at(std::make_pair(*vertex_it, *vertex_it2)).push_back(it->getFacetId());
+			}
+			else
+			{
+				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+				edgesMap.at(std::make_pair(*vertex_it2, *vertex_it)).push_back(it->getFacetId());
+			}
+		}
+
+		vertex_it2 = it->getFacet().getVertexesIds().begin();
+
+		if (*(vertex_it) < *(vertex_it2))
+		{
+			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+			edgesMap.at(std::make_pair(*vertex_it, *vertex_it2)).push_back(it->getFacetId());
+		}
+		else
+		{
+			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+			edgesMap.at(std::make_pair(*vertex_it2, *vertex_it)).push_back(it->getFacetId());
+		}
+	}
+
+	for(std::map<Generic_Edge, std::vector<UInt> >::const_iterator it = edgesMap.begin(); it != edgesMap.end(); ++it)
+	{
+		M_edges.push_back(Edge(it->first, this, edgeId));
+		M_borderEdges.push_back(Border_Edge(edgeId, this));
+		M_edges.rbegin()->M_separatedFacetsIds = it->second;
+		edgeId++;
+	}
+}
+
 bool Rigid_Mesh::hasNeighborsThroughFacet(const UInt & facet_Id, const UInt & idNeighbor) const
 {
 	if( M_facets[facet_Id].getSeparatedCellsIds()[0] == idNeighbor ||
@@ -296,10 +346,7 @@ const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::v
 // ==================================================
 
 Rigid_Mesh::Edge::Edge (const Generic_Edge & generic_edge, Geometry::Rigid_Mesh * const mesh, const UInt id):
-		M_edge(generic_edge), M_mesh(mesh), M_id(id)
-{
-	// TODO compute separated facets
-}
+	M_edge(generic_edge), M_mesh(mesh), M_id(id){}
 
 Rigid_Mesh::Edge::Edge (const Edge & edge, Geometry::Rigid_Mesh * const mesh):
 	M_edge(edge.getEdge()), M_mesh(mesh), M_id(edge.getId()),
@@ -469,14 +516,14 @@ Rigid_Mesh::Edge_ID::Edge_ID(const UInt edge_id, Geometry::Rigid_Mesh * const me
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Border_Edge::Border_Edge (const UInt edge_Id, const UInt border_Id, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(edge_Id, mesh), Border_Id(border_Id){}
+Rigid_Mesh::Border_Edge::Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh){}
 
 Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & border_edge, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(border_edge.getEdgeId(), mesh), Border_Id(border_edge.getBorderId()){}
+	Edge_ID(border_edge.getEdgeId(), mesh){}
 
 Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & e):
-	Edge_ID(e.getEdgeId(), e.getMesh()), Border_Id(e.getBorderId()){}
+	Edge_ID(e.getEdgeId(), e.getMesh()){}
 
 // --------------------   Class Facet_ID   --------------------
 
