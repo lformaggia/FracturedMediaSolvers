@@ -13,60 +13,60 @@ class FixPressureDofs
 {
 public:
 
-	//! No empty constructor
-	FixPressureDofs() = delete;
+    //! No empty constructor
+    FixPressureDofs() = delete;
 
-	//! Constructor
-	/*!
-	 * @param problem problem to modify
-	 */
-	FixPressureDofs(ProblemType * problem):
-		M_problem(problem) {}
+    //! Constructor
+    /*!
+     * @param problem problem to modify
+     */
+    FixPressureDofs(ProblemType * problem):
+        M_problem(problem) {}
 
-	//! Get problem
-	/*!
-	 * @return the problem
-	 */
-	ProblemType & getProblem()
-		{ return *M_problem; }
+    //! Get problem
+    /*!
+     * @return the problem
+     */
+    ProblemType & getProblem()
+        { return *M_problem; }
 
-	//! Set the pressure dofs
-	/*!
-	 * @param pressure pressure value to set inside the fractures
-	 */
-	void apply(const Real pressure);
+    //! Set the pressure dofs
+    /*!
+     * @param pressure pressure value to set inside the fractures
+     */
+    void apply(const Real pressure);
 
-	//! Default destructor
-	~FixPressureDofs() {};
+    //! Default destructor
+    ~FixPressureDofs() {};
 
 private:
 
-	//! Problem
-	ProblemType * M_problem;
+    //! Problem
+    ProblemType * M_problem;
 
 }; // class MSR
 
 template <typename ProblemType>
 void FixPressureDofs<ProblemType>::apply(const Real pressure)
 {
-	SpMat & A = M_problem->getA();
-	Vector & b = M_problem->getb();
+    SpMat & A = M_problem->getA();
+    Vector & b = M_problem->getb();
 
-	const UInt dofTotal = A.outerSize();
-	const UInt dofFractures = M_problem->getMesh().getFractureFacetsIdsVector().size();
-	const UInt dofPorousMatrix = dofTotal - dofFractures;
+    const UInt dofTotal = A.outerSize();
+    const UInt dofFractures = M_problem->getMesh().getFractureFacetsIdsVector().size();
+    const UInt dofPorousMatrix = dofTotal - dofFractures;
 
-	// Clear the fractures rows
-	A.bottomRows( dofFractures ) *= 0.;
+    // Clear the fractures rows
+    A.bottomRows( dofFractures ) *= 0.;
 
-	//const Real weight = A.diagonal().sum() / dofPorousMatrix;
+    const Real weight = A.diagonal().sum() / dofPorousMatrix;
 
-	b.tail( dofFractures ).setConstant( pressure );
+    b.tail( dofFractures ).setConstant( weight * pressure );
 
-	for(UInt index = dofPorousMatrix; index < dofTotal; ++index )
-		A.coeffRef( index, index ) = 1;
+    for(UInt index = dofPorousMatrix; index < dofTotal; ++index )
+        A.coeffRef( index, index ) = weigth;
 
-	A.prune(0.);
+    A.prune(0.);
 }
 
 #endif /* FIXPRESSUREDOFS_HPP_ */
