@@ -616,9 +616,10 @@ public:
 		//! Constructor for a Fracture_Edge given an edge id
 		/*!
 			@param edge_id is the id of an Edge of a Rigid_Mesh
+			@param fracture_Ids is a vector with the ids of the fractures represented by the Edge
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Fracture_Edge (const UInt edge_Id, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Edge given a fracture_edge belonging to another Rigid_Mesh.
 		/*!
@@ -664,25 +665,34 @@ public:
 		//! @name Constructor & Destructor
 		//@{
 
-		//! Constructor for a Fracture_Edge given an edge id
+		//! Constructor for a Border_Fracture_Edge given an edge id
 		/*!
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
 		Border_Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
 
-		//! Copy constructor for a Fracture_Edge given a fracture_edge belonging to another Rigid_Mesh.
+		//! Constructor for a Border_Fracture_Edge given an edge id
 		/*!
-		 * @param fracture_edge reference to a Fracture_Edge
+			@param edge_id is the id of an Edge of a Rigid_Mesh
+			@param borderEdge reference of the Border_Edge represented by this edge
+			@param fractureEdge reference of the Fracture_Edge represented by this edge
+			@param mesh is a pointer to the mesh to which the edge belongs
+		*/
+		Border_Fracture_Edge (const UInt edge_Id, const Border_Edge & borderEdge, const Fracture_Edge & fractureEdge, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Border_Fracture_Edge given a border_fracture_edge belonging to another Rigid_Mesh.
+		/*!
+		 * @param border_fracture_edge reference to a Border_Fracture_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Border_Fracture_Edge (const Fracture_Edge & fracture_edge, Geometry::Rigid_Mesh * const mesh);
+		Border_Fracture_Edge (const Border_Fracture_Edge & border_fracture_edge, Geometry::Rigid_Mesh * const mesh);
 
-		//! Copy constructor for a Fracture_Edge given a fracture_edge.
+		//! Copy constructor for a Border_Fracture_Edge given a border_fracture_edge.
 		/*!
-		 * @param e reference to a Fracture_Edge
+		 * @param e reference to a Border_Fracture_Edge
 		 */
-		Border_Fracture_Edge (const Fracture_Edge & e);
+		Border_Fracture_Edge (const Border_Fracture_Edge & e);
 
 		//! Destructor
 		~Border_Fracture_Edge () = default;
@@ -703,7 +713,7 @@ public:
 		 * @return the Fracture_Edge represented by this edge
 		 */
 		const Fracture_Edge & getFractureEdge () const
-		{return *M_fractureEdge;}
+			{return *M_fractureEdge;}
 		//@}
 
 		//! @name Set Methods
@@ -928,7 +938,7 @@ public:
 
 		//! Constructor for a Fracture_Facet given a facet id and the id of the represented fractures.
 		/*!
-			@param facet_Ids is a triplet: 1. id of a Facet of a Rigid_Mesh 2. id as Fracture_Facet 3. number of cells in Rigid_Mesh 4. Zone Code
+			@param facet_Ids is a 4-tuple: 1. id of a Facet of a Rigid_Mesh 2. id as Fracture_Facet 3. number of cells in Rigid_Mesh 4. Zone Code
 			@param fracture_Ids is a vector with the ids of the fractures represented by the Facet.
 			@param mesh is a pointer to the mesh to which the facet belongs
 		*/
