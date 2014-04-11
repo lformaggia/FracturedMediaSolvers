@@ -88,6 +88,9 @@ add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/doc)
 # Add tools
 add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tools)
 
+# Add test
+add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/test)
+
 # Install
 INSTALL(TARGETS fvcode.exe fvcode
 	RUNTIME DESTINATION ${INSTALL_BIN}
