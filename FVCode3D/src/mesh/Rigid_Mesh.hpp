@@ -570,7 +570,7 @@ public:
 	/*!
 		@class Border_Edge
    		This class is derived from the class Edge_ID.
-		This class contains the id of a edge which belongs to the border of the domain.
+		This class contains the id of an edge which belongs to the border of the domain.
    	*/
 	class Border_Edge: public Edge_ID {
 	public:
@@ -600,6 +600,133 @@ public:
 		//! Destructor
 		~Border_Edge () = default;
 		//@}
+	};
+
+	//! Class that represents a fracture edge
+	/*!
+		@class Fracture_Edge
+   		This class is derived from the class Edge_ID.
+		This class contains the id of an edge which belongs to at least a fracture.
+   	*/
+	class Fracture_Edge: public Edge_ID {
+	public:
+		//! @name Constructor & Destructor
+		//@{
+
+		//! Constructor for a Fracture_Edge given an edge id
+		/*!
+			@param edge_id is the id of an Edge of a Rigid_Mesh
+			@param mesh is a pointer to the mesh to which the edge belongs
+		*/
+		Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Fracture_Edge given a fracture_edge belonging to another Rigid_Mesh.
+		/*!
+		 * @param fracture_edge reference to a Fracture_Edge
+		 * @param mesh is a pointer to the mesh to which the edge belongs
+		 */
+		Fracture_Edge (const Fracture_Edge & fracture_edge, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Fracture_Edge given a fracture_edge.
+		/*!
+		 * @param e reference to a Fracture_Edge
+		 */
+		Fracture_Edge (const Fracture_Edge & e);
+
+		//! Destructor
+		~Fracture_Edge () = default;
+		//@}
+
+		//! @name Get Methods
+		//@{
+
+		//! Get fractures ids (const)
+		/*!
+		 * @return the ids of the represented fractures
+		 */
+		const std::vector<UInt> & getFractureIds () const
+			{return Fracture_Ids;}
+		//@}
+
+	protected:
+		//! Ids of the represented fractures
+		std::vector<UInt> Fracture_Ids;
+	};
+
+	//! Class that represents a border fracture edge
+	/*!
+		@class Border_Fracture_Edge
+   		This class is derived from the class Edge_ID.
+		This class contains the id of an edge which belongs to the border and belongs to at least a fracture.
+   	*/
+	class Border_Fracture_Edge: public Edge_ID {
+	public:
+		//! @name Constructor & Destructor
+		//@{
+
+		//! Constructor for a Fracture_Edge given an edge id
+		/*!
+			@param edge_id is the id of an Edge of a Rigid_Mesh
+			@param mesh is a pointer to the mesh to which the edge belongs
+		*/
+		Border_Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Fracture_Edge given a fracture_edge belonging to another Rigid_Mesh.
+		/*!
+		 * @param fracture_edge reference to a Fracture_Edge
+		 * @param mesh is a pointer to the mesh to which the edge belongs
+		 */
+		Border_Fracture_Edge (const Fracture_Edge & fracture_edge, Geometry::Rigid_Mesh * const mesh);
+
+		//! Copy constructor for a Fracture_Edge given a fracture_edge.
+		/*!
+		 * @param e reference to a Fracture_Edge
+		 */
+		Border_Fracture_Edge (const Fracture_Edge & e);
+
+		//! Destructor
+		~Border_Fracture_Edge () = default;
+		//@}
+
+		//! @name Get Methods
+		//@{
+
+		//! Get the Border_Edge represented by this edge (const)
+		/*!
+		 * @return the Border_Edge represented by this edge
+		 */
+		const Border_Edge & getBorderEdge () const
+			{return *M_borderEdge;}
+
+		//! Get the Fracture_Edge represented by this edge (const)
+		/*!
+		 * @return the Fracture_Edge represented by this edge
+		 */
+		const Fracture_Edge & getFractureEdge () const
+		{return *M_fractureEdge;}
+		//@}
+
+		//! @name Set Methods
+		//@{
+
+		//! Set the Border_Edge represented by this edge
+		/*!
+		 * @param the Border_Edge represented by this edge
+		 */
+		void setBorderEdge(const Border_Edge & borderEdge)
+			{ M_borderEdge = &borderEdge;}
+
+		//! Set the Fracture_Edge represented by this edge
+		/*!
+		 * @param the Fracture_Edge represented by this edge
+		 */
+		void setFractureEdge(const Fracture_Edge & fractureEdge)
+			{ M_fractureEdge = &fractureEdge;}
+		//@}
+
+	protected:
+		const Border_Edge * M_borderEdge;
+		const Fracture_Edge * M_fractureEdge;
 	};
 
 	//! Class that handles the several types of facets
@@ -1111,6 +1238,10 @@ protected:
 
 	//! Vector of Border_Edge
 	std::vector<Border_Edge> M_borderEdges;
+	//! Vector of Fracture_Edge
+	std::vector<Fracture_Edge> M_fractureEdges;
+	//! Vector of Border_Fracture_Edge
+	std::vector<Border_Fracture_Edge> M_borderFractureEdges;
 
 	//! Vector of Regular_Facet
 	std::vector<Regular_Facet> M_internalFacets;
