@@ -35,7 +35,6 @@ int main(int argc, char * argv[])
 	chrono.start();
 
 	std::cout << "Read Data..." << std::flush;
-	//Data data(dataFileName);
 	DataPtr_Type dataPtr(new Data(dataFileName));
 	std::cout << " done." << std::endl;
 

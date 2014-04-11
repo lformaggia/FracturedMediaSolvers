@@ -15,13 +15,13 @@ output_file	= sol
 
 ## problem parameter
 [problem]
-type		= steady	# steady or pseudoSteady 
+type		= pseudoSteady	# steady or pseudoSteady 
 fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
-sourceOn	= all		# all, matrix, fractures
-fracPressOn	= 0		# 1 set pressure inside fracture, 0 otherwise
+sourceOn	= none		# all, matrix, fractures, none
+fracPressOn	= 1		# 1 set pressure inside fracture, 0 otherwise
 fracPress	= 1.
 initial_time	= 0.
-end_time	= 10.e6
+end_time	= 2.e6
 time_step	= 1.e5
 
 ## fluid parameters
