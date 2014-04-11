@@ -44,13 +44,14 @@ public:
     //! Define where apply the source/sink term
     /*!
      * @enum SourceSinkOn
-     * This enumerator allows to select where apply the source/sink term: only on matrix, only on fractures or both.
+     * This enumerator allows to select where apply the source/sink term: only on matrix, only on fractures, both or none.
      */
     enum SourceSinkOn
     {
         Matrix          = 0,
         Fractures       = 1,
-        Both            = 2
+        Both            = 2,
+        None            = 3
     };
 
     //! @name Constructors

@@ -9,7 +9,7 @@ Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
 	M_outputDir("./results/"), M_outputFile("sol"),
 	M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
-	M_problemType(steady), M_fracturesOn(true), M_ssOn(Both),
+	M_problemType(steady), M_fracturesOn(true), M_ssOn(None),
 	M_setFracturesPressure(false), M_fracturesPressure(0.),
 	M_permMatrix(0.), M_poroMatrix(0.),
 	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
@@ -42,7 +42,7 @@ Data::Data(const std::string dataFileName)
 
 	M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
-	M_ssOn = parserSourceSinkOn.parse( dataFile("problem/sourceOn", "all") );
+	M_ssOn = parserSourceSinkOn.parse( dataFile("problem/sourceOn", "none") );
 
 	M_setFracturesPressure = static_cast<bool>(dataFile("problem/fracPressOn", 0));;
 	M_fracturesPressure = dataFile("problem/fracPress", 0.);
@@ -147,6 +147,9 @@ void Data::showMe( std::ostream & output ) const
 		case Both:
 			output << "all" << std::endl;
 			break;
+		case None:
+			output << "none" << std::endl;
+			break;
 		default:
 			exit(0);
 			break;
@@ -199,4 +202,5 @@ EnumParser<Data::SourceSinkOn>::EnumParser()
     enumMap["matrix"] = Data::SourceSinkOn::Matrix;
     enumMap["fractures"] = Data::SourceSinkOn::Fractures;
     enumMap["all"] = Data::SourceSinkOn::Both;
+    enumMap["none"] = Data::SourceSinkOn::None;
 }
