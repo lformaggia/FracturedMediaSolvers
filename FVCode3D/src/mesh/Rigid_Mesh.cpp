@@ -330,6 +330,8 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
 	out << "Number of Fracture-Facets: " << M_fractureFacets.size() <<std::endl;
 	out << "Number of Standard-Facets: " << M_internalFacets.size() <<std::endl;
 	out << "Number of Border-Edges: " << M_borderEdges.size() <<std::endl;
+	out << "Number of Fracture-Edges: " << M_fractureEdges.size() <<std::endl;
+	out << "Number of Border-Fracture-Edges: " << M_borderFractureEdges.size() <<std::endl;
 
 }
 
