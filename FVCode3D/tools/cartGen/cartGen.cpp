@@ -96,14 +96,10 @@ int main(int argc, char * argv[])
 	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
 		Geometry::Point3D centroid = it->second.getCentroid();
-		// along x
-		for(Real thresh = 0.1; thresh<2 ; thresh+=0.1)
+		if( centroid[0] >= 0.5 && centroid[0] <= 1.5 &&
+			centroid[2] > 0.5 - 0.01 && centroid[2] < 0.5 + 0.01)
 		{
-			if( centroid[0] >= 0.5 && centroid[0] <= 1.5 &&
-				centroid[2] > 0.5 - 0.05 && centroid[2] < 0.5 + 0.05)
-			{
-				facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
-			}
+			facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
 		}
 	}
 	// then call "addFractures()"

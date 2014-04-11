@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 	//propMap.setPropertiesOnMatrix(mesh, 0.25, 1000);
-	//propMap.setPropertiesOnFractures(mesh, 0.1, 1, 100000);
+	propMap.setPropertiesOnFractures(mesh, 1e-4, 1, 100000);
 
 	std::cout << "Export..." << std::flush;
 	ExporterVTU exporter;
@@ -115,12 +115,12 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
-	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
-	BoundaryConditions::BorderBC leftBC	(3, Dirichlet, fZero );
-	BoundaryConditions::BorderBC rightBC(4, Dirichlet, fZero );
-	BoundaryConditions::BorderBC upBC	(5, Dirichlet, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Dirichlet, fZero );
+	BoundaryConditions::BorderBC backBC	(1, Neumann, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Neumann, fZero );
+	BoundaryConditions::BorderBC leftBC	(3, Neumann, fZero );
+	BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
+	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
 
 	std::vector<BoundaryConditions::BorderBC> borders;
 
@@ -146,8 +146,9 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Export Fracture Junctures..." << std::flush;
+	std::cout << "Export Fracture Junctures & Tips..." << std::flush;
 	exporter.exportFractureJunctures(myrmesh, data.getOutputDir() + data.getOutputFile() + "_junc.vtu");
+	exporter.exportFractureTips(myrmesh, data.getOutputDir() + data.getOutputFile() + "_tips.vtu");
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;

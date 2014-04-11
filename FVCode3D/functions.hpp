@@ -100,6 +100,6 @@ Func SSOGrid3 = [](Geometry::Point3D p)
 			   );
 	};
 
-Func SS = fZero;//SSGrid2;
+Func SS = fOne;//SSGrid2;
 
 #endif /* FUNCTIONS_HPP_ */
