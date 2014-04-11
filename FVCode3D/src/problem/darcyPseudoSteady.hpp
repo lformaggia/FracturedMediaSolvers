@@ -223,7 +223,7 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, Implicit >::initialize()
 
     this->M_A = M_S->getMatrix() + M_M->getMatrix();
 
-    M_f.resize(M_S->getSize());
+    M_f = Vector::Constant(M_S->getSize(), 0.);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
         M_f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
@@ -266,7 +266,7 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, BDF2 >::initialize()
 
     this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
 
-    M_f.resize(M_S->getSize());
+    M_f = Vector::Constant(M_S->getSize(), 0.);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
         M_f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
