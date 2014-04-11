@@ -267,12 +267,12 @@ void Rigid_Mesh::EdgesVectorBuilder()
 			if (*(vertex_it) < *(vertex_it2))
 			{
 				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
-				edgesMap.at(std::make_pair(*vertex_it, *vertex_it2)).push_back(it->getFacetId());
+				edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
 			}
 			else
 			{
 				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
-				edgesMap.at(std::make_pair(*vertex_it2, *vertex_it)).push_back(it->getFacetId());
+				edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
 			}
 		}
 
@@ -281,12 +281,12 @@ void Rigid_Mesh::EdgesVectorBuilder()
 		if (*(vertex_it) < *(vertex_it2))
 		{
 			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
-			edgesMap.at(std::make_pair(*vertex_it, *vertex_it2)).push_back(it->getFacetId());
+			edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
 		}
 		else
 		{
-			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
-			edgesMap.at(std::make_pair(*vertex_it2, *vertex_it)).push_back(it->getFacetId());
+			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+			edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
 		}
 	}
 
@@ -325,9 +325,11 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
 	out << "Number of Nodes: " << M_nodes.size() <<std::endl;
 	out << "Number of Cells: " << M_cells.size() <<std::endl;
 	out << "Number of Facets: " << M_facets.size() <<std::endl;
+	out << "Number of Edges: " << M_edges.size() <<std::endl;
 	out << "Number of Border-Facets: " << M_borderFacets.size() <<std::endl;
 	out << "Number of Fracture-Facets: " << M_fractureFacets.size() <<std::endl;
 	out << "Number of Standard-Facets: " << M_internalFacets.size() <<std::endl;
+	out << "Number of Border-Edges: " << M_borderEdges.size() <<std::endl;
 
 }
 
