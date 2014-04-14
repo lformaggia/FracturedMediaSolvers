@@ -51,6 +51,7 @@ namespace Geometry
   {
 
     M_gridpointer = geoprop.getgridpointer();
+    M_permfieldPtr = geoprop.getpermpointer();
     M_Ne = 0;
     std::vector<gmm::size_type> dove_area;
     for (gmm::size_type i = 0; i < geoprop.getI().size(); ++i)
@@ -66,6 +67,9 @@ namespace Geometry
       {
         M_Ne = M_Ne + 1;
         M_areas.push_back (aa);
+        M_matPermX.push_back ((*M_permfieldPtr).getPermxVec()[NN]);
+        M_matPermY.push_back ((*M_permfieldPtr).getPermyVec()[NN]);
+        M_matPermZ.push_back ((*M_permfieldPtr).getPermzVec()[NN]);
         dove_area.push_back (i);
         M_Dmedio.push_back (geoprop.getDmedio() [NN]);
         M_CG.push_back (geoprop.getCG() [NN]);
@@ -411,7 +415,8 @@ namespace Geometry
   {
     for (gmm::size_type i = 0; i < M_S1x.size(); ++i)
     {
-      Real k_mX (1), k_mY (1), k_mZ (1);
+
+      Real k_mX (M_matPermX[i]), k_mY (M_matPermY[i]), k_mZ (M_matPermZ[i]);
       Real TT (0);
       Point3D NN (this->normal (0, 0) );
       if (M_Dmedio[i] > 0)
@@ -620,7 +625,7 @@ namespace Geometry
     {
       gmm::size_type nn (M_sortCG[n]);
       myfile << i + 1 << "\t" << n + 1 << "\t(" << M_ipos[nn] << "\t" << M_jpos[nn] << "\t" << M_kpos[nn] << ")\t" << M_areas[nn]*this->aperture() << "\t\t" << M_areas[nn] << "\t\t"
-             << M_Dmedio[nn] << "\t\t" << M_TM[nn] <<std::endl;// "\t\t"<<M_S1x[nn].length()<<"\t\t"<<M_S2x[nn].length()<<std::endl;
+             << M_Dmedio[nn] << "\t\t" << M_TM[nn]  <<std::endl;// "\t\t"<<M_S1x[nn].length()<<"\t\t"<<M_S2x[nn].length()<<std::endl;
     }
 
 

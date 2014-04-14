@@ -210,6 +210,7 @@ namespace Geometry
 
   private:
     CPgrid* M_gridpointer;
+    PermeabilityField* M_permfieldPtr;
     bool M_isMetric;
     std::vector<gmm::size_type> M_isintby;
     std::vector<IntFrac> M_inter;
@@ -227,6 +228,9 @@ namespace Geometry
     std::vector<Neigh_cell> M_vicineV;
     std::vector<Real> M_areas;
     std::vector<Real> M_Dmedio;
+    std::vector<Real> M_matPermX;
+    std::vector<Real> M_matPermY;
+    std::vector<Real> M_matPermZ;
     std::vector<Point3D> M_CG;
     std::vector<Segment> M_S1x;
     std::vector<Segment> M_S1y;

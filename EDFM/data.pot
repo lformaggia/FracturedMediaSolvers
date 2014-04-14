@@ -3,8 +3,15 @@
 
 #----------------------------------
  
-GridFile=./data/Frac_24_10_13/Grid_150x150.GRDECL         #nome fine della griglia
-FractureFile=./data/Frac_24_10_13/Frac_rev_23_10_13_feet.fab
+#GridFile=./data/Frac_24_10_13/Grid_150x150.GRDECL         #nome fine della griglia
+#FractureFile=./data/Frac_24_10_13/Frac_rev_23_10_13_feet.fab
+ 
+#----------------------------------
+
+ 
+GridFile=./data/caso_perm/Grid.GRDECL         #nome fine della griglia
+FractureFile=./data/caso_perm/EP_longf_feetzp.fab
+PermFile=./data/caso_perm/Perm.GRDECL      
  
 #----------------------------------
 

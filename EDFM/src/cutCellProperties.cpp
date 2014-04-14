@@ -46,17 +46,18 @@ namespace Geometry
   // ==================================================
   // Constructors & Destructor
   // ==================================================
-  CProp::CProp() : M_vol(), M_aree(), M_dmedio(), M_iteratorcellsbegin(), M_iteratorcellsend(), M_gridpointer(), M_faultpointer() {}
+  CProp::CProp() : M_vol(), M_aree(), M_dmedio(), M_iteratorcellsbegin(), M_iteratorcellsend(), M_gridpointer(), M_faultpointer(), M_permfieldPtr() {}
 
   //------------------costruttore
 
 
-  CProp::CProp (const Intersect::GridIntersections& storage, CPgrid* gridpointer, Fracture* faultpointer)
+  CProp::CProp (const Intersect::GridIntersections& storage, CPgrid* gridpointer, Fracture* faultpointer, PermeabilityField* permfield)
   {
     M_iteratorcellsbegin = storage.begin();
     M_iteratorcellsend = storage.end();
     M_gridpointer = gridpointer;
     M_faultpointer = faultpointer;
+    M_permfieldPtr = permfield;
 
     M_vol.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
     M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
