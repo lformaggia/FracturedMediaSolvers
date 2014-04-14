@@ -1,0 +1,38 @@
+#------------------------------#
+#    Data file for FVCode3D    #
+#------------------------------#
+
+## input
+[mesh]
+mesh_dir	= ./data/
+mesh_file	= thirdGood.mesh
+mesh_type	= .mesh		# .grid or .fvg or .mesh
+
+## output
+[output]
+output_dir	= ./results/
+output_file	= thirdGood
+
+## problem parameter
+[problem]
+type		= steady	# steady or pseudoSteady 
+fracturesOn	= 1		# 1 enable fractures, 0 disable fractures
+sourceOn	= all		# all, matrix, fractures
+fracPressOn	= 0		# 1 set pressure inside fracture, 0 otherwise
+fracPress	= 1.
+initial_time	= 0.
+end_time	= 10.e6
+time_step	= 1.e5
+
+## fluid parameters
+[fluid]
+mobility	= 1.
+compressibility	= 1.
+
+## boundary conditions
+[bc]
+theta		= 0.
+
+## Other
+[miscellaneous]
+verbose		= 1
