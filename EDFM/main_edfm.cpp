@@ -76,11 +76,35 @@ int main(int argc, char** argv){
 
 	
 	CPgrid grid(gridFile,0,direzione, angle, rotate_z);
+        
+	std::string permFile=cl("PermFile","");
+	PermeabilityField permfield(grid);
+        
+	if(permFile==std::string(""))
+	  {
+	    std::vector<Real>  uni(grid.Nx()*grid.Ny()*grid.Nz(),1.0);
+	    std::cerr<<"No perm file file "<<fractureFile<<std::endl;
+	    permfield.setPermx(uni);
+	    permfield.setPermy(uni);
+	    permfield.setPermz(uni);
+	  }
+	else  {
+		permfield.importFromFile (permFile);
+	}
 	
 	if (cl("exportGrid","no")=="yes"){	
 	std::stringstream ss (std::stringstream::in | std::stringstream::out);
 	ss<<outpath<<"/grid.vtk";
 	grid.exportVtk(ss.str());
+	std::stringstream ss_perm  (std::stringstream::in | std::stringstream::out);
+	ss_perm<< outpath<<"/permX"<<".vtk";
+	grid.exportVtk(ss_perm.str(), permfield.getPermxVec(),"PermX",0);
+        ss_perm.str("");
+        ss_perm<< outpath<<"/permY"<<".vtk";
+	grid.exportVtk(ss_perm.str(), permfield.getPermyVec(),"PermY",0);
+	ss_perm.str("");
+        ss_perm<< outpath<<"/permZ"<<".vtk";
+	grid.exportVtk(ss_perm.str(), permfield.getPermzVec(),"PermZ",0);
 	}
 
 	Fractures lista(fractureFile,conv_z, direzioneF, angleF);
@@ -133,7 +157,7 @@ int main(int argc, char** argv){
 
 		Fracture ff(lista.M_fractures[i]);
 		Fault f(ff);
-		CProp propfaglia(intMegaStore[i], &grid, &ff);
+		CProp propfaglia(intMegaStore[i], &grid, &ff, &permfield);
 #ifdef OLD_PROPERTIES
 		propfaglia.setProperties_old();
 #else
@@ -176,6 +200,7 @@ int main(int argc, char** argv){
 		f.exportVtk(ss.str());
 	      }
 	      if (cl("exportGeoprop","no")=="yes"){	
+
 		std::stringstream ss1 (std::stringstream::in | std::stringstream::out);
 		ss1<< outpath<< "/grid_Aree"<<i+1<<".vtk";
 		grid.exportVtk(ss1.str(), propStore[i].getAreas(),"area",0);

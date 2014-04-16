@@ -45,7 +45,7 @@ namespace Geometry
   // ==================================================
   void PermeabilityField::setPermx (const std::vector<Real>& p)
   {
-    UInt len = M_Nx * M_Ny * M_Nz - 1;
+    UInt len = M_Nx * M_Ny * M_Nz ;
     if (p.size() != len)
       std::cerr << " *** Error: in PermX dimension *** "
                 << std::endl << std::endl;
@@ -55,7 +55,7 @@ namespace Geometry
 
   void PermeabilityField::setPermy (const std::vector<Real>& p)
   {
-    UInt len = M_Nx * M_Ny * M_Nz - 1;
+    UInt len = M_Nx * M_Ny * M_Nz ;
     if (p.size() != len)
     {
       std::cerr << " *** Error: in PermY dimension *** "
@@ -70,7 +70,7 @@ namespace Geometry
 
   void PermeabilityField::setPermz (const std::vector<Real>& p)
   {
-    UInt len = M_Nx * M_Ny * M_Nz - 1;
+    UInt len = M_Nx * M_Ny * M_Nz ;
     if (p.size() != len)
     {
       std::cerr << " *** Error: in PermZ dimension *** "

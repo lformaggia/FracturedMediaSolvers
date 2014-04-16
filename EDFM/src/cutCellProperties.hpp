@@ -64,7 +64,7 @@ namespace Geometry
 
     //! Constructor
 
-    CProp (const Intersect::GridIntersections&, CPgrid*, Fracture*);
+    CProp (const Intersect::GridIntersections&, CPgrid*, Fracture*, PermeabilityField*);
 
     //! Destructor
     virtual ~CProp();
@@ -126,6 +126,11 @@ namespace Geometry
     inline CPgrid* getgridpointer()
     {
       return M_gridpointer;
+    }
+
+    inline PermeabilityField* getpermpointer()
+    {
+      return M_permfieldPtr;
     }
 
     inline std::vector<Real>& getVolumes()
@@ -207,6 +212,7 @@ namespace Geometry
     std::vector<Point3D> M_CG;
     Intersect::GridIntersections_Const_Iterator_Type M_iteratorcellsbegin, M_iteratorcellsend;
     CPgrid* M_gridpointer;
+    PermeabilityField* M_permfieldPtr;
     Fracture* M_faultpointer;
     gmm::size_type M_Ne;
     std::vector<gmm::size_type> M_i;
