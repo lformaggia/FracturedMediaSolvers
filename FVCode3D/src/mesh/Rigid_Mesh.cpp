@@ -172,6 +172,7 @@ void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_m
 	UInt fractureId = 0;
 
 	const Generic_FacetsContainer & facet_container = generic_mesh.getFacetsMap();
+	//std::map<Generic_Edge, std::vector<UInt> > edgesMap;
 
 	if(!M_renumber)
 	{
@@ -225,6 +226,38 @@ void Rigid_Mesh::M_facetsVectorsBuilder(const std::map<UInt,UInt> & old_to_new_m
 				M_fractureFacets.push_back(
 					Fracture_Facet( fracture_Ids, it->second.getRepresentedFractureIds(), this)
 				);
+/*
+				auto vertex_it  = it->second.getVertexesVector().begin();
+				auto vertex_it2 = vertex_it;
+				++vertex_it2;
+
+				for( ; vertex_it2 != it->second.getVertexesVector().end(); ++vertex_it, ++vertex_it2)
+				{
+					if (*(vertex_it) < *(vertex_it2))
+					{
+						edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+						edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
+					}
+					else
+					{
+						edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+						edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+					}
+				}
+
+				vertex_it2 = it->getFacet().getVertexesIds().begin();
+
+				if (*(vertex_it) < *(vertex_it2))
+				{
+					edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+					edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
+				}
+				else
+				{
+					edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+					edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+				}*/
+
 				++fractureId;
 			}
 			else
@@ -251,9 +284,11 @@ void Rigid_Mesh::AdjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFac
 
 void Rigid_Mesh::EdgesVectorBuilder()
 {
+	/*
 	UInt edgeId = 0;
 
 	std::map<Generic_Edge, std::vector<UInt> > edgesMap;
+	std::set<UInt> sepFacets;
 
 	// loop only over the border facet! Modify this if you want to store all edges
 	for(auto it = M_borderFacets.begin(); it != M_borderFacets.end(); ++it)
@@ -297,12 +332,64 @@ void Rigid_Mesh::EdgesVectorBuilder()
 		M_edges.rbegin()->M_separatedFacetsIds = it->second;
 		edgeId++;
 	}
+
+	edgesMap.clear();
+	std::map<Generic_Edge, std::vector< std::pair<UInt, bool> > > edgesFMap;
+
+	for(auto it = M_fractureFacets.begin(); it != M_fractureFacets.end(); ++it)
+	{
+		auto vertex_it  = it->getFacet().getVertexesIds().begin();
+		auto vertex_it2 = vertex_it;
+		++vertex_it2;
+
+		for( ; vertex_it2 != it->getFacet().getVertexesIds().end(); ++vertex_it, ++vertex_it2)
+		{
+			if (*(vertex_it) < *(vertex_it2))
+			{
+				edgesFMap.insert(std::pair<Generic_Edge, std::vector< std::pair<UInt, bool> > >
+								(std::make_pair(*vertex_it, *vertex_it2), std::vector<std::pair<UInt, bool> >())
+								);
+				edgesFMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(std::make_pair(it->getFacetId(), it->));
+			}
+			else
+			{
+				edgesFMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+				edgesFMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+			}
+		}
+
+		vertex_it2 = it->getFacet().getVertexesIds().begin();
+
+		if (*(vertex_it) < *(vertex_it2))
+		{
+			edgesFMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+			edgesFMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
+		}
+		else
+		{
+			edgesFMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+			edgesFMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+		}
+	}
+
+	for(std::map<Generic_Edge, std::vector<UInt> >::const_iterator it = edgesMap.begin(); it != edgesMap.end(); ++it)
+	{
+		M_edges.push_back(Edge(it->first, this, edgeId));
+		for(std::set<UInt>::const_iterator sepIt = it->second.begin(); sepIt != it->second.end(); ++sepIt)
+			if(M_facets[*sepIt].)
+			sepFacets.
+		M_fractureEdges.push_back(Fracture_Edge(edgeId, this));
+		M_edges.rbegin()->M_separatedFacetsIds = it->second;
+		edgeId++;
+		sepId.clear();
+	}
+	*/
 }
 
 bool Rigid_Mesh::hasNeighborsThroughFacet(const UInt & facet_Id, const UInt & idNeighbor) const
 {
 	if( M_facets[facet_Id].getSeparatedCellsIds()[0] == idNeighbor ||
-		M_facets[facet_Id].getSeparatedCellsIds()[1] == idNeighbor)
+	   (M_facets[facet_Id].getSeparatedCellsIds().size() > 1 && M_facets[facet_Id].getSeparatedCellsIds()[1] == idNeighbor) )
 	{
 		return true;
 	}
@@ -399,7 +486,7 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 
 Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
 	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVertexesVector()), M_area(generic_facet.area()),
-	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal())
+	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()), M_isFracture(generic_facet.isFracture())
 {
 	if(!M_mesh->M_renumber)
 		for(auto it = generic_facet.getSeparatedCells().begin(); it != generic_facet.getSeparatedCells().end(); ++it)
@@ -412,12 +499,12 @@ Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Me
 Rigid_Mesh::Facet::Facet(const Facet & facet):
 	M_mesh(facet.getMesh()), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()){}
+	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()){}
 
 Rigid_Mesh::Facet::Facet(const Facet & facet, Geometry::Rigid_Mesh * const mesh):
 	M_mesh(mesh), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()){}
+	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()){}
 
 // ==================================================
 // Methods

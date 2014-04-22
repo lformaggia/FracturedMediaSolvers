@@ -305,6 +305,20 @@ public:
 		 */
 		UInt getId() const
 			{ return M_id; }
+
+		//! Test if the facet represents a fracture
+		/*!
+		 * @return True if the facet represents a fracture
+		 */
+		bool isFracture() const
+			{ return M_isFracture; }
+
+		//! Test if the facet is a border facet
+		/*!
+		 * @return True if the facet is a border facet (i.e. it separates only one cell)
+		 */
+		bool isBorderFacet() const
+			{ return M_separatedCellsIds.size() == 1; }
 		//@}
 
 		//! @name Methods
@@ -332,6 +346,8 @@ public:
 		Generic_Point M_centroid;
 		//! The unsigned normal-vector to the Facet
 		Generic_Vector M_unsignedNormal;
+		//! True if the Facet is a fracture
+		bool M_isFracture;
 
 	};
 
@@ -834,8 +850,6 @@ public:
 			{return M_mesh->getFacetsVector()[Facet_Id].getSeparatedCellsIds();}
 		//@}
 	};
-
-public:
 	
 	//! Class that represents an interior facet (no fracture facet)
 	/*!

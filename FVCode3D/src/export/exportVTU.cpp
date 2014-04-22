@@ -883,7 +883,6 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
         for(std::vector<UInt>::const_iterator jt = f.getVertexesIds().begin(); jt != f.getVertexesIds().end()-1; ++jt )
             filestr << *jt << " ";
         filestr << *(f.getVertexesIds().rbegin()) << std::endl;
-
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
