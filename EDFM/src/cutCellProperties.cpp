@@ -59,6 +59,10 @@ namespace Geometry
     M_faultpointer = faultpointer;
     M_permfieldPtr = permfield;
 
+    M_vol.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() +1);
+    M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz()+1 );
+    M_CG.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() +1);
+    M_dmedio.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz()+1 );
     M_vol.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
     M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
     M_CG.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
