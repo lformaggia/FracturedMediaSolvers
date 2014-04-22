@@ -63,10 +63,6 @@ namespace Geometry
     M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz()+1 );
     M_CG.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() +1);
     M_dmedio.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz()+1 );
-    M_vol.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
-    M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
-    M_CG.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
-    M_dmedio.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
 
   }
 
@@ -79,7 +75,7 @@ namespace Geometry
 
   void CProp::setProperties()
   {
-
+    
     M_Ne = 0;
     gmm::size_type counter (0);
     for (Intersect::GridIntersections_Const_Iterator_Type it = M_iteratorcellsbegin;
@@ -100,17 +96,18 @@ namespace Geometry
          it != M_iteratorcellsend; ++it)
     {
       M_Ne = M_Ne + 1;
-
+      
       M_i.push_back (it->second.i() );
       M_j.push_back (it->second.j() );
       M_k.push_back (it->second.k() );
       // Create the cell
       CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
+      std::cout << it->second.i() <<"  "<<it->second.j() <<"   "<<it->second.k() <<std::endl;
       // Intersection points: true and virtual
       std::vector<Point3D> punti1 (this->getIntPoints (it) );
       // True vs virtial intersection points.
       std::vector<bool> puntiIsReal (this->getIsIntPointReal (it) );
-
+      
       gmm::size_type npunti_faglia (punti1.size() );
 
       Point3D Aa (punti1[0]);
@@ -295,10 +292,10 @@ namespace Geometry
         M_vol[ (*it).first] += calimero2.getVolume();
         M_dmedio[ (*it).first] += this->setIntd (calimero2, Aa);
       }
-
+      std::cout<< (*it).first<<std::endl;
       if (M_vol[ (*it).first] > 0)
       {
-        M_dmedio[ (*it).first] = M_dmedio[ (*it).first] / M_vol[ (*it).first];
+        M_dmedio[ (*it).first] = M_dmedio[ (*it).first-1] / M_vol[ (*it).first-1];
       }
       else
       {
