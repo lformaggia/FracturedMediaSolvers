@@ -4,3 +4,6 @@
 [submodule "GPRS"]
 	path = GPRS
 	url = ssh://gitolite@gitserver.mate.polimi.it/eniGPRS
+[submodule "kafres2"]
+	path = kafres2
+	url = ./kafres2
