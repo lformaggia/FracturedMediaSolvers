@@ -100,6 +100,10 @@ Func SSOGrid3 = [](Geometry::Point3D p)
 			   );
 	};
 
-Func SS = fOne;//SSGrid2;
+/* TEST EDFM */
+Func SSEDFM = [](Geometry::Point3D p)
+	{ return 1*( p.x() <= 0.2 ); };
+
+Func SS = SSEDFM;//SSGrid2;
 
 #endif /* FUNCTIONS_HPP_ */

@@ -115,12 +115,12 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Neumann, fZero );
-	BoundaryConditions::BorderBC frontBC(2, Neumann, fZero );
+	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
+	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
 	BoundaryConditions::BorderBC leftBC	(3, Neumann, fZero );
 	BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
-	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
+	BoundaryConditions::BorderBC upBC	(5, Dirichlet, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Dirichlet, fZero );
 
 	std::vector<BoundaryConditions::BorderBC> borders;
 
