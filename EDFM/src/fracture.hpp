@@ -203,6 +203,7 @@ namespace Geometry
 
     void sortCG_Y();
     void sortCG_X();
+    void sortFake();
     std::vector<gmm::size_type> getCGsort()
     {
       return M_sortCG;
