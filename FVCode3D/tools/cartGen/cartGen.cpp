@@ -36,7 +36,9 @@ int main(int argc, char * argv[])
 	std::cout << "Generate Cartesian grid..." << std::flush;
 	CartesianGrid cart(mesh, propMap);
 	cart.generate(true, data.getLx(), data.getLy(), data.getLz(), data.getNx(), data.getNy(), data.getNz());
-	std::cout << " done." << std::endl;
+	std::cout << " done." << std::endl << std::endl;
+
+	std::cout << "# of cells: " << mesh.getCellsMap().size() << std::endl << std::endl;
 
 	std::cout << "Compute separated cells..." << std::flush;
 	mesh.updateFacetsWithCells();
@@ -48,7 +50,7 @@ int main(int argc, char * argv[])
 
 	std::cout << "Set labels on boundary & add Fractures..." << std::flush;
 	cart.extractBC();
-	std::cout << " done." << std::endl;
+	std::cout << " done." << std::endl << std::endl;
 
 	// create here the map "facetIdToZone"
 	// Don't use "1" as zone code, it is reserved to the matrix!
@@ -96,14 +98,16 @@ int main(int argc, char * argv[])
 	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
 		Geometry::Point3D centroid = it->second.getCentroid();
-		if( centroid[0] >= 0.5 && centroid[0] <= 1.5 &&
-			centroid[2] > 0.5 - 0.01 && centroid[2] < 0.5 + 0.01)
+		if( centroid[0] >= 0.2 && centroid[0] <= 1.8 &&
+			centroid[2] > 0.2 - 0.01 && centroid[2] < 0.2 + 0.01)
 		{
 			facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
 		}
 	}
 	// then call "addFractures()"
 	cart.addFractures(facetIdToZone);
+
+	std::cout << "# of fracture facets: " << facetIdToZone.size() << std::endl << std::endl;
 
 	std::cout << "Compute facet ids of the fractures..." << std::flush;
 	mesh.updateFacetsWithFractures();
