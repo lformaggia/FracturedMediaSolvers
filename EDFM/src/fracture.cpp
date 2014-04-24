@@ -176,12 +176,15 @@ namespace Geometry
     }
     if ( (this->A().y == this->B().y) && (this->A().y == this->C().y) &&  (this->C().y == this->D().y) )
     {
-
       this->sortCG_X();
+    }
+    else if ( (this->A().x == this->B().x) && (this->A().x == this->C().x) &&  (this->C().x == this->D().x) )
+    {
+      this->sortCG_Y();
     }
     else
     {
-      this->sortCG_Y();
+        this->sortFake();
     }
   }
 
@@ -921,6 +924,17 @@ namespace Geometry
       }
     }
 
+  }
+
+  void Fracture::sortFake()
+  {
+
+    M_sortCG.reserve( M_CG.size() );
+
+    for( size_t i = 0; i < M_CG.size(); ++i )
+    {
+        M_sortCG.push_back( i );
+    } // for
   }
 
 } // namespace Geometry(find(M_sortCG.begin(),M_sortCG.end(),ii)-M_sortCG.begin());

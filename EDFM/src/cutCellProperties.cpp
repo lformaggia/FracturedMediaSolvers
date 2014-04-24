@@ -59,10 +59,10 @@ namespace Geometry
     M_faultpointer = faultpointer;
     M_permfieldPtr = permfield;
 
-    M_vol.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
-    M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
-    M_CG.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
-    M_dmedio.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() );
+    M_vol.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() + 1 );
+    M_aree.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() + 1 );
+    M_CG.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() + 1 );
+    M_dmedio.resize (M_gridpointer->Nx() *M_gridpointer->Ny() *M_gridpointer->Nz() + 1 );
 
   }
 
@@ -102,6 +102,7 @@ namespace Geometry
       M_k.push_back (it->second.k() );
       // Create the cell
       CPcell cella (M_gridpointer->cell ( (*it).second.i(), (*it).second.j(), (*it).second.k() ) );
+      std::cout << it->second.i() <<"  "<<it->second.j() <<"   "<<it->second.k() <<std::endl;
       // Intersection points: true and virtual
       std::vector<Point3D> punti1 (this->getIntPoints (it) );
       // True vs virtial intersection points.
@@ -291,10 +292,10 @@ namespace Geometry
         M_vol[ (*it).first] += calimero2.getVolume();
         M_dmedio[ (*it).first] += this->setIntd (calimero2, Aa);
       }
-
+      std::cout<< (*it).first<<std::endl;
       if (M_vol[ (*it).first] > 0)
       {
-        M_dmedio[ (*it).first] = M_dmedio[ (*it).first] / M_vol[ (*it).first];
+        M_dmedio[ (*it).first] = M_dmedio[ (*it).first-1] / M_vol[ (*it).first-1];
       }
       else
       {
@@ -982,9 +983,9 @@ namespace Geometry
     puntiarea_uv.reserve (npunti);
 
     // Loops on all intersection points to get uv coordinates
-    for (gmm::size_type i = 0; i < npunti; ++i) 
+    for (gmm::size_type i = 0; i < npunti; ++i)
     {
-	puntiarea_uv.push_back (Point2D (M_faultpointer->inv_param (puntiarea[i]) ) );
+    puntiarea_uv.push_back (Point2D (M_faultpointer->inv_param (puntiarea[i]) ) );
     }
     // Loops on all intersection points
     for (gmm::size_type i = 0; i < npunti; ++i)
@@ -1251,12 +1252,12 @@ namespace Geometry
         Point3D A (puntisin[i]), B (puntidx[j]), medio;
         Segment SS (A, B);
         SSMax.intersectTheSegment (SS, medio);
-	
-	if (SS.isIn (medio))// && cella.isIn (medio) )
+
+    if (SS.isIn (medio))// && cella.isIn (medio) )
         {
          puntilineaprovv.push_back (medio);
         }
-	  
+
       }
     }*/
 
@@ -1304,7 +1305,7 @@ namespace Geometry
 
         if (cont == 3)
         {
-	
+
           Triangle t (guscio1.getPoint (quali[0]), guscio1.getPoint (quali[1]), guscio1.getPoint (quali[2]) );
           std::vector<Real> pesi (t.getGaussWeights (4) );
           Real Intdprovv (0);
@@ -1326,7 +1327,7 @@ namespace Geometry
 
     if (puntidx.size() > 0 )
         {// std::cout << "dex"<<puntidx.size() <<std::endl;
- 
+
       for (gmm::size_type ii = 0; ii < puntilinea.size(); ++ii)
       {
         puntidx.push_back (puntilinea[ii]);
@@ -1500,11 +1501,11 @@ namespace Geometry
           {
             // This beats me!
             dmediosingolo = this->setIntdist_linea (puntiAreaNew, no, M_faultpointer->inter() [i], it, isPartial);
-	
+
           }
 
-		M_dmedioint[i][M_Ne-1] = dmediosingolo;
-	  
+        M_dmedioint[i][M_Ne-1] = dmediosingolo;
+
 
         }
 

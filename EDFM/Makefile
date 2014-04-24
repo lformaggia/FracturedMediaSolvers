@@ -10,13 +10,13 @@ CPPFLAGS=
 # Activate OpenMP
 OMPFLAGS = -fopenmp
 # When debugging take away openmp
-#OMPFLAGS = 
-CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) $(CPPFLAGS) -I./src -I../external/include
+#OMPFLAGS =
+CXXFLAGS = $(OPTFLAGS) $(WARFLAGS)  $(OMPFLAGS) $(CPPFLAGS) -I./src -I../external/include -I${mkQhullHome}/include
 # Release version
-#LDFLAGS= $(OPTFLAGS) 
+#LDFLAGS= $(OPTFLAGS)
 # For development version we hard link the loading of shared libs
-LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=$(PWD)/../external/lib 
-LDLIBS=-L../external/lib -lqhull $(OMPFLAGS)
+LDFLAGS= $(OPTFLAGS) -Wl,-rpath=$(PWD)/lib -Wl,-rpath=${mkQhullHome}/lib
+LDLIBS=-L${mkQhullHome}/lib -lqhull $(OMPFLAGS)
 LOG_LINKER = link.log
 LOG_COMPILER = compile.log
 SRCS = $(wildcard ./src/*.cpp)
@@ -50,7 +50,7 @@ doc:
 install: $(INSTALLDIR)/libCPgeom.so.1.0
 
 old_properties:
-	$(MAKE) main_edfm_old 
+	$(MAKE) main_edfm_old
 
 $(INSTALLDIR)/libCPgeom.so.1.0: $(OBJ)
 	$(CXX) $(LDFLAGS) -shared -Wl,-soname,libCPgeom.so.1 -o libCPgeom.so.1.0 $(OBJ) $(LDLIBS)
@@ -62,17 +62,17 @@ $(INSTALLDIR)/libCPgeom.so.1.0: $(OBJ)
 
 libdev: install
 
-#libdev: $(OBJ) 
+#libdev: $(OBJ)
 #	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared -Wl,-soname,libCPgeom.so.1 -o libC#Pgeom.so.1.0 $(OBJ)  $(LDLIBS)
 #	ln -s libCPgeom.so.1.0 libCPgeom.so.1	# soname
 #	ln -s libCPgeom.so.1.0 libCPgeom.so	# link name
 
 
-main_edfm: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm.o  
-	$(CXX) $(LDFLAGS) -o main_edfm main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
+main_edfm: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm.o
+	$(CXX) $(LDFLAGS) -o main_edfm main_edfm.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom
 
-main_edfm_old: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm_old.o  
-	$(CXX) $(LDFLAGS) -o main_edfm_old main_edfm_old.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom 
+main_edfm_old: $(INSTALLDIR)/libCPgeom.so.1.0 main_edfm_old.o
+	$(CXX) $(LDFLAGS) -o main_edfm_old main_edfm_old.o  $(LDLIBS) -L$(LIBDIR) -lCPgeom
 
 main_edfm_old.o: main_edfm.cpp
 	$(CXX) $(CXXFLAGS) -DOLD_PROPERTIES -c -o main_edfm_old.o main_edfm.cpp
