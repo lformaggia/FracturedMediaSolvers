@@ -27,8 +27,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 
 	nodesRef.reserve(nNodes);
 
-	std::cout<<"Nodes"<<std::endl;
-
 	// create nodes
 	for(k=0; k <= Nz; ++k)
 	{
@@ -42,8 +40,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 	}
 
 	tmp.resize(4);
-
-	std::cout<<"Facets x"<<std::endl;
 
 	// create facets parallel to x axis
 	for(i=0; i <= Nx; ++i)
@@ -66,8 +62,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 		}
 	}
 
-	std::cout<<"Facets y"<<std::endl;
-
 	// create facets parallel to y axis
 	for(j=0; j <= Ny; ++j)
 	{
@@ -88,8 +82,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 			}
 		}
 	}
-
-	std::cout<<"Facets z"<<std::endl;
 
 	// create facets parallel to z axis
 	for(k=0; k <= Nz; ++k)
@@ -114,7 +106,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 
 	tmpFacets.resize(6);
 
-	std::cout<<"Cells"<<std::endl;
 	count = 0;
 
 	M_mesh.buildNodesToFacetMap();
@@ -180,9 +171,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 			}
 		}
 	}
-
-	std::cout<<"# cells: "<<cellsRef.size()<<std::endl;
-
 }
 
 void CartesianGrid::extractBC(const Real theta)
