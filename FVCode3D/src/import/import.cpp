@@ -426,7 +426,7 @@ void ImporterForSolver::import(bool fracturesOn)
 
 	file >> nFractures;
 
-	for(i=0; i < nFractures; ++i)
+	for(i=0; i < nFractures*static_cast<UInt>(fracturesOn); ++i)
 	{
 		file >> facetsFracture;
 		tmp.resize(facetsFracture);
