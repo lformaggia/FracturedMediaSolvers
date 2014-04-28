@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 	//propMap.setPropertiesOnMatrix(mesh, 0.25, 1000);
-	propMap.setPropertiesOnFractures(mesh, 1e-4, 1, 100000);
+	//propMap.setPropertiesOnFractures(mesh, 1e-4, 1, 100000)
 
 	std::cout << "Export..." << std::flush;
 	ExporterVTU exporter;
