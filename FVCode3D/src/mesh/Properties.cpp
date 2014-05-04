@@ -1,6 +1,6 @@
 /*!
- *	@file Properties.hpp
- *	@brief Classes that handle the properties.
+ *	@file Properties.cpp
+ *	@brief Classes that handle the properties (definitions).
  */
 
 #include "mesh/Properties.hpp"
