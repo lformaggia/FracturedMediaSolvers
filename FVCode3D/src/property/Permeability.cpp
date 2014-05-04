@@ -8,7 +8,7 @@
 namespace Geometry
 {
 
-Point3D operator*(const Point3D & vector, const Permeability & tensor)
+Point3D operator*(const Point3D & vector, const PermeabilityBase & tensor)
 {
 	return tensor.vectorTensorProduct(vector);
 //	if(dynamic_cast<const PermeabilityScalar*>(&tensor))
@@ -23,7 +23,7 @@ Point3D operator*(const Point3D & vector, const Permeability & tensor)
 //		return Point3D(nan(""), nan(""), nan(""));
 }
 
-Point3D operator*(const Permeability & tensor, const Point3D & vector)
+Point3D operator*(const PermeabilityBase & tensor, const Point3D & vector)
 {
 	return tensor.tensorVectorProduct(vector);
 //	if(dynamic_cast<const PermeabilityScalar*>(&tensor))

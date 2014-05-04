@@ -10,13 +10,13 @@
 
 namespace Geometry{
 
-//! Permeability
+//! PermeabilityBase
 /*!
- * @class Permeability
+ * @class PermeabilityBase
  * This is an abstract class that allows to handle the permeability property.
  * Its derived classes define the permeability as a scalar, diagonal tensor, symmetric tensor and full tensor.
  */
-class Permeability
+class PermeabilityBase
 {
 public:
 
@@ -25,7 +25,7 @@ public:
 	 * Create the permeability as a scalar(=1), diagonal tensor(3), symmetric tensor(6) or full tensor(9)
 	 * @param size this parameter allows to select the type of the permeability. Default 1.
 	 */
-	Permeability(UInt size = 1):M_permeability(size){};
+	PermeabilityBase(UInt size = 1):M_permeability(size){};
 
 	//! Get the permeability at position (i,j) of the 3x3 tensor
 	/*!
@@ -84,7 +84,7 @@ public:
 	 * @param tensor permeability tensor
 	 * @return the product between vector^T and tensor
 	 */
-	friend Point3D operator*(const Point3D & vector, const Permeability & tensor);
+	friend Point3D operator*(const Point3D & vector, const PermeabilityBase & tensor);
 
 	//! Tensor-vector product
 	/*!
@@ -92,10 +92,10 @@ public:
 	 * @param vector vector
 	 * @return the product between tensor and vector
 	 */
-	friend Point3D operator*(const Permeability & tensor, const Point3D & vector);
+	friend Point3D operator*(const PermeabilityBase & tensor, const Point3D & vector);
 
 	//! Destructor
-	virtual ~Permeability(){};
+	virtual ~PermeabilityBase(){};
 
 protected:
 
@@ -107,13 +107,13 @@ private:
 	static const UInt M_size = 0;
 
 	//! No default constructor
-	Permeability();
+	PermeabilityBase();
 
 	//! No copy-constructor
-	Permeability(const Permeability &);
+	PermeabilityBase(const PermeabilityBase &);
 
 	//! No assignment operator
-	Permeability & operator=(const Permeability &);
+	PermeabilityBase & operator=(const PermeabilityBase &);
 
 };
 
@@ -121,14 +121,14 @@ private:
 /*!
  * @class PermeabilityScalar
  * This class defines the permeability property as a scalar.
- * It's a derived class of Permeability.
+ * It's a derived class of PermeabilityBase.
  */
-class PermeabilityScalar : public Permeability
+class PermeabilityScalar : public PermeabilityBase
 {
 public:
 
 	//! Default constructor
-	PermeabilityScalar():Permeability(M_size){};
+	PermeabilityScalar():PermeabilityBase(M_size){};
 
 	//! Get the permeability at position (i,j) of the 3x3 tensor
 	/*!
@@ -212,14 +212,14 @@ private:
 /*!
  * @class PermeabilityDiagonal
  * This class defines the permeability property as a diagonal tensor.
- * It's a derived class of Permeability.
+ * It's a derived class of PermeabilityBase.
  */
-class PermeabilityDiagonal : public Permeability
+class PermeabilityDiagonal : public PermeabilityBase
 {
 public:
 
 	//! Default constructor
-	PermeabilityDiagonal():Permeability(M_size){};
+	PermeabilityDiagonal():PermeabilityBase(M_size){};
 
 	//! Get the permeability at position (i,j) of the 3x3 tensor
 	/*!
@@ -303,14 +303,14 @@ private:
 /*!
  * @class PermeabilitySymTensor
  * This class defines the permeability property as a symmetric tensor.
- * It's a derived class of Permeability.
+ * It's a derived class of PermeabilityBase.
  */
-class PermeabilitySymTensor : public Permeability
+class PermeabilitySymTensor : public PermeabilityBase
 {
 public:
 
 	//! Default constructor
-	PermeabilitySymTensor():Permeability(M_size){};
+	PermeabilitySymTensor():PermeabilityBase(M_size){};
 
 	//! Get the permeability at position (i,j) of the 3x3 tensor
 	/*!
@@ -394,14 +394,14 @@ private:
 /*!
  * @class PermeabilityFullTensor
  * This class defines the permeability property as a full tensor.
- * It's a derived class of Permeability.
+ * It's a derived class of PermeabilityBase.
  */
-class PermeabilityFullTensor : public Permeability
+class PermeabilityFullTensor : public PermeabilityBase
 {
 public:
 
 	//! Default constructor
-	PermeabilityFullTensor():Permeability(M_size){};
+	PermeabilityFullTensor():PermeabilityBase(M_size){};
 
 	//! Get the permeability at position (i,j) of the 3x3 tensor
 	/*!
