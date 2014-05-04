@@ -4,7 +4,7 @@
  */
 
 #include "mesh/Rigid_Mesh.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 #include "quadrature/Quadrature.hpp"
 
 Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh):

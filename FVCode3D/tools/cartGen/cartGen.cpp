@@ -8,7 +8,7 @@
 #include "core/TypeDefinition.hpp"
 #include "core/data.hpp"
 #include "mesh/Mesh3D.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 #include "mesh/cartesianGrid.hpp"
 #include "import/import.hpp"
 #include "export/exportVTU.hpp"

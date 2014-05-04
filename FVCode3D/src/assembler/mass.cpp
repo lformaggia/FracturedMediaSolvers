@@ -4,7 +4,7 @@
  */
 
 #include "assembler/mass.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 
 namespace Darcy
 {

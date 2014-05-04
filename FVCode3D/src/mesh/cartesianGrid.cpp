@@ -4,7 +4,7 @@
  */
 
 #include "mesh/Mesh3D.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 #include "mesh/cartesianGrid.hpp"
 
 void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt Ny, const UInt Nz)

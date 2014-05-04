@@ -4,7 +4,7 @@
  */
 
 #include "mesh/Mesh3D.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 #include "import/import.hpp"
 
 #include <utility>

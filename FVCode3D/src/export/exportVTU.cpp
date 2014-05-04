@@ -7,7 +7,7 @@
 
 #include "mesh/Mesh3D.hpp"
 #include "mesh/Rigid_Mesh.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 #include "geometry/operations.hpp"
 
 void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)

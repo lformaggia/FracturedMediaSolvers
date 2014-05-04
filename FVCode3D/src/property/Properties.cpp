@@ -3,7 +3,7 @@
  *	@brief Classes that handle the properties (definitions).
  */
 
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 #include "mesh/Mesh3D.hpp"
 
 namespace Geometry

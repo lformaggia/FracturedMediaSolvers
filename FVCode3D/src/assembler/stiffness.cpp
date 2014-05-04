@@ -4,7 +4,7 @@
  */
 
 #include "assembler/stiffness.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 
 namespace Darcy
 {

@@ -3,7 +3,7 @@
  *	@brief Classes that handle the permeability (definitions).
  */
 
-#include "mesh/Permeability.hpp"
+#include "property/Permeability.hpp"
 
 namespace Geometry
 {

@@ -4,7 +4,7 @@
  */
 
 #include "mesh/Rigid_Mesh.hpp"
-#include "mesh/Properties.hpp"
+#include "property/Properties.hpp"
 
 namespace Geometry{
 
