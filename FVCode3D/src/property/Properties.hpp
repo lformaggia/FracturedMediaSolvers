@@ -7,6 +7,15 @@
 #define PROPERTIES_HPP_
 
 #include "core/TypeDefinition.hpp"
+#include "property/PermeabilityFactory.hpp"
+
+/* TODO
+#	modified:   src/utility/converter.cpp
+#	modified:   src/property/Properties.cpp
+#	modified:   src/assembler/stiffness.cpp
+#	modified:   src/export/exportVTU.cpp
+#	modified:   src/import/import.cpp
+ */
 
 namespace Geometry{
 
