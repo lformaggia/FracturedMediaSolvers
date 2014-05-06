@@ -169,8 +169,8 @@ void StiffMatrix::assemble()
 			alpha2 = FindDirichletalpha (neighbor1id, &facet_it);
 
 			T12 = alpha1*alpha2/(alpha1 + alpha2);
-			Q12 = T12 * M_properties.getMobility();
-			Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+			Q12 = 2 * T12 * M_properties.getMobility();
+			Q1o = 2 * Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 
 			Matrix_elements.emplace_back(Triplet (neighbor1id, neighbor1id, Q12));
 			_b->operator()(neighbor1id) = _b->operator()(neighbor1id) + Q1o;
