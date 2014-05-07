@@ -81,9 +81,9 @@ public:
 	void assemble();
 	//@}
 
-protected:
+public:
 
-	//! @name Protected Methods
+	//! @name Alpha Methods
 	//@{
 
 	//! Border center
