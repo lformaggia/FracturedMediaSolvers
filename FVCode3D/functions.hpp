@@ -104,6 +104,6 @@ Func SSOGrid3 = [](Geometry::Point3D p)
 Func SSEDFM = [](Geometry::Point3D p)
 	{ return 1*( p.x() <= 0.2 ); };
 
-Func SS = SSEDFM;//SSGrid2;
+Func SS = fZero;//SSGrid2;
 
 #endif /* FUNCTIONS_HPP_ */

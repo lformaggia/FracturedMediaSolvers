@@ -96,8 +96,8 @@ int main(int argc, char * argv[])
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-	//propMap.setPropertiesOnMatrix(mesh, 0.25, 1000);
-	//propMap.setPropertiesOnFractures(mesh, 1e-4, 1, 100000)
+	propMap.setPropertiesOnMatrix(mesh, 0.25, 1);
+	propMap.setPropertiesOnFractures(mesh, 1e-2, 1, 1e6);
 
 	std::cout << "Export..." << std::flush;
 	ExporterVTU exporter;
@@ -115,12 +115,12 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fZero );
+	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fOne );
 	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
 	BoundaryConditions::BorderBC leftBC	(3, Neumann, fZero );
 	BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
-	BoundaryConditions::BorderBC upBC	(5, Dirichlet, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Dirichlet, fZero );
+	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
+	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
 
 	std::vector<BoundaryConditions::BorderBC> borders;
 
