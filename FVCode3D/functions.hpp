@@ -9,9 +9,9 @@
 //Func SourceDomain = [](Geometry::Point3D p){return (p.x()*p.x() + p.y()*p.y() + p.z()*p.z()) < 1;};
 //Func SinkDomain = [](Geometry::Point3D p){return (p.x()*p.x() + p.y()*p.y()) < 1;};
 
-Func fZero = [](Geometry::Point3D p){ return 0.; };
-Func fOne = [](Geometry::Point3D p){ return 1.; };
-Func fMinusOne = [](Geometry::Point3D p){ return -1.; };
+Func fZero = [](Geometry::Point3D){ return 0.; };
+Func fOne = [](Geometry::Point3D){ return 1.; };
+Func fMinusOne = [](Geometry::Point3D){ return -1.; };
 
 /* grid2 */
 Func SourceGrid2 = [](Geometry::Point3D p)
