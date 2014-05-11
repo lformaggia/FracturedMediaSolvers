@@ -93,7 +93,30 @@ private:
 	Real M_z;
 
 };
+ Point3D operator+(const Point3D & p1, const Point3D & p2);
 
+ Point3D operator-(const Point3D & p1, const Point3D & p2);
+
+ Point3D operator-(const Point3D & p);
+
+ Real operator*(const Point3D & p1, const Point3D & p2);
+ Point3D operator*(const Point3D & p, const Real r);
+
+ Point3D operator*(const Real r, const Point3D & p);
+
+ Point3D operator/(const Point3D & p, const Real r);
+
+ Real dotProduct(const Point3D & p1, const Point3D & p2);
+
+ Real innerAngleRad(const Point3D & p1, const Point3D & p2);
+
+ Real innerAngleDeg(const Point3D & p1, const Point3D & p2);
+
+ Real distance(const Point3D & p1, const Point3D & p2);
+
+ Point3D crossProduct(const Point3D & p1, const Point3D & p2);
+
+ std::ostream & operator<<(std::ostream & os, const Point3D & p);
 }//namespace Geometry
 
 #endif /* POINT3D_HPP_ */
