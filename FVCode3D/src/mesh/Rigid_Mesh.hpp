@@ -5,7 +5,7 @@
 
 #ifndef RIGID_MESH_HPP_
 #define RIGID_MESH_HPP_
- 
+
 #include "core/TypeDefinition.hpp"
 #include "mesh/Mesh3D.hpp"
 
@@ -249,7 +249,7 @@ public:
 
 		//! @name Get Methods
 		//@{
-		
+
 		//! Get mesh
 		/*!
 		 * @return a const pointer to the related mesh
@@ -326,7 +326,7 @@ public:
 		//! Display general information about the Facet
 		/*!
 		 * @param out specify the output format (std::cout by default)
-		 */	
+		 */
 		void showMe (std::ostream & out=std::cout) const;
 
 		//@}
@@ -393,7 +393,7 @@ public:
 
 		//! @name Get Methods
 		//@{
-		
+
 		//! Get mesh
 		/*!
 		 * @return a const pointer to the mesh
@@ -477,7 +477,7 @@ public:
 		//! Display general information about the Cell
 		/*!
 		 * @param out specify the output format (std::cout by default)
-		 */	
+		 */
 		void showMe (std::ostream & out=std::cout) const;
 
 		//@}
@@ -792,21 +792,21 @@ public:
 
 		//! @name Get Methods
 		//@{
-		
+
 		//! Get mesh (const)
 		/*!
 		 * @return A const pointer to the mesh
 		 */
 		Geometry::Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
-		
+
 		//! Get Facet id (const)
 		/*!
 		 * @return the facet id contained in the class
 		 */
 		UInt getFacetId () const
 			{return Facet_Id;}
-		
+
 		//! Zone Code (const)
 		/*!
 		 * @return the zone code of the represented fractures
@@ -820,28 +820,28 @@ public:
 		 */
 		const Rigid_Mesh::Facet & getFacet () const
 			{return M_mesh->getFacetsVector()[Facet_Id];}
-		
+
 		//! Get unsigned normal (const)
 		/*!
 		 * @return the unsigned normal vector to the Facet whose id is contained in the class
 		 */
 		const Generic_Vector getUNormal () const
 			{return M_mesh->getFacetsVector()[Facet_Id].getUnsignedNormal();}
-		
+
 		//! Get center (const)
 		/*!
 		 * @return the centroid of the Facet whose id is contained in the class
 		 */
 		const Generic_Point getCentroid () const
 			{return M_mesh->getFacetsVector()[Facet_Id].getCentroid();}
-		
+
 		//! Get size (const)
 		/*!
 		 * @return the size of the Facet whose id is contained in the class
 		 */
 		Real getSize () const
 			{return M_mesh->getFacetsVector()[Facet_Id].area();}
-		
+
 		//! Get separated cells (const)
 		/*!
 		 * @return the id of the separated cell from Facet whose id is contained in the class
@@ -850,7 +850,7 @@ public:
 			{return M_mesh->getFacetsVector()[Facet_Id].getSeparatedCellsIds();}
 		//@}
 	};
-	
+
 	//! Class that represents an interior facet (no fracture facet)
 	/*!
 		@class Regular_Facet
@@ -1126,7 +1126,7 @@ public:
 	 * @return the size of the biggest facet
 	 */
 	Real getMaxFacetSize () const
-	{ 
+	{
 		auto comp=[](Facet f1, Facet f2){return f1.area()<f2.area();};
 		return std::max_element(M_facets.begin(),M_facets.end(), comp)->area();
 	}
@@ -1136,7 +1136,7 @@ public:
 	 * @return the size of the smallest facet
 	 */
 	Real getMinFacetSize () const
-	{ 
+	{
 		auto comp=[](Facet f1, Facet f2){return f1.area()<f2.area();};
 		return std::min_element(M_facets.begin(),M_facets.end(), comp)->area();
 	}
@@ -1146,7 +1146,7 @@ public:
 	 * @return the average size of the facets
 	 */
 	Real getAveFacetSize () const
-	{ 	
+	{
 		Real ave = 0;
 		auto sum = [&ave](Facet f1){ave+=f1.area();};
 		for(auto it: M_facets) sum(it);
@@ -1182,7 +1182,7 @@ public:
 	//! Display general information about the Rigid_Mesh
 	/*!
 	 * @param out specify the output format (std::cout by default)
-	 */	
+	 */
 	void showMe ( std::ostream & out=std::cout ) const;
 
 	//! Converts ids of nodes to nodes
@@ -1208,14 +1208,14 @@ protected:
 	/*!
 	 * @param generic_point is the point to print
 	 * @param out specify the output format (std::cout by default)
-	 */	
+	 */
 	void showPoint (const Point & generic_point, std::ostream & out=std::cout ) const;
 
 	//! Builds the vector of cells. It is called by constructor
 	/*!
 	 * @param generic_mesh the generic_mesh
 	 * @param old_to_new_map is a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
-	 */	
+	 */
 	void CellsVectorBuilder ( Generic_Mesh & generic_mesh, std::map<UInt, UInt> & old_to_new_map );
 
 	//! Builds the vector of facets. It is called by constructor
@@ -1223,7 +1223,7 @@ protected:
 	 * @param generic_mesh the generic_mesh
 	 * @param old_to_new_mapCells is a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
 	 * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Generic_Mesh to the id in the Rigid_Mesh
-	 */	
+	 */
 	void FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
 
 	//! Builds the vector of edges. It is called by constructor
@@ -1250,7 +1250,7 @@ protected:
 	void AdjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFacets);
 
 protected:
-	
+
 	//! Vector of Nodes
 	std::vector<Point> M_nodes;
 	//! Vector of Edges
