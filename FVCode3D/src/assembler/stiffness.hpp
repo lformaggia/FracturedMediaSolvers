@@ -76,9 +76,13 @@ public:
 	//@{
 	//! Assemble method
 	/*!
-	 * @return Assemble the Mass matrix
+	 * @return Assemble the stiffness matrix
 	 */
 	void assemble();
+	/*!
+	 * @return Assemble the stiffness Mimetic FD matrix
+	 */
+	//void assembleMFD(Real tCoeff=6.);
 	//@}
 
 public:
@@ -117,7 +121,7 @@ public:
 	 */
 	Real Findfracturesalpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
 	//@}
-	
+
 protected:
 	//! Unique pointer to the vector that contains the effects of BCs on the RHS
 	std::unique_ptr<Vector> _b;
