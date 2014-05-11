@@ -30,8 +30,11 @@ set(INSTALL_INCLUDE ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Install: include
 # Eigen path
 find_path(EIGEN_PATH NAMES signature_of_eigen3_matrix_library PATHS /usr/local/include/eigen3 DOC "Eigen Directory")
 
-# Suitesparse path
-find_path(SUITESPARSE_PATH NAMES signature_of_suitesparse_matrix_library PATHS /usr/local/include/suitesparse DOC "Suitesparse Directory")
+# Suitesparse lib path
+find_path(SUITESPARSE_LIB NAMES libumfpack.so PATHS /usr/local/include/suitesparse DOC "Suitesparse lib Directory")
+
+# Suitesparse include PATH
+find_path(SUITESPARSE_INCLUDE NAMES signature_of_suitesparse_matrix_library PATHS /usr/local/include/suitesparse DOC "Suitesparse include Directory")
 
 
 # Make sure the compiler can find include files.
@@ -40,7 +43,7 @@ include_directories (
             ${CMAKE_CURRENT_SOURCE_DIR}/src
             ${CMAKE_CURRENT_SOURCE_DIR}/include
             ${EIGEN_PATH}
-            ${SUITESPARSE_PATH}/include
+            ${SUITESPARSE_INCLUDE}
             )
 
 
@@ -48,7 +51,7 @@ include_directories (
 link_directories (
             ${CMAKE_CURRENT_BINARY_DIR}/lib
             ${CMAKE_CURRENT_SOURCE_DIR}/lib
-            ${SUITESPARSE_PATH}/lib
+            ${SUITESPARSE_LIB}
          )
 
 
@@ -66,14 +69,17 @@ set_target_properties(fvcode PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
 add_executable(fvcode.exe main.cpp )
 target_link_libraries(fvcode.exe fvcode tet
 #	lapack
-	/usr/local/suitesparse/lib/libumfpack.a
-	/usr/local/suitesparse/lib/libamd.a	
-	/usr/local/suitesparse/lib/libcholmod.a
-	/usr/local/suitesparse/lib/libcolamd.a
-	/usr/local/suitesparse/lib/libsuitesparseconfig.a
+#	/usr/local/suitesparse/lib/libumfpack.a
+#	/usr/local/suitesparse/lib/libamd.a	
+#	/usr/local/suitesparse/lib/libcholmod.a
+#	/usr/local/suitesparse/lib/libcolamd.a
+#	/usr/local/suitesparse/lib/libsuitesparseconfig.a
 #	/usr/local/suitesparse/lib/libbtf.a
 #	/usr/local/suitesparse/lib/libcamd.a
 #	/usr/local/suitesparse/lib/libccolamd.a
+        umfpack
+        amd
+	cholmod
 	rt
 	)
 
