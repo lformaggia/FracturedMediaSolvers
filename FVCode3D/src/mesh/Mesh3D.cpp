@@ -43,6 +43,8 @@ Mesh3D::Facet3D::Facet3D(Geometry::Mesh3D * const mesh, const std::vector<UInt> 
 
 Point3D Mesh3D::Facet3D::computeNormal() const
 {
+	//! @toto This is unsafe: better dist of points
+	// auto numNodes = getNodesVector().size();
 	Point3D A(M_mesh->getNodesVector()[M_idVertex[0]]);
 	Point3D B(M_mesh->getNodesVector()[M_idVertex[1]]);
 	Point3D C(M_mesh->getNodesVector()[M_idVertex[2]]);
@@ -65,7 +67,7 @@ Real Mesh3D::Facet3D::area() const
 
 	area += points[M_idVertex.size()-1].x() * points[0].y() - points[M_idVertex.size()-1].y() * points[0].x();
 
-	return std::fabs(area)/2;
+	return std::fabs(area)/2.;
 }
 
 void Mesh3D::Facet3D::computeCentroid()
@@ -342,13 +344,13 @@ UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
 		else
 			idFacet = itM->second;
 	}
-	
+
 	if(!found)
 	{
 		std::cerr << "Facet not found!" << std::endl;
 		exit(0);
 	}
-	
+
 	return idFacet;
 }
 
