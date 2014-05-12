@@ -221,6 +221,7 @@ void StiffMatrix::assemble()
 	UInt numFacets = facetVectorRef.size();
 //	UInt numInternalFacets=this->M_mesh.getInternalFacetsIdsVector().size();
 	UInt numCells = cellVectorRef.size();
+    UInt numCellsTot = cellVectorRef.size() + this->M_mesh.getFractureFacetsIdsVector().size();
 
 	// SIZING GLOBAL MATRICES
 	Eigen::SparseMatrix<double,RowMajor> Z(numFacets,numFacets); //! Z matrix for internal product= \f$ M^{-1}\f$
@@ -266,7 +267,7 @@ void StiffMatrix::assemble()
 	{
 		std::vector<UInt> const & cellFacetsId( cell.getFacetsIds() );
 		UInt numCellFacets = cellFacetsId.size();
-		auto K = M_properties.getMobility();
+		auto K = M_properties.getProperties(cell.getZoneCode()).M_permeability;
 		auto cellBaricenter = cell.getCentroid();
 		auto cellMeasure    = cell.getVolume();
 		auto cellId         = cell.getId();
@@ -366,8 +367,8 @@ void StiffMatrix::assemble()
 	std::cout<<" Done ALL"<<std::endl;
 	std::cout.flush();
 	*/
-	Matrix_elements.reserve(8*this->M_mesh.getFractureFacetsIdsVector().size()+
-			this->M_mesh.getBorderFacetsIdsVector().size());
+	//Matrix_elements.reserve(8*this->M_mesh.getFractureFacetsIdsVector().size()+
+	//		this->M_mesh.getBorderFacetsIdsVector().size());
 	for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
 	{
 		Real F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
@@ -448,10 +449,12 @@ void StiffMatrix::assemble()
 		}
 	}
 
+	
 	// Put everything together
-	Eigen::SparseMatrix<double,ColMajor> Mborder(numCells,numCells);
+	Eigen::SparseMatrix<double,ColMajor> Mborder(numCellsTot,numCellsTot);
 	Mborder.setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
-	this->M_Matrix->resize(numCells,numCells);
+	this->M_Matrix->resize(numCellsTot,numCellsTot);
+    T.conservativeResize(numCellsTot,numCellsTot);
 	*(this->M_Matrix) = T + Mborder;
 	//this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
 	std::cout<<" Assembling ended"<<std::endl;
