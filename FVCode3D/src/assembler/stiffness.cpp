@@ -225,7 +225,7 @@ void StiffMatrix::assemble()
 	// SIZING GLOBAL MATRICES
 	Eigen::SparseMatrix<double,RowMajor> Z(numFacets,numFacets); //! Z matrix for internal product= \f$ M^{-1}\f$
 	Eigen::SparseMatrix<double,RowMajor> B(numCells,numFacets);
-	Eigen::SparseMatrix<double,RowMajor> T(numCells,numCells);
+	Eigen::SparseMatrix<double,ColMajor> T(numCells,numCells);
 	ZMatrix_elements.resize(numFacets,0);
 	BMatrix_elements.resize(numCells,0);
 	// First loop to size matrices and avoid memory realloc
@@ -352,7 +352,7 @@ void StiffMatrix::assemble()
 	B.resize(0,0); // Save memory but it does not work...
 	Z.resize(0,0);
 
-	std::cout<<"Building the triplets...."; std::cout.flush();
+	/* std::cout<<"Building the triplets...."; std::cout.flush();
 	UInt counter(0);
 	Matrix_elements.reserve(T.nonZeros()+8*this->M_mesh.getFractureFacetsIdsVector().size());
 	for (int k=0; k<T.outerSize(); ++k)
@@ -365,6 +365,9 @@ void StiffMatrix::assemble()
 	T.resize(0,0);
 	std::cout<<" Done ALL"<<std::endl;
 	std::cout.flush();
+	*/
+	Matrix_elements.reserve(8*this->M_mesh.getFractureFacetsIdsVector().size()+
+			this->M_mesh.getBorderFacetsIdsVector().size());
 	for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
 	{
 		Real F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
@@ -445,7 +448,12 @@ void StiffMatrix::assemble()
 		}
 	}
 
-	this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
+	// Put everything together
+	Eigen::SparseMatrix<double,ColMajor> Mborder(numCells,numCells);
+	Mborder.setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
+	this->M_Matrix->resize(numCells,numCells);
+	*(this->M_Matrix) = T + Mborder;
+	//this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
 	std::cout<<" Assembling ended"<<std::endl;
 }
 
