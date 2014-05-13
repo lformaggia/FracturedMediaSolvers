@@ -203,8 +203,8 @@ void StiffMatrix::assemble()
 	Real Df;
 	Real T12, Q12, T1f, Q1f, T2f, Q2f, QFf, Q1o;
 	// Local Matrices for Mimetic
-	Eigen::Matrix<double,Dynamic,2> Np; // facet normals * K
-	Eigen::Matrix<double,Dynamic,2> Nop; // facets normals outward
+	Eigen::Matrix<double,Dynamic,3> Np; // facet normals * K
+	Eigen::Matrix<double,Dynamic,3> Nop; // facets normals outward
 	Eigen::Matrix<double,Dynamic,Dynamic> Z0p;// COmpunent of Z matrix
 	Eigen::Matrix<double,Dynamic,Dynamic> Z1p;// Component of Z Matrix
 	Eigen::Matrix<double,Dynamic,Dynamic> Zp; //! Z matrix for internal product= \f$ M^{-1}\f$
@@ -212,8 +212,8 @@ void StiffMatrix::assemble()
 	Eigen::Matrix<double,1,Dynamic> Bp; // B Matrix
 	Eigen::Matrix<double,Dynamic,1> BTp;// Traspose of B
 	Eigen::Matrix<double,Dynamic,2> Rp; // Matrix R
-	Eigen::Matrix<double,2,2> Rrt;
-	Eigen::Matrix<double,2,2> Rinv;
+	Eigen::Matrix<double,3,3> Rrt;
+	Eigen::Matrix<double,3,3> Rinv;
 
 	// Extract info of mesh. auto&& resolves const &
 	auto&& cellVectorRef   = this->M_mesh.getCellsVector();
@@ -301,16 +301,27 @@ void StiffMatrix::assemble()
 			// VELOCITY NOT THE FLUX
 			Np(localFacetId,0)=facetNormal[0];
 			Np(localFacetId,1)=facetNormal[1];
+			Np(localFacetId,2)=facetNormal[2];
+
 			Rp(localFacetId,0)=alpha*g[0]*facetMeasure;
 			Rp(localFacetId,1)=alpha*g[1]*facetMeasure;
+			Rp(localFacetId,2)=alpha*g[2]*facetMeasure;
 			Bp(0,localFacetId)=alpha*facetMeasure;
 		}
 		Rrt = Rp.transpose()*Rp;
-		Real det  = 1.0/(Rrt(0,0)*Rrt(1,1)-2*Rrt(0,1));
-		Rinv(0,0) =  det*Rrt(1,1);
-		Rinv(0,1) = -det*Rrt(0,1);
-		Rinv(1,0) =  Rinv(0,1);
-		Rinv(1,1) =  det*Rrt(0,0);
+
+		Real det  = Rrt(0,0)*(Rrt(1,1)*Rrt(2,2)-Rrt(1,2)*Rrt(2,1))-
+				    Rrt(0,1)*(Rrt(1,0)*Rrt(2,2)-Rrt(1,2)*Rrt(2,0))+
+				    Rrt(0,2)*(Rrt(1,0)*Rrt(2,1)-Rrt(1,1)*Rrt(2,0));
+		det = 1.0/det;
+
+		Rinv(0,0) =det*(Rrt(1,1)*Rrt(2,2)-Rrt(1,2)*Rrt(1,2));
+		Rinv(0,1) =det*(Rrt(0,2)*Rrt(1,2)-Rrt(0,1)*Rrt(2,2));
+		Rinv(0,2) =det*(Rrt(0,1)*Rrt(1,2)-Rrt(0,2)*Rrt(1,1));
+		Rinv(1,1) =det*(Rrt(0,0)*Rrt(2,2)-Rrt(0,2)*Rrt(0,2));
+		Rinv(1,2) =det*(Rrt(0,2)*Rrt(0,1)-Rrt(0,0)*Rrt(1,2));
+		Rinv(2,2) =det*(Rrt(0,0)*Rrt(1,1)-Rrt(0,1)*Rrt(0,1));
+
 
 		Z0p = (K/cellMeasure)*(Np*Np.transpose());
 		Z1p = (tCoeff*K/cellMeasure)*(
