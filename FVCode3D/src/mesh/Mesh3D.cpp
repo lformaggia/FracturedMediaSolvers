@@ -43,9 +43,14 @@ Mesh3D::Facet3D::Facet3D(Geometry::Mesh3D * const mesh, const std::vector<UInt> 
 
 Point3D Mesh3D::Facet3D::computeNormal() const
 {
+	UInt i = 3;
+	const UInt nPoints = getNumberOfPoints();
 	Point3D A(M_mesh->getNodesVector()[M_idVertex[0]]);
 	Point3D B(M_mesh->getNodesVector()[M_idVertex[1]]);
 	Point3D C(M_mesh->getNodesVector()[M_idVertex[2]]);
+	while( (std::fabs(innerAngleRad(B-A,C-A)) < 1e-6) && (i<nPoints) )
+		C = M_mesh->getNodesVector()[M_idVertex[i++]];
+
 	return Geometry::computeNormal(A,B,C);
 }
 
