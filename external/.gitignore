@@ -1,5 +1,0 @@
-bin/*
-lib/*
-share/*
-man/*
-# include dir is treated specially, look at include/.gitignore
