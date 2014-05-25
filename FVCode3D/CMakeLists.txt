@@ -69,11 +69,11 @@ set_target_properties(fvcode PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
 add_executable(fvcode.exe main.cpp )
 target_link_libraries(fvcode.exe fvcode tet
 #	lapack
-#	/usr/local/suitesparse/lib/libumfpack.a
-#	/usr/local/suitesparse/lib/libamd.a	
-#	/usr/local/suitesparse/lib/libcholmod.a
-#	/usr/local/suitesparse/lib/libcolamd.a
-#	/usr/local/suitesparse/lib/libsuitesparseconfig.a
+	/usr/local/suitesparse/lib/libumfpack.a
+	/usr/local/suitesparse/lib/libamd.a	
+	/usr/local/suitesparse/lib/libcholmod.a
+	/usr/local/suitesparse/lib/libcolamd.a
+	/usr/local/suitesparse/lib/libsuitesparseconfig.a
 #	/usr/local/suitesparse/lib/libbtf.a
 #	/usr/local/suitesparse/lib/libcamd.a
 #	/usr/local/suitesparse/lib/libccolamd.a

@@ -5,6 +5,8 @@
 #include <vector>
 #include <fstream>
 
+#include <unsupported/Eigen/SparseExtra>
+
 #include "core/TypeDefinition.hpp"
 #include "core/data.hpp"
 #include "mesh/Rigid_Mesh.hpp"
@@ -22,9 +24,9 @@
 #include "assembler/fixPressureDofs.hpp"
 #include "functions.hpp"
 
-typedef Problem<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> Pb;
-typedef DarcySteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
+typedef Problem<EigenBiCGSTAB, CentroidQuadrature, CentroidQuadrature> Pb;
+typedef DarcySteady<EigenBiCGSTAB, CentroidQuadrature, CentroidQuadrature> DarcyPb;
+typedef DarcyPseudoSteady<EigenBiCGSTAB, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -244,6 +246,176 @@ int main(int argc, char * argv[])
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
+    // Save matrix and rhs
+    Eigen::saveMarket(darcy->getA(),"stiffness.m");
+    Eigen::saveMarket(darcy->getb(),"rhs.m");
+
+    // Transmissibility fracture-frature and boundary fluxes
+    const std::vector<Geometry::Point3D> & meshNodes = myrmesh.getNodesVector();
+    const Vector & solution = darcy->getSolver().getSolution();
+    const UInt nbCells = myrmesh.getCellsVector().size();
+    Real pressure1(0.), pressure2(0.);
+    Real fracture1Area(0.), fracture2Area(0.);
+    Real fractureFlux(0.), inletFlux(0.), outletFlux(0.), fractureFluxIn(0.), fractureFluxOut(0.);
+    Real h( std::numeric_limits<Real>::max() );
+    const Real midX(1.);
+
+    // Boundary fluxes
+    Darcy::StiffMatrix StiffM(myrmesh, BC);
+    for ( auto facet_it : myrmesh.getBorderFacetsIdsVector() )
+    {
+        const UInt borderID = facet_it.getBorderId();
+        if (BC.getBordersBCMap().at(borderID).getBCType() == Dirichlet)
+        {
+            const UInt cellId = facet_it.getSeparated()[0];
+            const Real alpha1 = StiffM.Findalpha(cellId, &facet_it);
+            const Real alpha2 = StiffM.FindDirichletalpha(cellId, &facet_it);
+            Real trasmissibility = alpha1*alpha2/(alpha1 + alpha2) * propMap.getMobility();
+            const Real flux = trasmissibility *
+                    ( darcy->getSolver().getSolution()[cellId] - BC.getBordersBCMap().at(borderID).getBC()(facet_it.getCentroid()));
+
+            if(borderID == 1)
+            {
+                inletFlux += flux;
+            }
+            if(borderID == 2)
+            {
+                outletFlux += flux;
+            }
+
+        }
+    }
+    
+    const Real deltaFlux( std::abs(inletFlux) - std::abs(outletFlux) );
+
+    std::cout << std::setprecision(16)
+              << " inletFlux " << std::abs(inletFlux)
+              << std::endl;
+
+    std::cout << std::setprecision(16)
+              << " outletFlux " << std::abs(outletFlux)
+              << std::endl;
+
+    std::cout << std::setprecision(16)
+              << " deltaFlux " << std::abs(deltaFlux)
+              << std::endl;
+
+    // Transmissibility fracture-frature
+    for ( auto facet_it : myrmesh.getFractureFacetsIdsVector() )
+    {
+        const auto& facetNeighbors = facet_it.getFractureNeighbors ();
+        const UInt facetIdasCell = facet_it.getIdasCell();
+        const Geometry::Point3D facetCentre = facet_it.getCentroid();
+        const Real facetArea = facet_it.getSize();
+
+        h = std::min( h, std::sqrt( facetArea ) / 2. );
+
+        if ( facetCentre[0] < midX )
+        {
+            pressure1 += solution[ facetIdasCell ] * facetArea;
+            fracture1Area += facetArea;
+        } // if
+
+        if ( facetCentre[0] > midX /*&& facetCentre[0] < 4100.0*/ )
+        {
+            pressure2 += solution[ facetIdasCell ] * facetArea;
+            fracture2Area += facetArea;
+        } // if
+
+            const Real F_permeability = propMap.getProperties(facet_it.getZoneCode()).M_permeability;
+            const Real F_aperture = propMap.getProperties(facet_it.getZoneCode()).M_aperture;
+            const Real Df = F_aperture/2.;
+            const Real alphaf = facet_it.getSize() * F_permeability / Df;
+
+            const Real alpha1 = StiffM.Findalpha(facet_it.getSeparated()[0], &facet_it);
+            const Real alpha2 = StiffM.Findalpha(facet_it.getSeparated()[1], &facet_it);
+
+            const Real T1f = alpha1*alphaf/(alpha1 + alphaf) * propMap.getMobility();
+            const Real flux1 = T1f * (solution[facet_it.getSeparated()[0]] - solution[facetIdasCell]) ;
+
+            const Real T2f = alphaf*alpha2/(alphaf + alpha2) * propMap.getMobility();
+            const Real flux2 = T2f * (solution[facet_it.getSeparated()[1]] - solution[facetIdasCell]) ;
+
+            if (flux1 > 0)
+                fractureFluxIn += flux1;
+            else
+                fractureFluxOut += flux1;
+
+            if (flux2 > 0)
+                fractureFluxIn += flux2;
+            else
+                fractureFluxOut += flux2;
+
+        for ( auto& facetNeighbors_it : facetNeighbors )
+        {
+            const UInt node1Id = facetNeighbors_it.first.first;
+            const UInt node2Id = facetNeighbors_it.first.second;
+
+            if ( meshNodes[node1Id][0] == midX && meshNodes[node2Id][0] == midX && facetCentre[0] < midX )
+            {
+                const UInt neighborFacetIdasCell = facetNeighbors_it.second[0] + nbCells;
+                const Real trasmissibility = darcy->getA().coeffRef( facetIdasCell, neighborFacetIdasCell );
+                const Real deltaSolution = solution[ facetIdasCell ] - solution[ neighborFacetIdasCell ];
+                fractureFlux += trasmissibility * deltaSolution;
+            } // if
+        } // for
+    } // for
+
+    std::cout << "Fracture mesh size " << h << std::endl;
+
+    const Real deltaFractureFlux( std::abs(fractureFluxIn) - std::abs(fractureFluxOut) );
+
+    std::cout << std::setprecision(16)
+                << " inletFractureFlux " << std::abs(fractureFluxIn)
+                << std::endl;
+
+    std::cout << std::setprecision(16)
+                << " outletFractureFlux " << std::abs(fractureFluxOut)
+                << std::endl;
+
+    std::cout << std::setprecision(16)
+                << " deltaFractureFlux " << std::abs(deltaFractureFlux)
+                << std::endl;
+
+    pressure1 /= fracture1Area;
+    pressure2 /= fracture2Area;
+
+    std::cout << std::setprecision(16)
+                << "size1 " << fracture1Area
+                << std::endl
+                << " size2 " << fracture2Area
+                << std::endl;
+
+    const Real deltaFracturePressure( pressure1 - pressure2 );
+
+    std::cout << std::setprecision(16)
+                << "pressure1 " << pressure1
+                << std::endl
+                << " pressure2 " << pressure2
+                << " delta " << deltaFracturePressure
+                << std::endl;
+
+    const Real fractureTrasmissibility( fractureFlux / deltaFracturePressure );
+
+    const Real T_teo = 1.1250e+04;
+
+    std::cout << std::setprecision(16)
+                << " flux " << std::abs(fractureFlux)
+                << std::endl;
+
+    std::cout << std::setprecision(16)
+                << " trasmissibility " << std::abs(fractureTrasmissibility)
+                << std::endl;
+
+    std::cout << std::setprecision(16)
+                << " err " << std::abs((T_teo - std::abs(fractureTrasmissibility)) / T_teo)
+                << std::endl;
+
+    std::cout << std::setprecision(16)
+                << " Et " << 2*1.e-16 * std::max(pressure1, pressure2) / ( (pressure1 - pressure2)*(pressure1 - pressure2))
+                << std::endl;
+    
+    
 	std::cout << "Export Solution..." << std::flush;
 	exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
 	std::cout << " done." << std::endl << std::endl;
