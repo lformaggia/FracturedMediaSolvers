@@ -486,7 +486,8 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 
 Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
 	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVertexesVector()), M_area(generic_facet.area()),
-	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()), M_isFracture(generic_facet.isFracture())
+	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()), M_isFracture(generic_facet.isFracture()),
+    M_borderId(generic_facet.getBorderId())
 {
 	if(!M_mesh->M_renumber)
 		for(auto it = generic_facet.getSeparatedCells().begin(); it != generic_facet.getSeparatedCells().end(); ++it)
@@ -499,12 +500,14 @@ Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Me
 Rigid_Mesh::Facet::Facet(const Facet & facet):
 	M_mesh(facet.getMesh()), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()){}
+	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()),
+	M_borderId(facet.getBorderId()){}
 
 Rigid_Mesh::Facet::Facet(const Facet & facet, Geometry::Rigid_Mesh * const mesh):
 	M_mesh(mesh), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()){}
+	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()),
+	M_borderId(facet.getBorderId()){}
 
 // ==================================================
 // Methods

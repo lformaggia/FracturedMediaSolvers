@@ -321,6 +321,13 @@ public:
 			{ return M_separatedCellsIds.size() == 1; }
 		//@}
 
+        //! Get the borderID
+        /*!
+         * @return the borderID. If zero, then the facet is an interior facet
+         */
+        UInt getBorderId() const
+            { return M_borderId; }
+		
 		//! @name Methods
 		//@{
 		//! Display general information about the Facet
@@ -348,7 +355,8 @@ public:
 		Generic_Vector M_unsignedNormal;
 		//! True if the Facet is a fracture
 		bool M_isFracture;
-
+        //! Id of the border facet. It is 0 if the facet is interior
+        UInt M_borderId;
 	};
 
 	//! Class that implements a Cell
