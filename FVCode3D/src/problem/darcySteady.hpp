@@ -73,11 +73,24 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
     Darcy::StiffMatrix S(this->M_mesh, this->M_bc);
     S.assemble();
 
-    Vector f(Vector::Constant(S.getSize(), 0.));
-    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
-        f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
-    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
+    Vector f( Vector::Constant( S.getSize(), 0.) );
+    if ( this->M_mesh.getInternalFacetsIdsVector().size() != 0
+            &&
+            ( this->M_ssOn == Data::SourceSinkOn::Both
+                ||
+              this->M_ssOn == Data::SourceSinkOn::Matrix) )
+    {
+        f += this->M_quadrature->CellIntegrateMatrix(this->M_func);
+    } // if
+
+    if ( this->M_mesh.getFractureFacetsIdsVector().size() != 0
+            &&
+            ( this->M_ssOn == Data::SourceSinkOn::Both
+                ||
+              this->M_ssOn == Data::SourceSinkOn::Fractures ) )
+    {
         f += this->M_quadrature->CellIntegrateFractures(this->M_func);
+    } // if
 
     this->M_A = S.getMatrix();
     this->M_b = S.getBCVector() + f;
