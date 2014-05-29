@@ -6,8 +6,6 @@
 #include "mesh/Mesh3D.hpp"
 #include "geometry/operations.hpp"
 
-#include <boost/lexical_cast.hpp>
-
 #include <utility>
 #include <fstream>
 #include <algorithm>

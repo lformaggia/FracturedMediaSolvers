@@ -7,8 +7,6 @@
 #include "mesh/Mesh3D.hpp"
 #include "fracture/Fracture3D.hpp"
 
-#include <boost/lexical_cast.hpp>
-
 #include <fstream>
 #include <limits>
 #include <cstring>
@@ -39,9 +37,11 @@ bool FractureNetwork3D::exportVtk(const std::string & prefixFileName) const
 	bool status = true;
 
 	for( UInt i=0; i < nFN && status; ++i)
-		status = M_fractureNetwork[i].exportVtk(prefixFileName +
-				boost::lexical_cast<std::string>(i) +
-				".vtk" );
+    {
+        std::stringstream vtkFileName;
+        vtkFileName << prefixFileName << i << ".vtk";
+		status = M_fractureNetwork[i].exportVtk(vtkFileName.str());
+    }
 
 	return status;
 }
