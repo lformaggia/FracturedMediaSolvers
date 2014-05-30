@@ -20,7 +20,11 @@ class Solver
 public:
 
     //! Empty constructor
-    Solver():M_A(nullptr), M_b(nullptr) {}
+    Solver( const UInt nbDofs = 0 ) :
+        M_A( nbDofs, nbDofs ),
+        M_b( Vector::Zero( nbDofs ) ),
+        M_x( Vector::Zero( nbDofs ) )
+    {}
 
     //! Constructor
     /*!
@@ -28,65 +32,69 @@ public:
      * @param b RHS, it is Eigen vector
      */
     Solver(const SpMat & A, const Vector & b):
-        M_A(&A), M_b(&b) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-    Solver(const SpMat * A, const Vector * b):
         M_A(A), M_b(b) {}
 
     //! Set the matrix A
     /*!
      * @param the matrix A
      */
-    void setA(const SpMat & A)
-    	{ M_A = &A; }
+    void setA(const SpMat & A) { M_A = A; }
 
     //! Set the RHS
     /*!
      * @param the vector b
      */
-    void setb(const Vector & b)
-        { M_b = &b; }
+    void setb(const Vector & b) { M_b = b; }
 
     //! Get the matrix A
     /*!
      * @return the matrix A
      */
-    const SpMat & getA() const
-        { return *M_A; }
+    const SpMat & getA() const { return M_A; }
+
+    //! Get the matrix A
+    /*!
+     * @return the matrix A
+     */
+    SpMat & getA() { return M_A; }
 
     //! Get the RHS
     /*!
      * @return the vector b
      */
-    const Vector & getb() const
-        { return *M_b; }
+    const Vector & getb() const { return M_b; }
+
+    //! Get the RHS
+    /*!
+     * @return the vector b
+     */
+    Vector & getb() { return M_b; }
 
     //! Get the solution
     /*!
      * @return the vector containing the solution
      * @pre call solve()
      */
-    const Vector & getSolution() const
-        { return M_x; }
+    const Vector & getSolution() const { return M_x; }
+
+    //! Get the solution
+    /*!
+     * @return the vector containing the solution
+     * @pre call solve()
+     */
+    Vector & getSolution() { return M_x; }
 
     //! Get the system size
     /*!
      * @return the system size, i.e. the number of rows of A
      */
-    UInt size() const
-        { return M_A->rows(); }
+    UInt size() const { return M_A.rows(); }
 
     //! Get the non zero values
     /*!
      * @return the number or non zero values
      */
-    UInt nonZeros() const
-        { return M_A->nonZeros(); }
+    UInt nonZeros() const { return M_A.nonZeros(); }
 
     //! Solve the linear system
     /*!
@@ -96,18 +104,19 @@ public:
     virtual void solve() = 0;
 
     //! Destructor
-    virtual ~Solver() {}
+    virtual ~Solver() = default;
 
 protected:
 
     //! Sparse Matrix
-    const SpMat * M_A;
+    SpMat M_A;
+
     //! RHS
-    const Vector * M_b;
+    Vector M_b;
+
     //! Solution vector
     Vector M_x;
-
-};
+}; // class Solver
 
 //! Class EigenCholesky
 /*!
@@ -120,7 +129,7 @@ class EigenCholesky : public Solver
 public:
 
     //! Empty constructor
-	EigenCholesky(): Solver() {}
+    EigenCholesky( const UInt nbDofs = 0 ): Solver( nbDofs ) {}
 
     //! Constructor
     /*!
@@ -128,15 +137,7 @@ public:
      * @param b RHS, it is Eigen vector
      */
     EigenCholesky(const SpMat & A, const Vector & b):
-        Solver(&A,&b) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-    EigenCholesky(const SpMat * A, const Vector * b):
-        Solver(A,b) {}
+        Solver(A, b) {}
 
     //! Solve the linear system
     /*!
@@ -145,9 +146,8 @@ public:
     virtual void solve();
 
     //! Destructor
-    virtual ~EigenCholesky() {}
-
-};
+    virtual ~EigenCholesky() = default;
+}; // class EigenCholesky
 
 //! Class EigenLU
 /*!
@@ -160,7 +160,7 @@ class EigenLU : public Solver
 public:
 
     //! Empty constructor
-	EigenLU(): Solver() {}
+    EigenLU( const UInt nbDofs = 0 ): Solver( nbDofs ) {}
 
     //! Constructor
     /*!
@@ -168,15 +168,7 @@ public:
      * @param b RHS, it is Eigen vector
      */
     EigenLU(const SpMat & A, const Vector & b):
-        Solver(&A,&b) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-    EigenLU(const SpMat * A, const Vector * b):
-        Solver(A,b) {}
+        Solver(A, b) {}
 
     //! Solve the linear system
     /*!
@@ -185,9 +177,8 @@ public:
     virtual void solve();
 
     //! Destructor
-    virtual ~EigenLU() {}
-
-};
+    virtual ~EigenLU() = default;
+}; // class EigenLU
 
 //! Class EigenUmfPack
 /*!
@@ -199,33 +190,25 @@ class EigenUmfPack : public Solver
 {
 public:
 
-	//! Empty constructor
-	EigenUmfPack(): Solver() {}
+    //! Empty constructor
+    EigenUmfPack( const UInt nbDofs = 0 ): Solver( nbDofs ) {}
 
-	//! Constructor
-	/*!
-	 * @param A Eigen sparse matrix
-	 * @param b RHS, it is Eigen vector
-	 */
-	EigenUmfPack(const SpMat & A, const Vector & b):
-		Solver(&A,&b) {}
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    EigenUmfPack(const SpMat & A, const Vector & b):
+        Solver(A, b) {}
 
-	//! Constructor
-	/*!
-	 * @param A Eigen sparse matrix
-	 * @param b RHS, it is Eigen vector
-	 */
-	EigenUmfPack(const SpMat * A, const Vector * b):
-		Solver(A,b) {}
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b by means of a UmfPack factorization.
+     */
+    virtual void solve();
 
-	//! Solve the linear system
-	/*!
-	 * Solve the linear system Ax=b by means of a UmfPack factorization.
-	 */
-	virtual void solve();
-
-	//! Destructor
-	virtual ~EigenUmfPack() {}
+    //! Destructor
+    virtual ~EigenUmfPack() = default;
 };
 
 //! Class IterativeSolver
@@ -239,109 +222,90 @@ class IterativeSolver : public Solver
 {
 public:
 
-	//! Empty constructor
-	IterativeSolver(): Solver(), M_maxIter(100), M_iter(0), M_tol(1e-6), M_res(0) {}
+    //! Empty constructor
+    IterativeSolver( const UInt nbDofs = 0 ):
+        Solver( nbDofs ),
+        M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0) {}
 
-	//! Constructor
-	/*!
-	 * @param A Eigen sparse matrix
-	 * @param b RHS, it is Eigen vector
-	 */
-	IterativeSolver(const SpMat & A, const Vector & b):
-		Solver(&A,&b), M_maxIter(100), M_iter(0), M_tol(1e-6), M_res(0) {}
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    IterativeSolver( const SpMat & A, const Vector & b,
+                     const UInt maxIter = S_referenceTol, const Real tol = S_referenceMaxIter ):
+        Solver( A, b), M_maxIter(maxIter), M_iter(0), M_tol(tol), M_res(0) {}
 
-	//! Constructor
-	/*!
-	 * @param A Eigen sparse matrix
-	 * @param b RHS, it is Eigen vector
-	 */
-	IterativeSolver(const SpMat * A, const Vector * b):
-		Solver(A,b), M_maxIter(100), M_iter(0), M_tol(1e-6), M_res(0) {}
+    //! @name Get Methods
+    //@{
 
-	//! Constructor
-	/*!
-	 * @param A Eigen sparse matrix
-	 * @param b RHS, it is Eigen vector
-	 */
-	IterativeSolver(const SpMat & A, const Vector & b, const UInt maxIter, const Real tol):
-		Solver(&A,&b), M_maxIter(maxIter), M_iter(0), M_tol(tol), M_res(0) {}
+    //! Get maximum number of iterations
+    /*!
+     * @return maximum number of iterations
+     */
+    UInt getMaxIter() const { return M_maxIter; }
 
-	//! Constructor
-	/*!
-	 * @param A Eigen sparse matrix
-	 * @param b RHS, it is Eigen vector
-	 */
-	IterativeSolver(const SpMat * A, const Vector * b, const UInt maxIter, const Real tol):
-		Solver(A,b), M_maxIter(maxIter), M_iter(0), M_tol(tol), M_res(0) {}
+    //! Get number of iterations
+    /*!
+     * @return number of iterations employed by the solver
+     */
+    UInt getIter() const { return M_iter; }
 
-	//! @name Get Methods
-	//@{
+    //! Get relative tolerance for the residual error
+    /*!
+     * @return relative tolerance for the residual error
+     */
+    Real getTolerance() const { return M_tol; }
 
-	//! Get maximum number of iterations
-	/*!
-	 * @return maximum number of iterations
-	 */
-	UInt getMaxIter() const { return M_maxIter; }
+    //! Get the residual error
+    /*!
+     * @return residual error ( b - A * x )
+     */
+    Real getResidual() const { return M_res; }
 
-	//! Get number of iterations
-	/*!
-	 * @return number of iterations employed by the solver
-	 */
-	UInt getIter() const { return M_iter; }
+    //@}
 
-	//! Get relative tolerance for the residual error
-	/*!
-	 * @return relative tolerance for the residual error
-	 */
-	Real getTolerance() const { return M_tol; }
+    //! @name Set Methods
+    //@{
 
-	//! Get the residual error
-	/*!
-	 * @return residual error ( b - A * x )
-	 */
-	Real getResidual() const { return M_res; }
+    //! Set maximum number of iterations
+    /*!
+     * @param maximum number of iterations
+     */
+    void setMaxIter(const UInt maxIter) { M_maxIter = maxIter; };
 
-	//@}
+    //! Set relative tolerance for the residual error
+    /*!
+     * @param relative tolerance for the residual error
+     */
+    void setTolerance(const Real tol) { M_tol = tol; };
 
-	//! @name Set Methods
-	//@{
+    //@}
 
-	//! Set maximum number of iterations
-	/*!
-	 * @param maximum number of iterations
-	 */
-	void setMaxIter(const UInt maxIter) { M_maxIter = maxIter; };
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b.
+     * The method employed to solve the system depends on the derived class of Solver that calls this method.
+     */
+    virtual void solve() = 0;
 
-	//! Set relative tolerance for the residual error
-	/*!
-	 * @param relative tolerance for the residual error
-	 */
-	void setTolerance(const Real tol) { M_tol = tol; };
-
-	//@}
-
-	//! Solve the linear system
-	/*!
-	 * Solve the linear system Ax=b.
-	 * The method employed to solve the system depends on the derived class of Solver that calls this method.
-	 */
-	virtual void solve() = 0;
-
-	//! Destructor
-	virtual ~IterativeSolver() {}
+    //! Destructor
+    virtual ~IterativeSolver() = default;
 
 protected:
 
-	//! Maximum number of iterations
-	UInt M_maxIter;
-	//! Number of iterations
-	UInt M_iter;
-	//! Tolerance
-	Real M_tol;
-	//! Residual error
-	Real M_res;
+    //! Maximum number of iterations
+    UInt M_maxIter;
+    //! Number of iterations
+    UInt M_iter;
+    //! Tolerance
+    Real M_tol;
+    //! Residual error
+    Real M_res;
 
-};
+    static Real S_referenceTol;
+    static UInt S_referenceMaxIter;
+}; // class IterativeSolver
 
 //! Class EigenCG
 /*!
@@ -354,39 +318,17 @@ class EigenCG : public IterativeSolver
 public:
 
     //! Empty constructor
-	EigenCG(): IterativeSolver() {}
+    EigenCG( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-	EigenCG(const SpMat & A, const Vector & b):
-		IterativeSolver(&A,&b) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-	EigenCG(const SpMat * A, const Vector * b):
-		IterativeSolver(A,b) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-	EigenCG(const SpMat & A, const Vector & b, const UInt maxIter, const Real tol):
-		IterativeSolver(&A,&b,maxIter,tol) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-	EigenCG(const SpMat * A, const Vector * b, const UInt maxIter, const Real tol):
-		IterativeSolver(A,b,maxIter,tol) {}
+    EigenCG( const SpMat & A, const Vector & b,
+             const UInt maxIter = IterativeSolver::S_referenceTol,
+             const Real tol = IterativeSolver::S_referenceMaxIter ):
+        IterativeSolver(A, b,maxIter,tol) {}
 
     //! Solve the linear system
     /*!
@@ -395,9 +337,9 @@ public:
     virtual void solve();
 
     //! Destructor
-    virtual ~EigenCG() {}
+    virtual ~EigenCG() = default;
 
-};
+}; // class EigenCG
 
 //! Class EigenBiCGSTAB
 /*!
@@ -410,39 +352,25 @@ class EigenBiCGSTAB : public IterativeSolver
 public:
 
     //! Empty constructor
-	EigenBiCGSTAB(): IterativeSolver() {}
+    EigenBiCGSTAB( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-	EigenBiCGSTAB(const SpMat & A, const Vector & b):
-		IterativeSolver(&A,&b) {}
+    EigenBiCGSTAB(const SpMat & A, const Vector & b):
+        IterativeSolver( A, b) {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-	EigenBiCGSTAB(const SpMat * A, const Vector * b):
-		IterativeSolver(A,b) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-	EigenBiCGSTAB(const SpMat & A, const Vector & b, const UInt maxIter, const Real tol):
-		IterativeSolver(&A,&b,maxIter,tol) {}
-
-    //! Constructor
-    /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
-     */
-	EigenBiCGSTAB(const SpMat * A, const Vector * b, const UInt maxIter, const Real tol):
-		IterativeSolver(A,b,maxIter,tol) {}	
+    EigenBiCGSTAB( const SpMat & A, const Vector & b,
+                   const UInt maxIter = IterativeSolver::S_referenceTol,
+                   const Real tol = IterativeSolver::S_referenceMaxIter ):
+        IterativeSolver(A, b,maxIter,tol) {}
 
     //! Solve the linear system
     /*!
@@ -451,8 +379,8 @@ public:
     virtual void solve();
 
     //! Destructor
-    virtual ~EigenBiCGSTAB() {}
+    virtual ~EigenBiCGSTAB() = default;
 
-};
+}; // class EigenBiCGSTAB
 
 #endif /* SOLVER_HPP_ */
