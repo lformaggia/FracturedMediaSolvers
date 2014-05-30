@@ -74,7 +74,7 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
     S.assemble();
 
     Vector f( Vector::Constant( S.getSize(), 0.) );
-    if ( this->M_mesh.getInternalFacetsIdsVector().size() != 0
+    if ( this->M_mesh.getCellsVector().size() != 0
             &&
             ( this->M_ssOn == Data::SourceSinkOn::Both
                 ||
