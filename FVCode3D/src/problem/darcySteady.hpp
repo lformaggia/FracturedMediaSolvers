@@ -21,10 +21,16 @@
  * The first template indicates the Solver used to solve the linear system,
  * the second and third template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class Solver, class QRMatrix, class QRFracture>
-class DarcySteady : public Problem<Solver, QRMatrix, QRFracture>
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType = SpMat>
+class DarcySteady : public Problem<Solver, QRMatrix, QRFracture, MatrixType>
 {
 public:
+
+    //! Typedef for the matrix type
+    /*!
+     * @typedef Matrix_Type
+     */
+    typedef MatrixType Matrix_Type;
 
     //! Typedef for Rigid_Mesh
     /*!
@@ -46,41 +52,56 @@ public:
      * @param func reference to a Func
      */
     DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data):
-        Problem<Solver, QRMatrix, QRFracture>(mesh, bc, func, data) {};
+        Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, func, data) {};
 
-    //! Assemble method
+    //! Assemble matrix method
     /*!
-     * Build the stiffness matrix and the right hand side.
+     * Build the stiffness matrix.
      */
-    virtual void assemble();
+    virtual void assembleMatrix();
+
+    //! Assemble vector method
+    /*!
+     * Build the right hand side.
+     */
+    virtual void assembleVector();
 
     //! Solve method
     /*!
      * Solve the system Ax=b.
      * @pre call assemble().
      */
-    virtual void solve();
+    virtual void solve() { this->M_solver->solve(); }
 
     //! Destructor
-    virtual ~DarcySteady() {};
+    virtual ~DarcySteady() = default;
 };
 
-template <class Solver, class QRMatrix, class QRFracture>
-void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
+void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleMatrix()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
     Darcy::StiffMatrix S(this->M_mesh, this->M_bc);
     S.assemble();
 
-    Vector f( Vector::Constant( S.getSize(), 0.) );
-    if ( this->M_mesh.getCellsVector().size() != 0
+    this->M_A = S.getMatrix();
+    this->M_b = S.getBCVector();
+} // DarcySteady::assembleMatrix
+
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
+void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleVector()
+{
+    this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
+
+    Vector f( Vector::Constant( this->M_A.rows(), 0.) );
+    if ( this->M_mesh.getCellsIdsVector().size() != 0
             &&
             ( this->M_ssOn == Data::SourceSinkOn::Both
                 ||
               this->M_ssOn == Data::SourceSinkOn::Matrix) )
     {
-        f += this->M_quadrature->CellIntegrateMatrix(this->M_func);
+        f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
     } // if
 
     if ( this->M_mesh.getFractureFacetsIdsVector().size() != 0
@@ -89,19 +110,17 @@ void DarcySteady< Solver, QRMatrix, QRFracture >::assemble()
                 ||
               this->M_ssOn == Data::SourceSinkOn::Fractures ) )
     {
-        f += this->M_quadrature->CellIntegrateFractures(this->M_func);
+        f = this->M_quadrature->CellIntegrateFractures(this->M_func);
     } // if
 
-    this->M_A = S.getMatrix();
-    this->M_b = S.getBCVector() + f;
-}
-
-template <class Solver, class QRMatrix, class QRFracture>
-void DarcySteady< Solver, QRMatrix, QRFracture >::solve()
-{
-    this->M_solver->setA(this->M_A);
-    this->M_solver->setb(this->M_b);
-    this->M_solver->solve();
-}
+    if ( this->M_b.size() == 0 )
+    {
+        this->M_b = f;
+    } // if
+    else
+    {
+        this->M_b += f;
+    } // else
+} // DarcySteady::assembleVector
 
 #endif /* DARCYSTEADY_HPP_ */

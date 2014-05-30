@@ -21,10 +21,16 @@ class Quadrature;
  *  The first template indicates the Solver used to solve the linear system,
  *  the second and third template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class Solver, class QRMatrix, class QRFracture>
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType = SpMat>
 class Problem
 {
 public:
+
+    //! Typedef for the matrix type
+    /*!
+     * @typedef Matrix_Type
+     */
+    typedef MatrixType Matrix_Type;
 
     //! Typedef for Rigid_Mesh
     /*!
@@ -95,7 +101,7 @@ public:
     /*!
      * @return the matrix A
      */
-    SpMat & getA() { return M_A; }
+    Matrix_Type & getA() { return M_A; }
 
     //! Get the RHS
     /*!
@@ -105,7 +111,13 @@ public:
     //@}
 
     //! Assemble method
-    virtual void assemble() = 0;
+    void assemble() { assembleMatrix(); assembleVector(); };
+
+    //! Assemble matrix method
+    virtual void assembleMatrix() = 0;
+
+    //! Assemble vector method
+    virtual void assembleVector() = 0;
 
     //! Solve method
     virtual void solve() = 0;
@@ -114,7 +126,7 @@ public:
     virtual void assembleAndSolve() { assemble(); solve(); }
 
     //! Destructor
-    virtual ~Problem() {};
+    virtual ~Problem() = default;
 
 protected:
 
@@ -131,17 +143,23 @@ protected:
     //! Pointer to the solver class
     std::unique_ptr<Solver> M_solver;
     //! Sparse matrix A from the linear system Ax=b
-    SpMat M_A;
+    Matrix_Type& M_A;
     //! Vector b from the linear system Ax=b
-    Vector M_b;
+    Vector& M_b;
 };
 
-template <class Solver, class QRMatrix, class QRFracture>
-Problem< Solver, QRMatrix, QRFracture >::Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func &
-                                                 func, const DataPtr_Type & data):
-    M_mesh(mesh), M_bc(bc), M_func(func), M_ssOn(data->getSourceSinkOn()), M_quadrature(nullptr), M_solver(nullptr)
-{
-    M_solver.reset( new Solver() );
-}
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
+Problem< Solver, QRMatrix, QRFracture, MatrixType>::
+Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func &
+        func, const DataPtr_Type & data):
+    M_mesh(mesh),
+    M_bc(bc),
+    M_func(func),
+    M_ssOn(data->getSourceSinkOn()),
+    M_quadrature(nullptr),
+    M_solver( new Solver() ),
+    M_A( M_solver->getA() ),
+    M_b( M_solver->getb() )
+{} // Problem::Problem
 
 #endif /* PROBLEM_HPP_ */
