@@ -24,7 +24,7 @@
 
 typedef Problem<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> Pb;
 typedef DarcySteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
+typedef DarcyPseudoSteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
