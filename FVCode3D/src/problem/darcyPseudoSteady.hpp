@@ -208,7 +208,7 @@ public:
     virtual void solve();
 
     //! Destructor
-    virtual ~DarcyPseudoSteady() = delete;
+    virtual ~DarcyPseudoSteady() = default;
 
 protected:
 
