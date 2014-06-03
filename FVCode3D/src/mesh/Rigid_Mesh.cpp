@@ -416,10 +416,9 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
 	out << "Number of Border-Facets: " << M_borderFacets.size() <<std::endl;
 	out << "Number of Fracture-Facets: " << M_fractureFacets.size() <<std::endl;
 	out << "Number of Standard-Facets: " << M_internalFacets.size() <<std::endl;
+	out << "Number of Internal-Edges: " << M_internalEdges.size() <<std::endl;
 	out << "Number of Border-Edges: " << M_borderEdges.size() <<std::endl;
 	out << "Number of Fracture-Edges: " << M_fractureEdges.size() <<std::endl;
-	out << "Number of Border-Fracture-Edges: " << M_borderFractureEdges.size() <<std::endl;
-
 }
 
 const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::vector<UInt> & pointsIds)
@@ -437,15 +436,24 @@ const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::v
 // ==================================================
 
 Rigid_Mesh::Edge::Edge (const Generic_Edge & generic_edge, Geometry::Rigid_Mesh * const mesh, const UInt id):
-	M_edge(generic_edge), M_mesh(mesh), M_id(id){}
+	M_edge(generic_edge), M_mesh(mesh), M_id(id)
+{
+	// TODO calcolare separeted facets
+	// TODO calcolare quindi i seguenti:
+	M_isBorderEdge = false;
+	M_isFracture = false;
+	M_isTip = false;
+}
 
 Rigid_Mesh::Edge::Edge (const Edge & edge, Geometry::Rigid_Mesh * const mesh):
 	M_edge(edge.getEdge()), M_mesh(mesh), M_id(edge.getId()),
-	M_separatedFacetsIds(edge.getSeparatedFacetsIds()){}
+	M_separatedFacetsIds(edge.getSeparatedFacetsIds()), M_isBorderEdge(edge.isBorderEdge()),
+	M_isFracture(edge.isFracture()), M_isTip(edge.isTip()){}
 
 Rigid_Mesh::Edge::Edge (const Edge & edge):
 	M_edge(edge.getEdge()), M_mesh(edge.getMesh()), M_id(edge.getId()),
-	M_separatedFacetsIds(edge.getSeparatedFacetsIds()){}
+	M_separatedFacetsIds(edge.getSeparatedFacetsIds()), M_isBorderEdge(edge.isBorderEdge()),
+	M_isFracture(edge.isFracture()), M_isTip(edge.isTip()){}
 
 const Rigid_Mesh::Generic_Point Rigid_Mesh::Edge::getCentroid () const
 {
@@ -470,6 +478,9 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 	out << "Size: " << length() << std::endl;
 	out << "Center: ";
 	M_mesh->showPoint(getCentroid(), out);
+	out << "Is border? " << M_isBorderEdge << std::endl;
+	out << "Is fracture? " << M_isFracture << std::endl;
+	out << "Is tip? " << M_isTip << std::endl;
 	out << "M_separatedFacets : size = " << M_separatedFacetsIds.size();
 	out << "    [ ";
 	if( !M_separatedFacetsIds.empty() )
@@ -601,6 +612,17 @@ void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
 Rigid_Mesh::Edge_ID::Edge_ID(const UInt edge_id, Geometry::Rigid_Mesh * const mesh):
 	Edge_Id(edge_id), M_mesh(mesh){}
 
+// --------------------   Class Regular_Edge   --------------------
+
+Rigid_Mesh::Regular_Edge::Regular_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh) {}
+
+Rigid_Mesh::Regular_Edge::Regular_Edge (const Regular_Edge & regular_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(regular_edge.getEdgeId(), mesh) {}
+
+Rigid_Mesh::Regular_Edge::Regular_Edge (const Regular_Edge & e):
+	Edge_ID(e.getEdgeId(), e.getMesh()) {}
+
 // --------------------   Class Border_Edge   --------------------
 
 // ==================================================
@@ -608,13 +630,34 @@ Rigid_Mesh::Edge_ID::Edge_ID(const UInt edge_id, Geometry::Rigid_Mesh * const me
 // ==================================================
 
 Rigid_Mesh::Border_Edge::Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(edge_Id, mesh){}
+	Edge_ID(edge_Id, mesh)
+{
+	// TODO fill Border_Ids
+}
 
 Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & border_edge, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(border_edge.getEdgeId(), mesh){}
+	Edge_ID(border_edge.getEdgeId(), mesh), Border_Ids(border_edge.getBorderIds()){}
 
 Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & e):
-	Edge_ID(e.getEdgeId(), e.getMesh()){}
+	Edge_ID(e.getEdgeId(), e.getMesh()), Border_Ids(e.getBorderIds()){}
+
+// --------------------   Class Pure_Border_Edge   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Pure_Border_Edge::Pure_Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh),
+	Border_Edge(edge_Id, mesh){}
+
+Rigid_Mesh::Pure_Border_Edge::Pure_Border_Edge (const Pure_Border_Edge & pure_border_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(pure_border_edge.getEdgeId(), mesh),
+	Border_Edge(pure_border_edge.getEdgeId(), mesh){}
+
+Rigid_Mesh::Pure_Border_Edge::Pure_Border_Edge (const Pure_Border_Edge & e):
+	Edge_ID(e.getEdgeId(), e.getMesh()),
+	Border_Edge(e.getEdgeId(), e.getMesh()){}
 
 // --------------------   Class Fracture_Edge   --------------------
 
@@ -622,11 +665,10 @@ Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & e):
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Fracture_Edge::Fracture_Edge (const UInt edge_Id, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh):
+Rigid_Mesh::Fracture_Edge::Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
 	Edge_ID(edge_Id, mesh)
 {
-	for (auto it = fracture_Ids.begin(); it != fracture_Ids.end(); ++it)
-		Fracture_Ids.emplace_back(*(it));
+	// TODO fill Fracture_Ids
 }
 
 Rigid_Mesh::Fracture_Edge::Fracture_Edge (const Fracture_Edge & fracture_edge, Geometry::Rigid_Mesh * const mesh):
@@ -635,27 +677,86 @@ Rigid_Mesh::Fracture_Edge::Fracture_Edge (const Fracture_Edge & fracture_edge, G
 Rigid_Mesh::Fracture_Edge::Fracture_Edge (const Fracture_Edge & e):
 	Edge_ID(e.getEdgeId(), e.getMesh()), Fracture_Ids(e.getFractureIds()){}
 
-// --------------------   Class Border_Fracture_Edge   --------------------
+// --------------------   Class Juncture_Edge   --------------------
 
 // ==================================================
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Border_Fracture_Edge::Border_Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(edge_Id, mesh), M_borderEdge(nullptr), M_fractureEdge(nullptr){}
+Rigid_Mesh::Juncture_Edge::Juncture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh),
+	Fracture_Edge(edge_Id, mesh){}
 
-Rigid_Mesh::Border_Fracture_Edge::Border_Fracture_Edge (const UInt edge_Id, const Border_Edge & borderEdge, const Fracture_Edge & fractureEdge, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(edge_Id, mesh), M_borderEdge(&borderEdge), M_fractureEdge(&fractureEdge){}
+Rigid_Mesh::Juncture_Edge::Juncture_Edge (const Juncture_Edge & juncture_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(juncture_edge.getEdgeId(), mesh),
+	Fracture_Edge(juncture_edge.getEdgeId(), mesh){}
 
-Rigid_Mesh::Border_Fracture_Edge::Border_Fracture_Edge (const Border_Fracture_Edge & border_fracture_edge, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(border_fracture_edge.getEdgeId(), mesh),
-	M_borderEdge(&(border_fracture_edge.getBorderEdge())),
-	M_fractureEdge(&(border_fracture_edge.getFractureEdge())){}
-
-Rigid_Mesh::Border_Fracture_Edge::Border_Fracture_Edge (const Border_Fracture_Edge & e):
+Rigid_Mesh::Juncture_Edge::Juncture_Edge (const Juncture_Edge & e):
 	Edge_ID(e.getEdgeId(), e.getMesh()),
-	M_borderEdge(&(e.getBorderEdge())),
-	M_fractureEdge(&(e.getFractureEdge())){}
+	Fracture_Edge(e.getEdgeId(), e.getMesh()){}
+
+// --------------------   Class Tip_Edge   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Tip_Edge::Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh),
+	Fracture_Edge(edge_Id, mesh){}
+
+Rigid_Mesh::Tip_Edge::Tip_Edge (const Tip_Edge & tip_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(tip_edge.getEdgeId(), mesh),
+	Fracture_Edge(tip_edge.getEdgeId(), mesh){}
+
+Rigid_Mesh::Tip_Edge::Tip_Edge (const Tip_Edge & e):
+	Edge_ID(e.getEdgeId(), e.getMesh()),
+	Fracture_Edge(e.getEdgeId(), e.getMesh()){}
+
+// --------------------   Class Interior_Tip_Edge   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Interior_Tip_Edge::Interior_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh),
+	Fracture_Edge(edge_Id, mesh),
+	Tip_Edge(edge_Id, mesh){}
+
+Rigid_Mesh::Interior_Tip_Edge::Interior_Tip_Edge (const Interior_Tip_Edge & interior_tip_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(interior_tip_edge.getEdgeId(), mesh),
+	Fracture_Edge(interior_tip_edge.getEdgeId(), mesh),
+	Tip_Edge(interior_tip_edge.getEdgeId(), mesh){}
+
+Rigid_Mesh::Interior_Tip_Edge::Interior_Tip_Edge (const Interior_Tip_Edge & e):
+	Edge_ID(e.getEdgeId(), e.getMesh()),
+	Fracture_Edge(e.getEdgeId(), e.getMesh()),
+	Tip_Edge(e.getEdgeId(), e.getMesh()){}
+
+// --------------------   Class Border_Tip_Edge   --------------------
+
+// ==================================================
+// Constructors & Destructor
+// ==================================================
+
+Rigid_Mesh::Border_Tip_Edge::Border_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(edge_Id, mesh),
+	Fracture_Edge(edge_Id, mesh),
+	Tip_Edge(edge_Id, mesh),
+	Border_Edge(edge_Id, mesh){}
+
+Rigid_Mesh::Border_Tip_Edge::Border_Tip_Edge (const Border_Tip_Edge & border_tip_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(border_tip_edge.getEdgeId(), mesh),
+	Fracture_Edge(border_tip_edge.getEdgeId(), mesh),
+	Tip_Edge(border_tip_edge.getEdgeId(), mesh),
+	Border_Edge(border_tip_edge.getEdgeId(), mesh){}
+
+Rigid_Mesh::Border_Tip_Edge::Border_Tip_Edge (const Border_Tip_Edge & e):
+	Edge_ID(e.getEdgeId(), e.getMesh()),
+	Fracture_Edge(e.getEdgeId(), e.getMesh()),
+	Tip_Edge(e.getEdgeId(), e.getMesh()),
+	Border_Edge(e.getEdgeId(), e.getMesh()){}
 
 // --------------------   Class Facet_ID   --------------------
 
