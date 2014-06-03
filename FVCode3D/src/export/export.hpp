@@ -121,6 +121,23 @@ public:
      */
     virtual void exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol) = 0;
 
+    //! Export the solution on cells and fracture facets in a single file
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     */
+    template <typename VectorType>
+    void exportFlux(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol);
+
+    //! Export the solution on fracture facets
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     */
+    virtual void exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol) = 0;
+    
     //! Export the a specific property on cells and fracture facets
     /*!
      * @param mesh reference of a Geometry::Mesh3D
