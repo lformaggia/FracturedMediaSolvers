@@ -260,8 +260,17 @@ int main(int argc, char * argv[])
     Real h( std::numeric_limits<Real>::max() );
     const Real midX(1.);
 
-    // Boundary fluxes
     Darcy::StiffMatrix StiffM(myrmesh, BC);
+    StiffM.assemble();
+    StiffM.reconstructFlux(solution);
+    const Vector & flux = StiffM.getFlux();
+    
+    std::cout << " Export Flux" << std::flush;
+    exporter.exportFlux(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_flux.vtu", flux);
+    //exporter.exportFluxOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_flux_f.vtu", flux);
+    std::cout << "  done." << std::endl << std::endl;
+        
+    // Boundary fluxes
     for ( auto facet_it : myrmesh.getBorderFacetsIdsVector() )
     {
         const UInt borderID = facet_it.getBorderId();
