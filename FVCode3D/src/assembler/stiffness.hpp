@@ -122,6 +122,22 @@ public:
 	Real Findfracturesalpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
 	//@}
 
+public:
+        //! @name Get Methods
+    //@{    
+    const Vector & getFlux() const
+        { return M_flux; };
+    
+    Vector & getFlux()
+        { return M_flux; };
+    //@}
+
+    //! @name Methods
+    //@{        
+    //! Execute the reconstruction of flux/velocity
+    void reconstructFlux(const Vector & pressure);
+    //@}
+    
 protected:
 	//! Unique pointer to the vector that contains the effects of BCs on the RHS
 	std::unique_ptr<Vector> _b;
@@ -129,6 +145,14 @@ protected:
 	const Geometry::PropertiesMap & M_properties;
 	//! The container of the BCs
 	const BoundaryConditions & m_Bc;
+    
+protected:    
+    //! Vector that contains the flux on the facets
+    Eigen::Matrix<double,Eigen::Dynamic,1> M_flux;
+    
+    Eigen::SparseMatrix<double,Eigen::RowMajor> Z;
+    Eigen::SparseMatrix<double,Eigen::RowMajor> B;
+    Eigen::SparseMatrix<double,Eigen::RowMajor> Bd;
 };
 
 } // namespace Darcy

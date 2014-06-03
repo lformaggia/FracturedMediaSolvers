@@ -10,6 +10,9 @@
 #include "geometry/Point3D.hpp"
 #include <Eigen/LU>
 #include <iostream>
+
+#include <unsupported/Eigen/SparseExtra>
+
 namespace Darcy
 {
 
@@ -205,33 +208,31 @@ void StiffMatrix::assemble()
 	Real T12, Q12, T1f, Q1f, T2f, Q2f, QFf, Q1o;
 	// Local Matrices for Mimetic
 	Eigen::Matrix<double,Dynamic,3> Np; // facet normals
-	//Eigen::Matrix<double,Dynamic,3> Nop; // facets normals outward
 	Eigen::Matrix<double,Dynamic,Dynamic> Z0p;// COmpunent of Z matrix
 	Eigen::Matrix<double,Dynamic,Dynamic> Z1p;// Component of Z Matrix
 	Eigen::Matrix<double,Dynamic,Dynamic> Zp; //! Z matrix for internal product= \f$ M^{-1}\f$
-	//Eigen::Matrix<double,Dynamic,Dynamic> Tp; // Local trasmissibility
 	Eigen::Matrix<double,1,Dynamic> Bp; // B Matrix
-	//Eigen::Matrix<double,Dynamic,1> BTp;// Traspose of B
 	Eigen::Matrix<double,Dynamic,3> Rp; // Matrix R
-	Eigen::Matrix<double,3,3> Rrt;
-	Eigen::Matrix<double,3,3> Rinv;
-
+	Eigen::Matrix<double,Dynamic,Dynamic> Q; // base for the column space of Rp
+	
 	// Extract info of mesh. auto&& resolves const &
 	auto&& cellVectorRef   = this->M_mesh.getCellsVector();
 	auto&& facetVectorRef  = this->M_mesh.getFacetsVector();
 	UInt numFacets = facetVectorRef.size();
-//	UInt numInternalFacets=this->M_mesh.getInternalFacetsIdsVector().size();
 	UInt numCells = cellVectorRef.size();
     UInt numCellsTot = cellVectorRef.size() + this->M_mesh.getFractureFacetsIdsVector().size();
-    UInt numDcells = 0;
 
 	// SIZING GLOBAL MATRICES
-	Eigen::SparseMatrix<double,RowMajor> Z(numFacets,numFacets); //! Z matrix for internal product= \f$ M^{-1}\f$
-    Eigen::SparseMatrix<double,RowMajor> Bd;// Dirichlet B matrix
-	Eigen::SparseMatrix<double,RowMajor> B(numCells,numFacets);
+	//Eigen::SparseMatrix<double,RowMajor> Z(numFacets,numFacets); //! Z matrix for internal product= \f$ M^{-1}\f$
+    //Eigen::SparseMatrix<double,RowMajor> Bd(numFacets,numFacets);// Dirichlet B matrix
+	//Eigen::SparseMatrix<double,RowMajor> B(numCells,numFacets);
+    Eigen::SparseMatrix<double,ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
 	Eigen::SparseMatrix<double,ColMajor> T(numCells,numCells);
 	ZMatrix_elements.resize(numFacets,0);
 	BMatrix_elements.resize(numCells,0);
+    Z.resize(numFacets,numFacets);
+    B.resize(numCells,numFacets);
+    Bd.resize(numFacets,numFacets);
 	// First loop to size matrices and avoid memory realloc
 	for (auto&& cell : cellVectorRef)
 	{
@@ -249,11 +250,8 @@ void StiffMatrix::assemble()
 #ifndef NDEBUG
 			if (globalFacetId>numFacets) std::cerr<<" INCORRECT FACE ID"<<std::endl;
 #endif
-			if(fac.isBorderFacet())
-            {   
-                if (m_Bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann) continue;
-                numDcells++;
-            }
+			if(fac.isBorderFacet() && m_Bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)
+                continue;
 			BMatrix_elements[cellId]+=1;
 #ifdef DIAGONALZ
 			ZMatrix_elements[globalFacetId]+=1;
@@ -264,7 +262,6 @@ void StiffMatrix::assemble()
 	}
 	Z.reserve(ZMatrix_elements);
 	B.reserve(BMatrix_elements);
-    Bd.resize(numDcells,numFacets);
 	ZMatrix_elements.clear();
 	ZMatrix_elements.shrink_to_fit();
 	BMatrix_elements.clear();
@@ -315,74 +312,47 @@ void StiffMatrix::assemble()
 			Np(localFacetId,2)=facetNormal[2];
             Bp(0,localFacetId)=alpha*facetMeasure;
             
+            g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0];
+            g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1];
+            g[2] = std::fabs(g[2]) < 1e-15 ? 0 : g[2];
+            
 			Rp(localFacetId,0)=alpha*g[0]*facetMeasure;
 			Rp(localFacetId,1)=alpha*g[1]*facetMeasure;
 			Rp(localFacetId,2)=alpha*g[2]*facetMeasure;			
             if (fac.isBorderFacet() && (m_Bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Dirichlet))
             {
-                Bd.coeffRef(count,globalFacetId) = alpha*facetMeasure;
+                Bd.coeffRef(globalFacetId,globalFacetId) = alpha*facetMeasure;
                 count++;
             }
 		}
-		Rrt = Rp.transpose()*Rp;
-
-		Real det  = Rrt(0,0)*(Rrt(1,1)*Rrt(2,2)-Rrt(1,2)*Rrt(2,1))-
-				    Rrt(0,1)*(Rrt(1,0)*Rrt(2,2)-Rrt(1,2)*Rrt(2,0))+
-				    Rrt(0,2)*(Rrt(1,0)*Rrt(2,1)-Rrt(1,1)*Rrt(2,0));
-		det = 1.0/det;
         
-		Rinv(0,0) =det*(Rrt(1,1)*Rrt(2,2)-Rrt(1,2)*Rrt(1,2));
-		Rinv(0,1) =det*(Rrt(0,2)*Rrt(1,2)-Rrt(0,1)*Rrt(2,2));
-		Rinv(0,2) =det*(Rrt(0,1)*Rrt(1,2)-Rrt(0,2)*Rrt(1,1));
-		Rinv(1,1) =det*(Rrt(0,0)*Rrt(2,2)-Rrt(0,2)*Rrt(0,2));
-		Rinv(1,2) =det*(Rrt(0,2)*Rrt(0,1)-Rrt(0,0)*Rrt(1,2));
-		Rinv(2,2) =det*(Rrt(0,0)*Rrt(1,1)-Rrt(0,1)*Rrt(0,1));
-        Rinv(1,0) =Rinv(0,1);
-        Rinv(2,0) =Rinv(0,2);
-        Rinv(2,1) =Rinv(1,2);
-
-        Eigen::Matrix<double,Dynamic,3> Q;
         Q = Rp.fullPivLu().image(Rp);
         
 		Z0p = (K/cellMeasure)*(Np*Np.transpose());       
-        //tCoeff = Z0p.diagonal().sum();
 		Z1p = (tCoeff*K/cellMeasure)*(
 				Eigen::MatrixXd::Identity(numCellFacets,numCellFacets)-
 				Q*Q.transpose());
-				//Rp*Rinv*Rp.transpose());
-
-        if(Z1p(0,0)!=Z1p(0,0))
-        {
-            std::cout<<cellId<<std::endl;     
-            std::cout<<"Z1p: "<<std::endl;
-            std::cout<<Z1p<<std::endl<<std::endl;
-            
-            std::cout<<"Volume: "<<cellMeasure<<std::endl;
-            std::cout<<"det: "<<det<<std::endl;
-            
-            std::cout<<"Rp: "<<std::endl;
-            std::cout<<Rp<<std::endl<<std::endl;
-            
-            std::cout<<"Rp': "<<std::endl;
-            std::cout<<Rp.transpose()<<std::endl<<std::endl;            
-            
-            std::cout<<"Rrt: "<<std::endl;
-            std::cout<<Rrt<<std::endl<<std::endl;
-            
-            std::cout<<"Rinv: "<<std::endl;
-            std::cout<<Rinv<<std::endl<<std::endl;
-            
-            std::cout<<"Rp*Rinv*Rp.transpose(): "<<std::endl;
-            std::cout<<Rp*Rinv*Rp.transpose()<<std::endl<<std::endl;            
-            
-            std::cout<<"Z0p: "<<std::endl;
-            std::cout<<Z0p<<std::endl<<std::endl;
-            
-            UInt bin;
-            std::cin>>bin;
-        }
         
 		Zp  = Z0p + Z1p;
+        
+//         std::stringstream post;
+//         post << "_" << cellId;
+//         std::string str;        
+//         str = "Np" + post.str() + ".m";
+//         Eigen::saveMarket(Np,str);
+//         str = "Bp" + post.str() + ".m";
+//         Eigen::saveMarket(Bp,str);
+//         str = "Rp" + post.str() + ".m";
+//         Eigen::saveMarket(Rp,str);
+//         str = "Qp" + post.str() + ".m";
+//         Eigen::saveMarket(Q,str);
+//         str = "Z0p" + post.str() + ".m";
+//         Eigen::saveMarket(Z0p,str);
+//         str = "Z1p" + post.str() + ".m";
+//         Eigen::saveMarket(Z1p,str);
+//         str = "Zp" + post.str() + ".m";
+//         Eigen::saveMarket(Zp,str);
+        
 		for(UInt iloc=0; iloc<numCellFacets;++iloc)
 		{
 			UInt i=cellFacetsId[iloc];
@@ -412,32 +382,23 @@ void StiffMatrix::assemble()
 	T = B * Z * B.transpose();
     T.makeCompressed();
     std::cout<<"Building Trasmissibility Dirichelt matrix (global)"<<std::endl;
-    Eigen::SparseMatrix<double,ColMajor> Td(numCells,numDcells); // T matrix that contains the Dirichlet contributes
 	Td = B * Z * Bd.transpose();
-    Eigen::VectorXd ones(numCells);
-    ones.setOnes();
-    Eigen::VectorXd Vd = ones.transpose() * Td;
+    Td.makeCompressed();
 // Clean up to seve memory (I hope)
 	std::cout<<" Matrix T has "<<T.rows()<<" rows and "<<T.cols()<<" columns and "<<T.nonZeros()<<" Non zeros"<<std::endl;
 	std::cout<<" Num Cells"<<numCells<<std::endl;
 	std::cout.flush();
-	B.resize(0,0); // Save memory but it does not work...
-	Z.resize(0,0);
-
-	/* std::cout<<"Building the triplets...."; std::cout.flush();
-	UInt counter(0);
-	Matrix_elements.reserve(T.nonZeros()+8*this->M_mesh.getFractureFacetsIdsVector().size());
-	for (int k=0; k<T.outerSize(); ++k)
-	for (Eigen::SparseMatrix<double>::InnerIterator it(T,k); it; ++it)
-	{
-		if (++counter % 1000 ==0) std::cerr<<"Doing: "<<counter<<std::endl;std::cout.flush();
-		Matrix_elements.emplace_back(
-				Triplet (it.row(), it.col(), it.value()));
-	}
-	T.resize(0,0);
-	std::cout<<" Done ALL"<<std::endl;
-	std::cout.flush();
-	*/
+    
+    // print matrices
+//     Eigen::saveMarket(B,"B.m");
+//     Eigen::saveMarket(Z,"Z.m");
+//     Eigen::saveMarket(T,"T.m");
+//     Eigen::saveMarket(Bd,"Bd.m");
+//     Eigen::saveMarket(Td,"Td.m");
+    
+	//B.resize(0,0); // Save memory but it does not work...
+	//Z.resize(0,0);
+    
 	//Matrix_elements.reserve(8*this->M_mesh.getFractureFacetsIdsVector().size()+
 	//		this->M_mesh.getBorderFacetsIdsVector().size());
 	for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
@@ -492,13 +453,12 @@ void StiffMatrix::assemble()
 
 	for(UInt i=0; i<this->M_size; ++i)
 		_b->operator()(i)=0.;
-
-    count = 0;
-    
+   
 	for (auto facet_it : this->M_mesh.getBorderFacetsIdsVector())
 	{
 		neighbor1id = facet_it.getSeparated()[0];
 		UInt borderId = facet_it.getBorderId();
+        UInt facetId = facet_it.getFacetId();
 
 		if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
 		{
@@ -509,21 +469,11 @@ void StiffMatrix::assemble()
 		}
 		else if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
 		{
-			//alpha1 = Findalpha (neighbor1id, &facet_it);
-			//alpha2 = FindDirichletalpha (neighbor1id, &facet_it);
-
-			//T12 = /*2* */alpha1*alpha2/(alpha1 + alpha2);
-			//Q12 = T12 * M_properties.getMobility();
-			//Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
-
-			//Matrix_elements.emplace_back(Triplet (neighbor1id, neighbor1id, Q12));
-			//_b->operator()(neighbor1id) = _b->operator()(neighbor1id) + Q1o;
-            _b->operator()(neighbor1id) += Vd(count) * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
-            count++;
+            for (Eigen::SparseMatrix<double>::InnerIterator it(Td,facetId); it; ++it)
+                _b->operator()(it.row()) += it.value() * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 		}
 	}
 
-	
 	// Put everything together
 	Eigen::SparseMatrix<double,ColMajor> Mborder(numCellsTot,numCellsTot);
 	Mborder.setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
@@ -532,6 +482,165 @@ void StiffMatrix::assemble()
 	*(this->M_Matrix) = T + Mborder;
 	//this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
 	std::cout<<" Assembling ended"<<std::endl;
+}
+
+void StiffMatrix::reconstructFlux(const Vector & pressure)
+{
+    using Eigen::Dynamic;
+    using Eigen::RowMajor;
+    using Eigen::ColMajor;
+    using Geometry::Rigid_Mesh;
+    
+    // Extract info of mesh. auto&& resolves const &
+    auto&& cellVectorRef   = this->M_mesh.getCellsVector();
+    auto&& facetVectorRef  = this->M_mesh.getFacetsVector();
+    UInt numFacets = facetVectorRef.size();
+    UInt numCells = cellVectorRef.size();
+    UInt numFractures = this->M_mesh.getFractureFacetsIdsVector().size();
+    //UInt numCellsTot = cellVectorRef.size() + numFractures;
+    
+    // Resize the vectors
+    M_flux.resize(numFacets + numFractures);
+    //M_velocity.resize(3*numCellsTot);
+    
+    M_flux = - Z * B.transpose() * pressure;
+    
+    /*
+    using Eigen::Dynamic;
+    using Eigen::RowMajor;
+    using Eigen::ColMajor;
+    using Geometry::Rigid_Mesh;
+    
+    // Extract info of mesh. auto&& resolves const &
+    auto&& cellVectorRef   = this->M_mesh.getCellsVector();
+    auto&& facetVectorRef  = this->M_mesh.getFacetsVector();
+    UInt numFacets = facetVectorRef.size();
+    UInt numCells = cellVectorRef.size();
+    UInt numFractures = this->M_mesh.getFractureFacetsIdsVector().size();
+    UInt numCellsTot = cellVectorRef.size() + numFractures;
+    
+    // Resize the vectors
+    M_flux.resize(numFacets + numFractures);
+    M_velocity.resize(3*numCellsTot);
+    
+    Real tCoeff=2.;
+    
+    std::vector<Triplet> Matrix_elements;
+    Real alpha1, alpha2, alphaF, alphaf;
+    UInt neighbor1id, neighbor2id;
+    std::vector<Real> alphas;
+    Generic_Vector f1, f2;
+    Real Df;
+    Real T12, Q12, T1f, Q1f, T2f, Q2f, QFf, Q1o;
+    // Local Matrices for Mimetic
+    Eigen::Matrix<double,Dynamic,3> Np; // facet normals
+    Eigen::Matrix<double,Dynamic,Dynamic> Z0p;// COmpunent of Z matrix
+    Eigen::Matrix<double,Dynamic,Dynamic> Z1p;// Component of Z Matrix
+    Eigen::Matrix<double,Dynamic,Dynamic> Zp; //! Z matrix for internal product= \f$ M^{-1}\f$
+    Eigen::DiagonalMatrix<double,Dynamic> Bp; // B Matrix
+    Eigen::Matrix<double,Dynamic,3> Rp; // Matrix R
+    Eigen::Matrix<double,Dynamic,Dynamic> Qp; // base for the column space of Rp
+    Eigen::Matrix<double,Dynamic,Dynamic> Tp; // T matrix
+    Eigen::Matrix<double,Dynamic,1> Pp; // pressure local matrix
+    Eigen::Matrix<double,Dynamic,1> Fp; // fluxes local matrix
+    
+    std::map<UInt,UInt> facetToCell;
+        
+    // Loop on cells
+    std::cout<<" Starting loops on cells"<<std::endl;
+    for (auto&& cell : cellVectorRef)
+    {
+        std::vector<UInt> const & cellFacetsId( cell.getFacetsIds() );
+        UInt numCellFacets = cellFacetsId.size();
+        UInt numLocalCells = numCellFacets+1;
+        auto K = M_properties.getProperties(cell.getZoneCode()).M_permeability;
+        auto cellBaricenter = cell.getCentroid();
+        auto cellMeasure    = cell.getVolume();
+        auto cellId         = cell.getId();
+        if(cellId % 500 == 0)std::cout<<"Done "<< cellId<<" Cells"<<std::endl;
+        // Resize local matrices
+        Np.resize(numCellFacets,Eigen::NoChange);
+        Np.setZero();
+        Rp.resize(numCellFacets,Eigen::NoChange);
+        Rp.setZero();
+        Zp.resize(numCellFacets,numCellFacets);
+        Zp.setZero();
+        Z0p.resize(numCellFacets,numCellFacets);
+        Z0p.setZero();
+        Z1p.resize(numCellFacets,numCellFacets);
+        Z1p.setZero();
+        Bp.resize(numCellFacets,numCellFacets);
+        Bp.setZero();
+        Pp.resize(numCellFacets,Eigen::NoChange);
+        Pp.setZero();
+        Fp.resize(numCellFacets,Eigen::NoChange);
+        Fp.setZero()        
+        for(UInt localFacetId=0; localFacetId<numCellFacets;++localFacetId)
+        {            
+            UInt globalFacetId = cellFacetsId[localFacetId];
+            Rigid_Mesh::Facet const & fac=facetVectorRef[globalFacetId];            
+            if(fac.isBorderFacet() && (m_Bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)) continue;
+            Real alpha(0.);
+            Geometry::Point3D facetBaricenter= fac.getCentroid();
+            Geometry::Point3D facetNormal    = fac.getUnsignedNormal();
+            auto facetMeasure   = fac.area();
+            Geometry::Point3D g = facetBaricenter-cellBaricenter;
+            Real  dotp= Geometry::dotProduct(g,facetNormal);
+            alpha = (dotp >=0.? 1.0:-1.0);
+            
+            UInt oppositeCell;
+            if(fac.isBorderFacet())
+                oppositeCell = numCellsTot + fac.getBorderId();
+            else
+                oppositeCell = fac.getSeparated()[0] != cellId ? fac.getSeparated()[0] : fac.getSeparated()[1];
+            facetToCell.insert(std::pair<UInt,UInt>(localFacetId, oppositeCell));
+            
+            Np(localFacetId,0)=facetNormal[0];
+            Np(localFacetId,1)=facetNormal[1];
+            Np(localFacetId,2)=facetNormal[2];
+            Bp.diagonal()[localFacetId]=alpha*facetMeasure;
+            
+            g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0];
+            g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1];
+            g[2] = std::fabs(g[2]) < 1e-15 ? 0 : g[2];
+            
+            Rp(localFacetId,0)=alpha*g[0]*facetMeasure;
+            Rp(localFacetId,1)=alpha*g[1]*facetMeasure;
+            Rp(localFacetId,2)=alpha*g[2]*facetMeasure;         
+            if (fac.isBorderFacet() && (m_Bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Dirichlet))
+            {
+                Bd.coeffRef(globalFacetId,globalFacetId) = alpha*facetMeasure;
+                count++;
+            }
+        }
+        
+        Qp = Rp.fullPivLu().image(Rp);
+        
+        Z0p = (K/cellMeasure)*(Np*Np.transpose());       
+        Z1p = (tCoeff*K/cellMeasure)*(
+                Eigen::MatrixXd::Identity(numCellFacets,numCellFacets)-
+                Qp*Qp.transpose());
+        
+        Zp  = Z0p + Z1p;
+        
+        Tp = - Bp * Zp * Bp.transpose();
+        for(UInt localFacetId=0; localFacetId<numCellFacets;++localFacetId)
+        {
+            if(facetToCell[localFacetId] < numCellsTot)
+                Pp(localFacetId,0) = M_pressure[facetToCell[localFacetId]];
+            else
+                Pp(localFacetId,0) = M_bc.getBordersBCMap().at(facetToCell[localFacetId]-numCellsTot).getBC()(facetVectorRef[cellFacetsId[localFacetId]].getCentroid());
+        }
+        Fp = Tp * Pp;
+        
+        for(UInt localFacetId=0; localFacetId<numCellFacets;++localFacetId)
+        {
+            M_flux[facetToCell[localFacetId]] = Pp(localFacetId) > Fp(localFacetId)
+        }
+    }
+    */
+    
+    
 }
 
 } // namespace Darcy
