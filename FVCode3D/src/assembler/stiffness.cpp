@@ -181,11 +181,6 @@ void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) cons
 {
     for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
-        const Real F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
-        const Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
-        const Real Df = F_aperture/2.;
-        const Real alphaf = facet_it.getSize() * F_permeability / Df;
-
         for (auto juncture_it : facet_it.getFractureNeighbors())
         {
             std::vector<Real> alphas;
