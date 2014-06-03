@@ -95,7 +95,7 @@ void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleVector()
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
     Vector f( Vector::Constant( this->M_A.rows(), 0.) );
-    if ( this->M_mesh.getCellsIdsVector().size() != 0
+    if ( this->M_mesh.getCellsVector().size() != 0
             &&
             ( this->M_ssOn == Data::SourceSinkOn::Both
                 ||
