@@ -325,6 +325,13 @@ public:
 		const std::vector<UInt> & getSeparatedCellsIds () const
 			{ return M_separatedCellsIds; }
 
+		//! Get the zone code
+		/*!
+		 * @return the zone code of the facet
+		 */
+		UInt getZoneCode() const
+			{ return M_zone; }
+
 		//! Get the borderID
 		/*!
 		 * @return the borderID. If zero, then the facet is an interior facet
@@ -401,6 +408,8 @@ public:
 		UInt M_borderId;
 		//! The set containing the ids of the represented fractures
 		std::set<UInt> M_representedFractureIds;
+		//! Zone code
+		UInt M_zone;
 	};
 
 	//! Class that implements a Cell
