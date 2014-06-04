@@ -31,31 +31,96 @@ Rigid_Mesh::Rigid_Mesh (Generic_Mesh & generic_mesh, const PropertiesMap & prop,
 Rigid_Mesh::Rigid_Mesh(const Rigid_Mesh & mymesh):
 	M_nodes(mymesh.getNodesVector()), M_properties(mymesh.getPropertiesMap()), M_renumber(mymesh.isRenumbered())
 {
-	for (auto it = mymesh.getCellsVector().begin(); it != mymesh.getCellsVector().end(); ++it)
+	// Geometrical entities
+	for (auto&& it = mymesh.getCellsVector().begin(); it != mymesh.getCellsVector().end(); ++it)
 	{
-		Cell my_cell (*(it), this);
-		M_cells.push_back (my_cell);
+		M_cells.emplace_back (Cell(*(it), this));
 	}
 
-	for (auto it = mymesh.getFacetsVector().begin(); it != mymesh.getFacetsVector().end(); ++it)
+	for (auto&& it = mymesh.getFacetsVector().begin(); it != mymesh.getFacetsVector().end(); ++it)
 	{
-		Facet my_facet (*(it), this);
-		M_facets.push_back (my_facet);
+		M_facets.emplace_back (Facet(*(it), this));
 	}
 
-	for (auto it = mymesh.getBorderFacetsIdsVector().begin(); it != mymesh.getBorderFacetsIdsVector().end(); ++it)
+	for (auto&& it = mymesh.getEdgesVector().begin(); it != mymesh.getEdgesVector().end(); ++it)
+	{
+		M_edges.emplace_back (Edge(*(it), this));
+	}
+
+	// Facet ids vectors
+	for (auto&& it = mymesh.getBorderFacetsIdsVector().begin(); it != mymesh.getBorderFacetsIdsVector().end(); ++it)
 	{
 		M_borderFacets.emplace_back (Border_Facet (*(it), this));
 	}
 
-	for (auto it = mymesh.getInternalFacetsIdsVector().begin(); it != mymesh.getInternalFacetsIdsVector().end(); ++it)
+	for (auto&& it = mymesh.getInternalFacetsIdsVector().begin(); it != mymesh.getInternalFacetsIdsVector().end(); ++it)
 	{
 		M_internalFacets.emplace_back (Regular_Facet (*(it), this));
 	}
 
-	for (auto it = mymesh.getFractureFacetsIdsVector().begin(); it != mymesh.getFractureFacetsIdsVector().end(); ++it)
+	for (auto&& it = mymesh.getFractureFacetsIdsVector().begin(); it != mymesh.getFractureFacetsIdsVector().end(); ++it)
 	{
 		M_fractureFacets.emplace_back (Fracture_Facet (*(it), this));
+	}
+
+	// Edge ids vectors
+	for (auto&& it = mymesh.getInternalEdgesIdsVector().begin(); it != mymesh.getInternalEdgesIdsVector().end(); ++it)
+	{
+		M_internalEdges.emplace_back (Regular_Edge (*(it), this));
+	}
+
+	for (auto&& it = mymesh.getPureBorderEdgesIdsVector().begin(); it != mymesh.getPureBorderEdgesIdsVector().end(); ++it)
+	{
+		M_pureBorderEdges.emplace_back (Pure_Border_Edge (*(it), this));
+	}
+
+	for (auto&& it = mymesh.getJunctureEdgesIdsVector().begin(); it != mymesh.getJunctureEdgesIdsVector().end(); ++it)
+	{
+		M_junctureEdges.emplace_back (Juncture_Edge (*(it), this));
+	}
+
+	for (auto&& it = mymesh.getInternalTipEdgesIdsVector().begin(); it != mymesh.getInternalTipEdgesIdsVector().end(); ++it)
+	{
+		M_internalTipEdges.emplace_back (Internal_Tip_Edge (*(it), this));
+	}
+
+	for (auto&& it = mymesh.getBorderTipEdgesIdsVector().begin(); it != mymesh.getBorderTipEdgesIdsVector().end(); ++it)
+	{
+		M_borderTipEdges.emplace_back (Border_Tip_Edge (*(it), this));
+	}
+
+	// Edge pointer ids vectors
+	//border
+	for (auto&& it = mymesh.getPureBorderEdgesIdsVector().begin(); it != mymesh.getPureBorderEdgesIdsVector().end(); ++it)
+	{
+		M_borderEdges.push_back(&(*it));
+	}
+
+	for (auto&& it = mymesh.getBorderTipEdgesIdsVector().begin(); it != mymesh.getBorderTipEdgesIdsVector().end(); ++it)
+	{
+		M_borderEdges.push_back(&(*it));
+	}
+
+	//tip
+	for (auto&& it = mymesh.getInternalTipEdgesIdsVector().begin(); it != mymesh.getInternalTipEdgesIdsVector().end(); ++it)
+	{
+		M_tipEdges.push_back(&(*it));
+	}
+
+	for (auto&& it = mymesh.getBorderTipEdgesIdsVector().begin(); it != mymesh.getBorderTipEdgesIdsVector().end(); ++it)
+	{
+		M_tipEdges.push_back(&(*it));
+	}
+
+	//fracture
+	for (auto&& it = mymesh.getJunctureEdgesIdsVector().begin(); it != mymesh.getJunctureEdgesIdsVector().end(); ++it)
+	{
+		M_fractureEdges.push_back(&(*it));
+	}
+
+	for (auto&& it = mymesh.getTipEdgesIdsVector().begin(); it != mymesh.getTipEdgesIdsVector().end(); ++it)
+	{
+		M_fractureEdges.push_back(*it);
 	}
 }
 
@@ -284,106 +349,113 @@ void Rigid_Mesh::AdjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFac
 
 void Rigid_Mesh::EdgesVectorBuilder()
 {
-	/*
 	UInt edgeId = 0;
+	bool isFrac = false;
+	bool isBord = false;
+	bool isTip = false;
+	std::map<UInt,UInt> nFracFacets;
 
+	// edge as pair -> separated facets
 	std::map<Generic_Edge, std::vector<UInt> > edgesMap;
-	std::set<UInt> sepFacets;
 
-	// loop only over the border facet! Modify this if you want to store all edges
-	for(auto it = M_borderFacets.begin(); it != M_borderFacets.end(); ++it)
+	// loop only over the facets
+	for(auto it = M_facets.begin(); it != M_facets.end(); ++it)
 	{
-		auto vertex_it  = it->getFacet().getVertexesIds().begin();
+		auto vertex_it  = it->getVertexesIds().begin();
 		auto vertex_it2 = vertex_it;
 		++vertex_it2;
 
-		for( ; vertex_it2 != it->getFacet().getVertexesIds().end(); ++vertex_it, ++vertex_it2)
+		for( ; vertex_it2 != it->getVertexesIds().end(); ++vertex_it, ++vertex_it2)
 		{
 			if (*(vertex_it) < *(vertex_it2))
 			{
 				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
-				edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
+				edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getId());
 			}
 			else
 			{
 				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
-				edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+				edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getId());
 			}
 		}
 
-		vertex_it2 = it->getFacet().getVertexesIds().begin();
+		vertex_it2 = it->getVertexesIds().begin();
 
 		if (*(vertex_it) < *(vertex_it2))
 		{
 			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
-			edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
+			edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getId());
 		}
 		else
 		{
 			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
-			edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+			edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getId());
 		}
 	}
 
 	for(std::map<Generic_Edge, std::vector<UInt> >::const_iterator it = edgesMap.begin(); it != edgesMap.end(); ++it)
 	{
 		M_edges.push_back(Edge(it->first, this, edgeId));
-		M_borderEdges.push_back(Border_Edge(edgeId, this));
 		M_edges.rbegin()->M_separatedFacetsIds = it->second;
-		edgeId++;
-	}
 
-	edgesMap.clear();
-	std::map<Generic_Edge, std::vector< std::pair<UInt, bool> > > edgesFMap;
+		isFrac = isBord = isTip = false;
+		nFracFacets.clear();
 
-	for(auto it = M_fractureFacets.begin(); it != M_fractureFacets.end(); ++it)
-	{
-		auto vertex_it  = it->getFacet().getVertexesIds().begin();
-		auto vertex_it2 = vertex_it;
-		++vertex_it2;
-
-		for( ; vertex_it2 != it->getFacet().getVertexesIds().end(); ++vertex_it, ++vertex_it2)
+		for(auto it = M_edges.rbegin()->M_separatedFacetsIds.begin(); it != M_edges.rbegin()->M_separatedFacetsIds.end(); ++it )
 		{
-			if (*(vertex_it) < *(vertex_it2))
+			isFrac |= M_facets[*it].M_isFracture;
+			if (M_facets[*it].M_isFracture)
 			{
-				edgesFMap.insert(std::pair<Generic_Edge, std::vector< std::pair<UInt, bool> > >
-								(std::make_pair(*vertex_it, *vertex_it2), std::vector<std::pair<UInt, bool> >())
-								);
-				edgesFMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(std::make_pair(it->getFacetId(), it->));
+				for(auto&& jt = M_facets[*it].M_representedFractureIds.begin(); jt != M_facets[*it].M_representedFractureIds.end(); ++jt)
+				{
+					nFracFacets.insert(std::pair<UInt,UInt>(std::make_pair(*jt,0)));
+					nFracFacets[*jt]++;
+				}
 			}
-			else
-			{
-				edgesFMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
-				edgesFMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
-			}
+			isBord |= M_facets[*it].isBorderFacet();
 		}
 
-		vertex_it2 = it->getFacet().getVertexesIds().begin();
-
-		if (*(vertex_it) < *(vertex_it2))
+		for(auto&& it = nFracFacets.begin(); it != nFracFacets.end(); ++it)
 		{
-			edgesFMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
-			edgesFMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it->getFacetId());
+			isTip |= (it->second == 1) ? true : false;
+		}
+
+		if(!isFrac && !isBord)
+			M_internalEdges.push_back(Regular_Edge(edgeId,this));
+		else if(!isFrac && isBord)
+		{
+			M_pureBorderEdges.push_back(Pure_Border_Edge(edgeId,this));
+			M_borderEdges.push_back(&(*M_pureBorderEdges.rbegin()));
+			M_edges[edgeId].M_isBorderEdge = true;
+		}
+		else if(isFrac && !isTip)
+		{
+			M_junctureEdges.push_back(Juncture_Edge(edgeId,this));
+			M_fractureEdges.push_back(&(*M_junctureEdges.rbegin()));
+			M_edges[edgeId].M_isFracture = true;
+		}
+		else if(isFrac && isTip && !isBord)
+		{
+			M_internalTipEdges.push_back(Internal_Tip_Edge(edgeId,this));
+			M_tipEdges.push_back(&(*M_internalTipEdges.rbegin()));
+			M_fractureEdges.push_back(&(*M_internalTipEdges.rbegin()));
+			M_edges[edgeId].M_isFracture = true;
+			M_edges[edgeId].M_isTip = true;
 		}
 		else
 		{
-			edgesFMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
-			edgesFMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it->getFacetId());
+			M_borderTipEdges.push_back(Border_Tip_Edge(edgeId,this));
+			M_tipEdges.push_back(&(*M_borderTipEdges.rbegin()));
+			M_fractureEdges.push_back(&(*M_borderTipEdges.rbegin()));
+			M_borderEdges.push_back(&(*M_borderTipEdges.rbegin()));
+			M_edges[edgeId].M_isBorderEdge = true;
+			M_edges[edgeId].M_isFracture = true;
+			M_edges[edgeId].M_isTip = true;
 		}
+
+		edgeId++;
 	}
 
-	for(std::map<Generic_Edge, std::vector<UInt> >::const_iterator it = edgesMap.begin(); it != edgesMap.end(); ++it)
-	{
-		M_edges.push_back(Edge(it->first, this, edgeId));
-		for(std::set<UInt>::const_iterator sepIt = it->second.begin(); sepIt != it->second.end(); ++sepIt)
-			if(M_facets[*sepIt].)
-			sepFacets.
-		M_fractureEdges.push_back(Fracture_Edge(edgeId, this));
-		M_edges.rbegin()->M_separatedFacetsIds = it->second;
-		edgeId++;
-		sepId.clear();
-	}
-	*/
 }
 
 bool Rigid_Mesh::hasNeighborsThroughFacet(const UInt & facet_Id, const UInt & idNeighbor) const
@@ -418,7 +490,12 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
 	out << "Number of Standard-Facets: " << M_internalFacets.size() <<std::endl;
 	out << "Number of Internal-Edges: " << M_internalEdges.size() <<std::endl;
 	out << "Number of Border-Edges: " << M_borderEdges.size() <<std::endl;
+	out << "Number of Pure-Border-Edges: " << M_pureBorderEdges.size() <<std::endl;
 	out << "Number of Fracture-Edges: " << M_fractureEdges.size() <<std::endl;
+	out << "Number of Juncture-Edges: " << M_junctureEdges.size() <<std::endl;
+	out << "Number of Tip-Edges: " << M_tipEdges.size() <<std::endl;
+	out << "Number of Internal-Tip-Edges: " << M_internalTipEdges.size() <<std::endl;
+	out << "Number of Border-Tip-Edges: " << M_borderTipEdges.size() <<std::endl;
 }
 
 const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::vector<UInt> & pointsIds)
@@ -436,14 +513,7 @@ const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::IdToPoints(const std::v
 // ==================================================
 
 Rigid_Mesh::Edge::Edge (const Generic_Edge & generic_edge, Geometry::Rigid_Mesh * const mesh, const UInt id):
-	M_edge(generic_edge), M_mesh(mesh), M_id(id)
-{
-	// TODO calcolare separeted facets
-	// TODO calcolare quindi i seguenti:
-	M_isBorderEdge = false;
-	M_isFracture = false;
-	M_isTip = false;
-}
+	M_edge(generic_edge), M_mesh(mesh), M_id(id), M_isBorderEdge(false), M_isFracture(false), M_isTip(false) {}
 
 Rigid_Mesh::Edge::Edge (const Edge & edge, Geometry::Rigid_Mesh * const mesh):
 	M_edge(edge.getEdge()), M_mesh(mesh), M_id(edge.getId()),
@@ -497,7 +567,8 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 
 Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
 	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVertexesVector()), M_area(generic_facet.area()),
-	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()), M_isFracture(generic_facet.isFracture())
+	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()), M_isFracture(generic_facet.isFracture()),
+	M_borderId(generic_facet.getBorderId()), M_representedFractureIds(generic_facet.getRepresentedFractureIds())
 {
 	if(!M_mesh->M_renumber)
 		for(auto it = generic_facet.getSeparatedCells().begin(); it != generic_facet.getSeparatedCells().end(); ++it)
@@ -510,12 +581,14 @@ Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Me
 Rigid_Mesh::Facet::Facet(const Facet & facet):
 	M_mesh(facet.getMesh()), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()){}
+	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()),
+	M_borderId(facet.getBorderId()), M_representedFractureIds(facet.getRepresentedFractureIds()){}
 
 Rigid_Mesh::Facet::Facet(const Facet & facet, Geometry::Rigid_Mesh * const mesh):
 	M_mesh(mesh), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()){}
+	M_unsignedNormal(facet.getUnsignedNormal()), M_isFracture(facet.isFracture()),
+	M_borderId(facet.getBorderId()), M_representedFractureIds(facet.getRepresentedFractureIds()){}
 
 // ==================================================
 // Methods
@@ -719,17 +792,17 @@ Rigid_Mesh::Tip_Edge::Tip_Edge (const Tip_Edge & e):
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Interior_Tip_Edge::Interior_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
+Rigid_Mesh::Internal_Tip_Edge::Internal_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
 	Edge_ID(edge_Id, mesh),
 	Fracture_Edge(edge_Id, mesh),
 	Tip_Edge(edge_Id, mesh){}
 
-Rigid_Mesh::Interior_Tip_Edge::Interior_Tip_Edge (const Interior_Tip_Edge & interior_tip_edge, Geometry::Rigid_Mesh * const mesh):
-	Edge_ID(interior_tip_edge.getEdgeId(), mesh),
-	Fracture_Edge(interior_tip_edge.getEdgeId(), mesh),
-	Tip_Edge(interior_tip_edge.getEdgeId(), mesh){}
+Rigid_Mesh::Internal_Tip_Edge::Internal_Tip_Edge (const Internal_Tip_Edge & internal_tip_edge, Geometry::Rigid_Mesh * const mesh):
+	Edge_ID(internal_tip_edge.getEdgeId(), mesh),
+	Fracture_Edge(internal_tip_edge.getEdgeId(), mesh),
+	Tip_Edge(internal_tip_edge.getEdgeId(), mesh){}
 
-Rigid_Mesh::Interior_Tip_Edge::Interior_Tip_Edge (const Interior_Tip_Edge & e):
+Rigid_Mesh::Internal_Tip_Edge::Internal_Tip_Edge (const Internal_Tip_Edge & e):
 	Edge_ID(e.getEdgeId(), e.getMesh()),
 	Fracture_Edge(e.getEdgeId(), e.getMesh()),
 	Tip_Edge(e.getEdgeId(), e.getMesh()){}

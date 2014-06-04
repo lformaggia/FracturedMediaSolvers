@@ -325,6 +325,20 @@ public:
 		const std::vector<UInt> & getSeparatedCellsIds () const
 			{ return M_separatedCellsIds; }
 
+		//! Get the borderID
+		/*!
+		 * @return the borderID. If zero, then the facet is an interior facet
+		 */
+		UInt getBorderId() const
+			{ return M_borderId; }
+
+		//! Get the set of the represented fractures
+		/*!
+		 * @return a reference to the set that contains the id of the represented fractures
+		 */
+		const std::set<UInt> & getRepresentedFractureIds() const
+			{ return M_representedFractureIds; }
+
 		//! Get the area of the facet (const)
 		/*!
 		 * @return the area of the Facet
@@ -364,6 +378,8 @@ public:
 
 		//@}
 
+		friend Rigid_Mesh;
+
 	protected:
 		//! The pointer to the Rigid_Mesh containing the Facet
 		Geometry::Rigid_Mesh * M_mesh;
@@ -381,7 +397,10 @@ public:
 		Generic_Vector M_unsignedNormal;
 		//! True if the Facet is a fracture
 		bool M_isFracture;
-
+		//! Id of the border facet. It is 0 if the facet is interior
+		UInt M_borderId;
+		//! The set containing the ids of the represented fractures
+		std::set<UInt> M_representedFractureIds;
 	};
 
 	//! Class that implements a Cell
@@ -861,38 +880,38 @@ public:
 
 	//! Class that represents an interior tip edge
 	/*!
-		@class Interior_Tip_Edge
+		@class Internal_Tip_Edge
    		This class is derived from the class Tip_Edge.
 		This class contains the id of an edge which belongs to at least a fracture, it is a boundary edge for at least a fracture
 		and it is an interior edge for the domain.
    	*/
-	class Interior_Tip_Edge: public Tip_Edge {
+	class Internal_Tip_Edge: public Tip_Edge {
 	public:
 		//! @name Constructor & Destructor
 		//@{
 
-		//! Constructor for a Interior_Tip_Edge given an edge id
+		//! Constructor for a Internal_Tip_Edge given an edge id
 		/*!
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Interior_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Internal_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
 
-		//! Copy constructor for a Interior_Tip_Edge given a interior_tip_edge belonging to another Rigid_Mesh.
+		//! Copy constructor for a Internal_Tip_Edge given a interior_tip_edge belonging to another Rigid_Mesh.
 		/*!
-		 * @param interior_tip_edge reference to a Interior_Tip_Edge
+		 * @param internal_tip_edge reference to a Internal_Tip_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Interior_Tip_Edge (const Interior_Tip_Edge & interior_tip_edge, Geometry::Rigid_Mesh * const mesh);
+		Internal_Tip_Edge (const Internal_Tip_Edge & internal_tip_edge, Geometry::Rigid_Mesh * const mesh);
 
-		//! Copy constructor for a Interior_Tip_Edge given a interior_tip_edge.
+		//! Copy constructor for a Internal_Tip_Edge given a interior_tip_edge.
 		/*!
-		 * @param e reference to a Interior_Tip_Edge
+		 * @param e reference to a Internal_Tip_Edge
 		 */
-		Interior_Tip_Edge (const Interior_Tip_Edge & e);
+		Internal_Tip_Edge (const Internal_Tip_Edge & e);
 
 		//! Destructor
-		~Interior_Tip_Edge () = default;
+		~Internal_Tip_Edge () = default;
 		//@}
 	};
 
@@ -1271,12 +1290,61 @@ public:
 	const std::vector<Cell> & getCellsVector () const
 		{ return M_cells; }
 
+	//! Get internal edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the Regular_Edge
+	 */
+	const std::vector<Regular_Edge> & getInternalEdgesIdsVector () const
+		{ return M_internalEdges; }
+
 	//! Get border edges ids vector (const)
 	/*!
 	 * @return a reference to the vector of the Border_Edge
 	 */
-	const std::vector<Border_Edge> & getBorderEdgesIdsVector () const
+	const std::vector<const Border_Edge *> & getBorderEdgesIdsVector () const
 		{ return M_borderEdges; }
+
+	//! Get pure border edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the M_pureBorderEdges
+	 */
+	const std::vector<Pure_Border_Edge> & getPureBorderEdgesIdsVector () const
+		{ return M_pureBorderEdges; }
+
+	//! Get fracture edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the M_fractureEdges
+	 */
+	const std::vector<const Fracture_Edge *> & getFractureEdgesIdsVector () const
+		{ return M_fractureEdges; }
+
+	//! Get juncture edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the M_junctureEdges
+	 */
+	const std::vector<Juncture_Edge> & getJunctureEdgesIdsVector () const
+		{ return M_junctureEdges; }
+
+	//! Get tip edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the M_tipEdges
+	 */
+	const std::vector<const Tip_Edge *> & getTipEdgesIdsVector () const
+		{ return M_tipEdges; }
+
+	//! Get interior tip edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the M_internalTipEdges
+	 */
+	const std::vector<Internal_Tip_Edge> & getInternalTipEdgesIdsVector () const
+		{ return M_internalTipEdges; }
+
+	//! Get border tip edges ids vector (const)
+	/*!
+	 * @return a reference to the vector of the M_borderTipEdges
+	 */
+	const std::vector<Border_Tip_Edge> & getBorderTipEdgesIdsVector () const
+		{ return M_borderTipEdges; }
 
 	//! Get internal facets ids vector (const)
 	/*!
@@ -1441,17 +1509,17 @@ protected:
 	//! Vector of Regular_Edge
 	std::vector<Regular_Edge> M_internalEdges;
 	//! Vector of Border_Edge
-	std::vector<Border_Edge> M_borderEdges;
+	std::vector<const Border_Edge *> M_borderEdges;
 	//! Vector of Pure_Border_Edge
 	std::vector<Pure_Border_Edge> M_pureBorderEdges;
 	//! Vector of Fracture_Edge
-	std::vector<Fracture_Edge> M_fractureEdges;
+	std::vector<const Fracture_Edge *> M_fractureEdges;
 	//! Vector of Juncture_Edge
 	std::vector<Juncture_Edge> M_junctureEdges;
 	//! Vector of Tip_Edge
-	std::vector<Tip_Edge> M_tipEdges;
+	std::vector<const Tip_Edge *> M_tipEdges;
 	//! Vector of Interior_Tip_Edge
-	std::vector<Interior_Tip_Edge> M_interiorTipEdges;
+	std::vector<Internal_Tip_Edge> M_internalTipEdges;
 	//! Vector of Border_Tip_Edge
 	std::vector<Border_Tip_Edge> M_borderTipEdges;
 
