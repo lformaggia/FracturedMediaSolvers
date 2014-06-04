@@ -567,9 +567,9 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 
 Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
 	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVertexesVector()), M_area(generic_facet.area()),
-	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()), M_zone(generic_facet.getZoneCode()),
+	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()),
 	M_isFracture(generic_facet.isFracture()), M_borderId(generic_facet.getBorderId()),
-	M_representedFractureIds(generic_facet.getRepresentedFractureIds())
+	M_representedFractureIds(generic_facet.getRepresentedFractureIds()), M_zone(generic_facet.getZoneCode())
 {
 	if(!M_mesh->M_renumber)
 		for(auto it = generic_facet.getSeparatedCells().begin(); it != generic_facet.getSeparatedCells().end(); ++it)
@@ -582,16 +582,16 @@ Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Me
 Rigid_Mesh::Facet::Facet(const Facet & facet):
 	M_mesh(facet.getMesh()), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()), M_zone(facet.getZoneCode()),
+	M_unsignedNormal(facet.getUnsignedNormal()),
 	M_isFracture(facet.isFracture()), M_borderId(facet.getBorderId()),
-	M_representedFractureIds(facet.getRepresentedFractureIds()){}
+	M_representedFractureIds(facet.getRepresentedFractureIds()), M_zone(facet.getZoneCode()){}
 
 Rigid_Mesh::Facet::Facet(const Facet & facet, Geometry::Rigid_Mesh * const mesh):
 	M_mesh(mesh), M_id(facet.getId()), M_vertexesIds(facet.getVertexesIds()),
 	M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
-	M_unsignedNormal(facet.getUnsignedNormal()),M_zone(facet.getZoneCode()),
+	M_unsignedNormal(facet.getUnsignedNormal()),
 	M_isFracture(facet.isFracture()), M_borderId(facet.getBorderId()),
-	M_representedFractureIds(facet.getRepresentedFractureIds()){}
+	M_representedFractureIds(facet.getRepresentedFractureIds()), M_zone(facet.getZoneCode()){}
 
 // ==================================================
 // Methods
@@ -708,9 +708,9 @@ Rigid_Mesh::Regular_Edge::Regular_Edge (const Regular_Edge & e):
 Rigid_Mesh::Border_Edge::Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
 	Edge_ID(edge_Id, mesh)
 {
-	for(auto facet_it : M_edges[edge_Id].getSeparatedFacetsIds())
+	for(auto facet_it : mesh->getEdgesVector()[edge_Id].getSeparatedFacetsIds())
 	{
-		Border_Ids.insert(M_facets[facet_it].getBorderId());
+		Border_Ids.insert(mesh->getFacetsVector()[facet_it].getBorderId());
 	}
 	Border_Ids.erase(0);
 }
@@ -748,9 +748,9 @@ Rigid_Mesh::Pure_Border_Edge::Pure_Border_Edge (const Pure_Border_Edge & e):
 Rigid_Mesh::Fracture_Edge::Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
 	Edge_ID(edge_Id, mesh)
 {
-	for(auto facet_it : M_edges[edge_Id].getSeparatedFacetsIds())
+	for(auto facet_it : mesh->getEdgesVector()[edge_Id].getSeparatedFacetsIds())
 	{
-		for(auto fracture_it : M_facets[facet_it].getRepresentedFractureIds())
+		for(auto fracture_it : mesh->getFacetsVector()[facet_it].getRepresentedFractureIds())
 			Fracture_Ids.insert(fracture_it);
 	}
 }
