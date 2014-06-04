@@ -711,12 +711,12 @@ public:
 		/*!
 		 * @return the ids of the represented border facets (inherited from the facets)
 		 */
-		const std::vector<UInt> & getBorderIds() const
+		const std::set<UInt> & getBorderIds() const
 			{return Border_Ids;}
 		//@}
 	protected:
 		//! Ids of the represented borders
-		std::vector<UInt> Border_Ids;
+		std::set<UInt> Border_Ids;
 	};
 
 	//! Class that represents a border edge
@@ -797,13 +797,13 @@ public:
 		/*!
 		 * @return the ids of the represented fractures
 		 */
-		const std::vector<UInt> & getFractureIds () const
+		const std::set<UInt> & getFractureIds () const
 			{return Fracture_Ids;}
 		//@}
 
 	protected:
 		//! Ids of the represented fractures
-		std::vector<UInt> Fracture_Ids;
+		std::set<UInt> Fracture_Ids;
 	};
 
 	//! Class that represents a juncture edge

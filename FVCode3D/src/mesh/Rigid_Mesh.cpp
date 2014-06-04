@@ -705,7 +705,11 @@ Rigid_Mesh::Regular_Edge::Regular_Edge (const Regular_Edge & e):
 Rigid_Mesh::Border_Edge::Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
 	Edge_ID(edge_Id, mesh)
 {
-	// TODO fill Border_Ids
+	for(auto facet_it : M_edges[edge_Id].getSeparatedFacetsIds())
+	{
+		Border_Ids.insert(M_facets[facet_it].getBorderId());
+	}
+	Border_Ids.erase(0);
 }
 
 Rigid_Mesh::Border_Edge::Border_Edge (const Border_Edge & border_edge, Geometry::Rigid_Mesh * const mesh):
@@ -741,7 +745,11 @@ Rigid_Mesh::Pure_Border_Edge::Pure_Border_Edge (const Pure_Border_Edge & e):
 Rigid_Mesh::Fracture_Edge::Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh):
 	Edge_ID(edge_Id, mesh)
 {
-	// TODO fill Fracture_Ids
+	for(auto facet_it : M_edges[edge_Id].getSeparatedFacetsIds())
+	{
+		for(auto fracture_it : M_facets[facet_it].getRepresentedFractureIds())
+			Fracture_Ids.insert(fracture_it);
+	}
 }
 
 Rigid_Mesh::Fracture_Edge::Fracture_Edge (const Fracture_Edge & fracture_edge, Geometry::Rigid_Mesh * const mesh):
