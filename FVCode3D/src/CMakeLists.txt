@@ -1,0 +1,9 @@
+file(GLOB_RECURSE SRC_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*/*.cpp)
+file(GLOB_RECURSE SRC_HEADERS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/*/*.hpp)
+# We want these to be cache variables so that they are visible at parent scope
+set(LIB_SOURCES ${SRC_SOURCES} CACHE INTERNAL "")
+set(LIB_HEADERS ${SRC_HEADERS} CACHE INTERNAL "")
+
+install_files_with_directory_structure(${INSTALL_INCLUDE_DIR} ${LIB_HEADERS})
+
+
