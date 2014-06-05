@@ -1,0 +1,17 @@
+# - Config file for the GeoMesher package
+# It defines the following variables
+#  @PROJECT_NAME@_INCLUDE_DIRS - include directories for @PROJECT_NAME@
+#  @PROJECT_NAME@_LIBRARY_DIRS - library directories for @PROJECT_NAME@
+#  @PROJECT_NAME@_LIBRARIES    - libraries to link against
+#  @PROJECT_NAME@_TPL_INCLUDE_DIRS - Third party libraries include directories for @PROJECT_NAME@
+#  @PROJECT_NAME@_TPL_LIBRARY_DIRS - Third party libraries library directories for @PROJECT_NAME@
+
+# Compute paths
+get_filename_component(@PROJECT_NAME@_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(@PROJECT_NAME@_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+set(@PROJECT_NAME@_LIBRARY_DIRS "@CONF_LIBRARY_DIRS@")
+set(@PROJECT_NAME@_LIBRARIES @LIBRARIES@ )
+
+set(@PROJECT_NAME@_TPL_INCLUDE_DIRS "@PROJECT_TPL_INCLUDE_DIRS@")
+set(@PROJECT_NAME@_TPL_LIBRARY_DIRS "@PROJECT_TPL_LIBRARY_DIRS@")
+

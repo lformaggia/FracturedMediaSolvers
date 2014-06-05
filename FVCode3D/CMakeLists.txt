@@ -1,10 +1,23 @@
 # Set the minimum required version of cmake for a project
 cmake_minimum_required(VERSION 2.8)
 # Project name
-project (FVCode)
+set(PROJECT_NAME FVCode)
+project(${PROJECT_NAME})
 
-SET(CMAKE_VERBOSE_MAKEFILE TRUE CACHE BOOL "Verbose Makefile" FORCE)
+set (${PROJECT_NAME}_MAJOR_VERSION 0)
+set (${PROJECT_NAME}_MINOR_VERSION 1)
+set (${PROJECT_NAME}_PATCH_VERSION 0)
+set(${PROJECT_NAME}_VERSION
+    ${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_MINOR_VERSION}.${${PROJECT_NAME}_PATCH_VERSION})
+# This is used when configuring files
+# (this way we have a variable which is not dependent on the project name)
+set(PROJECT_VERSION ${${PROJECT_NAME}_VERSION})
+
+#SET(CMAKE_VERBOSE_MAKEFILE TRUE CACHE BOOL "Verbose Makefile" FORCE)
 SET(CMAKE_COLOR_MAKEFILE TRUE CACHE BOOL "Colored Makefile" FORCE)
+
+# This file contains the definition of special functions
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/IncludeFunctions.cmake)
 
 #ENABLE_TESTING()
 
@@ -13,52 +26,107 @@ IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-IF(DEFINED ENV{IS_MOX})
-    SET( ADDITIONAL_CXX_FLAGS "-lumfpack" )
-ELSE()
-    SET( ADDITIONAL_CXX_FLAGS "" )
-ENDIF()
-
-set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math ${ADDITIONAL_CXX_FLAGS}" CACHE STRING "g++ Compiler Flags for All Builds" FORCE)
+set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math" CACHE STRING "g++ Compiler Flags for All Builds" FORCE)
 
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for Release" FORCE)
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -O0 -g" CACHE STRING "g++ Compiler Flags for Debug" FORCE)
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for RelWithDebInfo" FORCE)
 
-# install directory
+#================================
+# Installation directories
+#================================
+# Offer the user the choice of overriding the installation directories
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/../install CACHE PATH "Install directory")
-set(INSTALL_BIN ${CMAKE_INSTALL_PREFIX}/bin CACHE PATH "Install: bin subdirectory")
-set(INSTALL_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib CACHE PATH "Install: library subdirectory")
-set(INSTALL_INCLUDE ${CMAKE_INSTALL_PREFIX}/include CACHE PATH "Install: include subdirectory")
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH
+  "Installation directory for header files")
 
-# Eigen path
-find_path(EIGEN_PATH NAMES signature_of_eigen3_matrix_library PATHS /usr/local/include/eigen3 DOC "Eigen Directory")
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/cmake/${PROJECT_NAME})
+endif()
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
+  "Installation directory for CMake files")
 
-# Suitesparse path
-find_path(SUITESPARSE_PATH NAMES signature_of_suitesparse_matrix_library PATHS /usr/local/include/suitesparse DOC "Suitesparse Directory")
+mark_as_advanced(INSTALL_LIB_DIR INSTALL_BIN_DIR INSTALL_INCLUDE_DIR INSTALL_CMAKE_DIR)
+
+#================================
+# Third Party Libraries
+#================================
+# find_package uses a Find<package>.cmake module which it tries to find
+# in CMAKE_MODULE_PATH. Since there are no default modules for Cholmod
+# and Umfpack, we use those in ${CMAKE_CURRENT_SOURCE_DIR}/cmake
+# (we later restore CMAKE_MODULE_PATH its value).
+# CMAKE_PREFIX_PATH is where find_package, find_library and find_file
+# look for files. We set this to the user defined TPL_<package>_DIR
+set(ENV_CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH})
+set(ENV_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# CHOLMOD
+set(CMAKE_PREFIX_PATH ${TPL_CHOLMOD_DIR})
+find_package(Cholmod)
+if(NOT CHOLMOD_FOUND)
+    message(FATAL_ERROR "Cholmod not found. Try setting TPL_CHOLMOD_DIR to the installation path of CHOLMOD")
+endif()
+# UMFPACK
+set(CMAKE_PREFIX_PATH ${TPL_UMFPACK_DIR})
+find_package(Umfpack)
+if(NOT UMFPACK_FOUND)
+    message(FATAL_ERROR "Umfpack not found. Try setting TPL_UMFPACK_DIR to the installation path of UMFPACK")
+endif()
+# Eigen
+set(CMAKE_PREFIX_PATH ${TPL_EIGEN_DIR})
+find_package(Eigen3)
+if(NOT EIGEN3_FOUND)
+    # We have our own
+    set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/eigen")
+endif()# BLAS
+set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
+set(CMAKE_PREFIX_PATH ${TPL_BLAS_DIR})
+find_package(BLAS)
+if(NOT BLAS_FOUND)
+    message(FATAL_ERROR "BLAS not found. Try setting TPL_BLAS_DIR to the installation path of BLAS")
+endif()
+# Restore variables to their original values
+set(CMAKE_PREFIX_PATH ${ENV_CMAKE_PREFIX_PATH})
+set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
+
+set(${PROJECT_NAME}_TPL_INCLUDE_DIRS
+    ${CHOLMOD_INCLUDES}
+    ${UMFPACK_INCLUDES}
+    ${EIGEN3_INCLUDE_DIR}
+    )
+
+set(${PROJECT_NAME}_TPL_LIBRARY_DIRS
+    ""
+    )
 
 # Make sure the compiler can find include files.
 include_directories (
-            ${CMAKE_CURRENT_SOURCE_DIR}
-            ${CMAKE_CURRENT_SOURCE_DIR}/src
-            ${CMAKE_CURRENT_SOURCE_DIR}/include
-            ${EIGEN_PATH}
-            ${SUITESPARSE_PATH}/include
-            )
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}
+    )
 
 
 # Make sure the linker can find the library.
 link_directories (
-            ${CMAKE_CURRENT_BINARY_DIR}/lib
-            ${CMAKE_CURRENT_SOURCE_DIR}/lib
-            ${SUITESPARSE_PATH}/lib
-         )
+    ${CMAKE_CURRENT_BINARY_DIR}/lib
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib
+    ${${PROJECT_NAME}_TPL_LIBRARY_DIRS}
+    )
+
+set(LIBRARIES ${UMFPACK_LIBRARIES} ${CHOLMOD_LIBRARIES} ${BLAS_LIBRARIES} tet CACHE INTERNAL "")
 
 # Create static library
+add_subdirectory(src)
 file(GLOB_RECURSE LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp)
 file(GLOB_RECURSE LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.hpp)
-add_library(fvcode STATIC ${LIB_SOURCES})
+add_library(fvcode STATIC ${LIB_SOURCES} ${LIB_HEADERS})
 
 #Set properties on a target.
 #We use this here to set -DTETLIBRARY for when compiling the library
@@ -66,22 +134,10 @@ set_target_properties(fvcode PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
 
 add_executable(fvcode.exe main.cpp )
 # Create executable and link libraries
-IF(DEFINED ENV{IS_MOX})
-    target_link_libraries(fvcode.exe fvcode tet)
-ELSE()
-    target_link_libraries(fvcode.exe fvcode tet
-        #   lapack
-        /usr/local/suitesparse/lib/libumfpack.a
-        /usr/local/suitesparse/lib/libamd.a
-        /usr/local/suitesparse/lib/libcholmod.a
-        /usr/local/suitesparse/lib/libcolamd.a
-        /usr/local/suitesparse/lib/libsuitesparseconfig.a
-    #   /usr/local/suitesparse/lib/libbtf.a
-    #   /usr/local/suitesparse/lib/libcamd.a
-    #   /usr/local/suitesparse/lib/libccolamd.a
-        rt
-        )
-ENDIF()
+target_link_libraries(fvcode.exe
+    fvcode
+    ${LIBRARIES}
+    )
 
 # Add subdirectories with examples
 # add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tests)
@@ -95,13 +151,14 @@ add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tools)
 
 # Install
 INSTALL(TARGETS fvcode.exe fvcode
-    RUNTIME DESTINATION ${INSTALL_BIN}
-    ARCHIVE DESTINATION ${INSTALL_LIBRARY}
-    LIBRARY DESTINATION ${INSTALL_LIBRARY}
+    RUNTIME DESTINATION ${INSTALL_BIN_DIR}
+    ARCHIVE DESTINATION ${INSTALL_LIB_DIR}
+    LIBRARY DESTINATION ${INSTALL_LIB_DIR}
     )
 
-INSTALL(FILES ${LIB_HEADERS} DESTINATION ${INSTALL_INCLUDE})
+INSTALL(FILES ${LIB_HEADERS} DESTINATION ${INSTALL_INCLUDE_DIR})
 
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtet.a DESTINATION ${INSTALL_LIB_DIR})
 
 # Add data file
 add_custom_command(
@@ -129,3 +186,12 @@ add_custom_command(
     COMMAND ${CMAKE_COMMAND} -E make_directory results
 
     )
+
+#================================
+# ${PROJECT_NAME}Config.cmake
+#================================
+
+# This file configures and prepares for installation
+# ${PROJECT_NAME}Config.cmake and ${PROJECT_NAME}ConfigVersion.cmake
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/InstallCMakeConfigFiles.cmake)
+
