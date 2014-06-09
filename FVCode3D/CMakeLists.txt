@@ -79,11 +79,11 @@ if(NOT UMFPACK_FOUND)
 endif()
 # Eigen
 set(CMAKE_PREFIX_PATH ${TPL_EIGEN_DIR})
-find_package(Eigen3)
-if(NOT EIGEN3_FOUND)
+#find_package(Eigen3)
+#if(NOT EIGEN3_FOUND)
     # We have our own
     set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/eigen")
-endif()# BLAS
+#endif()# BLAS
 set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
 set(CMAKE_PREFIX_PATH ${TPL_BLAS_DIR})
 find_package(BLAS)
@@ -127,6 +127,8 @@ add_subdirectory(src)
 file(GLOB_RECURSE LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp)
 file(GLOB_RECURSE LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.hpp)
 add_library(fvcode STATIC ${LIB_SOURCES} ${LIB_HEADERS})
+
+SET(LIBRARIES ${LIBRARIES} fvcode)
 
 #Set properties on a target.
 #We use this here to set -DTETLIBRARY for when compiling the library
