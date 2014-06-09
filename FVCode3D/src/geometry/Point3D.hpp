@@ -57,6 +57,12 @@ public:
 
 	Real & operator[](const UInt coord);
 
+	static const Real & getTolerance()
+	    { return Point3D::S_tolerance; }
+
+	static void setTolerance(const Real tolerance)
+	    { Point3D::S_tolerance = tolerance; }
+
 	friend Point3D operator+(const Point3D & p1, const Point3D & p2);
 
 	friend Point3D operator-(const Point3D & p1, const Point3D & p2);
@@ -92,7 +98,12 @@ private:
 	//! z-coordinate
 	Real M_z;
 
+	//! Relative tolerance
+	static Real S_tolerance;
+
 };
+
+bool operator<(const Point3D & p1, const Point3D & p2);
 
 }//namespace Geometry
 

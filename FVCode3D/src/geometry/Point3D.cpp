@@ -8,6 +8,8 @@
 
 namespace Geometry{
 
+Real Point3D::S_tolerance = 1e-8;
+
 void Point3D::normalize(){
 	Real n=norm();
 	M_x = M_x/n;
@@ -190,6 +192,25 @@ Point3D crossProduct(const Point3D & p1, const Point3D & p2){
 std::ostream & operator<<(std::ostream & os, const Point3D & p){
 	os<<"( "<<p.M_x<<" , "<<p.M_y<<" , "<<p.M_z<<" )";
 	return os;
+}
+
+bool operator<(const Point3D & p1, const Point3D & p2)
+{
+    const Real relTolX = std::max( std::fabs(p1.x()), std::fabs(p2.x()) );   
+
+    if ( std::fabs(p1.x() - p2.x()) <= Point3D::getTolerance() * relTolX )
+    {
+        const Real relTolY = std::max( std::fabs(p1.y()), std::fabs(p2.y()) );
+        if ( std::fabs(p1.y() - p2.y()) <= Point3D::getTolerance() * relTolY )   
+        {
+            const Real relTolZ = std::max( std::fabs(p1.z()), std::fabs(p2.z()) );
+            if ( std::fabs(p1.z() - p2.z()) <= Point3D::getTolerance() * relTolZ )
+                return false;
+            return p1.z() - p2.z() < Point3D::getTolerance() * relTolZ;
+        }
+        return p1.y() - p2.y() < Point3D::getTolerance() * relTolY;
+    }
+    return p1.x() - p2.x() < Point3D::getTolerance() * relTolX;
 }
 
 }//namespace Geometry
