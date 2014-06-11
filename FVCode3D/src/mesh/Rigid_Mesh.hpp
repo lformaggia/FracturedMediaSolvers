@@ -367,6 +367,14 @@ public:
 		bool isFracture() const
 			{ return M_isFracture; }
 
+		//! Get id of the fracture facet that it represents (const)
+		/*!
+		 * @return the id of the Fracture Facet
+		 * @pre test that the facet is a fracture facet!
+		 */
+		UInt getFractureFacetId() const
+			{ return M_fractureFacetId; }
+
 		//! Test if the facet is a border facet
 		/*!
 		 * @return True if the facet is a border facet (i.e. it separates only one cell)
@@ -404,6 +412,8 @@ public:
 		Generic_Vector M_unsignedNormal;
 		//! True if the Facet is a fracture
 		bool M_isFracture;
+		//! The fracture facet id
+		UInt M_fractureFacetId;
 		//! Id of the border facet. It is 0 if the facet is interior
 		UInt M_borderId;
 		//! The set containing the ids of the represented fractures
@@ -968,12 +978,9 @@ public:
 		This class is a base class.
    	*/
 	class Facet_ID{
-
 	protected:
 		//! The Id of the referred Facet
 		UInt Facet_Id;
-		//! Zone code of the facet
-		UInt M_zoneCode;
 		//! The pointer to the Rigid_Mesh containing the Facet
 		Rigid_Mesh * M_mesh;
 
@@ -984,10 +991,9 @@ public:
 		//! Constructor for a Facet_ID.
 		/*!
 			@param facet_id is the id of a Facet of a Rigid_Mesh.
-			@param zoneCode the code of the zone
 			@param mesh is a constant pointer to the mesh to which the Facet belongs
 		*/
-		Facet_ID(const UInt facet_id, const UInt zoneCode, Geometry::Rigid_Mesh * const mesh);
+		Facet_ID(const UInt facet_id, Geometry::Rigid_Mesh * const mesh);
 
 		//! No empty constructor
 		Facet_ID () = delete;
@@ -1018,7 +1024,7 @@ public:
 		 * @return the zone code of the represented fractures
 		 */
 		UInt getZoneCode () const
-			{return M_zoneCode;}
+			{return M_mesh->getFacetsVector()[Facet_Id].getZoneCode();}
 
 		//! Get Facet (const)
 		/*!
@@ -1071,10 +1077,9 @@ public:
 		//! Constructor for a Regular_Facet given an id
 		/*!
 			@param facet_id is the id of a Facet of a Rigid_Mesh
-			@param zoneCode the code of the zone
 			@param mesh is a pointer to the mesh to which the Facet belongs
 		*/
-		Regular_Facet (const UInt facet_Id, const UInt zoneCode, Geometry::Rigid_Mesh * const mesh);
+		Regular_Facet (const UInt facet_Id, Geometry::Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Regular_Facet given a regular_facet of another Rigid_Mesh.
 		/*!
@@ -1101,9 +1106,6 @@ public:
 		This class contains the id of a facet which belongs to the border of the domain.
    	*/
 	class Border_Facet: public Facet_ID {
-	protected:
-		//! Identifier of the border
-		UInt Border_Id;
 	public:
 		//! @name Constructor & Destructor
 		//@{
@@ -1111,11 +1113,9 @@ public:
 		//! Constructor for a Border_Facet given a facet id and the relative border id
 		/*!
 			@param facet_id is the id of a Facet of a Rigid_Mesh
-			@param zoneCode the code of the zone
-			@param border_id is the id of the border to which the facet belongs.
 			@param mesh is a pointer to the mesh to which the facet belongs
 		*/
-		Border_Facet (const UInt facet_Id, const UInt zoneCode, const UInt border_Id, Geometry::Rigid_Mesh * const mesh);
+		Border_Facet (const UInt facet_Id, Geometry::Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Facet given a border_facet belonging to another Rigid_Mesh.
 		/*!
@@ -1141,7 +1141,7 @@ public:
 		 * @return the id of the border of the contained Facet
 		 */
 		UInt getBorderId() const
-			{return Border_Id;}
+			{return M_mesh->getFacetsVector()[Facet_Id].getBorderId();}
 		//@}
 	};
 
@@ -1156,13 +1156,12 @@ public:
 		//! @name Constructor & Destructor
 		//@{
 
-		//! Constructor for a Fracture_Facet given a facet id and the id of the represented fractures.
+		//! Constructor for a Fracture_Facet given a facet id.
 		/*!
-			@param facet_Ids is a 4-tuple: 1. id of a Facet of a Rigid_Mesh 2. id as Fracture_Facet 3. number of cells in Rigid_Mesh 4. Zone Code
-			@param fracture_Ids is a vector with the ids of the fractures represented by the Facet.
+			@param facet_Id id of a Facet of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the facet belongs
 		*/
-		Fracture_Facet(const std::tuple<UInt,UInt,UInt,UInt> facet_Ids, const std::set<UInt> & fracture_Ids, Geometry::Rigid_Mesh * const mesh);
+		Fracture_Facet(const UInt facet_Id, Geometry::Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Facet given a fracture_facet belonging to another Rigid_Mesh.
 		/*!
@@ -1189,28 +1188,21 @@ public:
 		 * @return the id as Fracture_Facet
 		 */
 		UInt getId () const
-			{return M_Id;}
-
-		//! Get the number of cells (const)
-		/*!
-		 * @return the number of cells in the Rigid_Mesh
-		 */
-		UInt getCellsnumber () const
-			{return Cells_number;}
+			{return M_mesh->getFacetsVector()[Facet_Id].getFractureFacetId();}
 
 		//! Get the id as Cell (const)
 		/*!
 		 * @return the id as Cell = Number of cells + Id as Fracture_Facet
 		 */
 		UInt getIdasCell () const
-			{return (M_Id+Cells_number);}
+			{return (M_mesh->getFacetsVector()[Facet_Id].getFractureFacetId()+M_mesh->getCellsVector().size());}
 
 		//! Get fractures ids (const)
 		/*!
 		 * @return the ids of the represented fractures
 		 */
-		const std::vector<UInt> & getFractureIds () const
-			{return Fracture_Ids;}
+		const std::set<UInt> & getFractureIds () const
+			{return M_mesh->getFacetsVector()[Facet_Id].getRepresentedFractureIds();}
 
 		//! Get fracture neighbors (const)
 		/*!
@@ -1230,12 +1222,6 @@ public:
 		friend class Rigid_Mesh;
 
 	private:
-		//! Number of cells in the Rigid_Mesh
-		UInt Cells_number;
-		//! Id as Fracture_Facet
-		UInt M_Id;
-		//! Ids of the represented fractures
-		std::vector<UInt> Fracture_Ids;
 		//! Map that associates a juncture the ids of the neighboring Fracture_Facet
 		std::map<Fracture_Juncture, std::vector<UInt> > Fracture_Neighbors;
 		//! Set of tips of the current fracture
