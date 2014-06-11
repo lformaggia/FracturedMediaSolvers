@@ -149,6 +149,8 @@ int main(int argc, char * argv[])
 	std::cout << "Export Fracture Junctures & Tips..." << std::flush;
 	exporter.exportFractureJunctures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_junc.vtu");
 	exporter.exportFractureTips(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tips.vtu");
+	exporter.exportEdges(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_edges.vtu");
+	exporter.exportFacets(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_facets.vtu");
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
