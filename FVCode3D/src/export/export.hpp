@@ -48,9 +48,17 @@ public:
     typedef Geometry::Rigid_Mesh Rigid_Mesh;
     typedef Geometry::Rigid_Mesh::Cell Cell;
     typedef Geometry::Rigid_Mesh::Facet Facet;
+    typedef Geometry::Rigid_Mesh::Edge Edge;
+
     typedef Geometry::Rigid_Mesh::Fracture_Facet Fracture_Facet;
     typedef Geometry::Rigid_Mesh::Fracture_Tip Fracture_Tip;
     typedef Geometry::Rigid_Mesh::Fracture_Juncture Fracture_Juncture;
+
+    typedef Geometry::Rigid_Mesh::Regular_Edge Regular_Edge;
+    typedef Geometry::Rigid_Mesh::Juncture_Edge Juncture_Edge;
+    typedef Geometry::Rigid_Mesh::Internal_Tip_Edge Internal_Tip_Edge;
+    typedef Geometry::Rigid_Mesh::Border_Tip_Edge Border_Tip_Edge;
+    typedef Geometry::Rigid_Mesh::Pure_Border_Edge Pure_Border_Edge;
 
     //! Constructor
     Exporter(){}
@@ -89,7 +97,21 @@ public:
      * @param filename name of the file
      */
     virtual void exportWireframe(const Mesh3D & mesh, const std::string filename) = 0;
+
+    //! Export the edges
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     */
+    virtual void exportEdges(const Rigid_Mesh & mesh, const std::string filename) = 0;
     
+    //! Export the faces
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     */
+    virtual void exportFacets(const Rigid_Mesh & mesh, const std::string filename) = 0;
+
     //! Export the fracture junctures
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh

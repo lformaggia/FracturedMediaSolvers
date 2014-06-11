@@ -54,6 +54,20 @@ public:
      */
     virtual void exportWireframe(const Mesh3D & mesh, const std::string filename);
     
+    //! Export the edges
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     */
+    virtual void exportEdges(const Rigid_Mesh & mesh, const std::string filename);
+
+    //! Export the facets
+    /*!
+     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param filename name of the file
+     */
+    virtual void exportFacets(const Rigid_Mesh & mesh, const std::string filename);
+
     //! Export the fracture junctures
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh

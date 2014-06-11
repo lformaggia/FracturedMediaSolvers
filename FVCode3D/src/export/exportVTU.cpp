@@ -636,6 +636,217 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
+void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename)
+{
+    std::fstream filestr;
+
+    filestr.open (filename.c_str(), std::ios_base::out);
+
+    if (filestr.is_open())
+    {
+        std::cout << std::endl << " File: " << filename << ", successfully opened";
+    }
+    else
+    {
+        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << std::endl << " Exporting Edges in Vtu format... " << std::endl;
+
+    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Edge> & edges = mesh.getEdgesVector();
+    const std::vector<Regular_Edge> & regularEdges = mesh.getInternalEdgesIdsVector();
+    const std::vector<Juncture_Edge> & junctureEdges = mesh.getJunctureEdgesIdsVector();
+    const std::vector<Internal_Tip_Edge> & intTipEdges = mesh.getInternalTipEdgesIdsVector();
+    const std::vector<Border_Tip_Edge> & borTipEdges = mesh.getBorderTipEdgesIdsVector();
+    const std::vector<Pure_Border_Edge> & pureBorEdges = mesh.getPureBorderEdgesIdsVector();
+
+    UInt nPoints = nodes.size();
+    UInt nEdges = edges.size();
+    UInt offsets = 0, faceOffsets = 0;
+
+    // Header
+    filestr << "<?xml version=\"1.0\"?>" << std::endl;
+    filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+    filestr << "\t<UnstructuredGrid>" << std::endl;
+    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nEdges << "\">" << std::endl;
+
+    // CellData
+    filestr << "\t\t\t<CellData Scalars=\"Prop\">" << std::endl;
+
+    filestr << std::scientific << std::setprecision(0);
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"edgeType\" format=\"ascii\">" << std::endl;
+    for(auto&& edge : regularEdges )
+    	filestr << "1" << std::endl;
+    for(auto&& edge : junctureEdges )
+    	filestr << "2" << std::endl;
+    for(auto&& edge : intTipEdges )
+    	filestr << "3" << std::endl;
+    for(auto&& edge : borTipEdges )
+    	filestr << "4" << std::endl;
+    for(auto&& edge : pureBorEdges )
+    	filestr << "5" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"edgeId\" format=\"ascii\">" << std::endl;
+    for(auto&& edge : regularEdges )
+    	filestr << edge.getEdgeId() << std::endl;
+    for(auto&& edge : junctureEdges )
+    	filestr << edge.getEdgeId() << std::endl;
+    for(auto&& edge : intTipEdges )
+    	filestr << edge.getEdgeId() << std::endl;
+    for(auto&& edge : borTipEdges )
+    	filestr << edge.getEdgeId() << std::endl;
+    for(auto&& edge : pureBorEdges )
+    	filestr << edge.getEdgeId() << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t</CellData>" << std::endl;
+
+    filestr << std::scientific << std::setprecision(10);
+
+    // Points
+    filestr << "\t\t\t<Points>" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+        filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Points>" << std::endl;
+
+    // Cells
+    filestr << "\t\t\t<Cells>" << std::endl;
+    //  Connectivity
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+    for(auto&& edge : regularEdges )
+    	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
+    for(auto&& edge : junctureEdges )
+    	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
+    for(auto&& edge : intTipEdges )
+    	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
+    for(auto&& edge : borTipEdges )
+    	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
+    for(auto&& edge : pureBorEdges )
+    	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Offsets
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+    for( UInt i=0; i< nEdges; ++i )
+    {
+        offsets += 2;
+        filestr << offsets << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Types
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+    for( UInt i=0; i < nEdges ; ++i )
+        filestr << "3" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t</Cells>" << std::endl;
+
+    filestr << "\t\t</Piece>" << std::endl;
+    filestr << "\t</UnstructuredGrid>" << std::endl;
+    filestr << "\t</VTKFile>" << std::endl;
+
+    filestr.close();
+}
+
+void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename)
+{
+    std::fstream filestr;
+
+    filestr.open (filename.c_str(), std::ios_base::out);
+
+    if (filestr.is_open())
+    {
+        std::cout << std::endl << " File: " << filename << ", successfully opened";
+    }
+    else
+    {
+        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+        return;
+    }
+
+    std::cout << std::endl << " Exporting Facets in Vtu format... " << std::endl;
+
+    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Facet> & facets = mesh.getFacetsVector();
+    UInt nPoints = nodes.size();
+    UInt nFacets = facets.size();
+    UInt offsets = 0, faceOffsets = 0;
+
+    // Header
+    filestr << "<?xml version=\"1.0\"?>" << std::endl;
+    filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+    filestr << "\t<UnstructuredGrid>" << std::endl;
+    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nFacets << "\">" << std::endl;
+
+    // CellData
+    filestr << "\t\t\t<CellData Scalars=\"facetId\">" << std::endl;
+
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetId\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(10);
+    for(auto&& facet_it : facets)
+        filestr << facet_it.getId() << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderId\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(10);
+    for(auto&& facet_it : facets)
+        filestr << facet_it.getBorderId() << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t</CellData>" << std::endl;
+
+    filestr << std::scientific << std::setprecision(10);
+
+    // Points
+    filestr << "\t\t\t<Points>" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+        filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Points>" << std::endl;
+
+    // Cells
+    filestr << "\t\t\t<Cells>" << std::endl;
+    //  Connectivity
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+    for(auto&& facet_it : facets)
+    {
+        for(auto&& vertex_it : facet_it.getVertexesIds())
+            filestr << vertex_it << " ";
+        filestr << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Offsets
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+    for(auto&& facet_it : facets)
+    {
+        offsets += facet_it.vertexesNumber();
+        filestr << offsets << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Types
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+    for( UInt i=0; i < nFacets ; ++i )
+        filestr << "7" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t</Cells>" << std::endl;
+
+    filestr << "\t\t</Piece>" << std::endl;
+    filestr << "\t</UnstructuredGrid>" << std::endl;
+    filestr << "\t</VTKFile>" << std::endl;
+
+    filestr.close();
+}
+
 void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename)
 {
     std::fstream filestr;
