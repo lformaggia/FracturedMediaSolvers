@@ -35,11 +35,11 @@ Real StiffMatrix::Findfracturesalpha (const Fracture_Juncture fj, const UInt n_I
     normal = crossProduct(this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first], normal); // n = l x k
     normal.normalize();
     Real scalprod = fabs(dotProduct(normal, f));
-    alpha = A*k*scalprod/D;
+    alpha = A * k * scalprod / D;
     return alpha;
 }
 
-Real StiffMatrix::Findalpha (const UInt & cellId, Facet_ID * const facet) const
+Real StiffMatrix::Findalpha (const UInt & cellId, const Facet_ID * facet) const
 {
     Generic_Point facetCenter = facet->getCentroid();
     Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
@@ -57,17 +57,58 @@ Real StiffMatrix::Findalpha (const UInt & cellId, Facet_ID * const facet) const
     return alpha;
 }
 
-Real StiffMatrix::FindDirichletalpha (const UInt & cellId, Facet_ID * const facet) const
+Real StiffMatrix::Findalpha (const UInt & facetId, const Edge_ID * edge) const
+{
+    Generic_Point edgeCenter = edge->getCentroid();
+    Generic_Point facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
+
+    Real A = edge->getSize() * M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
+    Real k = M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
+    Generic_Vector f;
+    Real alpha;
+    Real D;
+    f = edgeCenter - facetCenter;
+    D = sqrt(dotProduct(f, f));
+    f = f/D;
+
+    Generic_Vector normal = crossProduct(	f,
+    						this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[0]] -
+    						this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[1]] ); // k = f x l
+    normal = crossProduct(	this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[0]] -
+    						this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[1]],
+    						normal); // n = l x k
+    normal.normalize();
+    Real scalprod = fabs(dotProduct(f, normal));
+    alpha = A * k * scalprod / D;
+	return alpha;
+}
+
+Real StiffMatrix::FindDirichletalpha (const UInt & cellId, const Facet_ID * facet) const
 {
     Generic_Point facetCenter = facet->getCentroid();
     Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
     Real alpha;
     Real D;
-    Generic_Vector f;
-    f = cellCenter - facetCenter;
+    Generic_Vector f = cellCenter - facetCenter;
     D = sqrt(dotProduct(f, f));
 
     alpha = facet->getSize() * M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability / D;
+    return alpha;
+}
+
+Real StiffMatrix::FindDirichletalpha (const UInt & facetId, const Edge_ID * edge) const
+{
+    Generic_Point borderCenter = edge->getCentroid();
+    Generic_Point facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
+
+    Real A = edge->getSize() * M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
+    Real k = M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
+    Real alpha;
+    Real D;
+    Generic_Vector f = borderCenter - facetCenter;
+    D = sqrt(dotProduct(f, f));
+
+    alpha = A * k / D;
     return alpha;
 }
 
@@ -88,6 +129,11 @@ void StiffMatrix::assemble()
     if( !this->M_mesh.getInternalFacetsIdsVector().empty() )
     {
         assemblePorousMatrixBC( Matrix_elements );
+    } // if
+
+    if( !this->M_mesh.getBorderTipEdgesIdsVector().empty() )
+    {
+        assembleFractureBC( Matrix_elements );
     } // if
 
     this->M_Matrix->setFromTriplets( std::begin( Matrix_elements ), std::end( Matrix_elements ) );
@@ -145,11 +191,6 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
 
 void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements ) const
 {
-    for(UInt i=0; i<this->M_size; ++i)
-    {
-        _b->operator()(i)=0.;
-    } // for
-
     for (auto facet_it : this->M_mesh.getBorderFacetsIdsVector())
     {
         const UInt neighbor1id = facet_it.getSeparated()[0];
@@ -205,5 +246,66 @@ void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) cons
         } // for
     } // for
 } // StiffMatrix::assembleFracture
+
+void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) const
+{
+    for (auto& edge_it : this->M_mesh.getBorderTipEdgesIdsVector())
+    {
+    	bool isD = false;
+        UInt borderId = 0;
+
+        // select which BC to apply
+        for(auto& border_it : edge_it.getBorderIds())
+        {
+        	// BC = D > N && the one with greatest id
+        	if(m_Bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
+        	{
+        		if(!isD)
+        		{
+        			isD = true;
+        			borderId = border_it;
+        		}
+        		else
+        		{
+        			borderId = (border_it > borderId) ? border_it : borderId;
+        		}
+        	}
+        	else if(!isD && m_Bc.getBordersBCMap().at(border_it).getBCType() == Neumann)
+        	{
+        		borderId = (border_it > borderId) ? border_it : borderId;
+        	}
+        }
+
+        // loop over the fracture facets
+        for(auto& facet_it : edge_it.getSeparated())
+        {
+        	if(this->M_mesh.getFacetsVector()[facet_it].isFracture())
+        	{
+        		UInt neighborIdAsCell = M_mesh.getFacetsVector()[facet_it].getFractureFacetId() + M_mesh.getCellsVector().size();
+        		Real aperture = M_properties.getProperties(this->M_mesh.getFacetsVector()[facet_it].getZoneCode()).M_aperture;
+
+                if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
+                {
+                    // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
+                    const Real Q1o = m_Bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
+
+                    _b->operator()(neighborIdAsCell) += Q1o;
+                } // if
+                else if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
+                {
+                    const Real alpha1 = Findalpha (facet_it, &edge_it);
+                    const Real alpha2 = FindDirichletalpha (facet_it, &edge_it);
+
+                    const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
+                    const Real Q12 = T12 * M_properties.getMobility();
+                    const Real Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
+
+                    Matrix_elements.emplace_back(Triplet (neighborIdAsCell, neighborIdAsCell, Q12));
+                    _b->operator()(neighborIdAsCell) = _b->operator()(neighborIdAsCell) + Q1o;
+                } // else if
+        	} // if
+        }// for
+    } // for
+} // StiffMatrix::assembleFractureBC
 
 } // namespace Darcy

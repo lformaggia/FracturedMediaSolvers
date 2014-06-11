@@ -41,6 +41,12 @@ class StiffMatrix: public MatrixHandler
         This type definition permits to treat Geometry::Rigid_Mesh::Facet_ID as a Facet_ID.
     */
     typedef Geometry::Rigid_Mesh::Facet_ID Facet_ID;
+    //! Typedef for Geometry::Rigid_Mesh::Edge_ID
+    /*!
+        @typedef Edge_ID
+        This type definition permits to treat Geometry::Rigid_Mesh::Edge_ID as a Edge_ID.
+    */
+    typedef Geometry::Rigid_Mesh::Edge_ID Edge_ID;
 
 public:
     //! @name Constructor & Destructor
@@ -52,7 +58,7 @@ public:
         @param BC Boundary conditions given in the container Darcy::BoundaryConditions
     */
     StiffMatrix(const Geometry::Rigid_Mesh & rigid_mesh, const BoundaryConditions & Bc):
-        MatrixHandler(rigid_mesh), _b (new Vector(this->M_size)),
+        MatrixHandler(rigid_mesh), _b (new Vector(Vector::Constant( this->M_size, 0.))),
         M_properties(rigid_mesh.getPropertiesMap()), m_Bc(Bc) {}
     //! No Copy-Constructor
     StiffMatrix(const StiffMatrix &) = delete;
@@ -99,7 +105,15 @@ public:
 	 * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
 	 * @return The computed coefficient alpha
 	 */
-	Real Findalpha (const UInt & cellId, Facet_ID * const facet) const;
+	Real Findalpha (const UInt & cellId, const Facet_ID * facet) const;
+
+	//! It is called by the method assemble() and it computes the coefficient alpha
+	/*!
+	 * @param facetId the Id of a Facet
+	 * @param edge A pointer to a Geometry::Rigid_mesh::Edge_ID
+	 * @return The computed coefficient alpha
+	 */
+	Real Findalpha (const UInt & facetId, const Edge_ID * edge) const;
 
 	//! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
 	/*!
@@ -107,7 +121,15 @@ public:
 	 * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
 	 * @return The computed coefficient alpha
 	 */
-	Real FindDirichletalpha (const UInt & cellId, Facet_ID * const facet) const;
+	Real FindDirichletalpha (const UInt & cellId, const Facet_ID * facet) const;
+
+	//! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
+	/*!
+	 * @param facetId the Id of a Facet
+	 * @param edge A pointer to a Geometry::Rigid_mesh::Edge_ID
+	 * @return The computed coefficient alpha
+	 */
+	Real FindDirichletalpha (const UInt & facetId, const Edge_ID * edge) const;
 
 	//! It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture in 3D
 	/*!
@@ -134,12 +156,18 @@ protected:
      * @return Assemble the BCs for the porous medium
      */
     void assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements ) const;
-    
+
     //! Assemble the fractures block
     /*!
      * @return Assemble the fractures block
      */
     void assembleFracture( std::vector<Triplet>& Matrix_elements ) const;
+    
+    //! Assemble the BCs for the fractures
+    /*!
+     * @return Assemble the BCs for the fractures
+     */
+    void assembleFractureBC( std::vector<Triplet>& Matrix_elements ) const;
     //@}
     
 protected:
