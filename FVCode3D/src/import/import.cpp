@@ -107,7 +107,7 @@ void ImporterMedit::import(bool fracturesOn)
 			tmp[j]--;
 		}
 		file >> zone;
-		bcId = zone <= 1000 ? 1 : 0;
+		bcId = (zone <= 1000 && zone > 0) ? 1 : 0;
 		zone = (zone > 1000) && (zone <= 2000) ? zone : 0;
 		facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, (zone)*static_cast<UInt>(fracturesOn), bcId) );
 		if(zone > 1 && fracturesOn && zones.find(zone) == zones.end())
