@@ -472,7 +472,7 @@ public:
 	Mesh3D(const Geometry::Mesh3D & mesh);
 
 	//! Destructor
-	virtual ~Mesh3D();
+	virtual ~Mesh3D() = default;
 
 	//@}
 

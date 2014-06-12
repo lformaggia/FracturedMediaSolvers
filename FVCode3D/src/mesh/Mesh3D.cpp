@@ -59,16 +59,18 @@ Real Mesh3D::Facet3D::area() const
     std::vector<Point3D> points;
     CoordinateSystem3D cs;
     Real area(0.);
+    const UInt nPoints = M_idVertex.size();
 
     cs.computeCartesianCoordinateSystem(computeNormal());
+    points.reserve(nPoints);
 
-    for(UInt i=0; i < M_idVertex.size(); ++i)
+    for(UInt i=0; i < nPoints; ++i)
         points.emplace_back( M_mesh->getNodesVector()[M_idVertex[i]].convertInLocalCoordinate(cs, Point3D(0.,0.,0.)) );
 
-    for(UInt i=0; i < (M_idVertex.size()-1) ; ++i)
+    for(UInt i=0; i < (nPoints-1) ; ++i)
         area += points[i].x() * points[i+1].y() - points[i].y() * points[i+1].x();
 
-    area += points[M_idVertex.size()-1].x() * points[0].y() - points[M_idVertex.size()-1].y() * points[0].x();
+    area += points[nPoints-1].x() * points[0].y() - points[nPoints-1].y() * points[0].x();
 
     return std::fabs(area)/2;
 }
@@ -135,11 +137,12 @@ Mesh3D::Cell3D::Cell3D(const Cell3D & cell) :
 Mesh3D::Cell3D::Cell3D( const Geometry::Mesh3D * mesh, const std::vector<UInt> & facets, const UInt zone ) :
         M_mesh(mesh), M_idFacets(facets.begin(), facets.end()), M_zone(zone)
 {
-    Facet3D f;
-
-    for(std::set<UInt>::const_iterator it=M_idFacets.begin(); it != M_idFacets.end(); ++it){
-        f = M_mesh->getFacetsMap().at(*it);
-        for(UInt j=0; j<f.getNumberOfPoints(); ++j)
+    for(std::set<UInt>::const_iterator it=M_idFacets.begin(); it != M_idFacets.end(); ++it)
+    {
+    	const Facet3D & f = M_mesh->getFacetsMap().at(*it);
+    	const UInt N = f.getNumberOfPoints();
+    	M_idVertexes.reserve(N);
+        for(UInt j=0; j<N; ++j)
             M_idVertexes.push_back(f.getIdVertex(j));
     }
 
@@ -159,8 +162,7 @@ Geometry::Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
     Facet3D facet;
 
     // control that facetId is a facet of this cell
-    for( std::set<UInt>::const_iterator it = M_idFacets.begin();
-            it != M_idFacets.end(); ++it )
+    for( std::set<UInt>::const_iterator it = M_idFacets.begin(); it != M_idFacets.end(); ++it )
     {
         if( *it == facetId )
             found = true;
@@ -183,7 +185,6 @@ Geometry::Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
         return -normal;
 
     return normal;
-
 }
 
 bool Mesh3D::Cell3D::hasNeighborsThroughFacet( const UInt & facetId, UInt & idNeighbor) const
@@ -262,8 +263,6 @@ Mesh3D::Mesh3D():
 Mesh3D::Mesh3D(const Geometry::Mesh3D & mesh):
         M_fn(mesh.getFn()), M_nodes(mesh.getNodesVector()),
         M_facets(mesh.getFacetsMap()), M_cells(mesh.getCellsMap()) {}
-
-Mesh3D::~Mesh3D() {}
 
 void Mesh3D::updateFacetsWithFractures()
 {
@@ -612,9 +611,9 @@ bool operator<(const Geometry::Mesh3D::Facet3D & f1, const Geometry::Mesh3D::Fac
     minSize = std::min(sizeF1,sizeF2);
     for(UInt i=0; i<minSize; ++i)
     {
-        if(idF1[i]<idF2[i])
+        if(idF1[i] < idF2[i])
             return true;
-        if(idF1[i]>idF2[i])
+        if(idF1[i] > idF2[i])
             return false;
     }
 
