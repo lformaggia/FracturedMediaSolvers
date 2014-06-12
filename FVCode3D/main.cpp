@@ -22,9 +22,11 @@
 #include "assembler/fixPressureDofs.hpp"
 #include "functions.hpp"
 
-typedef Problem<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> Pb;
-typedef DarcySteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
+typedef EigenUmfPack SolverType;
+
+typedef Problem<SolverType, CentroidQuadrature, CentroidQuadrature> Pb;
+typedef DarcySteady<SolverType, CentroidQuadrature, CentroidQuadrature> DarcyPb;
+typedef DarcyPseudoSteady<SolverType, CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
