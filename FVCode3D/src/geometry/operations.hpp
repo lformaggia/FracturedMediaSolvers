@@ -47,13 +47,15 @@ namespace Geometry{
 
 	//! Functor for computing the minimum between two types
 	template <typename T>
-	struct less{
+	struct less
+	{
 		bool operator() (const T & x, const T & y) const { return x < y; }
 	};
 
 	//! Functor for computing the minimum between two generic std::pair
 	template <typename T>
-	struct less< std::pair<T,T> >{
+	struct less< std::pair<T,T> >
+	{
 		bool operator() (const std::pair<T,T> & x, const std::pair<T,T> & y) const
 		{
 			if( x.first < y.first )

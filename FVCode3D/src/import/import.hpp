@@ -82,7 +82,7 @@ public:
 		{ return M_properties; }
 
 	//! Destructor
-	virtual ~Importer(){};
+	virtual ~Importer() = default;
 
 protected:
 
@@ -140,7 +140,7 @@ public:
 	virtual void addFractures();
 	
 	//! Destructor
-	virtual ~ImporterMedit(){};
+	virtual ~ImporterMedit() = default;
 
 private:
 
@@ -188,7 +188,7 @@ public:
 	virtual void addFractures();
 	
 	//! Destructor
-	virtual ~ImporterTPFA(){};
+	virtual ~ImporterTPFA() = default;
 
 private:
 
@@ -230,7 +230,7 @@ public:
 	virtual void import(bool fracturesOn = true);
 	
 	//! Destructor
-	virtual ~ImporterForSolver(){};
+	virtual ~ImporterForSolver() = default;
 
 private:
 	//! No default constructor
