@@ -170,7 +170,7 @@ public:
     virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
 
     //! Destructor
-    virtual ~Exporter(){};
+    virtual ~Exporter() = default;
 
 };
 

@@ -17,7 +17,7 @@ class ExporterVTU : public Exporter
 public:
 
     //! Constructor
-    ExporterVTU(){}
+    ExporterVTU() = default;
 
     //! Export the mesh (only cells)
     /*!
@@ -126,7 +126,7 @@ public:
     virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) ;
 
     //! Destructor
-    virtual ~ExporterVTU() {};
+    virtual ~ExporterVTU() = default;
 };
 
 template <typename VectorType>
@@ -238,10 +238,10 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         filestr << "1" << std::endl;
-        filestr << facets[it->getFacetId()].vertexesNumber() << std::endl;
-        for(std::vector<UInt>::const_iterator jt = facets[it->getFacetId()].getVertexesIds().begin(); jt != facets[it->getFacetId()].getVertexesIds().end()-1; ++jt )
+        filestr << facets[it->getId()].vertexesNumber() << std::endl;
+        for(std::vector<UInt>::const_iterator jt = facets[it->getId()].getVertexesIds().begin(); jt != facets[it->getId()].getVertexesIds().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(facets[it->getFacetId()].getVertexesIds().rbegin()) << std::endl;
+        filestr << *(facets[it->getId()].getVertexesIds().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -256,7 +256,7 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     }
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
-        faceOffsets += 2 + facets[it->getFacetId()].vertexesNumber();
+        faceOffsets += 2 + facets[it->getId()].vertexesNumber();
         filestr << faceOffsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
