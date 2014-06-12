@@ -189,16 +189,16 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->getVertexesIds().begin(); jt != it->getVertexesIds().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->getVerticesIds().begin(); jt != it->getVerticesIds().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->getVertexesIds().rbegin()) << std::endl;
+        filestr << *(it->getVerticesIds().rbegin()) << std::endl;
     }
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         const Facet & f = it->getFacet();
-        for(std::vector<UInt>::const_iterator jt = f.getVertexesIds().begin(); jt != f.getVertexesIds().end()-1; ++jt )
+        for(std::vector<UInt>::const_iterator jt = f.getVerticesIds().begin(); jt != f.getVerticesIds().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(f.getVertexesIds().rbegin()) << std::endl;
+        filestr << *(f.getVerticesIds().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -206,12 +206,12 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        offsets += it->vertexesNumber();
+        offsets += it->verticesNumber();
         filestr << offsets << std::endl;
     }
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
-        offsets += it->getFacet().vertexesNumber();
+        offsets += it->getFacet().verticesNumber();
         filestr << offsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -229,19 +229,19 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
         filestr << it->facetsNumber() << std::endl;
         for( std::vector<UInt>::const_iterator jt = it->getFacetsIds().begin(); jt != it->getFacetsIds().end(); ++jt )
         {
-            filestr << facets[*jt].vertexesNumber() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = facets[*jt].getVertexesIds().begin(); kt != facets[*jt].getVertexesIds().end()-1; ++kt )
+            filestr << facets[*jt].verticesNumber() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = facets[*jt].getVerticesIds().begin(); kt != facets[*jt].getVerticesIds().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(facets[*jt].getVertexesIds().rbegin()) << std::endl;
+            filestr << *(facets[*jt].getVerticesIds().rbegin()) << std::endl;
         }
     }
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         filestr << "1" << std::endl;
-        filestr << facets[it->getId()].vertexesNumber() << std::endl;
-        for(std::vector<UInt>::const_iterator jt = facets[it->getId()].getVertexesIds().begin(); jt != facets[it->getId()].getVertexesIds().end()-1; ++jt )
+        filestr << facets[it->getId()].verticesNumber() << std::endl;
+        for(std::vector<UInt>::const_iterator jt = facets[it->getId()].getVerticesIds().begin(); jt != facets[it->getId()].getVerticesIds().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(facets[it->getId()].getVertexesIds().rbegin()) << std::endl;
+        filestr << *(facets[it->getId()].getVerticesIds().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -251,12 +251,12 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     {
         faceOffsets += 1 + it->facetsNumber();
         for( std::vector<UInt>::const_iterator jt = it->getFacetsIds().begin(); jt != it->getFacetsIds().end(); ++jt )
-            faceOffsets += facets[*jt].vertexesNumber();
+            faceOffsets += facets[*jt].verticesNumber();
         filestr << faceOffsets << std::endl;
     }
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
-        faceOffsets += 2 + facets[it->getId()].vertexesNumber();
+        faceOffsets += 2 + facets[it->getId()].verticesNumber();
         filestr << faceOffsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;

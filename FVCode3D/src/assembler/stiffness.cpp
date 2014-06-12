@@ -72,10 +72,10 @@ Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
     f = f/D;
 
     Generic_Vector normal = crossProduct(	f,
-    						this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[0]] -
-    						this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[1]] ); // k = f x l
-    normal = crossProduct(	this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[0]] -
-    						this->M_mesh.getNodesVector()[edge->getEdge().getVertexesIds()[1]],
+    						this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[0]] -
+    						this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[1]] ); // k = f x l
+    normal = crossProduct(	this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[0]] -
+    						this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[1]],
     						normal); // n = l x k
     normal.normalize();
     Real scalprod = fabs(dotProduct(f, normal));

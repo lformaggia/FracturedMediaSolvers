@@ -140,16 +140,16 @@ public:
 		//! @name Get Methods
 		//@{
 
-		//! Get vertexes Ids (const)
+		//! Get vertices Ids (const)
 		/*!
-		 * @return a reference to a vector of the facet vertexes ids
+		 * @return a reference to a vector of the facet vertices ids
 		 */
-		const std::vector<UInt> getVertexesIds () const
+		const std::vector<UInt> getVerticesIds () const
 			{ return std::vector<UInt>{M_edge.first, M_edge.second}; }
 
-		//! Get vertexes Ids (const)
+		//! Get vertices Ids (const)
 		/*!
-		 * @return a reference to a pair of the edge vertexes ids
+		 * @return a reference to a pair of the edge vertices ids
 		 */
 		const Generic_Edge & getEdge () const
 			{ return M_edge; }
@@ -290,19 +290,19 @@ public:
 		Geometry::Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
 
-		//! Get vertexes Ids (const)
+		//! Get vertices Ids (const)
 		/*!
-		 * @return a reference to a vector of the facet vertexes ids
+		 * @return a reference to a vector of the facet vertices ids
 		 */
-		const std::vector<UInt> & getVertexesIds () const
-			{ return M_vertexesIds; }
+		const std::vector<UInt> & getVerticesIds () const
+			{ return M_verticesIds; }
 
-		//! Get Vertexes number (const)
+		//! Get vertices number (const)
 		/*!
-		 * @return the number of the vertexes of the Facet
+		 * @return the number of the vertices of the Facet
 		 */
-		UInt vertexesNumber() const
-			{ return M_vertexesIds.size (); }
+		UInt verticesNumber() const
+			{ return M_verticesIds.size (); }
 
 		//! Get centroid (const)
 		/*!
@@ -400,8 +400,8 @@ public:
 		Geometry::Rigid_Mesh * M_mesh;
 		//! The Facet id in the containing Rigid_Mesh
 		UInt M_id;
-		//! The vector of the ids of the Facet's Vertexes
-		std::vector<UInt> M_vertexesIds;
+		//! The vector of the ids of the Facet's vertices
+		std::vector<UInt> M_verticesIds;
 		//! The vector of the ids of the Cells separated by Facet
 		std::vector<UInt> M_separatedCellsIds;
 		//! The area of the Facet
@@ -479,12 +479,12 @@ public:
 		UInt getZoneCode () const
 			{return M_zoneCode;}
 
-		//! Get Vertexes ids (const)
+		//! Get Vertices ids (const)
 		/*!
 		 * @return a reference to a vector which contains the ids of the Cell's vertices
 		 */
-		const std::vector<UInt> & getVertexesIds () const
-			{ return M_vertexesIds; }
+		const std::vector<UInt> & getVerticesIds () const
+			{ return M_verticesIds; }
 
 		//! Get Facets ids (const)
 		/*!
@@ -507,12 +507,12 @@ public:
 		const Generic_Point & getCentroid () const
 			{ return M_centroid; }
 
-		//! Get Vertexes number (const)
+		//! Get vertices number (const)
 		/*!
-		 * @return the number of the vertexes of the Cell
+		 * @return the number of the vertices of the Cell
 		 */
-		UInt vertexesNumber() const
-			{ return M_vertexesIds.size (); }
+		UInt verticesNumber() const
+			{ return M_verticesIds.size (); }
 
 		//! Get Facets number (const)
 		/*!
@@ -562,8 +562,8 @@ public:
 		UInt M_Id;
 		//! Zone code of the Cell
 		UInt M_zoneCode;
-		//! The vector of the ids of the Cell's Vertexes
-		std::vector<UInt> M_vertexesIds;
+		//! The vector of the ids of the Cell's vertices
+		std::vector<UInt> M_verticesIds;
 		//! The vector of the ids of the Facets
 		std::vector<UInt> M_facetsIds;
 		//! The vector of the ids of the Cells neighbors
@@ -1439,25 +1439,19 @@ protected:
 	//! @name Protected Methods
 	//@{
 
-	//! It is called by the constructor
-	/*!
-	 * @param generic_mesh the generic_mesh
-	 */
-	//void M_constructor (Generic_Mesh & generic_mesh);
-
 	//! Prints the components of a point
 	/*!
 	 * @param generic_point is the point to print
 	 * @param out specify the output format (std::cout by default)
 	 */	
-	void showPoint (const Point & generic_point, std::ostream & out=std::cout ) const;
+	void showPoint(const Point & generic_point, std::ostream & out=std::cout ) const;
 
 	//! Builds the vector of cells. It is called by constructor
 	/*!
 	 * @param generic_mesh the generic_mesh
 	 * @param old_to_new_map is a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
 	 */	
-	void cellsVectorBuilder ( Generic_Mesh & generic_mesh, std::map<UInt, UInt> & old_to_new_map );
+	void cellsVectorBuilder(Generic_Mesh & generic_mesh, std::map<UInt, UInt> & old_to_new_map );
 
 	//! Builds the vector of facets. It is called by constructor
 	/*!
@@ -1465,18 +1459,10 @@ protected:
 	 * @param old_to_new_mapCells is a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
 	 * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Generic_Mesh to the id in the Rigid_Mesh
 	 */	
-	void facetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
+	void facetsVectorsBuilder(Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
 
 	//! Builds the vector of edges. It is called by constructor
 	void edgesVectorBuilder();
-
-	//! Builds the vector of facets. It is called by constructor
-	/*!
-	 * @param old_to_new_mapCells a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
-	 * @param old_to_new_mapFacets a map that binds the id of a facet in the original Generic_Mesh to the id in the Rigid_Mesh
-	 * @param generic_mesh reference to the Generic_Mesh
-	*/
-	void M_facetsVectorsBuilder(const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets, Generic_Mesh & generic_mesh);
 
 	//! Converts the neighbors ids of cells from old one to new one. It is called by constructor
 	/*!
