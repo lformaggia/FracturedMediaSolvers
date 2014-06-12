@@ -1,7 +1,7 @@
 # Set the minimum required version of cmake for a project
 cmake_minimum_required(VERSION 2.8)
 # Project name
-set(PROJECT_NAME FVCode)
+set(PROJECT_NAME FVCode3D)
 project(${PROJECT_NAME})
 
 set (${PROJECT_NAME}_MAJOR_VERSION 0)
@@ -66,25 +66,28 @@ set(ENV_CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH})
 set(ENV_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # CHOLMOD
-set(CMAKE_PREFIX_PATH ${TPL_CHOLMOD_DIR})
+set(TPL_SuiteSparse_DIR "" CACHE PATH "SuiteSparse installation base directory")
+set(CMAKE_PREFIX_PATH ${TPL_SuiteSparse_DIR})
 find_package(Cholmod)
 if(NOT CHOLMOD_FOUND)
-    message(FATAL_ERROR "Cholmod not found. Try setting TPL_CHOLMOD_DIR to the installation path of CHOLMOD")
+    message(FATAL_ERROR "Cholmod not found. Try setting TPL_SuiteSparse_DIR to the installation path of SuiteSparse")
 endif()
 # UMFPACK
-set(CMAKE_PREFIX_PATH ${TPL_UMFPACK_DIR})
+set(CMAKE_PREFIX_PATH ${TPL_SuiteSparse_DIR})
 find_package(Umfpack)
 if(NOT UMFPACK_FOUND)
-    message(FATAL_ERROR "Umfpack not found. Try setting TPL_UMFPACK_DIR to the installation path of UMFPACK")
+    message(FATAL_ERROR "Umfpack not found. Try setting TPL_SuiteSparse_DIR to the installation path of SuiteSparse")
 endif()
 # Eigen
-set(CMAKE_PREFIX_PATH ${TPL_EIGEN_DIR})
-#find_package(Eigen3)
-#if(NOT EIGEN3_FOUND)
-    # We have our own
-    set(EIGEN3_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/eigen")
-#endif()# BLAS
+set(TPL_Eigen_DIR "" CACHE PATH "Eigen installation base directory")
+set(CMAKE_PREFIX_PATH ${TPL_Eigen_DIR})
+find_package(Eigen3)
+if(NOT EIGEN3_FOUND)
+    message(FATAL_ERROR "Eigen not found. Try setting TPL_Eigen_DIR to the installation path of Eigen")
+endif()
+# BLAS
 set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
+set(TPL_BLAS_DIR "" CACHE PATH "BLAS installation base directory")
 set(CMAKE_PREFIX_PATH ${TPL_BLAS_DIR})
 find_package(BLAS)
 if(NOT BLAS_FOUND)
@@ -126,18 +129,18 @@ set(LIBRARIES ${UMFPACK_LIBRARIES} ${CHOLMOD_LIBRARIES} ${BLAS_LIBRARIES} tet CA
 add_subdirectory(src)
 file(GLOB_RECURSE LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp)
 file(GLOB_RECURSE LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.hpp)
-add_library(fvcode STATIC ${LIB_SOURCES} ${LIB_HEADERS})
+add_library(fvcode3d STATIC ${LIB_SOURCES} ${LIB_HEADERS})
 
-SET(LIBRARIES ${LIBRARIES} fvcode)
+SET(LIBRARIES ${LIBRARIES} fvcode3d)
 
 #Set properties on a target.
 #We use this here to set -DTETLIBRARY for when compiling the library
-set_target_properties(fvcode PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
+set_target_properties(fvcode3d PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
 
-add_executable(fvcode.exe main.cpp )
+add_executable(fvcode3d.exe main.cpp )
 # Create executable and link libraries
-target_link_libraries(fvcode.exe
-    fvcode
+target_link_libraries(fvcode3d.exe
+    fvcode3d
     ${LIBRARIES}
     )
 
@@ -152,7 +155,7 @@ add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/doc)
 add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tools)
 
 # Install
-INSTALL(TARGETS fvcode.exe fvcode
+INSTALL(TARGETS fvcode3d.exe fvcode3d
     RUNTIME DESTINATION ${INSTALL_BIN_DIR}
     ARCHIVE DESTINATION ${INSTALL_LIB_DIR}
     LIBRARY DESTINATION ${INSTALL_LIB_DIR}

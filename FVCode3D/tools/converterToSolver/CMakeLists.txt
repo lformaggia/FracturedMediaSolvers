@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 add_executable( convToSolver.exe converterToSolver )
-target_link_libraries( convToSolver.exe fvcode tet )
+target_link_libraries( convToSolver.exe fvcode3d tet )
 
 # Add data file
 add_custom_command(
