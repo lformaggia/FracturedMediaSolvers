@@ -6,11 +6,11 @@
 #include "mesh/Mesh3D.hpp"
 #include "boundaryCondition/BC.hpp"
 
-BoundaryConditions::BoundaryConditions(std::vector<BorderBC> & borderbc)
+BoundaryConditions::BoundaryConditions(std::vector<BorderBC> & borderBC)
 {
-	for(std::vector<BorderBC>::const_iterator it = borderbc.begin(); it != borderbc.end(); ++it)
-		BordersBCMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->getId()), std::forward_as_tuple(*it));
+	for(std::vector<BorderBC>::const_iterator it = borderBC.begin(); it != borderBC.end(); ++it)
+		M_bordersBCMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->getId()), std::forward_as_tuple(*it));
 
-	for(std::map<UInt,BorderBC>::iterator it = BordersBCMap.begin(); it != BordersBCMap.end(); ++it)
-		it->second.m_bcContainer = this;
+	for(std::map<UInt,BorderBC>::iterator it = M_bordersBCMap.begin(); it != M_bordersBCMap.end(); ++it)
+		it->second.M_bcContainer = this;
 }
