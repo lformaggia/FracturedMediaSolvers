@@ -91,20 +91,6 @@ public:
 	 */
 	void addFractures(std::vector<Geometry::Fracture3D> & fractures);
 
-	//! Insert a Fracture3D in the Fracture Network, by using a vector::push_back()
-	/*!
-	 * @param f The fracture to insert
-	 */
-	void push_back(const Geometry::Fracture3D & f)
-		{ M_fractureNetwork.push_back(f); }
-
-	//! Insert a Fracture3D in the Fracture Network, by using a vector::emplace_back()
-	/*!
-	 * @param f The fracture to insert
-	 */
-	void emplace_back(const Geometry::Fracture3D & f)
-		{ M_fractureNetwork.emplace_back(f); }
-
 	//! The number of fractures stored in the network
 	/*!
 	 * @return The number of fractures stored in the network
