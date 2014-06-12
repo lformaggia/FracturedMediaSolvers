@@ -68,28 +68,28 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # CHOLMOD
 set(TPL_SuiteSparse_DIR "" CACHE PATH "SuiteSparse installation base directory")
 set(CMAKE_PREFIX_PATH ${TPL_SuiteSparse_DIR})
-find_package(Cholmod)
+find_package(Cholmod QUIET)
 if(NOT CHOLMOD_FOUND)
     message(FATAL_ERROR "Cholmod not found. Try setting TPL_SuiteSparse_DIR to the installation path of SuiteSparse")
 endif()
 # UMFPACK
 set(CMAKE_PREFIX_PATH ${TPL_SuiteSparse_DIR})
-find_package(Umfpack)
+find_package(Umfpack QUIET)
 if(NOT UMFPACK_FOUND)
     message(FATAL_ERROR "Umfpack not found. Try setting TPL_SuiteSparse_DIR to the installation path of SuiteSparse")
 endif()
 # Eigen
 set(TPL_Eigen_DIR "" CACHE PATH "Eigen installation base directory")
 set(CMAKE_PREFIX_PATH ${TPL_Eigen_DIR})
-find_package(Eigen3)
-if(NOT EIGEN3_FOUND)
+find_package(Eigen3 QUIET)
+if(NOT EIGEN3_FOUND QUIET)
     message(FATAL_ERROR "Eigen not found. Try setting TPL_Eigen_DIR to the installation path of Eigen")
 endif()
 # BLAS
 set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
 set(TPL_BLAS_DIR "" CACHE PATH "BLAS installation base directory")
 set(CMAKE_PREFIX_PATH ${TPL_BLAS_DIR})
-find_package(BLAS)
+find_package(BLAS QUIET)
 if(NOT BLAS_FOUND)
     message(FATAL_ERROR "BLAS not found. Try setting TPL_BLAS_DIR to the installation path of BLAS")
 endif()
@@ -102,10 +102,12 @@ set(${PROJECT_NAME}_TPL_INCLUDE_DIRS
     ${UMFPACK_INCLUDES}
     ${EIGEN3_INCLUDE_DIR}
     )
+message(STATUS "${PROJECT_NAME}_TPL_INCLUDE_DIRS = ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}")
 
 set(${PROJECT_NAME}_TPL_LIBRARY_DIRS
     ""
     )
+message(STATUS "${PROJECT_NAME}_TPL_LIBRARY_DIRS = ${${PROJECT_NAME}_TPL_LIBRARY_DIRS}")
 
 # Make sure the compiler can find include files.
 include_directories (
@@ -123,7 +125,13 @@ link_directories (
     ${${PROJECT_NAME}_TPL_LIBRARY_DIRS}
     )
 
-set(LIBRARIES ${UMFPACK_LIBRARIES} ${CHOLMOD_LIBRARIES} ${BLAS_LIBRARIES} tet CACHE INTERNAL "")
+set(LIBRARIES
+    ${UMFPACK_LIBRARIES}
+    ${CHOLMOD_LIBRARIES}
+    ${BLAS_LIBRARIES}
+    tet
+    CACHE INTERNAL "")
+message(STATUS "LIBRARIES = ${LIBRARIES}")
 
 # Create static library
 add_subdirectory(src)

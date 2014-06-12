@@ -1,25 +1,43 @@
----How to install---
+================================
+Installation
+================================
 
-Create build directories:
+The simplest way to install FVCode3D is to run the install.sh script:
+    ./install.sh --prefix=<install dir>
+This will install both FVCode3D and its dependencies in <install dir>.
+If --prefix is not specified, the default location is ../install.
 
- > mkdir FVCode3D-build
- > cd FVCode3D-build
- > mkdir eigen-build
- > cd eigen-build
+Unless told otherwise, the install script will also install all the needed
+packages (cmake, blas, lapack, suitesparse and eigen).
+If you wish to use an existing installation of one of the packages,
+its location can be specified with the option --with-<package>=<path>, e.g.:
+    ./install.sh --prefix=<install dir> --with-cmake=/usr --with-blas=/usr
 
-Compile eigen:
+For a full list of options:
+    ./install.sh --help
 
- > cmake ../../FVCode3D/eigen
- > make
+================================
+Development installation
+================================
+The default installation install libraries, executables and headers to the
+specified location, creates the documentation with doxygen and removes the
+build directory. For development purposes these steps are not required.
+One can simply use:
+    ./install-devel.sh --prefix=<install dir>
+This script install the development version, meaning that it will not delete
+the build dir (by default located in <install dir>/build) and it wil not build
+the documentation.
 
-Compile FVCode3D:
+Alternatively, one can simply configure FVCode3D using CMake. This requires
+BLAS, SuiteSparse and Eigen to be already installed:
+    mkdir -p /path/to/build/dir
+    cd /path/to/build/dir
+    cmake \
+        -DTPL_BLAS_DIR:path=/path/to/blas/install \
+        -DTPL_SuiteSparse_DIR:path=/path/to/suitesparse/install \
+        -DTPL_Eigen_DIR:path=/path/to/eigen/install \
+        /path/to/source/dir
+    make
 
- > cd FVCode3D-build
- > cmake ../FVCode3D
- > make
-
----Documentation---
-
-To generate documentation launch
-
- > make doc
+To generate documentation use:
+    make doc

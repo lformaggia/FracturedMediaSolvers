@@ -1,0 +1,56 @@
+#! /bin/bash
+
+# list of packages
+# the key should be:
+# - INSTALL : the package will be installed by this script
+# - YES : the package is already installed in the system, and its paths
+# must be specified in the following variables
+# - NO : the package will not be used
+# BEWARE! some packages are required and cannot be set to NO!!
+
+for package in "${PACKAGE_ARRAY[@]}"; do
+    if [ -z "${!package}" ]; then
+        eval ${package}=INSTALL
+    fi
+    eval package_install_dir=\${${package}_install_dir}
+    if [ -z "${package_install_dir}" ]; then
+        eval ${package}_install_dir=${INSTALL_DIR}/external/${package}
+    fi
+done
+
+package_install=()
+package_yes=()
+package_no=()
+
+for package in "${PACKAGE_ARRAY[@]}"; do
+    if [[ "${!package}" == "INSTALL" ]]; then
+        echo "$package will be installed"
+        package_install=( ${package_install[@]} $package )
+    elif [[ "${!package}" == "YES" ]]; then
+        echo "$package is already installed"
+        package_yes=( ${package_yes[@]} $package )
+    elif [[ "${!package}" == "NO" ]]; then
+        echo "$package will not be used"
+        package_no=( ${package_no[@]} $package )
+    fi
+done
+
+echo
+echo "The following packages will be installed:"
+echo ${package_install[@]}
+
+echo
+echo "The following packages are already installed: "
+echo ${package_yes[@]}
+
+echo
+echo "The following packages will not be used:"
+echo ${package_no[@]}
+
+if [ -n "${INSTALL_THIRD_PARTIES}" ] && [ ${#package_install[@]} -gt 0 ] ; then
+    pushd scripts >/dev/null
+    source pkgbuild ${package_install[@]}
+    popd >/dev/null
+fi
+
+echo "Finished building external packages."
