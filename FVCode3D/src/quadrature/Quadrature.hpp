@@ -63,13 +63,13 @@ public:
 		@param Integrand A std::function which returns a scalar
 	 	@return The integral of the considered Integrand function
 	 */
-	Real Integrate (const std::function<Real(Generic_Point)> & Integrand);
+	Real integrate (const std::function<Real(Generic_Point)> & integrand);
 	//! Integrate a function and return the integral cell by cell
 	/*!
 		@param Integrand A function which returns a scalar
 	 	@return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell 
 	 */
-	Vector CellIntegrate (const std::function<Real(Generic_Point)> & func);
+	Vector cellIntegrate (const std::function<Real(Generic_Point)> & func);
     //! Integrate a function and return the integral cell by cell, only in the porous matrix
     /*!
         @param Integrand A function which returns a scalar
@@ -77,7 +77,7 @@ public:
         of the porous matrix
         @note The vector contains all the problem entries, fractures included which are zero
      */
-    Vector CellIntegrateMatrix (const std::function<Real(Generic_Point)> & func);
+    Vector cellIntegrateMatrix (const std::function<Real(Generic_Point)> & func);
     //! Integrate a function and return the integral cell by cell, only in the fractures
     /*!
         @param Integrand A function which returns a scalar
@@ -85,19 +85,19 @@ public:
         of the fractures
         @note The vector contains all the problem entries, the entries of the matrix are zero
      */
-    Vector CellIntegrateFractures (const std::function<Real(Generic_Point)> & func);
+    Vector cellIntegrateFractures (const std::function<Real(Generic_Point)> & func);
 	//! Integrate discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
 	 	@return The integral of the considered Integrand function
 	 */
-	Real Integrate (const Vector & Integrand);
+	Real integrate (const Vector & integrand);
 	//! L2 Norm of a discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
 	 	@return The L2 norm of the considered Integrand function
 	 */
-	Real L2Norm (const Vector & Integrand);
+	Real L2Norm (const Vector & integrand);
 	//@}
 
 	//! @name Get Methods

@@ -28,48 +28,48 @@ Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const Quadratur
 	M_fractureQuadrature(std::move(fracturequadrature.clone()))
 	{}
 
-Real Quadrature::Integrate(const Vector & Integrand)
+Real Quadrature::integrate(const Vector & integrand)
 {
-	UInt IntSize = Integrand.size();
+	UInt IntSize = integrand.size();
 	if(IntSize != M_size)
 		std::cerr << "ERROR: DIMENSION OF INTEGRAND FUNCTION DIFFERS FROM DIMENSION OF MESH" << std::endl;
 	Real integral = 0;
 	for (auto cell_it : M_mesh.getCellsVector())
 	{
-		integral += cell_it.getVolume()*Integrand(cell_it.getId());
+		integral += cell_it.getVolume()*integrand(cell_it.getId());
 	}
 
 	for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
 	{
 		Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
-		integral += _volume*Integrand(facet_it.getIdAsCell());
-		integral -= _volume/2.*Integrand(facet_it.getSeparatedCellsIds()[0]);
-		integral -= _volume/2.*Integrand(facet_it.getSeparatedCellsIds()[1]);
+		integral += _volume*integrand(facet_it.getIdAsCell());
+		integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0]);
+		integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1]);
 	}
 
 	return integral;
 }
 
-Real Quadrature::L2Norm(const Vector& Integrand)
+Real Quadrature::L2Norm(const Vector& integrand)
 {
 	Real integral = 0;
 	for (auto cell_it : M_mesh.getCellsVector())
 	{
-		integral += cell_it.getVolume()*Integrand(cell_it.getId())*Integrand(cell_it.getId());
+		integral += cell_it.getVolume()*integrand(cell_it.getId())*integrand(cell_it.getId());
 	}
 
 	for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
 	{
 		Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
-		integral += _volume*Integrand(facet_it.getIdAsCell())*Integrand(facet_it.getIdAsCell());
-		integral -= _volume/2.*Integrand(facet_it.getSeparatedCellsIds()[0])*Integrand(facet_it.getSeparatedCellsIds()[0]);
-		integral -= _volume/2.*Integrand(facet_it.getSeparatedCellsIds()[1])*Integrand(facet_it.getSeparatedCellsIds()[1]);
+		integral += _volume*integrand(facet_it.getIdAsCell())*integrand(facet_it.getIdAsCell());
+		integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0])*integrand(facet_it.getSeparatedCellsIds()[0]);
+		integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1])*integrand(facet_it.getSeparatedCellsIds()[1]);
 	}
 
 	return sqrt(integral);
 }
 
-Vector Quadrature::CellIntegrate (const std::function<Real(Generic_Point)> & func)
+Vector Quadrature::cellIntegrate (const std::function<Real(Generic_Point)> & func)
 {
 	UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 	Vector result(N);
@@ -104,7 +104,7 @@ Vector Quadrature::CellIntegrate (const std::function<Real(Generic_Point)> & fun
 	return result;
 }
 
-Vector Quadrature::CellIntegrateMatrix (const std::function<Real(Generic_Point)> & func)
+Vector Quadrature::cellIntegrateMatrix (const std::function<Real(Generic_Point)> & func)
 {
     UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
     Vector result( Vector::Zero(N) );
@@ -140,7 +140,7 @@ Vector Quadrature::CellIntegrateMatrix (const std::function<Real(Generic_Point)>
 
 } // CellIntegrateMatrix
 
-Vector Quadrature::CellIntegrateFractures (const std::function<Real(Generic_Point)> & func)
+Vector Quadrature::cellIntegrateFractures (const std::function<Real(Generic_Point)> & func)
 {
     UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
     Vector result( Vector::Zero(N) );
@@ -157,12 +157,12 @@ Vector Quadrature::CellIntegrateFractures (const std::function<Real(Generic_Poin
     return result;
 } // CellIntegrateFractures
 
-Real Quadrature::Integrate(const std::function<Real(Generic_Point)>& Integrand)
+Real Quadrature::integrate(const std::function<Real(Generic_Point)>& integrand)
 {
 	UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 	Vector result(N);
 	Real integral = 0;
-	result = CellIntegrate(Integrand);
+	result = cellIntegrate(integrand);
 
 	for (UInt it = 0; it < N; ++it)
 		integral += result (it);

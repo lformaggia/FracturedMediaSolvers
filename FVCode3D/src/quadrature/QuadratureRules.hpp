@@ -41,7 +41,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & Integrand) const = 0;
+	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & integrand) const = 0;
 
 	//! Method apply for facets
 	/*!
@@ -50,7 +50,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the facet
 	 */
-	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const = 0;
+	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & integrand) const = 0;
 
 	//! Destructor
 	virtual ~QuadratureRule() {};
@@ -80,7 +80,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & Integrand) const;
+	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & integrand) const;
 
 	//! Method apply for facets
 	/*!
@@ -89,7 +89,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the facet
 	 */
-	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const;
+	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & integrand) const;
 
 	//! Destructor
     virtual ~CentroidQuadrature(){};

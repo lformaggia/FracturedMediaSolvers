@@ -101,7 +101,7 @@ void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleVector()
                 ||
               this->M_ssOn == Data::SourceSinkOn::Matrix) )
     {
-        f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+        f = this->M_quadrature->cellIntegrateMatrix(this->M_func);
     } // if
 
     if ( this->M_mesh.getFractureFacetsIdsVector().size() != 0
@@ -110,7 +110,7 @@ void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleVector()
                 ||
               this->M_ssOn == Data::SourceSinkOn::Fractures ) )
     {
-        f = this->M_quadrature->CellIntegrateFractures(this->M_func);
+        f = this->M_quadrature->cellIntegrateFractures(this->M_func);
     } // if
 
     if ( this->M_b.size() == 0 )

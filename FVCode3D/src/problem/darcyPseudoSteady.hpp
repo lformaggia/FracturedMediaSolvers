@@ -72,8 +72,8 @@ public:
      * @param func reference to a Func
      * @param data reference to a Data class
      */
-    DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data):
-        Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, func, data),
+    DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const DataPtr_Type & data):
+        Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, f, data),
         M_tStep(data->getTimeStep()),
         M_x(nullptr), M_M(nullptr) {};
 
@@ -91,7 +91,6 @@ public:
      */
     virtual void initialize();
 
-    virtual void assemble();
     //! Assemble matrix method
     /*!
      * Nothing to do
@@ -246,9 +245,9 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::in
 
     M_f = Vector::Constant(M_S->getSize(), 0.);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
-        M_f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+        M_f = this->M_quadrature->cellIntegrateMatrix(this->M_func);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
-        M_f += this->M_quadrature->CellIntegrateFractures(this->M_func);
+        M_f += this->M_quadrature->cellIntegrateFractures(this->M_func);
 
     M_xOld = Vector::Constant(M_M->getSize(), 0.);
     M_x = &M_xOld;
@@ -285,9 +284,9 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::initia
 
     M_f = Vector::Constant(M_S->getSize(), 0.);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
-        M_f = this->M_quadrature->CellIntegrateMatrix(this->M_func);
+        M_f = this->M_quadrature->cellIntegrateMatrix(this->M_func);
     if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
-        M_f += this->M_quadrature->CellIntegrateFractures(this->M_func);
+        M_f += this->M_quadrature->cellIntegrateFractures(this->M_func);
 
     M_xOldOld = Vector::Constant(M_M->getSize(), 0.);
     M_xOld = Vector::Constant(M_M->getSize(), 0.);
