@@ -584,7 +584,7 @@ public:
 
 	protected:
 		//! The Id of the referred Edge
-		UInt Edge_Id;
+		UInt M_id;
 		//! The pointer to the Rigid_Mesh containing the Edge
 		Rigid_Mesh * M_mesh;
 
@@ -620,36 +620,36 @@ public:
 		/*!
 		 * @return the edge id contained in the class
 		 */
-		UInt getEdgeId () const
-			{return Edge_Id;}
+		UInt getId () const
+			{return M_id;}
 
 		//! Get Edge (const)
 		/*!
 		 * @return a reference to a Edge whose id is contained in the class
 		 */
 		const Rigid_Mesh::Edge & getEdge () const
-			{return M_mesh->getEdgesVector()[Edge_Id];}
+			{return M_mesh->getEdgesVector()[M_id];}
 
 		//! Get center (const)
 		/*!
 		 * @return the centroid of the Edge whose id is contained in the class
 		 */
 		const Generic_Point getCentroid () const
-			{return M_mesh->getEdgesVector()[Edge_Id].getCentroid();}
+			{return M_mesh->getEdgesVector()[M_id].getCentroid();}
 
 		//! Get size (const)
 		/*!
 		 * @return the size of the Edge whose id is contained in the class
 		 */
 		Real getSize () const
-			{return M_mesh->getEdgesVector()[Edge_Id].length();}
+			{return M_mesh->getEdgesVector()[M_id].length();}
 
 		//! Get separated facets (const)
 		/*!
 		 * @return the id of the separated facets from Edge whose id is contained in the class
 		 */
-		const std::vector<UInt> & getSeparated () const
-			{return M_mesh->getEdgesVector()[Edge_Id].getSeparatedFacetsIds();}
+		const std::vector<UInt> & getSeparatedFacetsIds () const
+			{return M_mesh->getEdgesVector()[M_id].getSeparatedFacetsIds();}
 		//@}
 	};
 
@@ -731,11 +731,11 @@ public:
 		 * @return the ids of the represented border facets (inherited from the facets)
 		 */
 		const std::set<UInt> & getBorderIds() const
-			{return Border_Ids;}
+			{return M_borderIds;}
 		//@}
 	protected:
 		//! Ids of the represented borders
-		std::set<UInt> Border_Ids;
+		std::set<UInt> M_borderIds;
 	};
 
 	//! Class that represents a border edge
@@ -817,12 +817,12 @@ public:
 		 * @return the ids of the represented fractures
 		 */
 		const std::set<UInt> & getFractureIds () const
-			{return Fracture_Ids;}
+			{return M_fractureIds;}
 		//@}
 
 	protected:
 		//! Ids of the represented fractures
-		std::set<UInt> Fracture_Ids;
+		std::set<UInt> M_fractureIds;
 	};
 
 	//! Class that represents a juncture edge
@@ -980,7 +980,7 @@ public:
 	class Facet_ID{
 	protected:
 		//! The Id of the referred Facet
-		UInt Facet_Id;
+		UInt M_id;
 		//! The pointer to the Rigid_Mesh containing the Facet
 		Rigid_Mesh * M_mesh;
 
@@ -1016,50 +1016,50 @@ public:
 		/*!
 		 * @return the facet id contained in the class
 		 */
-		UInt getFacetId () const
-			{return Facet_Id;}
+		UInt getId () const
+			{return M_id;}
 		
 		//! Zone Code (const)
 		/*!
 		 * @return the zone code of the represented fractures
 		 */
 		UInt getZoneCode () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getZoneCode();}
+			{return M_mesh->getFacetsVector()[M_id].getZoneCode();}
 
 		//! Get Facet (const)
 		/*!
 		 * @return a reference to a Facet whose id is contained in the class
 		 */
 		const Rigid_Mesh::Facet & getFacet () const
-			{return M_mesh->getFacetsVector()[Facet_Id];}
+			{return M_mesh->getFacetsVector()[M_id];}
 		
 		//! Get unsigned normal (const)
 		/*!
 		 * @return the unsigned normal vector to the Facet whose id is contained in the class
 		 */
-		const Generic_Vector getUNormal () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getUnsignedNormal();}
+		const Generic_Vector getUnsignedNormal () const
+			{return M_mesh->getFacetsVector()[M_id].getUnsignedNormal();}
 		
 		//! Get center (const)
 		/*!
 		 * @return the centroid of the Facet whose id is contained in the class
 		 */
 		const Generic_Point getCentroid () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getCentroid();}
+			{return M_mesh->getFacetsVector()[M_id].getCentroid();}
 		
 		//! Get size (const)
 		/*!
 		 * @return the size of the Facet whose id is contained in the class
 		 */
 		Real getSize () const
-			{return M_mesh->getFacetsVector()[Facet_Id].area();}
+			{return M_mesh->getFacetsVector()[M_id].area();}
 		
 		//! Get separated cells (const)
 		/*!
 		 * @return the id of the separated cell from Facet whose id is contained in the class
 		 */
-		const std::vector<UInt> & getSeparated () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getSeparatedCellsIds();}
+		const std::vector<UInt> & getSeparatedCellsIds () const
+			{return M_mesh->getFacetsVector()[M_id].getSeparatedCellsIds();}
 		//@}
 	};
 	
@@ -1141,7 +1141,7 @@ public:
 		 * @return the id of the border of the contained Facet
 		 */
 		UInt getBorderId() const
-			{return M_mesh->getFacetsVector()[Facet_Id].getBorderId();}
+			{return M_mesh->getFacetsVector()[M_id].getBorderId();}
 		//@}
 	};
 
@@ -1187,45 +1187,45 @@ public:
 		/*!
 		 * @return the id as Fracture_Facet
 		 */
-		UInt getId () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getFractureFacetId();}
+		UInt getFractureId () const
+			{return M_mesh->getFacetsVector()[M_id].getFractureFacetId();}
 
 		//! Get the id as Cell (const)
 		/*!
 		 * @return the id as Cell = Number of cells + Id as Fracture_Facet
 		 */
-		UInt getIdasCell () const
-			{return (M_mesh->getFacetsVector()[Facet_Id].getFractureFacetId()+M_mesh->getCellsVector().size());}
+		UInt getIdAsCell () const
+			{return (M_mesh->getFacetsVector()[M_id].getFractureFacetId()+M_mesh->getCellsVector().size());}
 
 		//! Get fractures ids (const)
 		/*!
 		 * @return the ids of the represented fractures
 		 */
 		const std::set<UInt> & getFractureIds () const
-			{return M_mesh->getFacetsVector()[Facet_Id].getRepresentedFractureIds();}
+			{return M_mesh->getFacetsVector()[M_id].getRepresentedFractureIds();}
 
 		//! Get fracture neighbors (const)
 		/*!
 		 * @return a map that associate a juncture the ids of the neighboring Fracture_Facet
 		 */
 		const std::map<Fracture_Juncture, std::vector<UInt> > & getFractureNeighbors () const
-			{return Fracture_Neighbors;}
+			{return M_fractureNeighbors;}
 
 		//! Get fracture tips (const)
 		/*!
 		 * @return a set of tips of the current fracture
 		 */
 		const std::set<Fracture_Tip> & getFractureTips () const
-			{return Fracture_Tips;}
+			{return M_fractureTips;}
 		//@}
 
 		friend class Rigid_Mesh;
 
 	private:
 		//! Map that associates a juncture the ids of the neighboring Fracture_Facet
-		std::map<Fracture_Juncture, std::vector<UInt> > Fracture_Neighbors;
+		std::map<Fracture_Juncture, std::vector<UInt> > M_fractureNeighbors;
 		//! Set of tips of the current fracture
-		std::set<Fracture_Tip> Fracture_Tips;
+		std::set<Fracture_Tip> M_fractureTips;
 	};
 
 public:
@@ -1431,7 +1431,7 @@ public:
 	 * @param pointsId a reference to a vector of ids of nodes
 	 * @return a vector with the corresponding points
 	*/
-	const std::vector<Generic_Point> IdToPoints (const std::vector<UInt> & pointsId);
+	const std::vector<Generic_Point> idsToPoints (const std::vector<UInt> & pointsId);
 
 	//@}
 
@@ -1443,7 +1443,7 @@ protected:
 	/*!
 	 * @param generic_mesh the generic_mesh
 	 */
-	void M_constructor (Generic_Mesh & generic_mesh);
+	//void M_constructor (Generic_Mesh & generic_mesh);
 
 	//! Prints the components of a point
 	/*!
@@ -1457,7 +1457,7 @@ protected:
 	 * @param generic_mesh the generic_mesh
 	 * @param old_to_new_map is a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
 	 */	
-	void CellsVectorBuilder ( Generic_Mesh & generic_mesh, std::map<UInt, UInt> & old_to_new_map );
+	void cellsVectorBuilder ( Generic_Mesh & generic_mesh, std::map<UInt, UInt> & old_to_new_map );
 
 	//! Builds the vector of facets. It is called by constructor
 	/*!
@@ -1465,10 +1465,10 @@ protected:
 	 * @param old_to_new_mapCells is a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
 	 * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Generic_Mesh to the id in the Rigid_Mesh
 	 */	
-	void FacetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
+	void facetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
 
 	//! Builds the vector of edges. It is called by constructor
-	void EdgesVectorBuilder();
+	void edgesVectorBuilder();
 
 	//! Builds the vector of facets. It is called by constructor
 	/*!
@@ -1482,13 +1482,13 @@ protected:
 	/*!
 	 * @param old_to_new_map a map that binds the id of a cell in the original Generic_Mesh to the id in the Rigid_Mesh
 	*/
-	void AdjustCellNeighbors(const std::map<UInt, UInt> & old_to_new_map);
+	void adjustCellNeighbors(const std::map<UInt, UInt> & old_to_new_map);
 
 	//! Converts the facets id of the cells from old one to new one. It is called by constructor
 	/*!
 	 * @param old_to_new_mapFacets a map that binds the id of a facet in the original Generic_Mesh to the id in the Rigid_Mesh
 	 */
-	void AdjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFacets);
+	void adjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFacets);
 
 protected:
 	
