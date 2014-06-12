@@ -80,7 +80,7 @@ public:
 		{ return M_properties; }
 
 	//! Destructor
-	virtual ~CartesianGrid(){};
+	virtual ~CartesianGrid() = default;
 
 protected:
 
