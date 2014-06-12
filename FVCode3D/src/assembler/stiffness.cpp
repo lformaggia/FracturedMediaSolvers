@@ -9,7 +9,7 @@
 namespace Darcy
 {
 
-StiffMatrix::Generic_Point StiffMatrix::border_center(Fracture_Juncture fj) const
+StiffMatrix::Generic_Point StiffMatrix::getBorderCenter(Fracture_Juncture fj) const
 {
     return (this->M_mesh.getNodesVector()[fj.first] +
                 (this->M_mesh.getNodesVector()[fj.second] -
@@ -18,9 +18,9 @@ StiffMatrix::Generic_Point StiffMatrix::border_center(Fracture_Juncture fj) cons
            );
 }
 
-Real StiffMatrix::Findfracturesalpha (const Fracture_Juncture fj, const UInt n_Id) const
+Real StiffMatrix::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_Id) const
 {
-    Generic_Point borderCenter = border_center(fj);
+    Generic_Point borderCenter = getBorderCenter(fj);
     Generic_Point cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCentroid();
 
     Real A = M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_aperture * (this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]).norm();
@@ -39,11 +39,11 @@ Real StiffMatrix::Findfracturesalpha (const Fracture_Juncture fj, const UInt n_I
     return alpha;
 }
 
-Real StiffMatrix::Findalpha (const UInt & cellId, const Facet_ID * facet) const
+Real StiffMatrix::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
     Generic_Point facetCenter = facet->getCentroid();
     Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
-    Generic_Vector normal = facet->getUNormal();
+    Generic_Vector normal = facet->getUnsignedNormal();
     Real alpha;
     Real D;
     Generic_Vector f;
@@ -57,7 +57,7 @@ Real StiffMatrix::Findalpha (const UInt & cellId, const Facet_ID * facet) const
     return alpha;
 }
 
-Real StiffMatrix::Findalpha (const UInt & facetId, const Edge_ID * edge) const
+Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
     Generic_Point edgeCenter = edge->getCentroid();
     Generic_Point facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
@@ -83,7 +83,7 @@ Real StiffMatrix::Findalpha (const UInt & facetId, const Edge_ID * edge) const
 	return alpha;
 }
 
-Real StiffMatrix::FindDirichletalpha (const UInt & cellId, const Facet_ID * facet) const
+Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
     Generic_Point facetCenter = facet->getCentroid();
     Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
@@ -96,7 +96,7 @@ Real StiffMatrix::FindDirichletalpha (const UInt & cellId, const Facet_ID * face
     return alpha;
 }
 
-Real StiffMatrix::FindDirichletalpha (const UInt & facetId, const Edge_ID * edge) const
+Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
     Generic_Point borderCenter = edge->getCentroid();
     Generic_Point facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
@@ -144,11 +144,11 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
 {
     for (auto facet_it : this->M_mesh.getInternalFacetsIdsVector())
     {
-        const UInt neighbor1id = facet_it.getSeparated()[0];
-        const UInt neighbor2id = facet_it.getSeparated()[1];
+        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
+        const UInt neighbor2id = facet_it.getSeparatedCellsIds()[1];
 
-        const Real alpha1 = Findalpha(neighbor1id, &facet_it);
-        const Real alpha2 = Findalpha(neighbor2id, &facet_it);
+        const Real alpha1 = findAlpha(neighbor1id, &facet_it);
+        const Real alpha2 = findAlpha(neighbor2id, &facet_it);
 
         const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
         const Real Q12 = T12 * M_properties.getMobility();
@@ -166,11 +166,11 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
         const Real Df = F_aperture/2.;
         const Real alphaf = facet_it.getSize() * F_permeability / Df;
 
-        const UInt neighbor1id = facet_it.getSeparated()[0];
-        const UInt neighbor2id = facet_it.getSeparated()[1];
+        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
+        const UInt neighbor2id = facet_it.getSeparatedCellsIds()[1];
 
-        const Real alpha1 = Findalpha(neighbor1id, &facet_it);
-        const Real alpha2 = Findalpha(neighbor2id, &facet_it);
+        const Real alpha1 = findAlpha(neighbor1id, &facet_it);
+        const Real alpha2 = findAlpha(neighbor2id, &facet_it);
 
         const Real T1f = alpha1*alphaf/(alpha1 + alphaf);
         const Real Q1f = T1f * M_properties.getMobility();
@@ -179,14 +179,14 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
         const Real Q2f = T2f * M_properties.getMobility();
 
         Matrix_elements.emplace_back(neighbor1id, neighbor1id, Q1f); // Triplet
-        Matrix_elements.emplace_back(neighbor1id, facet_it.getIdasCell(), -Q1f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdasCell(), neighbor1id, -Q1f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdasCell(), facet_it.getIdasCell(), Q1f); // Triplet
+        Matrix_elements.emplace_back(neighbor1id, facet_it.getIdAsCell(), -Q1f); // Triplet
+        Matrix_elements.emplace_back(facet_it.getIdAsCell(), neighbor1id, -Q1f); // Triplet
+        Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), Q1f); // Triplet
 
         Matrix_elements.emplace_back(neighbor2id, neighbor2id, Q2f); // Triplet
-        Matrix_elements.emplace_back(neighbor2id, facet_it.getIdasCell(), -Q2f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdasCell(), neighbor2id, -Q2f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdasCell(), facet_it.getIdasCell(), Q2f); // Triplet
+        Matrix_elements.emplace_back(neighbor2id, facet_it.getIdAsCell(), -Q2f); // Triplet
+        Matrix_elements.emplace_back(facet_it.getIdAsCell(), neighbor2id, -Q2f); // Triplet
+        Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), Q2f); // Triplet
     } // for
 } // StiffMatrix::assemblePorousMatrix
 
@@ -194,27 +194,27 @@ void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements 
 {
     for (auto facet_it : this->M_mesh.getBorderFacetsIdsVector())
     {
-        const UInt neighbor1id = facet_it.getSeparated()[0];
+        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
         const UInt borderId = facet_it.getBorderId();
 
-        if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
+        if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
         {
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
-            const Real Q1o = m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
+            const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-            _b->operator()(neighbor1id) += Q1o;
+            M_b->operator()(neighbor1id) += Q1o;
         } // if
-        else if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
+        else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
-            const Real alpha1 = Findalpha (neighbor1id, &facet_it);
-            const Real alpha2 = FindDirichletalpha (neighbor1id, &facet_it);
+            const Real alpha1 = findAlpha (neighbor1id, &facet_it);
+            const Real alpha2 = findDirichletAlpha (neighbor1id, &facet_it);
 
             const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
             const Real Q12 = T12 * M_properties.getMobility();
-            const Real Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+            const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 
             Matrix_elements.emplace_back(neighbor1id, neighbor1id, Q12); // Triplet
-            _b->operator()(neighbor1id) = _b->operator()(neighbor1id) + Q1o;
+            M_b->operator()(neighbor1id) = M_b->operator()(neighbor1id) + Q1o;
         } // else if
     } // for
 } // StiffMatrix::assemblePorousMatrixBC
@@ -226,11 +226,11 @@ void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) cons
         for (auto juncture_it : facet_it.getFractureNeighbors())
         {
             std::vector<Real> alphas;
-            const Real alphaF = Findfracturesalpha(juncture_it.first, facet_it.getId());
+            const Real alphaF = findFracturesAlpha(juncture_it.first, facet_it.getFractureId());
 
             for (auto neighbors_it : juncture_it.second)
             {
-                alphas.emplace_back(Findfracturesalpha(juncture_it.first, neighbors_it));
+                alphas.emplace_back(findFracturesAlpha(juncture_it.first, neighbors_it));
             } // for
 
             Real a_sum = alphaF;
@@ -240,9 +240,9 @@ void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) cons
             for (UInt counter = 0; counter < alphas.size(); ++counter)
             {
                 const Real QFf = alphaF*alphas[counter] * M_properties.getMobility() / a_sum;
-                Matrix_elements.emplace_back(facet_it.getIdasCell(), facet_it.getIdasCell(), QFf); // Triplet
-                Matrix_elements.emplace_back(facet_it.getIdasCell(),
-                    this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getIdasCell(),
+                Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), QFf); // Triplet
+                Matrix_elements.emplace_back(facet_it.getIdAsCell(),
+                    this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getIdAsCell(),
                     -QFf);  // Triplet
             } // for
         } // for
@@ -260,7 +260,7 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
         for(auto& border_it : edge_it.getBorderIds())
         {
         	// BC = D > N && the one with greatest id
-        	if(m_Bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
+        	if(M_bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
         	{
         		if(!isD)
         		{
@@ -272,38 +272,38 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
         			borderId = (border_it > borderId) ? border_it : borderId;
         		}
         	}
-        	else if(!isD && m_Bc.getBordersBCMap().at(border_it).getBCType() == Neumann)
+        	else if(!isD && M_bc.getBordersBCMap().at(border_it).getBCType() == Neumann)
         	{
         		borderId = (border_it > borderId) ? border_it : borderId;
         	}
         }
 
         // loop over the fracture facets
-        for(auto& facet_it : edge_it.getSeparated())
+        for(auto& facet_it : edge_it.getSeparatedFacetsIds())
         {
         	if(this->M_mesh.getFacetsVector()[facet_it].isFracture())
         	{
         		UInt neighborIdAsCell = M_mesh.getFacetsVector()[facet_it].getFractureFacetId() + M_mesh.getCellsVector().size();
         		Real aperture = M_properties.getProperties(this->M_mesh.getFacetsVector()[facet_it].getZoneCode()).M_aperture;
 
-                if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
+                if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
                 {
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
-                    const Real Q1o = m_Bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
+                    const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    _b->operator()(neighborIdAsCell) += Q1o;
+                    M_b->operator()(neighborIdAsCell) += Q1o;
                 } // if
-                else if(m_Bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
+                else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {
-                    const Real alpha1 = Findalpha (facet_it, &edge_it);
-                    const Real alpha2 = FindDirichletalpha (facet_it, &edge_it);
+                    const Real alpha1 = findAlpha (facet_it, &edge_it);
+                    const Real alpha2 = findDirichletAlpha (facet_it, &edge_it);
 
                     const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
                     const Real Q12 = T12 * M_properties.getMobility();
-                    const Real Q1o = Q12 * m_Bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
+                    const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
                     Matrix_elements.emplace_back(neighborIdAsCell, neighborIdAsCell, Q12); // Triplet
-                    _b->operator()(neighborIdAsCell) = _b->operator()(neighborIdAsCell) + Q1o;
+                    M_b->operator()(neighborIdAsCell) = M_b->operator()(neighborIdAsCell) + Q1o;
                 } // else if
         	} // if
         }// for
