@@ -41,7 +41,7 @@ public:
 
 	void linearTransform(const Real scaling, const Real xShift, const Real yShift, const Real zShift);
 
-	Point3D convertInLocalCoordinate(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
+	Point3D convertInLocalCoordinates(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
 
 	Point3D & operator=(const Point3D & p);
 

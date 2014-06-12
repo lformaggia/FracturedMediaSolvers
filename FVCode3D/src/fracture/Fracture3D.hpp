@@ -130,7 +130,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 			   FALSE -> an error occurred
 	 */
-	bool exportVtk(const std::string & filename) const;
+	bool exportVTK(const std::string & filename) const;
 
 	//! Display general information about the content of the class
 	/*!

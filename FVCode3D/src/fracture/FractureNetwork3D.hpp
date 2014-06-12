@@ -44,7 +44,7 @@ public:
 	FractureNetwork3D(const Geometry::Mesh3D & mesh, const std::vector<Geometry::Fracture3D> & fractures);
 
 	//! Destructor
-	~FractureNetwork3D();
+	~FractureNetwork3D() = default;
 
 	//@}
 
@@ -105,7 +105,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportVtk(const std::string & prefixFileName="FractureNetwork") const;
+	bool exportVTK(const std::string & prefixFileName="FractureNetwork") const;
 
 	//! Export in a single vtk file all the segments representing each fracture in the network
 	/*!
@@ -114,7 +114,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportNetworkVtk(const std::string & filename="FractureNetwork.vtk") const;
+	bool exportNetworkVTK(const std::string & filename="FractureNetwork.vtk") const;
 
 	//! Display general information about the content of the class
 	/*!

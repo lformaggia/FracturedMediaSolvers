@@ -65,7 +65,7 @@ Real Mesh3D::Facet3D::area() const
     points.reserve(nPoints);
 
     for(UInt i=0; i < nPoints; ++i)
-        points.emplace_back( M_mesh->getNodesVector()[M_idVertex[i]].convertInLocalCoordinate(cs, Point3D(0.,0.,0.)) );
+        points.emplace_back( M_mesh->getNodesVector()[M_idVertex[i]].convertInLocalCoordinates(cs, Point3D(0.,0.,0.)) );
 
     for(UInt i=0; i < (nPoints-1) ; ++i)
         area += points[i].x() * points[i+1].y() - points[i].y() * points[i+1].x();
@@ -585,12 +585,12 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
 
 bool Mesh3D::exportFractureNetworkVtk(const std::string & filename) const
 {
-    return M_fn.exportNetworkVtk(filename);
+    return M_fn.exportNetworkVTK(filename);
 }
 
 bool Mesh3D::exportFractureVtk( const std::string & filename, const UInt & f) const
 {
-    return M_fn.getFracture(f).exportVtk(filename);
+    return M_fn.getFracture(f).exportVTK(filename);
 }
 
 
@@ -598,7 +598,6 @@ bool Mesh3D::exportFractureVtk( const std::string & filename, const UInt & f) co
 
 bool operator<(const Geometry::Mesh3D::Facet3D & f1, const Geometry::Mesh3D::Facet3D & f2)
 {
-    bool res(false);
     std::vector<UInt> idF1, idF2;
     UInt sizeF1, sizeF2, minSize;
 

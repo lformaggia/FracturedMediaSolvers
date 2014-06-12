@@ -24,8 +24,6 @@ FractureNetwork3D::FractureNetwork3D(const Geometry::FractureNetwork3D & fn):
 FractureNetwork3D::FractureNetwork3D(const Geometry::Mesh3D & mesh, const std::vector<Geometry::Fracture3D> & fractures):
 		M_fractureNetwork(fractures), M_mesh(mesh) {}
 
-FractureNetwork3D::~FractureNetwork3D() {}
-
 void FractureNetwork3D::addFractures(std::vector<Geometry::Fracture3D> & fractures)
 {
 	M_fractureNetwork.clear();
@@ -33,26 +31,26 @@ void FractureNetwork3D::addFractures(std::vector<Geometry::Fracture3D> & fractur
 	fractures.erase(fractures.begin(), fractures.end());
 }
 
-bool FractureNetwork3D::exportVtk(const std::string & prefixFileName) const
+bool FractureNetwork3D::exportVTK(const std::string & prefixFileName) const
 {
 	const UInt nFN = M_fractureNetwork.size();
 	bool status = true;
 
 	for( UInt i=0; i < nFN && status; ++i)
-		status = M_fractureNetwork[i].exportVtk(prefixFileName +
+		status = M_fractureNetwork[i].exportVTK(prefixFileName +
 				boost::lexical_cast<std::string>(i) +
 				".vtk" );
 
 	return status;
 }
 
-bool FractureNetwork3D::exportNetworkVtk(const std::string & filename) const
+bool FractureNetwork3D::exportNetworkVTK(const std::string & filename) const
 {
 	const UInt nFN = M_fractureNetwork.size();
 	bool status = true;
 
 	for(UInt i=0; i < nFN && status; ++i)
-		status = M_fractureNetwork[i].exportVtk(filename);
+		status = M_fractureNetwork[i].exportVTK(filename);
 
 	return status;
 }
