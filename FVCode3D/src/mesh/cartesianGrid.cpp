@@ -13,8 +13,6 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 	Real hy = Ly/Ny;
 	Real hz = Lz/Nz;
 	UInt nNodes = (Nx+1)*(Ny+1)*(Nz+1);
-	//UInt nFacets = (Nx+1)*Ny*Nz + Nx*(Ny+1)*Nz + Nx*Ny*(Nz+1);
-	//UInt nCells = Nx*Ny*Nz;
 	UInt i,j,k;
 
 	UInt bcId, zone, maxZone = 0, count = 0;
@@ -34,7 +32,7 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 		{
 			for(i=0; i <= Nx; ++i)
 			{
-				nodesRef.push_back( Geometry::Point3D( hx*i, hy*j, hz*k) );
+				nodesRef.emplace_back(hx*i, hy*j, hz*k); // Geometry::Point3D
 			}
 		}
 	}
