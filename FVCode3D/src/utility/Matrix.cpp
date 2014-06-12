@@ -50,7 +50,8 @@ void SparseMatrix::fill(const UInt i, const UInt j, const Real value)
 
 void SparseMatrix::fill(const std::pair<UInt, UInt> ij, const Real value)
 {
-	if(M_options & Store){
+	if(M_options & Store)
+	{
 		const std::map<std::pair<UInt, UInt>, Real>::iterator it = M_matrix.find(ij);
 
 		if (it != M_matrix.end())
@@ -58,7 +59,8 @@ void SparseMatrix::fill(const std::pair<UInt, UInt> ij, const Real value)
 		else
 			M_matrix.insert(std::make_pair(ij,value));
 	}
-	if(M_options & SaveOnFile){
+	if(M_options & SaveOnFile)
+	{
 		*M_file<<ij.first<<" "<<ij.second<<" "<<value<<std::endl;
 		M_nonZeros++;
 	}
