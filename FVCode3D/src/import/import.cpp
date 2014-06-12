@@ -82,13 +82,13 @@ void ImporterMedit::import(bool fracturesOn)
 		getline(file, buffer);
 
 	file >> nNodes;
-	nodesRef.resize(nNodes);
+	nodesRef.reserve(nNodes);
 
 	for(i=0; i < nNodes; ++i)
 	{
 		file >> x; file >> y; file >> z;
 		file >> buffer;
-		nodesRef[i] = Geometry::Point3D(x,y,z);
+		nodesRef.emplace_back(x,y,z); // Geometry::Point3D
 	}
 	
 	// Read facets
@@ -223,12 +223,12 @@ void ImporterTPFA::import(bool fracturesOn)
 	file >> volumeCorrection;
 
 	// Read nodes
-	nodesRef.resize(nNodes);
+	nodesRef.reserve(nNodes);
 
 	for(i=0; i < nNodes; ++i)
 	{
 		file >> x; file >> y; file >> z;
-		nodesRef[i] = Geometry::Point3D(x,y,z);
+		nodesRef.emplace_back(x,y,z); // Geometry::Point3D
 	}
 
 	// Read facets
@@ -255,9 +255,6 @@ void ImporterTPFA::import(bool fracturesOn)
 		cellsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, zone+1) );
 	}
 	tmp.clear();
-
-	//prop.setProperties(1., 0.25, 100);
-	//M_properties.setZone(0, prop);
 
 	// Read properties
 	for(i=0; i < nZones; ++i)
@@ -295,9 +292,6 @@ void ImporterTPFA::addFractures()
 				fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
 				fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
 			}
-			//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
-			//M_properties.getProperties(it->second.getZoneCode()).M_permeability = 1000;
-			//M_properties.getProperties(it->second.getZoneCode()).M_aperture = 1;
 		}
 	}
 
@@ -342,12 +336,12 @@ void ImporterForSolver::import(bool fracturesOn)
 		file >> buffer;
 
 	file >> nNodes;
-	nodesRef.resize(nNodes);
+	nodesRef.reserve(nNodes);
 
 	for(i=0; i < nNodes; ++i)
 	{
 		file >> x; file >> y; file >> z;
-		nodesRef[i] = Geometry::Point3D(x,y,z);
+		nodesRef.emplace_back(x,y,z); // Geometry::Point3D
 	}
 
 	// Read facets with properties
@@ -426,6 +420,8 @@ void ImporterForSolver::import(bool fracturesOn)
 
 	file >> nFractures;
 
+	FN.getNetwork().reserve(nFractures);
+
 	for(i=0; i < nFractures*static_cast<UInt>(fracturesOn); ++i)
 	{
 		file >> facetsFracture;
@@ -433,13 +429,7 @@ void ImporterForSolver::import(bool fracturesOn)
 		for(j=0; j < facetsFracture; ++j)
 			file >> tmp[j];
 		if(facetsFracture>0)
-			FN.emplace_back(Geometry::Fracture3D(M_mesh, tmp, i));
-		//M_properties.getProperties(it->second.getZoneCode()).M_porosity = 1;
-		for(j=0; j<facetsFracture; ++j)
-		{
-//			M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_permeability = 1000;
-//			M_properties.getProperties(facetsRef[tmp[j]].getZoneCode()).M_aperture = 1;
-		}
+			FN.getNetwork().emplace_back(M_mesh, tmp, i); // Geometry::Fracture3D
 	}
 
 	file.close();
