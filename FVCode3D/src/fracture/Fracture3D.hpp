@@ -44,7 +44,7 @@ public:
 	Fracture3D(const Geometry::Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id);
 
 	//! Destructor
-	~Fracture3D();
+	~Fracture3D() = default;
 
 	//@}
 

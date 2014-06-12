@@ -17,8 +17,6 @@ Fracture3D::Fracture3D(const Geometry::Fracture3D & f):
 Fracture3D::Fracture3D(const Geometry::Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id):
 	M_id(id), M_fractureFacets(fractureFacets), M_mesh(mesh) {}
 
-Fracture3D::~Fracture3D() {}
-
 bool Fracture3D::exportVtk(const std::string & filename) const
 {
 	// TODO Fare una bool per scegliere se fare out o append?
