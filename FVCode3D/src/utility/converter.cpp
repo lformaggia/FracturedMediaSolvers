@@ -32,7 +32,7 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 	std::vector<Geometry::Point3D> & nodesRef = mesh.getNodesVector();
 	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
 	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
-	Geometry::FractureNetwork3D & FN = mesh.getFn();
+	Geometry::FractureNetwork3D & FN = mesh.getFN();
 
 	nNodes = nodesRef.size();
 	nFacets = facetsRef.size();
@@ -63,11 +63,11 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 	for(i=0; i < nFacets; ++i)
 	{
 		file << std::scientific << std::setprecision(0);
-		nodesFacet = facetsRef[i].getNumberOfPoints();
+		nodesFacet = facetsRef[i].getNumberOfVertices();
 		file << nodesFacet << " ";
 
 		for(j=0; j < nodesFacet; ++j)
-			file << facetsRef[i].getIdVertex(j) << " ";
+			file << facetsRef[i].getVertexId(j) << " ";
 
 		file << facetsRef[i].getSeparatedCells().size() << " ";
 		for(std::set<UInt>::const_iterator it = facetsRef[i].getSeparatedCells().begin(); it != facetsRef[i].getSeparatedCells().end(); ++it)
@@ -96,7 +96,7 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 	for(i=0; i < nCells; ++i)
 	{
 		file << std::scientific << std::setprecision(0);
-		facetsCell = cellsRef[i].getNumberOfFacets();
+		facetsCell = cellsRef[i].facetsNumber();
 		file << facetsCell << " ";
 
 		for(std::set<UInt>::const_iterator it = cellsRef[i].getFacetsSet().begin(); it != cellsRef[i].getFacetsSet().end(); ++it)
@@ -177,9 +177,9 @@ void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh)
 	file << nFacets << std::endl;
 	for(i=0; i<nFacets; ++i)
 	{
-		file << facetsRef.at(i).getVertexesVector()[0] + 1 << "  ";
-		file << facetsRef.at(i).getVertexesVector()[1] + 1 << "  ";
-		file << facetsRef.at(i).getVertexesVector()[2] + 1 << "  ";
+		file << facetsRef.at(i).getVerticesVector()[0] + 1 << "  ";
+		file << facetsRef.at(i).getVerticesVector()[1] + 1 << "  ";
+		file << facetsRef.at(i).getVerticesVector()[2] + 1 << "  ";
 		zone = facetsRef.at(i).isBorderFacet() ? 1 : 0 ;
 		zone = facetsRef.at(i).isFracture() ? 1001 : zone ;
 		file << zone << std::endl;
@@ -190,10 +190,10 @@ void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh)
 	file << nCells << std::endl;
 	for(i=0; i<nCells; ++i)
 	{
-		file << cellsRef.at(i).getVertexesVector()[0] + 1 << "  ";
-		file << cellsRef.at(i).getVertexesVector()[1] + 1 << "  ";
-		file << cellsRef.at(i).getVertexesVector()[2] + 1 << "  ";
-		file << cellsRef.at(i).getVertexesVector()[3] + 1 << "  ";
+		file << cellsRef.at(i).getVerticesVector()[0] + 1 << "  ";
+		file << cellsRef.at(i).getVerticesVector()[1] + 1 << "  ";
+		file << cellsRef.at(i).getVerticesVector()[2] + 1 << "  ";
+		file << cellsRef.at(i).getVerticesVector()[3] + 1 << "  ";
 		file << "0" << std::endl;
 	}
 

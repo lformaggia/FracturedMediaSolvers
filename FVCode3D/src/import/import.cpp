@@ -327,7 +327,7 @@ void ImporterForSolver::import(bool fracturesOn)
 	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
 	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
 	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
-	Geometry::FractureNetwork3D & FN = M_mesh.getFn();
+	Geometry::FractureNetwork3D & FN = M_mesh.getFN();
 	Geometry::Properties prop;
 
 	// Read nodes

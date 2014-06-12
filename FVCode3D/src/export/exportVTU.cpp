@@ -66,9 +66,9 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->second.getVerticesVector().begin(); jt != it->second.getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+        filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -76,7 +76,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        offsets += it->second.vertexesNumber();
+        offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -94,10 +94,10 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
         filestr << it->second.facetsNumber() << std::endl;
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
         {
-            filestr << facets.at(*jt).getNumberOfPoints() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVertexesVector().begin(); kt != facets.at(*jt).getVertexesVector().end()-1; ++kt )
+            filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != facets.at(*jt).getVerticesVector().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -108,7 +108,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     {
         faceOffsets += 1 + it->second.facetsNumber();
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
-            faceOffsets += facets.at(*jt).getNumberOfPoints();
+            faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -176,9 +176,9 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->second.getVerticesVector().begin(); jt != it->second.getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+        filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -186,7 +186,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        offsets += it->second.vertexesNumber();
+        offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -225,7 +225,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
 
     const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt,Facet3D> & facets = mesh.getFacetsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
     UInt nPoints = nodes.size();
     UInt nCells = 0;
     UInt offsets = 0;
@@ -273,9 +273,9 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
-            for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+            for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                 filestr << *jt << " ";
-            filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
         }
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -286,7 +286,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
-            offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+            offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
             filestr << offsets << std::endl;
         }
     }
@@ -328,7 +328,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
     std::set<UInt> ids;
     std::set<UInt>::const_iterator itSet;
     UInt nPoints = nodes.size();
@@ -397,9 +397,9 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->second.getVerticesVector().begin(); jt != it->second.getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+        filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
@@ -408,9 +408,9 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                     filestr << *jt << " ";
-                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -422,7 +422,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        offsets += it->second.vertexesNumber();
+        offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -432,7 +432,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+                offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
                 filestr << offsets << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
@@ -454,10 +454,10 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
         filestr << it->second.facetsNumber() << std::endl;
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
         {
-            filestr << facets.at(*jt).getNumberOfPoints() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVertexesVector().begin(); kt != facets.at(*jt).getVertexesVector().end()-1; ++kt )
+            filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != facets.at(*jt).getVerticesVector().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -468,10 +468,10 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             if(itSet == ids.end())
             {
                 filestr << "1" << std::endl;
-                filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
-                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+                filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices() << std::endl;
+                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                     filestr << *jt << " ";
-                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -485,7 +485,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     {
         faceOffsets += 1 + it->second.facetsNumber();
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
-            faceOffsets += facets.at(*jt).getNumberOfPoints();
+            faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -495,7 +495,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+                faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
                 filestr << faceOffsets << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
@@ -540,42 +540,42 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
 
     for(std::map<UInt, Facet3D>::const_iterator it = facets.begin(); it != facets.end(); ++it)
     {
-	edgesFacet = it->second.getNumberOfPoints();
-        for(UInt i=0; i<edgesFacet-1; ++i)
-	{
-	    if(it->second.getIdVertex(i) < it->second.getIdVertex(i+1))
-	    {
-		itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(i), it->second.getIdVertex(i+1)) );
-		if(itSet == edges.end())
-		    edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(i), it->second.getIdVertex(i+1)), it->second.isFracture()));
-		else if(it->second.isFracture() == true)
-		    edges[std::pair<UInt,UInt>(it->second.getIdVertex(i), it->second.getIdVertex(i+1))] = true;
-	    }
-	    else
-	    {
-		itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(i+1), it->second.getIdVertex(i)) );
-		if(itSet == edges.end())
-		    edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(i+1), it->second.getIdVertex(i)), it->second.isFracture()));
-		else if(it->second.isFracture() == true)
-		    edges[std::pair<UInt,UInt>(it->second.getIdVertex(i+1), it->second.getIdVertex(i))] = true;
-	    }
-	}
-	if(it->second.getIdVertex(edgesFacet-1) < it->second.getIdVertex(0))
-	{
-	    itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(edgesFacet-1), it->second.getIdVertex(0)) );
-	    if(itSet == edges.end())
-	        edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(edgesFacet-1), it->second.getIdVertex(0)), it->second.isFracture()));
-	    else if(it->second.isFracture() == true)
-	        edges[std::pair<UInt,UInt>(it->second.getIdVertex(edgesFacet-1), it->second.getIdVertex(0))] = true;
-	}
-	else
-	{
-	    itSet = edges.find( std::pair<UInt,UInt>(it->second.getIdVertex(0), it->second.getIdVertex(edgesFacet-1)) );
-	    if(itSet == edges.end())
-	        edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getIdVertex(0), it->second.getIdVertex(edgesFacet-1)), it->second.isFracture()));
-	    else if(it->second.isFracture() == true)
-	        edges[std::pair<UInt,UInt>(it->second.getIdVertex(0), it->second.getIdVertex(edgesFacet-1))] = true;
-	}
+    	edgesFacet = it->second.getNumberOfVertices();
+    	for(UInt i=0; i<edgesFacet-1; ++i)
+    	{
+    		if(it->second.getVertexId(i) < it->second.getVertexId(i+1))
+    		{
+    			itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(i), it->second.getVertexId(i+1)) );
+    			if(itSet == edges.end())
+    				edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getVertexId(i), it->second.getVertexId(i+1)), it->second.isFracture()));
+    			else if(it->second.isFracture() == true)
+    				edges[std::pair<UInt,UInt>(it->second.getVertexId(i), it->second.getVertexId(i+1))] = true;
+    		}
+    		else
+    		{
+    			itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(i+1), it->second.getVertexId(i)) );
+    			if(itSet == edges.end())
+    				edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getVertexId(i+1), it->second.getVertexId(i)), it->second.isFracture()));
+    			else if(it->second.isFracture() == true)
+    				edges[std::pair<UInt,UInt>(it->second.getVertexId(i+1), it->second.getVertexId(i))] = true;
+    		}
+    	}
+    	if(it->second.getVertexId(edgesFacet-1) < it->second.getVertexId(0))
+    	{
+    		itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(edgesFacet-1), it->second.getVertexId(0)) );
+    		if(itSet == edges.end())
+    			edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getVertexId(edgesFacet-1), it->second.getVertexId(0)), it->second.isFracture()));
+    		else if(it->second.isFracture() == true)
+    			edges[std::pair<UInt,UInt>(it->second.getVertexId(edgesFacet-1), it->second.getVertexId(0))] = true;
+    	}
+    	else
+    	{
+    		itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(0), it->second.getVertexId(edgesFacet-1)) );
+    		if(itSet == edges.end())
+    			edges.insert(std::pair< std::pair<UInt,UInt>, bool>(std::make_pair(it->second.getVertexId(0), it->second.getVertexId(edgesFacet-1)), it->second.isFracture()));
+    		else if(it->second.isFracture() == true)
+    			edges[std::pair<UInt,UInt>(it->second.getVertexId(0), it->second.getVertexId(edgesFacet-1))] = true;
+    	}
     }
     nEdges = edges.size();
 
@@ -1162,7 +1162,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
     std::set<UInt> ids;
     std::set<UInt>::const_iterator itSet;
     UInt nPoints = nodes.size();
@@ -1356,9 +1356,9 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->second.getVerticesVector().begin(); jt != it->second.getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+        filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
@@ -1367,9 +1367,9 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                     filestr << *jt << " ";
-                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -1381,7 +1381,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        offsets += it->second.vertexesNumber();
+        offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1391,7 +1391,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+                offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
                 filestr << offsets << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
@@ -1413,10 +1413,10 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << it->second.facetsNumber() << std::endl;
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
         {
-            filestr << facets.at(*jt).getNumberOfPoints() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVertexesVector().begin(); kt != facets.at(*jt).getVertexesVector().end()-1; ++kt )
+            filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != facets.at(*jt).getVerticesVector().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1427,10 +1427,10 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             if(itSet == ids.end())
             {
                 filestr << "1" << std::endl;
-                filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
-                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+                filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices() << std::endl;
+                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                     filestr << *jt << " ";
-                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -1444,7 +1444,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     {
         faceOffsets += 1 + it->second.facetsNumber();
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
-            faceOffsets += facets.at(*jt).getNumberOfPoints();
+            faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1454,7 +1454,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+                faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
                 filestr << faceOffsets << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
@@ -1492,7 +1492,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFn().getNetwork();
+    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
     std::set<UInt> ids;
     std::set<UInt>::const_iterator itSet;
     UInt nPoints = nodes.size();
@@ -1623,9 +1623,9 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->second.getVerticesVector().begin(); jt != it->second.getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+        filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
@@ -1634,9 +1634,9 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                     filestr << *jt << " ";
-                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -1648,7 +1648,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
     {
-        offsets += it->second.vertexesNumber();
+        offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1658,7 +1658,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+                offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
                 filestr << offsets << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
@@ -1680,10 +1680,10 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << it->second.facetsNumber() << std::endl;
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
         {
-            filestr << facets.at(*jt).getNumberOfPoints() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVertexesVector().begin(); kt != facets.at(*jt).getVertexesVector().end()-1; ++kt )
+            filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != facets.at(*jt).getVerticesVector().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1694,10 +1694,10 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             if(itSet == ids.end())
             {
                 filestr << "1" << std::endl;
-                filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints() << std::endl;
-                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVertexesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVertexesVector().end()-1; ++jt )
+                filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices() << std::endl;
+                for(std::vector<UInt>::const_iterator jt = facets.at(it->getFractureFacetsId()[i]).getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
                     filestr << *jt << " ";
-                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVertexesVector().rbegin()) << std::endl;
+                filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -1711,7 +1711,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     {
         faceOffsets += 1 + it->second.facetsNumber();
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
-            faceOffsets += facets.at(*jt).getNumberOfPoints();
+            faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
     for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1721,7 +1721,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfPoints();
+                faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
                 filestr << faceOffsets << std::endl;
                 ids.insert(it->getFractureFacetsId()[i]);
             }

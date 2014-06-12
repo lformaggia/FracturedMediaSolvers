@@ -546,7 +546,7 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 // ==================================================
 
 Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
-	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVertexesVector()), M_area(generic_facet.area()),
+	M_mesh(mesh), M_id(m_id), M_vertexesIds(generic_facet.getVerticesVector()), M_area(generic_facet.area()),
 	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()),
 	M_isFracture(generic_facet.isFracture()), M_fractureFacetId(0), M_borderId(generic_facet.getBorderId()),
 	M_representedFractureIds(generic_facet.getRepresentedFractureIds()), M_zone(generic_facet.getZoneCode())
@@ -609,7 +609,7 @@ void Rigid_Mesh::Facet::showMe(std::ostream & out) const
 
 Rigid_Mesh::Cell::Cell( const Generic_Cell & generic_cell, Geometry::Rigid_Mesh * const mesh, const UInt m_id):
 	M_mesh(mesh), M_Id(m_id), M_zoneCode(generic_cell.getZoneCode()),
-	M_vertexesIds(generic_cell.getVertexesVector()),
+	M_vertexesIds(generic_cell.getVerticesVector()),
 	M_centroid(generic_cell.getCentroid()),
 	M_volume(generic_cell.volume())
 {
