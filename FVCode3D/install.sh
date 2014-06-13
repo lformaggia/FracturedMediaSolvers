@@ -176,9 +176,10 @@ echo "Build type: ${BUILD_TYPE}"
 echo "Installing in: $INSTALL_DIR"
 echo "Using ${NUM_PROC} parallel builds"
 
-cd ${ROOT_DIR}/external
+pushd ${ROOT_DIR}/external > /dev/null
 source ./build
 export NUM_PROC
+popd > /dev/null
 
 CMAKE_BIN=cmake
 if [ -n "${cmake_install_dir}" ]; then
