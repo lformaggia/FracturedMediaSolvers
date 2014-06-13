@@ -142,7 +142,7 @@ void StiffMatrix::assemble()
 
 void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) const
 {
-    for (auto facet_it : this->M_mesh.getInternalFacetsIdsVector())
+    for (auto& facet_it : this->M_mesh.getInternalFacetsIdsVector())
     {
         const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
         const UInt neighbor2id = facet_it.getSeparatedCellsIds()[1];
@@ -159,7 +159,7 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
         Matrix_elements.emplace_back(neighbor2id, neighbor2id, Q12); // Triplet
     } // for
 
-    for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
+    for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
         const Real F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
         const Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
@@ -192,7 +192,7 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
 
 void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements ) const
 {
-    for (auto facet_it : this->M_mesh.getBorderFacetsIdsVector())
+    for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector())
     {
         const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
         const UInt borderId = facet_it.getBorderId();
@@ -221,14 +221,14 @@ void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements 
 
 void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) const
 {
-    for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
+    for(auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
-        for (auto juncture_it : facet_it.getFractureNeighbors())
+        for(auto& juncture_it : facet_it.getFractureNeighbors())
         {
             std::vector<Real> alphas;
             const Real alphaF = findFracturesAlpha(juncture_it.first, facet_it.getFractureId());
 
-            for (auto neighbors_it : juncture_it.second)
+            for(auto neighbors_it : juncture_it.second)
             {
                 alphas.emplace_back(findFracturesAlpha(juncture_it.first, neighbors_it));
             } // for
@@ -237,7 +237,7 @@ void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) cons
             auto sum_maker = [&a_sum](Real item){a_sum += item;};
             std::for_each(alphas.begin(), alphas.end(), sum_maker);
 
-            for (UInt counter = 0; counter < alphas.size(); ++counter)
+            for(UInt counter = 0; counter < alphas.size(); ++counter)
             {
                 const Real QFf = alphaF*alphas[counter] * M_properties.getMobility() / a_sum;
                 Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), QFf); // Triplet
@@ -257,7 +257,7 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
         UInt borderId = 0;
 
         // select which BC to apply
-        for(auto& border_it : edge_it.getBorderIds())
+        for(auto border_it : edge_it.getBorderIds())
         {
         	// BC = D > N && the one with greatest id
         	if(M_bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
@@ -279,7 +279,7 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
         }
 
         // loop over the fracture facets
-        for(auto& facet_it : edge_it.getSeparatedFacetsIds())
+        for(auto facet_it : edge_it.getSeparatedFacetsIds())
         {
         	if(this->M_mesh.getFacetsVector()[facet_it].isFracture())
         	{

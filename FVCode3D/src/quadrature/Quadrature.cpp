@@ -34,12 +34,12 @@ Real Quadrature::integrate(const Vector & integrand)
 	if(IntSize != M_size)
 		std::cerr << "ERROR: DIMENSION OF INTEGRAND FUNCTION DIFFERS FROM DIMENSION OF MESH" << std::endl;
 	Real integral = 0;
-	for (auto cell_it : M_mesh.getCellsVector())
+	for(auto& cell_it : M_mesh.getCellsVector())
 	{
 		integral += cell_it.getVolume()*integrand(cell_it.getId());
 	}
 
-	for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
+	for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
 	{
 		Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 		integral += _volume*integrand(facet_it.getIdAsCell());
@@ -53,12 +53,12 @@ Real Quadrature::integrate(const Vector & integrand)
 Real Quadrature::L2Norm(const Vector& integrand)
 {
 	Real integral = 0;
-	for (auto cell_it : M_mesh.getCellsVector())
+	for(auto& cell_it : M_mesh.getCellsVector())
 	{
 		integral += cell_it.getVolume()*integrand(cell_it.getId())*integrand(cell_it.getId());
 	}
 
-	for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
+	for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
 	{
 		Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 		integral += _volume*integrand(facet_it.getIdAsCell())*integrand(facet_it.getIdAsCell());
@@ -76,10 +76,12 @@ Vector Quadrature::cellIntegrate (const std::function<Real(Generic_Point)> & fun
 	Real partRes;
 	UInt NeighboursId;
 
-	for (auto cell_it : M_mesh.getCellsVector())
-		result (cell_it.getId()) = M_quadrature->apply(cell_it, func);
+	for(auto& cell_it : M_mesh.getCellsVector())
+	{
+		result(cell_it.getId()) = M_quadrature->apply(cell_it, func);
+	}
 
-	for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
+	for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
 	{
 		// contribution from the fracture
 		Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
@@ -111,12 +113,12 @@ Vector Quadrature::cellIntegrateMatrix (const std::function<Real(Generic_Point)>
     Real partRes;
     UInt NeighboursId;
 
-    for (auto cell_it : M_mesh.getCellsVector())
+    for(auto& cell_it : M_mesh.getCellsVector())
     {
         result (cell_it.getId()) = M_quadrature->apply(cell_it, func);
     } // for
 
-    for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
+    for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {
         // contribution from the fracture
         const Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
@@ -145,7 +147,7 @@ Vector Quadrature::cellIntegrateFractures (const std::function<Real(Generic_Poin
     UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
     Vector result( Vector::Zero(N) );
 
-    for (auto facet_it : M_mesh.getFractureFacetsIdsVector())
+    for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {
         // contribution from the fracture
         const Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
@@ -164,7 +166,10 @@ Real Quadrature::integrate(const std::function<Real(Generic_Point)>& integrand)
 	Real integral = 0;
 	result = cellIntegrate(integrand);
 
-	for (UInt it = 0; it < N; ++it)
+	for(UInt it = 0; it < N; ++it)
+	{
 		integral += result (it);
+	}
+
 	return integral;
 }

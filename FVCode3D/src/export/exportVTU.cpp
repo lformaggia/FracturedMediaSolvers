@@ -690,15 +690,15 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"edgeId\" format=\"ascii\">" << std::endl;
-    for(auto&& edge : regularEdges )
+    for(auto& edge : regularEdges )
     	filestr << edge.getId() << std::endl;
-    for(auto&& edge : junctureEdges )
+    for(auto& edge : junctureEdges )
     	filestr << edge.getId() << std::endl;
-    for(auto&& edge : intTipEdges )
+    for(auto& edge : intTipEdges )
     	filestr << edge.getId() << std::endl;
-    for(auto&& edge : borTipEdges )
+    for(auto& edge : borTipEdges )
     	filestr << edge.getId() << std::endl;
-    for(auto&& edge : pureBorEdges )
+    for(auto& edge : pureBorEdges )
     	filestr << edge.getId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -718,15 +718,15 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr << "\t\t\t<Cells>" << std::endl;
     //  Connectivity
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
-    for(auto&& edge : regularEdges )
+    for(auto& edge : regularEdges )
     	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
-    for(auto&& edge : junctureEdges )
+    for(auto& edge : junctureEdges )
     	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
-    for(auto&& edge : intTipEdges )
+    for(auto& edge : intTipEdges )
     	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
-    for(auto&& edge : borTipEdges )
+    for(auto& edge : borTipEdges )
     	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
-    for(auto&& edge : pureBorEdges )
+    for(auto& edge : pureBorEdges )
     	filestr << edge.getEdge().getEdge().first << " " << edge.getEdge().getEdge().second << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -789,13 +789,13 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetId\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
-    for(auto&& facet_it : facets)
+    for(auto& facet_it : facets)
         filestr << facet_it.getId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderId\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
-    for(auto&& facet_it : facets)
+    for(auto& facet_it : facets)
         filestr << facet_it.getBorderId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -815,9 +815,9 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     filestr << "\t\t\t<Cells>" << std::endl;
     //  Connectivity
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
-    for(auto&& facet_it : facets)
+    for(auto& facet_it : facets)
     {
-        for(auto&& vertex_it : facet_it.getVerticesIds())
+        for(auto vertex_it : facet_it.getVerticesIds())
             filestr << vertex_it << " ";
         filestr << std::endl;
     }
@@ -825,7 +825,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
 
     //  Offsets
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
-    for(auto&& facet_it : facets)
+    for(auto& facet_it : facets)
     {
         offsets += facet_it.verticesNumber();
         filestr << offsets << std::endl;
@@ -834,7 +834,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
 
     //  Types
     filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
-    for( UInt i=0; i < nFacets ; ++i )
+    for(UInt i=0; i < nFacets ; ++i)
         filestr << "7" << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -877,9 +877,9 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     std::map<UInt,UInt> GlobalToLocal;
 
     // Compute # of fracture junctures
-    for (auto fractureFacet_it : fractures)
+    for(auto& fractureFacet_it : fractures)
     {
-        for(auto juncture_it : fractureFacet_it.getFractureNeighbors())
+        for(auto& juncture_it : fractureFacet_it.getFractureNeighbors())
         {
             localPoints.insert(juncture_it.first.first);
             localPoints.insert(juncture_it.first.second);
@@ -969,13 +969,13 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     std::map<UInt,UInt> GlobalToLocal;
 
     // Compute # of fracture tips
-    for (auto fractureFacet_it = fractures.begin(); fractureFacet_it != fractures.end(); ++fractureFacet_it)
+    for(auto& fractureFacet : fractures)
     {
-        for(auto tips_it = fractureFacet_it->getFractureTips().begin(); tips_it != fractureFacet_it->getFractureTips().end(); ++tips_it )
+        for(auto& tips : fractureFacet.getFractureTips())
         {
-            localPoints.insert(tips_it->first);
-            localPoints.insert(tips_it->second);
-            fracturesTips.insert( std::make_pair(tips_it->first,tips_it->second) );
+            localPoints.insert(tips.first);
+            localPoints.insert(tips.second);
+            fracturesTips.insert( std::make_pair(tips.first, tips.second) );
         }
     }
     nCells = fracturesTips.size();

@@ -1368,7 +1368,7 @@ public:
 	 */
 	Real getMaxFacetSize () const
 	{ 
-		auto comp=[](Facet f1, Facet f2){return f1.area()<f2.area();};
+		auto comp=[](const Facet & f1, const Facet & f2){return f1.area()<f2.area();};
 		return std::max_element(M_facets.begin(),M_facets.end(), comp)->area();
 	}
 
@@ -1378,7 +1378,7 @@ public:
 	 */
 	Real getMinFacetSize () const
 	{ 
-		auto comp=[](Facet f1, Facet f2){return f1.area()<f2.area();};
+		auto comp=[](const Facet & f1, const Facet & f2){return f1.area()<f2.area();};
 		return std::min_element(M_facets.begin(),M_facets.end(), comp)->area();
 	}
 
@@ -1389,8 +1389,9 @@ public:
 	Real getAveFacetSize () const
 	{ 	
 		Real ave = 0;
-		auto sum = [&ave](Facet f1){ave+=f1.area();};
-		for(auto it: M_facets) sum(it);
+		auto sum = [&ave](const Facet & f1){ave+=f1.area();};
+		for(auto& it: M_facets)
+			sum(it);
 		return ave/M_facets.size();
 	}
 

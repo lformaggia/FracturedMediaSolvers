@@ -17,13 +17,13 @@ void MassMatrix::assemble()
 	Real porosity, volume;
 	const Real compressibility = M_properties.getCompressibility();
 
-	for (auto cell_it : this->M_mesh.getCellsVector())
+	for (auto& cell_it : this->M_mesh.getCellsVector())
 	{
 		porosity = M_properties.getProperties(cell_it.getZoneCode()).M_porosity;
 		Matrix_elements.emplace_back(cell_it.getId(), cell_it.getId(), compressibility * porosity * cell_it.getVolume()); // Triplet
 	}
 
-	for (auto facet_it : this->M_mesh.getFractureFacetsIdsVector())
+	for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
 	{
 		// set mass term of the fracture
 		volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
