@@ -11,10 +11,10 @@
 #include <functional>
 #include <algorithm>
 
+#include "core/TypeDefinition.hpp"
+
 namespace FVCode3D
 {
-
-#include "core/TypeDefinition.hpp"
 
 class Rigid_Mesh;
 

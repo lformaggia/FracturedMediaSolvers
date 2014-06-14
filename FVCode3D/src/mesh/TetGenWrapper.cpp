@@ -4,7 +4,7 @@
  */
 
 #include "tetgen.h"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 #include "mesh/TetGenWrapper.hpp"
 
 namespace FVCode3D

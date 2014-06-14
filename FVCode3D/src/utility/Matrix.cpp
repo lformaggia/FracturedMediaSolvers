@@ -5,7 +5,7 @@
  *      Author: viskius
  */
 
-#include "Matrix.hpp"
+#include "utility/Matrix.hpp"
 
 namespace FVCode3D
 {

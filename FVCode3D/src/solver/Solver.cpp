@@ -3,7 +3,7 @@
  *  @brief These classes allow to solve a linear system (definitions).
  */
 
-#include "solver/solver.hpp"
+#include "solver/Solver.hpp"
 
 namespace FVCode3D
 {

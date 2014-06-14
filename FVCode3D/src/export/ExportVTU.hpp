@@ -6,7 +6,7 @@
 #ifndef EXPORTVTU_HPP_
 #define EXPORTVTU_HPP_
 
-#include "export/export.hpp"
+#include "export/Export.hpp"
 
 namespace FVCode3D
 {

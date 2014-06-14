@@ -3,7 +3,7 @@
  *	@brief Class for building a Mass-matrix for a finite volume method (definitions).
  */
 
-#include "assembler/mass.hpp"
+#include "assembler/Mass.hpp"
 #include "property/Properties.hpp"
 
 namespace FVCode3D

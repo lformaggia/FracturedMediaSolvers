@@ -3,7 +3,7 @@
  *	@brief Classes for quadrature rules (definitions).
  */
 
-#include "mesh/Rigid_Mesh.hpp"
+#include "mesh/RigidMesh.hpp"
 #include "quadrature/QuadratureRules.hpp"
 
 namespace FVCode3D

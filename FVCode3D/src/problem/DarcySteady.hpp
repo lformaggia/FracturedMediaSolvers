@@ -6,11 +6,11 @@
 #ifndef DARCYSTEADY_HPP_
 #define DARCYSTEADY_HPP_
 
-#include "core/data.hpp"
-#include "problem/problem.hpp"
+#include "core/Data.hpp"
+#include "problem/Problem.hpp"
 #include "quadrature/Quadrature.hpp"
-#include "solver/solver.hpp"
-#include "assembler/stiffness.hpp"
+#include "solver/Solver.hpp"
+#include "assembler/Stiffness.hpp"
 
 namespace FVCode3D
 {

@@ -6,9 +6,9 @@
 #ifndef TYPEDEFNITION_HPP_
 #define TYPEDEFNITION_HPP_
 
-#include "core/basic_type.hpp"
+#include "core/BasicType.hpp"
 #include "geometry/Point3D.hpp"
-#include "core/chrono.hpp"
+#include "core/Chrono.hpp"
 #include "GetPot"
 
 namespace FVCode3D

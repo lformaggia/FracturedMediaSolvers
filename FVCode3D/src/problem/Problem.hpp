@@ -6,9 +6,9 @@
 #ifndef PROBLEM_HPP_
 #define PROBLEM_HPP_
 
-#include "core/data.hpp"
+#include "core/Data.hpp"
 #include "core/TypeDefinition.hpp"
-#include "mesh/Rigid_Mesh.hpp"
+#include "mesh/RigidMesh.hpp"
 #include "boundaryCondition/BC.hpp"
 
 namespace FVCode3D

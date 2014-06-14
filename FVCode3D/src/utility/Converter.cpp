@@ -5,7 +5,7 @@
 
 #include "mesh/Mesh3D.hpp"
 #include "property/Properties.hpp"
-#include "utility/converter.hpp"
+#include "utility/Converter.hpp"
 
 namespace FVCode3D
 {

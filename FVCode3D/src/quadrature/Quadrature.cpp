@@ -3,7 +3,7 @@
  *	@brief Class for integrating functions on a Rigid_Mesh (definitions).
  */
 
-#include "mesh/Rigid_Mesh.hpp"
+#include "mesh/RigidMesh.hpp"
 #include "property/Properties.hpp"
 #include "quadrature/Quadrature.hpp"
 

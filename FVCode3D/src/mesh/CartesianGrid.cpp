@@ -5,7 +5,7 @@
 
 #include "mesh/Mesh3D.hpp"
 #include "property/Properties.hpp"
-#include "mesh/cartesianGrid.hpp"
+#include "mesh/CartesianGrid.hpp"
 
 namespace FVCode3D
 {

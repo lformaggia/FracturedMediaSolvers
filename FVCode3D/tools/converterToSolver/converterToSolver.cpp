@@ -6,12 +6,12 @@
 #include <fstream>
 
 #include "core/TypeDefinition.hpp"
-#include "core/data.hpp"
+#include "core/Data.hpp"
 #include "mesh/Mesh3D.hpp"
 #include "property/Properties.hpp"
-#include "import/import.hpp"
-#include "export/exportVTU.hpp"
-#include "utility/converter.hpp"
+#include "import/Import.hpp"
+#include "export/ExportVTU.hpp"
+#include "utility/Converter.hpp"
 
 using namespace FVCode3D;
 

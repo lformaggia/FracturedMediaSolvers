@@ -3,12 +3,12 @@
  * @brief Classes for saving files in the VTU format (definitions).
  */
 
-#include "export/exportVTU.hpp"
+#include "export/ExportVTU.hpp"
 
 #include "mesh/Mesh3D.hpp"
-#include "mesh/Rigid_Mesh.hpp"
+#include "mesh/RigidMesh.hpp"
 #include "property/Properties.hpp"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 
 namespace FVCode3D
 {

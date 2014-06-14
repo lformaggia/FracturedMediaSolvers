@@ -6,12 +6,12 @@
 #ifndef DARCYPSEUDOSTEADY_HPP_
 #define DARCYPSEUDOSTEADY_HPP_
 
-#include "core/data.hpp"
-#include "problem/problem.hpp"
+#include "core/Data.hpp"
+#include "problem/Problem.hpp"
 #include "quadrature/Quadrature.hpp"
-#include "solver/solver.hpp"
-#include "assembler/stiffness.hpp"
-#include "assembler/mass.hpp"
+#include "solver/Solver.hpp"
+#include "assembler/Stiffness.hpp"
+#include "assembler/Mass.hpp"
 
 namespace FVCode3D
 {

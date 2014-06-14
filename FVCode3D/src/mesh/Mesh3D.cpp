@@ -4,7 +4,7 @@
  */
 
 #include "mesh/Mesh3D.hpp"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 
 #include <boost/lexical_cast.hpp>
 

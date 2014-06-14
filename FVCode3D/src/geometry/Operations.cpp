@@ -3,7 +3,7 @@
  *  @brief Some useful operations (definitions).
  */
 
-#include "operations.hpp"
+#include "geometry/Operations.hpp"
 #include "geometry/Point3D.hpp"
 
 namespace FVCode3D

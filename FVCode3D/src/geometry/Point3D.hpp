@@ -6,7 +6,7 @@
 #ifndef POINT3D_HPP_
 #define POINT3D_HPP_
 
-#include "core/basic_type.hpp"
+#include "core/BasicType.hpp"
 
 namespace FVCode3D
 {

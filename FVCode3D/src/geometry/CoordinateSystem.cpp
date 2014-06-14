@@ -3,7 +3,7 @@
  * @brief Class for a 3D Cartesian coordinate system (definitions).
  */
 
-#include "CoordinateSystem.hpp"
+#include "geometry/CoordinateSystem.hpp"
 
 namespace FVCode3D
 {

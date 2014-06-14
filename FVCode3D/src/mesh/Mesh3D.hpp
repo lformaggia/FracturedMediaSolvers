@@ -8,7 +8,7 @@
 
 #include "core/TypeDefinition.hpp"
 #include "geometry/CoordinateSystem.hpp"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 #include "fracture/Fracture3D.hpp"
 #include "fracture/FractureNetwork3D.hpp"
 #include "mesh/TetGenWrapper.hpp"

@@ -7,7 +7,7 @@
 #define EXPORT_HPP_
 
 #include "core/TypeDefinition.hpp"
-#include "mesh/Rigid_Mesh.hpp"
+#include "mesh/RigidMesh.hpp"
 
 namespace FVCode3D
 {
