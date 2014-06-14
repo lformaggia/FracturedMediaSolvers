@@ -9,6 +9,9 @@
 #include "core/TypeDefinition.hpp"
 #include "mesh/Rigid_Mesh.hpp"
 
+namespace FVCode3D
+{
+
 class Mesh3D;
 class Rigid_Mesh;
 class PropertiesMap;
@@ -174,4 +177,5 @@ public:
 
 };
 
+} // namespace FVCode3D
 #endif /* EXPORT_HPP_ */

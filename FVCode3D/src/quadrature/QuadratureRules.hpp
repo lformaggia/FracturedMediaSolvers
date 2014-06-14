@@ -11,6 +11,9 @@
 #include <functional>
 #include <algorithm>
 
+namespace FVCode3D
+{
+
 #include "core/TypeDefinition.hpp"
 
 class Rigid_Mesh;
@@ -96,4 +99,5 @@ public:
 
 };
 
+} // namespace FVCode3D
 #endif

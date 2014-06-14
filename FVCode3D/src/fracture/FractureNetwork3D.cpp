@@ -13,7 +13,8 @@
 #include <limits>
 #include <cstring>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 FractureNetwork3D::FractureNetwork3D(const Geometry::Mesh3D & mesh):
 		M_mesh(mesh) {}
@@ -70,4 +71,4 @@ void FractureNetwork3D::showMe(std::ostream & out) const
 	out << std::endl;
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

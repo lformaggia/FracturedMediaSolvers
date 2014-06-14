@@ -8,7 +8,8 @@
 
 #include "core/basic_type.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class CoordinateSystem3D;
 
@@ -105,6 +106,6 @@ private:
 
 bool operator<(const Point3D & p1, const Point3D & p2);
 
-}//namespace Geometry
+} // namespace FVCode3D
 
 #endif /* POINT3D_HPP_ */

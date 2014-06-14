@@ -8,7 +8,8 @@
 
 #include "core/TypeDefinition.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 //! PermeabilityBase
 /*!
@@ -481,6 +482,6 @@ private:
 	PermeabilityFullTensor & operator=(const PermeabilityFullTensor &);
 };
 
-} // namespace Geometry
+} // namespace FVCode3D
 
 #endif /* PERMEABILITY_HPP_ */

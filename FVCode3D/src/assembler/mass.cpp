@@ -6,7 +6,7 @@
 #include "assembler/mass.hpp"
 #include "property/Properties.hpp"
 
-namespace Darcy
+namespace FVCode3D
 {
 
 void MassMatrix::assemble()
@@ -42,4 +42,4 @@ void MassMatrix::assemble()
 	this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
 }
 
-} // namespace Darcy
+} // namespace FVCode3D

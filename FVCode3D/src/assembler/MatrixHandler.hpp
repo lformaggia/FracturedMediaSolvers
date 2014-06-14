@@ -13,7 +13,7 @@
 #include "core/TypeDefinition.hpp"
 #include "mesh/Rigid_Mesh.hpp"
 
-namespace Darcy
+namespace FVCode3D
 {
 
 //! Type for matrix size
@@ -97,6 +97,6 @@ protected:
 	std::unique_ptr<SpMat> M_Matrix;
 };
 
-} // namespace Darcy
+} // namespace FVCode3D
 
 #endif

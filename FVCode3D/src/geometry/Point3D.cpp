@@ -6,7 +6,8 @@
 #include "Point3D.hpp"
 #include "CoordinateSystem.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 Real Point3D::S_tolerance = 1e-8;
 
@@ -226,4 +227,4 @@ bool operator<(const Point3D & p1, const Point3D & p2)
     return p1.x() - p2.x() < Point3D::getTolerance() * relTolX;
 }
 
-}//namespace Geometry
+} //namespace FVCode3D

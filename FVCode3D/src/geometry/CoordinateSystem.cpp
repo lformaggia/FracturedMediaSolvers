@@ -5,7 +5,7 @@
 
 #include "CoordinateSystem.hpp"
 
-namespace Geometry
+namespace FVCode3D
 {
 
 void CoordinateSystem3D::computeCartesianCoordinateSystem(const Point3D & z)
@@ -63,4 +63,4 @@ void CoordinateSystem3D::computeCartesianCoordinateSystem(const Point3D & z)
 	M_v.normalize();
 }
 
-}// namespace Geometry
+}// namespace FVCode3D

@@ -5,6 +5,9 @@
 
 #include "solver/solver.hpp"
 
+namespace FVCode3D
+{
+
 void EigenCholesky::solve()
 {
     Eigen::SimplicialCholesky<SpMat> chol(M_A);
@@ -55,3 +58,5 @@ void EigenBiCGSTAB::solve()
     M_iter = bicgstab.iterations();
     M_res = bicgstab.error();
 } // EigenBiCGSTAB::solve
+
+} // namespace FVCode3D

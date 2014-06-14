@@ -6,7 +6,7 @@
 #include "operations.hpp"
 #include "geometry/Point3D.hpp"
 
-namespace Geometry{
+namespace FVCode3D{
 
 Point3D computeNormal( const Point3D & A, const Point3D & B, const Point3D & C)
 {
@@ -38,4 +38,4 @@ Real tetrahedronVolume(const std::vector<Point3D> & nodes)
 	return std::fabs( dotProduct( nodes[2]-nodes[3] , crossProduct(nodes[0]-nodes[3],nodes[1]-nodes[3]) ) ) / 6.;
 }
 
-}// namespace Geometry
+}// namespace FVCode3D

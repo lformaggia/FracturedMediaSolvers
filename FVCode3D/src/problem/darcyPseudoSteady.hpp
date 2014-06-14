@@ -13,6 +13,9 @@
 #include "assembler/stiffness.hpp"
 #include "assembler/mass.hpp"
 
+namespace FVCode3D
+{
+
 //! Select the time scheme
 /*!
  * @enum TimeScheme
@@ -309,4 +312,5 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::solve(
     M_x = &(this->M_solver->getSolution());
 } // DarcyPseudoSteady::solve
 
+} // namespace FVCode3D
 #endif /* DARCYPSEUDOSTEADY_HPP_ */

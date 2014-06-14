@@ -9,7 +9,8 @@
 #include "core/TypeDefinition.hpp"
 #include <fstream>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class Mesh3D;
 
@@ -151,6 +152,6 @@ private:
 
 };
 
-} // namespace Geometry
+} // namespace FVCode3D
 
 #endif /* FRACTURE3D_HPP_ */

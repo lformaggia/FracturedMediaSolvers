@@ -6,7 +6,8 @@
 #include "mesh/Rigid_Mesh.hpp"
 #include "property/Properties.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 // --------------------   Class Rigid_Mesh   --------------------
 
@@ -874,4 +875,4 @@ Rigid_Mesh::Fracture_Facet::Fracture_Facet(const Fracture_Facet & fracture_facet
 	M_fractureNeighbors(fracture_facet.getFractureNeighbors()),
 	M_fractureTips(fracture_facet.getFractureTips()) {}
 
-}// namespace Geometry
+} // namespace FVCode3D

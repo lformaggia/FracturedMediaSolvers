@@ -7,6 +7,9 @@
 #include "property/Properties.hpp"
 #include "utility/converter.hpp"
 
+namespace FVCode3D
+{
+
 void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties)
 {
 	std::fstream file;
@@ -199,3 +202,5 @@ void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh)
 
 	file.close();
 }
+
+} // namespace FVCode3D

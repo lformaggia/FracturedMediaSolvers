@@ -12,6 +12,8 @@
 #include "solver/solver.hpp"
 #include "assembler/stiffness.hpp"
 
+namespace FVCode3D
+{
 
 //! Class that defines the steady-state Darcy problem
 /*!
@@ -123,4 +125,5 @@ void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleVector()
     } // else
 } // DarcySteady::assembleVector
 
+} // namespace FVCode3D
 #endif /* DARCYSTEADY_HPP_ */

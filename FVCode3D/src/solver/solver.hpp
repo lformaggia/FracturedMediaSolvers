@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 //! Class Solver
 /*!
  * @class Solver
@@ -383,4 +386,5 @@ public:
 
 }; // class EigenBiCGSTAB
 
+} // namespace FVCode3D
 #endif /* SOLVER_HPP_ */

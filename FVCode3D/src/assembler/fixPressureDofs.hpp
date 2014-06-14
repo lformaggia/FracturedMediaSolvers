@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 template <typename ProblemType>
 class FixPressureDofs
 {
@@ -69,4 +72,5 @@ void FixPressureDofs<ProblemType>::apply(const Real pressure)
     A.prune(0.);
 }
 
+} // namespace FVCode3D
 #endif /* FIXPRESSUREDOFS_HPP_ */

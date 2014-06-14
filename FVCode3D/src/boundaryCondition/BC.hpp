@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <iostream>
 
+namespace FVCode3D
+{
+
 class Mesh3D;
 
 //! Select the type of the BC
@@ -134,4 +137,5 @@ protected:
 	std::map<UInt,BorderBC> M_bordersBCMap;
 };
 
+} // namespace FVCode3D
 #endif

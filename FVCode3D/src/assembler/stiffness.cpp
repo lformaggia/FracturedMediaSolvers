@@ -6,7 +6,7 @@
 #include "assembler/stiffness.hpp"
 #include "property/Properties.hpp"
 
-namespace Darcy
+namespace FVCode3D
 {
 
 StiffMatrix::Generic_Point StiffMatrix::getBorderCenter(Fracture_Juncture fj) const
@@ -310,4 +310,4 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
     } // for
 } // StiffMatrix::assembleFractureBC
 
-} // namespace Darcy
+} // namespace FVCode3D

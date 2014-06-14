@@ -7,6 +7,9 @@
 #include "property/Properties.hpp"
 #include "quadrature/Quadrature.hpp"
 
+namespace FVCode3D
+{
+
 Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh):
 	 M_mesh (rigid_mesh), M_properties(rigid_mesh.getPropertiesMap()),
 	 M_size (rigid_mesh.getCellsVector().size()+ rigid_mesh.getFractureFacetsIdsVector().size()),
@@ -173,3 +176,5 @@ Real Quadrature::integrate(const std::function<Real(Generic_Point)>& integrand)
 
 	return integral;
 }
+
+} // namespace FVCode3D

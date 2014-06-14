@@ -8,6 +8,9 @@
 
 #include <ctime>
 
+namespace FVCode3D
+{
+
 //! Class that implements a chronometer
 /*!
  * @class Chrono
@@ -44,4 +47,5 @@ private:
 
 };
 
+} // namespace FVCode3D
 #endif /* CHRONO_HPP_ */

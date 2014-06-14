@@ -22,6 +22,8 @@
 #include "assembler/fixPressureDofs.hpp"
 #include "functions.hpp"
 
+using namespace FVCode3D;
+
 typedef EigenUmfPack SolverType;
 
 typedef Problem<SolverType, CentroidQuadrature, CentroidQuadrature> Pb;

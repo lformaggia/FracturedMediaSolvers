@@ -10,6 +10,9 @@
 #include "property/Properties.hpp"
 #include "geometry/operations.hpp"
 
+namespace FVCode3D
+{
+
 void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
 {
     std::fstream filestr;
@@ -1959,3 +1962,5 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
 
     filestr.close();
 }
+
+} // namespace FVCode3D

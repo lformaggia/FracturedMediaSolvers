@@ -10,6 +10,9 @@
 #include <utility>
 #include <map>
 
+namespace FVCode3D
+{
+
 void Importer::extractBC(const Real theta)
 {
 	Geometry::Point3D normal, center, centerFace;
@@ -434,3 +437,5 @@ void ImporterForSolver::import(bool fracturesOn)
 
 	file.close();
 }
+
+} // namespace FVCode3D

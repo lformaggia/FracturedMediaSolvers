@@ -14,7 +14,8 @@
 #include <cmath>
 #include <vector>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 // --------------------   Class Mesh3D::Facet3D   --------------------
 
@@ -619,4 +620,4 @@ bool operator<(const Geometry::Mesh3D::Facet3D & f1, const Geometry::Mesh3D::Fac
     return sizeF1<sizeF2;
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

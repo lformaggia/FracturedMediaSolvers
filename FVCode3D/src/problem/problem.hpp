@@ -11,6 +11,9 @@
 #include "mesh/Rigid_Mesh.hpp"
 #include "boundaryCondition/BC.hpp"
 
+namespace FVCode3D
+{
+
 class Quadrature;
 
 //! Class that defines a generic problem
@@ -162,4 +165,5 @@ Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func &
     M_b( M_solver->getb() )
 {} // Problem::Problem
 
+} // namespace FVCode3D
 #endif /* PROBLEM_HPP_ */

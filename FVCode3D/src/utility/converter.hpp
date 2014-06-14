@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 class Mesh3D;
 class PropertiesMap;
 
@@ -30,4 +33,5 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
  */
 void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh);
 
+} // namespace FVCode3D
 #endif /* CONVERTER_HPP_ */

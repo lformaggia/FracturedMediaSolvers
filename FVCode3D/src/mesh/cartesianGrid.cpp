@@ -7,6 +7,9 @@
 #include "property/Properties.hpp"
 #include "mesh/cartesianGrid.hpp"
 
+namespace FVCode3D
+{
+
 void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt Ny, const UInt Nz)
 {
 	Real hx = Lx/Nx;
@@ -251,3 +254,5 @@ void CartesianGrid::addBCAndFractures(const std::map<UInt,UInt> & facetIdToZone,
 	extractBC(theta);
 	addFractures(facetIdToZone);
 }
+
+} // namespace FVCode3D

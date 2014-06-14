@@ -7,7 +7,8 @@
 #include "geometry/operations.hpp"
 #include "mesh/TetGenWrapper.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 TetGenWrapper::TetGenWrapper(std::vector<Point3D> nodes, std::vector< std::vector<UInt> > faces):
 		M_inNodes(nodes), M_faces(faces), M_volume(0.) {}
@@ -135,4 +136,4 @@ const std::vector<Point3D> TetGenWrapper::getElement(const UInt i) const
 	return points;
 }
 
-}// namespace Geometry
+}// namespace FVCode3D

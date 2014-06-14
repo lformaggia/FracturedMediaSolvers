@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 class Mesh3D;
 class PropertiesMap;
 
@@ -249,5 +252,5 @@ private:
 
 };
 
-
+} // namespace FVCode3D
 #endif /* IMPORT_HPP_ */

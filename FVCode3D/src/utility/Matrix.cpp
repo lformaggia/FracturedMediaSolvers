@@ -7,6 +7,9 @@
 
 #include "Matrix.hpp"
 
+namespace FVCode3D
+{
+
 SparseMatrix::SparseMatrix():
 		M_nonZeros(0), M_options(Store), M_file(0) {}
 
@@ -74,3 +77,5 @@ SparseMatrix::~SparseMatrix()
 		delete M_file;
 	}
 }
+
+} // namespace FVCode3D

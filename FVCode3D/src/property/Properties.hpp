@@ -17,7 +17,8 @@
 #	modified:   src/import/import.cpp
  */
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class Mesh3D;
 
@@ -186,6 +187,6 @@ private:
 	Real M_compressibility;
 };
 
-} //namespace Geometry
+} // namespace FVCode3D
 
 #endif /* PROPERTIES_HPP_ */

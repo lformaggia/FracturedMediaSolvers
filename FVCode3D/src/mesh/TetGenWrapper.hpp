@@ -8,7 +8,8 @@
 
 #include "core/TypeDefinition.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 //! Class that tetrahedralizes a polyhedron and computes its volume
 /*!
@@ -90,6 +91,6 @@ private:
 
 };
 
-}// namespace Geometry
+} // namespace FVCode3D
 
 #endif /* TETGENWRAPPER_HPP_ */

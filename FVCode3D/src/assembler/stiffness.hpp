@@ -16,7 +16,7 @@
 class Rigid_mesh;
 class PropertiesMap;
 
-namespace Darcy
+namespace FVCode3D
 {
 
 //! Class for assembling a stiffness matrix
@@ -89,68 +89,68 @@ public:
 
 public:
 
-	//! @name Alpha Methods
-	//@{
+    //! @name Alpha Methods
+    //@{
 
-	//! Border center
-	/*!
-	 * @param fj the Id of the juncture of two Fracture_Facet in 3D
-	 * @return The center of the juncture between two Fracure_Facet
-	 */
-	Generic_Point getBorderCenter(Fracture_Juncture fj) const;
+    //! Border center
+    /*!
+     * @param fj the Id of the juncture of two Fracture_Facet in 3D
+     * @return The center of the juncture between two Fracure_Facet
+     */
+    Generic_Point getBorderCenter(Fracture_Juncture fj) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha
-	/*!
-	 * @param cellId the Id of a Cell
-	 * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
-	 * @return The computed coefficient alpha
-	 */
-	Real findAlpha (const UInt & cellId, const Facet_ID * facet) const;
+    //! It is called by the method assemble() and it computes the coefficient alpha
+    /*!
+     * @param cellId the Id of a Cell
+     * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
+     * @return The computed coefficient alpha
+     */
+    Real findAlpha (const UInt & cellId, const Facet_ID * facet) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha
-	/*!
-	 * @param facetId the Id of a Facet
-	 * @param edge A pointer to a Geometry::Rigid_mesh::Edge_ID
-	 * @return The computed coefficient alpha
-	 */
-	Real findAlpha (const UInt & facetId, const Edge_ID * edge) const;
+    //! It is called by the method assemble() and it computes the coefficient alpha
+    /*!
+     * @param facetId the Id of a Facet
+     * @param edge A pointer to a Geometry::Rigid_mesh::Edge_ID
+     * @return The computed coefficient alpha
+     */
+    Real findAlpha (const UInt & facetId, const Edge_ID * edge) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
-	/*!
-	 * @param cellId the Id of a Cell
-	 * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
-	 * @return The computed coefficient alpha
-	 */
-	Real findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const;
+    //! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
+    /*!
+     * @param cellId the Id of a Cell
+     * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
+     * @return The computed coefficient alpha
+     */
+    Real findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
-	/*!
-	 * @param facetId the Id of a Facet
-	 * @param edge A pointer to a Geometry::Rigid_mesh::Edge_ID
-	 * @return The computed coefficient alpha
-	 */
-	Real findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const;
+    //! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
+    /*!
+     * @param facetId the Id of a Facet
+     * @param edge A pointer to a Geometry::Rigid_mesh::Edge_ID
+     * @return The computed coefficient alpha
+     */
+    Real findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture in 3D
-	/*!
-	 * @param fj is a Fracture_Juncture
-	 * @param n_Id The Id of the Fracture_Facet
-	 * @return The computed coefficient alpha
-	 */
-	Real findFracturesAlpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
-	//@}
+    //! It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture in 3D
+    /*!
+     * @param fj is a Fracture_Juncture
+     * @param n_Id The Id of the Fracture_Facet
+     * @return The computed coefficient alpha
+     */
+    Real findFracturesAlpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
+    //@}
 
-protected:    
-    
+protected:
+
     //! @name Assemble Methods
     //@{
-    
+
     //! Assemble the porous medium block
     /*!
      * @return Assemble the porous media block
      */
     void assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) const;
-    
+
     //! Assemble the BCs for the porous medium
     /*!
      * @return Assemble the BCs for the porous medium
@@ -162,14 +162,14 @@ protected:
      * @return Assemble the fractures block
      */
     void assembleFracture( std::vector<Triplet>& Matrix_elements ) const;
-    
+
     //! Assemble the BCs for the fractures
     /*!
      * @return Assemble the BCs for the fractures
      */
     void assembleFractureBC( std::vector<Triplet>& Matrix_elements ) const;
     //@}
-    
+
 protected:
     //! Unique pointer to the vector that contains the effects of BCs on the RHS
     std::unique_ptr<Vector> M_b;
@@ -179,6 +179,5 @@ protected:
     const BoundaryConditions & M_bc;
 };
 
-} // namespace Darcy
-
+} // namespace FVCode3D
 #endif

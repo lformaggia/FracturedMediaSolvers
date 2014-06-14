@@ -18,7 +18,8 @@
 #include <map>
 #include <cmath>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class FractureNetwork3D;
 class Fracture;
@@ -640,6 +641,6 @@ protected:
  */
 bool operator<(const Geometry::Mesh3D::Facet3D & f1, const Geometry::Mesh3D::Facet3D & f2);
 
-}// namespace Geometry
+} // namespace FVCode3D
 
 #endif /* MESH3D_HPP_ */

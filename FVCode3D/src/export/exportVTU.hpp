@@ -8,6 +8,9 @@
 
 #include "export/export.hpp"
 
+namespace FVCode3D
+{
+
 /*!
  * @class ExporterVTU
  * This class allows to export mesh, fractures, solution, and properties in VTU format.
@@ -269,4 +272,5 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     filestr.close();
 }
 
+} // namespace FVCode3D
 #endif /* EXPORTVTU_HPP_ */

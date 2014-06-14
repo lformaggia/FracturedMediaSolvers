@@ -17,7 +17,8 @@
 #include <map>
 #include <utility>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class PropertiesMap;
 
@@ -1519,6 +1520,6 @@ protected:
 	bool M_renumber;
 };
 
-}//namespace Geometry
+} //namespace FVCode3D
 
 #endif

@@ -6,7 +6,8 @@
 #include "fracture/Fracture3D.hpp"
 #include "mesh/Mesh3D.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 Fracture3D::Fracture3D(const Geometry::Mesh3D & mesh):
 	M_id(0), M_mesh(mesh) {}
@@ -103,4 +104,4 @@ void Fracture3D::showMe(std::ostream & out) const
 	out << " Physical Properties : " << std::endl;
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

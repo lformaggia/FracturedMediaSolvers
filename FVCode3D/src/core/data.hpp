@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 //! Class that handles the information needed for the solver
 /*!
  * @class Data
@@ -540,4 +543,5 @@ EnumParser<Data::SourceSinkOn>::EnumParser();
 
 typedef std::unique_ptr<Data> DataPtr_Type;
 
+} // namespace FVCode3D
 #endif /* DATA_HPP_ */

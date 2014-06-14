@@ -22,6 +22,9 @@
 #include <Eigen/Sparse>
 #include <Eigen/UmfPackSupport>
 
+namespace FVCode3D
+{
+
 //! Type for real numbers
 typedef double Real;
 
@@ -54,5 +57,7 @@ typedef Eigen::VectorXd Vector;
 
 //! Type for eigen triplets
 typedef Eigen::Triplet<Real> Triplet;
+
+} // namespace FVCode3D
 
 #endif /* BASIC_TYPE_HPP_ */

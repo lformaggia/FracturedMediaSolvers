@@ -14,6 +14,9 @@
 #include "core/TypeDefinition.hpp"
 #include "quadrature/QuadratureRules.hpp"
 
+namespace FVCode3D
+{
+
 class Rigid_mesh;
 class PropertiesMap;
 
@@ -124,4 +127,5 @@ protected:
 	QR_Handler M_fractureQuadrature;
 };
 
+} // namespace FVCode3D
 #endif

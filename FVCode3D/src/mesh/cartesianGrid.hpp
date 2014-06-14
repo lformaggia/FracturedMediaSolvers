@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 class Mesh3D;
 class PropertiesMap;
 
@@ -102,4 +105,5 @@ private:
 
 };
 
+} // FVCode3D
 #endif /* CARTESIANGRID_HPP_ */

@@ -5,6 +5,9 @@
 
 #include "core/data.hpp"
 
+namespace FVCode3D
+{
+
 Data::Data():
 	M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
 	M_outputDir("./results/"), M_outputFile("sol"),
@@ -204,3 +207,5 @@ EnumParser<Data::SourceSinkOn>::EnumParser()
     enumMap["all"] = Data::SourceSinkOn::Both;
     enumMap["none"] = Data::SourceSinkOn::None;
 }
+
+} // namespace FVCode3D

@@ -11,6 +11,11 @@
 #include "core/chrono.hpp"
 #include "GetPot"
 
+namespace FVCode3D
+{
+
 typedef	std::function<Real (Geometry::Point3D point)> Func;
+
+} // namespace FVCode3D
 
 #endif /* TYPEDEFNITION_HPP_ */

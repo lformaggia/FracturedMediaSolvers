@@ -14,7 +14,8 @@
 	
 class PropertiesMap;
 
-namespace Darcy{
+namespace FVCode3D
+{
 
 //! Class for assembling a mass matrix
 /*!
@@ -61,6 +62,6 @@ protected:
 	const Geometry::PropertiesMap & M_properties;
 };
 
-} //namespace Darcy
+} //namespace FVCode3D
 
 #endif
