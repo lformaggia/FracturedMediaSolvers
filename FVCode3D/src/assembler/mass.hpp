@@ -11,11 +11,11 @@
 #include <functional>
 #include <algorithm>
 #include "assembler/MatrixHandler.hpp"
-	
-class PropertiesMap;
 
 namespace FVCode3D
 {
+
+class PropertiesMap;
 
 //! Class for assembling a mass matrix
 /*!
@@ -33,11 +33,11 @@ public:
 	//! @name Constructor & Destructor
 	//@{
 
-	//! Construct a Mass-Matrix, given a Geometry::Rigid_Mesh.
+	//! Construct a Mass-Matrix, given a Rigid_Mesh.
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh used to build the matrix
+		@param rigid_mesh A Rigid_Mesh used to build the matrix
 	*/
-	MassMatrix(const Geometry::Rigid_Mesh & rigid_mesh):
+	MassMatrix(const Rigid_Mesh & rigid_mesh):
 		MatrixHandler(rigid_mesh, D_Cell), M_properties(rigid_mesh.getPropertiesMap()) {}
 	//! No Copy-Constructor
 	MassMatrix(const MassMatrix&) = delete;
@@ -58,8 +58,8 @@ public:
 	//@}
 
 protected:
-	//! A reference to a Geometry::PropertiesMap
-	const Geometry::PropertiesMap & M_properties;
+	//! A reference to a PropertiesMap
+	const PropertiesMap & M_properties;
 };
 
 } //namespace FVCode3D

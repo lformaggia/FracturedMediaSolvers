@@ -10,7 +10,7 @@
 namespace FVCode3D
 {
 
-void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties)
+void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties)
 {
 	std::fstream file;
 
@@ -32,10 +32,10 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 	UInt nodesFacet, facetsCell, facetsFracture;
 	UInt i, j;
 
-	std::vector<Geometry::Point3D> & nodesRef = mesh.getNodesVector();
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
-	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
-	Geometry::FractureNetwork3D & FN = mesh.getFN();
+	std::vector<Point3D> & nodesRef = mesh.getNodesVector();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+	FractureNetwork3D & FN = mesh.getFN();
 
 	nNodes = nodesRef.size();
 	nFacets = facetsRef.size();
@@ -131,7 +131,7 @@ void saveAsSolverFormat(const std::string filename, Geometry::Mesh3D & mesh, Geo
 	file.close();
 }
 
-void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh)
+void saveAsMeditFormat(const std::string filename, Mesh3D & mesh)
 {
 	std::fstream file;
 
@@ -152,9 +152,9 @@ void saveAsMeditFormat(const std::string filename, Geometry::Mesh3D & mesh)
 	UInt nNodes, nFacets, nCells;
 	UInt i, zone;
 
-	std::vector<Geometry::Point3D> & nodesRef = mesh.getNodesVector();
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
-	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+	std::vector<Point3D> & nodesRef = mesh.getNodesVector();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
 
 	nNodes = nodesRef.size();
 	nFacets = facetsRef.size();

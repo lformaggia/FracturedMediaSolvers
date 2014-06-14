@@ -10,21 +10,21 @@
 namespace FVCode3D
 {
 
-Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh):
+Quadrature::Quadrature (const Rigid_Mesh & rigid_mesh):
 	 M_mesh (rigid_mesh), M_properties(rigid_mesh.getPropertiesMap()),
 	 M_size (rigid_mesh.getCellsVector().size()+ rigid_mesh.getFractureFacetsIdsVector().size()),
 	 M_quadrature(std::move(std::unique_ptr< QuadratureRule >(new CentroidQuadrature))),
 	 M_fractureQuadrature(std::move(std::unique_ptr< QuadratureRule >(new CentroidQuadrature)))
 {}
 
-Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature):
+Quadrature::Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature):
 	M_mesh (rigid_mesh), M_properties(rigid_mesh.getPropertiesMap()),
 	M_size (rigid_mesh.getCellsVector().size()+ rigid_mesh.getFractureFacetsIdsVector().size()),
 	M_quadrature(std::move(quadrature.clone())),
 	M_fractureQuadrature(std::move(std::unique_ptr<QuadratureRule >(new CentroidQuadrature)))
 {}
 
-Quadrature::Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature, const QuadratureRule & fracturequadrature):
+Quadrature::Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature, const QuadratureRule & fracturequadrature):
 	M_mesh (rigid_mesh), M_properties(rigid_mesh.getPropertiesMap()),
 	M_size (rigid_mesh.getCellsVector().size()+ rigid_mesh.getFractureFacetsIdsVector().size()),
 	M_quadrature(std::move(quadrature.clone())),

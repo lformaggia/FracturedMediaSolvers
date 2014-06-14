@@ -55,13 +55,6 @@ public:
      */
     typedef MatrixType Matrix_Type;
 
-    //! Typedef for Rigid_Mesh
-    /*!
-     * @typedef Rigid_Mesh
-     * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
-     */
-    typedef Geometry::Rigid_Mesh Rigid_Mesh;
-
     //! No default constructor
     DarcyPseudoSteady() = delete;
 
@@ -70,7 +63,7 @@ public:
 
     //! Constructor
     /*!
-     * @param mesh reference to a Geometry::Rigid_mesh
+     * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions class
      * @param func reference to a Func
      * @param data reference to a Data class
@@ -131,9 +124,9 @@ protected:
     Vector M_f;
 
     //! Pointer to the mass matrix
-    std::unique_ptr<Darcy::MassMatrix> M_M;
+    std::unique_ptr<MassMatrix> M_M;
     //! Pointer to the stiffness matrix
-    std::unique_ptr<Darcy::StiffMatrix> M_S;
+    std::unique_ptr<StiffMatrix> M_S;
 };
 
 //! Specialization class that defines the pseudo-steady-state Darcy problem for the BDF2 time scheme
@@ -143,13 +136,6 @@ class DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 > :
 {
 public:
 
-    //! Typedef for Rigid_Mesh
-    /*!
-     * @typedef Rigid_Mesh
-     * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
-     */
-    typedef Geometry::Rigid_Mesh Rigid_Mesh;
-
     //! No default constructor
     DarcyPseudoSteady() = delete;
 
@@ -158,7 +144,7 @@ public:
 
     //! Constructor
     /*!
-     * @param mesh reference to a Geometry::Rigid_mesh
+     * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions class
      * @param func reference to a Func
      * @param data reference to a Data class
@@ -227,9 +213,9 @@ protected:
     Vector M_f;
 
     //! Pointer to the mass matrix
-    std::unique_ptr<Darcy::MassMatrix> M_M;
+    std::unique_ptr<MassMatrix> M_M;
     //! Pointer to the stiffness matrix
-    std::unique_ptr<Darcy::StiffMatrix> M_S;
+    std::unique_ptr<StiffMatrix> M_S;
 };
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
@@ -237,11 +223,11 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::in
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new Darcy::MassMatrix(this->M_mesh) );
+    M_M.reset( new MassMatrix(this->M_mesh) );
     M_M->assemble();
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
-    M_S.reset( new Darcy::StiffMatrix(this->M_mesh, this->M_bc) );
+    M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
     M_S->assemble();
 
     this->M_A = M_S->getMatrix() + M_M->getMatrix();
@@ -276,11 +262,11 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::initia
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new Darcy::MassMatrix(this->M_mesh) );
+    M_M.reset( new MassMatrix(this->M_mesh) );
     M_M->assemble();
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
-    M_S.reset( new Darcy::StiffMatrix(this->M_mesh, this->M_bc) );
+    M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
     M_S->assemble();
 
     this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();

@@ -27,9 +27,9 @@ class QuadratureRule
 {
 public:
 
-	typedef Geometry::Point3D Generic_Point;
-	typedef Geometry::Rigid_Mesh::Cell Cell;
-	typedef Geometry::Rigid_Mesh::Facet Facet;
+	typedef Point3D Generic_Point;
+	typedef Rigid_Mesh::Cell Cell;
+	typedef Rigid_Mesh::Facet Facet;
 	typedef std::unique_ptr<QuadratureRule> QuadratureRuleHandler;
 
 	//! Clone method for the class

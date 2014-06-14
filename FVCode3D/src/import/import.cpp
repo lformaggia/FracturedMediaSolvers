@@ -15,11 +15,11 @@ namespace FVCode3D
 
 void Importer::extractBC(const Real theta)
 {
-	Geometry::Point3D normal, center, centerFace;
+	Point3D normal, center, centerFace;
 	Real max;
 	UInt compMax;
 
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
 	{
 		if (it->second.getSeparatedCells().size() == 1)
 		{
@@ -33,7 +33,7 @@ void Importer::extractBC(const Real theta)
 			if(normal * center > 0.)
 				normal = -normal;
 
-			normal = Geometry::rotateOf(normal, theta);
+			normal = rotateOf(normal, theta);
 
 			max = std::max(std::fabs(normal.x()), std::fabs(normal.y()));
 			compMax = std::fabs(normal.x()) > std::fabs(normal.y()) ? 0 : 1;
@@ -73,11 +73,11 @@ void ImporterMedit::import(bool fracturesOn)
 	std::set<UInt> zones;
 	std::string buffer = "";
 
-	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
-	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+	std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
 
-	Geometry::Properties prop;
+	Properties prop;
 
 	// Read nodes
 	const std::string s2findN = "Vertices";
@@ -91,7 +91,7 @@ void ImporterMedit::import(bool fracturesOn)
 	{
 		file >> x; file >> y; file >> z;
 		file >> buffer;
-		nodesRef.emplace_back(x,y,z); // Geometry::Point3D
+		nodesRef.emplace_back(x,y,z); // Point3D
 	}
 	
 	// Read facets
@@ -163,13 +163,13 @@ void ImporterMedit::import(bool fracturesOn)
 
 void ImporterMedit::addFractures()
 {
-	Geometry::FractureNetwork3D FN(M_mesh);
-	std::vector<Geometry::Fracture3D> fracturesVector;
-	std::map<UInt, Geometry::Fracture3D> fracturesMap;
-	std::map<UInt, Geometry::Fracture3D>::iterator itF;
-	Geometry::Point3D normal, center, centerFace;
+	FractureNetwork3D FN(M_mesh);
+	std::vector<Fracture3D> fracturesVector;
+	std::map<UInt, Fracture3D> fracturesMap;
+	std::map<UInt, Fracture3D>::iterator itF;
+	Point3D normal, center, centerFace;
 
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
 	{
 		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
 		{
@@ -212,11 +212,11 @@ void ImporterTPFA::import(bool fracturesOn)
 	Real aperture, porosity, permeability;
 	std::vector<UInt> tmp;
 
-	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
-	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+	std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
 
-	Geometry::Properties prop;
+	Properties prop;
 
 	// Read header
 	file >> nNodes;
@@ -231,7 +231,7 @@ void ImporterTPFA::import(bool fracturesOn)
 	for(i=0; i < nNodes; ++i)
 	{
 		file >> x; file >> y; file >> z;
-		nodesRef.emplace_back(x,y,z); // Geometry::Point3D
+		nodesRef.emplace_back(x,y,z); // Point3D
 	}
 
 	// Read facets
@@ -276,13 +276,13 @@ void ImporterTPFA::import(bool fracturesOn)
 
 void ImporterTPFA::addFractures()
 {
-	Geometry::FractureNetwork3D FN(M_mesh);
-	std::vector<Geometry::Fracture3D> fracturesVector;
-	std::map<UInt, Geometry::Fracture3D> fracturesMap;
-	std::map<UInt, Geometry::Fracture3D>::iterator itF;
-	Geometry::Point3D normal, center, centerFace;
+	FractureNetwork3D FN(M_mesh);
+	std::vector<Fracture3D> fracturesVector;
+	std::map<UInt, Fracture3D> fracturesMap;
+	std::map<UInt, Fracture3D>::iterator itF;
+	Point3D normal, center, centerFace;
 
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
 	{
 		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
 		{
@@ -327,11 +327,11 @@ void ImporterForSolver::import(bool fracturesOn)
 	std::string buffer = "";
 	const UInt permSize = 1;
 
-	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
-	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
-	Geometry::FractureNetwork3D & FN = M_mesh.getFN();
-	Geometry::Properties prop;
+	std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+	FractureNetwork3D & FN = M_mesh.getFN();
+	Properties prop;
 
 	// Read nodes
 	const std::string s2findN = "POINTS";
@@ -344,7 +344,7 @@ void ImporterForSolver::import(bool fracturesOn)
 	for(i=0; i < nNodes; ++i)
 	{
 		file >> x; file >> y; file >> z;
-		nodesRef.emplace_back(x,y,z); // Geometry::Point3D
+		nodesRef.emplace_back(x,y,z); // Point3D
 	}
 
 	// Read facets with properties
@@ -432,7 +432,7 @@ void ImporterForSolver::import(bool fracturesOn)
 		for(j=0; j < facetsFracture; ++j)
 			file >> tmp[j];
 		if(facetsFracture>0)
-			FN.getNetwork().emplace_back(M_mesh, tmp, i); // Geometry::Fracture3D
+			FN.getNetwork().emplace_back(M_mesh, tmp, i); // Fracture3D
 	}
 
 	file.close();

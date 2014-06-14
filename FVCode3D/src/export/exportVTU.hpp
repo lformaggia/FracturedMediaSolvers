@@ -24,70 +24,70 @@ public:
 
     //! Export the mesh (only cells)
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
+     * @param mesh reference of a Mesh3D
      * @param filename name of the file
      */
     virtual void exportMesh(const Mesh3D & mesh, const std::string filename);
 
     //! Export a tetrahedral mesh (only cells)
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
+     * @param mesh reference of a Mesh3D
      * @param filename name of the file
      */
     virtual void exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename);
 
     //! Export the fracture facets
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
+     * @param mesh reference of a Mesh3D
      * @param filename name of the file
      */
     virtual void exportFractures(const Mesh3D & mesh, const std::string filename);
 
     //! Export the mesh, cells and fracture facets, in a single file
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
+     * @param mesh reference of a Mesh3D
      * @param filename name of the file
      */
     virtual void exportMeshWithFractures(const Mesh3D & mesh, const std::string filename);
 
     //! Export the wireframe
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
+     * @param mesh reference of a Mesh3D
      * @param filename name of the file
      */
     virtual void exportWireframe(const Mesh3D & mesh, const std::string filename);
     
     //! Export the edges
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      */
     virtual void exportEdges(const Rigid_Mesh & mesh, const std::string filename);
 
     //! Export the facets
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      */
     virtual void exportFacets(const Rigid_Mesh & mesh, const std::string filename);
 
     //! Export the fracture junctures
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      */
     virtual void exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename);
 
     //! Export the fracture tips
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      */
     virtual void exportFractureTips(const Rigid_Mesh & mesh, const std::string filename);
 
     //! Export the solution on cells and fracture facets in a single file
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
      */
@@ -96,7 +96,7 @@ public:
 
     //! Export the solution on fracture facets
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
      */
@@ -104,8 +104,8 @@ public:
 
     //! Export the a specific property on cells and fracture facets
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
-     * @param properties reference to a Geometry::PropertiesMap
+     * @param mesh reference of a Mesh3D
+     * @param properties reference to a PropertiesMap
      * @param filename name of the file
      * @param propertiesType flag used to select which properties to export
      * @param property pointer to a generic property
@@ -114,15 +114,15 @@ public:
 
     //! Export all properties defined on cells and fracture facets
     /*!
-     * @param mesh reference of a Geometry::Mesh3D
-     * @param properties reference to a Geometry::PropertiesMap
+     * @param mesh reference of a Mesh3D
+     * @param properties reference to a PropertiesMap
      * @param filename name of the file
      */
     virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename);
 
     //! Export the solution on fracture facets
     /*!
-     * @param mesh reference of a Geometry::Rigid_Mesh
+     * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
      */
@@ -151,7 +151,7 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
 
     std::cout << std::endl << " Exporting Solution in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Facet> & facets = mesh.getFacetsVector();
     const std::vector<Cell> & cells = mesh.getCellsVector();
     const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
@@ -181,7 +181,7 @@ void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string file
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;

@@ -17,7 +17,7 @@ class Mesh3D;
 //! Class that implements a fracture.
 /*!
 	@class Fracture3D
-    This class implements the concept of a fracture as a vector of facets of a Geometry::Mesh3D.
+    This class implements the concept of a fracture as a vector of facets of a Mesh3D.
  */
 class Fracture3D{
 public:
@@ -26,23 +26,23 @@ public:
 
 	//! Constructor
 	/*!
-	 * @param mesh reference of a Geometry::Mesh3D
+	 * @param mesh reference of a Mesh3D
 	 */
-	Fracture3D(const Geometry::Mesh3D & mesh);
+	Fracture3D(const Mesh3D & mesh);
 
 	//! Copy constructor
 	/*!
-	 * @param f Geometry::Fracture3D
+	 * @param f Fracture3D
 	 */
-	Fracture3D(const Geometry::Fracture3D & f);
+	Fracture3D(const Fracture3D & f);
 
 	//! Constructor, getting the vector of fracture facets ids
 	/*!
-	 * @param mesh reference of a Geometry::Mesh3D
+	 * @param mesh reference of a Mesh3D
 	 * @param fractureFacets The vector of facets ids that define the fracture
 	 * @param id identifier of the fracture
 	 */
-	Fracture3D(const Geometry::Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id);
+	Fracture3D(const Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id);
 
 	//! Destructor
 	~Fracture3D() = default;
@@ -54,10 +54,10 @@ public:
 
 	//! Assignment operator
 	/*!
-	 * @param f Geometry::Fracture3D
-	 * @return this Geometry::Fracture3D
+	 * @param f Fracture3D
+	 * @return this Fracture3D
 	 */
-	Geometry::Fracture3D & operator=(Geometry::Fracture3D f)
+	Fracture3D & operator=(Fracture3D f)
 		{ M_id = f.getId(); M_fractureFacets = f.getFractureFacetsId(); return *this; };
 
 	//@}
@@ -104,7 +104,7 @@ public:
 	/*!
 	 * @return The 3D mesh
 	 */
-	const Geometry::Mesh3D & getMesh() const
+	const Mesh3D & getMesh() const
 		{ return M_mesh; }
 
 	//@}
@@ -148,7 +148,7 @@ private:
 	//! It stores the facets id used for the discretization
 	std::vector<UInt> M_fractureFacets;
 	//! Reference to the mesh
-	const Geometry::Mesh3D & M_mesh;
+	const Mesh3D & M_mesh;
 
 };
 

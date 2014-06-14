@@ -25,10 +25,10 @@ public:
 
 	//! Constructor
 	/*!
-	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param mesh reference to a Mesh3D
+	 * @param properties reference to a PropertiesMap
 	 */
-	CartesianGrid(Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+	CartesianGrid(Mesh3D & mesh, PropertiesMap & properties):
 		M_mesh(mesh), M_properties(properties) {}
 
 	//! Generate a Cartesian mesh
@@ -72,14 +72,14 @@ public:
 	/*!
 	 * @return reference to the mesh
 	 */
-	const Geometry::Mesh3D & getMesh() const
+	const Mesh3D & getMesh() const
 		{ return M_mesh; }
 
 	//! Get properties
 	/*!
 	 * @return reference to the properties
 	 */
-	const Geometry::PropertiesMap & getProperties() const
+	const PropertiesMap & getProperties() const
 		{ return M_properties; }
 
 	//! Destructor
@@ -87,10 +87,10 @@ public:
 
 protected:
 
-	//! Reference to a Geometry::Mesh3D
-	Geometry::Mesh3D & M_mesh;
-	//! Reference to a Geometry::PropertiesMap
-	Geometry::PropertiesMap & M_properties;
+	//! Reference to a Mesh3D
+	Mesh3D & M_mesh;
+	//! Reference to a PropertiesMap
+	PropertiesMap & M_properties;
 
 private:
 

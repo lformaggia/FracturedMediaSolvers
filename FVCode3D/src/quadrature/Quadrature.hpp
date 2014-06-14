@@ -30,32 +30,32 @@ class PropertiesMap;
 class Quadrature
 {
 
-	typedef Geometry::Point3D Generic_Point;
-	typedef Geometry::Point3D Generic_Vector;
+	typedef Point3D Generic_Point;
+	typedef Point3D Generic_Vector;
 	typedef std::pair<UInt,UInt> Fracture_Juncture;
 	typedef QuadratureRule::QuadratureRuleHandler QR_Handler;
 
 public:
 	//! @name Constructor & Destructor
 	//@{
-	//! Constructor for Quadrature, given a Geometry::Rigid_Mesh.
+	//! Constructor for Quadrature, given a Rigid_Mesh.
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh on which we want to integrate
+		@param rigid_mesh A Rigid_Mesh on which we want to integrate
 	*/
-	Quadrature (const Geometry::Rigid_Mesh & rigid_mesh);
-	//! Constructor for Quadrature, given a Geometry::Rigid_Mesh and a QuadratureRule
+	Quadrature (const Rigid_Mesh & rigid_mesh);
+	//! Constructor for Quadrature, given a Rigid_Mesh and a QuadratureRule
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh on which we want to integrate
-		@param quadrature A Darcy::QuadratureRule we want to use in order to integrate a function
+		@param rigid_mesh A Rigid_Mesh on which we want to integrate
+		@param quadrature A QuadratureRule we want to use in order to integrate a function
 	*/
-	Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature);
-	//! Constructor for Quadrature, given a Geometry::Rigid_Mesh, a QuadratureRule, and a QuadratureRule to integrate fractures
+	Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature);
+	//! Constructor for Quadrature, given a Rigid_Mesh, a QuadratureRule, and a QuadratureRule to integrate fractures
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh on which we want to integrate
-		@param quadrature A Darcy::QuadratureRule we want to use in order to integrate a function
-		@param fracturequadrature A Darcy::QuadratureRule we want to use in order to integrate a function on fractures
+		@param rigid_mesh A Rigid_Mesh on which we want to integrate
+		@param quadrature A QuadratureRule we want to use in order to integrate a function
+		@param fracturequadrature A QuadratureRule we want to use in order to integrate a function on fractures
 	*/
-	Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature, const QuadratureRule & fracturequadrature);
+	Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature, const QuadratureRule & fracturequadrature);
 	//@}
 
 	//! @name Methods
@@ -108,17 +108,17 @@ public:
 		
 	//! Get Mesh size (const)
 	/*!
-	 * @return The number of the cells in the Geometry::Rigid_Mesh considered
+	 * @return The number of the cells in the Rigid_Mesh considered
 	 */
 	UInt getMeshSize() const
 		{return M_size;}
 	//@}
 
 protected:
-	//! A reference to a Geometry::Rigid_Mesh
-	const Geometry::Rigid_Mesh & M_mesh;
-	//! A reference to a Geometry::PropertiesMap
-	const Geometry::PropertiesMap & M_properties;
+	//! A reference to a Rigid_Mesh
+	const Rigid_Mesh & M_mesh;
+	//! A reference to a PropertiesMap
+	const PropertiesMap & M_properties;
 	//! The number of cells in M_mesh
 	UInt M_size;
 	//! A pointer to a QuadratureRule

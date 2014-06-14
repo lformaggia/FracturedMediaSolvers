@@ -32,8 +32,8 @@ enum BCType{Dirichlet, Neumann};
 */
 class BoundaryConditions
 {
-	typedef Geometry::Point3D Generic_Point;
-	typedef Geometry::Mesh3D::Facet3D Generic_Border;
+	typedef Point3D Generic_Point;
+	typedef Mesh3D::Facet3D Generic_Border;
 
 public:
 

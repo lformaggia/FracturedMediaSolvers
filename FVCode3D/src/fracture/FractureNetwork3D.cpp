@@ -16,16 +16,16 @@
 namespace FVCode3D
 {
 
-FractureNetwork3D::FractureNetwork3D(const Geometry::Mesh3D & mesh):
+FractureNetwork3D::FractureNetwork3D(const Mesh3D & mesh):
 		M_mesh(mesh) {}
 
-FractureNetwork3D::FractureNetwork3D(const Geometry::FractureNetwork3D & fn):
+FractureNetwork3D::FractureNetwork3D(const FractureNetwork3D & fn):
 		M_fractureNetwork(fn.getNetwork()), M_mesh(fn.getMesh()) {}
 
-FractureNetwork3D::FractureNetwork3D(const Geometry::Mesh3D & mesh, const std::vector<Geometry::Fracture3D> & fractures):
+FractureNetwork3D::FractureNetwork3D(const Mesh3D & mesh, const std::vector<Fracture3D> & fractures):
 		M_fractureNetwork(fractures), M_mesh(mesh) {}
 
-void FractureNetwork3D::addFractures(std::vector<Geometry::Fracture3D> & fractures)
+void FractureNetwork3D::addFractures(std::vector<Fracture3D> & fractures)
 {
 	M_fractureNetwork.clear();
 	std::move(fractures.begin(), fractures.end(), std::back_inserter(M_fractureNetwork));

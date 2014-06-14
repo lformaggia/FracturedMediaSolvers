@@ -27,10 +27,10 @@ public:
 	/*!
 	 * Constructor from a grid file
 	 * @param filename filename of the file
-	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param mesh reference to a Mesh3D
+	 * @param properties reference to a PropertiesMap
 	 */
-	Importer(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+	Importer(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
 		M_filename(filename), M_mesh(mesh), M_properties(properties) {}
 
 	//! Import from a grid file
@@ -74,14 +74,14 @@ public:
 	/*!
 	 * @return reference to the mesh
 	 */
-	const Geometry::Mesh3D & getMesh() const
+	const Mesh3D & getMesh() const
 		{ return M_mesh; }
 
 	//! Get properties
 	/*!
 	 * @return reference to the properties
 	 */
-	const Geometry::PropertiesMap & getProperties() const
+	const PropertiesMap & getProperties() const
 		{ return M_properties; }
 
 	//! Destructor
@@ -91,10 +91,10 @@ protected:
 
 	//! Filename
 	std::string M_filename;
-	//! Reference to a Geometry::Mesh3D
-	Geometry::Mesh3D & M_mesh;
-	//! Reference to a Geometry::PropertiesMap
-	Geometry::PropertiesMap & M_properties;
+	//! Reference to a Mesh3D
+	Mesh3D & M_mesh;
+	//! Reference to a PropertiesMap
+	PropertiesMap & M_properties;
 
 private:
 
@@ -122,10 +122,10 @@ public:
 	/*!
 	 * Constructor from a medit file
 	 * @param filename filename of the .mesh file
-	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param mesh reference to a Mesh3D
+	 * @param properties reference to a PropertiesMap
 	 */
-	ImporterMedit(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+	ImporterMedit(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
 		Importer(filename, mesh, properties) {}
 
 	//! Import from a .mesh file
@@ -170,10 +170,10 @@ public:
 	/*!
 	 * Constructor from a grid file
 	 * @param filename filename of the .grid file
-	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param mesh reference to a Mesh3D
+	 * @param properties reference to a PropertiesMap
 	 */
-	ImporterTPFA(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+	ImporterTPFA(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
 		Importer(filename, mesh, properties) {}
 
 	//! Import from a standard grid file
@@ -219,10 +219,10 @@ public:
 	/*!
 	 * Constructor from a file
 	 * @param filename filename of the file
-	 * @param mesh reference to a Geometry::Mesh3D
-	 * @param properties reference to a Geometry::PropertiesMap
+	 * @param mesh reference to a Mesh3D
+	 * @param properties reference to a PropertiesMap
 	 */
-	ImporterForSolver(const std::string filename, Geometry::Mesh3D & mesh, Geometry::PropertiesMap & properties):
+	ImporterForSolver(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
 		Importer(filename, mesh, properties) {}
 
 	//! Import from a file with boundary conditions and fracture network

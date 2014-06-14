@@ -34,13 +34,6 @@ public:
      */
     typedef MatrixType Matrix_Type;
 
-    //! Typedef for Rigid_Mesh
-    /*!
-     * @typedef Rigid_Mesh
-     * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh
-     */
-    typedef Geometry::Rigid_Mesh Rigid_Mesh;
-
     //! No default constructor
     DarcySteady() = delete;
 
@@ -49,7 +42,7 @@ public:
 
     //! Constructor
     /*!
-     * @param mesh reference to a Geometry::Rigid_mesh
+     * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
@@ -84,7 +77,7 @@ void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleMatrix()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    Darcy::StiffMatrix S(this->M_mesh, this->M_bc);
+    StiffMatrix S(this->M_mesh, this->M_bc);
     S.assemble();
 
     this->M_A = S.getMatrix();

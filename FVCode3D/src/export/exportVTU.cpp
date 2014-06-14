@@ -31,7 +31,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
     UInt nPoints = nodes.size();
@@ -58,7 +58,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -142,7 +142,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
 
     std::cout << std::endl << " Exporting Tetrahedral Mesh3D in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
     UInt nPoints = nodes.size();
     UInt nCells = cells.size();
@@ -168,7 +168,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -226,14 +226,14 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
 
     std::cout << std::endl << " Exporting Fractures in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt,Facet3D> & facets = mesh.getFacetsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
+    const std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
     UInt nPoints = nodes.size();
     UInt nCells = 0;
     UInt offsets = 0;
 
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
         nCells += it->getNumberOfFractureFacets();
 
     // Header
@@ -246,13 +246,13 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     filestr << "\t\t\t<CellData Scalars=\"scalars\">" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(0);
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             filestr << it->getFractureFacetsId()[i] << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"fractureID\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(0);
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             filestr << it->getId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -263,7 +263,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -272,7 +272,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     filestr << "\t\t\t<Cells>" << std::endl;
     //  Connectivity
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -285,7 +285,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
 
     //  Offsets
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -328,10 +328,10 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
+    const std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
     std::set<UInt> ids;
     std::set<UInt>::const_iterator itSet;
     UInt nPoints = nodes.size();
@@ -340,7 +340,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     UInt nTotal;
     UInt offsets = 0, faceOffsets = 0;
 
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
         for(UInt i=0; i<it->getNumberOfFractureFacets(); ++i)
           ids.insert(it->getFractureFacetsId()[i]);
     nFractures = ids.size();
@@ -368,7 +368,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr << std::scientific << std::setprecision(0);
     for( std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
         filestr << "-1" << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -389,7 +389,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -404,7 +404,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             filestr << *jt << " ";
         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -428,7 +428,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
         offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -463,7 +463,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -491,7 +491,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
             faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -533,7 +533,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
 
     std::cout << std::endl << " Exporting Wireframe in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     std::map< std::pair<UInt,UInt>, bool > edges;
     std::map< std::pair<UInt,UInt>, bool >::const_iterator itSet;
@@ -602,7 +602,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -657,7 +657,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
 
     std::cout << std::endl << " Exporting Edges in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Edge> & edges = mesh.getEdgesVector();
     const std::vector<Regular_Edge> & regularEdges = mesh.getInternalEdgesIdsVector();
     const std::vector<Juncture_Edge> & junctureEdges = mesh.getJunctureEdgesIdsVector();
@@ -712,7 +712,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -775,7 +775,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
 
     std::cout << std::endl << " Exporting Facets in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Facet> & facets = mesh.getFacetsVector();
     UInt nPoints = nodes.size();
     UInt nFacets = facets.size();
@@ -809,7 +809,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -868,7 +868,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
 
     std::cout << std::endl << " Exporting Fracture Junctures in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
     UInt nPoints = 0;
     UInt nCells = 0;
@@ -876,7 +876,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     UInt count = 0;
 
     std::set<UInt> localPoints;
-    std::set<Fracture_Juncture, Geometry::less< std::pair<UInt,UInt> > > fracturesJunctures;
+    std::set<Fracture_Juncture, less< std::pair<UInt,UInt> > > fracturesJunctures;
     std::map<UInt,UInt> GlobalToLocal;
 
     // Compute # of fracture junctures
@@ -915,13 +915,13 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr << "\t\t\t<Cells>" << std::endl;
     //  Connectivity
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
-    for(std::set<Fracture_Juncture, Geometry::less< std::pair<UInt,UInt> > >::const_iterator it = fracturesJunctures.begin(); it != fracturesJunctures.end(); ++it )
+    for(std::set<Fracture_Juncture, less< std::pair<UInt,UInt> > >::const_iterator it = fracturesJunctures.begin(); it != fracturesJunctures.end(); ++it )
         filestr << GlobalToLocal[it->first] << " " << GlobalToLocal[it->second] << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     //  Offsets
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
-    for(std::set<Fracture_Juncture, Geometry::less< std::pair<UInt,UInt> > >::const_iterator it = fracturesJunctures.begin(); it != fracturesJunctures.end(); ++it )
+    for(std::set<Fracture_Juncture, less< std::pair<UInt,UInt> > >::const_iterator it = fracturesJunctures.begin(); it != fracturesJunctures.end(); ++it )
     {
         offsets += 2;
         filestr << offsets << std::endl;
@@ -960,7 +960,7 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
 
     std::cout << std::endl << " Exporting Fracture Tips in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
     UInt nPoints = 0;
     UInt nCells = 0;
@@ -968,7 +968,7 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     UInt count = 0;
 
     std::set<UInt> localPoints;
-    std::set<Fracture_Tip, Geometry::less< std::pair<UInt,UInt> > > fracturesTips;
+    std::set<Fracture_Tip, less< std::pair<UInt,UInt> > > fracturesTips;
     std::map<UInt,UInt> GlobalToLocal;
 
     // Compute # of fracture tips
@@ -1007,13 +1007,13 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     filestr << "\t\t\t<Cells>" << std::endl;
     //  Connectivity
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
-    for(std::set<Fracture_Tip, Geometry::less< std::pair<UInt,UInt> > >::const_iterator it = fracturesTips.begin(); it != fracturesTips.end(); ++it )
+    for(std::set<Fracture_Tip, less< std::pair<UInt,UInt> > >::const_iterator it = fracturesTips.begin(); it != fracturesTips.end(); ++it )
         filestr << GlobalToLocal[it->first] << " " << GlobalToLocal[it->second] << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     //  Offsets
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
-    for(std::set<Fracture_Tip, Geometry::less< std::pair<UInt,UInt> > >::const_iterator it = fracturesTips.begin(); it != fracturesTips.end(); ++it )
+    for(std::set<Fracture_Tip, less< std::pair<UInt,UInt> > >::const_iterator it = fracturesTips.begin(); it != fracturesTips.end(); ++it )
     {
         offsets += 2;
         filestr << offsets << std::endl;
@@ -1052,7 +1052,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
 
     std::cout << std::endl << " Exporting Solution on Fractures in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Facet> & facets = mesh.getFacetsVector();
     const std::vector<Cell> & cells = mesh.getCellsVector();
     const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
@@ -1082,7 +1082,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -1162,10 +1162,10 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
+    const std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
     std::set<UInt> ids;
     std::set<UInt>::const_iterator itSet;
     UInt nPoints = nodes.size();
@@ -1174,7 +1174,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     UInt nTotal;
     UInt offsets = 0, faceOffsets = 0;
 
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
         for(UInt i=0; i<it->getNumberOfFractureFacets(); ++i)
           ids.insert(it->getFractureFacetsId()[i]);
     nFractures = ids.size();
@@ -1197,7 +1197,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"zoneCode\" format=\"ascii\">" << std::endl;
         for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << it->second.getZoneCode() << std::endl;
-        for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+        for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             {
@@ -1228,7 +1228,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
         for(UInt i=0; i < nCells; ++i )
             filestr << "-1" << std::endl;
-        for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+        for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             {
@@ -1249,7 +1249,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
         for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << properties.getProperties(it->second.getZoneCode()).M_porosity << std::endl;
-        for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+        for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             {
@@ -1270,7 +1270,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
         for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << properties.getProperties(it->second.getZoneCode()).M_permeability << std::endl;
-        for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+        for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             {
@@ -1291,7 +1291,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderID\" format=\"ascii\">" << std::endl;
         for(UInt i=0; i < nCells; ++i )
             filestr << "0" << std::endl;
-        for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+        for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             {
@@ -1318,7 +1318,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
         for(UInt i=0; i < nCells; ++i )
             filestr << "-1" << std::endl;
-        for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+        for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
             {
@@ -1348,7 +1348,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -1363,7 +1363,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             filestr << *jt << " ";
         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1387,7 +1387,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1422,7 +1422,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1450,7 +1450,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1492,10 +1492,10 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
     const std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
-    const std::vector<Geometry::Fracture3D> & fractures = mesh.getFN().getNetwork();
+    const std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
     std::set<UInt> ids;
     std::set<UInt>::const_iterator itSet;
     UInt nPoints = nodes.size();
@@ -1504,7 +1504,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     UInt nTotal;
     UInt offsets = 0, faceOffsets = 0;
 
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it)
         for(UInt i=0; i<it->getNumberOfFractureFacets(); ++i)
           ids.insert(it->getFractureFacetsId()[i]);
     nFractures = ids.size();
@@ -1531,7 +1531,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
     for(UInt i=0; i < nCells; ++i )
         filestr << "-1" << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -1549,7 +1549,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
     for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
         filestr << properties.getProperties(it->second.getZoneCode()).M_porosity << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -1567,7 +1567,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
     for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
         filestr << properties.getProperties(it->second.getZoneCode()).M_permeability << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -1594,7 +1594,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetID\" format=\"ascii\">" << std::endl;
     for(UInt i=0; i < nCells; ++i )
         filestr << "-1" << std::endl;
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
         {
@@ -1615,7 +1615,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -1630,7 +1630,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             filestr << *jt << " ";
         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1654,7 +1654,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1689,7 +1689,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1717,7 +1717,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             faceOffsets += facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
-    for(std::vector<Geometry::Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
+    for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i)
         {
@@ -1759,7 +1759,7 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
 
-    const std::vector<Geometry::Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
     const std::vector<Facet> & facets = mesh.getFacetsVector();
     const std::vector<Cell> & cells = mesh.getCellsVector();
     const std::vector<Fracture_Facet> & fractures = mesh.getFractureFacetsIdsVector();
@@ -1871,7 +1871,7 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;

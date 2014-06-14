@@ -14,7 +14,7 @@
 namespace FVCode3D
 {
 
-typedef	std::function<Real (Geometry::Point3D point)> Func;
+typedef	std::function<Real (Point3D point)> Func;
 
 } // namespace FVCode3D
 

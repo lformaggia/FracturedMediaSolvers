@@ -35,13 +35,6 @@ public:
      */
     typedef MatrixType Matrix_Type;
 
-    //! Typedef for Rigid_Mesh
-    /*!
-     * @typedef Rigid_Mesh
-     * This type definition permits to treat Geometry::Rigid_Mesh as a Rigid_Mesh.
-     */
-    typedef Geometry::Rigid_Mesh Rigid_Mesh;
-
     //! No default constructor
     Problem() = delete;
 
@@ -50,7 +43,7 @@ public:
 
     //! Constructor
     /*!
-     * @param mesh reference to a Geometry::Rigid_mesh
+     * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
@@ -60,7 +53,7 @@ public:
     //@{
     //! Get the mesh
     /*!
-     * @return a constant reference to the Geometry::Rigid_Mesh
+     * @return a constant reference to the Rigid_Mesh
      */
     const Rigid_Mesh & getMesh() const { return M_mesh; }
 
@@ -133,7 +126,7 @@ public:
 
 protected:
 
-    //! Constant reference to a Geometry::Rigid_Mesh
+    //! Constant reference to a Rigid_Mesh
     const Rigid_Mesh & M_mesh;
     //! Constant reference to the boundary conditions
     const BoundaryConditions & M_bc;

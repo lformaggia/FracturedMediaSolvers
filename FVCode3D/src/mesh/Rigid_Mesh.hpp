@@ -25,37 +25,37 @@ class PropertiesMap;
 //! Class that allows to handle a Mesh3D for a differential problem
 /*!
 	@class Rigid_Mesh
-   	This class implements a container for a Geometry::Mesh3D.
-   	The Rigid_Mesh container adapts the Geometry::Mesh3D in order to be efficient for the discretization of differential problems.
+   	This class implements a container for a Mesh3D.
+   	The Rigid_Mesh container adapts the Mesh3D in order to be efficient for the discretization of differential problems.
 */
 class Rigid_Mesh{
 public:
 
-	//! Typedef for Geometry::Point3D
+	//! Typedef for Point3D
 	/*!
 		@typedef Generic_Point
-   		This type definition permits to treat Geometry::Point3D as a Generic_Point.
+   		This type definition permits to treat Point3D as a Generic_Point.
    	*/
 	typedef Point3D Generic_Point;
-	//! Typedef for Geometry::Point3D
+	//! Typedef for Point3D
 	/*!
 		@typedef Generic_Vector
-   		This type definition permits to treat Geometry::Point3D as a Generic_Vector.
+   		This type definition permits to treat Point3D as a Generic_Vector.
    	*/
 	typedef Point3D Generic_Vector;
-	//! Typedef for Geometry::Mesh3D
+	//! Typedef for Mesh3D
 	/*!
 		@typedef Generic_Mesh
    		This type definition permits to treat Mesh3D as a Generic_Mesh.
    	*/
 	typedef Mesh3D Generic_Mesh;
-	//! Typedef for Geometry::Mesh3D::Facet3D
+	//! Typedef for Mesh3D::Facet3D
 	/*!
 		@typedef Generic_Facet
    		This type definition permits to treat Mesh3D::Facet3D as a Generic_Facet.
    	*/
 	typedef Mesh3D::Facet3D Generic_Facet;
-	//! Typedef for Geometry::Mesh3D::Cell3D
+	//! Typedef for Mesh3D::Cell3D
 	/*!
 		@typedef Generic_Cell
    		This type definition permits to treat Mesh3D::Cell3D as a Generic_Cell.
@@ -115,14 +115,14 @@ public:
 			@param mesh is a constant pointer to the mesh to which the Edge belongs
 			@param id is the Id of the edge in the Rigid_Mesh
 		*/
-		Edge (const Generic_Edge & generic_edge, Geometry::Rigid_Mesh * const mesh, const UInt id);
+		Edge (const Generic_Edge & generic_edge, Rigid_Mesh * const mesh, const UInt id);
 
 		//! Copy constructor for a Edge from a Edge of another Rigid_Mesh
 		/*!
 		 * @param edge reference to a Edge
 		 * @param mesh is a constant pointer to the mesh to which the Edge belongs
 		 */
-		Edge (const Edge & edge, Geometry::Rigid_Mesh * const mesh);
+		Edge (const Edge & edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Edge from a Edge
 		/*!
@@ -159,7 +159,7 @@ public:
 		/*!
 		 * @return a const pointer to the related mesh
 		 */
-		Geometry::Rigid_Mesh * getMesh () const
+		Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
 
 		//! Get Id (const)
@@ -226,7 +226,7 @@ public:
 		//! The pair of the ids of the Edge's Vertexes
 		const Generic_Edge M_edge;
 		//! The pointer to the Rigid_Mesh containing the Edge
-		Geometry::Rigid_Mesh * M_mesh;
+		Rigid_Mesh * M_mesh;
 		//! The Edge id in the containing Rigid_Mesh
 		UInt M_id;
 		//! The vector of the ids of the Facets separated by Edge
@@ -258,14 +258,14 @@ public:
 			@param old_to_new_map is a map from the old Id of the Neighbour-Cells in the Mesh3D to the new Id of those cells in the Rigid_Mesh
 			@param m_id is the Id of the facet in the Rigid_Mesh
 		*/
-		Facet (const Generic_Facet & generic_facet, Geometry::Rigid_Mesh * const mesh, const std::map<UInt, UInt> &old_to_new_map, const UInt m_id);
+		Facet (const Generic_Facet & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt, UInt> &old_to_new_map, const UInt m_id);
 
 		//! Copy constructor for a Facet from a Facet of another Rigid_Mesh
 		/*!
 		 * @param facet reference to a Facet
 		 * @param mesh is a constant pointer to the mesh to which the Facet belongs
 		 */
-		Facet (const Facet& facet, Geometry::Rigid_Mesh * const mesh);
+		Facet (const Facet& facet, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Facet from a Facet
 		/*!
@@ -288,7 +288,7 @@ public:
 		/*!
 		 * @return a const pointer to the related mesh
 		 */
-		Geometry::Rigid_Mesh * getMesh () const
+		Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
 
 		//! Get vertices Ids (const)
@@ -398,7 +398,7 @@ public:
 
 	protected:
 		//! The pointer to the Rigid_Mesh containing the Facet
-		Geometry::Rigid_Mesh * M_mesh;
+		Rigid_Mesh * M_mesh;
 		//! The Facet id in the containing Rigid_Mesh
 		UInt M_id;
 		//! The vector of the ids of the Facet's vertices
@@ -440,14 +440,14 @@ public:
 			@param mesh is a constant pointer to the mesh to which the Cell belongs
 			@param m_id is the id of the cell in the Rigid_Mesh
 		*/
-		Cell (const Generic_Cell & generic_cell, Geometry::Rigid_Mesh * const mesh, const UInt m_id);
+		Cell (const Generic_Cell & generic_cell, Rigid_Mesh * const mesh, const UInt m_id);
 
 		//! Copy constructor for a Cell from a Cell of another Rigid_Mesh
 		/*!
 		 * @param cell reference to a Cell
 		 * @param mesh is a constant pointer to the mesh to which the Cell belongs
 		 */
-		Cell (const Cell & cell, Geometry::Rigid_Mesh * const mesh);
+		Cell (const Cell & cell, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Cell from a Cell
 		/*!
@@ -470,7 +470,7 @@ public:
 		/*!
 		 * @return a const pointer to the mesh
 		 */
-		Geometry::Rigid_Mesh * getMesh () const
+		Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
 
 		//! Zone Code (const)
@@ -558,7 +558,7 @@ public:
 
 	protected:
 		//! The pointer to the Rigid_Mesh containing the Cell
-		Geometry::Rigid_Mesh * M_mesh;
+		Rigid_Mesh * M_mesh;
 		//! The Cell Id in the containing Rigid_Mesh
 		UInt M_Id;
 		//! Zone code of the Cell
@@ -598,7 +598,7 @@ public:
 			@param edge_id is the id of a Edge of a Rigid_Mesh.
 			@param mesh is a constant pointer to the mesh to which the Edge belongs
 		*/
-		Edge_ID(const UInt edge_id, Geometry::Rigid_Mesh * const mesh);
+		Edge_ID(const UInt edge_id, Rigid_Mesh * const mesh);
 
 		//! No empty constructor
 		Edge_ID () = delete;
@@ -614,7 +614,7 @@ public:
 		/*!
 		 * @return A const pointer to the mesh
 		 */
-		Geometry::Rigid_Mesh * getMesh () const
+		Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
 
 		//! Get Edge id (const)
@@ -670,14 +670,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Regular_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Regular_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Regular_Edge given a regular_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param regular_edge reference to a Regular_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Regular_Edge (const Regular_Edge & regular_edge, Geometry::Rigid_Mesh * const mesh);
+		Regular_Edge (const Regular_Edge & regular_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Regular_Edge given a border_edge.
 		/*!
@@ -706,14 +706,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Border_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Edge given a border_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param border_edge reference to a Border_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Border_Edge (const Border_Edge & border_edge, Geometry::Rigid_Mesh * const mesh);
+		Border_Edge (const Border_Edge & border_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Edge given a border_edge.
 		/*!
@@ -755,14 +755,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Pure_Border_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Pure_Border_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Pure_Border_Edge given a border_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param pure_border_edge reference to a Border_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Pure_Border_Edge (const Pure_Border_Edge & pure_border_edge, Geometry::Rigid_Mesh * const mesh);
+		Pure_Border_Edge (const Pure_Border_Edge & pure_border_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Pure_Border_Edge given a border_edge.
 		/*!
@@ -791,14 +791,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Fracture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Fracture_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Edge given a fracture_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param fracture_edge reference to a Fracture_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Fracture_Edge (const Fracture_Edge & fracture_edge, Geometry::Rigid_Mesh * const mesh);
+		Fracture_Edge (const Fracture_Edge & fracture_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Edge given a fracture_edge.
 		/*!
@@ -842,14 +842,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Juncture_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Juncture_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Juncture_Edge given a juncture_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param juncture_edge reference to a Juncture_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Juncture_Edge (const Juncture_Edge & juncture_edge, Geometry::Rigid_Mesh * const mesh);
+		Juncture_Edge (const Juncture_Edge & juncture_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Juncture_Edge given a juncture_edge.
 		/*!
@@ -878,14 +878,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Tip_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Tip_Edge given a tip_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param tip_edge reference to a Tip_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Tip_Edge (const Tip_Edge & tip_edge, Geometry::Rigid_Mesh * const mesh);
+		Tip_Edge (const Tip_Edge & tip_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Tip_Edge given a tip_edge.
 		/*!
@@ -915,14 +915,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Internal_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Internal_Tip_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Internal_Tip_Edge given a interior_tip_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param internal_tip_edge reference to a Internal_Tip_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Internal_Tip_Edge (const Internal_Tip_Edge & internal_tip_edge, Geometry::Rigid_Mesh * const mesh);
+		Internal_Tip_Edge (const Internal_Tip_Edge & internal_tip_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Internal_Tip_Edge given a interior_tip_edge.
 		/*!
@@ -952,14 +952,14 @@ public:
 			@param edge_id is the id of an Edge of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the edge belongs
 		*/
-		Border_Tip_Edge (const UInt edge_Id, Geometry::Rigid_Mesh * const mesh);
+		Border_Tip_Edge (const UInt edge_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Tip_Edge given a border_tip_edge belonging to another Rigid_Mesh.
 		/*!
 		 * @param border_tip_edge reference to a Border_Tip_Edge
 		 * @param mesh is a pointer to the mesh to which the edge belongs
 		 */
-		Border_Tip_Edge (const Border_Tip_Edge & border_tip_edge, Geometry::Rigid_Mesh * const mesh);
+		Border_Tip_Edge (const Border_Tip_Edge & border_tip_edge, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Tip_Edge given a border_tip_edge.
 		/*!
@@ -994,7 +994,7 @@ public:
 			@param facet_id is the id of a Facet of a Rigid_Mesh.
 			@param mesh is a constant pointer to the mesh to which the Facet belongs
 		*/
-		Facet_ID(const UInt facet_id, Geometry::Rigid_Mesh * const mesh);
+		Facet_ID(const UInt facet_id, Rigid_Mesh * const mesh);
 
 		//! No empty constructor
 		Facet_ID () = delete;
@@ -1010,7 +1010,7 @@ public:
 		/*!
 		 * @return A const pointer to the mesh
 		 */
-		Geometry::Rigid_Mesh * getMesh () const
+		Rigid_Mesh * getMesh () const
 			{ return M_mesh; }
 		
 		//! Get Facet id (const)
@@ -1080,14 +1080,14 @@ public:
 			@param facet_id is the id of a Facet of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the Facet belongs
 		*/
-		Regular_Facet (const UInt facet_Id, Geometry::Rigid_Mesh * const mesh);
+		Regular_Facet (const UInt facet_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Regular_Facet given a regular_facet of another Rigid_Mesh.
 		/*!
 			@param regular_facet is a Regular_Facet of a different Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the Facet belongs
 		*/
-		Regular_Facet (const Regular_Facet & regular_facet, Geometry::Rigid_Mesh * const mesh);
+		Regular_Facet (const Regular_Facet & regular_facet, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Regular_Facet given a regular_facet
 		/*!
@@ -1116,14 +1116,14 @@ public:
 			@param facet_id is the id of a Facet of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the facet belongs
 		*/
-		Border_Facet (const UInt facet_Id, Geometry::Rigid_Mesh * const mesh);
+		Border_Facet (const UInt facet_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Facet given a border_facet belonging to another Rigid_Mesh.
 		/*!
 		 * @param border_facet reference to a Border_Facet
 		 * @param mesh is a pointer to the mesh to which the facet belongs
 		 */
-		Border_Facet (const Border_Facet & border_facet, Geometry::Rigid_Mesh * const mesh);
+		Border_Facet (const Border_Facet & border_facet, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Border_Facet given a border_facet.
 		/*!
@@ -1162,14 +1162,14 @@ public:
 			@param facet_Id id of a Facet of a Rigid_Mesh
 			@param mesh is a pointer to the mesh to which the facet belongs
 		*/
-		Fracture_Facet(const UInt facet_Id, Geometry::Rigid_Mesh * const mesh);
+		Fracture_Facet(const UInt facet_Id, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Facet given a fracture_facet belonging to another Rigid_Mesh.
 		/*!
 		 * @param fracture_facet reference to a Fracture_Facet
 		 * @param mesh is a pointer to the mesh to which the facet belongs
 		 */
-		Fracture_Facet(const Fracture_Facet & fracture_facet, Geometry::Rigid_Mesh * const mesh);
+		Fracture_Facet(const Fracture_Facet & fracture_facet, Rigid_Mesh * const mesh);
 
 		//! Copy constructor for a Fracture_Facet
 		/*!
@@ -1233,10 +1233,10 @@ public:
 	//! @name Constructor & Destructor
 	//@{
 
-	//! Constructor for a Rigid_Mesh given a Generic_Mesh and a Geometry::PropertiesMap
+	//! Constructor for a Rigid_Mesh given a Generic_Mesh and a PropertiesMap
 	/*!
 		@param generic_mesh is a reference to a Generic_Mesh from which the Rigid_Mesh is constructed
-		@param prop reference to a Geometry::PropertiesMap
+		@param prop reference to a PropertiesMap
 		@param renumber If False the facets and cells are not renumbered (Default = false)
 	*/
 	Rigid_Mesh (Generic_Mesh & generic_mesh, const PropertiesMap & prop, const bool renumber = false);

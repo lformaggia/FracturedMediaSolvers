@@ -22,9 +22,9 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 
 	std::vector<UInt> tmp, tmpFacets;
 
-	std::vector<Geometry::Point3D> & nodesRef = M_mesh.getNodesVector();
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
-	std::map<UInt, Geometry::Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+	std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
 
 	nodesRef.reserve(nNodes);
 
@@ -35,7 +35,7 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 		{
 			for(i=0; i <= Nx; ++i)
 			{
-				nodesRef.emplace_back(hx*i, hy*j, hz*k); // Geometry::Point3D
+				nodesRef.emplace_back(hx*i, hy*j, hz*k); // Point3D
 			}
 		}
 	}
@@ -176,11 +176,11 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
 
 void CartesianGrid::extractBC(const Real theta)
 {
-	Geometry::Point3D normal, center, centerFace;
+	Point3D normal, center, centerFace;
 	Real max;
 	UInt compMax;
 
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
 	{
 		if (it->second.getSeparatedCells().size() == 1)
 		{
@@ -194,7 +194,7 @@ void CartesianGrid::extractBC(const Real theta)
 			if(normal * center > 0.)
 				normal = -normal;
 
-			normal = Geometry::rotateOf(normal, theta);
+			normal = rotateOf(normal, theta);
 
 			max = std::max(std::fabs(normal.x()), std::fabs(normal.y()));
 			compMax = std::fabs(normal.x()) > std::fabs(normal.y()) ? 0 : 1;
@@ -212,19 +212,19 @@ void CartesianGrid::extractBC(const Real theta)
 
 void CartesianGrid::addFractures(const std::map<UInt,UInt> & facetIdToZone)
 {
-	std::map<UInt, Geometry::Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+	std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
 
-	Geometry::FractureNetwork3D FN(M_mesh);
-	std::vector<Geometry::Fracture3D> fracturesVector;
-	std::map<UInt, Geometry::Fracture3D> fracturesMap;
-	std::map<UInt, Geometry::Fracture3D>::iterator itF;
-	Geometry::Point3D normal, center, centerFace;
+	FractureNetwork3D FN(M_mesh);
+	std::vector<Fracture3D> fracturesVector;
+	std::map<UInt, Fracture3D> fracturesMap;
+	std::map<UInt, Fracture3D>::iterator itF;
+	Point3D normal, center, centerFace;
 
 	for(std::map<UInt,UInt>::const_iterator it = facetIdToZone.begin(); it!= facetIdToZone.end(); ++it)
 		if(facetsRef.find(it->first) != facetsRef.end())
 			facetsRef[it->first].setZoneCode(it->second);
 
-	for(std::map<UInt, Geometry::Mesh3D::Facet3D>::iterator it = facetsRef.begin(); it != facetsRef.end(); ++it)
+	for(std::map<UInt, Mesh3D::Facet3D>::iterator it = facetsRef.begin(); it != facetsRef.end(); ++it)
 	{
 		if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
 		{

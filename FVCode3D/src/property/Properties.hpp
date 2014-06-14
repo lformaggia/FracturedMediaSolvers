@@ -105,14 +105,14 @@ public:
 
 	//! Get the map of properties (const)
 	/*!
-	 * @return the map of the properties. First -> zone code; Second -> Geometry::Properties
+	 * @return the map of the properties. First -> zone code; Second -> Properties
 	 */
 	const std::map<UInt, Properties> & getProperties() const
 		{ return M_properties; };
 
 	//! Get the map of properties
 	/*!
-	 * @return the map of the properties. First -> zone code; Second -> Geometry::Properties
+	 * @return the map of the properties. First -> zone code; Second -> Properties
 	 */
 	std::map<UInt, Properties> & getProperties()
 		{ return M_properties; };
@@ -120,7 +120,7 @@ public:
 	//! Get the properties of a selected zone (const)
 	/*!
 	 * @param zone the id of the zone code
-	 * @return a reference of the related Geometry::Properties
+	 * @return a reference of the related Properties
 	 */
 	const Properties & getProperties(const UInt zone) const
 		{ return M_properties.at(zone); };
@@ -128,14 +128,14 @@ public:
 	//! Get the properties of a selected zone
 	/*!
 	 * @param zone the id of the zone code
-	 * @return a reference of the related Geometry::Properties
+	 * @return a reference of the related Properties
 	 */
 	Properties & getProperties(const UInt zone)
 		{ return M_properties[zone]; };
 
 	//! Set the same property on all the porous medium
 	/*!
-	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param mesh reference to a Mesh3D
 	 * @param porosity Porosity of the matrix.
 	 * @param permeability Permeability of the matrix
 	 */
@@ -143,7 +143,7 @@ public:
 
 	//! Set the same property on all the fractures
 	/*!
-	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param mesh reference to a Mesh3D
 	 * @param aperture Aperture of the fractures
 	 * @param porosity Porosity of the fractures
 	 * @param permeability Permeability of the fractures
@@ -153,7 +153,7 @@ public:
 	//! Set the properties of a selected zone
 	/*!
 	 * @param zone the id of the zone code
-	 * @param prop a reference to a Geometry::Properties
+	 * @param prop a reference to a Properties
 	 */
 	void setZone(const UInt zone, const Properties & prop)
 		{ M_properties[zone] = prop; };
