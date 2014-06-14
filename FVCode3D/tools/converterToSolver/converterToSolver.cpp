@@ -13,6 +13,8 @@
 #include "export/exportVTU.hpp"
 #include "utility/converter.hpp"
 
+using namespace FVCode3D;
+
 int main(int argc, char * argv[])
 {
 	GetPot command_line(argc,argv);
@@ -29,8 +31,8 @@ int main(int argc, char * argv[])
 	std::cout << std::endl;
 
 	std::cout << "Define Mesh and Properties..." << std::flush;
-	Geometry::Mesh3D mesh;
-	Geometry::PropertiesMap propMap(data.getMobility());
+	Mesh3D mesh;
+	PropertiesMap propMap(data.getMobility());
 	std::cout << " done." << std::endl;
 
 	Importer * importer = 0;

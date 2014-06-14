@@ -48,8 +48,8 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Define Mesh and Properties..." << std::flush;
-	Geometry::Mesh3D mesh;
-	Geometry::PropertiesMap propMap(dataPtr->getMobility(), dataPtr->getCompressibility());
+	Mesh3D mesh;
+	PropertiesMap propMap(dataPtr->getMobility(), dataPtr->getCompressibility());
 	std::cout << " done." << std::endl;
 
 
@@ -142,7 +142,7 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Assemble rigid mesh..." << std::flush;
-	Geometry::Rigid_Mesh myrmesh(mesh, propMap);
+	Rigid_Mesh myrmesh(mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
 	myrmesh.showMe();
