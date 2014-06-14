@@ -31,18 +31,6 @@ class PropertiesMap;
 class Rigid_Mesh{
 public:
 
-	//! Typedef for Point3D
-	/*!
-		@typedef Generic_Point
-   		This type definition permits to treat Point3D as a Generic_Point.
-   	*/
-	typedef Point3D Generic_Point;
-	//! Typedef for Point3D
-	/*!
-		@typedef Generic_Vector
-   		This type definition permits to treat Point3D as a Generic_Vector.
-   	*/
-	typedef Point3D Generic_Vector;
 	//! Typedef for Mesh3D
 	/*!
 		@typedef Generic_Mesh
@@ -79,24 +67,12 @@ public:
    		This type definition permits to handle a pair of Points as a tip of a facet.
    	*/
 	typedef std::pair<UInt,UInt> Fracture_Tip;
-	//! Typedef for std::vector<Point3D>
-	/*!
-		@typedef Generic_Border
-   		This type definition permits to handle a vector of Point3D as a Generic_Border of the domain.
-   	*/
-	typedef std::vector<Point3D> Generic_Border;
 	//! Typedef for std::map<UInt,Mesh3D::Facet3D>
 	/*!
 		@typedef Generic_FacetsContainer
 	   	This type definition permits to treat the container of the Facets of a Mesh3D as Generic_FacetsContainer.
 	 */
 	typedef std::map<UInt,Mesh3D::Facet3D> Generic_FacetsContainer;
-	//! Typedef for Generic_Point
-	/*!
-		@typedef Point
-   		This type definition permits to treat Generic_Point as a Point.
-   	*/
-	typedef Generic_Point Point;
 
 	//! Class that implements a Edge
 	/*!
@@ -202,7 +178,7 @@ public:
 		/*!
 		 * @return reference to the centroid of the Edge
 		 */
-		const Generic_Point getCentroid () const;
+		const Point3D getCentroid () const;
 
 		//! Get the length of the edge (const)
 		/*!
@@ -309,14 +285,14 @@ public:
 		/*!
 		 * @return reference to the centroid of the Facet
 		 */
-		const Generic_Point & getCentroid () const
+		const Point3D & getCentroid () const
 			{ return M_centroid; }
 
 		//! Get unsigned Normal (const)
 		/*!
 		 * @return the unsigned normal vector to the Facet
 		 */
-		Generic_Vector getUnsignedNormal () const
+		Point3D getUnsignedNormal () const
 			{ return M_unsignedNormal; }
 
 		//! Get separated Cells ids (const)
@@ -408,9 +384,9 @@ public:
 		//! The area of the Facet
 		Real M_area;
 		//! The centroid of the Facet
-		Generic_Point M_centroid;
+		Point3D M_centroid;
 		//! The unsigned normal-vector to the Facet
-		Generic_Vector M_unsignedNormal;
+		Point3D M_unsignedNormal;
 		//! True if the Facet is a fracture
 		bool M_isFracture;
 		//! The fracture facet id
@@ -505,7 +481,7 @@ public:
 		/*!
 		 * @return a reference to the centroid of the Cell
 		 */
-		const Generic_Point & getCentroid () const
+		const Point3D & getCentroid () const
 			{ return M_centroid; }
 
 		//! Get vertices number (const)
@@ -570,7 +546,7 @@ public:
 		//! The vector of the ids of the Cells neighbors
 		std::vector<UInt> M_neighborsIds;
 		//! The centroid of the Cell
-		Generic_Point M_centroid;
+		Point3D M_centroid;
 		//! The volume of the Cell
 		Real M_volume;
 	};
@@ -635,7 +611,7 @@ public:
 		/*!
 		 * @return the centroid of the Edge whose id is contained in the class
 		 */
-		const Generic_Point getCentroid () const
+		const Point3D getCentroid () const
 			{return M_mesh->getEdgesVector()[M_id].getCentroid();}
 
 		//! Get size (const)
@@ -1038,14 +1014,14 @@ public:
 		/*!
 		 * @return the unsigned normal vector to the Facet whose id is contained in the class
 		 */
-		const Generic_Vector getUnsignedNormal () const
+		const Point3D getUnsignedNormal () const
 			{return M_mesh->getFacetsVector()[M_id].getUnsignedNormal();}
 		
 		//! Get center (const)
 		/*!
 		 * @return the centroid of the Facet whose id is contained in the class
 		 */
-		const Generic_Point getCentroid () const
+		const Point3D getCentroid () const
 			{return M_mesh->getFacetsVector()[M_id].getCentroid();}
 		
 		//! Get size (const)
@@ -1262,7 +1238,7 @@ public:
 	/*!
 	 * @return a reference to the vector that contains the nodes of the mesh
 	 */
-	const std::vector<Point> & getNodesVector () const
+	const std::vector<Point3D> & getNodesVector () const
 		{ return M_nodes; }
 
 	//! Get edges vector (const)
@@ -1433,7 +1409,7 @@ public:
 	 * @param pointsId a reference to a vector of ids of nodes
 	 * @return a vector with the corresponding points
 	*/
-	const std::vector<Generic_Point> idsToPoints (const std::vector<UInt> & pointsId);
+	const std::vector<Point3D> idsToPoints (const std::vector<UInt> & pointsId);
 
 	//@}
 
@@ -1446,7 +1422,7 @@ protected:
 	 * @param generic_point is the point to print
 	 * @param out specify the output format (std::cout by default)
 	 */	
-	void showPoint(const Point & generic_point, std::ostream & out=std::cout ) const;
+	void showPoint(const Point3D & generic_point, std::ostream & out=std::cout ) const;
 
 	//! Builds the vector of cells. It is called by constructor
 	/*!
@@ -1481,7 +1457,7 @@ protected:
 protected:
 	
 	//! Vector of Nodes
-	std::vector<Point> M_nodes;
+	std::vector<Point3D> M_nodes;
 	//! Vector of Edges
 	std::vector<Edge> M_edges;
 	//! Vector of Facets

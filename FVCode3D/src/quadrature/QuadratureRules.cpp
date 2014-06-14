@@ -14,12 +14,12 @@ std::unique_ptr<QuadratureRule> CentroidQuadrature::clone() const
 	return std::unique_ptr<QuadratureRule>(new CentroidQuadrature(*this));
 }
 
-Real CentroidQuadrature::apply(const Cell & cell, const std::function<Real(Generic_Point)> & integrand) const
+Real CentroidQuadrature::apply(const Cell & cell, const std::function<Real(Point3D)> & integrand) const
 {
 	return integrand(cell.getCentroid()) * cell.getVolume();
 }
 
-Real CentroidQuadrature::apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & integrand) const
+Real CentroidQuadrature::apply(const Facet & facet, const Real volume, const std::function<Real(Point3D)> & integrand) const
 {
 	return integrand(facet.getCentroid()) * volume;
 }

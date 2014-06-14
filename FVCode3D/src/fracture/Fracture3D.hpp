@@ -16,8 +16,8 @@ class Mesh3D;
 
 //! Class that implements a fracture.
 /*!
-	@class Fracture3D
-    This class implements the concept of a fracture as a vector of facets of a Mesh3D.
+ * @class Fracture3D
+ * This class implements the concept of a fracture as a vector of facets of a Mesh3D.
  */
 class Fracture3D{
 public:

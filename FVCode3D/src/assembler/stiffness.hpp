@@ -97,7 +97,7 @@ public:
      * @param fj the Id of the juncture of two Fracture_Facet in 3D
      * @return The center of the juncture between two Fracure_Facet
      */
-    Generic_Point getBorderCenter(Fracture_Juncture fj) const;
+    Point3D getBorderCenter(Fracture_Juncture fj) const;
 
     //! It is called by the method assemble() and it computes the coefficient alpha
     /*!

@@ -443,7 +443,7 @@ bool Rigid_Mesh::hasNeighborsThroughFacet(const UInt & facet_Id, const UInt & id
 	return false;
 }
 
-void Rigid_Mesh::showPoint(const Point & generic_point, std::ostream & out) const
+void Rigid_Mesh::showPoint(const Point3D & generic_point, std::ostream & out) const
 {
 	out << generic_point.x() << " " << generic_point.y() << " " << generic_point.z() << std::endl;
 }
@@ -473,9 +473,9 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
 	out << "Number of Border-Tip-Edges: " << M_borderTipEdges.size() <<std::endl;
 }
 
-const std::vector<Rigid_Mesh::Generic_Point> Rigid_Mesh::idsToPoints(const std::vector<UInt> & pointsIds)
+const std::vector<Point3D> Rigid_Mesh::idsToPoints(const std::vector<UInt> & pointsIds)
 {
-	std::vector<Generic_Point> points;
+	std::vector<Point3D> points;
 	for (auto iter : pointsIds)
 		points.push_back(M_nodes[iter]);
 	return points;
@@ -500,17 +500,17 @@ Rigid_Mesh::Edge::Edge (const Edge & edge):
 	M_separatedFacetsIds(edge.getSeparatedFacetsIds()), M_isBorderEdge(edge.isBorderEdge()),
 	M_isFracture(edge.isFracture()), M_isTip(edge.isTip()){}
 
-const Rigid_Mesh::Generic_Point Rigid_Mesh::Edge::getCentroid () const
+const Point3D Rigid_Mesh::Edge::getCentroid () const
 {
-	Generic_Point first (M_mesh->getNodesVector()[M_edge.first]);
-	Generic_Point second (M_mesh->getNodesVector()[M_edge.second]);
+	Point3D first (M_mesh->getNodesVector()[M_edge.first]);
+	Point3D second (M_mesh->getNodesVector()[M_edge.second]);
 	return (first+second) / 2.;
 }
 
 Real Rigid_Mesh::Edge::length() const
 {
-	Generic_Point first (M_mesh->getNodesVector()[M_edge.first]);
-	Generic_Point second (M_mesh->getNodesVector()[M_edge.second]);
+	Point3D first (M_mesh->getNodesVector()[M_edge.first]);
+	Point3D second (M_mesh->getNodesVector()[M_edge.second]);
 	return (second-first).norm();
 }
 

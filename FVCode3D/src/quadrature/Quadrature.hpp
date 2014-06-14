@@ -29,10 +29,17 @@ class PropertiesMap;
 */
 class Quadrature
 {
-
-	typedef Point3D Generic_Point;
-	typedef Point3D Generic_Vector;
+	//! Typedef for std::pair<UInt,UInt>
+	/*!
+	 * @typedef Fracture_Juncture
+   	 * This type definition permits to handle a pair of Points as a juncture between to facets.
+	 */
 	typedef std::pair<UInt,UInt> Fracture_Juncture;
+	//! Typedef for QuadratureRule::QuadratureRuleHandler
+	/*!
+	 * @typedef QR_Handler
+   	 * This type definition permits to handle a QuadratureRule::QuadratureRuleHandler as a QR_Handler.
+	 */
 	typedef QuadratureRule::QuadratureRuleHandler QR_Handler;
 
 public:
@@ -66,13 +73,13 @@ public:
 		@param Integrand A std::function which returns a scalar
 	 	@return The integral of the considered Integrand function
 	 */
-	Real integrate (const std::function<Real(Generic_Point)> & integrand);
+	Real integrate (const std::function<Real(Point3D)> & integrand);
 	//! Integrate a function and return the integral cell by cell
 	/*!
 		@param Integrand A function which returns a scalar
 	 	@return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell 
 	 */
-	Vector cellIntegrate (const std::function<Real(Generic_Point)> & func);
+	Vector cellIntegrate (const std::function<Real(Point3D)> & func);
     //! Integrate a function and return the integral cell by cell, only in the porous matrix
     /*!
         @param Integrand A function which returns a scalar
@@ -80,7 +87,7 @@ public:
         of the porous matrix
         @note The vector contains all the problem entries, fractures included which are zero
      */
-    Vector cellIntegrateMatrix (const std::function<Real(Generic_Point)> & func);
+    Vector cellIntegrateMatrix (const std::function<Real(Point3D)> & func);
     //! Integrate a function and return the integral cell by cell, only in the fractures
     /*!
         @param Integrand A function which returns a scalar
@@ -88,7 +95,7 @@ public:
         of the fractures
         @note The vector contains all the problem entries, the entries of the matrix are zero
      */
-    Vector cellIntegrateFractures (const std::function<Real(Generic_Point)> & func);
+    Vector cellIntegrateFractures (const std::function<Real(Point3D)> & func);
 	//! Integrate discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell

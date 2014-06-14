@@ -72,7 +72,7 @@ Real Quadrature::L2Norm(const Vector& integrand)
 	return sqrt(integral);
 }
 
-Vector Quadrature::cellIntegrate (const std::function<Real(Generic_Point)> & func)
+Vector Quadrature::cellIntegrate (const std::function<Real(Point3D)> & func)
 {
 	UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 	Vector result(N);
@@ -109,7 +109,7 @@ Vector Quadrature::cellIntegrate (const std::function<Real(Generic_Point)> & fun
 	return result;
 }
 
-Vector Quadrature::cellIntegrateMatrix (const std::function<Real(Generic_Point)> & func)
+Vector Quadrature::cellIntegrateMatrix (const std::function<Real(Point3D)> & func)
 {
     UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
     Vector result( Vector::Zero(N) );
@@ -145,7 +145,7 @@ Vector Quadrature::cellIntegrateMatrix (const std::function<Real(Generic_Point)>
 
 } // CellIntegrateMatrix
 
-Vector Quadrature::cellIntegrateFractures (const std::function<Real(Generic_Point)> & func)
+Vector Quadrature::cellIntegrateFractures (const std::function<Real(Point3D)> & func)
 {
     UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
     Vector result( Vector::Zero(N) );
@@ -162,7 +162,7 @@ Vector Quadrature::cellIntegrateFractures (const std::function<Real(Generic_Poin
     return result;
 } // CellIntegrateFractures
 
-Real Quadrature::integrate(const std::function<Real(Generic_Point)>& integrand)
+Real Quadrature::integrate(const std::function<Real(Point3D)>& integrand)
 {
 	UInt N = M_mesh.getCellsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 	Vector result(N);

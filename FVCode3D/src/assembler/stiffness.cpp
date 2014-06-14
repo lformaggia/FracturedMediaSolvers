@@ -9,7 +9,7 @@
 namespace FVCode3D
 {
 
-StiffMatrix::Generic_Point StiffMatrix::getBorderCenter(Fracture_Juncture fj) const
+Point3D StiffMatrix::getBorderCenter(Fracture_Juncture fj) const
 {
     return (this->M_mesh.getNodesVector()[fj.first] +
                 (this->M_mesh.getNodesVector()[fj.second] -
@@ -20,18 +20,18 @@ StiffMatrix::Generic_Point StiffMatrix::getBorderCenter(Fracture_Juncture fj) co
 
 Real StiffMatrix::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_Id) const
 {
-    Generic_Point borderCenter = getBorderCenter(fj);
-    Generic_Point cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCentroid();
+	Point3D borderCenter = getBorderCenter(fj);
+	Point3D cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCentroid();
 
     Real A = M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_aperture * (this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]).norm();
     Real k = M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_permeability;
-    Generic_Vector f;
+    Point3D f;
     Real alpha;
     Real D;
     f = borderCenter - cellCenter;
     D = sqrt(dotProduct(f, f));
     f /= D;
-    Generic_Vector normal = crossProduct(f, this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]); // k = f x l
+    Point3D normal = crossProduct(f, this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]); // k = f x l
     normal = crossProduct(this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first], normal); // n = l x k
     normal.normalize();
     Real scalprod = fabs(dotProduct(normal, f));
@@ -41,12 +41,12 @@ Real StiffMatrix::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_I
 
 Real StiffMatrix::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
-    Generic_Point facetCenter = facet->getCentroid();
-    Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
-    Generic_Vector normal = facet->getUnsignedNormal();
+    Point3D facetCenter = facet->getCentroid();
+    Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
+    Point3D normal = facet->getUnsignedNormal();
     Real alpha;
     Real D;
-    Generic_Vector f;
+    Point3D f;
     Real scalprod;
     f = cellCenter - facetCenter;
     D = sqrt(dotProduct(f, f));
@@ -59,19 +59,19 @@ Real StiffMatrix::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 
 Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
-    Generic_Point edgeCenter = edge->getCentroid();
-    Generic_Point facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
+    Point3D edgeCenter = edge->getCentroid();
+    Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
 
     Real A = edge->getSize() * M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
     Real k = M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
-    Generic_Vector f;
+    Point3D f;
     Real alpha;
     Real D;
     f = edgeCenter - facetCenter;
     D = sqrt(dotProduct(f, f));
     f = f/D;
 
-    Generic_Vector normal = crossProduct(	f,
+    Point3D normal = crossProduct(	f,
     						this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[0]] -
     						this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[1]] ); // k = f x l
     normal = crossProduct(	this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[0]] -
@@ -85,11 +85,11 @@ Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 
 Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
-    Generic_Point facetCenter = facet->getCentroid();
-    Generic_Point cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
+    Point3D facetCenter = facet->getCentroid();
+    Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
     Real alpha;
     Real D;
-    Generic_Vector f = cellCenter - facetCenter;
+    Point3D f = cellCenter - facetCenter;
     D = sqrt(dotProduct(f, f));
 
     alpha = facet->getSize() * M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability / D;
@@ -98,14 +98,14 @@ Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * face
 
 Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
-    Generic_Point borderCenter = edge->getCentroid();
-    Generic_Point facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
+    Point3D borderCenter = edge->getCentroid();
+    Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
 
     Real A = edge->getSize() * M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
     Real k = M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
     Real alpha;
     Real D;
-    Generic_Vector f = borderCenter - facetCenter;
+    Point3D f = borderCenter - facetCenter;
     D = sqrt(dotProduct(f, f));
 
     alpha = A * k / D;

@@ -33,8 +33,12 @@ enum DiscretizationType {D_Cell, D_Nodes};
 class MatrixHandler
 {
 public:
-	typedef Point3D Generic_Point;
-	typedef Point3D Generic_Vector;
+
+    //! Typedef for DiscretizationType
+    /*!
+        @typedef DType
+        This type definition permits to treat DiscretizationType as a DType.
+    */
 	typedef DiscretizationType DType;
 
 public:

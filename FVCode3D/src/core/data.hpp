@@ -512,35 +512,62 @@ protected:
 
 };
 
+//! Class that implements a parser for a generic enumerator
+/*!
+ * @class EnumParser
+ * This class allows to convert a string to an enumerator value
+ * The template parameter is the enumerator type
+ */
 template <class T>
 class EnumParser
 {
 public:
-    EnumParser(){};
 
+	//! Empty constructor
+    EnumParser() {};
+
+    //! Parse method
+    /*!
+     * @param str string of the enumerator value that you want to convert
+     * @return the enumerator value associated with the string
+     */
     T parse(const std::string & str) const
     {
-        typename std::map<std::string, T>::const_iterator it = enumMap.find(str);
-        if (it == enumMap.end())
+        typename std::map<std::string, T>::const_iterator it = M_enumMap.find(str);
+        if (it == M_enumMap.end())
         {
             std::cerr << "This enum does not exist!" << std::endl;
             exit(0);
         }
         return it->second;
     }
+
+	//! Destructor
+    ~EnumParser() = default;
+
 private:
-    std::map<std::string, T> enumMap;
+
+    //! Map that links a string to an enumarator type
+    std::map<std::string, T> M_enumMap;
 };
 
+//! Specialized class that implements a parser for the Data::ProblemType enum
 template<>
 EnumParser<Data::ProblemType>::EnumParser();
 
+//! Specialized class that implements a parser for the Data::MeshFormatType enum
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser();
 
+//! Specialized class that implements a parser for the Data::SourceSinkOn enum
 template<>
 EnumParser<Data::SourceSinkOn>::EnumParser();
 
+//! Typedef for std::unique_ptr<Data>
+/*!
+ * @typedef DataPtr_Type
+ * This type definition permits to handle a std::unique_ptr<Data> as a DataPtr_Type.
+ */
 typedef std::unique_ptr<Data> DataPtr_Type;
 
 } // namespace FVCode3D

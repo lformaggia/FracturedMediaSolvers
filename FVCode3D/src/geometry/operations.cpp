@@ -6,7 +6,8 @@
 #include "operations.hpp"
 #include "geometry/Point3D.hpp"
 
-namespace FVCode3D{
+namespace FVCode3D
+{
 
 Point3D computeNormal( const Point3D & A, const Point3D & B, const Point3D & C)
 {

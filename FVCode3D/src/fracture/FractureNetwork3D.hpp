@@ -16,8 +16,8 @@ class Fracture3D;
 
 //! Class that handles the fracture network
 /*!
-	@class FractureNetwork3D
-   	This class implements the concept of fracture network as a vector of Fracture3D.
+ * @class FractureNetwork3D
+ * This class implements the concept of fracture network as a vector of Fracture3D.
  */
 class FractureNetwork3D
 {

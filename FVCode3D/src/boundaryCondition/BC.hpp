@@ -32,9 +32,6 @@ enum BCType{Dirichlet, Neumann};
 */
 class BoundaryConditions
 {
-	typedef Point3D Generic_Point;
-	typedef Mesh3D::Facet3D Generic_Border;
-
 public:
 
 	//! Class that implements the BC on a portion of the border
@@ -42,14 +39,15 @@ public:
 		@class BorderBC
 		This class implements the boundary conditions on a portion of the domain.
 	*/
-	class BorderBC {
+	class BorderBC
+	{
 	protected:
 		//! Id of the BC
 		UInt M_id;
 		//! Type of Boundary Condition as BCType: Dirichlet or Neumann are implemented
 		BCType M_bcType;
 		//! Boundary condition as a function
-		std::function<Real(Generic_Point)> M_bc;
+		std::function<Real(Point3D)> M_bc;
 		//! Pointer to the container of the BorderBC: BoundaryConditions
 		BoundaryConditions * M_bcContainer;
 
@@ -63,7 +61,7 @@ public:
 			@param bctype is of type BCType and can be Dirichlet or Neumann
 			@param bc is the function that is actually our BC
 		*/
-		BorderBC(UInt Id, BCType bctype, std::function<Real(Generic_Point)> bc):
+		BorderBC(UInt Id, BCType bctype, std::function<Real(Point3D)> bc):
 			M_id(Id), M_bcType(bctype), M_bc(bc), M_bcContainer(0) {}
 		//! Default Copy Constructor
 		BorderBC(const BorderBC &) = default;
@@ -95,7 +93,7 @@ public:
 		/*!
 		 * @return A function which is actually the Boundary condition
 		 */
-		const std::function<Real(Generic_Point)> getBC() const
+		const std::function<Real(Point3D)> getBC() const
 			{ return M_bc; }
 		//@}
 

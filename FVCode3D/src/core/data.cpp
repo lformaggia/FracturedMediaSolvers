@@ -187,25 +187,25 @@ void Data::showMe( std::ostream & output ) const
 template<>
 EnumParser<Data::ProblemType>::EnumParser()
 {
-    enumMap["steady"] = Data::ProblemType::steady;
-    enumMap["pseudoSteady"] = Data::ProblemType::pseudoSteady;
+	M_enumMap["steady"] = Data::ProblemType::steady;
+	M_enumMap["pseudoSteady"] = Data::ProblemType::pseudoSteady;
 }
 
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser()
 {
-    enumMap[".grid"] = Data::MeshFormatType::TPFA;
-    enumMap[".fvg"] = Data::MeshFormatType::forSolver;
-    enumMap[".mesh"] = Data::MeshFormatType::Medit;
+	M_enumMap[".grid"] = Data::MeshFormatType::TPFA;
+	M_enumMap[".fvg"] = Data::MeshFormatType::forSolver;
+	M_enumMap[".mesh"] = Data::MeshFormatType::Medit;
 }
 
 template<>
 EnumParser<Data::SourceSinkOn>::EnumParser()
 {
-    enumMap["matrix"] = Data::SourceSinkOn::Matrix;
-    enumMap["fractures"] = Data::SourceSinkOn::Fractures;
-    enumMap["all"] = Data::SourceSinkOn::Both;
-    enumMap["none"] = Data::SourceSinkOn::None;
+	M_enumMap["matrix"] = Data::SourceSinkOn::Matrix;
+	M_enumMap["fractures"] = Data::SourceSinkOn::Fractures;
+	M_enumMap["all"] = Data::SourceSinkOn::Both;
+	M_enumMap["none"] = Data::SourceSinkOn::None;
 }
 
 } // namespace FVCode3D
