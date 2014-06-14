@@ -15,7 +15,7 @@ namespace FVCode3D
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Rigid_Mesh (Generic_Mesh & generic_mesh, const PropertiesMap & prop, const bool renumber):
+Rigid_Mesh::Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber):
 	M_nodes(generic_mesh.getNodesVector()), M_properties(prop), M_renumber(renumber)
 {
 	std::map<UInt, UInt> old_to_new_mapCells;
@@ -143,7 +143,7 @@ Rigid_Mesh::Rigid_Mesh(const Rigid_Mesh & mymesh):
 // Protected Method
 // ==================================================
 
-void Rigid_Mesh::cellsVectorBuilder (Generic_Mesh & generic_mesh, std::map<UInt, UInt> & old_to_new_map)
+void Rigid_Mesh::cellsVectorBuilder (Mesh3D & generic_mesh, std::map<UInt, UInt> & old_to_new_map)
 {
 	M_cells.reserve(generic_mesh.getCellsMap().size());
 
@@ -173,10 +173,10 @@ void Rigid_Mesh::adjustCellNeighbors ( const std::map<UInt, UInt> & old_to_new_m
 			Neighbors_it = old_to_new_map.at(Neighbors_it);
 }
 
-void Rigid_Mesh::facetsVectorsBuilder ( Generic_Mesh & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets)
+void Rigid_Mesh::facetsVectorsBuilder ( Mesh3D & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets)
 {
 	// Define which facets are fracture ones, which are border ones and which are regular ones.
-	const Generic_FacetsContainer & facet_container = generic_mesh.getFacetsMap();
+	const Facet3DMap & facet_container = generic_mesh.getFacetsMap();
 	UInt fractureId = 0;
 
 	M_facets.reserve(facet_container.size());
@@ -321,7 +321,7 @@ void Rigid_Mesh::edgesVectorBuilder()
 	std::map<UInt,UInt> nFracFacets;
 
 	// edge as pair -> separated facets
-	std::map<Generic_Edge, std::vector<UInt> > edgesMap;
+	std::map<Edge3D, std::vector<UInt> > edgesMap;
 
 	// loop only over the facets
 	for(auto& it : M_facets)
@@ -334,12 +334,12 @@ void Rigid_Mesh::edgesVectorBuilder()
 		{
 			if (*(vertex_it) < *(vertex_it2))
 			{
-				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+				edgesMap.insert(std::pair<Edge3D, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
 				edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it.getId());
 			}
 			else
 			{
-				edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+				edgesMap.insert(std::pair<Edge3D, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
 				edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it.getId());
 			}
 		}
@@ -348,12 +348,12 @@ void Rigid_Mesh::edgesVectorBuilder()
 
 		if (*(vertex_it) < *(vertex_it2))
 		{
-			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
+			edgesMap.insert(std::pair<Edge3D, std::vector<UInt> >(std::make_pair(*vertex_it, *vertex_it2), std::vector<UInt>()) );
 			edgesMap[std::make_pair(*vertex_it, *vertex_it2)].push_back(it.getId());
 		}
 		else
 		{
-			edgesMap.insert(std::pair<Generic_Edge, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
+			edgesMap.insert(std::pair<Edge3D, std::vector<UInt> >(std::make_pair(*vertex_it2, *vertex_it), std::vector<UInt>()) );
 			edgesMap[std::make_pair(*vertex_it2, *vertex_it)].push_back(it.getId());
 		}
 	}
@@ -487,7 +487,7 @@ const std::vector<Point3D> Rigid_Mesh::idsToPoints(const std::vector<UInt> & poi
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Edge::Edge (const Generic_Edge & generic_edge, Rigid_Mesh * const mesh, const UInt id):
+Rigid_Mesh::Edge::Edge (const Edge3D & generic_edge, Rigid_Mesh * const mesh, const UInt id):
 	M_edge(generic_edge), M_mesh(mesh), M_id(id), M_isBorderEdge(false), M_isFracture(false), M_isTip(false){}
 
 Rigid_Mesh::Edge::Edge (const Edge & edge, Rigid_Mesh * const mesh):
@@ -540,7 +540,7 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Facet::Facet(const Generic_Facet & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
+Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
 	M_mesh(mesh), M_id(m_id), M_verticesIds(generic_facet.getVerticesVector()), M_area(generic_facet.area()),
 	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()),
 	M_isFracture(generic_facet.isFracture()), M_fractureFacetId(0), M_borderId(generic_facet.getBorderId()),
@@ -602,7 +602,7 @@ void Rigid_Mesh::Facet::showMe(std::ostream & out) const
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Cell::Cell( const Generic_Cell & generic_cell, Rigid_Mesh * const mesh, const UInt m_id):
+Rigid_Mesh::Cell::Cell( const Cell3D & generic_cell, Rigid_Mesh * const mesh, const UInt m_id):
 	M_mesh(mesh), M_Id(m_id), M_zoneCode(generic_cell.getZoneCode()),
 	M_verticesIds(generic_cell.getVerticesVector()),
 	M_centroid(generic_cell.getCentroid()),

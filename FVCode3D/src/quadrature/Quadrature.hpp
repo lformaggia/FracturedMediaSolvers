@@ -29,12 +29,6 @@ class PropertiesMap;
 */
 class Quadrature
 {
-	//! Typedef for std::pair<UInt,UInt>
-	/*!
-	 * @typedef Fracture_Juncture
-   	 * This type definition permits to handle a pair of Points as a juncture between to facets.
-	 */
-	typedef std::pair<UInt,UInt> Fracture_Juncture;
 	//! Typedef for QuadratureRule::QuadratureRuleHandler
 	/*!
 	 * @typedef QR_Handler

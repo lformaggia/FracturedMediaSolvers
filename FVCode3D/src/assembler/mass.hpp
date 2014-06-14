@@ -26,14 +26,6 @@ class PropertiesMap;
 */
 class MassMatrix: public MatrixHandler
 {
-
-    //! Typedef for std::pair<UInt,UInt>
-    /*!
-        @typedef Fracture_Juncture
-        This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
-    */
-	typedef std::pair<UInt,UInt> Fracture_Juncture;
-
 public:
 	//! @name Constructor & Destructor
 	//@{
