@@ -10,6 +10,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 class PermeabilityBase;
 
 /*!
@@ -119,4 +122,5 @@ template<typename T>
 PermeabilityProxy<T>::~PermeabilityProxy()
 {}
 
+} // namespace FVCode3D
 #endif /* PERMEABILITYFACTORY_HPP_ */

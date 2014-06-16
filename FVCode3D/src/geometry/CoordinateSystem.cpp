@@ -3,12 +3,13 @@
  * @brief Class for a 3D Cartesian coordinate system (definitions).
  */
 
-#include "CoordinateSystem.hpp"
+#include "geometry/CoordinateSystem.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
-void CoordinateSystem3D::computeCartesianCoordinateSystem(const Point3D & z){
-
+void CoordinateSystem3D::computeCartesianCoordinateSystem(const Point3D & z)
+{
 	M_w = z;
 	M_w.normalize();
 
@@ -27,15 +28,18 @@ void CoordinateSystem3D::computeCartesianCoordinateSystem(const Point3D & z){
 	else if ( std::abs(M_w.z()) > std::abs(M_w.x()) )
 		max = 2;
 
-	if ( max==0 ){
+	if ( max==0 )
+	{
 		x2.setValues(0., 1., 0.);
 		x3.setValues(0., 0., 1.);
 	}
-	else if ( max==1 ){
+	else if ( max==1 )
+	{
 		x2.setValues(1., 0., 0.);
 		x3.setValues(0., 0., 1.);
 	}
-	else if ( max==2 ){
+	else if ( max==2 )
+	{
 		x2.setValues(1., 0., 0.);
 		x3.setValues(0., 1., 0.);
 	}
@@ -57,7 +61,6 @@ void CoordinateSystem3D::computeCartesianCoordinateSystem(const Point3D & z){
 	M_v -= temp2;
 
 	M_v.normalize();
-
 }
 
-}// namespace Geometry
+}// namespace FVCode3D

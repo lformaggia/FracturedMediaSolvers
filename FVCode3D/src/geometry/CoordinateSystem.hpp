@@ -9,7 +9,7 @@
 #include "core/TypeDefinition.hpp"
 #include "geometry/Point3D.hpp"
 
-namespace Geometry
+namespace FVCode3D
 {
 
 class Point3D;
@@ -68,6 +68,6 @@ private:
 	Point3D M_w;
 };
 
-}
+} // namespace FVCode3D
 
 #endif /* COORDINATESYSTEM_HPP_ */

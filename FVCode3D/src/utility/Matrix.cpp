@@ -5,13 +5,16 @@
  *      Author: viskius
  */
 
-#include "Matrix.hpp"
+#include "utility/Matrix.hpp"
+
+namespace FVCode3D
+{
 
 SparseMatrix::SparseMatrix():
-		M_nonZeros(0), M_options(Store), M_file(0) {}
+	M_nonZeros(0), M_options(Store), M_file(0) {}
 
 SparseMatrix::SparseMatrix(const Flag8bit options, const std::string filename):
-		M_nonZeros(0), M_options(options | SaveOnFile), M_filename(filename), M_file(0)
+	M_nonZeros(0), M_options(options | SaveOnFile), M_filename(filename), M_file(0)
 {
 	M_file = new std::ofstream;
 	M_file->open(M_filename.c_str(), std::ios_base::out);
@@ -50,7 +53,8 @@ void SparseMatrix::fill(const UInt i, const UInt j, const Real value)
 
 void SparseMatrix::fill(const std::pair<UInt, UInt> ij, const Real value)
 {
-	if(M_options & Store){
+	if(M_options & Store)
+	{
 		const std::map<std::pair<UInt, UInt>, Real>::iterator it = M_matrix.find(ij);
 
 		if (it != M_matrix.end())
@@ -58,7 +62,8 @@ void SparseMatrix::fill(const std::pair<UInt, UInt> ij, const Real value)
 		else
 			M_matrix.insert(std::make_pair(ij,value));
 	}
-	if(M_options & SaveOnFile){
+	if(M_options & SaveOnFile)
+	{
 		*M_file<<ij.first<<" "<<ij.second<<" "<<value<<std::endl;
 		M_nonZeros++;
 	}
@@ -72,3 +77,5 @@ SparseMatrix::~SparseMatrix()
 		delete M_file;
 	}
 }
+
+} // namespace FVCode3D

@@ -4,16 +4,17 @@
  */
 
 #include "tetgen.h"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 #include "mesh/TetGenWrapper.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 TetGenWrapper::TetGenWrapper(std::vector<Point3D> nodes, std::vector< std::vector<UInt> > faces):
-		M_inNodes(nodes), M_faces(faces), M_volume(0.) {}
+	M_inNodes(nodes), M_faces(faces), M_volume(0.) {}
 
-void TetGenWrapper::generateMesh(){
-
+void TetGenWrapper::generateMesh()
+{
 	tetgenio in, out;
 	tetgenio::facet *f;
 	tetgenio::polygon *p;
@@ -79,7 +80,6 @@ void TetGenWrapper::generateMesh(){
 		M_elements[i][2] = out.tetrahedronlist[4*i+2];
 		M_elements[i][3] = out.tetrahedronlist[4*i+3];
 	}
-
 }
 
 Real TetGenWrapper::computeVolume()
@@ -135,4 +135,4 @@ const std::vector<Point3D> TetGenWrapper::getElement(const UInt i) const
 	return points;
 }
 
-}// namespace Geometry
+}// namespace FVCode3D

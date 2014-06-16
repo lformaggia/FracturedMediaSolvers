@@ -8,6 +8,9 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 //! Enumerator used to select how to store the matrix
 /*!
  * @enum MatrixOptions
@@ -121,4 +124,5 @@ private:
 
 };
 
+} // namespace FVCode3D
 #endif /* MATRIX_HPP_ */

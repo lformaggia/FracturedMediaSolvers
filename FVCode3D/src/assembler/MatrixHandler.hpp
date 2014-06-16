@@ -11,9 +11,9 @@
 #include <functional>
 #include <algorithm>
 #include "core/TypeDefinition.hpp"
-#include "mesh/Rigid_Mesh.hpp"
+#include "mesh/RigidMesh.hpp"
 
-namespace Darcy
+namespace FVCode3D
 {
 
 //! Type for matrix size
@@ -27,26 +27,30 @@ enum DiscretizationType {D_Cell, D_Nodes};
 /*!
 	@class MatrixHandler
 	This class is a base class used as a model for the derived classes (such as the stiffness matrix and mass matrix).
-	It implements a square-Matrix (N x N). It needs a Geometry::Rigid_Mesh to be built.
+	It implements a square-Matrix (N x N). It needs a Rigid_Mesh to be built.
 	Abstract class.
 */
 class MatrixHandler
 {
 public:
-	typedef Geometry::Point3D Generic_Point;
-	typedef Geometry::Point3D Generic_Vector;
+
+    //! Typedef for DiscretizationType
+    /*!
+        @typedef DType
+        This type definition permits to treat DiscretizationType as a DType.
+    */
 	typedef DiscretizationType DType;
 
 public:
 	//! @name Constructor & Destructor
 	//@{
 
-	//! Construct a MatrixHandler, given a Geometry::Rigid_Mesh.
+	//! Construct a MatrixHandler, given a Rigid_Mesh.
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh used to build the matrix
+		@param rigid_mesh A Rigid_Mesh used to build the matrix
 		@param dtype It is the policy adopted for the discretization: per Cell or per Nodes (default Cell)
 	*/
-	MatrixHandler(const Geometry::Rigid_Mesh & rigid_mesh, DType dtype = D_Cell):
+	MatrixHandler(const Rigid_Mesh & rigid_mesh, DType dtype = D_Cell):
 		M_mesh (rigid_mesh), M_policy(dtype),
 		M_size ((1-dtype)*(rigid_mesh.getCellsVector().size()+rigid_mesh.getFractureFacetsIdsVector().size())+dtype*(rigid_mesh.getNodesVector().size())),
 		M_Matrix(new SpMat(this->M_size, this->M_size)) {}
@@ -87,8 +91,8 @@ public:
 	//@}
 
 protected:
-	//! A reference to a Geometry::Rigid_Mesh
-	const Geometry::Rigid_Mesh & M_mesh;
+	//! A reference to a Rigid_Mesh
+	const Rigid_Mesh & M_mesh;
 	//! It explains if the matrix has the size of the number of Cells or the number of Nodes
 	DType M_policy;
 	//! The size N of the NxN matrix
@@ -97,6 +101,6 @@ protected:
 	std::unique_ptr<SpMat> M_Matrix;
 };
 
-} // namespace Darcy
+} // namespace FVCode3D
 
 #endif

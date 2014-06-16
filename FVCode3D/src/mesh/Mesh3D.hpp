@@ -8,7 +8,7 @@
 
 #include "core/TypeDefinition.hpp"
 #include "geometry/CoordinateSystem.hpp"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 #include "fracture/Fracture3D.hpp"
 #include "fracture/FractureNetwork3D.hpp"
 #include "mesh/TetGenWrapper.hpp"
@@ -18,7 +18,8 @@
 #include <map>
 #include <cmath>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class FractureNetwork3D;
 class Fracture;
@@ -55,19 +56,19 @@ public:
 
 		//! Copy constructor
 		/*!
-		 * @param facet a reference to a Geometry::Mesh3D::Facet3D
+		 * @param facet a reference to a Mesh3D::Facet3D
 		 */
 		Facet3D(const Facet3D & facet);
 
 		//! Constructor for the facet of a specified mesh moving from the vertices.
 		/*!
 		 * The normal is computed in clockwise rotation.
-		 * @param mesh pointer to a Geometry::Mesh3D
+		 * @param mesh pointer to a Mesh3D
 		 * @param vertices vector of identifiers of the vertices
 		 * @param borderId id of the border. If the facet is interior, then borderId should be 0
 		 * @pre vertices[i] is connected to vertices[i-i] and vertices[i+i]
 		 */
-		Facet3D(Geometry::Mesh3D * const mesh, const std::vector<UInt> & vertices, const UInt zone, const UInt borderId);
+		Facet3D(Mesh3D * const mesh, const std::vector<UInt> & vertices, const UInt zone, const UInt borderId);
 
 		//@}
 
@@ -78,36 +79,36 @@ public:
 		/*!
 		 * @return the pointer to the mesh
 		 */
-		const Geometry::Mesh3D * getMesh() const
+		const Mesh3D * getMesh() const
 			{ return M_mesh; }
 
-		//! Get the i-th vertex id (const)
+		//! Get the i-th vertex id of the current facet (const)
 		/*!
-		 * @param i i-th vertex of the facet
-		 * @return a constant reference to the i-th vertex id
+		 * @param i i-th vertex of the current facet
+		 * @return the id of i-th vertex
 		 */
-		const UInt & getIdVertex(const UInt i) const
-			{ return M_idVertex[i]; }
+		UInt getVertexId(const UInt i) const
+			{ return M_vertexIds[i]; }
 
-		//! Get the id of the i-th vertex (const)
+		//! Get the vertex vector of the current facet (const)
 		/*!
-		 * @return a constant reference to the id of the i-th vertex
+		 * @return a constant reference to the vertex vector of the current facet
 		 */
-		const std::vector<UInt> & getVertexesVector() const
-			{ return M_idVertex; }
-
-		//! Get the i-th vertex (const)
-		/*!
-		 * @return a constant reference to the i-th vertex
-		 */
-		const Geometry::Point3D & getVertex(const UInt i) const
-			{ return M_mesh->getNodesVector()[M_idVertex[i]]; }
+		const std::vector<UInt> & getVerticesVector() const
+			{ return M_vertexIds; }
 
 		//! Get the i-th vertex (const)
 		/*!
 		 * @return a constant reference to the i-th vertex
 		 */
-		const std::vector<Geometry::Point3D> & getVertices() const
+		const Point3D & getVertex(const UInt i) const
+			{ return M_mesh->getNodesVector()[M_vertexIds[i]]; }
+
+		//! Get the vertex vector(const)
+		/*!
+		 * @return a constant reference to the vertex vector
+		 */
+		const std::vector<Point3D> & getVertices() const
 			{ return M_mesh->getNodesVector(); }
 
 		//! Get the set of the separated cells ids (const)
@@ -142,14 +143,14 @@ public:
 		/*!
 		 * @return the number of points of the facet
 		 */
-		UInt getNumberOfPoints() const
-			{ return M_idVertex.size(); }
+		UInt getNumberOfVertices() const
+			{ return M_vertexIds.size(); }
 
 		//! Get the facet centroid
 		/*!
 		 * @return a reference to the facet centroid
 		 */
-		const Geometry::Point3D & getCentroid() const
+		const Point3D & getCentroid() const
 			{ return M_centroid; }
 
 		//! Get the borderID
@@ -175,7 +176,7 @@ public:
 		/*!
 		 * @param mesh the new value for the mesh pointer
 		 */
-		void setMesh(Geometry::Mesh3D * const mesh)
+		void setMesh(Mesh3D * const mesh)
 			{ M_mesh = mesh; }
 
 		//! Set the ids of the two vertexes
@@ -183,7 +184,7 @@ public:
 		 * @param vertices the ids of a vertices
 		 */
 		void setVertices(const std::vector<UInt> & vertices)
-			{ M_idVertex = vertices; }
+			{ M_vertexIds = vertices; }
 
 		//! Set the borderID
 		/*!
@@ -243,15 +244,15 @@ public:
 
 	private:
 		//! The pointer to the mesh containing this facet
-		const Geometry::Mesh3D * M_mesh;
+		const Mesh3D * M_mesh;
 		//! The ids of the vertices of the facet
-		std::vector<UInt> M_idVertex;
+		std::vector<UInt> M_vertexIds;
 		//! The set containing the ids of the cells separated by this facet
 		std::set<UInt> M_separatedCells;
 		//! The set containing the ids of the represented fractures
 		std::set<UInt> M_representedFractureIds;
 		//! The centroid of the facet
-		Geometry::Point3D M_centroid;
+		Point3D M_centroid;
 		//! Border Id. If zero, then the facet is an interior facet
 		UInt M_borderId;
 		//! Zone code
@@ -275,7 +276,7 @@ public:
 
 		//! Copy constructor
 		/*!
-		 * @param cell a reference to a Geometry::Mesh3D::Cell3D
+		 * @param cell a reference to a Mesh3D::Cell3D
 		 */
 		Cell3D(const Cell3D & cell);
 
@@ -285,7 +286,7 @@ public:
 		 * @param facets the vector that contains the facets ids
 		 * @param zone code of the zone
 		 */
-		Cell3D( const Geometry::Mesh3D * mesh,
+		Cell3D( const Mesh3D * mesh,
 				const std::vector<UInt> & facets,
 				const UInt zone );
 
@@ -298,63 +299,56 @@ public:
 		/*!
 		 * @return the pointer to the mesh
 		 */
-		const Geometry::Mesh3D * getMesh() const
+		const Mesh3D * getMesh() const
 			{ return M_mesh; }
 
 		//! Get the vector that contains the vertexes ids (const)
 		/*!
 		 * @return a constant reference to the vector of the vertexes ids
 		 */
-		const std::vector<UInt> & getVertexesVector() const
-			{ return M_idVertexes; }
+		const std::vector<UInt> & getVerticesVector() const
+			{ return M_vertexIds; }
 
 		//! Get the vector that contains the vertexes ids
 		/*!
 		 * @return a reference to the vector of the vertexes ids
 		 */
-		std::vector<UInt> & getVertexesVector()
-			{ return M_idVertexes; }
+		std::vector<UInt> & getVerticesVector()
+			{ return M_vertexIds; }
 
 		//! Get the set that contains the facets ids (const)
 		/*!
 		 * @return a constant reference to the set of the facets ids
 		 */
 		const std::set<UInt> & getFacetsSet() const
-			{ return M_idFacets; }
+			{ return M_facetIds; }
 
 		//! Get the set that contains the facets ids
 		/*!
 		 * @return a reference to the set of the facets ids
 		 */
 		std::set<UInt> & getFacetsSet()
-			{ return M_idFacets; }
+			{ return M_facetIds; }
 
 		//! Get the set that contains the ids of the neighbor cells (const)
 		/*!
 		 * @return a constant reference to the set of the ids of the neighbor cells
 		 */
 		const std::set<UInt> & getNeighborsSet() const
-			{ return M_idNeighbors; }
+			{ return M_neighborIds; }
 
 		//! Get the set that contains the ids of the neighbor cells
 		/*!
 		 * @return a reference to the set of the ids of the neighbor cells
 		 */
 		std::set<UInt> & getNeighborsSet()
-			{ return M_idNeighbors; }
-
-		//! Get the number of facets of the cell (const)
-		/*!
-		 * @return the number of facets of the cell
-		 */
-		UInt getNumberOfFacets() const
-			{ return M_idFacets.size(); }
+			{ return M_neighborIds; }
 
 		//! Get the cell centroid
 		/*!
 		 * @return a reference to the cell centroid
 		 */
-		const Geometry::Point3D & getCentroid() const
+		const Point3D & getCentroid() const
 			{ return M_centroid; }
 
 		//! Return the volume (const)
@@ -392,29 +386,29 @@ public:
 		/*!
 		 * @return the number of vertexes
 		 */
-		UInt vertexesNumber() const
-			{ return M_idVertexes.size(); }
+		UInt verticesNumber() const
+			{ return M_vertexIds.size(); }
 
 		//! The number of facets of the cell
 		/*!
 		 * @return the number of facets
 		 */
 		UInt facetsNumber() const
-			{ return M_idFacets.size(); }
+			{ return M_facetIds.size(); }
 
 		//! The number of neighbors of the cell
 		/*!
 		 * @return the number of neighbors
 		 */
 		UInt neighborsNumber() const
-			{ return M_idNeighbors.size(); }
+			{ return M_neighborIds.size(); }
 
 		//! The normalized vector normal to the facet defined by the facet id
 		/*!
 		 * @param facetId the facet id
 		 * @return The normalized vector normal to the facet
 		 */
-		Geometry::Point3D outerNormalToFacet( const UInt & facetId) const;
+		Point3D outerNormalToFacet( const UInt & facetId) const;
 
 		//! Test if a cell has a neighbor cell through the facet defined by the facet id
 		/*!
@@ -442,15 +436,15 @@ public:
 	private:
 
 		//! The pointer to the mesh containing this cell
-		const Geometry::Mesh3D * M_mesh;
+		const Mesh3D * M_mesh;
 		//! The vector containing the vertexes ids. The order doesn't matter.
-		std::vector<UInt> M_idVertexes;
+		std::vector<UInt> M_vertexIds;
 		//! The vector containing the facets ids
-		std::set<UInt> M_idFacets;
+		std::set<UInt> M_facetIds;
 		//! The set storing the ids of the neighbor cells
-		std::set<UInt> M_idNeighbors;
+		std::set<UInt> M_neighborIds;
 		//! The centroid of the cell
-		Geometry::Point3D M_centroid;
+		Point3D M_centroid;
 		//! The volume of the cell
 		Real M_volume;
 		//! Zone code
@@ -467,12 +461,12 @@ public:
 
 	//! Copy constructor
 	/*!
-	 * @param mesh reference to a Geometry::Mesh3D
+	 * @param mesh reference to a Mesh3D
 	 */
-	Mesh3D(const Geometry::Mesh3D & mesh);
+	Mesh3D(const Mesh3D & mesh);
 
 	//! Destructor
-	virtual ~Mesh3D();
+	virtual ~Mesh3D() = default;
 
 	//@}
 
@@ -483,14 +477,14 @@ public:
 	/*!
 	 * @return a constant reference to the vector storing the nodes of the mesh
 	 */
-	const std::vector<Geometry::Point3D> & getNodesVector() const
+	const std::vector<Point3D> & getNodesVector() const
 		{ return M_nodes; }
 
 	//! Get the vector storing the nodes of the mesh
 	/*!
 	 * @return a reference to the vector storing the nodes of the mesh
 	 */
-	std::vector<Geometry::Point3D> & getNodesVector()
+	std::vector<Point3D> & getNodesVector()
 		{ return M_nodes; }
 
 	//! Get the set storing the facets of the mesh (const)
@@ -525,14 +519,14 @@ public:
 	/*!
 	 * @return a constant reference to the fracture network of the mesh
 	 */
-	const FractureNetwork3D & getFn() const
+	const FractureNetwork3D & getFN() const
 		{ return M_fn; }
 
 	//! Get the fracture network of the mesh
 	/*!
 	 * @return a constant reference to the fracture network of the mesh
 	 */
-	FractureNetwork3D & getFn()
+	FractureNetwork3D & getFN()
 		{ return M_fn; }
 
 	//@}
@@ -541,15 +535,15 @@ public:
 	//@{
 
 	//! Get the number of nodes
-	UInt Nnodes() const
+	UInt getNumberOfNodes() const
 		{ return M_nodes.size(); }
 
 	//! Get the number of facets
-	UInt Nfacets() const
+	UInt getNumberOfFacets() const
 		{ return M_facets.size(); }
 
 	//! Get the number of cells
-	UInt Ncells() const
+	UInt getNumberOfCells() const
 		{ return M_cells.size(); }
 
 	//! Clear all the content of the class
@@ -592,7 +586,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportVtu(const std::string & filename) const;
+	bool exportVTU(const std::string & filename) const;
 
 	//! Export some cells of the mesh in vtu format
 	/*!
@@ -601,7 +595,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportCellsVtu(const std::string & filename, const std::vector<UInt> & idCells) const;
+	bool exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const;
 
 	//! Export in a single vtk file all the facets representing each fracture in the network
 	/*!
@@ -610,7 +604,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportFractureNetworkVtk(const std::string & filename) const;
+	bool exportFractureNetworkVTK(const std::string & filename) const;
 
 	//! Export in a vtk file the facets representing a fracture in the network
 	/*!
@@ -620,15 +614,15 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportFractureVtk(const std::string & filename, const UInt & f) const;
+	bool exportFractureVTK(const std::string & filename, const UInt & f) const;
 
 	//@}
 
 protected:
 	//! The fracture network
-	Geometry::FractureNetwork3D M_fn;
+	FractureNetwork3D M_fn;
 	//! The vector storing all the nodes of the mesh
-	std::vector<Geometry::Point3D> M_nodes;
+	std::vector<Point3D> M_nodes;
 	//! The set storing all the edges of the mesh
 	std::map<UInt,Facet3D> M_facets;
 	//! The map storing all the cells of the mesh
@@ -645,8 +639,8 @@ protected:
  * @return TRUE  -> f1 < f2
  *		   FALSE -> f1 >= f2
  */
-bool operator<(const Geometry::Mesh3D::Facet3D & f1, const Geometry::Mesh3D::Facet3D & f2);
+bool operator<(const Mesh3D::Facet3D & f1, const Mesh3D::Facet3D & f2);
 
-}// namespace Geometry
+} // namespace FVCode3D
 
 #endif /* MESH3D_HPP_ */

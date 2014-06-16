@@ -6,9 +6,10 @@
 #ifndef POINT3D_HPP_
 #define POINT3D_HPP_
 
-#include "core/basic_type.hpp"
+#include "core/BasicType.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class CoordinateSystem3D;
 
@@ -41,7 +42,7 @@ public:
 
 	void linearTransform(const Real scaling, const Real xShift, const Real yShift, const Real zShift);
 
-	Point3D convertInLocalCoordinate(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
+	Point3D convertInLocalCoordinates(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
 
 	Point3D & operator=(const Point3D & p);
 
@@ -105,6 +106,6 @@ private:
 
 bool operator<(const Point3D & p1, const Point3D & p2);
 
-}//namespace Geometry
+} // namespace FVCode3D
 
 #endif /* POINT3D_HPP_ */

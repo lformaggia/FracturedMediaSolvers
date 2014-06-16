@@ -6,7 +6,7 @@
 #include "property/Properties.hpp"
 #include "mesh/Mesh3D.hpp"
 
-namespace Geometry
+namespace FVCode3D
 {
 
 void PropertiesMap::setPropertiesOnMatrix(const Mesh3D & mesh, const Real porosity, const Real permeability)
@@ -39,4 +39,4 @@ void PropertiesMap::setPropertiesOnFractures(const Mesh3D & mesh, const Real ape
 	}
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

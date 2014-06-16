@@ -4,7 +4,7 @@
  */
 
 #include "mesh/Mesh3D.hpp"
-#include "geometry/operations.hpp"
+#include "geometry/Operations.hpp"
 
 #include <utility>
 #include <fstream>
@@ -12,7 +12,8 @@
 #include <cmath>
 #include <vector>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 // --------------------   Class Mesh3D::Facet3D   --------------------
 
@@ -23,14 +24,14 @@ Mesh3D::Facet3D::Facet3D() :
         M_mesh(0), M_borderId(0), M_zone(0) {}
 
 Mesh3D::Facet3D::Facet3D(const Facet3D & facet) :
-        M_mesh(facet.getMesh()), M_idVertex(facet.getVertexesVector()),
+        M_mesh(facet.getMesh()), M_vertexIds(facet.getVerticesVector()),
         M_separatedCells(facet.getSeparatedCells()),
         M_representedFractureIds(facet.getRepresentedFractureIds()),
         M_centroid(facet.getCentroid()),
         M_borderId(facet.getBorderId()), M_zone(facet.getZoneCode()) {}
 
-Mesh3D::Facet3D::Facet3D(Geometry::Mesh3D * const mesh, const std::vector<UInt> & vertices, const UInt zone, const UInt borderId) :
-                M_mesh(mesh), M_idVertex(vertices), M_borderId(borderId), M_zone(zone)
+Mesh3D::Facet3D::Facet3D(Mesh3D * const mesh, const std::vector<UInt> & vertices, const UInt zone, const UInt borderId) :
+                M_mesh(mesh), M_vertexIds(vertices), M_borderId(borderId), M_zone(zone)
 {
     computeCentroid();
 }
@@ -42,14 +43,14 @@ Mesh3D::Facet3D::Facet3D(Geometry::Mesh3D * const mesh, const std::vector<UInt> 
 Point3D Mesh3D::Facet3D::computeNormal() const
 {
 	UInt i = 3;
-	const UInt nPoints = getNumberOfPoints();
-	Point3D A(M_mesh->getNodesVector()[M_idVertex[0]]);
-	Point3D B(M_mesh->getNodesVector()[M_idVertex[1]]);
-	Point3D C(M_mesh->getNodesVector()[M_idVertex[2]]);
+	const UInt nPoints = getNumberOfVertices();
+	Point3D A(M_mesh->getNodesVector()[M_vertexIds[0]]);
+	Point3D B(M_mesh->getNodesVector()[M_vertexIds[1]]);
+	Point3D C(M_mesh->getNodesVector()[M_vertexIds[2]]);
 	while( (std::fabs(innerAngleRad(B-A,C-A)) < 1e-6) && (i<nPoints) )
-		C = M_mesh->getNodesVector()[M_idVertex[i++]];
+		C = M_mesh->getNodesVector()[M_vertexIds[i++]];
 
-	return Geometry::computeNormal(A,B,C);
+	return FVCode3D::computeNormal(A,B,C);
 }
 
 Real Mesh3D::Facet3D::area() const
@@ -57,34 +58,36 @@ Real Mesh3D::Facet3D::area() const
     std::vector<Point3D> points;
     CoordinateSystem3D cs;
     Real area(0.);
+    const UInt nPoints = M_vertexIds.size();
 
     cs.computeCartesianCoordinateSystem(computeNormal());
+    points.reserve(nPoints);
 
-    for(UInt i=0; i < M_idVertex.size(); ++i)
-        points.emplace_back( M_mesh->getNodesVector()[M_idVertex[i]].convertInLocalCoordinate(cs, Point3D(0.,0.,0.)) );
+    for(UInt i=0; i < nPoints; ++i)
+        points.emplace_back( M_mesh->getNodesVector()[M_vertexIds[i]].convertInLocalCoordinates(cs, Point3D(0.,0.,0.)) );
 
-    for(UInt i=0; i < (M_idVertex.size()-1) ; ++i)
+    for(UInt i=0; i < (nPoints-1) ; ++i)
         area += points[i].x() * points[i+1].y() - points[i].y() * points[i+1].x();
 
-    area += points[M_idVertex.size()-1].x() * points[0].y() - points[M_idVertex.size()-1].y() * points[0].x();
+    area += points[nPoints-1].x() * points[0].y() - points[nPoints-1].y() * points[0].x();
 
     return std::fabs(area)/2;
 }
 
 void Mesh3D::Facet3D::computeCentroid()
 {
-    UInt N = M_idVertex.size();
+    UInt N = M_vertexIds.size();
     Real tmpArea, totArea = 0.;
 
     for (UInt j = 1; j < N-1; ++j)
     {
-        tmpArea = triangleArea( M_mesh->getNodesVector()[M_idVertex[0]],
-                                M_mesh->getNodesVector()[M_idVertex[j]],
-                                M_mesh->getNodesVector()[M_idVertex[j+1]]);
+        tmpArea = triangleArea( M_mesh->getNodesVector()[M_vertexIds[0]],
+                                M_mesh->getNodesVector()[M_vertexIds[j]],
+                                M_mesh->getNodesVector()[M_vertexIds[j+1]]);
         totArea += tmpArea;
-        M_centroid += tmpArea * (   M_mesh->getNodesVector()[M_idVertex[0]] +
-                                        M_mesh->getNodesVector()[M_idVertex[j]] +
-                                        M_mesh->getNodesVector()[M_idVertex[j+1]]
+        M_centroid += tmpArea * (   M_mesh->getNodesVector()[M_vertexIds[0]] +
+                                        M_mesh->getNodesVector()[M_vertexIds[j]] +
+                                        M_mesh->getNodesVector()[M_vertexIds[j+1]]
                                     ) / 3.;
     }
 
@@ -96,9 +99,9 @@ void Mesh3D::Facet3D::showMe(std::ostream  & out) const
     out << "Type = Facet3D :";
     out << "M_mesh = " << M_mesh << std::endl;
     out << "  ->" << std::endl;
-    for(UInt i=0; i<M_idVertex.size(); ++i)
+    for(UInt i=0; i<M_vertexIds.size(); ++i)
     {
-        out << "    M_idP["<<i<<"] = " << M_idVertex[i] << std::endl;
+        out << "    M_idP["<<i<<"] = " << M_vertexIds[i] << std::endl;
     }
     out << "  -> M_separatedCells : size = " << M_separatedCells.size();
     out << "    [ ";
@@ -125,24 +128,25 @@ Mesh3D::Cell3D::Cell3D() :
         M_mesh(0), M_volume(0.), M_zone(0) {}
 
 Mesh3D::Cell3D::Cell3D(const Cell3D & cell) :
-        M_mesh(cell.getMesh()), M_idVertexes(cell.getVertexesVector()),
-        M_idFacets(cell.getFacetsSet()), M_idNeighbors(cell.getNeighborsSet()),
+        M_mesh(cell.getMesh()), M_vertexIds(cell.getVerticesVector()),
+        M_facetIds(cell.getFacetsSet()), M_neighborIds(cell.getNeighborsSet()),
         M_centroid(cell.getCentroid()),
         M_volume(cell.volume()), M_zone(cell.getZoneCode()) {}
 
-Mesh3D::Cell3D::Cell3D( const Geometry::Mesh3D * mesh, const std::vector<UInt> & facets, const UInt zone ) :
-        M_mesh(mesh), M_idFacets(facets.begin(), facets.end()), M_zone(zone)
+Mesh3D::Cell3D::Cell3D( const Mesh3D * mesh, const std::vector<UInt> & facets, const UInt zone ) :
+        M_mesh(mesh), M_facetIds(facets.begin(), facets.end()), M_zone(zone)
 {
-    Facet3D f;
-
-    for(std::set<UInt>::const_iterator it=M_idFacets.begin(); it != M_idFacets.end(); ++it){
-        f = M_mesh->getFacetsMap().at(*it);
-        for(UInt j=0; j<f.getNumberOfPoints(); ++j)
-            M_idVertexes.push_back(f.getIdVertex(j));
+    for(std::set<UInt>::const_iterator it=M_facetIds.begin(); it != M_facetIds.end(); ++it)
+    {
+    	const Facet3D & f = M_mesh->getFacetsMap().at(*it);
+    	const UInt N = f.getNumberOfVertices();
+    	M_vertexIds.reserve(N);
+        for(UInt j=0; j<N; ++j)
+        	M_vertexIds.push_back(f.getVertexId(j));
     }
 
-    sort(M_idVertexes.begin(), M_idVertexes.end());
-    M_idVertexes.erase( unique( M_idVertexes.begin(), M_idVertexes.end() ), M_idVertexes.end() );
+    sort(M_vertexIds.begin(), M_vertexIds.end());
+    M_vertexIds.erase( unique( M_vertexIds.begin(), M_vertexIds.end() ), M_vertexIds.end() );
 
     computeVolumeAndCentroid();
 }
@@ -150,15 +154,14 @@ Mesh3D::Cell3D::Cell3D( const Geometry::Mesh3D * mesh, const std::vector<UInt> &
 // ==================================================
 // Methods
 // ==================================================
-Geometry::Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
+Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
 {
     bool found(false);
     Point3D normal(0., 0., 0.), v_centr;
     Facet3D facet;
 
     // control that facetId is a facet of this cell
-    for( std::set<UInt>::const_iterator it = M_idFacets.begin();
-            it != M_idFacets.end(); ++it )
+    for( std::set<UInt>::const_iterator it = M_facetIds.begin(); it != M_facetIds.end(); ++it )
     {
         if( *it == facetId )
             found = true;
@@ -181,14 +184,13 @@ Geometry::Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
         return -normal;
 
     return normal;
-
 }
 
 bool Mesh3D::Cell3D::hasNeighborsThroughFacet( const UInt & facetId, UInt & idNeighbor) const
 {
     bool found(false);
 
-    for( std::set<UInt>::const_iterator it = M_idNeighbors.begin(); it != M_idNeighbors.end(); ++it )
+    for( std::set<UInt>::const_iterator it = M_neighborIds.begin(); it != M_neighborIds.end(); ++it )
     {
         if( std::find( M_mesh->getCellsMap().at(*it).getFacetsSet().begin(), M_mesh->getCellsMap().at(*it).getFacetsSet().end(), facetId )
             != M_mesh->getCellsMap().at(*it).getFacetsSet().end() )
@@ -208,7 +210,7 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
     std::vector< std::vector<UInt> > facets;
     std::map<UInt, UInt> globalToLocal;
 
-    const UInt nNodes = vertexesNumber();
+    const UInt nNodes = verticesNumber();
     const UInt nFacets = facetsNumber();
     UInt nodesFacet, i, j;
     std::set<UInt>::iterator it;
@@ -218,16 +220,16 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
 
     for(i=0; i < nNodes; ++i)
     {
-        nodes[i] = M_mesh->getNodesVector()[M_idVertexes[i]];
-        globalToLocal.insert(std::make_pair(M_idVertexes[i], i));
+        nodes[i] = M_mesh->getNodesVector()[M_vertexIds[i]];
+        globalToLocal.insert(std::make_pair(M_vertexIds[i], i));
     }
 
-    for(i=0, it=M_idFacets.begin(); it != M_idFacets.end(); ++i, ++it)
+    for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
     {
-        nodesFacet = M_mesh->getFacetsMap().at(*it).getNumberOfPoints();
+        nodesFacet = M_mesh->getFacetsMap().at(*it).getNumberOfVertices();
         facets[i].resize(nodesFacet);
         for(j=0; j < nodesFacet; ++j)
-            facets[i][j] = globalToLocal[ M_mesh->getFacetsMap().at(*it).getVertexesVector()[j] ];
+            facets[i][j] = globalToLocal[ M_mesh->getFacetsMap().at(*it).getVerticesVector()[j] ];
     }
 
     TetGenWrapper TG(nodes, facets);
@@ -240,12 +242,12 @@ void Mesh3D::Cell3D::showMe(std::ostream & out) const
 {
     out << "Type = Cell3D :";
     out << " M_mesh : " << M_mesh << std::endl;
-    out << "  -> M_idVertexes : size = " << M_idVertexes.size() << std::endl;
-    for( std::vector<UInt>::const_iterator it = M_idVertexes.begin(); it != M_idVertexes.end(); ++it )
-        out << "    IdVertexes = "<< *it << std::endl;
-    out << "  -> M_idFacets : size = " << M_idFacets.size() << std::endl;
-    for( std::set<UInt>::const_iterator it = M_idFacets.begin(); it != M_idFacets.end(); ++it )
-        out << "    IdFacets = "<< *it << std::endl;
+    out << "  -> M_vertexIds : size = " << M_vertexIds.size() << std::endl;
+    for( std::vector<UInt>::const_iterator it = M_vertexIds.begin(); it != M_vertexIds.end(); ++it )
+        out << "    VertexId = "<< *it << std::endl;
+    out << "  -> M_facetIds : size = " << M_facetIds.size() << std::endl;
+    for( std::set<UInt>::const_iterator it = M_facetIds.begin(); it != M_facetIds.end(); ++it )
+        out << "    FacetId = "<< *it << std::endl;
 }
 
 
@@ -257,11 +259,9 @@ void Mesh3D::Cell3D::showMe(std::ostream & out) const
 Mesh3D::Mesh3D():
         M_fn(*this) {}
 
-Mesh3D::Mesh3D(const Geometry::Mesh3D & mesh):
-        M_fn(mesh.getFn()), M_nodes(mesh.getNodesVector()),
+Mesh3D::Mesh3D(const Mesh3D & mesh):
+        M_fn(mesh.getFN()), M_nodes(mesh.getNodesVector()),
         M_facets(mesh.getFacetsMap()), M_cells(mesh.getCellsMap()) {}
-
-Mesh3D::~Mesh3D() {}
 
 void Mesh3D::updateFacetsWithFractures()
 {
@@ -299,7 +299,7 @@ void Mesh3D::buildNodesToFacetMap()
 
     for(itF = M_facets.begin(); itF != M_facets.end(); ++itF)
     {
-        nodes = itF->second.getVertexesVector();
+        nodes = itF->second.getVerticesVector();
         sort(nodes.begin(), nodes.end());
         M_nodesToFacet.insert( std::pair<std::vector<UInt>, UInt>(nodes, itF->first) );
     }
@@ -322,7 +322,7 @@ UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
             found = true;
             idFacet = itF->first;
             facetsIds.clear();
-            facetsIds.insert(itF->second.getVertexesVector().begin(), itF->second.getVertexesVector().end());
+            facetsIds.insert(itF->second.getVerticesVector().begin(), itF->second.getVerticesVector().end());
             for(it = facetsIds.begin(), it2 = nodesIds.begin(); it != facetsIds.end(); ++it, ++it2)
             {
                 if( *it != *it2 )
@@ -355,7 +355,7 @@ UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
     return idFacet;
 }
 
-bool Mesh3D::exportVtu(const std::string & filename) const
+bool Mesh3D::exportVTU(const std::string & filename) const
 {
     std::fstream filestr;
 
@@ -378,7 +378,7 @@ bool Mesh3D::exportVtu(const std::string & filename) const
     UInt nVal = 0, offsets = 0, faceOffsets = 0;
 
     for( std::map<UInt,Cell3D>::const_iterator it = M_cells.begin(); it != M_cells.end(); ++it )
-        nVal += it->second.vertexesNumber() + 1;
+        nVal += it->second.verticesNumber() + 1;
 
     // Header
     filestr << "<?xml version=\"1.0\"?>" << std::endl;
@@ -400,7 +400,7 @@ bool Mesh3D::exportVtu(const std::string & filename) const
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
-    for( std::vector<Geometry::Point3D>::const_iterator it = M_nodes.begin(); it != M_nodes.end(); ++it )
+    for( std::vector<Point3D>::const_iterator it = M_nodes.begin(); it != M_nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -411,9 +411,9 @@ bool Mesh3D::exportVtu(const std::string & filename) const
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = M_cells.begin(); it != M_cells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = it->second.getVertexesVector().begin(); jt != it->second.getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = it->second.getVerticesVector().begin(); jt != it->second.getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(it->second.getVertexesVector().rbegin()) << std::endl;
+        filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -421,7 +421,7 @@ bool Mesh3D::exportVtu(const std::string & filename) const
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::map<UInt,Cell3D>::const_iterator it = M_cells.begin(); it != M_cells.end(); ++it )
     {
-        offsets += it->second.vertexesNumber();
+        offsets += it->second.verticesNumber();
         filestr << offsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -439,10 +439,10 @@ bool Mesh3D::exportVtu(const std::string & filename) const
         filestr << it->second.facetsNumber() << std::endl;
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
         {
-            filestr << M_facets.at(*jt).getNumberOfPoints() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = M_facets.at(*jt).getVertexesVector().begin(); kt != M_facets.at(*jt).getVertexesVector().end()-1; ++kt )
+            filestr << M_facets.at(*jt).getNumberOfVertices() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = M_facets.at(*jt).getVerticesVector().begin(); kt != M_facets.at(*jt).getVerticesVector().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(M_facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(M_facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -453,7 +453,7 @@ bool Mesh3D::exportVtu(const std::string & filename) const
     {
         faceOffsets += 1 + it->second.facetsNumber();
         for( std::set<UInt>::const_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.getFacetsSet().end(); ++jt )
-            faceOffsets += M_facets.at(*jt).getNumberOfPoints();
+            faceOffsets += M_facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -468,7 +468,7 @@ bool Mesh3D::exportVtu(const std::string & filename) const
     return true;
 }
 
-bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt> & idCells) const
+bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const
 {
     std::fstream filestr;
 
@@ -491,7 +491,7 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
     UInt offsets = 0, faceOffsets = 0;
 
     for( std::vector<UInt>::const_iterator it = idCells.begin(); it != idCells.end(); ++it )
-        nPoints += M_cells.at(*it).vertexesNumber();
+        nPoints += M_cells.at(*it).verticesNumber();
 
     // Header
     filestr << "<?xml version=\"1.0\"?>" << std::endl;
@@ -514,7 +514,7 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
     filestr << "\t\t\t<Points>" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<UInt>::const_iterator it = idCells.begin(); it != idCells.end(); ++it )
-        for( std::vector<UInt>::const_iterator jt = M_cells.at(*it).getVertexesVector().begin(); jt != M_cells.at(*it).getVertexesVector().end(); ++jt)
+        for( std::vector<UInt>::const_iterator jt = M_cells.at(*it).getVerticesVector().begin(); jt != M_cells.at(*it).getVerticesVector().end(); ++jt)
             filestr << M_nodes[*jt].x() << " " << M_nodes[*jt].y() << " " << M_nodes[*jt].z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</Points>" << std::endl;
@@ -525,9 +525,9 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
     for( std::vector<UInt>::const_iterator it = idCells.begin(); it != idCells.end(); ++it )
     {
-        for( std::vector<UInt>::const_iterator jt = M_cells.at(*it).getVertexesVector().begin(); jt != M_cells.at(*it).getVertexesVector().end()-1; ++jt )
+        for( std::vector<UInt>::const_iterator jt = M_cells.at(*it).getVerticesVector().begin(); jt != M_cells.at(*it).getVerticesVector().end()-1; ++jt )
             filestr << *jt << " ";
-        filestr << *(M_cells.at(*it).getVertexesVector().rbegin()) << std::endl;
+        filestr << *(M_cells.at(*it).getVerticesVector().rbegin()) << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
@@ -535,7 +535,7 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
     for( std::vector<UInt>::const_iterator it = idCells.begin(); it != idCells.end(); ++it )
     {
-        offsets += M_cells.at(*it).vertexesNumber();
+        offsets += M_cells.at(*it).verticesNumber();
         filestr << offsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -553,10 +553,10 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
         filestr << M_cells.at(*it).facetsNumber() << std::endl;
         for( std::set<UInt>::const_iterator jt = M_cells.at(*it).getFacetsSet().begin(); jt != M_cells.at(*it).getFacetsSet().end(); ++jt )
         {
-            filestr << M_facets.at(*jt).getNumberOfPoints() << std::endl;
-            for( std::vector<UInt>::const_iterator kt = M_facets.at(*jt).getVertexesVector().begin(); kt != M_facets.at(*jt).getVertexesVector().end()-1; ++kt )
+            filestr << M_facets.at(*jt).getNumberOfVertices() << std::endl;
+            for( std::vector<UInt>::const_iterator kt = M_facets.at(*jt).getVerticesVector().begin(); kt != M_facets.at(*jt).getVerticesVector().end()-1; ++kt )
                 filestr << *kt << " ";
-            filestr << *(M_facets.at(*jt).getVertexesVector().rbegin()) << std::endl;
+            filestr << *(M_facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
         }
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -567,7 +567,7 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
     {
         faceOffsets += 1 + M_cells.at(*it).facetsNumber();
         for( std::set<UInt>::const_iterator jt = M_cells.at(*it).getFacetsSet().begin(); jt != M_cells.at(*it).getFacetsSet().end(); ++jt )
-            faceOffsets += M_facets.at(*jt).getNumberOfPoints();
+            faceOffsets += M_facets.at(*jt).getNumberOfVertices();
         filestr << faceOffsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -582,41 +582,40 @@ bool Mesh3D::exportCellsVtu(const std::string & filename, const std::vector<UInt
     return true;
 }
 
-bool Mesh3D::exportFractureNetworkVtk(const std::string & filename) const
+bool Mesh3D::exportFractureNetworkVTK(const std::string & filename) const
 {
-    return M_fn.exportNetworkVtk(filename);
+    return M_fn.exportNetworkVTK(filename);
 }
 
-bool Mesh3D::exportFractureVtk( const std::string & filename, const UInt & f) const
+bool Mesh3D::exportFractureVTK( const std::string & filename, const UInt & f) const
 {
-    return M_fn.getFracture(f).exportVtk(filename);
+    return M_fn.getFracture(f).exportVTK(filename);
 }
 
 
 // --------------------   Overloading operator< (for Facet3D)  --------------------
 
-bool operator<(const Geometry::Mesh3D::Facet3D & f1, const Geometry::Mesh3D::Facet3D & f2)
+bool operator<(const Mesh3D::Facet3D & f1, const Mesh3D::Facet3D & f2)
 {
-    bool res(false);
     std::vector<UInt> idF1, idF2;
     UInt sizeF1, sizeF2, minSize;
 
-    idF1 = f1.getVertexesVector();
+    idF1 = f1.getVerticesVector();
     std::sort(idF1.begin(), idF1.end());
-    idF2 = f2.getVertexesVector();
+    idF2 = f2.getVerticesVector();
     std::sort(idF2.begin(), idF2.end());
     sizeF1 = idF1.size();
     sizeF2 = idF2.size();
     minSize = std::min(sizeF1,sizeF2);
     for(UInt i=0; i<minSize; ++i)
     {
-        if(idF1[i]<idF2[i])
+        if(idF1[i] < idF2[i])
             return true;
-        if(idF1[i]>idF2[i])
+        if(idF1[i] > idF2[i])
             return false;
     }
 
     return sizeF1<sizeF2;
 }
 
-} // namespace Geometry
+} // namespace FVCode3D
