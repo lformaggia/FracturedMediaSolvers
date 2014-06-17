@@ -39,7 +39,7 @@ bool FractureNetwork3D::exportVTK(const std::string & prefixFileName) const
     {
         std::stringstream vtkFileName;
         vtkFileName << prefixFileName << i << ".vtk";
-		status = M_fractureNetwork[i].exportVtk(vtkFileName.str());
+		status = M_fractureNetwork[i].exportVTK(vtkFileName.str());
     }
 
 	return status;

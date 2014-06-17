@@ -82,7 +82,7 @@ endif()
 set(TPL_Eigen_DIR "" CACHE PATH "Eigen installation base directory")
 set(CMAKE_PREFIX_PATH ${TPL_Eigen_DIR})
 find_package(Eigen3 QUIET)
-if(NOT EIGEN3_FOUND QUIET)
+if(NOT EIGEN3_FOUND)
     message(FATAL_ERROR "Eigen not found. Try setting TPL_Eigen_DIR to the installation path of Eigen")
 endif()
 # BLAS
