@@ -185,6 +185,30 @@ public:
      */
     Real getPressuresInFractures() const { return M_fracturesPressure; }
 
+    //! Test if the multiple sub-regions method is activated or not
+    /*!
+     * @return if true the multiple sub-regions method is activated
+     */
+    bool MSROn() const { return M_nbSubRegions; }
+
+    //! Get the number of sub-regions
+    /*!
+     * @return the number of sub-regions
+     */
+    UInt nbSubRegions() const { return M_nbSubRegions; }
+
+    //! Get the number of time step to check for the steady state
+    /*!
+     * @return the number of time step to check for the steady state
+     */
+    UInt nbTimeStepSteadyState() const { return M_nbTimeStepSteadyState; }
+
+    //! Get the tolerance to consider a time step at the steady state
+    /*!
+     * @return the tolerance to consider a time step at the steady state
+     */
+    Real tolSteadyState() const { return M_tolSteadyState; }
+
     //! Get the permeability in the porous medium
     /*!
      * @return the permeability in the porous medium
@@ -366,6 +390,30 @@ public:
      */
     void setPressuresInFractures(const Real press) { M_fracturesPressure = press; }
 
+    //! Enable or disable the the multiple sub-regions method
+    /*!
+     * @param msr if true the multiple sub-regions method is activated
+     */
+    void MSROn(bool msr) { M_MSR = msr; }
+
+    //! Set the number of sub-regions
+    /*!
+     * @param nSubReg the number of sub-regions
+     */
+    void setNbSubRegions(const UInt nSubReg) { M_nbSubRegions = nSubReg; }
+
+    //! Set the number of time step to check for the steady state
+    /*!
+     * @param nTimeStep the number of time step to check for the steady state
+     */
+    void setNbTimeStepSteadyState(const UInt nTimeStep ) { M_nbTimeStepSteadyState = nTimeStep; }
+
+    //! Set the tolerance to consider a time step at the steady state
+    /*!
+     * @param tol the tolerance to consider a time step at the steady state
+     */
+    void tolSteadyState(const Real tol) { M_tolSteadyState = tol; }
+
     //! Set the permeability in the porous medium
     /*!
      * @param perm the permeability in the porous medium
@@ -485,6 +533,14 @@ protected:
     bool M_setFracturesPressure;
     //! Pressure value inside the fractures
     Real M_fracturesPressure;
+    //! Multiple sub-regions on?
+    bool M_MSR;
+    //! Number of sub-regions
+    UInt M_nbSubRegions;
+    //! Number of time step to check for the steady state
+    UInt M_nbTimeStepSteadyState;
+    //! Tolerance to consider a time step at the steady state
+    Real M_tolSteadyState;
     //! Permeability in the porous medium
     Real M_permMatrix;
     //! Porosity in the porous medium

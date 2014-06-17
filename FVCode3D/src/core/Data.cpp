@@ -14,6 +14,8 @@ Data::Data():
 	M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
 	M_problemType(steady), M_fracturesOn(true), M_ssOn(None),
 	M_setFracturesPressure(false), M_fracturesPressure(0.),
+	M_MSR(false), M_nbSubRegions(1),
+	M_nbTimeStepSteadyState(0), M_tolSteadyState(1e-8),
 	M_permMatrix(0.), M_poroMatrix(0.),
 	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
 	M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
@@ -49,6 +51,11 @@ Data::Data(const std::string dataFileName)
 
 	M_setFracturesPressure = static_cast<bool>(dataFile("problem/fracPressOn", 0));;
 	M_fracturesPressure = dataFile("problem/fracPress", 0.);
+
+	M_MSR = static_cast<bool>(dataFile("msr/MSROn", 0));
+    M_nbSubRegions = dataFile("msr/nbSubRegions", 1 );
+    M_nbTimeStepSteadyState = dataFile("msr/nbStep", 0 );
+    M_tolSteadyState = dataFile("msr/tol", 1e-8 );
 
 	M_permMatrix = dataFile("problem/perm_matrix", 1e2);
 	M_poroMatrix = dataFile("problem/poro_matrix", 0.25);
@@ -165,17 +172,25 @@ void Data::showMe( std::ostream & output ) const
 		output << "Fractures pressure: " << M_fracturesPressure << std::endl;
 	}
 
+	output << "MSR On: " << M_MSR << std::endl;
+
 	if(M_problemType == pseudoSteady)
 	{
 		output << "Initial time: " << M_initTime << std::endl;
 		output << "End time: " << M_endTime << std::endl;
 		output << "Time step: " << M_timeStep << std::endl;
+
+		output << "Compressibility: " << M_compressibility << std::endl;
+
+		if(M_MSR)
+		{
+			output << "# sub regions: " << M_nbSubRegions << std::endl;
+			output << "# time step: " << M_nbTimeStepSteadyState << std::endl;
+			output << "Tolerance : " << M_tolSteadyState << std::endl;
+		}
 	}
 
 	output << "Mobility: " << M_mobility << std::endl;
-
-	if(M_problemType == pseudoSteady)
-		output << "Compressibility: " << M_compressibility << std::endl;
 
 	output << "Theta: " << M_theta << std::endl;
 
