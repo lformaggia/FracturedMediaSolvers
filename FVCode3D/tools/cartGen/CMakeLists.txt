@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 add_executable(cartGen.exe cartGen )
-target_link_libraries( cartGen.exe fvcode tet )
+target_link_libraries( cartGen.exe fvcode3d tet )
 
 # Add data file
 add_custom_command(

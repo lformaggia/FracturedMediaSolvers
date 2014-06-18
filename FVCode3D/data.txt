@@ -4,35 +4,35 @@
 
 ## input
 [mesh]
-mesh_dir	= ./data/
-mesh_file	= cartBC1.fvg
-mesh_type	= .fvg		# .grid or .fvg or .mesh
+mesh_dir    = ./data/
+mesh_file   = tetraBC1.fvg
+mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
 [output]
-output_dir	= ./results/
-output_file	= sol
+output_dir  = ./results/
+output_file = sol
 
 ## problem parameter
 [problem]
-type		= steady	# steady or pseudoSteady 
-fracturesOn	= 0		# 1 enable fractures, 0 disable fractures
-sourceOn	= none		# all, matrix, fractures, none
-fracPressOn	= 0		# 1 set pressure inside fracture, 0 otherwise
-fracPress	= 1.
-initial_time	= 0.
-end_time	= 2.e6
-time_step	= 1.e5
+type        = steady    # steady or pseudoSteady
+fracturesOn = 1     # 1 enable fractures, 0 disable fractures
+sourceOn    = none      # all, matrix, fractures, none
+fracPressOn = 0     # 1 set pressure inside fracture, 0 otherwise
+fracPress   = 1.
+initial_time    = 0.
+end_time    = 2.e6
+time_step   = 1.e5
 
 ## fluid parameters
 [fluid]
-mobility	= 1.
-compressibility	= 1.
+mobility    = 1.
+compressibility = 1.
 
 ## boundary conditions
 [bc]
-theta		= 0.
+theta       = 0.
 
 ## Other
 [miscellaneous]
-verbose		= 1
+verbose     = 1

@@ -5,7 +5,7 @@
 
 #include "property/Permeability.hpp"
 
-namespace Geometry
+namespace FVCode3D
 {
 
 Point3D operator*(const Point3D & vector, const PermeabilityBase & tensor)
@@ -230,4 +230,4 @@ Point3D operator*(const PermeabilityFullTensor & tensor, const Point3D & vector)
 	return Point3D(x, y, z);
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

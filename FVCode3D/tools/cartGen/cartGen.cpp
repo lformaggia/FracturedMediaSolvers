@@ -6,13 +6,15 @@
 #include <fstream>
 
 #include "core/TypeDefinition.hpp"
-#include "core/data.hpp"
+#include "core/Data.hpp"
 #include "mesh/Mesh3D.hpp"
 #include "property/Properties.hpp"
-#include "mesh/cartesianGrid.hpp"
-#include "import/import.hpp"
-#include "export/exportVTU.hpp"
-#include "utility/converter.hpp"
+#include "mesh/CartesianGrid.hpp"
+#include "import/Import.hpp"
+#include "export/ExportVTU.hpp"
+#include "utility/Converter.hpp"
+
+using namespace FVCode3D;
 
 int main(int argc, char * argv[])
 {
@@ -29,8 +31,8 @@ int main(int argc, char * argv[])
 	std::cout << std::endl;
 
 	std::cout << "Define Mesh and Properties..." << std::flush;
-	Geometry::Mesh3D mesh;
-	Geometry::PropertiesMap propMap(data.getMobility());
+	Mesh3D mesh;
+	PropertiesMap propMap(data.getMobility());
 	std::cout << " done." << std::endl;
 
 	std::cout << "Generate Cartesian grid..." << std::flush;
@@ -57,9 +59,9 @@ int main(int argc, char * argv[])
 	// Example:
 	std::map<UInt,UInt> facetIdToZone;
 	/*
-	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt,Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
-		Geometry::Point3D centroid = it->second.getCentroid();
+		Point3D centroid = it->second.getCentroid();
 		// along x
 		for(Real thresh = 0.1; thresh<2 ; thresh+=0.1)
 		{
@@ -95,9 +97,9 @@ int main(int argc, char * argv[])
 		}
 	}*/
 
-	for(std::map<UInt,Geometry::Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
+	for(std::map<UInt,Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
 	{
-		Geometry::Point3D centroid = it->second.getCentroid();
+		Point3D centroid = it->second.getCentroid();
 		if( centroid[0] >= 0.2 && centroid[0] <= 1.8 &&
 			centroid[2] > 0.2 - 0.01 && centroid[2] < 0.2 + 0.01)
 		{

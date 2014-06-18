@@ -6,25 +6,29 @@
 #include <fstream>
 
 #include "core/TypeDefinition.hpp"
-#include "core/data.hpp"
-#include "mesh/Rigid_Mesh.hpp"
+#include "core/Data.hpp"
+#include "mesh/RigidMesh.hpp"
 #include "property/Properties.hpp"
-#include "mesh/cartesianGrid.hpp"
+#include "mesh/CartesianGrid.hpp"
 #include "boundaryCondition/BC.hpp"
 #include "quadrature/Quadrature.hpp"
-#include "import/import.hpp"
-#include "export/exportVTU.hpp"
-#include "utility/converter.hpp"
-#include "solver/solver.hpp"
-#include "problem/problem.hpp"
-#include "problem/darcySteady.hpp"
-#include "problem/darcyPseudoSteady.hpp"
-#include "assembler/fixPressureDofs.hpp"
+#include "import/Import.hpp"
+#include "export/ExportVTU.hpp"
+#include "utility/Converter.hpp"
+#include "solver/Solver.hpp"
+#include "problem/Problem.hpp"
+#include "problem/DarcySteady.hpp"
+#include "problem/DarcyPseudoSteady.hpp"
+#include "assembler/FixPressureDofs.hpp"
 #include "functions.hpp"
 
-typedef Problem<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> Pb;
-typedef DarcySteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<EigenUmfPack, CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
+using namespace FVCode3D;
+
+typedef EigenUmfPack SolverType;
+
+typedef Problem<SolverType, CentroidQuadrature, CentroidQuadrature> Pb;
+typedef DarcySteady<SolverType, CentroidQuadrature, CentroidQuadrature> DarcyPb;
+typedef DarcyPseudoSteady<SolverType, CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -44,8 +48,8 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Define Mesh and Properties..." << std::flush;
-	Geometry::Mesh3D mesh;
-	Geometry::PropertiesMap propMap(dataPtr->getMobility(), dataPtr->getCompressibility());
+	Mesh3D mesh;
+	PropertiesMap propMap(dataPtr->getMobility(), dataPtr->getCompressibility());
 	std::cout << " done." << std::endl;
 
 
@@ -138,7 +142,7 @@ int main(int argc, char * argv[])
 
 
 	std::cout << "Assemble rigid mesh..." << std::flush;
-	Geometry::Rigid_Mesh myrmesh(mesh, propMap);
+	Rigid_Mesh myrmesh(mesh, propMap);
 	std::cout << " done." << std::endl << std::endl;
 
 	myrmesh.showMe();
@@ -149,6 +153,8 @@ int main(int argc, char * argv[])
 	std::cout << "Export Fracture Junctures & Tips..." << std::flush;
 	exporter.exportFractureJunctures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_junc.vtu");
 	exporter.exportFractureTips(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tips.vtu");
+	exporter.exportEdges(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_edges.vtu");
+	exporter.exportFacets(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_facets.vtu");
 	std::cout << " done." << std::endl << std::endl;
 
 	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;

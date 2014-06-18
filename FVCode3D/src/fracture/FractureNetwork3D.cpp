@@ -7,52 +7,51 @@
 #include "mesh/Mesh3D.hpp"
 #include "fracture/Fracture3D.hpp"
 
-#include <boost/lexical_cast.hpp>
-
 #include <fstream>
 #include <limits>
 #include <cstring>
 
-namespace Geometry{
+namespace FVCode3D
+{
 
-FractureNetwork3D::FractureNetwork3D(const Geometry::Mesh3D & mesh):
+FractureNetwork3D::FractureNetwork3D(const Mesh3D & mesh):
 		M_mesh(mesh) {}
 
-FractureNetwork3D::FractureNetwork3D(const Geometry::FractureNetwork3D & fn):
+FractureNetwork3D::FractureNetwork3D(const FractureNetwork3D & fn):
 		M_fractureNetwork(fn.getNetwork()), M_mesh(fn.getMesh()) {}
 
-FractureNetwork3D::FractureNetwork3D(const Geometry::Mesh3D & mesh, const std::vector<Geometry::Fracture3D> & fractures):
+FractureNetwork3D::FractureNetwork3D(const Mesh3D & mesh, const std::vector<Fracture3D> & fractures):
 		M_fractureNetwork(fractures), M_mesh(mesh) {}
 
-FractureNetwork3D::~FractureNetwork3D() {}
-
-void FractureNetwork3D::addFractures(std::vector<Geometry::Fracture3D> & fractures)
+void FractureNetwork3D::addFractures(std::vector<Fracture3D> & fractures)
 {
 	M_fractureNetwork.clear();
 	std::move(fractures.begin(), fractures.end(), std::back_inserter(M_fractureNetwork));
 	fractures.erase(fractures.begin(), fractures.end());
 }
 
-bool FractureNetwork3D::exportVtk(const std::string & prefixFileName) const
+bool FractureNetwork3D::exportVTK(const std::string & prefixFileName) const
 {
 	const UInt nFN = M_fractureNetwork.size();
 	bool status = true;
 
 	for( UInt i=0; i < nFN && status; ++i)
-		status = M_fractureNetwork[i].exportVtk(prefixFileName +
-				boost::lexical_cast<std::string>(i) +
-				".vtk" );
+    {
+        std::stringstream vtkFileName;
+        vtkFileName << prefixFileName << i << ".vtk";
+		status = M_fractureNetwork[i].exportVTK(vtkFileName.str());
+    }
 
 	return status;
 }
 
-bool FractureNetwork3D::exportNetworkVtk(const std::string & filename) const
+bool FractureNetwork3D::exportNetworkVTK(const std::string & filename) const
 {
 	const UInt nFN = M_fractureNetwork.size();
 	bool status = true;
 
 	for(UInt i=0; i < nFN && status; ++i)
-		status = M_fractureNetwork[i].exportVtk(filename);
+		status = M_fractureNetwork[i].exportVTK(filename);
 
 	return status;
 }
@@ -72,4 +71,4 @@ void FractureNetwork3D::showMe(std::ostream & out) const
 	out << std::endl;
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

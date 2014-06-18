@@ -4,6 +4,7 @@
 
 # Considering the modules from the Mattia setting
 export mkPrefix="/u/geo2/sw"
+export IS_MOX="true"
 source ${mkPrefix}/System/mkConfig.sh
 
 # Load the needed modules

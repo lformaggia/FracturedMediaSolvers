@@ -14,6 +14,9 @@
 #include "core/TypeDefinition.hpp"
 #include "quadrature/QuadratureRules.hpp"
 
+namespace FVCode3D
+{
+
 class Rigid_mesh;
 class PropertiesMap;
 
@@ -26,33 +29,34 @@ class PropertiesMap;
 */
 class Quadrature
 {
-
-	typedef Geometry::Point3D Generic_Point;
-	typedef Geometry::Point3D Generic_Vector;
-	typedef std::pair<UInt,UInt> Fracture_Juncture;
+	//! Typedef for QuadratureRule::QuadratureRuleHandler
+	/*!
+	 * @typedef QR_Handler
+   	 * This type definition permits to handle a QuadratureRule::QuadratureRuleHandler as a QR_Handler.
+	 */
 	typedef QuadratureRule::QuadratureRuleHandler QR_Handler;
 
 public:
 	//! @name Constructor & Destructor
 	//@{
-	//! Constructor for Quadrature, given a Geometry::Rigid_Mesh.
+	//! Constructor for Quadrature, given a Rigid_Mesh.
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh on which we want to integrate
+		@param rigid_mesh A Rigid_Mesh on which we want to integrate
 	*/
-	Quadrature (const Geometry::Rigid_Mesh & rigid_mesh);
-	//! Constructor for Quadrature, given a Geometry::Rigid_Mesh and a QuadratureRule
+	Quadrature (const Rigid_Mesh & rigid_mesh);
+	//! Constructor for Quadrature, given a Rigid_Mesh and a QuadratureRule
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh on which we want to integrate
-		@param quadrature A Darcy::QuadratureRule we want to use in order to integrate a function
+		@param rigid_mesh A Rigid_Mesh on which we want to integrate
+		@param quadrature A QuadratureRule we want to use in order to integrate a function
 	*/
-	Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature);
-	//! Constructor for Quadrature, given a Geometry::Rigid_Mesh, a QuadratureRule, and a QuadratureRule to integrate fractures
+	Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature);
+	//! Constructor for Quadrature, given a Rigid_Mesh, a QuadratureRule, and a QuadratureRule to integrate fractures
 	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh on which we want to integrate
-		@param quadrature A Darcy::QuadratureRule we want to use in order to integrate a function
-		@param fracturequadrature A Darcy::QuadratureRule we want to use in order to integrate a function on fractures
+		@param rigid_mesh A Rigid_Mesh on which we want to integrate
+		@param quadrature A QuadratureRule we want to use in order to integrate a function
+		@param fracturequadrature A QuadratureRule we want to use in order to integrate a function on fractures
 	*/
-	Quadrature (const Geometry::Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature, const QuadratureRule & fracturequadrature);
+	Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & quadrature, const QuadratureRule & fracturequadrature);
 	//@}
 
 	//! @name Methods
@@ -63,13 +67,13 @@ public:
 		@param Integrand A std::function which returns a scalar
 	 	@return The integral of the considered Integrand function
 	 */
-	Real Integrate (const std::function<Real(Generic_Point)> & Integrand);
+	Real integrate (const std::function<Real(Point3D)> & integrand);
 	//! Integrate a function and return the integral cell by cell
 	/*!
 		@param Integrand A function which returns a scalar
 	 	@return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell 
 	 */
-	Vector CellIntegrate (const std::function<Real(Generic_Point)> & func);
+	Vector cellIntegrate (const std::function<Real(Point3D)> & func);
     //! Integrate a function and return the integral cell by cell, only in the porous matrix
     /*!
         @param Integrand A function which returns a scalar
@@ -77,7 +81,7 @@ public:
         of the porous matrix
         @note The vector contains all the problem entries, fractures included which are zero
      */
-    Vector CellIntegrateMatrix (const std::function<Real(Generic_Point)> & func);
+    Vector cellIntegrateMatrix (const std::function<Real(Point3D)> & func);
     //! Integrate a function and return the integral cell by cell, only in the fractures
     /*!
         @param Integrand A function which returns a scalar
@@ -85,19 +89,19 @@ public:
         of the fractures
         @note The vector contains all the problem entries, the entries of the matrix are zero
      */
-    Vector CellIntegrateFractures (const std::function<Real(Generic_Point)> & func);
+    Vector cellIntegrateFractures (const std::function<Real(Point3D)> & func);
 	//! Integrate discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
 	 	@return The integral of the considered Integrand function
 	 */
-	Real Integrate (const Vector & Integrand);
+	Real integrate (const Vector & integrand);
 	//! L2 Norm of a discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
 	 	@return The L2 norm of the considered Integrand function
 	 */
-	Real L2Norm (const Vector & Integrand);
+	Real L2Norm (const Vector & integrand);
 	//@}
 
 	//! @name Get Methods
@@ -105,17 +109,17 @@ public:
 		
 	//! Get Mesh size (const)
 	/*!
-	 * @return The number of the cells in the Geometry::Rigid_Mesh considered
+	 * @return The number of the cells in the Rigid_Mesh considered
 	 */
 	UInt getMeshSize() const
 		{return M_size;}
 	//@}
 
 protected:
-	//! A reference to a Geometry::Rigid_Mesh
-	const Geometry::Rigid_Mesh & M_mesh;
-	//! A reference to a Geometry::PropertiesMap
-	const Geometry::PropertiesMap & M_properties;
+	//! A reference to a Rigid_Mesh
+	const Rigid_Mesh & M_mesh;
+	//! A reference to a PropertiesMap
+	const PropertiesMap & M_properties;
 	//! The number of cells in M_mesh
 	UInt M_size;
 	//! A pointer to a QuadratureRule
@@ -124,4 +128,5 @@ protected:
 	QR_Handler M_fractureQuadrature;
 };
 
+} // namespace FVCode3D
 #endif

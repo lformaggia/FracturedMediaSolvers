@@ -6,20 +6,19 @@
 #include "fracture/Fracture3D.hpp"
 #include "mesh/Mesh3D.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
-Fracture3D::Fracture3D(const Geometry::Mesh3D & mesh):
+Fracture3D::Fracture3D(const Mesh3D & mesh):
 	M_id(0), M_mesh(mesh) {}
 
-Fracture3D::Fracture3D(const Geometry::Fracture3D & f):
+Fracture3D::Fracture3D(const Fracture3D & f):
 	M_id(f.getId()), M_fractureFacets(f.getFractureFacetsId()), M_mesh(f.getMesh()) {}
 
-Fracture3D::Fracture3D(const Geometry::Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id):
+Fracture3D::Fracture3D(const Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id):
 	M_id(id), M_fractureFacets(fractureFacets), M_mesh(mesh) {}
 
-Fracture3D::~Fracture3D() {}
-
-bool Fracture3D::exportVtk(const std::string & filename) const
+bool Fracture3D::exportVTK(const std::string & filename) const
 {
 	// TODO Fare una bool per scegliere se fare out o append?
 
@@ -29,9 +28,9 @@ bool Fracture3D::exportVtk(const std::string & filename) const
 
 	for(UInt i=0; i < nFaces; ++i)
 	{
-		totalNodes += (M_mesh.getFacetsMap()).at(M_fractureFacets[i]).getNumberOfPoints();
-		nodes.insert( M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVertexesVector().begin(), M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVertexesVector().end() );
-		//std::copy( M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVertexesVector().begin(), M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVertexesVector().end(),
+		totalNodes += (M_mesh.getFacetsMap()).at(M_fractureFacets[i]).getNumberOfVertices();
+		nodes.insert( M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVerticesVector().begin(), M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVerticesVector().end() );
+		//std::copy( M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVerticesVector().begin(), M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVerticesVector().end(),
 		//		std::inserter( nodes, nodes.end() ) );
 	}
 
@@ -75,10 +74,10 @@ bool Fracture3D::exportVtk(const std::string & filename) const
 	// Celldata
 	filestr << "CELLS " << nFaces << " " << totalNodes + nFaces << std::endl;
 	for(UInt i=0; i<nFaces; ++i){
-		nNodesFacet = M_mesh.getFacetsMap().at(M_fractureFacets[i]).getNumberOfPoints();
+		nNodesFacet = M_mesh.getFacetsMap().at(M_fractureFacets[i]).getNumberOfVertices();
 		filestr << nNodesFacet;
 		for(UInt j=0; j < nNodesFacet; ++j)
-			filestr << M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVertexesVector()[j];
+			filestr << M_mesh.getFacetsMap().at(M_fractureFacets[i]).getVerticesVector()[j];
 		filestr << std::endl;
 	}
 	filestr << std::endl;
@@ -105,4 +104,4 @@ void Fracture3D::showMe(std::ostream & out) const
 	out << " Physical Properties : " << std::endl;
 }
 
-} // namespace Geometry
+} // namespace FVCode3D

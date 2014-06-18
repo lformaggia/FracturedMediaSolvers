@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 add_executable( convToVTU.exe converterToVTU )
-target_link_libraries( convToVTU.exe fvcode tet )
+target_link_libraries( convToVTU.exe fvcode3d tet )
 
 # Add data file
 add_custom_command(

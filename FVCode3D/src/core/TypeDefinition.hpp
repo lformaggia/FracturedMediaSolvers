@@ -6,11 +6,16 @@
 #ifndef TYPEDEFNITION_HPP_
 #define TYPEDEFNITION_HPP_
 
-#include "core/basic_type.hpp"
+#include "core/BasicType.hpp"
 #include "geometry/Point3D.hpp"
-#include "core/chrono.hpp"
+#include "core/Chrono.hpp"
 #include "GetPot"
 
-typedef	std::function<Real (Geometry::Point3D point)> Func;
+namespace FVCode3D
+{
+
+typedef	std::function<Real (Point3D point)> Func;
+
+} // namespace FVCode3D
 
 #endif /* TYPEDEFNITION_HPP_ */

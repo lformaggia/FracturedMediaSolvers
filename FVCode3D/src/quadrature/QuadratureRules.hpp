@@ -13,20 +13,22 @@
 
 #include "core/TypeDefinition.hpp"
 
+namespace FVCode3D
+{
+
 class Rigid_Mesh;
 
 //! Class that implements a quadrature rule
 /*!
-	@class QuadratureRule
-	This is a base abstract class that implements a quadrature rule.
-*/
+ * @class QuadratureRule
+ * This is a base abstract class that implements a quadrature rule.
+ */
 class QuadratureRule
 {
 public:
 
-	typedef Geometry::Point3D Generic_Point;
-	typedef Geometry::Rigid_Mesh::Cell Cell;
-	typedef Geometry::Rigid_Mesh::Facet Facet;
+	typedef Rigid_Mesh::Cell Cell;
+	typedef Rigid_Mesh::Facet Facet;
 	typedef std::unique_ptr<QuadratureRule> QuadratureRuleHandler;
 
 	//! Clone method for the class
@@ -41,7 +43,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & Integrand) const = 0;
+	virtual Real apply(const Cell & cell, const std::function<Real(Point3D)> & integrand) const = 0;
 
 	//! Method apply for facets
 	/*!
@@ -50,7 +52,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the facet
 	 */
-	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const = 0;
+	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Point3D)> & integrand) const = 0;
 
 	//! Destructor
 	virtual ~QuadratureRule() {};
@@ -58,9 +60,9 @@ public:
 
 //! MidPoint Quadrature rule for a generic polyhedron/polygon
 /*!
-	@class CentroidQuadrature
-	This class is a quadrature rule for an arbitrary polyhedron/polygon
-*/
+ * @class CentroidQuadrature
+ * This class is a quadrature rule for an arbitrary polyhedron/polygon
+ */
 class CentroidQuadrature : public QuadratureRule
 {
 public:
@@ -80,7 +82,7 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the cell
 	 */
-	virtual Real apply(const Cell & cell, const std::function<Real(Generic_Point)> & Integrand) const;
+	virtual Real apply(const Cell & cell, const std::function<Real(Point3D)> & integrand) const;
 
 	//! Method apply for facets
 	/*!
@@ -89,11 +91,12 @@ public:
 	@param Integrand The function we want to integrate
 	@return the approximation of the integral of Integrand on the facet
 	 */
-	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Generic_Point)> & Integrand) const;
+	virtual Real apply(const Facet & facet, const Real volume, const std::function<Real(Point3D)> & integrand) const;
 
 	//! Destructor
     virtual ~CentroidQuadrature(){};
 
 };
 
+} // namespace FVCode3D
 #endif

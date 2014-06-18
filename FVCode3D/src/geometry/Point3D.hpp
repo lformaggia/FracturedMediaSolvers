@@ -6,9 +6,10 @@
 #ifndef POINT3D_HPP_
 #define POINT3D_HPP_
 
-#include "core/basic_type.hpp"
+#include "core/BasicType.hpp"
 
-namespace Geometry{
+namespace FVCode3D
+{
 
 class CoordinateSystem3D;
 
@@ -41,7 +42,7 @@ public:
 
 	void linearTransform(const Real scaling, const Real xShift, const Real yShift, const Real zShift);
 
-	Point3D convertInLocalCoordinate(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
+	Point3D convertInLocalCoordinates(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
 
 	Point3D & operator=(const Point3D & p);
 
@@ -56,6 +57,12 @@ public:
 	Real operator[](const UInt coord) const;
 
 	Real & operator[](const UInt coord);
+
+	static const Real & getTolerance()
+	    { return Point3D::S_tolerance; }
+
+	static void setTolerance(const Real tolerance)
+	    { Point3D::S_tolerance = tolerance; }
 
 	friend Point3D operator+(const Point3D & p1, const Point3D & p2);
 
@@ -92,8 +99,13 @@ private:
 	//! z-coordinate
 	Real M_z;
 
+	//! Relative tolerance
+	static Real S_tolerance;
+
 };
 
-}//namespace Geometry
+bool operator<(const Point3D & p1, const Point3D & p2);
+
+} // namespace FVCode3D
 
 #endif /* POINT3D_HPP_ */
