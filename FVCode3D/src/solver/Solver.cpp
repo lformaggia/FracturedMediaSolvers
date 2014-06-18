@@ -4,6 +4,9 @@
  */
 
 #include "solver/Solver.hpp"
+#ifdef FVCODE3D_HAS_UMFPACK
+#include <Eigen/UmfPackSupport>
+#endif
 
 namespace FVCode3D
 {
@@ -22,11 +25,13 @@ void EigenLU::solve()
     M_x = lu.solve(M_b);
 } // EigenLU::solve
 
+#ifdef FVCODE3D_HAS_UMFPACK
 void EigenUmfPack::solve()
 {
     Eigen::UmfPackLU<SpMat> lu( M_A );
     M_x = lu.solve( M_b );
 } // EigenUmfPack::solve
+#endif
 
 Real IterativeSolver::S_referenceTol = 1e-6;
 UInt IterativeSolver::S_referenceMaxIter = 100;

@@ -183,6 +183,7 @@ public:
     virtual ~EigenLU() = default;
 }; // class EigenLU
 
+#ifdef FVCODE3D_HAS_UMFPACK
 //! Class EigenUmfPack
 /*!
  * @class EigenUmfPack
@@ -213,6 +214,8 @@ public:
     //! Destructor
     virtual ~EigenUmfPack() = default;
 };
+#endif
+
 
 //! Class IterativeSolver
 /*!
