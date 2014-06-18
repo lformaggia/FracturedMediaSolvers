@@ -20,7 +20,6 @@
 #include <map>
 
 #include <Eigen/Sparse>
-#include <Eigen/UmfPackSupport>
 
 namespace FVCode3D
 {
