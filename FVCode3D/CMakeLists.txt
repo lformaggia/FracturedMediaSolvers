@@ -30,7 +30,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math" CACHE STRING "g++ Compiler Flag
 
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for Release" FORCE)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -O0 -g" CACHE STRING "g++ Compiler Flags for Debug" FORCE)
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -D_GLIBCXX_DEBUG -O0 -g" CACHE STRING "g++ Compiler Flags for Debug" FORCE)
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for RelWithDebInfo" FORCE)
 
 #================================
@@ -139,7 +139,7 @@ file(GLOB_RECURSE LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp)
 file(GLOB_RECURSE LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.hpp)
 add_library(fvcode3d STATIC ${LIB_SOURCES} ${LIB_HEADERS})
 
-SET(LIBRARIES ${LIBRARIES} fvcode3d)
+SET(LIBRARIES fvcode3d ${LIBRARIES})
 
 #Set properties on a target.
 #We use this here to set -DTETLIBRARY for when compiling the library

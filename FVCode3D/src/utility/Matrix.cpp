@@ -30,7 +30,7 @@ Real SparseMatrix::getValue(const std::pair<UInt, UInt> ij) const
 	if(M_matrix.size() == 0)
 		return 0.;
 
-	std::map<std::pair<UInt, UInt>, Real>::const_iterator it = M_matrix.find(ij);
+	std::map<std::pair<UInt, UInt>, Real, lessOnMatrixIndices>::const_iterator it = M_matrix.find(ij);
 
 	if ( it != M_matrix.end())
 		return it->second;
@@ -55,7 +55,7 @@ void SparseMatrix::fill(const std::pair<UInt, UInt> ij, const Real value)
 {
 	if(M_options & Store)
 	{
-		const std::map<std::pair<UInt, UInt>, Real>::iterator it = M_matrix.find(ij);
+		const std::map<std::pair<UInt, UInt>, Real, lessOnMatrixIndices>::iterator it = M_matrix.find(ij);
 
 		if (it != M_matrix.end())
 			it->second = value;
