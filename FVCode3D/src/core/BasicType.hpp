@@ -56,8 +56,7 @@ typedef Eigen::VectorXd Vector;
 
 //! Type for eigen triplets
 typedef Eigen::Triplet<Real> Triplet;
-class Point3D;
-typedef std::function<Real (Point3D point)> Func;
+
 } // namespace FVCode3D
 
 #endif /* BASIC_TYPE_HPP_ */
