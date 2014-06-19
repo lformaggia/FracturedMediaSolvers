@@ -159,4 +159,5 @@ Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func &
 {} // Problem::Problem
 
 } // namespace FVCode3D
+
 #endif /* PROBLEM_HPP_ */
