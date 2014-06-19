@@ -705,6 +705,19 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     	filestr << edge.getId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
+    filestr << "\t\t\t\t<DataArray type=\"UInt64\" Name=\"edgeBC\" format=\"ascii\">" << std::endl;
+    for(auto& edge : regularEdges )
+    	filestr << "0" << std::endl;
+    for(auto& edge : junctureEdges )
+    	filestr << "0" << std::endl;
+    for(auto& edge : intTipEdges )
+    	filestr << "0" << std::endl;
+    for(auto& edge : borTipEdges )
+    	filestr << *std::begin(edge.getBorderIds()) << std::endl;
+    for(auto& edge : pureBorEdges )
+    	filestr << *std::begin(edge.getBorderIds()) << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
     filestr << "\t\t\t</CellData>" << std::endl;
 
     filestr << std::scientific << std::setprecision(10);
