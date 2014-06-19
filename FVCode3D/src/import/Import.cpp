@@ -41,7 +41,7 @@ void Importer::extractBC(const Real theta)
 			max = std::max(max, std::fabs(normal.z()));
 			compMax = max > std::fabs(normal.z()) ? compMax : 2;
 
-			if(normal[compMax]>0.)
+			if(normal[compMax]<0.)
 				it->second.setBorderID(2*compMax+1);
 			else
 				it->second.setBorderID(2*compMax+2);
