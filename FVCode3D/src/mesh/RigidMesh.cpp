@@ -15,7 +15,7 @@ namespace FVCode3D
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber):
+Rigid_Mesh::Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber, const bool buildEdges):
 	M_nodes(generic_mesh.getNodesVector()), M_properties(prop), M_renumber(renumber)
 {
 	std::map<UInt, UInt> old_to_new_mapCells;
@@ -26,7 +26,8 @@ Rigid_Mesh::Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const
 	facetsVectorsBuilder(generic_mesh, old_to_new_mapCells, old_to_new_mapFacets);
 	if(M_renumber)
 		adjustCellFacets(old_to_new_mapFacets);
-	edgesVectorBuilder();
+	if(buildEdges)
+		edgesVectorBuilder();
 }
 
 Rigid_Mesh::Rigid_Mesh(const Rigid_Mesh & mymesh):
@@ -312,12 +313,9 @@ void Rigid_Mesh::adjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFac
 			Facets_it = old_to_new_mapFacets.at(Facets_it);
 }
 
-void Rigid_Mesh::edgesVectorBuilder()
+void Rigid_Mesh::edgesBuilder()
 {
 	UInt edgeId = 0;
-	bool isFrac = false;
-	bool isBord = false;
-	bool isTip = false;
 	std::map<UInt,UInt> nFracFacets;
 
 	// edge as pair -> separated facets
@@ -372,50 +370,58 @@ void Rigid_Mesh::edgesVectorBuilder()
 	{
 		M_edges.emplace_back(map_it.first, this, edgeId); // Edge
 		M_edges.rbegin()->M_separatedFacetsIds = map_it.second;
+		edgeId++;
+	}
 
-		isFrac = isBord = isTip = false;
+	for(auto& edge_it : M_edges)
+	{
 		nFracFacets.clear();
+		edgeId = edge_it.getId();
 
-		for(auto it : M_edges.rbegin()->M_separatedFacetsIds)
+		for(auto it : M_edges[edgeId].M_separatedFacetsIds)
 		{
-			isFrac |= M_facets[it].M_isFracture;
+			edge_it.M_isFracture |= M_facets[it].M_isFracture;
 			if (M_facets[it].M_isFracture)
 			{
 				for(auto jt : M_facets[it].M_representedFractureIds)
 				{
-					nFracFacets.insert(std::pair<UInt,UInt>(std::make_pair(jt,0)));
-					nFracFacets[jt]++;
+					nFracFacets.insert(std::pair<UInt,UInt>(std::make_pair(it,0)));
+					nFracFacets[it]++;
 				}
 			}
-			isBord |= M_facets[it].isBorderFacet();
+			edge_it.M_isBorderEdge |= M_facets[it].isBorderFacet();
 		}
 
 		for(auto& it : nFracFacets)
 		{
-			isTip |= (it.second == 1) ? true : false;
+			edge_it.M_isTip |= (it.second == 1) ? true : false;
 		}
+	}
+}
 
-		if(!isFrac && !isBord)
+void Rigid_Mesh::edgesIdBuilder()
+{
+	for(auto& edge_it : M_edges)
+	{
+		UInt edgeId = edge_it.getId();
+
+		if(!edge_it.M_isFracture && !edge_it.M_isBorderEdge)
 			M_internalEdges.emplace_back(edgeId,this); // Regular_Edge
-		else if(!isFrac && isBord)
+		else if(!edge_it.M_isFracture && edge_it.M_isBorderEdge)
 		{
 			M_pureBorderEdges.emplace_back(edgeId,this); // Pure_Border_Edge
 			M_borderEdges.push_back(&(*M_pureBorderEdges.rbegin()));
-			M_edges[edgeId].M_isBorderEdge = true;
 		}
-		else if(isFrac && !isTip)
+		else if(edge_it.M_isFracture && !edge_it.M_isTip)
 		{
 			M_junctureEdges.emplace_back(edgeId,this); // Juncture_Edge
 			M_fractureEdges.push_back(&(*M_junctureEdges.rbegin()));
-			M_edges[edgeId].M_isFracture = true;
 		}
-		else if(isFrac && isTip && !isBord)
+		else if(edge_it.M_isFracture && edge_it.M_isTip && !edge_it.M_isBorderEdge)
 		{
 			M_internalTipEdges.emplace_back(edgeId,this); // Internal_Tip_Edge
 			M_tipEdges.push_back(&(*M_internalTipEdges.rbegin()));
 			M_fractureEdges.push_back(&(*M_internalTipEdges.rbegin()));
-			M_edges[edgeId].M_isFracture = true;
-			M_edges[edgeId].M_isTip = true;
 		}
 		else
 		{
@@ -423,12 +429,7 @@ void Rigid_Mesh::edgesVectorBuilder()
 			M_tipEdges.push_back(&(*M_borderTipEdges.rbegin()));
 			M_fractureEdges.push_back(&(*M_borderTipEdges.rbegin()));
 			M_borderEdges.push_back(&(*M_borderTipEdges.rbegin()));
-			M_edges[edgeId].M_isBorderEdge = true;
-			M_edges[edgeId].M_isFracture = true;
-			M_edges[edgeId].M_isTip = true;
 		}
-
-		edgeId++;
 	}
 	// TODO shrink to fit or not shrink to fit?
 }

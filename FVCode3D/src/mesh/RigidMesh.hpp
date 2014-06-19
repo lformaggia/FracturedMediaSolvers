@@ -182,6 +182,21 @@ public:
 
 		//! @name Methods
 		//@{
+
+		//! Set if the edge is a border edge (for the domain)
+		/*!
+		 * @param isBorder True if the edge is a border edge (i.e. it separates a border facet)
+		 */
+		void setBorderEdge(bool isBorder)
+			{ M_isBorderEdge = isBorder; }
+
+		//! Set if the edge is a tip, i.e. a border edge for the fracture
+		/*!
+		 * @param True if the edge is a tip (i.e. it separates one of the fractures that it separates only once, i.e. it is a tip for at least a fracture)
+		 */
+		void setTip(bool isTip)
+			{ M_isTip = isTip; }
+
 		//! Display general information about the Edge
 		/*!
 		 * @param out specify the output format (std::cout by default)
@@ -351,7 +366,7 @@ public:
 		 * @return True if the facet is a border facet (i.e. it separates only one cell)
 		 */
 		bool isBorderFacet() const
-			{ return M_separatedCellsIds.size() == 1; }
+			{ return M_separatedCellsIds.size() < 2; }
 		//@}
 
 		//! @name Methods
@@ -702,6 +717,13 @@ public:
 		 * @return the ids of the represented border facets (inherited from the facets)
 		 */
 		const std::set<UInt> & getBorderIds() const
+			{return M_borderIds;}
+
+		//! Get border ids
+		/*!
+		 * @return the ids of the represented border facets (inherited from the facets)
+		 */
+		std::set<UInt> & getBorderIds()
 			{return M_borderIds;}
 		//@}
 	protected:
@@ -1209,7 +1231,7 @@ public:
 		@param prop reference to a PropertiesMap
 		@param renumber If False the facets and cells are not renumbered (Default = false)
 	*/
-	Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber = false);
+	Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber = false, const bool buildEdges = true);
 
 	//! Copy constructor
 	/*!
@@ -1240,6 +1262,13 @@ public:
 	 * @return a reference to the vector that contains the edges of the mesh
 	 */
 	const std::vector<Edge> & getEdgesVector () const
+		{ return M_edges; }
+
+	//! Get edges vector
+	/*!
+	 * @return a reference to the vector that contains the edges of the mesh
+	 */
+	std::vector<Edge> & getEdgesVector ()
 		{ return M_edges; }
 
 	//! Get facets vector (const)
@@ -1310,6 +1339,13 @@ public:
 	 * @return a reference to the vector of the M_borderTipEdges
 	 */
 	const std::vector<Border_Tip_Edge> & getBorderTipEdgesIdsVector () const
+		{ return M_borderTipEdges; }
+
+	//! Get border tip edges ids vector
+	/*!
+	 * @return a reference to the vector of the M_borderTipEdges
+	 */
+	std::vector<Border_Tip_Edge> & getBorderTipEdgesIdsVector ()
 		{ return M_borderTipEdges; }
 
 	//! Get internal facets ids vector (const)
@@ -1405,6 +1441,16 @@ public:
 	*/
 	const std::vector<Point3D> idsToPoints (const std::vector<UInt> & pointsId);
 
+	//! Builds the vector of edges. It is called by constructor
+	void edgesVectorBuilder()
+		{ edgesBuilder(); edgesIdBuilder(); }
+
+	//! Builds the vector of RigidMesh::Edge.
+	void edgesBuilder();
+
+	//! Builds the vector of RigidMesh::Edge_ID.
+	void edgesIdBuilder();
+
 	//@}
 
 protected:
@@ -1432,9 +1478,6 @@ protected:
 	 * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Mesh3D to the id in the Rigid_Mesh
 	 */	
 	void facetsVectorsBuilder(Mesh3D & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
-
-	//! Builds the vector of edges. It is called by constructor
-	void edgesVectorBuilder();
 
 	//! Converts the neighbors ids of cells from old one to new one. It is called by constructor
 	/*!
