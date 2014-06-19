@@ -12,6 +12,7 @@
 #include <functional>
 #include <algorithm>
 #include <iostream>
+#include <limits>
 
 namespace FVCode3D
 {
@@ -23,7 +24,23 @@ class Mesh3D;
 	@enum BCType
 	It is possible to choose the type of the boundary conditions: "Dirichlet" type or "Neumann" type.
 */
-enum BCType{Dirichlet, Neumann};
+enum BCType
+{
+	Dirichlet,
+	Neumann
+};
+
+enum BorderLabel : UInt
+{
+    Internal    = 0,
+    Left        = 1,
+    Right       = 2,
+    Front       = 3,
+    Back        = 4,
+    Bottom      = 5,
+    Top         = 6,
+    FractureTip = std::numeric_limits<UInt>::max()
+};
 
 //! Class for implementing the BCs
 /*!
