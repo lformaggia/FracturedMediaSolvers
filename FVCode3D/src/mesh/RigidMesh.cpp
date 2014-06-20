@@ -474,7 +474,7 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
 	out << "Number of Border-Tip-Edges: " << M_borderTipEdges.size() <<std::endl;
 }
 
-const std::vector<Point3D> Rigid_Mesh::idsToPoints(const std::vector<UInt> & pointsIds)
+const std::vector<Point3D> Rigid_Mesh::idsToPoints(const std::vector<UInt> & pointsIds) const
 {
 	std::vector<Point3D> points;
 	for (auto iter : pointsIds)

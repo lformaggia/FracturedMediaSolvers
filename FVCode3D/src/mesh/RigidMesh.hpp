@@ -1,5 +1,5 @@
  /*!
- *	@file Rigid_Mesh.hpp
+ *	@file RigidMesh.hpp
  *	@brief Class for unstructured mesh.
  */
 
@@ -21,6 +21,9 @@ namespace FVCode3D
 {
 
 class PropertiesMap;
+class ProxyRigidMesh;
+class ProxyEdge;
+class ProxyBorderEdge;
 
 //! Class that allows to handle a Mesh3D for a differential problem
 /*!
@@ -28,7 +31,8 @@ class PropertiesMap;
    	This class implements a container for a Mesh3D.
    	The Rigid_Mesh container adapts the Mesh3D in order to be efficient for the discretization of differential problems.
 */
-class Rigid_Mesh{
+class Rigid_Mesh
+{
 public:
 
 	//! Typedef for Mesh3D::Facet3D
@@ -73,7 +77,8 @@ public:
 		@class Edge
    		This class implements the concept of Edge of a Rigid_Mesh.
    	*/
-	class Edge{
+	class Edge
+	{
 	public:
 
 		//! @name Constructor & Destructor
@@ -183,20 +188,6 @@ public:
 		//! @name Methods
 		//@{
 
-		//! Set if the edge is a border edge (for the domain)
-		/*!
-		 * @param isBorder True if the edge is a border edge (i.e. it separates a border facet)
-		 */
-		void setBorderEdge(bool isBorder)
-			{ M_isBorderEdge = isBorder; }
-
-		//! Set if the edge is a tip, i.e. a border edge for the fracture
-		/*!
-		 * @param True if the edge is a tip (i.e. it separates one of the fractures that it separates only once, i.e. it is a tip for at least a fracture)
-		 */
-		void setTip(bool isTip)
-			{ M_isTip = isTip; }
-
 		//! Display general information about the Edge
 		/*!
 		 * @param out specify the output format (std::cout by default)
@@ -206,6 +197,7 @@ public:
 		//@}
 
 		friend Rigid_Mesh;
+		friend ProxyEdge;
 
 	protected:
 		//! The pair of the ids of the Edge's Vertexes
@@ -718,14 +710,10 @@ public:
 		 */
 		const std::set<UInt> & getBorderIds() const
 			{return M_borderIds;}
-
-		//! Get border ids
-		/*!
-		 * @return the ids of the represented border facets (inherited from the facets)
-		 */
-		std::set<UInt> & getBorderIds()
-			{return M_borderIds;}
 		//@}
+
+		friend ProxyBorderEdge;
+
 	protected:
 		//! Ids of the represented borders
 		std::set<UInt> M_borderIds;
@@ -1264,13 +1252,6 @@ public:
 	const std::vector<Edge> & getEdgesVector () const
 		{ return M_edges; }
 
-	//! Get edges vector
-	/*!
-	 * @return a reference to the vector that contains the edges of the mesh
-	 */
-	std::vector<Edge> & getEdgesVector ()
-		{ return M_edges; }
-
 	//! Get facets vector (const)
 	/*!
 	 * @return a reference to the vector that contains the facets of the mesh
@@ -1339,13 +1320,6 @@ public:
 	 * @return a reference to the vector of the M_borderTipEdges
 	 */
 	const std::vector<Border_Tip_Edge> & getBorderTipEdgesIdsVector () const
-		{ return M_borderTipEdges; }
-
-	//! Get border tip edges ids vector
-	/*!
-	 * @return a reference to the vector of the M_borderTipEdges
-	 */
-	std::vector<Border_Tip_Edge> & getBorderTipEdgesIdsVector ()
 		{ return M_borderTipEdges; }
 
 	//! Get internal facets ids vector (const)
@@ -1439,19 +1413,11 @@ public:
 	 * @param pointsId a reference to a vector of ids of nodes
 	 * @return a vector with the corresponding points
 	*/
-	const std::vector<Point3D> idsToPoints (const std::vector<UInt> & pointsId);
-
-	//! Builds the vector of edges. It is called by constructor
-	void edgesVectorBuilder()
-		{ edgesBuilder(); edgesIdBuilder(); }
-
-	//! Builds the vector of RigidMesh::Edge.
-	void edgesBuilder();
-
-	//! Builds the vector of RigidMesh::Edge_ID.
-	void edgesIdBuilder();
+	const std::vector<Point3D> idsToPoints (const std::vector<UInt> & pointsId) const;
 
 	//@}
+
+	friend ProxyRigidMesh;
 
 protected:
 	//! @name Protected Methods
@@ -1478,6 +1444,16 @@ protected:
 	 * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Mesh3D to the id in the Rigid_Mesh
 	 */	
 	void facetsVectorsBuilder(Mesh3D & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
+
+	//! Builds the vector of edges. It is called by constructor
+	void edgesVectorBuilder()
+		{ edgesBuilder(); edgesIdBuilder(); }
+
+	//! Builds the vector of RigidMesh::Edge.
+	void edgesBuilder();
+
+	//! Builds the vector of RigidMesh::Edge_ID.
+	void edgesIdBuilder();
 
 	//! Converts the neighbors ids of cells from old one to new one. It is called by constructor
 	/*!
