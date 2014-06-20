@@ -170,6 +170,7 @@ INSTALL(TARGETS fvcode3d.exe fvcode3d
     )
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtet.a DESTINATION ${INSTALL_LIB_DIR})
+INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/GetPot ${CMAKE_CURRENT_SOURCE_DIR}/include/tetgen.h DESTINATION ${INSTALL_INCLUDE_DIR})
 
 # Add data file
 add_custom_command(
