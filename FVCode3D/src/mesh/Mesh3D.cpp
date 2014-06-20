@@ -592,6 +592,14 @@ bool Mesh3D::exportFractureVTK( const std::string & filename, const UInt & f) co
     return M_fn.getFracture(f).exportVTK(filename);
 }
 
+void Mesh3D::clear()
+{
+    M_fn.clear();
+    M_nodes.clear();
+    M_facets.clear();
+    M_cells.clear();
+    M_nodesToFacet.clear();
+}
 
 // --------------------   Overloading operator< (for Facet3D)  --------------------
 

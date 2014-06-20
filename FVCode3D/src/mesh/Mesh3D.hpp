@@ -546,10 +546,6 @@ public:
 	UInt getNumberOfCells() const
 		{ return M_cells.size(); }
 
-	//! Clear all the content of the class
-	void clear()
-		{ M_nodes.clear(); M_facets.clear(); M_cells.clear(); }
-
 	//! Add the fracture network
 	void addFractureNetwork( FractureNetwork3D & fn )
 		{ M_fn.getNetwork() = fn.getNetwork(); }
@@ -615,6 +611,9 @@ public:
 	 *		   FALSE -> an error occurred
 	 */
 	bool exportFractureVTK(const std::string & filename, const UInt & f) const;
+
+    //! Clear the mesh
+    void clear();
 
 	//@}
 
