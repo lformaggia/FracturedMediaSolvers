@@ -32,4 +32,5 @@
 #include "mesh/TetGenWrapper.hpp"
 #include "mesh/CartesianGrid.hpp"
 #include "mesh/RigidMesh.hpp"
+#include "mesh/ProxyRigidMesh.hpp"
 #include "mesh/Mesh3D.hpp"
