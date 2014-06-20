@@ -54,6 +54,9 @@ typedef Eigen::SparseMatrix<Real> SpMat;
 //! Type for eigen vectors
 typedef Eigen::VectorXd Vector;
 
+//! Type for eigen UInt vectors
+typedef Eigen::Matrix<UInt, Eigen::Dynamic, 1> UIntVector;
+
 //! Type for eigen triplets
 typedef Eigen::Triplet<Real> Triplet;
 
