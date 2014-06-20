@@ -123,6 +123,8 @@ public:
 	 */
 	void showMe(std::ostream & out=std::cout) const;
 
+    void clear() { M_fractureNetwork.clear(); }
+
 private:
 
 	//! It stores the the fractures of the network
