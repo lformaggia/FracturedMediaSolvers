@@ -49,7 +49,7 @@ Data::Data(const std::string dataFileName)
 	M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
 	M_ssOn = parserSourceSinkOn.parse( dataFile("problem/sourceOn", "none") );
 
-	M_setFracturesPressure = static_cast<bool>(dataFile("problem/fracPressOn", 0));;
+	M_setFracturesPressure = static_cast<bool>(dataFile("problem/fracPressOn", 0));
 	M_fracturesPressure = dataFile("problem/fracPress", 0.);
 
 	M_MSR = static_cast<bool>(dataFile("msr/MSROn", 0));
