@@ -5,8 +5,6 @@
 #include <vector>
 #include <fstream>
 
-#define FVCODE3D_HAS_UMFPACK
-
 #include "core/TypeDefinition.hpp"
 #include "core/Data.hpp"
 #include "mesh/RigidMesh.hpp"
@@ -22,12 +20,16 @@
 #include "problem/DarcySteady.hpp"
 #include "problem/DarcyPseudoSteady.hpp"
 #include "assembler/FixPressureDofs.hpp"
-//#include "multipleSubRegions/MultipleSubRegions.hpp"
+#include "multipleSubRegions/MultipleSubRegions.hpp"
 #include "functions.hpp"
 
 using namespace FVCode3D;
 
+#ifdef FVCODE3D_HAS_UMFPACK
+typedef EigenUmfPack SolverType;
+#else
 typedef EigenLU SolverType;
+#endif
 
 typedef Problem<SolverType, CentroidQuadrature, CentroidQuadrature> Pb;
 typedef DarcySteady<SolverType, CentroidQuadrature, CentroidQuadrature> DarcyPb;
@@ -41,7 +43,7 @@ int main(int argc, char * argv[])
     Chrono chrono;
     chrono.start();
 
-    std::cout << "Read Data..." << std::flush;
+    std::cout << "Read Data from " << dataFileName << "..." << std::flush;
     DataPtr_Type dataPtr(new Data(dataFileName));
     std::cout << " done." << std::endl;
 
@@ -103,8 +105,10 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
+    std::cout << "Set uniform properties..." << std::flush;
     propMap.setPropertiesOnMatrix(mesh, 0.25, 1);
     propMap.setPropertiesOnFractures(mesh, 1e-2, 1, 1e6);
+    std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;
     ExporterVTU exporter;
@@ -166,9 +170,13 @@ int main(int argc, char * argv[])
     std::cout << "Build problem..." << std::flush;
     Pb * darcy(nullptr);
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
+    {
         darcy = new DarcyPb(myrmesh, BC, SS, dataPtr);
+    }
     else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
+    {
         darcy = new PseudoDarcyPb(myrmesh, BC, SS, dataPtr);
+    }
     std::cout << " done." << std::endl << std::endl;
 
     if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
@@ -177,10 +185,19 @@ int main(int argc, char * argv[])
         dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
     }
 
+
+    MSR<Pb> * multipleSubRegions(nullptr);
+
+
     std::cout << "Solve problem..." << std::flush;
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
     {
         darcy->assemble();
+        if(dataPtr->MSROn())
+        {
+        	multipleSubRegions = new MSR<Pb>(darcy, dataPtr);
+            multipleSubRegions->setup();
+        }
         if(dataPtr->pressuresInFractures())
         {
             FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
@@ -250,6 +267,16 @@ int main(int argc, char * argv[])
     }
     std::cout << " done." << std::endl << std::endl;
 
+    if(dataPtr->MSROn())
+    {
+        std::cout << "Compute sub-regions..." << std::flush;
+        multipleSubRegions->createRegions();
+        std::cout << " done." << std::endl;
+        std::cout << "Compute transmissibilities..." << std::flush;
+        multipleSubRegions->computeTransmissibility();
+        std::cout << " done." << std::endl << std::endl;
+    }
+
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
@@ -260,6 +287,14 @@ int main(int argc, char * argv[])
     std::cout << "Export Solution on Fractures..." << std::flush;
     exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
+
+    if(dataPtr->MSROn())
+    {
+        std::cout << "Export SubRegions..." << std::flush;
+        exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_colour.vtu",
+    multipleSubRegions->getColorsVector() );
+        std::cout << " done." << std::endl << std::endl;
+    }
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
