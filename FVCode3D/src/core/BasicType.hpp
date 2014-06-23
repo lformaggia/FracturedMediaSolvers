@@ -21,6 +21,8 @@
 
 #include <Eigen/Sparse>
 
+#define FVCODE3D_HAS_UMFPACK
+
 namespace FVCode3D
 {
 
