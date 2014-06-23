@@ -1,6 +1,6 @@
 # Create static library
 add_subdirectory(FVCode3D)
-SET(LIBRARIES fvcode3d ${LIBRARIES})
+SET(LIBRARIES fvcode3d ${LIBRARIES} CACHE INTERNAL "")
 
 add_executable(fvcode3d.exe main.cpp )
 # Create executable and link libraries
