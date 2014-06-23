@@ -3,8 +3,8 @@
  *	@brief Definition of fundamental types.
  */
 
-#ifndef TYPEDEFNITION_HPP_
-#define TYPEDEFNITION_HPP_
+#ifndef FVCODE3D_TYPEDEFNITION_HPP_
+#define FVCODE3D_TYPEDEFNITION_HPP_
 
 #include <FVCode3D/core/BasicType.hpp>
 #include <FVCode3D/geometry/Point3D.hpp>
@@ -18,4 +18,4 @@ namespace FVCode3D
 
 } // namespace FVCode3D
 
-#endif /* TYPEDEFNITION_HPP_ */
+#endif /* FVCODE3D_TYPEDEFNITION_HPP_ */

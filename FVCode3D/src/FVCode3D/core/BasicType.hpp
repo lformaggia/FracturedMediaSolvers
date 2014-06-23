@@ -3,8 +3,8 @@
  *  @brief Basic definition types
  */
 
-#ifndef BASIC_TYPE_HPP_
-#define BASIC_TYPE_HPP_
+#ifndef FVCODE3D_BASIC_TYPE_HPP_
+#define FVCODE3D_BASIC_TYPE_HPP_
 
 #include <stdint.h>
 #include <vector>
@@ -68,4 +68,4 @@ typedef	std::function<Real(Point3D)> Func;
 
 } // namespace FVCode3D
 
-#endif /* BASIC_TYPE_HPP_ */
+#endif /* FVCODE3D_BASIC_TYPE_HPP_ */
