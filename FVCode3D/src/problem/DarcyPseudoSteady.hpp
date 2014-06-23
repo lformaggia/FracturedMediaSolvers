@@ -244,7 +244,6 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::as
 	if(!M_isInitialized)
 	{
 		initialize();
-		M_isInitialized = true;
 	}
 	assembleMatrix();
 	assembleVector();
@@ -272,6 +271,8 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::in
 
     M_xOld = Vector::Constant(M_M->getSize(), 0.);
     M_x = &M_xOld;
+
+    M_isInitialized = true;
 } // DarcyPseudoSteady::initialize
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
