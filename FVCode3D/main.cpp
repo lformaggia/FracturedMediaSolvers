@@ -185,9 +185,7 @@ int main(int argc, char * argv[])
         dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
     }
 
-
     MSR<Pb> * multipleSubRegions(nullptr);
-
 
     std::cout << "Solve problem..." << std::flush;
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
