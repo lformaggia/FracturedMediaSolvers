@@ -71,7 +71,8 @@ public:
     DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const DataPtr_Type & data):
         Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, f, data),
         M_tStep(data->getTimeStep()),
-        M_x(nullptr), M_M(nullptr) {};
+        M_x(nullptr), M_M(nullptr),
+        M_isInitialized(false) {};
 
     //! Get the previous solution
     /*!
@@ -86,6 +87,12 @@ public:
      * To be called only once.
      */
     virtual void initialize();
+
+    //! Assemble the linear system
+    /*!
+     * Nothing to do
+     */
+    virtual void assemble();
 
     //! Assemble matrix method
     /*!
@@ -123,6 +130,9 @@ protected:
     //! Vector that contains the source/sink term
     Vector M_f;
 
+    //! True if the system is initialized
+    bool M_isInitialized;
+
     //! Pointer to the mass matrix
     std::unique_ptr<MassMatrix> M_M;
     //! Pointer to the stiffness matrix
@@ -152,7 +162,8 @@ public:
     DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const DataPtr_Type & data):
         Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, f, data),
         M_tStep(data->getTimeStep()),
-        M_x(nullptr), M_M(nullptr) {};
+        M_x(nullptr), M_M(nullptr),
+        M_isInitialized(false) {};
 
     //! Get the previous solution
     /*!
@@ -173,6 +184,12 @@ public:
      * To be called only once.
      */
     virtual void initialize();
+
+    //! Assemble the linear system
+    /*!
+     * Nothing to do
+     */
+    virtual void assemble();
 
     //! Assemble matrix method
     /*!
@@ -212,11 +229,26 @@ protected:
     //! Vector that contains the source/sink term
     Vector M_f;
 
+    //! True if the system is initialized
+    bool M_isInitialized;
+
     //! Pointer to the mass matrix
     std::unique_ptr<MassMatrix> M_M;
     //! Pointer to the stiffness matrix
     std::unique_ptr<StiffMatrix> M_S;
 };
+
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::assemble()
+{
+	if(!M_isInitialized)
+	{
+		initialize();
+		M_isInitialized = true;
+	}
+	assembleMatrix();
+	assembleVector();
+}
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::initialize()
@@ -256,6 +288,18 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::so
     this->M_solver->solve();
     M_x = &(this->M_solver->getSolution());
 } // DarcyPseudoSteady::solve
+
+template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::assemble()
+{
+	if(!M_isInitialized)
+	{
+		initialize();
+		M_isInitialized = true;
+	}
+	assembleMatrix();
+	assembleVector();
+}
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
 void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::initialize()
