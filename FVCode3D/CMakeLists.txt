@@ -129,6 +129,7 @@ set(LIBRARIES
     ${UMFPACK_LIBRARIES}
     ${CHOLMOD_LIBRARIES}
     ${BLAS_LIBRARIES}
+    rt
     tet
     CACHE INTERNAL "")
 message(STATUS "LIBRARIES = ${LIBRARIES}")
@@ -180,10 +181,6 @@ add_custom_command(
     COMMAND ln -sf
     ${PROJECT_SOURCE_DIR}/data.txt          # <--this is in-file
     ${PROJECT_BINARY_DIR}/data.txt          # <--this is out-file path
-
-    COMMAND ln -sf
-    ${PROJECT_SOURCE_DIR}/dataMSR.txt          # <--this is in-file
-    ${PROJECT_BINARY_DIR}/dataMSR.txt          # <--this is out-file path
 
     COMMAND ${CMAKE_COMMAND} -E copy        # which executes "cmake - E copy_if_different..."
     ${PROJECT_SOURCE_DIR}/README            # <--this is in-file
