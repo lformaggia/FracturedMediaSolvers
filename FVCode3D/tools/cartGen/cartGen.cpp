@@ -12,6 +12,7 @@
 #include "mesh/CartesianGrid.hpp"
 #include "import/Import.hpp"
 #include "export/ExportVTU.hpp"
+#include "export/ExportCP.hpp"
 #include "utility/Converter.hpp"
 
 using namespace FVCode3D;
@@ -106,9 +107,9 @@ int main(int argc, char * argv[])
             facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
         }
     }
+    */
     // then call "addFractures()"
     cart.addFractures(facetIdToZone);
-    */
 
     std::cout << "# of fracture facets: " << facetIdToZone.size() << std::endl << std::endl;
 
@@ -116,11 +117,16 @@ int main(int argc, char * argv[])
     mesh.updateFacetsWithFractures();
     std::cout << " done." << std::endl << std::endl;
 
+    std::cout << "Set uniform properties..." << std::flush;
     propMap.setPropertiesOnMatrix(mesh, data.getMatrixPorosity(), data.getMatrixPermeability());
     propMap.setPropertiesOnFractures(mesh, data.getFractureAperture(), data.getFracturePorosity(), data.getFracturePermeability());
+    std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;
     saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + ".fvg", mesh, propMap);
+
+    ExporterCP exporter;
+    exporter.exportMesh(mesh, data.getOutputDir() + data.getOutputFile() + ".GRDECL");
     std::cout << " done." << std::endl;
 
     return 0;
