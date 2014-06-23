@@ -5,6 +5,13 @@ set(SRC_HEADERS ${SRC_HEADERS} FVCode3D.hpp)
 set(LIB_SOURCES ${SRC_SOURCES} CACHE INTERNAL "")
 set(LIB_HEADERS ${SRC_HEADERS} CACHE INTERNAL "")
 
-install_files_with_directory_structure(${INSTALL_INCLUDE_DIR} ${LIB_HEADERS})
+add_library(fvcode3d STATIC ${LIB_SOURCES} ${LIB_HEADERS})
+
+#Set properties on a target.
+#We use this here to set -DTETLIBRARY for when compiling the library
+set_target_properties(fvcode3d PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
+
+install(TARGETS fvcode3d DESTINATION ${INSTALL_LIB_DIR})
+install_files_with_directory_structure(${INSTALL_INCLUDE_DIR}/${PROJECT_NAME} ${LIB_HEADERS})
 
 
