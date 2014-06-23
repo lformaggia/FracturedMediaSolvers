@@ -106,6 +106,12 @@ public:
     Vector & getb() { return M_b; }
     //@}
 
+    //! Get the stiffness matrix
+    /*!
+     * @return the stiffness matrix
+     */
+    virtual Matrix_Type & getStiffnessMatrix() = 0;
+
     //! Assemble method
     void assemble() { assembleMatrix(); assembleVector(); };
 

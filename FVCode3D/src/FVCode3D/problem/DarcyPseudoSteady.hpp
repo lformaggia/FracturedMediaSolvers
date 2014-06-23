@@ -80,6 +80,12 @@ public:
      */
     const Vector & getOldSolution() const { return M_xOld; }
 
+    //! Get the stiffness matrix
+    /*!
+     * @return the stiffness matrix
+     */
+    virtual Matrix_Type & getStiffnessMatrix() { return this->M_S; }
+
     //! Initialize the matrices
     /*!
      * Build the matrices and vectors that are not time dependent, i.e.,
@@ -176,6 +182,12 @@ public:
      * @return constant reference vector to the solution two steps before
      */
     const Vector & getOldOldSolution() const { return M_xOldOld; }
+
+    //! Get the stiffness matrix
+    /*!
+     * @return the stiffness matrix
+     */
+    virtual Matrix_Type & getStiffnessMatrix() { return this->M_S; }
 
     //! Initialize the matrices
     /*!

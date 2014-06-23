@@ -49,6 +49,12 @@ public:
     DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data):
         Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, func, data) {};
 
+    //! Get the stiffness matrix
+    /*!
+     * @return the stiffness matrix
+     */
+    virtual Matrix_Type & getStiffnessMatrix() { return this->M_A; }
+
     //! Assemble matrix method
     /*!
      * Build the stiffness matrix.
