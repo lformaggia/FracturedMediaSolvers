@@ -3,8 +3,8 @@
  * @brief Class for unstructured mesh (definitions).
  */
 
-#include "mesh/RigidMesh.hpp"
-#include "property/Properties.hpp"
+#include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/property/Properties.hpp>
 
 namespace FVCode3D
 {

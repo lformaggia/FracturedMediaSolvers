@@ -3,9 +3,9 @@
  *	@brief Class for integrating functions on a Rigid_Mesh (definitions).
  */
 
-#include "mesh/RigidMesh.hpp"
-#include "property/Properties.hpp"
-#include "quadrature/Quadrature.hpp"
+#include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/quadrature/Quadrature.hpp>
 
 namespace FVCode3D
 {

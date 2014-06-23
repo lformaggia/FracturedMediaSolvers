@@ -6,10 +6,10 @@
 #ifndef PROBLEM_HPP_
 #define PROBLEM_HPP_
 
-#include "core/Data.hpp"
-#include "core/TypeDefinition.hpp"
-#include "mesh/RigidMesh.hpp"
-#include "boundaryCondition/BC.hpp"
+#include <FVCode3D/core/Data.hpp>
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/boundaryCondition/BC.hpp>
 
 namespace FVCode3D
 {

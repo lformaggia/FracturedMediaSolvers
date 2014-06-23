@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <functional>
 
-#include "ExportCP.hpp"
+#include <FVCode3D/export/ExportCP.hpp>
 
 namespace FVCode3D
 {

@@ -11,7 +11,7 @@
 #include <functional>
 #include <algorithm>
 
-#include "core/TypeDefinition.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
 
 namespace FVCode3D
 {

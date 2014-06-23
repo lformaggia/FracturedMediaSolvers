@@ -3,9 +3,9 @@
  * @brief Classes for loading files (definitions).
  */
 
-#include "mesh/Mesh3D.hpp"
-#include "property/Properties.hpp"
-#include "import/Import.hpp"
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/import/Import.hpp>
 
 #include <utility>
 #include <map>

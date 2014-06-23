@@ -8,7 +8,7 @@
 #ifndef PERMEABILITYFACTORY_HPP_
 #define PERMEABILITYFACTORY_HPP_
 
-#include "core/TypeDefinition.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
 
 namespace FVCode3D
 {

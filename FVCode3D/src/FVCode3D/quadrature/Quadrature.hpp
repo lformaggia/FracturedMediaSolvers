@@ -11,8 +11,8 @@
 #include <functional>
 #include <algorithm>
 
-#include "core/TypeDefinition.hpp"
-#include "quadrature/QuadratureRules.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/quadrature/QuadratureRules.hpp>
 
 namespace FVCode3D
 {

@@ -3,8 +3,8 @@
  * @brief Class that handles the fractures (definition).
  */
 
-#include "fracture/Fracture3D.hpp"
-#include "mesh/Mesh3D.hpp"
+#include <FVCode3D/fracture/Fracture3D.hpp>
+#include <FVCode3D/mesh/Mesh3D.hpp>
 
 namespace FVCode3D
 {

@@ -3,7 +3,7 @@
  *  @brief Classes that implements the multiple sub-regions (definitions).
  */
 
-#include "multipleSubRegions/MultipleSubRegions.hpp"
+#include <FVCode3D/multipleSubRegions/MultipleSubRegions.hpp>
 
 namespace FVCode3D
 {

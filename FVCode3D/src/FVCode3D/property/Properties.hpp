@@ -6,8 +6,8 @@
 #ifndef PROPERTIES_HPP_
 #define PROPERTIES_HPP_
 
-#include "core/TypeDefinition.hpp"
-#include "property/PermeabilityFactory.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/property/PermeabilityFactory.hpp>
 
 /* TODO
 #	modified:   src/utility/converter.cpp

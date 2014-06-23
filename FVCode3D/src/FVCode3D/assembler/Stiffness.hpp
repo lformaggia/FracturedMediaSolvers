@@ -10,8 +10,8 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include "assembler/MatrixHandler.hpp"
-#include "boundaryCondition/BC.hpp"
+#include <FVCode3D/assembler/MatrixHandler.hpp>
+#include <FVCode3D/boundaryCondition/BC.hpp>
 
 namespace FVCode3D
 {

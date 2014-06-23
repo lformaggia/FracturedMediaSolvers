@@ -19,7 +19,6 @@ add_subdirectory (tools)
 INSTALL(TARGETS fvcode3d.exe DESTINATION ${INSTALL_BIN_DIR})
 
 INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../lib/libtet.a DESTINATION ${INSTALL_LIB_DIR})
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../include/GetPot ${CMAKE_CURRENT_SOURCE_DIR}/../include/tetgen.h DESTINATION ${INSTALL_INCLUDE_DIR})
 
 # Add data files
 link_files_to_binary_dir(data_files data.txt ../data)

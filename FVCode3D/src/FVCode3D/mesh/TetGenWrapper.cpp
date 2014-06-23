@@ -3,9 +3,9 @@
  *	@brief Class for tetrahedralizing a polyhedron (definitions).
  */
 
-#include "tetgen.h"
-#include "geometry/Operations.hpp"
-#include "mesh/TetGenWrapper.hpp"
+#include <FVCode3D/tetgen.h>
+#include <FVCode3D/geometry/Operations.hpp>
+#include <FVCode3D/mesh/TetGenWrapper.hpp>
 
 namespace FVCode3D
 {

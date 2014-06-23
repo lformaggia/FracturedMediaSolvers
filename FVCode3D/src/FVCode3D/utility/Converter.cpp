@@ -3,9 +3,9 @@
  *	@brief Methods to convert format files (definitions).
  */
 
-#include "mesh/Mesh3D.hpp"
-#include "property/Properties.hpp"
-#include "utility/Converter.hpp"
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/utility/Converter.hpp>
 
 namespace FVCode3D
 {

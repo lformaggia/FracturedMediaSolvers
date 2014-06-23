@@ -5,22 +5,22 @@
 #include <vector>
 #include <fstream>
 
-#include "core/TypeDefinition.hpp"
-#include "core/Data.hpp"
-#include "mesh/RigidMesh.hpp"
-#include "property/Properties.hpp"
-#include "mesh/CartesianGrid.hpp"
-#include "boundaryCondition/BC.hpp"
-#include "quadrature/Quadrature.hpp"
-#include "import/Import.hpp"
-#include "export/ExportVTU.hpp"
-#include "utility/Converter.hpp"
-#include "solver/Solver.hpp"
-#include "problem/Problem.hpp"
-#include "problem/DarcySteady.hpp"
-#include "problem/DarcyPseudoSteady.hpp"
-#include "assembler/FixPressureDofs.hpp"
-#include "multipleSubRegions/MultipleSubRegions.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/core/Data.hpp>
+#include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/mesh/CartesianGrid.hpp>
+#include <FVCode3D/boundaryCondition/BC.hpp>
+#include <FVCode3D/quadrature/Quadrature.hpp>
+#include <FVCode3D/import/Import.hpp>
+#include <FVCode3D/export/ExportVTU.hpp>
+#include <FVCode3D/utility/Converter.hpp>
+#include <FVCode3D/solver/Solver.hpp>
+#include <FVCode3D/problem/Problem.hpp>
+#include <FVCode3D/problem/DarcySteady.hpp>
+#include <FVCode3D/problem/DarcyPseudoSteady.hpp>
+#include <FVCode3D/assembler/FixPressureDofs.hpp>
+#include <FVCode3D/multipleSubRegions/MultipleSubRegions.hpp>
 #include "functions.hpp"
 
 using namespace FVCode3D;

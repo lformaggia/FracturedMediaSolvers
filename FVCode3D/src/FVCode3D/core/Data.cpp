@@ -3,7 +3,7 @@
  *	@brief This class implements a simple chronometer (definitions).
  */
 
-#include "core/Data.hpp"
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {

@@ -6,7 +6,7 @@
 #ifndef IMPORT_HPP_
 #define IMPORT_HPP_
 
-#include "core/TypeDefinition.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
 
 namespace FVCode3D
 {

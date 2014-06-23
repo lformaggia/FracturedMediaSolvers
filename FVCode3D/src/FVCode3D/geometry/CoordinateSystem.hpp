@@ -6,8 +6,8 @@
 #ifndef COORDINATESYSTEM_HPP_
 #define COORDINATESYSTEM_HPP_
 
-#include "core/TypeDefinition.hpp"
-#include "geometry/Point3D.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/geometry/Point3D.hpp>
 
 namespace FVCode3D
 {

@@ -3,7 +3,7 @@
  *  @brief These classes allow to solve a linear system (definitions).
  */
 
-#include "solver/Solver.hpp"
+#include <FVCode3D/solver/Solver.hpp>
 #ifdef FVCODE3D_HAS_UMFPACK
 #include <Eigen/UmfPackSupport>
 #endif

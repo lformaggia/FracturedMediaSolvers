@@ -3,8 +3,8 @@
  *  @brief This class build a Stiffness-matrix of the Darcy problem (definitions).
  */
 
-#include "assembler/Stiffness.hpp"
-#include "property/Properties.hpp"
+#include <FVCode3D/assembler/Stiffness.hpp>
+#include <FVCode3D/property/Properties.hpp>
 
 namespace FVCode3D
 {

@@ -3,8 +3,8 @@
  * @brief Class for a 3D Point (definitions).
  */
 
-#include "geometry/Point3D.hpp"
-#include "geometry/CoordinateSystem.hpp"
+#include <FVCode3D/geometry/Point3D.hpp>
+#include <FVCode3D/geometry/CoordinateSystem.hpp>
 
 namespace FVCode3D
 {

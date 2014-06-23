@@ -6,7 +6,7 @@
 #ifndef FRACTURE3D_HPP_
 #define FRACTURE3D_HPP_
 
-#include "core/TypeDefinition.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
 #include <fstream>
 
 namespace FVCode3D

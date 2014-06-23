@@ -3,9 +3,9 @@
  * @brief Class that handles the fracture network (definitions).
  */
 
-#include "fracture/FractureNetwork3D.hpp"
-#include "mesh/Mesh3D.hpp"
-#include "fracture/Fracture3D.hpp"
+#include <FVCode3D/fracture/FractureNetwork3D.hpp>
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/fracture/Fracture3D.hpp>
 
 #include <fstream>
 #include <limits>

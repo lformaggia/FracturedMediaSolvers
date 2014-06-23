@@ -6,8 +6,8 @@
 #ifndef RIGID_MESH_HPP_
 #define RIGID_MESH_HPP_
  
-#include "core/TypeDefinition.hpp"
-#include "mesh/Mesh3D.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/mesh/Mesh3D.hpp>
 
 #include <cmath>
 #include <set>

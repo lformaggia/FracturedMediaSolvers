@@ -6,7 +6,7 @@
 #ifndef OPERATIONS_HPP_
 #define OPERATIONS_HPP_
 
-#include "core/TypeDefinition.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
 
 namespace FVCode3D
 {

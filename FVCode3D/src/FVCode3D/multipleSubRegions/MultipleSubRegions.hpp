@@ -9,9 +9,9 @@
 #include <functional>
 #include <memory>
 
-#include "eigenPatch/RangeSupport.hpp"
-#include "core/TypeDefinition.hpp"
-#include "core/Data.hpp"
+#include <FVCode3D/eigenPatch/RangeSupport.hpp>
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {

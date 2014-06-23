@@ -6,8 +6,8 @@
 #ifndef EXPORT_HPP_
 #define EXPORT_HPP_
 
-#include "core/TypeDefinition.hpp"
-#include "mesh/RigidMesh.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/mesh/RigidMesh.hpp>
 
 namespace FVCode3D
 {

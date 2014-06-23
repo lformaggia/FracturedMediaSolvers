@@ -3,9 +3,9 @@
  * @brief Class that generate a hexahedral structured (Cartesian) grid (definitions).
  */
 
-#include "mesh/Mesh3D.hpp"
-#include "property/Properties.hpp"
-#include "mesh/CartesianGrid.hpp"
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/mesh/CartesianGrid.hpp>
 
 namespace FVCode3D
 {

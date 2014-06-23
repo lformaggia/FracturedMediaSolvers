@@ -3,8 +3,8 @@
  *	@brief This class handles the boundary conditions of the Darcy problem.
  */
 
-#include "mesh/Mesh3D.hpp"
-#include "boundaryCondition/BC.hpp"
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/boundaryCondition/BC.hpp>
 
 namespace FVCode3D
 {

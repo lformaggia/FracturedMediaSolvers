@@ -10,7 +10,7 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
-#include "assembler/MatrixHandler.hpp"
+#include <FVCode3D/assembler/MatrixHandler.hpp>
 
 namespace FVCode3D
 {

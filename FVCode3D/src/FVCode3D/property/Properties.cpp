@@ -3,8 +3,8 @@
  *	@brief Classes that handle the properties (definitions).
  */
 
-#include "property/Properties.hpp"
-#include "mesh/Mesh3D.hpp"
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/mesh/Mesh3D.hpp>
 
 namespace FVCode3D
 {

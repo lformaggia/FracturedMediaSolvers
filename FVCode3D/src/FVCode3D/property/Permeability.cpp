@@ -3,7 +3,7 @@
  *	@brief Classes that handle the permeability (definitions).
  */
 
-#include "property/Permeability.hpp"
+#include <FVCode3D/property/Permeability.hpp>
 
 namespace FVCode3D
 {

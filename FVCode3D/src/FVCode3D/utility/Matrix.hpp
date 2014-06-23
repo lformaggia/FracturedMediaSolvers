@@ -6,7 +6,7 @@
 #ifndef MATRIX_HPP_
 #define MATRIX_HPP_
 
-#include "core/TypeDefinition.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
 
 namespace FVCode3D
 {

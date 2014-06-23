@@ -6,7 +6,7 @@
 #ifndef EXPORTCP_HPP_
 #define EXPORTCP_HPP_
 
-#include "export/Export.hpp"
+#include <FVCode3D/export/Export.hpp>
 
 namespace FVCode3D
 {

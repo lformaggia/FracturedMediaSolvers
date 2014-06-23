@@ -3,8 +3,8 @@
  *  @brief Some useful operations (definitions).
  */
 
-#include "geometry/Operations.hpp"
-#include "geometry/Point3D.hpp"
+#include <FVCode3D/geometry/Operations.hpp>
+#include <FVCode3D/geometry/Point3D.hpp>
 
 namespace FVCode3D
 {

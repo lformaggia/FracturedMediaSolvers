@@ -6,12 +6,12 @@
 #ifndef MESH3D_HPP_
 #define MESH3D_HPP_
 
-#include "core/TypeDefinition.hpp"
-#include "geometry/CoordinateSystem.hpp"
-#include "geometry/Operations.hpp"
-#include "fracture/Fracture3D.hpp"
-#include "fracture/FractureNetwork3D.hpp"
-#include "mesh/TetGenWrapper.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/geometry/CoordinateSystem.hpp>
+#include <FVCode3D/geometry/Operations.hpp>
+#include <FVCode3D/fracture/Fracture3D.hpp>
+#include <FVCode3D/fracture/FractureNetwork3D.hpp>
+#include <FVCode3D/mesh/TetGenWrapper.hpp>
 
 #include <set>
 #include <vector>

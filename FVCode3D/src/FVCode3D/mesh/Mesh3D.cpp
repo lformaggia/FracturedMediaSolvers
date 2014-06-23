@@ -3,8 +3,8 @@
  * @brief Classes that implements polyhedrical unstructured meshes (definitions).
  */
 
-#include "mesh/Mesh3D.hpp"
-#include "geometry/Operations.hpp"
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/geometry/Operations.hpp>
 
 #include <utility>
 #include <fstream>

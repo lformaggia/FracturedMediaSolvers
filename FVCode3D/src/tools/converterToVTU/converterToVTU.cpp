@@ -5,12 +5,12 @@
 #include <vector>
 #include <fstream>
 
-#include "core/TypeDefinition.hpp"
-#include "core/Data.hpp"
-#include "mesh/Mesh3D.hpp"
-#include "property/Properties.hpp"
-#include "import/Import.hpp"
-#include "export/ExportVTU.hpp"
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/core/Data.hpp>
+#include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/import/Import.hpp>
+#include <FVCode3D/export/ExportVTU.hpp>
 
 using namespace FVCode3D;
 
