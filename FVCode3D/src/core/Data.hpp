@@ -189,7 +189,7 @@ public:
     /*!
      * @return if true the multiple sub-regions method is activated
      */
-    bool MSROn() const { return M_nbSubRegions; }
+    bool MSROn() const { return M_MSR; }
 
     //! Get the number of sub-regions
     /*!
