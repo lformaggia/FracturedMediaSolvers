@@ -86,19 +86,20 @@ public:
      */
     virtual Matrix_Type & getStiffnessMatrix() { return this->M_S->getMatrix(); }
 
+    //! Assemble the linear system
+    /*!
+     * It calls initialize(), assembleMatrix() and assembleVector()
+     */
+    virtual void assemble();
+
     //! Initialize the matrices
     /*!
      * Build the matrices and vectors that are not time dependent, i.e.,
-     * the mass matrix, the stiffness matrix (and BCs vector) and the source vector.
+     * the mass matrix, the stiffness matrix, the source vector and the BCs.
+     * The BCs and the source are not added to the RHS.
      * To be called only once.
      */
     virtual void initialize();
-
-    //! Assemble the linear system
-    /*!
-     * Nothing to do
-     */
-    virtual void assemble();
 
     //! Assemble matrix method
     /*!
@@ -108,7 +109,8 @@ public:
 
     //! Assemble vector method
     /*!
-     * Update the previous solutions and build the right hand side.
+     * Update the previous solutions and build the right hand side
+     * with BCs, source vector.
      * To be called at each time step.
      */
     virtual void assembleVector();
@@ -198,14 +200,15 @@ public:
     //! Initialize the matrices
     /*!
      * Build the matrices and vectors that are not time dependent, i.e.,
-     * the mass matrix, the stiffness matrix (and BCs vector) and the source vector.
+     * the mass matrix, the stiffness matrix, the source vector and the BCs.
+     * The BCs and the source are not added to the RHS.
      * To be called only once.
      */
     virtual void initialize();
 
     //! Assemble the linear system
     /*!
-     * Nothing to do
+     * It calls initialize(), assembleMatrix() and assembleVector()
      */
     virtual void assemble();
 
@@ -216,8 +219,9 @@ public:
     virtual void assembleMatrix() {};
 
     //! Assemble vector method
-    /*!
-     * Update the previous solutions and build the right hand side.
+    /*
+     * Update the previous solutions and build the right hand side
+     * with BCs, source vector.
      * To be called at each time step.
      */
     virtual void assembleVector();
@@ -256,8 +260,14 @@ protected:
     std::unique_ptr<StiffMatrix> M_S;
 };
 
+
+//
+// Implementation of DarcyPseudoSteady< Implicit >
+//
+
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::assemble()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::
+assemble()
 {
 	if(!M_isInitialized)
 	{
@@ -268,7 +278,8 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::as
 }
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::initialize()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::
+initialize()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
@@ -294,7 +305,8 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::in
 } // DarcyPseudoSteady::initialize
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::assembleVector()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::
+assembleVector()
 {
     M_xOld = *M_x;
 
@@ -302,26 +314,33 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::as
 } // DarcyPseudoSteady::assemble
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::solve()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, Implicit >::
+solve()
 {
     this->M_solver->solve();
     M_x = &(this->M_solver->getSolution());
 } // DarcyPseudoSteady::solve
 
+
+//
+// Implementation of DarcyPseudoSteady< BDF2 >
+//
+
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::assemble()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::
+assemble()
 {
 	if(!M_isInitialized)
 	{
 		initialize();
-		M_isInitialized = true;
 	}
 	assembleMatrix();
 	assembleVector();
 }
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::initialize()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::
+initialize()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
@@ -343,10 +362,13 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::initia
     M_xOldOld = Vector::Constant(M_M->getSize(), 0.);
     M_xOld = Vector::Constant(M_M->getSize(), 0.);
     M_x = &M_xOld;
+
+    M_isInitialized = true;
 } // DarcyPseudoSteady::initialize
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::assembleVector()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::
+assembleVector()
 {
     M_xOldOld = M_xOld;
     M_xOld = *M_x;
@@ -355,7 +377,8 @@ void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::assemb
 } // DarcyPseudoSteady::assemble
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::solve()
+void DarcyPseudoSteady< Solver, QRMatrix, QRFracture, MatrixType, BDF2 >::
+solve()
 {
     this->M_solver->solve();
     M_x = &(this->M_solver->getSolution());

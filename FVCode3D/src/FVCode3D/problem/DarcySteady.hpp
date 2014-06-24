@@ -57,7 +57,7 @@ public:
 
     //! Assemble matrix method
     /*!
-     * Build the stiffness matrix.
+     * Build the stiffness matrix and the BCs.
      */
     virtual void assembleMatrix();
 
@@ -79,7 +79,8 @@ public:
 };
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleMatrix()
+void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::
+assembleMatrix()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
@@ -91,7 +92,8 @@ void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleMatrix()
 } // DarcySteady::assembleMatrix
 
 template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::assembleVector()
+void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::
+assembleVector()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 

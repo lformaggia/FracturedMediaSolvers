@@ -113,6 +113,9 @@ public:
     virtual Matrix_Type & getStiffnessMatrix() = 0;
 
     //! Assemble method
+    /*!
+     * It calls assembleMatrix() and assembleVector()
+     */
     void assemble() { assembleMatrix(); assembleVector(); };
 
     //! Assemble matrix method
@@ -125,6 +128,9 @@ public:
     virtual void solve() = 0;
 
     //! Assemble and solve
+    /*!
+     * It calls assemble() and solve()
+     */
     virtual void assembleAndSolve() { assemble(); solve(); }
 
     //! Destructor
