@@ -62,10 +62,6 @@ typedef Eigen::Matrix<UInt, Eigen::Dynamic, 1> UIntVector;
 //! Type for eigen triplets
 typedef Eigen::Triplet<Real> Triplet;
 
-class Point3D;
-
-typedef	std::function<Real(Point3D)> Func;
-
 } // namespace FVCode3D
 
 #endif /* FVCODE3D_BASIC_TYPE_HPP_ */
