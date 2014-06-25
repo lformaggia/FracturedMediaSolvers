@@ -114,33 +114,30 @@ Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge
 
 void StiffMatrix::assemble()
 {
-    std::vector<Triplet> Matrix_elements;
     // TODO reserve the vector!
 
     if( !this->M_mesh.getInternalFacetsIdsVector().empty() )
     {
-        assemblePorousMatrix( Matrix_elements );
+        assemblePorousMatrix();
     } // if
 
     if( !this->M_mesh.getFractureFacetsIdsVector().empty() )
     {
-        assembleFracture( Matrix_elements );
+        assembleFracture();
     } // if
 
     if( !this->M_mesh.getInternalFacetsIdsVector().empty() )
     {
-        assemblePorousMatrixBC( Matrix_elements );
+        assemblePorousMatrixBC();
     } // if
 
     if( !this->M_mesh.getBorderTipEdgesIdsVector().empty() )
     {
-        assembleFractureBC( Matrix_elements );
+        assembleFractureBC();
     } // if
-
-    this->M_Matrix->setFromTriplets( std::begin( Matrix_elements ), std::end( Matrix_elements ) );
 } // assemble
 
-void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) const
+void StiffMatrix::assemblePorousMatrix()
 {
     for (auto& facet_it : this->M_mesh.getInternalFacetsIdsVector())
     {
@@ -153,10 +150,10 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
         const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
         const Real Q12 = T12 * M_properties.getMobility();
 
-        Matrix_elements.emplace_back(neighbor1id, neighbor1id, Q12); // Triplet
-        Matrix_elements.emplace_back(neighbor1id, neighbor2id, -Q12); // Triplet
-        Matrix_elements.emplace_back(neighbor2id, neighbor1id, -Q12); // Triplet
-        Matrix_elements.emplace_back(neighbor2id, neighbor2id, Q12); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor1id, M_offsetCol + neighbor1id, Q12); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor1id, M_offsetCol + neighbor2id, -Q12); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor2id, M_offsetCol + neighbor1id, -Q12); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor2id, M_offsetCol + neighbor2id, Q12); // Triplet
     } // for
 
     for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
@@ -178,19 +175,19 @@ void StiffMatrix::assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) 
         const Real T2f = alphaf*alpha2/(alphaf + alpha2);
         const Real Q2f = T2f * M_properties.getMobility();
 
-        Matrix_elements.emplace_back(neighbor1id, neighbor1id, Q1f); // Triplet
-        Matrix_elements.emplace_back(neighbor1id, facet_it.getIdAsCell(), -Q1f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdAsCell(), neighbor1id, -Q1f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), Q1f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor1id, M_offsetCol + neighbor1id, Q1f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor1id, M_offsetCol + facet_it.getIdAsCell(), -Q1f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + neighbor1id, -Q1f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + facet_it.getIdAsCell(), Q1f); // Triplet
 
-        Matrix_elements.emplace_back(neighbor2id, neighbor2id, Q2f); // Triplet
-        Matrix_elements.emplace_back(neighbor2id, facet_it.getIdAsCell(), -Q2f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdAsCell(), neighbor2id, -Q2f); // Triplet
-        Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), Q2f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor2id, M_offsetCol + neighbor2id, Q2f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + neighbor2id, M_offsetCol + facet_it.getIdAsCell(), -Q2f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + neighbor2id, -Q2f); // Triplet
+        M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + facet_it.getIdAsCell(), Q2f); // Triplet
     } // for
 } // StiffMatrix::assemblePorousMatrix
 
-void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements ) const
+void StiffMatrix::assemblePorousMatrixBC()
 {
     for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector())
     {
@@ -202,7 +199,7 @@ void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements 
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-            M_b->operator()(neighbor1id) += Q1o;
+            M_b->operator()(M_offsetRow + neighbor1id) += Q1o;
         } // if
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
@@ -213,13 +210,13 @@ void StiffMatrix::assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements 
             const Real Q12 = T12 * M_properties.getMobility();
             const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 
-            Matrix_elements.emplace_back(neighbor1id, neighbor1id, Q12); // Triplet
-            M_b->operator()(neighbor1id) = M_b->operator()(neighbor1id) + Q1o;
+            M_matrixElements.emplace_back(M_offsetRow + neighbor1id, M_offsetCol + neighbor1id, Q12); // Triplet
+            M_b->operator()(M_offsetRow + neighbor1id) += Q1o;
         } // else if
     } // for
 } // StiffMatrix::assemblePorousMatrixBC
 
-void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) const
+void StiffMatrix::assembleFracture()
 {
     for(auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
@@ -240,16 +237,16 @@ void StiffMatrix::assembleFracture( std::vector<Triplet>& Matrix_elements ) cons
             for(UInt counter = 0; counter < alphas.size(); ++counter)
             {
                 const Real QFf = alphaF*alphas[counter] * M_properties.getMobility() / a_sum;
-                Matrix_elements.emplace_back(facet_it.getIdAsCell(), facet_it.getIdAsCell(), QFf); // Triplet
-                Matrix_elements.emplace_back(facet_it.getIdAsCell(),
-                    this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getIdAsCell(),
+                M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + facet_it.getIdAsCell(), QFf); // Triplet
+                M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(),
+                	M_offsetCol + this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getIdAsCell(),
                     -QFf);  // Triplet
             } // for
         } // for
     } // for
 } // StiffMatrix::assembleFracture
 
-void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) const
+void StiffMatrix::assembleFractureBC()
 {
     for (auto& edge_it : this->M_mesh.getBorderTipEdgesIdsVector())
     {
@@ -291,7 +288,7 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    M_b->operator()(neighborIdAsCell) += Q1o;
+                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
                 } // if
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {
@@ -302,8 +299,8 @@ void StiffMatrix::assembleFractureBC( std::vector<Triplet>& Matrix_elements ) co
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
-                    Matrix_elements.emplace_back(neighborIdAsCell, neighborIdAsCell, Q12); // Triplet
-                    M_b->operator()(neighborIdAsCell) = M_b->operator()(neighborIdAsCell) + Q1o;
+                    M_matrixElements.emplace_back(M_offsetRow + neighborIdAsCell, M_offsetCol + neighborIdAsCell, Q12); // Triplet
+                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
                 } // else if
         	} // if
         }// for

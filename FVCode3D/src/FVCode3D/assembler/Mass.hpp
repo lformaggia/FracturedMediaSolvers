@@ -35,7 +35,7 @@ public:
 		@param rigid_mesh A Rigid_Mesh used to build the matrix
 	*/
 	MassMatrix(const Rigid_Mesh & rigid_mesh):
-		MatrixHandler(rigid_mesh, D_Cell), M_properties(rigid_mesh.getPropertiesMap()) {}
+		MatrixHandler(rigid_mesh, D_Cell) {}
 	//! No Copy-Constructor
 	MassMatrix(const MassMatrix&) = delete;
 	//! No Empty-Constructor
@@ -54,9 +54,6 @@ public:
 	void assemble();
 	//@}
 
-protected:
-	//! A reference to a PropertiesMap
-	const PropertiesMap & M_properties;
 };
 
 } //namespace FVCode3D

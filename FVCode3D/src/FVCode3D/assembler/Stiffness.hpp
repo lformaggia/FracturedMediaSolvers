@@ -59,7 +59,7 @@ public:
     */
     StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC):
         MatrixHandler(rigid_mesh), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
-        M_properties(rigid_mesh.getPropertiesMap()), M_bc(BC) {}
+        M_bc(BC) {}
     //! No Copy-Constructor
     StiffMatrix(const StiffMatrix &) = delete;
     //! No Empty-Constructor
@@ -85,6 +85,15 @@ public:
      * @return Assemble the stiffness matrix
      */
     void assemble();
+
+	//! Set offsets
+	/*!
+	 * @param row row offset
+	 * @param col column offset
+	 */
+	virtual void setOffsets(const UInt row, const UInt col)
+		{ this->setOffsets(row, col); M_b.reset(new Vector( Vector::Constant( this->M_size + this->M_offsetRow, 0.) )); }
+
     //@}
 
 public:
@@ -149,32 +158,30 @@ protected:
     /*!
      * @return Assemble the porous media block
      */
-    void assemblePorousMatrix( std::vector<Triplet>& Matrix_elements ) const;
+    void assemblePorousMatrix();
 
     //! Assemble the BCs for the porous medium
     /*!
      * @return Assemble the BCs for the porous medium
      */
-    void assemblePorousMatrixBC( std::vector<Triplet>& Matrix_elements ) const;
+    void assemblePorousMatrixBC();
 
     //! Assemble the fractures block
     /*!
      * @return Assemble the fractures block
      */
-    void assembleFracture( std::vector<Triplet>& Matrix_elements ) const;
+    void assembleFracture();
 
     //! Assemble the BCs for the fractures
     /*!
      * @return Assemble the BCs for the fractures
      */
-    void assembleFractureBC( std::vector<Triplet>& Matrix_elements ) const;
+    void assembleFractureBC();
     //@}
 
 protected:
     //! Unique pointer to the vector that contains the effects of BCs on the RHS
     std::unique_ptr<Vector> M_b;
-    //! A reference to a PropertiesMap
-    const PropertiesMap & M_properties;
     //! The container of the BCs
     const BoundaryConditions & M_bc;
 };
