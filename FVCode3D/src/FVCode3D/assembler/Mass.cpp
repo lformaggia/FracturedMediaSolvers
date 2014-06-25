@@ -31,12 +31,12 @@ void MassMatrix::assemble()
 		M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + facet_it.getIdAsCell(), compressibility * porosity * volume); // Triplet
 
 		// remove from the first neighbor the portion due to the fracture
-		porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[0]].getZoneCode() ).M_porosity;
-		M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[0], M_offsetCol + facet_it.getSeparatedCellsIds()[0], -compressibility * porosity * volume / 2); // Triplet
+		//porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[0]].getZoneCode() ).M_porosity;
+		//M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[0], M_offsetCol + facet_it.getSeparatedCellsIds()[0], -compressibility * porosity * volume / 2); // Triplet
 
 		// remove from the second neighbor the portion due to the fracture
-		porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[1]].getZoneCode() ).M_porosity;
-		M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[1], M_offsetCol + facet_it.getSeparatedCellsIds()[1], -compressibility * porosity * volume / 2); // Triplet
+		//porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[1]].getZoneCode() ).M_porosity;
+		//M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[1], M_offsetCol + facet_it.getSeparatedCellsIds()[1], -compressibility * porosity * volume / 2); // Triplet
 	}
 }
 
