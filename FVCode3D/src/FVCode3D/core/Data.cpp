@@ -19,7 +19,7 @@ Data::Data():
 	M_permMatrix(0.), M_poroMatrix(0.),
 	M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
 	M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
-	M_mobility(1.), M_compressibility(0.), M_theta(0.), M_verbose(true)
+	M_mobility(1.), M_compressibility(1.), M_theta(0.), M_verbose(true)
 {}
 
 Data::Data(const std::string dataFileName)
@@ -68,7 +68,7 @@ Data::Data(const std::string dataFileName)
 	M_timeStep = dataFile("problem/time_step", 0.1);
 
 	M_mobility = dataFile("fluid/mobility", 1.);
-	M_compressibility = dataFile("fluid/compressibility", 0.);
+	M_compressibility = dataFile("fluid/compressibility", 1.);
 
 	M_theta = dataFile("bc/theta", 0.);
 
