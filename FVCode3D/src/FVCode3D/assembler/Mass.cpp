@@ -29,14 +29,23 @@ void MassMatrix::assemble()
 		porosity = M_properties.getProperties(facet_it.getZoneCode()).M_porosity;
 
 		M_matrixElements.emplace_back(M_offsetRow + facet_it.getIdAsCell(), M_offsetCol + facet_it.getIdAsCell(), compressibility * porosity * volume); // Triplet
+	}
 
-		// remove from the first neighbor the portion due to the fracture
-		//porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[0]].getZoneCode() ).M_porosity;
-		//M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[0], M_offsetCol + facet_it.getSeparatedCellsIds()[0], -compressibility * porosity * volume / 2); // Triplet
+	if( this->M_mesh.getCellsVector().size() > 0 )
+	{
+		for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
+		{
+			// set mass term of the fracture
+			volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 
-		// remove from the second neighbor the portion due to the fracture
-		//porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[1]].getZoneCode() ).M_porosity;
-		//M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[1], M_offsetCol + facet_it.getSeparatedCellsIds()[1], -compressibility * porosity * volume / 2); // Triplet
+			// remove from the first neighbor the portion due to the fracture
+			porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[0]].getZoneCode() ).M_porosity;
+			M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[0], M_offsetCol + facet_it.getSeparatedCellsIds()[0], -compressibility * porosity * volume / 2); // Triplet
+
+			// remove from the second neighbor the portion due to the fracture
+			porosity = M_properties.getProperties( this->M_mesh.getCellsVector()[facet_it.getSeparatedCellsIds()[1]].getZoneCode() ).M_porosity;
+			M_matrixElements.emplace_back(M_offsetRow + facet_it.getSeparatedCellsIds()[1], M_offsetCol + facet_it.getSeparatedCellsIds()[1], -compressibility * porosity * volume / 2); // Triplet
+		}
 	}
 }
 
