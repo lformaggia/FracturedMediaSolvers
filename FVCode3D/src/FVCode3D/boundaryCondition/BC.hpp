@@ -136,16 +136,25 @@ public:
 	//! @name Constructor & Destructor
 	//@{
 
+	//! Default empty constructor
+	BoundaryConditions() = default;
 	//! Constructor for a BoundaryConditions, given a vector of BorderBC.
 	/*!
 		@param borderBC is a vector of BorderBC containing the boundary conditions.
 	*/
-	BoundaryConditions(std::vector<BorderBC> & borderBC);
+	BoundaryConditions(std::vector<BorderBC> & borderBC)
+	{ setBoundaryConditions(borderBC); }
 	//! DEfault copy constructor
 	BoundaryConditions(const BoundaryConditions &) = default;
 	//! Default destructor
 	~BoundaryConditions() = default;
 	//@}
+
+	//! Set boundary condition from a vector of Border BC
+	/*!
+	 * @param borderBC is a vector of BorderBC containing the boundary conditions.
+	 */
+	void setBoundaryConditions(std::vector<BorderBC> & borderBC);
 
 protected:
 	//! Map of BorderBC. First -> BC id, second -> BorderBC

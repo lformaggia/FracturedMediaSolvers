@@ -9,7 +9,7 @@
 namespace FVCode3D
 {
 
-BoundaryConditions::BoundaryConditions(std::vector<BorderBC> & borderBC)
+void BoundaryConditions::setBoundaryConditions(std::vector<BorderBC> & borderBC)
 {
 	for(std::vector<BorderBC>::const_iterator it = borderBC.begin(); it != borderBC.end(); ++it)
 		M_bordersBCMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->getId()), std::forward_as_tuple(*it));
