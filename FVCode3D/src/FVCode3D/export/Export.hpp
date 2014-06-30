@@ -152,7 +152,7 @@ public:
      * @param propertiesType flag used to select which properties to export
      * @param property pointer to a generic property
      */
-    virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
+    virtual void exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = nullptr ) = 0;
 
     //! Export all properties defined on cells and fracture facets
     /*!
@@ -168,7 +168,7 @@ public:
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
      */
-    virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = NULL ) = 0;
+    virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property = nullptr ) = 0;
 
     //! Destructor
     virtual ~Exporter() = default;

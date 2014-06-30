@@ -706,12 +706,16 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     filestr << "\t\t\t\t<DataArray type=\"UInt64\" Name=\"edgeBC\" format=\"ascii\">" << std::endl;
-    for(auto& edge : regularEdges )
-        filestr << "0" << std::endl;
-    for(auto& edge : junctureEdges )
-        filestr << "0" << std::endl;
-    for(auto& edge : intTipEdges )
-        filestr << "0" << std::endl;
+
+    std::for_each( std::begin(regularEdges), std::end(regularEdges),
+    			   [&filestr] (const Regular_Edge &) { filestr << "0" << std::endl; } );
+
+    std::for_each( std::begin(junctureEdges), std::end(junctureEdges),
+    			   [&filestr] (const Juncture_Edge &) { filestr << "0" << std::endl; } );
+
+    std::for_each( std::begin(intTipEdges), std::end(intTipEdges),
+    			   [&filestr] (const Internal_Tip_Edge &) { filestr << "0" << std::endl; } );
+
     for(auto& edge : borTipEdges )
         filestr << *std::begin(edge.getBorderIds()) << std::endl;
     for(auto& edge : pureBorEdges )
