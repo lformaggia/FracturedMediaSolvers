@@ -71,8 +71,8 @@ public:
     DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const DataPtr_Type & data):
         Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, f, data),
         M_tStep(data->getTimeStep()),
-        M_x(nullptr), M_M(nullptr),
-        M_isInitialized(false) {};
+        M_x(nullptr), M_isInitialized(false),
+        M_M(nullptr), M_S(nullptr) {}
 
     //! Get the previous solution
     /*!
@@ -176,8 +176,8 @@ public:
     DarcyPseudoSteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & f, const DataPtr_Type & data):
         Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, f, data),
         M_tStep(data->getTimeStep()),
-        M_x(nullptr), M_M(nullptr),
-        M_isInitialized(false) {};
+        M_x(nullptr), M_isInitialized(false),
+        M_M(nullptr), M_S(nullptr) {};
 
     //! Get the previous solution
     /*!
