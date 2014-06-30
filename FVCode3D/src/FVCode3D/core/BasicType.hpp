@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <utility>
 #include <functional>
+#include <algorithm>
 #include <tuple>
 #include <string>
 #include <map>
