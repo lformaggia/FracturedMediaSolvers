@@ -383,7 +383,7 @@ void Rigid_Mesh::edgesBuilder()
 			edge_it.M_isFracture |= M_facets[it].M_isFracture;
 			if (M_facets[it].M_isFracture)
 			{
-				for(auto jt : M_facets[it].M_representedFractureIds)
+				for(UInt jt = 0 ; jt < M_facets[it].M_representedFractureIds.size(); ++jt)
 				{
 					nFracFacets.insert(std::pair<UInt,UInt>(std::make_pair(it,0)));
 					nFracFacets[it]++;
