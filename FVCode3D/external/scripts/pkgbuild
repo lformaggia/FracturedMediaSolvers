@@ -30,7 +30,7 @@ for(( i=0; i < $package_number; i++ )); do
     echo " $i: installing $package package"
     echo "====================================="
 
-    build_package $package || exit 1
+    build_package $package || { echo -e "Error installing package ${package}\nCheck log file: ${install_dir}/${package}.log"; exit 1; }
 
 done
 }
