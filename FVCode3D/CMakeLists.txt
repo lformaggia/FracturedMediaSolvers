@@ -30,8 +30,12 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -frounding-math" CACHE STRING "g++ Compiler Flag
 
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for Release" FORCE)
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -O0 -g" CACHE STRING "g++ Compiler Flags for Debug" FORCE)
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -D_GLIBCXX_DEBUG -O0 -g" CACHE STRING "g++ Compiler Flags for Debug" FORCE)
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG" CACHE STRING "g++ Compiler Flags for RelWithDebInfo" FORCE)
+
+if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo." FORCE)
+endif()
 
 #================================
 # Installation directories
@@ -111,7 +115,6 @@ message(STATUS "${PROJECT_NAME}_TPL_LIBRARY_DIRS = ${${PROJECT_NAME}_TPL_LIBRARY
 
 # Make sure the compiler can find include files.
 include_directories (
-    ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}
@@ -129,74 +132,18 @@ set(LIBRARIES
     ${UMFPACK_LIBRARIES}
     ${CHOLMOD_LIBRARIES}
     ${BLAS_LIBRARIES}
+    rt
     tet
     CACHE INTERNAL "")
 message(STATUS "LIBRARIES = ${LIBRARIES}")
 
-# Create static library
+#================================
+# Subdirectories
+#================================
 add_subdirectory(src)
-file(GLOB_RECURSE LIB_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.cpp)
-file(GLOB_RECURSE LIB_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/src/*/*.hpp)
-add_library(fvcode3d STATIC ${LIB_SOURCES} ${LIB_HEADERS})
-
-SET(LIBRARIES ${LIBRARIES} fvcode3d)
-
-#Set properties on a target.
-#We use this here to set -DTETLIBRARY for when compiling the library
-set_target_properties(fvcode3d PROPERTIES "COMPILE_DEFINITIONS" TETLIBRARY)
-
-add_executable(fvcode3d.exe main.cpp )
-# Create executable and link libraries
-target_link_libraries(fvcode3d.exe
-    fvcode3d
-    ${LIBRARIES}
-    )
-
-# Add subdirectories with examples
-# add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tests)
-
 
 # Add documentation
-add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/doc)
-
-# Add tools
-add_subdirectory (${CMAKE_CURRENT_SOURCE_DIR}/tools)
-
-# Install
-INSTALL(TARGETS fvcode3d.exe fvcode3d
-    RUNTIME DESTINATION ${INSTALL_BIN_DIR}
-    ARCHIVE DESTINATION ${INSTALL_LIB_DIR}
-    LIBRARY DESTINATION ${INSTALL_LIB_DIR}
-    )
-
-INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/lib/libtet.a DESTINATION ${INSTALL_LIB_DIR})
-
-# Add data file
-add_custom_command(
-    TARGET fvcode.exe POST_BUILD                # Adds a post-build event to fvcode.exe
-
-#    COMMAND ${CMAKE_COMMAND} -E copy        # which executes "cmake - E copy..."
-    COMMAND ln -sf
-    ${PROJECT_SOURCE_DIR}/data.txt          # <--this is in-file
-    ${PROJECT_BINARY_DIR}/data.txt          # <--this is out-file path
-
-    COMMAND ln -sf
-    ${PROJECT_SOURCE_DIR}/dataMSR.txt          # <--this is in-file
-    ${PROJECT_BINARY_DIR}/dataMSR.txt          # <--this is out-file path
-
-    COMMAND ${CMAKE_COMMAND} -E copy        # which executes "cmake - E copy_if_different..."
-    ${PROJECT_SOURCE_DIR}/README            # <--this is in-file
-    ${PROJECT_BINARY_DIR}/README            # <--this is out-file path
-
-    COMMAND ln -sf
-    "${PROJECT_SOURCE_DIR}/data"
-    "${PROJECT_BINARY_DIR}"
-
-#   COMMAND ${CMAKE_COMMAND} -E make_directory data
-
-    COMMAND ${CMAKE_COMMAND} -E make_directory results
-
-    )
+add_subdirectory(doc)
 
 #================================
 # ${PROJECT_NAME}Config.cmake
