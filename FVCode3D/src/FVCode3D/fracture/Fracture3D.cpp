@@ -18,7 +18,7 @@ Fracture3D::Fracture3D(const Fracture3D & f):
 Fracture3D::Fracture3D(const Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id):
 	M_id(id), M_fractureFacets(fractureFacets), M_mesh(mesh) {}
 
-bool Fracture3D::exportVTK(const std::string & filename) const
+bool Fracture3D::exportVTK(const std::string & filename) const throw()
 {
 	// TODO Fare una bool per scegliere se fare out o append?
 
@@ -44,9 +44,7 @@ bool Fracture3D::exportVTK(const std::string & filename) const
 	}
 	else
 	{
-		std::cerr << std::endl
-				  << " *** Error: file not opened *** " << std::endl << std::endl;
-		return  0;
+		throw std::runtime_error("Error: file " + filename + " not opened.");
 	}
 
 	std::cout << std::endl

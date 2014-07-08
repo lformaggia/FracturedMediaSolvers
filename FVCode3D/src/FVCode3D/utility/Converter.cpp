@@ -10,7 +10,7 @@
 namespace FVCode3D
 {
 
-void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties)
+void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties) throw()
 {
 	std::fstream file;
 
@@ -22,7 +22,7 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
 	}
 	else
 	{
-		std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+		throw std::runtime_error("Error: file " + filename + " not opened.");
 		return;
 	}
 
@@ -131,7 +131,7 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
 	file.close();
 }
 
-void saveAsMeditFormat(const std::string filename, Mesh3D & mesh)
+void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw()
 {
 	std::fstream file;
 
@@ -143,7 +143,7 @@ void saveAsMeditFormat(const std::string filename, Mesh3D & mesh)
 	}
 	else
 	{
-		std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
+		throw std::runtime_error("Error: file " + filename + " not opened.");
 		return;
 	}
 

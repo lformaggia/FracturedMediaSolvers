@@ -37,7 +37,7 @@ public:
 	/*!
 	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
 	 */
-	virtual void import(bool fracturesOn) = 0;
+	virtual void import(bool fracturesOn) throw() = 0;
 
 	//! Generate the BC ids from a standard TPFA file format
 	/*!
@@ -133,7 +133,7 @@ public:
 	 * Read points, polygons, polyhedra
 	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
 	 */
-	virtual void import(bool fracturesOn = true);
+	virtual void import(bool fracturesOn = true) throw();
 	
 	//! Add the fractures network
 	/*!
@@ -181,7 +181,7 @@ public:
 	 * Read points, polygons, polyhedra, zone properties
 	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
 	 */
-	virtual void import(bool fracturesOn = true);
+	virtual void import(bool fracturesOn = true) throw();
 
 	//! Add the fractures network
 	/*!
@@ -230,7 +230,7 @@ public:
 	 * Read points, polygons, polyhedra, zone properties, BC ids, fracture network
 	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
 	 */
-	virtual void import(bool fracturesOn = true);
+	virtual void import(bool fracturesOn = true) throw();
 	
 	//! Destructor
 	virtual ~ImporterForSolver() = default;

@@ -88,7 +88,7 @@ Point3D & Point3D::operator/=(const Real & r)
 	return *this;
 }
 
-Real Point3D::operator[](const UInt coord) const
+Real Point3D::operator[](const UInt coord) const throw()
 {
 	switch(coord)
 	{
@@ -102,12 +102,13 @@ Real Point3D::operator[](const UInt coord) const
 		return M_z;
 		break;
 	default:
-		// TODO throw exception
+		throw std::runtime_error("Error: out of range in " + std::string(__FUNCTION__) + ".");
 		return M_x;
+		break;
 	}
 }
 
-Real & Point3D::operator[](const UInt coord)
+Real & Point3D::operator[](const UInt coord) throw()
 {
 	switch(coord)
 	{
@@ -121,8 +122,9 @@ Real & Point3D::operator[](const UInt coord)
 		return M_z;
 		break;
 	default:
-		// TODO throw exception
+		throw std::runtime_error("Error: out of range in " + std::string(__FUNCTION__) + ".");
 		return M_x;
+		break;
 	}
 }
 

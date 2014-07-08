@@ -13,7 +13,7 @@
 namespace FVCode3D
 {
 
-void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -25,8 +25,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -124,7 +123,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     filestr.close();
 }
 
-void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -136,8 +135,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Tetrahedral Mesh3D in Vtu format... " << std::endl;
@@ -208,7 +206,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     filestr.close();
 }
 
-void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -220,8 +218,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");;
     }
 
     std::cout << std::endl << " Exporting Fractures in Vtu format... " << std::endl;
@@ -310,7 +307,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -322,8 +319,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -515,7 +511,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr.close();
 }
 
-void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -527,8 +523,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Wireframe in Vtu format... " << std::endl;
@@ -639,7 +634,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -651,8 +646,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Edges in Vtu format... " << std::endl;
@@ -774,7 +768,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -786,8 +780,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Facets in Vtu format... " << std::endl;
@@ -867,7 +860,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     filestr.close();
 }
 
-void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -879,8 +872,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Fracture Junctures in Vtu format... " << std::endl;
@@ -959,7 +951,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr.close();
 }
 
-void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -971,8 +963,7 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Fracture Tips in Vtu format... " << std::endl;
@@ -1051,7 +1042,7 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) throw()
 {
     std::fstream filestr;
 
@@ -1063,8 +1054,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -1381,7 +1371,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename)
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename) throw()
 {
     std::fstream filestr;
 
@@ -1393,8 +1383,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -1648,7 +1637,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
+void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) throw()
 {
     std::fstream filestr;
 
@@ -1660,8 +1649,7 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;

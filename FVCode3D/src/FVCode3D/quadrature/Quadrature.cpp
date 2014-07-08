@@ -31,11 +31,15 @@ Quadrature::Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & qu
 	M_fractureQuadrature(std::move(fracturequadrature.clone()))
 	{}
 
-Real Quadrature::integrate(const Vector & integrand)
+Real Quadrature::integrate(const Vector & integrand) throw()
 {
 	UInt IntSize = integrand.size();
 	if(IntSize != M_size)
-		std::cerr << "ERROR: DIMENSION OF INTEGRAND FUNCTION DIFFERS FROM DIMENSION OF MESH" << std::endl;
+	{
+		std::stringstream error;
+		error << "Error: dimension of integrand function " << IntSize << " differs from dimension of mesh " << M_size << ".";
+		throw std::runtime_error(error.str());
+	}
 	Real integral = 0;
 	for(auto& cell_it : M_mesh.getCellsVector())
 	{
@@ -156,7 +160,6 @@ Vector Quadrature::cellIntegrateFractures (const std::function<Real(Point3D)> & 
         const Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 
         result (facet_it.getIdAsCell()) = M_fractureQuadrature->apply(M_mesh.getFacetsVector()[facet_it.getId()], _volume, func);
-
     } // for
 
     return result;

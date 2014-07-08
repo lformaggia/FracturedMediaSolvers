@@ -22,7 +22,7 @@ class PropertiesMap;
  * @param properties reference to a PropertiesMap
  * @pre import the file
  */
-void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties);
+void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties) throw();
 
 //! Save a file in Medit format (.mesh)
 /*!
@@ -31,7 +31,7 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
  * @param mesh reference to a Mesh3D
  * @pre import the file
  */
-void saveAsMeditFormat(const std::string filename, Mesh3D & mesh);
+void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw();
 
 } // namespace FVCode3D
 #endif /* CONVERTER_HPP_ */

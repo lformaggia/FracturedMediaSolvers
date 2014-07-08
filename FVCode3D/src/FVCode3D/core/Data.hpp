@@ -70,7 +70,7 @@ public:
     /*!
      * @param dataFileName name of the data file
      */
-    Data(const std::string dataFileName);
+    Data(const std::string dataFileName) throw();
 
     //! Copy constructor
     /*!
@@ -310,7 +310,7 @@ public:
      * @param type the format type of the mesh
      * @post modifies the mesh extension
      */
-    void setMeshType(const MeshFormatType type);
+    void setMeshType(const MeshFormatType type) throw();
 
     //! Set the output directory
     /*!
@@ -587,13 +587,12 @@ public:
      * @param str string of the enumerator value that you want to convert
      * @return the enumerator value associated with the string
      */
-    T parse(const std::string & str) const
+    T parse(const std::string & str) const throw()
     {
         typename std::map<std::string, T>::const_iterator it = M_enumMap.find(str);
         if (it == M_enumMap.end())
         {
-            std::cerr << "This enum does not exist!" << std::endl;
-            exit(0);
+            throw std::runtime_error("Error: parsing an enum that does not exist.");
         }
         return it->second;
     }

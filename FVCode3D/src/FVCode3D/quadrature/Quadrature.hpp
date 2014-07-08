@@ -95,7 +95,7 @@ public:
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
 	 	@return The integral of the considered Integrand function
 	 */
-	Real integrate (const Vector & integrand);
+	Real integrate (const Vector & integrand) throw();
 	//! L2 Norm of a discrete function
 	/*!
 		@param Integrand A vector such that in the i-th component has the value of the function on the i-th cell

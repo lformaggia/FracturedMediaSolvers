@@ -54,9 +54,9 @@ public:
 
 	Point3D & operator/=(const Real & r);
 
-	Real operator[](const UInt coord) const;
+	Real operator[](const UInt coord) const throw();
 
-	Real & operator[](const UInt coord);
+	Real & operator[](const UInt coord) throw();
 
 	static const Real & getTolerance()
 	    { return Point3D::S_tolerance; }

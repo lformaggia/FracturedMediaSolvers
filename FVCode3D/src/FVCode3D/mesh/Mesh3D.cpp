@@ -154,7 +154,7 @@ Mesh3D::Cell3D::Cell3D( const Mesh3D * mesh, const std::vector<UInt> & facets, c
 // ==================================================
 // Methods
 // ==================================================
-Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
+Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const throw()
 {
     bool found(false);
     Point3D normal(0., 0., 0.), v_centr;
@@ -170,8 +170,9 @@ Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
     // check if the facet exists in this cell
     if( !found )
     {
-        std::cerr << " Error: the facet is not in this cell" << std::endl;
-        return normal;
+    	std::stringstream error;
+    	error << "Error: the facet " << facetId << " is not in the cell.";
+        throw std::runtime_error(error.str());
     }
 
     facet = M_mesh->getFacetsMap().at( facetId );
@@ -305,7 +306,7 @@ void Mesh3D::buildNodesToFacetMap()
     }
 }
 
-UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
+UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes) throw()
 {
     bool found = true;
     UInt idFacet = 0;
@@ -348,14 +349,13 @@ UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
 
     if(!found)
     {
-        std::cerr << "Facet not found!" << std::endl;
-        exit(0);
+        throw std::runtime_error("Error: facet not found in " + std::string(__FUNCTION__) + "." );
     }
 
     return idFacet;
 }
 
-bool Mesh3D::exportVTU(const std::string & filename) const
+bool Mesh3D::exportVTU(const std::string & filename) const throw()
 {
     std::fstream filestr;
 
@@ -367,8 +367,7 @@ bool Mesh3D::exportVTU(const std::string & filename) const
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return 0;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -468,7 +467,7 @@ bool Mesh3D::exportVTU(const std::string & filename) const
     return true;
 }
 
-bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const
+bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const throw()
 {
     std::fstream filestr;
 
@@ -480,8 +479,7 @@ bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return  0;
+    	throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -582,12 +580,12 @@ bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt
     return true;
 }
 
-bool Mesh3D::exportFractureNetworkVTK(const std::string & filename) const
+bool Mesh3D::exportFractureNetworkVTK(const std::string & filename) const throw()
 {
     return M_fn.exportNetworkVTK(filename);
 }
 
-bool Mesh3D::exportFractureVTK( const std::string & filename, const UInt & f) const
+bool Mesh3D::exportFractureVTK( const std::string & filename, const UInt & f) const throw()
 {
     return M_fn.getFracture(f).exportVTK(filename);
 }

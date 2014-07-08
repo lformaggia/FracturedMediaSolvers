@@ -55,14 +55,13 @@ void Importer::addBCAndFractures(const Real theta)
 	addFractures();
 }
 
-void ImporterMedit::import(bool fracturesOn)
+void ImporterMedit::import(bool fracturesOn) throw()
 {
 	std::ifstream file;
 	file.open(M_filename.c_str(), std::ios_base::in);
 	if(!file)
 	{
-		std::cerr << "File not opened!" << std::endl;
-		exit(0);
+		throw std::runtime_error("Error: file not opened when importing Medit mesh.");
 	}
 
 	UInt nNodes, nFacets, nCells;
@@ -194,14 +193,13 @@ void ImporterMedit::addFractures()
 	M_mesh.addFractureNetwork(FN);
 }
 
-void ImporterTPFA::import(bool fracturesOn)
+void ImporterTPFA::import(bool fracturesOn) throw()
 {
 	std::ifstream file;
 	file.open(M_filename.c_str(), std::ios_base::in);
 	if(!file)
 	{
-		std::cerr << "File not opened!" << std::endl;
-		exit(0);
+		throw std::runtime_error("Error: file not opened when importing TPFA mesh.");
 	}
 
 	UInt nNodes, nFacets, nCells, nZones, volumeCorrection;
@@ -307,14 +305,13 @@ void ImporterTPFA::addFractures()
 	M_mesh.addFractureNetwork(FN);
 }
 
-void ImporterForSolver::import(bool fracturesOn)
+void ImporterForSolver::import(bool fracturesOn) throw()
 {
 	std::ifstream file;
 	file.open(M_filename.c_str(), std::ios_base::in);
 	if(!file)
 	{
-		std::cerr << "File not opened!" << std::endl;
-		exit(0);
+		throw std::runtime_error("Error: file not opened when importing .fvg mesh.");
 	}
 
 	UInt nNodes, nFacets, nCells, nFractures;

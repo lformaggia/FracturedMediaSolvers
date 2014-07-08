@@ -408,7 +408,7 @@ public:
 		 * @param facetId the facet id
 		 * @return The normalized vector normal to the facet
 		 */
-		Point3D outerNormalToFacet( const UInt & facetId) const;
+		Point3D outerNormalToFacet( const UInt & facetId) const throw();
 
 		//! Test if a cell has a neighbor cell through the facet defined by the facet id
 		/*!
@@ -573,7 +573,7 @@ public:
 	 * @param nodes vector of nodes that define the facet
 	 * @return the id of the facet
 	 */ 
-	UInt getFacetFromNodes(std::vector<UInt> & nodes);
+	UInt getFacetFromNodes(std::vector<UInt> & nodes) throw();
 	
 	//! Export the mesh in vtu format
 	/*!
@@ -582,7 +582,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportVTU(const std::string & filename) const;
+	bool exportVTU(const std::string & filename) const throw();
 
 	//! Export some cells of the mesh in vtu format
 	/*!
@@ -591,7 +591,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const;
+	bool exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const throw();
 
 	//! Export in a single vtk file all the facets representing each fracture in the network
 	/*!
@@ -600,7 +600,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportFractureNetworkVTK(const std::string & filename) const;
+	bool exportFractureNetworkVTK(const std::string & filename) const throw();
 
 	//! Export in a vtk file the facets representing a fracture in the network
 	/*!
@@ -610,7 +610,7 @@ public:
 	 * @return TRUE  -> operation ended correctly
 	 *		   FALSE -> an error occurred
 	 */
-	bool exportFractureVTK(const std::string & filename, const UInt & f) const;
+	bool exportFractureVTK(const std::string & filename, const UInt & f) const throw();
 
     //! Clear the mesh
     void clear();

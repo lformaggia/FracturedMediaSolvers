@@ -22,12 +22,23 @@ Data::Data():
 	M_mobility(1.), M_compressibility(1.), M_theta(0.), M_verbose(true)
 {}
 
-Data::Data(const std::string dataFileName)
+Data::Data(const std::string dataFileName) throw()
 {
 	EnumParser<MeshFormatType> parserMeshType;
 	EnumParser<ProblemType> parserProblemType;
 	EnumParser<SourceSinkOn> parserSourceSinkOn;
   
+	std::ifstream file(dataFileName.c_str());
+	if(file.good())
+	{
+		file.close();
+	}
+	else
+	{
+		file.close();
+		throw std::runtime_error("Error: data file not opened.");
+	}
+
 	GetPot dataFile((dataFileName).c_str());
 
 	M_meshDir = dataFile("mesh/mesh_dir", "./data/");
@@ -82,7 +93,7 @@ void Data::setMeshExtension(const std::string ext)
 	M_meshType = parserMeshType.parse( M_meshExt );
 }
 
-void Data::setMeshType(const MeshFormatType type)
+void Data::setMeshType(const MeshFormatType type) throw()
 {
 	switch(M_meshType)
 	{
@@ -96,7 +107,7 @@ void Data::setMeshType(const MeshFormatType type)
 			M_meshExt = ".mesh";
 			break;
 		default:
-			exit(0);
+			throw std::runtime_error("Error: the mesh type set does not exist.");
 			break;
 	}
 
