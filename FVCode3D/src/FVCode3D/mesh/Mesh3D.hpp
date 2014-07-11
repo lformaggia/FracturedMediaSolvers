@@ -153,6 +153,20 @@ public:
 		const Point3D & getCentroid() const
 			{ return M_centroid; }
 
+		//! Get the facet unsigned normal
+		/*!
+		 * @return a reference to the facet unsigned normal
+		 */
+		const Point3D & getUnsignedNormal() const
+			{ return M_normal; }
+
+		//! Get the facet area
+		/*!
+		 * @return the area of the facet
+		 */
+		Real getArea() const
+			{ return M_area; }
+
 		//! Get the borderID
 		/*!
 		 * @return the borderID. If zero, then the facet is an interior facet
@@ -220,19 +234,16 @@ public:
 			{ return M_borderId; }
 
 		//! Compute the normal of the facet
-		/*!
-		 * @return The normal of the facet
-		 */
-		Point3D computeNormal() const;
+		void computeNormal();
 
 		//! Compute the facet centroid and stores it in the M_centroid variable
 		void computeCentroid();
 
 		//! Compute the area of the facet
-		/*!
-		 * @return the area of the facet
-		 */
-		Real area() const;
+		void computeArea();
+
+		//! Compute normal, centroid and area
+		void computeCentroidAndNormalAndArea();
 
 		//! Display general information about the content of the class
 		/*!
@@ -253,6 +264,10 @@ public:
 		std::set<UInt> M_representedFractureIds;
 		//! The centroid of the facet
 		Point3D M_centroid;
+		//! The normal of the facet
+		Point3D M_normal;
+		//! Area of the facet
+		Real M_area;
 		//! Border Id. If zero, then the facet is an interior facet
 		UInt M_borderId;
 		//! Zone code
