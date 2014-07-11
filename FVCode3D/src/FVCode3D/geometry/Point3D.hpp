@@ -34,6 +34,12 @@ public:
 
 	Real z() const { return M_z; };
 
+	Real & x() { return M_x; };
+
+	Real & y() { return M_y; };
+
+	Real & z() { return M_z; };
+
 	Real norm() const { return std::sqrt( M_x*M_x + M_y*M_y + M_z*M_z );}
 
 	void normalize();
