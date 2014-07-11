@@ -542,8 +542,8 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 // ==================================================
 
 Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
-	M_mesh(mesh), M_id(m_id), M_verticesIds(generic_facet.getVerticesVector()), M_area(generic_facet.area()),
-	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.computeNormal()),
+	M_mesh(mesh), M_id(m_id), M_verticesIds(generic_facet.getVerticesVector()), M_area(generic_facet.getArea()),
+	M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.getUnsignedNormal()),
 	M_isFracture(generic_facet.isFracture()), M_fractureFacetId(0), M_borderId(generic_facet.getBorderId()),
 	M_representedFractureIds(generic_facet.getRepresentedFractureIds()), M_zone(generic_facet.getZoneCode())
 {

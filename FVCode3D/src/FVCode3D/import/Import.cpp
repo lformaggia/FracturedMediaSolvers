@@ -26,7 +26,7 @@ void Importer::extractBC(const Real theta)
 			center = M_mesh.getCellsMap().at(*(it->second.getSeparatedCells().begin())).getCentroid();
 			centerFace = it->second.getCentroid();
 
-			normal = it->second.computeNormal();
+			normal = it->second.getUnsignedNormal();
 			center -= centerFace;
 			center.normalize();
 
