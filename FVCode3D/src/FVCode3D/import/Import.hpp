@@ -63,6 +63,14 @@ public:
 	 */
 	virtual void addBCAndFractures(const Real theta = 0.);
 	
+	//! Add noise to the points
+	/*!
+	 * Add noise to the points following a normal distribution with mean @a mean and standard deviation @a stDev
+	 * @param mean mean. Default = 0.
+	 * @param stDev standard deviation. Default = 1.
+	 */
+	void addNoiseToPoint(const Real mean = 0., const Real stDev = 1.);
+
 	//! Get filename
 	/*!
 	 * @return the filename
