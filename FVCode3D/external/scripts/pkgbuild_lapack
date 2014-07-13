@@ -22,15 +22,10 @@ build_lapack() {
         CMAKE_BIN="${cmake_install_dir}/bin/cmake"
     fi
 
-    FORTRAN_COMPILER_OPTION=""
-    if [ -n "${FORTRAN_COMPILER}" ]; then
-        FORTRAN_COMPILER_OPTION="-DCMAKE_Fortran_COMPILER=${FORTRAN_COMPILER}"
-    fi
     cd ${build_dir}
     ${CMAKE_BIN} \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=ON \
-        ${FORTRAN_COMPILER_OPTION} \
         -DUSE_OPTIMIZED_BLAS:BOOL=ON \
         -DCMAKE_PREFIX_PATH:PATH=${blas_install_dir} \
         -DCMAKE_INSTALL_PREFIX:PATH=${install_dir} \
