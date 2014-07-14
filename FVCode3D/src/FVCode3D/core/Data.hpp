@@ -209,6 +209,12 @@ public:
      */
     Real tolSteadyState() const { return M_tolSteadyState; }
 
+    //! Get the type of the permeability
+    /*!
+     * @return the type of the permeability
+     */
+    const std::string getPermeabilityType() const { return M_permeabilityType; }
+
     //! Get the permeability in the porous medium
     /*!
      * @return the permeability in the porous medium
@@ -414,6 +420,12 @@ public:
      */
     void tolSteadyState(const Real tol) { M_tolSteadyState = tol; }
 
+    //! Set the type of the permeability
+    /*!
+     * @param type the type of the permeability
+     */
+    void setPermeabilityType(const std::string type) { M_permeabilityType = type; }
+
     //! Set the permeability in the porous medium
     /*!
      * @param perm the permeability in the porous medium
@@ -541,6 +553,8 @@ protected:
     UInt M_nbTimeStepSteadyState;
     //! Tolerance to consider a time step at the steady state
     Real M_tolSteadyState;
+    //! Type of the permeability
+    std::string M_permeabilityType;
     //! Permeability in the porous medium
     Real M_permMatrix;
     //! Porosity in the porous medium
@@ -579,7 +593,7 @@ class EnumParser
 {
 public:
 
-	//! Empty constructor
+    //! Empty constructor
     EnumParser() {};
 
     //! Parse method
@@ -597,7 +611,7 @@ public:
         return it->second;
     }
 
-	//! Destructor
+    //! Destructor
     ~EnumParser() = default;
 
 private:
