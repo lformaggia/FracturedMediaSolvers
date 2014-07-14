@@ -104,7 +104,7 @@ public:
      * @param filename name of the file
      */
     virtual void exportEdges(const Rigid_Mesh & mesh, const std::string filename) throw() = 0;
-    
+
     //! Export the faces
     /*!
      * @param mesh reference of a Rigid_Mesh
