@@ -9,16 +9,15 @@
 #define PERMEABILITYFACTORY_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 
 namespace FVCode3D
 {
 
-class PermeabilityBase;
-
 /*!
  * Builder
  */
-typedef std::shared_ptr<PermeabilityBase> (* PermeabilityBuilder)();
+typedef PermPtr_Type (* PermeabilityBuilder)();
 
 
 /*!
@@ -32,7 +31,7 @@ public:
 
 	inline void addProduct(const std::string productName, const PermeabilityBuilder & builder);
 
-	inline std::shared_ptr<PermeabilityBase> getProduct(const std::string productName) const;
+	inline PermPtr_Type getProduct(const std::string productName) const;
 
 	inline ~PermeabilityFactory();
 
@@ -64,7 +63,7 @@ public:
 
 	~PermeabilityProxy();
 
-	static std::shared_ptr<PermeabilityBase> Build();
+	static PermPtr_Type Build();
 
 private:
 
@@ -94,11 +93,11 @@ void PermeabilityFactory::addProduct(const std::string productName, const Permea
 	M_productList.insert(std::make_pair(productName, builder));
 }
 
-std::shared_ptr<PermeabilityBase> PermeabilityFactory::getProduct(const std::string productName) const
+PermPtr_Type PermeabilityFactory::getProduct(const std::string productName) const
 {
 	std::map<std::string,PermeabilityBuilder>::const_iterator it = M_productList.find(productName);
 
-	return (it == M_productList.end()) ? std::shared_ptr<PermeabilityBase>() : it->second();
+	return (it == M_productList.end()) ? PermPtr_Type() : it->second();
 }
 
 PermeabilityFactory::~PermeabilityFactory()
@@ -113,9 +112,9 @@ PermeabilityProxy<T>::PermeabilityProxy(char const * const & proxyName)
 }
 
 template<typename T>
-std::shared_ptr<PermeabilityBase> PermeabilityProxy<T>::Build()
+PermPtr_Type PermeabilityProxy<T>::Build()
 {
-	return std::shared_ptr<PermeabilityBase>(new T);
+	return PermPtr_Type(new T);
 }
 
 template<typename T>
