@@ -25,10 +25,10 @@ Real StiffMatrix::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_I
     const Point3D cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCentroid();
 
     const Real A = M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_aperture *
-    			  (this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]).norm();
+                  (this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]).norm();
 
     const PermPtr_Type & k =
-    		M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_permeability;
+            M_properties.getProperties(this->M_mesh.getFractureFacetsIdsVector()[n_Id].getZoneCode()).M_permeability;
 
     Point3D f = borderCenter - cellCenter;
     const Real D = sqrt(dotProduct(f, f));
@@ -45,11 +45,11 @@ Real StiffMatrix::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_I
 
 Real StiffMatrix::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
-	const Point3D facetCenter = facet->getCentroid();
-	const Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
+    const Point3D facetCenter = facet->getCentroid();
+    const Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
 
     const PermPtr_Type & k =
-    		M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability;
+            M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability;
 
     Point3D f = cellCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
@@ -64,14 +64,14 @@ Real StiffMatrix::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 
 Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
-	const Point3D edgeCenter = edge->getCentroid();
-	const Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
+    const Point3D edgeCenter = edge->getCentroid();
+    const Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
 
-	const Real A = edge->getSize() *
-				   M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
+    const Real A = edge->getSize() *
+                   M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
 
     const PermPtr_Type & k =
-    		M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
+            M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
 
     Point3D f = edgeCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
@@ -92,11 +92,11 @@ Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 
 Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
-	const Point3D facetCenter = facet->getCentroid();
-	const Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
+    const Point3D facetCenter = facet->getCentroid();
+    const Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
 
     const PermPtr_Type & k =
-    		M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability;
+            M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability;
 
     const Point3D f = cellCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
@@ -110,18 +110,17 @@ Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * face
 
 Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
-	const Point3D borderCenter = edge->getCentroid();
-	const Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
+    const Point3D borderCenter = edge->getCentroid();
+    const Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
 
-	const Real A = edge->getSize() *
-				   M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
+    const Real A = edge->getSize() *
+                   M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_aperture;
 
     const PermPtr_Type & k =
-    		M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
+            M_properties.getProperties(this->M_mesh.getFacetsVector()[facetId].getZoneCode()).M_permeability;
 
     Point3D f = borderCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
-    f /= D;
 
     Point3D normal = crossProduct(  f,
                             this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[0]] -
@@ -133,7 +132,7 @@ Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge
 
     const Real KnDotF = fabs(dotProduct(k * normal, normal)); // K n * n, I suppose that for the ghost facet n // f
 
-    return edge->getSize() * KnDotF / D;
+    return A * KnDotF / D;
 }
 
 void StiffMatrix::assemble()
@@ -308,7 +307,7 @@ void StiffMatrix::assembleFractureBC()
         {
             if(this->M_mesh.getFacetsVector()[facet_it].isFracture())
             {
-            	const UInt neighborIdAsCell = M_mesh.getFacetsVector()[facet_it].getFractureFacetId() + M_mesh.getCellsVector().size();
+                const UInt neighborIdAsCell = M_mesh.getFacetsVector()[facet_it].getFractureFacetId() + M_mesh.getCellsVector().size();
                 const Real aperture = M_properties.getProperties(this->M_mesh.getFacetsVector()[facet_it].getZoneCode()).M_aperture;
 
                 if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
