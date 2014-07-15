@@ -79,9 +79,11 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
 
         file << facetsRef[i].getBorderId() << " ";
         file << facetsRef[i].isFracture() << " ";
+
+    	file.unsetf(std::ios_base::floatfield);
+        file << /*std::scientific <<*/ std::setprecision(10);
         if(facetsRef[i].isFracture())
         {
-            file << std::scientific << std::setprecision(10);
             file << properties.getProperties(facetsRef[i].getZoneCode()).M_aperture << " ";
             file << properties.getProperties(facetsRef[i].getZoneCode()).M_porosity;
             for(UInt row = 0; row < 3; ++row)
@@ -113,8 +115,9 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
         for(std::set<UInt>::const_iterator it = cellsRef[i].getFacetsSet().begin(); it != cellsRef[i].getFacetsSet().end(); ++it)
             file << *it << " ";
 
-        file << std::scientific << std::setprecision(10);
-        file << properties.getProperties(cellsRef[i].getZoneCode()).M_porosity << " ";
+    	file.unsetf(std::ios_base::floatfield);
+        file << /*std::scientific <<*/ std::setprecision(10);
+        file << properties.getProperties(cellsRef[i].getZoneCode()).M_porosity;
         for(UInt row = 0; row < 3; ++row)
         {
             for(UInt col = 0; col < 3; ++col)
@@ -122,10 +125,11 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
                 if(col >= row)
                 {
                     file << " "
-                         << properties.getProperties(facetsRef[i].getZoneCode()).M_permeability->operator()(row,col);
+                         << properties.getProperties(cellsRef[i].getZoneCode()).M_permeability->operator()(row,col);
                 }
             }
         }
+        file << std::endl;
     }
     file << std::endl;
     file << std::scientific << std::setprecision(0);
