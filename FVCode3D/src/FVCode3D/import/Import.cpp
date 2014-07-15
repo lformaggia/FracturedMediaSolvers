@@ -116,7 +116,7 @@ void ImporterMedit::import(bool fracturesOn) throw()
     file >> nFacets;
 
     std::shared_ptr<PermeabilityScalar> permPtr;
-    permPtr->operator()(1. , 0);
+    permPtr->setPermeability(1. , 0);
 
     tmp.resize(3);
     for(i=0; i < nFacets; ++i)
@@ -286,7 +286,7 @@ void ImporterTPFA::import(bool fracturesOn) throw()
         file >> permeability; // dummy parameter
         file >> permeability;
 
-        permPtr->operator()(permeability);
+        permPtr->setPermeability(permeability, 0);
 
         prop.setProperties(aperture, porosity, permPtr);
         M_properties.setZone(zone+1, prop);
