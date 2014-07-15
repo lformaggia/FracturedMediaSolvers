@@ -9,6 +9,7 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 #include <FVCode3D/mesh/CartesianGrid.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
@@ -105,10 +106,16 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-    std::cout << "Set uniform properties..." << std::flush;
-    propMap.setPropertiesOnMatrix(mesh, 0.25, 1);
-    propMap.setPropertiesOnFractures(mesh, 1e-2, 1, 1e6);
-    std::cout << " done." << std::endl << std::endl;
+//    std::cout << "Set uniform properties..." << std::flush;
+//    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
+//    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+//    matrixPerm->setPermeability( 1., 0 );
+//    matrixPerm->setPermeability( 1., 4 );
+//    matrixPerm->setPermeability( 1., 8 );
+//    fracturesPerm->setPermeability( 1.e6, 0 );
+//    propMap.setPropertiesOnMatrix(mesh, 0.25, matrixPerm);
+//    propMap.setPropertiesOnFractures(mesh, 1e-2, 1, fracturesPerm);
+//    std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;
     ExporterVTU exporter;
@@ -119,7 +126,7 @@ int main(int argc, char * argv[])
     exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
     exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
 //  if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-//      saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_new.fvg", mesh, propMap);
+//    	saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
