@@ -66,14 +66,14 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void operator()(const Real perm, const UInt i, const UInt j) = 0;
+    virtual void setPermeability(const Real perm, const UInt i, const UInt j) = 0;
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
     /*!
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void operator()(const Real perm, const UInt i) = 0;
+    virtual void setPermeability(const Real perm, const UInt i) = 0;
 
     //! Get the permeability at position [i] of the vector
     /*!
@@ -216,7 +216,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void operator()(const Real perm, const UInt i, const UInt j)
+    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
         { M_permeability[0] = i==j ? perm : M_permeability[0]; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -224,7 +224,7 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void operator()(const Real perm, const UInt i)
+    virtual void setPermeability(const Real perm, const UInt i)
         { M_permeability[0] = i%4==0 ? perm : M_permeability[0]; };
 
     //! Vector-tensor product
@@ -338,7 +338,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void operator()(const Real perm, const UInt i, const UInt j)
+    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
         { M_permeability[i] = i==j ? perm : M_permeability[i];};
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -346,7 +346,7 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void operator()(const Real perm, const UInt i)
+    virtual void setPermeability(const Real perm, const UInt i)
         { M_permeability[i/4] = i%4==0 ? perm : M_permeability[i/4];};
 
     //! Vector-tensor product
@@ -460,7 +460,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void operator()(const Real perm, const UInt i, const UInt j)
+    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
         { M_permeability[3*i+j-i-(i>1)] = j>=i ? perm : M_permeability[3*i+j-i-(i>1)]; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -468,8 +468,8 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void operator()(const Real perm, const UInt i)
-        { operator()(perm, i/3, i%3); };
+    virtual void setPermeability(const Real perm, const UInt i)
+        { setPermeability(perm, i/3, i%3); };
 
     //! Vector-tensor product
     /*!
@@ -582,7 +582,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void operator()(const Real perm, const UInt i, const UInt j)
+    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
         { M_permeability[3*i+j] = perm; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -590,7 +590,7 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void operator()(const Real perm, const UInt i)
+    virtual void setPermeability(const Real perm, const UInt i)
         { M_permeability[i] = perm; };
 
     //! Vector-tensor product
