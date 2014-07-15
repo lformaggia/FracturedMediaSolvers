@@ -9,6 +9,7 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/export/ExportVTU.hpp>
 
