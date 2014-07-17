@@ -3,8 +3,8 @@
 ver="3.2.1"
 
 download_eigen() {
-    if [ -f ${PACKAGE_SRC_DIR}/eigen-${ver}.tar.gz ]; then
-        cp ${PACKAGE_SRC_DIR}/eigen-${ver}.tar.gz ${src_dir}
+    if [ -f ${PACKAGE_SRC_DIR}/${ver}.tar.gz ]; then
+        cp ${PACKAGE_SRC_DIR}/${ver}.tar.gz ${src_dir}
     else
         wget -nv http://bitbucket.org/eigen/eigen/get/${ver}.tar.gz
     fi
