@@ -6,7 +6,7 @@
 
 LOWERCASE_PROJECT_NAME=fvcode3d
 
-OUTPUT_FILE="../${LOWERCASE_PRJECT_NAME}.tar.gz"
+OUTPUT_FILE="../${LOWERCASE_PROJECT_NAME}.tar.gz"
 if [ $# -eq 1 ]; then
     OUTPUT_FILE="$1"
 fi
