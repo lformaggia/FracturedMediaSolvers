@@ -42,11 +42,7 @@ for package in "${PACKAGE_ARRAY[@]}"; do
 done
 
 if [ ${#package_install[@]} -ne 0 ]; then
-    if [ -n "${INSTALL_PACKAGES}" ]; then
-        echo "-- The following packages will be installed:"
-    else
-        echo "-- Skipping the installation of the following packages:"
-    fi
+    echo "-- The following packages will be installed:"
     echo "     ${package_install[@]}"
 fi
 
@@ -61,7 +57,7 @@ if [ ${#package_no[@]} -ne 0 ]; then
     echo "     ${package_no[@]}"
 fi
 
-if [ -n "${INSTALL_PACKAGES}" ] && [ ${#package_install[@]} -gt 0 ] ; then
+if [ ${#package_install[@]} -gt 0 ] ; then
     pushd scripts >/dev/null
     source pkgbuild ${package_install[@]}
     popd >/dev/null

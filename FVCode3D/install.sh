@@ -19,7 +19,7 @@ ROOT_DIR=$PWD
 
 # Set default installation directory if not already set
 if [ -z "${INSTALL_DIR}" ]; then
-    INSTALL_DIR=${PWD}/../install
+    INSTALL_DIR=${PWD}/../${LOWERCASE_PROJECT_NAME}-install
 fi
 
 # set number of parallel builds to use
@@ -31,7 +31,6 @@ if [ -z "${BUILD_TYPE}" ]; then
     BUILD_TYPE="Release"
 fi
 
-INSTALL_PACKAGES=1
 INSTALL_PROJECT=1
 INSTALL_DOC=1
 BUILD_PROJECT_TESTS="ON"
@@ -109,7 +108,8 @@ case $i in
         echo "  --build-dir=<path>          build directory;"
         echo "                              default value is \"<install_dir>/build\""
         echo "                              where <install_dir> can be specified with"
-        echo "                              the --prefix option and defaults to \"../install\";"
+        echo "                              the --prefix option and defaults to"
+        echo "                              \"../${LOWERCASE_PROJECT_NAME}-install\";"
         echo "                              unless --leave-build-dir is specified, this "
         echo "                              directory will be deleted at the end of the build"
         echo "  -b, --build-type=<type>     build ${PROJECT_NAME} in <type> mode,"
@@ -138,10 +138,19 @@ case $i in
         echo "  --leave-build-dir           ${PROJECT_NAME} build directory won't be deleted"
         echo "                              once the installation is complete"
         echo "  -p, --prefix=<path>         installation directory;"
-        echo "                              default value is \"../install\""
-        echo "  --skip-package-installation don't install third party libraries"
+        echo "                              default value is \"../${LOWERCASE_PROJECT_NAME}-install\";"
+        echo "  --skip-packages-installation"
+        echo "                              don't install third party libraries"
         echo "                              (assume all packages have already been installed"
         echo "                              during a previous execution of this script)"
+        echo "  --skip-<package>-installation"
+        echo "                              don't install <package>"
+        echo "                              (assume <package> has already been installed"
+        echo "                              during a previous execution of this script)"
+        echo "                              <package> can be one of:"
+        for package in "${PACKAGE_ARRAY[@]}"; do
+            echo "                                - $package"
+        done
         echo "  --with-system-<package>     use the default version of <package> installed on"
         echo "                              the system; <package> can be one of:"
         for package in "${PACKAGE_ARRAY[@]}"; do
@@ -194,8 +203,19 @@ case $i in
     --without-tests)
         BUILD_PROJECT_TESTS="OFF"
     ;;
-    --skip-package-installation)
-        INSTALL_PACKAGES=""
+    --skip-*-installation)
+        PACKAGE_NAME=$(echo $i | sed 's/--skip-//' | sed 's/-installation//' | tr '[:upper:]' '[:lower:]')
+        # 'CUSTOM' means the package is already installed
+        # The "external/build" script will take care of setting the default path where the package should have been installed
+        if [ "${PACKAGE_NAME}" == "packages" ]; then
+            # don't reinstall any package
+            for package in "${PACKAGE_ARRAY[@]}"; do
+                eval ${package}="CUSTOM"
+            done
+        else
+            # use the system version of this package
+            eval ${PACKAGE_NAME}="CUSTOM"
+        fi
     ;;
     --without-${LOWERCASE_PROJECT_NAME})
         INSTALL_PROJECT=""
