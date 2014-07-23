@@ -476,6 +476,8 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         std::cout<<"NODI INIZIALI \t\t\t\t\t\t\t\t NODI CONVERTITI"<<std::endl;
         std::cout.precision(16);
 #endif
+        Point3D cellCenter(0., 0., 0.);
+
         for(i=0; i < nNodes; ++i)
         {
             nodes[i] = M_mesh->getNodesVector()[M_vertexIds[i]];
@@ -485,10 +487,12 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
 //            nodes[i] = nodes[i].convertInLocalCoordinates(CS, origin);
             globalToLocal.insert(std::make_pair(M_vertexIds[i], i));
 
+            cellCenter += nodes[i];
 #ifdef FVCODE3D_DEBUG_CELLS_
             std::cout<<i<<": "<<nodes[i]<<std::endl;
 #endif
         }
+        cellCenter /= nNodes;
 
         for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
         {
@@ -580,6 +584,25 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         std::cout<<"qz: "<<BB.qz()<<std::endl;
 #endif
         BB.scaleNodesToUnit(nodes);
+        BB.scaleNodesToUnit(cellCenter);
+
+        // For each (triangular) facet we build a tetrahedron by adding a
+        // fourth point at the center of the cell
+        M_volume = 0;
+        M_centroid = Point3D(0., 0., 0.);
+        for (std::vector< std::vector<UInt> >::const_iterator facetIt = facets.begin();
+            facetIt != facets.end(); ++facetIt)
+        {
+            std::vector<Point3D> tetrahedronNodes(4);
+            tetrahedronNodes[0] = nodes[(*facetIt)[0]];
+            tetrahedronNodes[1] = nodes[(*facetIt)[1]];
+            tetrahedronNodes[2] = nodes[(*facetIt)[2]];
+            tetrahedronNodes[3] = cellCenter;
+            Real partialVolume = FVCode3D::tetrahedronVolume(tetrahedronNodes);
+            M_volume += partialVolume;
+            M_centroid += partialVolume * ( tetrahedronNodes[0] + tetrahedronNodes[1] + tetrahedronNodes[2] + tetrahedronNodes[3] ) / 4.;
+        }
+        M_centroid /= M_volume;
 
 #ifdef FVCODE3D_DEBUG_CELLS_
         std::cout<<"NODI CONVERTITI E SCALATI"<<std::endl;
@@ -588,11 +611,6 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
             std::cout<<i<<": "<<nodes[i]<<std::endl;
         }
 #endif
-
-        TetGenWrapper TG(nodes, facets);
-        TG.generateMesh();
-        M_volume = TG.computeVolume();
-        M_centroid = TG.computeCenterOfMass();
 
         M_volume /= (BB.mx() * BB.my() * BB.mz());
 #ifdef FVCODE3D_DEBUG_CELLS_
