@@ -46,31 +46,39 @@ Real triangleArea(const Point3D & A, const Point3D & B, const Point3D & C);
  */
 Real tetrahedronVolume(const std::vector<Point3D> & nodes);
 
+//! Compute the bounding-box of a set of points
+/*!
+ * @param nodes vector of points
+ * @param pMin first point that defines the BB
+ * @param pMax second point that defines the BB
+ */
+void computeBoundingBox(const std::vector<Point3D> & nodes, Point3D & pMin, Point3D & pMax);
+
 //! Functor for computing the minimum between two types
 template <typename T>
 struct less
 {
-	bool operator() (const T & x, const T & y) const { return x < y; }
+    bool operator() (const T & x, const T & y) const { return x < y; }
 };
 
 //! Functor for computing the minimum between two generic std::pair
 template <typename T>
 struct less< std::pair<T,T> >
 {
-	bool operator() (const std::pair<T,T> & x, const std::pair<T,T> & y) const
-	{
-		if( x.first < y.first )
-			return true;
-		if( x.first == y.first )
-		{
-			if( x.second < y.second )
-				return true;
-			else
-				return false;
-		}
-		else
-			return false;
-	}
+    bool operator() (const std::pair<T,T> & x, const std::pair<T,T> & y) const
+    {
+        if( x.first < y.first )
+            return true;
+        if( x.first == y.first )
+        {
+            if( x.second < y.second )
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
 };
 
 }// namespace FVCode3D
