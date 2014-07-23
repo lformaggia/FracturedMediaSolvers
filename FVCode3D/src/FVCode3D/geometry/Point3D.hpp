@@ -22,91 +22,94 @@ class CoordinateSystem3D;
 class Point3D{
 public:
 
-	Point3D(): M_x(0.) ,M_y(0.) , M_z(0.) {};
+    Point3D(): M_x(0.) ,M_y(0.) , M_z(0.) {};
 
-	Point3D(Real x, Real y, Real z): M_x(x) ,M_y(y) , M_z(z) {};
+    Point3D(Real x, Real y, Real z): M_x(x) ,M_y(y) , M_z(z) {};
 
-	Point3D(const Point3D & p): M_x(p.x()), M_y(p.y()), M_z(p.z()) {};
+    Point3D(const Point3D & p): M_x(p.x()), M_y(p.y()), M_z(p.z()) {};
 
-	Real x() const { return M_x; };
+    Real x() const { return M_x; };
 
-	Real y() const { return M_y; };
+    Real y() const { return M_y; };
 
-	Real z() const { return M_z; };
+    Real z() const { return M_z; };
 
-	Real & x() { return M_x; };
+    Real & x() { return M_x; };
 
-	Real & y() { return M_y; };
+    Real & y() { return M_y; };
 
-	Real & z() { return M_z; };
+    Real & z() { return M_z; };
 
-	Real norm() const { return std::sqrt( M_x*M_x + M_y*M_y + M_z*M_z );}
+    Real norm() const { return std::sqrt( M_x*M_x + M_y*M_y + M_z*M_z );}
 
-	void normalize();
+    void normalize();
 
-	void setValues(const Real x, const Real y, const Real z);
+    void setValues(const Real x, const Real y, const Real z);
 
-	void linearTransform(const Real scaling, const Real xShift, const Real yShift, const Real zShift);
+    void linearTransform(const Real scaling, const Real xShift, const Real yShift, const Real zShift);
 
-	Point3D convertInLocalCoordinates(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
+    void linearTransform(const Real xScaling, const Real yScaling, const Real zScaling,
+                         const Real xShift, const Real yShift, const Real zShift);
 
-	Point3D & operator=(const Point3D & p);
+    Point3D convertInLocalCoordinates(const CoordinateSystem3D & coordSys, const Point3D & origin) const;
 
-	Point3D & operator+=(const Point3D & p);
+    Point3D & operator=(const Point3D & p);
 
-	Point3D & operator-=(const Point3D & p);
+    Point3D & operator+=(const Point3D & p);
 
-	Point3D & operator*=(const Real & r);
+    Point3D & operator-=(const Point3D & p);
 
-	Point3D & operator/=(const Real & r);
+    Point3D & operator*=(const Real & r);
 
-	Real operator[](const UInt coord) const throw();
+    Point3D & operator/=(const Real & r);
 
-	Real & operator[](const UInt coord) throw();
+    Real operator[](const UInt coord) const throw();
 
-	static const Real & getTolerance()
-	    { return Point3D::S_tolerance; }
+    Real & operator[](const UInt coord) throw();
 
-	static void setTolerance(const Real tolerance)
-	    { Point3D::S_tolerance = tolerance; }
+    static const Real & getTolerance()
+        { return Point3D::S_tolerance; }
 
-	friend Point3D operator+(const Point3D & p1, const Point3D & p2);
+    static void setTolerance(const Real tolerance)
+        { Point3D::S_tolerance = tolerance; }
 
-	friend Point3D operator-(const Point3D & p1, const Point3D & p2);
+    friend Point3D operator+(const Point3D & p1, const Point3D & p2);
 
-	friend Point3D operator-(const Point3D & p);
+    friend Point3D operator-(const Point3D & p1, const Point3D & p2);
 
-	friend Real operator*(const Point3D & p1, const Point3D & p2);
+    friend Point3D operator-(const Point3D & p);
 
-	friend Point3D operator*(const Point3D & p, const Real r);
+    friend Real operator*(const Point3D & p1, const Point3D & p2);
 
-	friend Point3D operator*(const Real r, const Point3D & p);
+    friend Point3D operator*(const Point3D & p, const Real r);
 
-	friend Point3D operator/(const Point3D & p, const Real r);
+    friend Point3D operator*(const Real r, const Point3D & p);
 
-	friend Real dotProduct(const Point3D & p1, const Point3D & p2);
+    friend Point3D operator/(const Point3D & p, const Real r);
 
-	friend Real innerAngleRad(const Point3D & p1, const Point3D & p2);
+    friend Real dotProduct(const Point3D & p1, const Point3D & p2);
 
-	friend Real innerAngleDeg(const Point3D & p1, const Point3D & p2);
+    friend Real innerAngleRad(const Point3D & p1, const Point3D & p2);
 
-	friend Real distance(const Point3D & p1, const Point3D & p2);
+    friend Real innerAngleDeg(const Point3D & p1, const Point3D & p2);
 
-	friend Point3D crossProduct(const Point3D & p1, const Point3D & p2);
+    friend Real distance(const Point3D & p1, const Point3D & p2);
 
-	friend std::ostream & operator<<(std::ostream & os, const Point3D & p);
+    friend Point3D crossProduct(const Point3D & p1, const Point3D & p2);
+
+    friend std::ostream & operator<<(std::ostream & os, const Point3D & p);
 
 private:
 
-	//! x-coordinate
-	Real M_x;
-	//! y-coordinate
-	Real M_y;
-	//! z-coordinate
-	Real M_z;
+    //! x-coordinate
+    Real M_x;
+    //! y-coordinate
+    Real M_y;
+    //! z-coordinate
+    Real M_z;
 
-	//! Relative tolerance
-	static Real S_tolerance;
+    //! Relative tolerance
+    static Real S_tolerance;
 
 };
 
