@@ -3,6 +3,7 @@
 #include <FVCode3D/core/BasicType.hpp>
 #include <FVCode3D/geometry/Point3D.hpp>
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/geometry/BoundingBox.hpp>
 #include <FVCode3D/export/ExportVTU.hpp>
 #include <FVCode3D/export/Export.hpp>
 #include <FVCode3D/eigenPatch/RangeSupport.hpp>
