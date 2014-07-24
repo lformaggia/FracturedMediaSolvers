@@ -422,9 +422,6 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         std::vector< std::vector<UInt> > facets;
         std::map<UInt, UInt> globalToLocal;
 
-//        Real area(0.);
-//        Point3D zAxis;
-
         // Count the number of vertices and facets that
         // define the approximation of the non-planar facets polyhedron
         const UInt nNodes = verticesNumber();
@@ -433,12 +430,6 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         for(auto id : M_facetIds)
         {
             const UInt nodesFacet = M_mesh->getFacetsMap().at(id).getNumberOfVertices();
-
-//            if ( area < M_mesh->getFacetsMap().at(id).getArea() )
-//            {
-//                area = M_mesh->getFacetsMap().at(id).getArea();
-//               zAxis = M_mesh->getFacetsMap().at(id).getUnsignedNormal();
-//            }
 
             if( nodesFacet > 3 )
             {
@@ -451,46 +442,19 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
             }
         }
 
-//        const Point3D zAxisCartesian(0., 0., 1.);
-//        const Point3D origin(0., 0., 0.);
-//        if(dotProduct( zAxisCartesian , zAxis) < 0. )
-//            zAxis = - zAxis;
-//        CoordinateSystem3D CS;
-//        CS.computeCartesianCoordinateSystem(zAxis);
-
-#ifdef FVCODE3D_DEBUG_CELLS_
-        std::cout<<std::endl<<std::endl<<"--- NEW ELEMENT ---"<<std::endl;
-        std::cout<<"U: "<<CS.getU()<<std::endl;
-        std::cout<<"V: "<<CS.getV()<<std::endl;
-        std::cout<<"W: "<<CS.getW()<<std::endl;
-        std::cout<<"zAxes: "<<zAxis<<std::endl;
-#endif
-
         UInt nodesFacet, i, j, intNodesCount(0), intFacetsCount(0);
         std::set<UInt>::iterator it;
 
         nodes.resize( nNodes + addedNodes );
         facets.resize( nFacets );
 
-#ifdef FVCODE3D_DEBUG_CELLS_
-        std::cout<<"NODI INIZIALI \t\t\t\t\t\t\t\t NODI CONVERTITI"<<std::endl;
-        std::cout.precision(16);
-#endif
         Point3D cellCenter(0., 0., 0.);
 
         for(i=0; i < nNodes; ++i)
         {
             nodes[i] = M_mesh->getNodesVector()[M_vertexIds[i]];
-#ifdef FVCODE3D_DEBUG_CELLS_
-            std::cout<<i<<": "<<nodes[i]<<" \t\t\t\t ";
-#endif
-//            nodes[i] = nodes[i].convertInLocalCoordinates(CS, origin);
             globalToLocal.insert(std::make_pair(M_vertexIds[i], i));
-
             cellCenter += nodes[i];
-#ifdef FVCODE3D_DEBUG_CELLS_
-            std::cout<<i<<": "<<nodes[i]<<std::endl;
-#endif
         }
         cellCenter /= nNodes;
 
@@ -498,15 +462,6 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         {
             auto& facet = M_mesh->getFacetsMap().at(*it);
             nodesFacet = facet.getNumberOfVertices();
-
-#ifdef FVCODE3D_DEBUG_CELLS_
-//            std::cout<<"FACCIA "<<i<<std::endl;
-//            for(auto id : facet.getVerticesVector())
-//            {
-//                std::cout<<"\t"<<globalToLocal[id];
-//            }
-//            std::cout<<std::endl;
-#endif
 
             if( nodesFacet > 3 )
             {
@@ -517,15 +472,7 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
                     center += M_mesh->getNodesVector()[id];
                 }
                 center /= nodesFacet;
-
                 nodes[nNodes + intNodesCount] = center;
-#ifdef FVCODE3D_DEBUG_CELLS_
-                std::cout<<nNodes + intNodesCount<<": "<<nodes[nNodes + intNodesCount]<<" \t\t\t\t ";
-#endif
-//                nodes[nNodes + intNodesCount] = nodes[nNodes + intNodesCount].convertInLocalCoordinates(CS, origin);
-#ifdef FVCODE3D_DEBUG_CELLS_
-                std::cout<<nNodes + intNodesCount<<": "<<nodes[nNodes + intNodesCount]<<std::endl;
-#endif
 
                 // loop over the triangles (except the last one) that settle the current facet
                 for(j=0; j < nodesFacet - 1; ++j)
@@ -556,19 +503,31 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         }
 
 #ifdef FVCODE3D_DEBUG_CELLS_
-        UInt lol=0;
-        for(auto f : facets)
+        std::cout<<std::endl<<std::endl<<"--- NEW ELEMENT ---"<<std::endl;
+
+        std::cout<<"NODI INIZIALI con centroidi facce"<<std::endl;
+        std::cout.precision(16);
+        for(i=0; i < nodes.size(); ++i)
         {
-            std::cout<<"FACCIA "<<lol++<<std::endl;
-            for(auto id : f)
+            std::cout<<i<<": "<<nodes[i]<<std::endl;
+        }
+
+        for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
+        {
+            auto& facet = M_mesh->getFacetsMap().at(*it);
+            std::cout<<"FACCIA "<<i<<std::endl;
+            for(auto id : facet.getVerticesVector())
             {
-                std::cout<<"\t"<<id;
+                std::cout<<"\t"<<globalToLocal[id];
             }
             std::cout<<std::endl;
         }
 #endif
 
         BoundingBox BB(nodes);
+        BB.scaleNodesToUnit(nodes);
+        BB.scaleNodesToUnit(cellCenter);
+
 #ifdef FVCODE3D_DEBUG_CELLS_
         std::cout<<"xMin: "<<BB.xMin()<<std::endl;
         std::cout<<"yMin: "<<BB.yMin()<<std::endl;
@@ -582,9 +541,13 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         std::cout<<"qx: "<<BB.qx()<<std::endl;
         std::cout<<"qy: "<<BB.qy()<<std::endl;
         std::cout<<"qz: "<<BB.qz()<<std::endl;
+
+        std::cout<<"NODI SCALATI con centroidi facce"<<std::endl;
+        for(i=0; i < nodes.size(); ++i)
+        {
+            std::cout<<i<<": "<<nodes[i]<<std::endl;
+        }
 #endif
-        BB.scaleNodesToUnit(nodes);
-        BB.scaleNodesToUnit(cellCenter);
 
         // For each (triangular) facet we build a tetrahedron by adding a
         // fourth point at the center of the cell
@@ -604,25 +567,12 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         }
         M_centroid /= M_volume;
 
-#ifdef FVCODE3D_DEBUG_CELLS_
-        std::cout<<"NODI CONVERTITI E SCALATI"<<std::endl;
-        for(i=0; i < nodes.size(); ++i)
-        {
-            std::cout<<i<<": "<<nodes[i]<<std::endl;
-        }
-#endif
-
         M_volume /= (BB.mx() * BB.my() * BB.mz());
-#ifdef FVCODE3D_DEBUG_CELLS_
-        std::cout<<"new Volume: "<<M_volume<<std::endl;
-#endif
-
         BB.scaleNodesToPhysical(M_centroid);
 
-//        CS.computeCartesianCoordinateSystem( zAxisCartesian.convertInLocalCoordinates(CS, origin) );
-//        M_centroid = M_centroid.convertInLocalCoordinates(CS, origin);
 #ifdef FVCODE3D_DEBUG_CELLS_
-        std::cout<<"centroid: "<<M_centroid<<std::endl;
+        std::cout<<"Volume: "<<M_volume<<std::endl;
+        std::cout<<"Centroid: "<<M_centroid<<std::endl;
 #endif
     }
     else
