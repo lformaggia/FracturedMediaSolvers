@@ -141,6 +141,10 @@ message(STATUS "LIBRARIES = ${LIBRARIES}")
 #================================
 # Subdirectories
 #================================
+option(${PROJECT_NAME}_ENABLE_TESTS "Enable tests" ON)
+if(${PROJECT_NAME}_ENABLE_TESTS)
+    enable_testing()
+endif()
 add_subdirectory(src)
 
 # Add documentation
