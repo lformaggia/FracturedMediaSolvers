@@ -39,6 +39,15 @@ Point3D rotateOf(const Point3D & p, const Real angleDeg);
  */
 Real triangleArea(const Point3D & A, const Point3D & B, const Point3D & C);
 
+//! Compute the centroid of a triangle
+/*!
+ * @param A first point of the triangle
+ * @param B second point of the triangle
+ * @param C third point of the triangle
+ * @return the centroid of the triangle
+ */
+Point3D triangleCentroid(const Point3D & A, const Point3D & B, const Point3D & C);
+
 //! Compute the volume of a tetrahedron
 /*!
  * @param nodes vector of points that define the tetrahedron

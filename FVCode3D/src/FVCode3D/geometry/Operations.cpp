@@ -34,6 +34,11 @@ Real triangleArea(const Point3D & A, const Point3D & B, const Point3D & C)
     return crossProduct(B-A,C-A).norm() / 2.;
 }
 
+Point3D triangleCentroid(const Point3D & A, const Point3D & B, const Point3D & C)
+{
+    return (A + B + C) / 3.;
+}
+
 Real tetrahedronVolume(const std::vector<Point3D> & nodes)
 {
     return std::fabs( dotProduct( nodes[2]-nodes[3] , crossProduct(nodes[0]-nodes[3],nodes[1]-nodes[3]) ) ) / 6.;
