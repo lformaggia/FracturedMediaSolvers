@@ -13,8 +13,11 @@
 #include <algorithm>
 #include <cmath>
 #include <vector>
+#include <array>
+#include <queue>
 
-//#define FVCODE3D_DEBUG_CELLS_
+//#define FVCODE3D_DEBUG_CELLS
+#define FVCODE3D_CELL_VOLUME_BY_GAUSS
 
 namespace FVCode3D
 {
@@ -418,6 +421,267 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
 
     if(M_vertexIds.size() > 4)
     {
+#ifdef FVCODE3D_CELL_VOLUME_BY_GAUSS
+        std::vector<Point3D> nodes;
+        std::vector< std::vector<UInt> > facets;
+        std::map<UInt, UInt> globalToLocal;
+
+        // Count the number of vertices and facets that
+        // define the approximation of the non-planar facets polyhedron
+        const UInt nNodes = verticesNumber();
+        UInt addedNodes = 0;
+        UInt nFacets = 0;
+        for(auto id : M_facetIds)
+        {
+            const UInt nodesFacet = M_mesh->getFacetsMap().at(id).getNumberOfVertices();
+
+            if( nodesFacet > 3 )
+            {
+                addedNodes++;
+                nFacets += nodesFacet;
+            }
+            else
+            {
+                nFacets++;
+            }
+        }
+
+        UInt nodesFacet, i, j, intNodesCount(0), intFacetsCount(0);
+        std::set<UInt>::iterator it;
+
+        nodes.resize( nNodes + addedNodes );
+        facets.resize( nFacets );
+
+        for(i=0; i < nNodes; ++i)
+        {
+            nodes[i] = M_mesh->getNodesVector()[M_vertexIds[i]];
+            globalToLocal.insert(std::make_pair(M_vertexIds[i], i));
+        }
+
+        typedef std::pair< UInt, UInt > edge_Type;
+        typedef std::map< edge_Type, std::array<UInt,2> > map_Type;
+
+        std::map< edge_Type, std::array<UInt,2> > edgeToTria;
+        std::vector< std::array<edge_Type, 3 > > triaToEdge(nFacets);
+        std::pair< map_Type::iterator , bool > itMap;
+
+        for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
+        {
+            auto& facet = M_mesh->getFacetsMap().at(*it);
+            nodesFacet = facet.getNumberOfVertices();
+
+            if( nodesFacet > 3 )
+            {
+                Point3D center(0., 0., 0.);
+
+                for(auto id : facet.getVerticesVector())
+                {
+                    center += M_mesh->getNodesVector()[id];
+                }
+                center /= nodesFacet;
+                nodes[nNodes + intNodesCount] = center;
+
+                // loop over the triangles that settle the current facet
+                for(j=0; j < nodesFacet; ++j)
+                {
+                    // add the j-th triangle
+                    facets[intFacetsCount].resize(3);
+                    facets[intFacetsCount][0] = nNodes + intNodesCount;
+                    facets[intFacetsCount][1] = globalToLocal[ facet.getVerticesVector()[j%nodesFacet] ];
+                    facets[intFacetsCount][2] = globalToLocal[ facet.getVerticesVector()[(j+1)%nodesFacet] ];
+
+                    // fill the edgeToTria map and the triaToEdge vector
+                    for( UInt e = 0; e < 3; ++e)
+                    {
+                        itMap = edgeToTria.insert( std::make_pair( std::make_pair(facets[intFacetsCount][e%3],
+                                facets[intFacetsCount][(e+1)%3] ), std::array<UInt,2>{ { intFacetsCount, intFacetsCount } } ) );
+
+                        if( !itMap.second )
+                            itMap.first->second[1] = intFacetsCount;
+
+                        itMap = edgeToTria.insert( std::make_pair( std::make_pair(facets[intFacetsCount][(e+1)%3],
+                                facets[intFacetsCount][e%3] ), std::array<UInt,2>{ { intFacetsCount, intFacetsCount } } ) );
+
+                        if( !itMap.second )
+                            itMap.first->second[1] = intFacetsCount;
+
+                        triaToEdge[intFacetsCount][e] = std::make_pair( facets[intFacetsCount][e%3] ,
+                                                                        facets[intFacetsCount][(e+1)%3] );
+                    }
+
+                    intFacetsCount++;
+                }
+
+                intNodesCount++;
+            }
+            else
+            {
+                facets[intFacetsCount].resize(3);
+                for(j=0; j < 3; ++j)
+                    facets[intFacetsCount][j] = globalToLocal[ facet.getVerticesVector()[j] ];
+
+                // fill the edgeToTria map
+                for( UInt e = 0; e < 3; ++e)
+                {
+                    itMap = edgeToTria.insert( std::make_pair( std::make_pair(facets[intFacetsCount][e%3],
+                            facets[intFacetsCount][(e+1)%3] ), std::array<UInt,2>{ { intFacetsCount, intFacetsCount } } ) );
+
+                    if( !itMap.second )
+                        itMap.first->second[1] = intFacetsCount;
+
+                    itMap = edgeToTria.insert( std::make_pair( std::make_pair(facets[intFacetsCount][(e+1)%3],
+                            facets[intFacetsCount][e%3] ), std::array<UInt,2>{ { intFacetsCount, intFacetsCount } } ) );
+
+                    if( !itMap.second )
+                        itMap.first->second[1] = intFacetsCount;
+
+                    triaToEdge[intFacetsCount][e] = std::make_pair( facets[intFacetsCount][e%3] ,
+                                                                    facets[intFacetsCount][(e+1)%3] );
+                }
+
+                intFacetsCount++;
+            }
+        }
+
+        std::vector<bool> checked(nFacets,false);
+        std::vector<bool> orientation(nFacets,true);
+        std::queue<UInt> queueTria;
+        std::vector<Real> sign(nFacets);
+
+        queueTria.push(0);
+        checked[0] = true;
+        while(!queueTria.empty())
+        {
+            const UInt idTria = queueTria.front();
+            queueTria.pop();
+
+            for(UInt i = 0; i < 3; ++i)
+            {
+                const edge_Type edge(facets[idTria][i%3] ,
+                                     facets[idTria][(i+1)%3] );
+                const auto& trias = *(edgeToTria.find(edge));
+                const UInt idOther = ( idTria == trias.second[0] ) ? trias.second[1] : trias.second[0];
+
+                const bool found = std::find( std::begin( triaToEdge[idOther] ) , std::end( triaToEdge[idOther] ) , edge )
+                                   != std::end( triaToEdge[idOther] );
+
+                orientation[idOther] = orientation[idTria] ^ found;
+
+                if(!checked[idOther])
+                {
+                    queueTria.push(idOther);
+                    checked[idOther] = true;
+                }
+            }
+
+            sign[idTria] = ( 2. * static_cast<Real>(orientation[idTria]) - 1. );
+        }
+
+#ifdef FVCODE3D_DEBUG_CELLS
+        std::cout<<std::endl<<std::endl<<"--- NEW ELEMENT ---"<<std::endl;
+
+        std::cout<<"NODI INIZIALI con centroidi facce"<<std::endl;
+        std::cout.precision(16);
+        for(i=0; i < nodes.size(); ++i)
+        {
+            std::cout<<i<<": "<<nodes[i]<<std::endl;
+        }
+
+        i=0;
+        for(auto& facet : facets)
+        {
+            std::cout<<"FACCIA "<<i++<<std::endl;
+            for(auto& id : facet)
+            {
+                std::cout<<"\t"<<id;
+            }
+            std::cout<<std::endl;
+        }
+//        for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
+//        {
+//            auto& facet = M_mesh->getFacetsMap().at(*it);
+//            std::cout<<"FACCIA "<<i<<std::endl;
+//            for(auto id : facet.getVerticesVector())
+//            {
+//                std::cout<<"\t"<<globalToLocal[id];
+//            }
+//            std::cout<<std::endl;
+//        }
+#endif // FVCODE3D_DEBUG_CELLS
+
+        BoundingBox BB(nodes);
+        BB.scaleNodesToUnit(nodes);
+
+#ifdef FVCODE3D_DEBUG_CELLS
+        std::cout<<"xMin: "<<BB.xMin()<<std::endl;
+        std::cout<<"yMin: "<<BB.yMin()<<std::endl;
+        std::cout<<"zMin: "<<BB.zMin()<<std::endl;
+        std::cout<<"xMax: "<<BB.xMax()<<std::endl;
+        std::cout<<"yMax: "<<BB.yMax()<<std::endl;
+        std::cout<<"zMax: "<<BB.zMax()<<std::endl;
+        std::cout<<"mx: "<<BB.mx()<<std::endl;
+        std::cout<<"my: "<<BB.my()<<std::endl;
+        std::cout<<"mz: "<<BB.mz()<<std::endl;
+        std::cout<<"qx: "<<BB.qx()<<std::endl;
+        std::cout<<"qy: "<<BB.qy()<<std::endl;
+        std::cout<<"qz: "<<BB.qz()<<std::endl;
+
+        std::cout<<"NODI SCALATI con centroidi facce"<<std::endl;
+        for(i=0; i < nodes.size(); ++i)
+        {
+            std::cout<<i<<": "<<nodes[i]<<std::endl;
+        }
+#endif // FVCODE3D_DEBUG_CELLS
+
+        // For each (triangular) facet we build a tetrahedron by adding a
+        // fourth point at the center of the cell
+        M_volume = 0.;
+        M_centroid = Point3D(0., 0., 0.);
+        for(auto facet = std::begin( facets ); facet != std::end( facets ); ++facet)
+        {
+            std::vector<Point3D> p(3);
+            p[0] = nodes[(*facet)[0]];
+            p[1] = nodes[(*facet)[1]];
+            p[2] = nodes[(*facet)[2]];
+
+            const UInt index = std::distance( std::begin( facets ) , facet );
+            const Point3D triangleNormal = sign[index] * FVCode3D::computeNormal( p[0], p[1], p[2] );
+            const Real triangleArea = FVCode3D::triangleArea( p[0], p[1], p[2] );
+            const Point3D triangleCentroid = FVCode3D::triangleCentroid( p[0], p[1], p[2] );
+            Point3D localCentroid(0., 0., 0.);
+
+            M_volume += triangleArea * dotProduct( triangleCentroid , triangleNormal );
+
+            localCentroid.x() += ( (p[0] + p[1]).x() * (p[0] + p[1]).x() * triangleNormal.x() +
+                                   (p[1] + p[2]).x() * (p[1] + p[2]).x() * triangleNormal.x() +
+                                   (p[2] + p[0]).x() * (p[2] + p[0]).x() * triangleNormal.x() );
+
+            localCentroid.y() += ( (p[0] + p[1]).y() * (p[0] + p[1]).y() * triangleNormal.y() +
+                                   (p[1] + p[2]).y() * (p[1] + p[2]).y() * triangleNormal.y() +
+                                   (p[2] + p[0]).y() * (p[2] + p[0]).y() * triangleNormal.y() );
+
+            localCentroid.z() += ( (p[0] + p[1]).z() * (p[0] + p[1]).z() * triangleNormal.z() +
+                                   (p[1] + p[2]).z() * (p[1] + p[2]).z() * triangleNormal.z() +
+                                   (p[2] + p[0]).z() * (p[2] + p[0]).z() * triangleNormal.z() );
+            localCentroid *= triangleArea / 12.;
+
+            M_centroid += localCentroid;
+        }
+        M_volume /= 3.;
+        M_centroid /= 2. * M_volume;
+
+        M_volume /= (BB.mx() * BB.my() * BB.mz());
+        M_volume = std::fabs( M_volume );
+        BB.scaleNodesToPhysical(M_centroid);
+
+#ifdef FVCODE3D_DEBUG_CELLS
+        std::cout<<"Volume: "<<M_volume<<std::endl;
+        std::cout<<"Centroid: "<<M_centroid<<std::endl;
+#endif // FVCODE3D_DEBUG_CELLS
+//        Real gaussVolume = M_volume;
+//        Point3D gaussCentroid = M_centroid;
+//        {
+#else // FVCODE3D_CELL_VOLUME_BY_GAUSS
         std::vector<Point3D> nodes;
         std::vector< std::vector<UInt> > facets;
         std::map<UInt, UInt> globalToLocal;
@@ -502,7 +766,7 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
             }
         }
 
-#ifdef FVCODE3D_DEBUG_CELLS_
+#ifdef FVCODE3D_DEBUG_CELLS
         std::cout<<std::endl<<std::endl<<"--- NEW ELEMENT ---"<<std::endl;
 
         std::cout<<"NODI INIZIALI con centroidi facce"<<std::endl;
@@ -512,23 +776,33 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
             std::cout<<i<<": "<<nodes[i]<<std::endl;
         }
 
-        for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
+        i=0;
+        for(auto& facet : facets)
         {
-            auto& facet = M_mesh->getFacetsMap().at(*it);
-            std::cout<<"FACCIA "<<i<<std::endl;
-            for(auto id : facet.getVerticesVector())
+            std::cout<<"FACCIA "<<i++<<std::endl;
+            for(auto& id : facet)
             {
-                std::cout<<"\t"<<globalToLocal[id];
+                std::cout<<"\t"<<id;
             }
             std::cout<<std::endl;
         }
-#endif
+//        for(i=0, it=M_facetIds.begin(); it != M_facetIds.end(); ++i, ++it)
+//        {
+//            auto& facet = M_mesh->getFacetsMap().at(*it);
+//            std::cout<<"FACCIA "<<i<<std::endl;
+//            for(auto id : facet.getVerticesVector())
+//            {
+//                std::cout<<"\t"<<globalToLocal[id];
+//            }
+//            std::cout<<std::endl;
+//        }
+#endif // FVCODE3D_DEBUG_CELLS
 
         BoundingBox BB(nodes);
         BB.scaleNodesToUnit(nodes);
         BB.scaleNodesToUnit(cellCenter);
 
-#ifdef FVCODE3D_DEBUG_CELLS_
+#ifdef FVCODE3D_DEBUG_CELLS
         std::cout<<"xMin: "<<BB.xMin()<<std::endl;
         std::cout<<"yMin: "<<BB.yMin()<<std::endl;
         std::cout<<"zMin: "<<BB.zMin()<<std::endl;
@@ -547,7 +821,7 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         {
             std::cout<<i<<": "<<nodes[i]<<std::endl;
         }
-#endif
+#endif // FVCODE3D_DEBUG_CELLS
 
         // For each (triangular) facet we build a tetrahedron by adding a
         // fourth point at the center of the cell
@@ -570,10 +844,21 @@ void Mesh3D::Cell3D::computeVolumeAndCentroid()
         M_volume /= (BB.mx() * BB.my() * BB.mz());
         BB.scaleNodesToPhysical(M_centroid);
 
-#ifdef FVCODE3D_DEBUG_CELLS_
+#ifdef FVCODE3D_DEBUG_CELLS
         std::cout<<"Volume: "<<M_volume<<std::endl;
         std::cout<<"Centroid: "<<M_centroid<<std::endl;
-#endif
+#endif // FVCODE3D_DEBUG_CELLS
+//        std::cout<<"Volume: "<<M_volume<<std::endl;
+//        std::cout<<"GaussVolume: "<<gaussVolume<<std::endl;
+//        std::cout<<"Centroid: "<<M_centroid<<std::endl;
+//        std::cout<<"GaussCentroid: "<<gaussCentroid<<std::endl;
+//
+//        std::cout<<"Err Volume: "<<(M_volume - gaussVolume) / M_volume<<std::endl;
+//        std::cout<<"Err Centrois: "<<(M_centroid - gaussCentroid).norm() / M_centroid.norm()<<std::endl<<std::endl;
+//        M_volume = gaussVolume;
+//        M_centroid = gaussCentroid;
+//    }
+#endif // FVCODE3D_CELL_VOLUME_BY_GAUSS
     }
     else
     {
