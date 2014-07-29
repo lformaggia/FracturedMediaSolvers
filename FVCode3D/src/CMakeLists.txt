@@ -9,8 +9,10 @@ target_link_libraries(fvcode3d.exe
     ${LIBRARIES}
     )
 
-# Add subdirectories with examples
-# add_subdirectory (tests)
+# Add subdirectories with tests
+if(${PROJECT_NAME}_ENABLE_TESTS)
+    add_subdirectory(test)
+endif()
 
 # Add tools
 add_subdirectory (tools)

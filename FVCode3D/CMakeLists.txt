@@ -31,10 +31,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -frounding-math")
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -D_GLIBCXX_DEBUG -O0 -g")
+set(CMAKE_CXX_FLAGS_PROFILE "-pg")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG")
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo." FORCE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release Profile RelWithDebInfo." FORCE)
 endif()
 
 #================================
@@ -140,6 +141,10 @@ message(STATUS "LIBRARIES = ${LIBRARIES}")
 #================================
 # Subdirectories
 #================================
+option(${PROJECT_NAME}_ENABLE_TESTS "Enable tests" ON)
+if(${PROJECT_NAME}_ENABLE_TESTS)
+    enable_testing()
+endif()
 add_subdirectory(src)
 
 # Add documentation

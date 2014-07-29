@@ -251,7 +251,7 @@ for C_LIBRARY_DIR in "${C_LIBRARY_DIRS[@]}"; do
     export CFLAGS="${CFLAGS} -Wl,-rpath,${C_LIBRARY_DIR} -L${C_LIBRARY_DIR}"
 done
 for CXX_LIBRARY_DIR in "${CXX_LIBRARY_DIRS[@]}"; do
-    export CXXFLAGS="${CXXFLAGS} -Wl,-rpath,${CXX_LIBRARY_DIR} -L${CXX_LIBRARY_DIR}"
+    export CXXFLAGS="${CXXFLAGS} -Wl,-rpath,${CXX_LIBRARY_DIR} -L${CXX_LIBRARY_DIR} -lstdc++"
 done
 for FORTRAN_LIBRARY_DIR in "${FORTRAN_LIBRARY_DIRS[@]}"; do
     export FFLAGS="${FFLAGS} -Wl,-rpath,${FORTRAN_LIBRARY_DIR} -L${FORTRAN_LIBRARY_DIR}"
