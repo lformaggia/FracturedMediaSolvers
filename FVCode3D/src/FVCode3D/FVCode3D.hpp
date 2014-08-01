@@ -7,6 +7,7 @@
 #include <FVCode3D/export/ExportVTU.hpp>
 #include <FVCode3D/export/Export.hpp>
 #include <FVCode3D/eigenPatch/RangeSupport.hpp>
+#include <FVCode3D/eigenPatch/SparseBlock.hpp>
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/problem/DarcySteady.hpp>
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
