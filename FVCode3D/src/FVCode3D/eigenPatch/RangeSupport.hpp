@@ -1,3 +1,7 @@
+/*!
+ * @file RangeSupport.hpp
+ * @brief Range support for Eigen::data_types
+ */
 #ifndef RANGESUPPORT_HPP_
 #define RANGESUPPORT_HPP_
 

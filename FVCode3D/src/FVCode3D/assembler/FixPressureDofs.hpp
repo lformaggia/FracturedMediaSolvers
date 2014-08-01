@@ -11,6 +11,13 @@
 namespace FVCode3D
 {
 
+//! Class for fixing a pressure value inside the fractures
+/*!
+ * @class FixPressureDofs
+ * This class replaces each row of the algebraic matrix associated with
+ * the fractures with a row of zeros, but on the diagonal, where a constant value @c is applied.
+ * The same dofs on the right and side are replaced by @c multiplied by the pressure imposed on the fractures.
+ */
 template <typename ProblemType>
 class FixPressureDofs
 {
@@ -40,14 +47,14 @@ public:
     void apply(const Real pressure);
 
     //! Default destructor
-    ~FixPressureDofs() {};
+    ~FixPressureDofs() = default;
 
 private:
 
     //! Problem
     ProblemType * M_problem;
 
-}; // class MSR
+}; // class FixPressureDofs
 
 template <typename ProblemType>
 void FixPressureDofs<ProblemType>::apply(const Real pressure)

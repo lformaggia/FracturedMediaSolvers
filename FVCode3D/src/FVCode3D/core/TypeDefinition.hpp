@@ -1,6 +1,6 @@
 /*!
  *  @file TypeDefinition.hpp
- *	@brief Definition of fundamental types.
+ *  @brief Definition of fundamental types.
  */
 
 #ifndef FVCODE3D_TYPEDEFNITION_HPP_
@@ -14,7 +14,8 @@
 namespace FVCode3D
 {
 
-typedef	std::function<Real(Point3D)> Func;
+//! Type for a std::function<Real(Point3D)>
+typedef std::function<Real(Point3D)> Func;
 
 } // namespace FVCode3D
 

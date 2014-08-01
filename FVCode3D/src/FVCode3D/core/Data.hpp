@@ -44,10 +44,10 @@ public:
         Medit           = 2
     };
 
-    //! Define where apply the source/sink term
+    //! Define where to apply the source/sink term
     /*!
      * @enum SourceSinkOn
-     * This enumerator allows to select where apply the source/sink term: only on matrix, only on fractures, both or none.
+     * This enumerator allows to select where to apply the source/sink term: only on matrix, only on fractures, both or none.
      */
     enum SourceSinkOn
     {
@@ -579,7 +579,6 @@ protected:
     Real M_theta;
     //! Verbose
     bool M_verbose;
-
 };
 
 //! Class that implements a parser for a generic enumerator
@@ -594,7 +593,7 @@ class EnumParser
 public:
 
     //! Empty constructor
-    EnumParser() {};
+    EnumParser();
 
     //! Parse method
     /*!
@@ -619,6 +618,7 @@ private:
     //! Map that links a string to an enumarator type
     std::map<std::string, T> M_enumMap;
 };
+
 
 //! Specialized class that implements a parser for the Data::ProblemType enum
 template<>

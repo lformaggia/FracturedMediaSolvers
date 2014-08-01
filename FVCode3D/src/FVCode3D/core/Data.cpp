@@ -214,6 +214,9 @@ void Data::showMe( std::ostream & output ) const
     output << "-----------------------------" << std::endl;
 }
 
+template<class T>
+EnumParser<T>::EnumParser() = default;
+
 template<>
 EnumParser<Data::ProblemType>::EnumParser()
 {

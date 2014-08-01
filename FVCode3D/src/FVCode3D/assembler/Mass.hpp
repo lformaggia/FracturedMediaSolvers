@@ -1,7 +1,7 @@
 /*!
- *	@file mass.hpp
- *	@brief This class build a Mass-matrix for a finite volume method.
- */ 
+ *  @file mass.hpp
+ *  @brief This class build a Mass-matrix for a finite volume method.
+ */
 
 #ifndef __DARCYMASS_HPP__
 #define __DARCYMASS_HPP__
@@ -19,42 +19,42 @@ class PropertiesMap;
 
 //! Class for assembling a mass matrix
 /*!
-	@class MassMatrix
-	This class constructs the mass-matrix.
-	The adopted technique is the one of the finite volume method:
-	it hence represents the volume of the cell. The fractures are considered as cells.
-*/
+ * @class MassMatrix
+ * This class constructs the mass-matrix.
+ * The adopted technique is the one of the finite volume method:
+ * it hence represents the volume of the cell. The fractures are considered as cells.
+ */
 class MassMatrix: public MatrixHandler
 {
 public:
-	//! @name Constructor & Destructor
-	//@{
+    //! @name Constructor & Destructor
+    //@{
 
-	//! Construct a Mass-Matrix, given a Rigid_Mesh.
-	/*!
-		@param rigid_mesh A Rigid_Mesh used to build the matrix
-	*/
-	MassMatrix(const Rigid_Mesh & rigid_mesh):
-		MatrixHandler(rigid_mesh, D_Cell) {}
-	//! No Copy-Constructor
-	MassMatrix(const MassMatrix&) = delete;
-	//! No Empty-Constructor
-	MassMatrix() = delete;
-	//! Destructor
-	~MassMatrix() = default;
-	//@}
+    //! Construct a Mass-Matrix, given a Rigid_Mesh.
+    /*!
+        @param rigid_mesh A Rigid_Mesh used to build the matrix
+    */
+    MassMatrix(const Rigid_Mesh & rigid_mesh):
+        MatrixHandler(rigid_mesh, D_Cell) {}
+    //! No Copy-Constructor
+    MassMatrix(const MassMatrix&) = delete;
+    //! No Empty-Constructor
+    MassMatrix() = delete;
+    //! Destructor
+    ~MassMatrix() = default;
+    //@}
 
-	//! @name Methods
-	//@{
-		
-	//! Assemble method
-	/*!
-	 * @return Assemble the Mass matrix
-	 */
-	void assemble();
-	//@}
+    //! @name Methods
+    //@{
 
-};
+    //! Assemble method
+    /*!
+     * Assemble the Mass matrix
+     */
+    void assemble();
+    //@}
+
+}; // class MassMatrix
 
 } //namespace FVCode3D
 
