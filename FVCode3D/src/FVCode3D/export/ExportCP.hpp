@@ -92,6 +92,7 @@ protected:
 
     //! Export the solution on cells and fracture facets in a single file
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
@@ -101,6 +102,7 @@ protected:
 
     //! Export the solution on fracture facets
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)

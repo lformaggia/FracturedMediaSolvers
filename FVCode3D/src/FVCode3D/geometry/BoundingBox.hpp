@@ -20,7 +20,8 @@ public:
     //! Empty Constructor
     BoundingBox();
 
-    BoundingBox(const BoundingBox & BB) = default;
+    //! Default copy-constructor
+    BoundingBox(const BoundingBox &) = default;
 
     //! Constructor
     /*!
@@ -74,9 +75,9 @@ public:
     void setYMax(const Real y) { M_yMax = y; }
     void setZMin(const Real z) { M_zMin = z; }
     void setZMax(const Real z) { M_zMax = z; }
-    void setExtremes(   const Real xmin, const Real xmax,
-                        const Real ymin, const Real ymax,
-                        const Real zmin, const Real zmax);
+    void setExtremes( const Real xmin, const Real xmax,
+                      const Real ymin, const Real ymax,
+                      const Real zmin, const Real zmax);
     //@}
 
     //! Set the diagonal of the BB

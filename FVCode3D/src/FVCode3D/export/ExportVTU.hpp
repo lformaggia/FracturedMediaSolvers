@@ -56,7 +56,7 @@ public:
      * @param filename name of the file
      */
     virtual void exportWireframe(const Mesh3D & mesh, const std::string filename) throw();
-    
+
     //! Export the edges
     /*!
      * @param mesh reference of a Rigid_Mesh
@@ -87,6 +87,7 @@ public:
 
     //! Export the solution on cells and fracture facets in a single file
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
@@ -96,6 +97,7 @@ public:
 
     //! Export the solution on fracture facets
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
@@ -132,6 +134,10 @@ public:
     //! Destructor
     virtual ~ExporterVTU() = default;
 };
+
+/*----------------*/
+/* IMPLEMENTATION */
+/*----------------*/
 
 template <typename VectorType>
 void ExporterVTU::exportSolution(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName) throw()
@@ -285,7 +291,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
     }
     else
     {
-    	throw std::runtime_error("Error: file " + filename + " not opened.");
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Solution on Fractures in Vtu format... " << std::endl;

@@ -61,7 +61,7 @@ public:
     typedef Rigid_Mesh::Pure_Border_Edge Pure_Border_Edge;
 
     //! Constructor
-    Exporter(){}
+    Exporter() = default;
 
     //! Export the mesh (only cells)
     /*!
@@ -128,6 +128,7 @@ public:
 
     //! Export the solution on cells and fracture facets in a single file
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
@@ -137,6 +138,7 @@ public:
 
     //! Export the solution on fracture facets
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)

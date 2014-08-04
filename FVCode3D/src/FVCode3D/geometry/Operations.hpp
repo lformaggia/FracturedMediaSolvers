@@ -64,6 +64,9 @@ Real tetrahedronVolume(const std::vector<Point3D> & nodes);
 void computeBoundingBox(const std::vector<Point3D> & nodes, Point3D & pMin, Point3D & pMax);
 
 //! Functor for computing the minimum between two types
+/*!
+ * @tparam T generic type
+ */
 template <typename T>
 struct less
 {
@@ -71,6 +74,9 @@ struct less
 };
 
 //! Functor for computing the minimum between two generic std::pair
+/*!
+ * @tparam T generic type
+ */
 template <typename T>
 struct less< std::pair<T,T> >
 {
