@@ -126,7 +126,7 @@ int main(int argc, char * argv[])
     exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
     exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
 //  if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-//    	saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
+//      saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -200,7 +200,7 @@ int main(int argc, char * argv[])
         darcy->assemble();
         if(dataPtr->MSROn())
         {
-        	multipleSubRegions = new MSR<Pb>(darcy, dataPtr);
+            multipleSubRegions = new MSR<Pb>(darcy, dataPtr);
             multipleSubRegions->setup();
         }
         if(dataPtr->pressuresInFractures())
