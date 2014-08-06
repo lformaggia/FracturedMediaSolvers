@@ -5,8 +5,8 @@ namespace FVCode3D
 
 SpMat sparseBlock(SpMat _matrix, UInt _ibegin, UInt _jbegin, UInt _icount, UInt _jcount)
 {
-    assert( _ibegin + _icount <= _matrix.rows() );
-    assert( _jbegin + _jcount <= _matrix.cols() );
+    assert( int(_ibegin + _icount) <= _matrix.rows() );
+    assert( int(_jbegin + _jcount) <= _matrix.cols() );
 
     UInt Mj, Mi, i, currOuterIndex, nextOuterIndex;
     std::vector<Triplet> tripletList;
