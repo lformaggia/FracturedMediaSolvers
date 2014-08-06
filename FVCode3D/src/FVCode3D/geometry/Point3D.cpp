@@ -14,6 +14,8 @@ Real Point3D::S_tolerance = 1e-8;
 void Point3D::normalize()
 {
     Real n=norm();
+    if (n == 0)
+        return;
     M_x = M_x/n;
     M_y = M_y/n;
     M_z = M_z/n;
