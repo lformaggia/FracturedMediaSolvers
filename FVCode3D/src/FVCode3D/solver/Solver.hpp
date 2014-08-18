@@ -263,9 +263,9 @@ public:
      */
     Real getTolerance() const { return M_tol; }
 
-    //! Get the residual error
+    //! Get the normalized residual error
     /*!
-     * @return residual error ( b - A * x )
+     * @return the normalized residual error || b - A * x || / || b ||
      */
     Real getResidual() const { return M_res; }
 
