@@ -9,7 +9,7 @@
 namespace FVCode3D
 {
 
-Real Point3D::S_tolerance = 1e-16;
+Real Point3D::S_tolerance = 1e-10;
 
 void Point3D::normalize()
 {
