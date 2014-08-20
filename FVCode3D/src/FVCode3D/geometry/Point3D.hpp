@@ -117,11 +117,23 @@ public:
 
     Real & operator[](const UInt coord) throw();
 
-    static const Real & getTolerance()
-        { return Point3D::S_tolerance; }
+    static const Real & getToleranceX()
+        { return Point3D::S_toleranceX; }
 
-    static void setTolerance(const Real tolerance)
-        { Point3D::S_tolerance = tolerance; }
+    static const Real & getToleranceY()
+        { return Point3D::S_toleranceY; }
+
+    static const Real & getToleranceZ()
+        { return Point3D::S_toleranceZ; }
+
+    static void setToleranceX(const Real tolerance)
+        { Point3D::S_toleranceX = tolerance; }
+
+    static void setToleranceY(const Real tolerance)
+        { Point3D::S_toleranceY = tolerance; }
+
+    static void setToleranceZ(const Real tolerance)
+        { Point3D::S_toleranceZ = tolerance; }
 
     friend Point3D operator+(const Point3D & p1, const Point3D & p2);
 
@@ -149,6 +161,13 @@ public:
 
     friend std::ostream & operator<<(std::ostream & os, const Point3D & p);
 
+    //! Relative x-tolerance
+    static Real S_toleranceX;
+    //! Relative y-tolerance
+    static Real S_toleranceY;
+    //! Relative z-tolerance
+    static Real S_toleranceZ;
+
 private:
 
     //! x-coordinate
@@ -157,10 +176,6 @@ private:
     Real M_y;
     //! z-coordinate
     Real M_z;
-
-    //! Relative tolerance
-    static Real S_tolerance;
-
 };
 
 bool operator<(const Point3D & p1, const Point3D & p2);

@@ -9,7 +9,9 @@
 namespace FVCode3D
 {
 
-Real Point3D::S_tolerance = 1e-10;
+Real Point3D::S_toleranceX = std::numeric_limits<Real>::epsilon();
+Real Point3D::S_toleranceY = std::numeric_limits<Real>::epsilon();
+Real Point3D::S_toleranceZ = std::numeric_limits<Real>::epsilon();
 
 void Point3D::normalize()
 {
@@ -222,21 +224,17 @@ std::ostream & operator<<(std::ostream & os, const Point3D & p)
 
 bool operator<(const Point3D & p1, const Point3D & p2)
 {
-    const Real relTolX = std::max( std::fabs(p1.x()), std::fabs(p2.x()) );
-
-    if ( std::fabs(p1.x() - p2.x()) <= Point3D::getTolerance() * relTolX )
+    if ( std::fabs(p1.x() - p2.x()) <= Point3D::S_toleranceX )
     {
-        const Real relTolY = std::max( std::fabs(p1.y()), std::fabs(p2.y()) );
-        if ( std::fabs(p1.y() - p2.y()) <= Point3D::getTolerance() * relTolY )
+        if ( std::fabs(p1.y() - p2.y()) <= Point3D::S_toleranceY )
         {
-            const Real relTolZ = std::max( std::fabs(p1.z()), std::fabs(p2.z()) );
-            if ( std::fabs(p1.z() - p2.z()) <= Point3D::getTolerance() * relTolZ )
+            if ( std::fabs(p1.z() - p2.z()) <= Point3D::S_toleranceZ )
                 return false;
-            return p1.z() - p2.z() < Point3D::getTolerance() * relTolZ;
+            return p1.z() - p2.z() < Point3D::S_toleranceZ;
         }
-        return p1.y() - p2.y() < Point3D::getTolerance() * relTolY;
+        return p1.y() - p2.y() < Point3D::S_toleranceY;
     }
-    return p1.x() - p2.x() < Point3D::getTolerance() * relTolX;
+    return p1.x() - p2.x() < Point3D::S_toleranceX;
 }
 
 } //namespace FVCode3D
