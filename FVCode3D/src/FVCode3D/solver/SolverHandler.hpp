@@ -70,10 +70,10 @@ public:
 private:
 
     //! No copy constructor
-    SolverProxy(const SolverProxy &);
+    SolverProxy(const SolverProxy &) = delete;
 
     //! No assignment operator
-    SolverProxy & operator=(const SolverProxy &);
+    SolverProxy & operator=(const SolverProxy &) = delete;
 };
 
 
