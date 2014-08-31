@@ -41,6 +41,14 @@ compressibility = 1.
 [bc]
 theta       = 0.
 
+## solver
+[solver]
+type    = EigenLU  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
+
+    [./iterative]
+    maxIt       = 1000
+    tolerance   = 1e-5
+
 ## Other
 [miscellaneous]
 verbose     = 1
