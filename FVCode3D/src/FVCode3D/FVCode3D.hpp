@@ -16,6 +16,7 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/core/Chrono.hpp>
 #include <FVCode3D/solver/Solver.hpp>
+#include <FVCode3D/solver/SolverHandler.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/quadrature/QuadratureRules.hpp>
