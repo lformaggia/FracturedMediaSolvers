@@ -16,7 +16,6 @@
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/export/ExportVTU.hpp>
 #include <FVCode3D/utility/Converter.hpp>
-#include <FVCode3D/solver/Solver.hpp>
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/problem/DarcySteady.hpp>
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
@@ -26,15 +25,9 @@
 
 using namespace FVCode3D;
 
-#ifdef FVCODE3D_HAS_UMFPACK
-typedef EigenUmfPack SolverType;
-#else
-typedef EigenLU SolverType;
-#endif
-
-typedef Problem<SolverType, CentroidQuadrature, CentroidQuadrature> Pb;
-typedef DarcySteady<SolverType, CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<SolverType, CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
+typedef Problem<CentroidQuadrature, CentroidQuadrature> Pb;
+typedef DarcySteady<CentroidQuadrature, CentroidQuadrature> DarcyPb;
+typedef DarcyPseudoSteady<CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -178,18 +171,18 @@ int main(int argc, char * argv[])
     Pb * darcy(nullptr);
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
     {
-        darcy = new DarcyPb(myrmesh, BC, SS, dataPtr);
+        darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
     }
     else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
     {
-        darcy = new PseudoDarcyPb(myrmesh, BC, SS, dataPtr);
+        darcy = new PseudoDarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
     }
     std::cout << " done." << std::endl << std::endl;
 
-    if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+    if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
     {
-        dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setMaxIter(1000);
-        dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
+        dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setMaxIter(dataPtr->getIterativeSolverMaxIter());
+        dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setTolerance(dataPtr->getIterativeSolverTolerance());
     }
 
     MSR<Pb> * multipleSubRegions(nullptr);
@@ -209,11 +202,11 @@ int main(int argc, char * argv[])
             fpd.apply(dataPtr->getPressuresInFractures());
         }
         darcy->solve();
-        if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+        if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
         {
             std::cout << std::endl;
-            std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
-            std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
+            std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getIter() << std::endl;
+            std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getResidual() << std::endl;
         }
     }
     else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
@@ -251,8 +244,8 @@ int main(int argc, char * argv[])
             if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
             {
                 std::cout << std::endl;
-                std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
-                std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
+                std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getIter() << std::endl;
+                std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getResidual() << std::endl;
                 std::cout << std::endl;
             }
 
