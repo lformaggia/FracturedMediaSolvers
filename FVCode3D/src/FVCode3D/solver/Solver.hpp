@@ -11,6 +11,15 @@
 namespace FVCode3D
 {
 
+class Solver;
+
+//! Typedef for SolverPtr_Type
+/*!
+ * @typedef SolverPtr_Type
+ * This type definition permits to handle a SolverPtr_Type as a SolverPtr_Type.
+ */
+typedef std::shared_ptr<Solver> SolverPtr_Type;
+
 //! Class Solver
 /*!
  * @class Solver
@@ -214,7 +223,7 @@ public:
     //! Destructor
     virtual ~EigenUmfPack() = default;
 };
-#endif
+#endif // FVCODE3D_HAS_UMFPACK
 
 
 //! Class IterativeSolver
