@@ -11,7 +11,7 @@
 namespace FVCode3D
 {
 
-void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) throw()
+void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::ostringstream specGridSS, coordSS, zCornSS, actnumSS;
 
@@ -93,7 +93,7 @@ void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) thr
     }
     else
     {
-    	throw std::runtime_error("Error: file " + filename + " not opened.");
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh in GRDECL format... " << std::endl;

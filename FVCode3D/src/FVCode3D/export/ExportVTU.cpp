@@ -14,7 +14,7 @@
 namespace FVCode3D
 {
 
-void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename) throw()
+void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -124,7 +124,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename) th
     filestr.close();
 }
 
-void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename) throw()
+void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -207,7 +207,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     filestr.close();
 }
 
-void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename) throw()
+void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -308,7 +308,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string filename) throw()
+void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -512,7 +512,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr.close();
 }
 
-void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename) throw()
+void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -635,7 +635,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename) throw()
+void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -769,7 +769,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename) throw()
+void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -861,7 +861,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     filestr.close();
 }
 
-void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename) throw()
+void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -952,7 +952,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr.close();
 }
 
-void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename) throw()
+void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -1043,7 +1043,8 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) throw()
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties,
+    const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) const throw()
 {
     std::fstream filestr;
 
@@ -1373,7 +1374,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename) throw()
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -1640,7 +1641,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) throw()
+void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) const throw()
 {
     std::fstream filestr;
 
