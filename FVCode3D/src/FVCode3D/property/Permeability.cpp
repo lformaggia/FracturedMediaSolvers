@@ -4,7 +4,6 @@
  */
 
 #include <FVCode3D/property/Permeability.hpp>
-#include <FVCode3D/property/PermeabilityFactory.hpp>
 
 namespace FVCode3D
 {
@@ -44,7 +43,7 @@ Point3D operator*(const PermPtr_Type & tensor, const Point3D & vector)
 
 std::ostream & operator<<(std::ostream & os, const PermPtr_Type & tensor)
 {
-	return tensor->showMe(os);
+    return tensor->showMe(os);
 }
 
 
@@ -80,19 +79,19 @@ Point3D operator*(const std::shared_ptr<PermeabilityScalar> & tensor, const Poin
 
 std::ostream & PermeabilityScalar::showMe(std::ostream & os) const
 {
-	os << "| " << M_permeability[0] << " 0 0 |" << std::endl;
-	os << "| 0 " << M_permeability[0] << " 0 |" << std::endl;
-	os << "| 0 0 " << M_permeability[0] << " |" << std::endl;
-	return os;
+    os << "| " << M_permeability[0] << " 0 0 |" << std::endl;
+    os << "| 0 " << M_permeability[0] << " 0 |" << std::endl;
+    os << "| 0 0 " << M_permeability[0] << " |" << std::endl;
+    return os;
 }
 
 std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityScalar> & perm)
 {
-	os << "| " << perm->M_permeability[0] << " 0 0 |" << std::endl;
-	os << "| 0 " << perm->M_permeability[0] << " 0 |" << std::endl;
-	os << "| 0 0 " << perm->M_permeability[0] << " |" << std::endl;
+    os << "| " << perm->M_permeability[0] << " 0 0 |" << std::endl;
+    os << "| 0 " << perm->M_permeability[0] << " 0 |" << std::endl;
+    os << "| 0 0 " << perm->M_permeability[0] << " |" << std::endl;
 
-	return os;
+    return os;
 }
 
 
@@ -136,19 +135,19 @@ Point3D operator*(const std::shared_ptr<PermeabilityDiagonal> & tensor, const Po
 
 std::ostream & PermeabilityDiagonal::showMe(std::ostream & os) const
 {
-	os << "| " << M_permeability[0] << " 0 0 |" << std::endl;
-	os << "| 0 " << M_permeability[1] << " 0 |" << std::endl;
-	os << "| 0 0 " << M_permeability[2] << " |" << std::endl;
-	return os;
+    os << "| " << M_permeability[0] << " 0 0 |" << std::endl;
+    os << "| 0 " << M_permeability[1] << " 0 |" << std::endl;
+    os << "| 0 0 " << M_permeability[2] << " |" << std::endl;
+    return os;
 }
 
 std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityDiagonal> & perm)
 {
-	os << "| " << perm->M_permeability[0] << " 0 0 |" << std::endl;
-	os << "| 0 " << perm->M_permeability[1] << " 0 |" << std::endl;
-	os << "| 0 0 " << perm->M_permeability[2] << " |" << std::endl;
+    os << "| " << perm->M_permeability[0] << " 0 0 |" << std::endl;
+    os << "| 0 " << perm->M_permeability[1] << " 0 |" << std::endl;
+    os << "| 0 0 " << perm->M_permeability[2] << " |" << std::endl;
 
-	return os;
+    return os;
 }
 
 
@@ -232,19 +231,19 @@ Point3D operator*(const std::shared_ptr<PermeabilitySymTensor> & tensor, const P
 
 std::ostream & PermeabilitySymTensor::showMe(std::ostream & os) const
 {
-	os << "| " << M_permeability[0] << " " << M_permeability[1] << " " << M_permeability[2] << " |" << std::endl;
-	os << "| " << M_permeability[1] << " " << M_permeability[3] << " " << M_permeability[4] << " |" << std::endl;
-	os << "| " << M_permeability[2] << " " << M_permeability[4] << " " << M_permeability[5] << " |" << std::endl;
-	return os;
+    os << "| " << M_permeability[0] << " " << M_permeability[1] << " " << M_permeability[2] << " |" << std::endl;
+    os << "| " << M_permeability[1] << " " << M_permeability[3] << " " << M_permeability[4] << " |" << std::endl;
+    os << "| " << M_permeability[2] << " " << M_permeability[4] << " " << M_permeability[5] << " |" << std::endl;
+    return os;
 }
 
 std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilitySymTensor> & perm)
 {
-	os << "| " << perm->M_permeability[0] << " " << perm->M_permeability[1] << " " << perm->M_permeability[2] << " |" << std::endl;
-	os << "| " << perm->M_permeability[1] << " " << perm->M_permeability[3] << " " << perm->M_permeability[4] << " |" << std::endl;
-	os << "| " << perm->M_permeability[2] << " " << perm->M_permeability[4] << " " << perm->M_permeability[5] << " |" << std::endl;
+    os << "| " << perm->M_permeability[0] << " " << perm->M_permeability[1] << " " << perm->M_permeability[2] << " |" << std::endl;
+    os << "| " << perm->M_permeability[1] << " " << perm->M_permeability[3] << " " << perm->M_permeability[4] << " |" << std::endl;
+    os << "| " << perm->M_permeability[2] << " " << perm->M_permeability[4] << " " << perm->M_permeability[5] << " |" << std::endl;
 
-	return os;
+    return os;
 }
 
 
@@ -328,27 +327,19 @@ Point3D operator*(const std::shared_ptr<PermeabilityFullTensor> & tensor, const 
 
 std::ostream &  PermeabilityFullTensor::showMe(std::ostream & os) const
 {
-	os << "| " << M_permeability[0] << " " << M_permeability[1] << " " << M_permeability[2] << " |" << std::endl;
-	os << "| " << M_permeability[3] << " " << M_permeability[4] << " " << M_permeability[5] << " |" << std::endl;
-	os << "| " << M_permeability[6] << " " << M_permeability[7] << " " << M_permeability[8] << " |" << std::endl;
-	return os;
+    os << "| " << M_permeability[0] << " " << M_permeability[1] << " " << M_permeability[2] << " |" << std::endl;
+    os << "| " << M_permeability[3] << " " << M_permeability[4] << " " << M_permeability[5] << " |" << std::endl;
+    os << "| " << M_permeability[6] << " " << M_permeability[7] << " " << M_permeability[8] << " |" << std::endl;
+    return os;
 }
 
 std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityFullTensor> & perm)
 {
-	os << "| " << perm->M_permeability[0] << " " << perm->M_permeability[1] << " " << perm->M_permeability[2] << " |" << std::endl;
-	os << "| " << perm->M_permeability[3] << " " << perm->M_permeability[4] << " " << perm->M_permeability[5] << " |" << std::endl;
-	os << "| " << perm->M_permeability[6] << " " << perm->M_permeability[7] << " " << perm->M_permeability[8] << " |" << std::endl;
+    os << "| " << perm->M_permeability[0] << " " << perm->M_permeability[1] << " " << perm->M_permeability[2] << " |" << std::endl;
+    os << "| " << perm->M_permeability[3] << " " << perm->M_permeability[4] << " " << perm->M_permeability[5] << " |" << std::endl;
+    os << "| " << perm->M_permeability[6] << " " << perm->M_permeability[7] << " " << perm->M_permeability[8] << " |" << std::endl;
 
-	return os;
+    return os;
 }
-
-/*
- * Registration
- */
-PermeabilityProxy<PermeabilityScalar> PermScal("ScalarPermeability");
-PermeabilityProxy<PermeabilityDiagonal> PermDiag("DiagonalPermeability");
-PermeabilityProxy<PermeabilitySymTensor> PermSymT("SymTensorPermeability");
-PermeabilityProxy<PermeabilityFullTensor> PermFullT("FullTensorPermeability");
 
 } // namespace FVCode3D
