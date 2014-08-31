@@ -4,6 +4,7 @@
  */
 
 #include <FVCode3D/core/Data.hpp>
+#include <FVCode3D/solver/SolverHandler.hpp>
 
 namespace FVCode3D
 {
@@ -214,8 +215,11 @@ void Data::showMe( std::ostream & output ) const
     output << "Mobility: " << M_mobility << std::endl;
 
     output << "Solver: " << M_solverType << std::endl;
-    output << "# max iter: " << M_maxIt << std::endl;
-    output << "Tolerance: " << M_tol << std::endl;
+    if(dynamic_cast<IterativeSolver*>(SolverHandler::Instance().getProduct(M_solverType).get()))
+    {
+        output << "# max iter: " << M_maxIt << std::endl;
+        output << "Tolerance: " << M_tol << std::endl;
+    }
 
     output << "Theta: " << M_theta << std::endl;
 
