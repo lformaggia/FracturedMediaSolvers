@@ -22,8 +22,8 @@ int main(int argc, char * argv[])
 
     std::cout << "Read Data..." << std::flush;
     Data data(dataFileName);
-	data.fractureOn(true);
-	data.verbose(true);
+    data.fractureOn(true);
+    data.verbose(true);
     std::cout << " done." << std::endl;
 
     std::cout << std::endl;
