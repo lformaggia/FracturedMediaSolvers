@@ -20,7 +20,9 @@ Data::Data():
     M_permMatrix(0.), M_poroMatrix(0.),
     M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
     M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
-    M_mobility(1.), M_compressibility(1.), M_theta(0.), M_verbose(true)
+    M_mobility(1.), M_compressibility(1.),
+    M_maxIt(1.), M_tol(0.),
+    M_theta(0.), M_verbose(true)
 {}
 
 Data::Data(const std::string dataFileName) throw()
@@ -82,6 +84,10 @@ Data::Data(const std::string dataFileName) throw()
 
     M_mobility = dataFile("fluid/mobility", 1.);
     M_compressibility = dataFile("fluid/compressibility", 1.);
+
+    M_solverType = dataFile("solver/type", "EigenUmfPack");
+    M_maxIt = dataFile("solver/iterative/maxIt", 1000);
+    M_tol = dataFile("solver/iterative/tolerance", 1e-4);
 
     M_theta = dataFile("bc/theta", 0.);
 
@@ -206,6 +212,10 @@ void Data::showMe( std::ostream & output ) const
     }
 
     output << "Mobility: " << M_mobility << std::endl;
+
+    output << "Solver: " << M_solverType << std::endl;
+    output << "# max iter: " << M_maxIt << std::endl;
+    output << "Tolerance: " << M_tol << std::endl;
 
     output << "Theta: " << M_theta << std::endl;
 

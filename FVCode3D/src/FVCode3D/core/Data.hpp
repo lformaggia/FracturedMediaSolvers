@@ -275,6 +275,24 @@ public:
      */
     Real getCompressibility() const { return M_compressibility; }
 
+    //! Get solver type
+    /*!
+     * @return the solver type
+     */
+    const std::string getSolverType() const { return M_solverType; }
+
+    //! Get maximum iterations of the iterative solver
+    /*!
+     * @return maximum iterations of the iterative solver
+     */
+    UInt getIterativeSolverMaxIter() const { return M_maxIt; }
+
+    //! Get tolerance of the iterative solver
+    /*!
+     * @return tolerance of the iterative solver
+     */
+    Real getIterativeSolverTolerance() const { return M_tol; }
+
     //! Get theta angle
     /*!
      * @return the angle theta used to identify the BC ids
@@ -486,6 +504,24 @@ public:
      */
     void setCompressibility(const Real compressibility) { M_compressibility = compressibility; }
 
+    //! Set solver type
+    /*!
+     * @param the solver type
+     */
+    void getSolverType(const std::string solver) { M_solverType = solver; }
+
+    //! Set maximum iterations of the iterative solver
+    /*!
+     * @param maxIt maximum iterations of the iterative solver
+     */
+     void setIterativeSolverMaxIter(const UInt maxIt) { M_maxIt = maxIt; }
+
+    //! Set tolerance of the iterative solver
+    /*!
+     * @param tol tolerance of the iterative solver
+     */
+    void setIterativeSolverTolerance(const Real tol) { M_tol = tol; }
+
     //! Set theta angle
     /*!
      * @param theta the angle theta used to identify the BC ids
@@ -575,6 +611,14 @@ protected:
     Real M_mobility;
     //! Compressibility
     Real M_compressibility;
+
+    //! Solver used
+    std::string M_solverType;
+    //! Maximum iterations of the iterative solver
+    UInt M_maxIt;
+    //! Tolerance of the iterative solver
+    Real M_tol;
+
     //! Angle used to rotate along z-axis the domain. It is used only to compute the normal for detecting BC!
     Real M_theta;
     //! Verbose
