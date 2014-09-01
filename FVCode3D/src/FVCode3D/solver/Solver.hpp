@@ -58,6 +58,17 @@ public:
      */
     void setb(const Vector & b) { M_b = b; }
 
+    //! Resize the matrix and vector
+    /*!
+     * @param nbDofs number of the dofs
+     */
+    void setDofs(const UInt nbDofs)
+    {
+        M_A.resize(nbDofs, nbDofs);
+        M_b = Vector::Zero( nbDofs );
+        M_x = Vector::Zero( nbDofs );
+    }
+
     //! Get the matrix A
     /*!
      * @return the matrix A
