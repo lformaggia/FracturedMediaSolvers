@@ -168,7 +168,7 @@ public:
         { M_compressibility = compressibility; };
 
     //! Destructor
-    ~PropertiesMap() {};
+    ~PropertiesMap() = default;
 
 private:
 

@@ -69,7 +69,7 @@ public:
     //! Get the i-th fracture (const)
     /*!
      * @param i id of the fracture
-     * @return A the i-th fracture
+     * @return the i-th fracture
      */
     const Fracture3D & getFracture(const UInt i) const
         { return M_fractureNetwork[i]; }

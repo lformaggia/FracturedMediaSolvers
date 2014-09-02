@@ -1,6 +1,6 @@
 /*!
- *  @file chrono.cpp
- *  @brief This class implements a simple chronometer (definitions).
+ *  @file data.cpp
+ *  @brief This class handles the data for the solver (definitions).
  */
 
 #include <FVCode3D/core/Data.hpp>

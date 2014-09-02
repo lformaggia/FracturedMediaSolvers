@@ -1,6 +1,6 @@
 /*!
- *  @file export.hpp
- *  @brief Classes for saving files.
+ * @file export.hpp
+ * @brief Classes for saving files.
  */
 
 #ifndef EXPORT_HPP_
@@ -132,6 +132,7 @@ public:
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     * @param fieldName name of the field that appears in the file
      */
     template <typename VectorType>
     void exportSolution(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Pressure") const throw();
@@ -142,6 +143,7 @@ public:
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     * @param fieldName name of the field that appears in the file
      */
     template <typename VectorType>
     void exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Pressure") const throw();
@@ -170,6 +172,7 @@ public:
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     * @param property pointer to a generic property
      */
     virtual void exportWithProperties(const Rigid_Mesh & mesh, const std::string filename,
         const Flag16bit propertiesType, const std::vector<Real> * property = nullptr ) const throw() = 0;
