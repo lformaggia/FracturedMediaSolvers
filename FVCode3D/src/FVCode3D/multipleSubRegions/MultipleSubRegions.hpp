@@ -32,7 +32,7 @@ UInt linearRegionSelection ( const Real& _cellSolution, const UInt& _nbRegions,
  * @class MSR
  * This class implements the multiple sub regions method.
  * Given the solution and the number of sub regions, it computes for each cell in which sub region the cell belongs.
-*/
+ */
 template <typename ProblemType>
 class MSR
 {

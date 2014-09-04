@@ -1,4 +1,4 @@
- /*!
+/*!
  * @file Mesh3D.hpp
  * @brief Classes that implements polyhedrical unstructured meshes.
  */
@@ -32,7 +32,6 @@ class Fracture;
  */
 class Mesh3D
 {
-
 public:
 
     class Facet3D;
@@ -45,8 +44,8 @@ public:
         This class implements the concept of a facet of a mesh.
         It is composed of a vector of ids that represent the points of the mesh.
     */
-    class Facet3D{
-
+    class Facet3D
+    {
     public:
         //! @name Constructor & Destructor
         //@{
@@ -280,8 +279,8 @@ public:
         This class implements the concept of a Cell of a mesh.
         It is composed of a vector of ids that represent the facets of the mesh.
      */
-    class Cell3D{
-
+    class Cell3D
+    {
     public:
         //! @name Constructor & Destructor
         //@{
@@ -643,7 +642,6 @@ protected:
     std::map<UInt,Cell3D> M_cells;
     //! The map that associates to a vector of node ids a facet id
     std::map<std::vector<UInt>, UInt> M_nodesToFacet;
-
 };
 
 //! Overloading of operator< between two Facet3D objects (needed by the set M_facets)

@@ -1,5 +1,5 @@
 /*!
- *  @file darcySteady.hpp
+ *  @file DarcySteady.hpp
  *  @brief Class that defines and solves the Darcy's problem at steady state.
  */
 
