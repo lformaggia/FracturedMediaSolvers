@@ -1,3 +1,8 @@
+/*!
+ * @file BoundingBox.hpp
+ * @brief Class that implements a Bounding Box and scaling operations.
+ */
+
 #ifndef FVCODE3D_BOUNDINGBOX_HPP_
 #define FVCODE3D_BOUNDINGBOX_HPP_
 

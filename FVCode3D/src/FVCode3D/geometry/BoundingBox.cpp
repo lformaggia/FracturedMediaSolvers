@@ -1,3 +1,8 @@
+/*!
+ * @file BoundingBox.hpp
+ * @brief Class that implements a Bounding Box and scaling operations (definitions).
+ */
+
 #include <FVCode3D/geometry/BoundingBox.hpp>
 
 namespace FVCode3D
