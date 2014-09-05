@@ -11,6 +11,7 @@
 namespace FVCode3D
 {
 
+//! Class to export mesh, fractures, solution and properties in VTU format type
 /*!
  * @class ExporterVTU
  * This class allows to export mesh, fractures, solution, and properties in VTU format.

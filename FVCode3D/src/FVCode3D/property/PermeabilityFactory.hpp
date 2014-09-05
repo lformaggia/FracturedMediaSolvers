@@ -12,13 +12,14 @@
 namespace FVCode3D
 {
 
+//! Typedef for PermeabilityBuilder function
 /*!
  * @typedef PermeabilityBuilder
  * It is the Builder: takes nothing, returns a PermPtr_Type
  */
 typedef PermPtr_Type (* PermeabilityBuilder)();
 
-
+//! Factory that produces Permeability classes
 /*!
  * @class PermeabilityFactory
  * This class implements a Factory that produces Permeability classes.
@@ -75,6 +76,7 @@ private:
 };
 
 
+//! Proxy for PermeabilityFactory
 /*!
  * @class PermeabilityProxy
  * This class implements the Proxy that actually create a new product

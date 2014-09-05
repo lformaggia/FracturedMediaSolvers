@@ -11,6 +11,7 @@
 namespace FVCode3D
 {
 
+//! Class to export mesh in GRDECL format type
 /*!
  * @class ExporterCP
  * This class allows to export mesh and fractures.

@@ -26,9 +26,9 @@ class Fracture;
 
 //! Class that implements a 3D mesh.
 /*!
-    @class Mesh3D
-    This class implements the concept of a three dimensional polyhedrical unstructured mesh.
-    It is composed of points, facets and cells.
+ * @class Mesh3D
+ * This class implements the concept of a three dimensional polyhedrical unstructured mesh.
+ * It is composed of points, facets and cells.
  */
 class Mesh3D
 {
@@ -40,10 +40,10 @@ public:
 
     //! Class that implements a facet
     /*!
-        @class Facet3D
-        This class implements the concept of a facet of a mesh.
-        It is composed of a vector of ids that represent the points of the mesh.
-    */
+     * @class Facet3D
+     * This class implements the concept of a facet of a mesh.
+     * It is composed of a vector of ids that represent the points of the mesh.
+     */
     class Facet3D
     {
     public:
@@ -275,9 +275,9 @@ public:
 
     //! Class that implements a cell
     /*!
-        @class Cell3D
-        This class implements the concept of a Cell of a mesh.
-        It is composed of a vector of ids that represent the facets of the mesh.
+     * @class Cell3D
+     * This class implements the concept of a Cell of a mesh.
+     * It is composed of a vector of ids that represent the facets of the mesh.
      */
     class Cell3D
     {

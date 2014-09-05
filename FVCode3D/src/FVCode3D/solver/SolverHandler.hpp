@@ -12,6 +12,7 @@
 namespace FVCode3D
 {
 
+//! Typedef for SolverBuilder function
 /*!
  * @typedef SolverBuilder
  * It is the Builder: takes nothing, returns a SolverPtr_Type
@@ -19,6 +20,7 @@ namespace FVCode3D
 typedef SolverPtr_Type (* SolverBuilder)();
 
 
+//! Factory that produces Solver classes
 /*!
  * @class SolverHandler
  * This class implements a Factory that produces Solver classes.
@@ -75,6 +77,7 @@ private:
 };
 
 
+//! Proxy for SolverHandler
 /*!
  * @class SolverProxy
  * This class implements the Proxy that actually create a new product
