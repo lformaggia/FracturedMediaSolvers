@@ -1,6 +1,6 @@
 /*!
- *  @file solver.cpp
- *  @brief These classes allow to solve a linear system (definitions).
+ * @file solver.cpp
+ * @brief These classes allow to solve a linear system (definitions).
  */
 
 #include <FVCode3D/solver/Solver.hpp>

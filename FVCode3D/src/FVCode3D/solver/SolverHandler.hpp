@@ -1,3 +1,8 @@
+/*!
+ * @file SolverHandler.hpp
+ * @brief Factory that handles the creation of the Solver classes.
+ */
+
 #ifndef SOLVERHANDLER_HPP_
 #define SOLVERHANDLER_HPP_
 
@@ -8,24 +13,41 @@ namespace FVCode3D
 {
 
 /*!
- * Builder
+ * @typedef SolverBuilder
+ * It is the Builder: takes nothing, returns a SolverPtr_Type
  */
 typedef SolverPtr_Type (* SolverBuilder)();
 
 
 /*!
- * Handler
+ * @class SolverHandler
+ * This class implements a Factory that produces Solver classes.
  */
 class SolverHandler
 {
 public:
 
+    //! Static method that return an instance of this class.
+    /*!
+     * @return SolverHandler instance
+     */
     static SolverHandler & Instance();
 
+    //! Add a product to the factory
+    /*!
+     * @param productName name of the product
+     * @param builder builder function
+     */
     void addProduct(const std::string productName, const SolverBuilder & builder);
 
+    //! Get a product
+    /*!
+     * @param productName product name to get
+     * @return a pointer to the Solver class of the product
+     */
     SolverPtr_Type getProduct(const std::string productName) const;
 
+    //! Destructor
     ~SolverHandler() = default;
 
 private:
@@ -54,20 +76,33 @@ private:
 
 
 /*!
- * Proxy
+ * @class SolverProxy
+ * This class implements the Proxy that actually create a new product
  */
 template<typename T>
 class SolverProxy
 {
 public:
 
+    //! Constructor
+    /*!
+     * @param proxyName name of the product
+     */
     SolverProxy(const std::string & proxyName);
 
+    //! Destructor
     ~SolverProxy() = default;
 
+    //! Static function that creates a new product
+    /*!
+     * @return a pointer to a Solver class
+     */
     static SolverPtr_Type Build();
 
 private:
+
+    //! No default constructor
+    SolverProxy() = delete;
 
     //! No copy constructor
     SolverProxy(const SolverProxy &) = delete;

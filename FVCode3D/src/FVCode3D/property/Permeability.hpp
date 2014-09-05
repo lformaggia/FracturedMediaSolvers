@@ -16,7 +16,7 @@ class PermeabilityBase;
 //! Typedef for PermPtr_Type
 /*!
  * @typedef PermPtr_Type
- * This type definition permits to handle a PermPtr_Type as a PermPtr_Type.
+ * This type definition permits to handle a std::shared_ptr<PermeabilityBase> as a PermPtr_Type.
  */
 typedef std::shared_ptr<PermeabilityBase> PermPtr_Type;
 
@@ -35,7 +35,7 @@ public:
      * Create the permeability as a scalar(=1), diagonal tensor(3), symmetric tensor(6) or full tensor(9)
      * @param size this parameter allows to select the type of the permeability. Default 1.
      */
-    PermeabilityBase(const UInt size = 1):M_permeability(size, 0.){};
+    PermeabilityBase(const UInt size = 1): M_permeability(size, 0.) {};
 
     //! Get the permeability at position (i,j) of the 3x3 tensor
     /*!
@@ -58,7 +58,7 @@ public:
      * @return the permeability at i
      */
     virtual Real operator[](const UInt i) const
-    	{ return M_permeability[i]; }
+        { return M_permeability[i]; }
 
     //! Set the permeability at position (i,j) of the 3x3 tensor
     /*!
@@ -81,7 +81,7 @@ public:
      * @param i position of the permeability into the vector
      */
     virtual Real & operator[](const UInt i)
-    	{ return M_permeability[i]; }
+        { return M_permeability[i]; }
 
     //! Compute the norm of the permeability tensor
     /*!
@@ -158,7 +158,7 @@ public:
     friend std::ostream & operator<<(std::ostream & os, const PermPtr_Type & tensor);
 
     //! Destructor
-    virtual ~PermeabilityBase(){};
+    virtual ~PermeabilityBase() = default;
 
 protected:
 
@@ -170,13 +170,13 @@ private:
     static const UInt M_size = 0;
 
     //! No default constructor
-    PermeabilityBase();
+    PermeabilityBase() = delete;
 
     //! No copy-constructor
-    PermeabilityBase(const PermeabilityBase &);
+    PermeabilityBase(const PermeabilityBase &) = delete;
 
     //! No assignment operator
-    PermeabilityBase & operator=(const PermeabilityBase &);
+    PermeabilityBase & operator=(const PermeabilityBase &) = delete;
 
 };
 
@@ -191,7 +191,7 @@ class PermeabilityScalar : public PermeabilityBase
 public:
 
     //! Default constructor
-    PermeabilityScalar():PermeabilityBase(M_size){};
+    PermeabilityScalar(): PermeabilityBase(M_size) {};
 
     //! Get the permeability at position (i,j) of the 3x3 tensor
     /*!
@@ -289,17 +289,17 @@ public:
     friend std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityScalar> & perm);
 
     //! Destructor
-    virtual ~PermeabilityScalar(){};
+    virtual ~PermeabilityScalar() = default;
 
 private:
     //! Size of the permeability
     static const UInt M_size = 1;
 
     //! No copy-constructor
-    PermeabilityScalar(const PermeabilityScalar &);
+    PermeabilityScalar(const PermeabilityScalar &) = delete;
 
     //! No assignment operator
-    PermeabilityScalar & operator=(const PermeabilityScalar &);
+    PermeabilityScalar & operator=(const PermeabilityScalar &) = delete;
 };
 
 //! Diagonal tensor Permeability
@@ -411,17 +411,17 @@ public:
     friend std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityDiagonal> & perm);
 
     //! Destructor
-    virtual ~PermeabilityDiagonal(){};
+    virtual ~PermeabilityDiagonal() = default;
 
 private:
     //! Size of the permeability
     static const UInt M_size = 3;
 
     //! No copy-constructor
-    PermeabilityDiagonal(const PermeabilityDiagonal &);
+    PermeabilityDiagonal(const PermeabilityDiagonal &) = delete;
 
     //! No assignment operator
-    PermeabilityDiagonal & operator=(const PermeabilityDiagonal &);
+    PermeabilityDiagonal & operator=(const PermeabilityDiagonal &) = delete;
 };
 
 //! Symmetric tensor Permeability
@@ -533,17 +533,17 @@ public:
     friend std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilitySymTensor> & perm);
 
     //! Destructor
-    virtual ~PermeabilitySymTensor(){};
+    virtual ~PermeabilitySymTensor() = default;
 
 private:
     //! Size of the permeability
     static const UInt M_size = 6;
 
     //! No copy-constructor
-    PermeabilitySymTensor(const PermeabilitySymTensor &);
+    PermeabilitySymTensor(const PermeabilitySymTensor &) = delete;
 
     //! No assignment operator
-    PermeabilitySymTensor & operator=(const PermeabilitySymTensor &);
+    PermeabilitySymTensor & operator=(const PermeabilitySymTensor &) = delete;
 };
 
 //! Full tensor Permeability
@@ -655,17 +655,17 @@ public:
     friend std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityFullTensor> & perm);
 
     //! Destructor
-    virtual ~PermeabilityFullTensor(){};
+    virtual ~PermeabilityFullTensor() = default;
 
 private:
     //! Size of the permeability
     static const UInt M_size = 9;
 
     //! No copy-constructor
-    PermeabilityFullTensor(const PermeabilityFullTensor &);
+    PermeabilityFullTensor(const PermeabilityFullTensor &) = delete;
 
     //! No assignment operator
-    PermeabilityFullTensor & operator=(const PermeabilityFullTensor &);
+    PermeabilityFullTensor & operator=(const PermeabilityFullTensor &) = delete;
 };
 
 } // namespace FVCode3D

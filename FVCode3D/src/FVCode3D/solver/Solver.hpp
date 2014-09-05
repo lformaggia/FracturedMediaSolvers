@@ -1,6 +1,6 @@
 /*!
- *  @file solver.hpp
- *  @brief These classes allow to solve a linear system.
+ * @file solver.hpp
+ * @brief These classes allow to solve a linear system.
  */
 
 #ifndef SOLVER_HPP_

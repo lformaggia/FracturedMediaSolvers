@@ -1,6 +1,8 @@
-/*
+/*!
  * @file PermeabilityFactory.hpp
+ * @brief Factory that handles the creation of the Permeability classes.
  */
+
 #ifndef PERMEABILITYFACTORY_HPP_
 #define PERMEABILITYFACTORY_HPP_
 
@@ -11,24 +13,41 @@ namespace FVCode3D
 {
 
 /*!
- * Builder
+ * @typedef PermeabilityBuilder
+ * It is the Builder: takes nothing, returns a PermPtr_Type
  */
 typedef PermPtr_Type (* PermeabilityBuilder)();
 
 
 /*!
- * Factory
+ * @class PermeabilityFactory
+ * This class implements a Factory that produces Permeability classes.
  */
 class PermeabilityFactory
 {
 public:
 
+    //! Static method that return an instance of this class.
+    /*!
+     * @return PermeabilityFactory instance
+     */
     static PermeabilityFactory & Instance();
 
+    //! Add a product to the factory
+    /*!
+     * @param productName name of the product
+     * @param builder builder function
+     */
     void addProduct(const std::string productName, const PermeabilityBuilder & builder);
 
+    //! Get a product
+    /*!
+     * @param productName product name to get
+     * @return a pointer to the PemeabilityBase class of the product
+     */
     PermPtr_Type getProduct(const std::string productName) const;
 
+    //! Destructor
     ~PermeabilityFactory() = default;
 
 private:
@@ -57,20 +76,33 @@ private:
 
 
 /*!
- * Proxy
+ * @class PermeabilityProxy
+ * This class implements the Proxy that actually create a new product
  */
 template<typename T>
 class PermeabilityProxy
 {
 public:
 
+    //! Constructor
+    /*!
+     * @param proxyName name of the product
+     */
     PermeabilityProxy(const std::string & proxyName);
 
+    //! Destructor
     ~PermeabilityProxy() = default;
 
+    //! Static function that creates a new product
+    /*!
+     * @return a pointer to a PermeabilityBase class
+     */
     static PermPtr_Type Build();
 
 private:
+
+    //! No default constructor
+    PermeabilityProxy() = delete;
 
     //! No copy constructor
     PermeabilityProxy(const PermeabilityProxy &) = delete;

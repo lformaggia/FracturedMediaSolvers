@@ -1,3 +1,8 @@
+/*!
+ * @file PermeabilityFactory.hpp
+ * @brief Factory that handles the creation of the Permeability classes (definitions).
+ */
+
 #include <FVCode3D/property/PermeabilityFactory.hpp>
 
 namespace FVCode3D

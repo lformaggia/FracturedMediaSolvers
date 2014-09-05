@@ -1,3 +1,7 @@
+/*!
+ * @file SolverHandler.cpp
+ * @brief Factory that handles the creation of the Solver classes (definitions).
+ */
 #include <FVCode3D/solver/SolverHandler.hpp>
 
 namespace FVCode3D

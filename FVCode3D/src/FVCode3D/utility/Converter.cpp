@@ -1,6 +1,6 @@
 /*!
- *  @file converter.cpp
- *  @brief Methods to convert format files (definitions).
+ * @file converter.cpp
+ * @brief Methods to convert format files (definitions).
  */
 
 #include <FVCode3D/mesh/Mesh3D.hpp>
@@ -80,7 +80,7 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
         file << facetsRef[i].getBorderId() << " ";
         file << facetsRef[i].isFracture() << " ";
 
-    	file.unsetf(std::ios_base::floatfield);
+        file.unsetf(std::ios_base::floatfield);
         file << /*std::scientific <<*/ std::setprecision(10);
         if(facetsRef[i].isFracture())
         {
@@ -115,7 +115,7 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
         for(std::set<UInt>::const_iterator it = cellsRef[i].getFacetsSet().begin(); it != cellsRef[i].getFacetsSet().end(); ++it)
             file << *it << " ";
 
-    	file.unsetf(std::ios_base::floatfield);
+        file.unsetf(std::ios_base::floatfield);
         file << /*std::scientific <<*/ std::setprecision(10);
         file << properties.getProperties(cellsRef[i].getZoneCode()).M_porosity;
         for(UInt row = 0; row < 3; ++row)

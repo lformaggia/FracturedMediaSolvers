@@ -1,6 +1,6 @@
 /*!
- *	@file converter.hpp
- *	@brief Methods to convert format files.
+ * @file converter.hpp
+ * @brief Methods to convert format files.
  */
 
 #ifndef CONVERTER_HPP_
