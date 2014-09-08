@@ -30,7 +30,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -frounding-math")
 
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -D_GLIBCXX_DEBUG -O0 -g")
+set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra -pedantic -D_GLIBCXX_DEBUG -O0 -g -gdwarf-3")
 set(CMAKE_CXX_FLAGS_PROFILE "-pg")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Wall -Wextra -pedantic -O2 -DEIGEN_NO_DEBUG")
 
