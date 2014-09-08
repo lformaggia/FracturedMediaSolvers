@@ -1,6 +1,6 @@
 /*!
- *  @file RigidMesh.hpp
- *  @brief Class for unstructured mesh.
+ * @file RigidMesh.hpp
+ * @brief Class for unstructured mesh.
  */
 
 #ifndef RIGID_MESH_HPP_
