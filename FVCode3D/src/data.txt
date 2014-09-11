@@ -25,13 +25,6 @@ initial_time    = 0.
 end_time    = 2.e6
 time_step   = 1.e5
 
-## MSR
-[msr]
-MSROn       = 0
-nbSubRegions    = 2
-nbStep      = 4
-tol         = 1.e-8
-
 ## fluid parameters
 [fluid]
 mobility    = 1.
@@ -48,7 +41,3 @@ type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , Eig
     [./iterative]
     maxIt       = 1000
     tolerance   = 1e-5
-
-## Other
-[miscellaneous]
-verbose     = 1
