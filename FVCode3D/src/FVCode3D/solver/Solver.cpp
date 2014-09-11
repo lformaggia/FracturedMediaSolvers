@@ -1,6 +1,6 @@
 /*!
- *  @file solver.cpp
- *  @brief These classes allow to solve a linear system (definitions).
+ * @file solver.cpp
+ * @brief These classes allow to solve a linear system (definitions).
  */
 
 #include <FVCode3D/solver/Solver.hpp>
@@ -31,7 +31,7 @@ void EigenUmfPack::solve()
     Eigen::UmfPackLU<SpMat> lu( M_A );
     M_x = lu.solve( M_b );
 } // EigenUmfPack::solve
-#endif
+#endif // FVCODE3D_HAS_UMFPACK
 
 Real IterativeSolver::S_referenceTol = 1e-6;
 UInt IterativeSolver::S_referenceMaxIter = 100;

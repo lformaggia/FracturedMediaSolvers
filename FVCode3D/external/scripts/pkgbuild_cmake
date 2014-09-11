@@ -18,12 +18,6 @@ build_cmake() {
     mkdir -p ${src_dir}/cmake-${ver}
     cd ${src_dir}/cmake-${ver}
 
-    if [ -n "${CXX_COMPILER}" ]; then
-        export CXX=${CXX_COMPILER}
-    fi
-    if [ -n "${C_COMPILER}" ]; then
-        export CC=${C_COMPILER}
-    fi
     ./bootstrap --prefix=${install_dir} \
         --parallel=${NUM_PROC}
 

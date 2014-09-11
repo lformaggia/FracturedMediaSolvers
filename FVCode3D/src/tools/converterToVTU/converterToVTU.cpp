@@ -9,6 +9,7 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/export/ExportVTU.hpp>
 
@@ -21,8 +22,8 @@ int main(int argc, char * argv[])
 
     std::cout << "Read Data..." << std::flush;
     Data data(dataFileName);
-	data.fractureOn(true);
-	data.verbose(true);
+    data.fractureOn(true);
+    data.verbose(true);
     std::cout << " done." << std::endl;
 
     std::cout << std::endl;

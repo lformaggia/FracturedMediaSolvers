@@ -5,4 +5,4 @@
 #   ./install-developmnet.sh --help
 # for a full list of options
 
-./install.sh --leave-build-dir --without-doc $@
+source ./install.sh --leave-build-dir --without-doc $@

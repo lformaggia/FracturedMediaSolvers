@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir    = ./data/
-mesh_file   = tetraBC1.fvg
+mesh_file   = cartBC1.fvg
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
@@ -20,16 +20,10 @@ fracturesOn = 1     # 1 enable fractures, 0 disable fractures
 sourceOn    = none      # all, matrix, fractures, none
 fracPressOn = 0     # 1 set pressure inside fracture, 0 otherwise
 fracPress   = 1.
+perm_size   = ScalarPermeability    # ScalarPermeability, DiagonalPermeability, SymTensorPermeability, FullTensorPermeability
 initial_time    = 0.
 end_time    = 2.e6
 time_step   = 1.e5
-
-## MSR
-[msr]
-MSROn       = 0
-nbSubRegions    = 2
-nbStep      = 4
-tol         = 1.e-8
 
 ## fluid parameters
 [fluid]
@@ -40,6 +34,10 @@ compressibility = 1.
 [bc]
 theta       = 0.
 
-## Other
-[miscellaneous]
-verbose     = 1
+## solver
+[solver]
+type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
+
+    [./iterative]
+    maxIt       = 1000
+    tolerance   = 1e-5

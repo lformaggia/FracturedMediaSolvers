@@ -9,6 +9,7 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 #include <FVCode3D/mesh/CartesianGrid.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/export/ExportVTU.hpp>
@@ -118,8 +119,12 @@ int main(int argc, char * argv[])
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Set uniform properties..." << std::flush;
-    propMap.setPropertiesOnMatrix(mesh, data.getMatrixPorosity(), data.getMatrixPermeability());
-    propMap.setPropertiesOnFractures(mesh, data.getFractureAperture(), data.getFracturePorosity(), data.getFracturePermeability());
+    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityScalar );
+    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+    matrixPerm->setPermeability( data.getMatrixPermeability(), 0 );
+    fracturesPerm->setPermeability( data.getFracturePermeability(), 0 );
+    propMap.setPropertiesOnMatrix(mesh, data.getMatrixPorosity(), matrixPerm);
+    propMap.setPropertiesOnFractures(mesh, data.getFractureAperture(), data.getFracturePorosity(), fracturesPerm);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;

@@ -32,7 +32,7 @@ UInt linearRegionSelection ( const Real& _cellSolution, const UInt& _nbRegions,
  * @class MSR
  * This class implements the multiple sub regions method.
  * Given the solution and the number of sub regions, it computes for each cell in which sub region the cell belongs.
-*/
+ */
 template <typename ProblemType>
 class MSR
 {
@@ -156,11 +156,11 @@ MSR<ProblemType>::MSR(ProblemType* problem, const DataPtr_Type& data ):
     M_dofTotal( 0 ),
     M_dofFractures( 0 ),
     M_dofPorousMatrix( 0 ),
-    M_maxSolution( std::numeric_limits<Real>::min() ),
+    M_maxSolution( std::numeric_limits<Real>::lowest() ),
     M_minSolution( std::numeric_limits<Real>::max() ),
     M_isPseudoSteadyState(false),
     M_localNbTimeStepSteadyState(0),
-    M_constantValue( std::numeric_limits<Real>::min() )
+    M_constantValue( std::numeric_limits<Real>::lowest() )
 {} // MSR::MSR
 
 template <typename ProblemType>
@@ -252,7 +252,7 @@ void MSR<ProblemType>::computeAveragePressure( std::vector<Real> & _averagePress
         const auto& neighborCells = facet_it.getSeparatedCellsIds();
         for(auto& cell_it : neighborCells )
         {
-        	measures[ cell_it ] -= localMeasure / 2.;
+            measures[ cell_it ] -= localMeasure / 2.;
         } // for
     } // for
 

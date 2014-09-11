@@ -1,78 +1,116 @@
-/*
- * PermeabilityFactory.hpp
- *
- *  Created on: 04/mag/2014
- *      Author: viskius
+/*!
+ * @file PermeabilityFactory.hpp
+ * @brief Factory that handles the creation of the Permeability classes.
  */
 
 #ifndef PERMEABILITYFACTORY_HPP_
 #define PERMEABILITYFACTORY_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 
 namespace FVCode3D
 {
 
-class PermeabilityBase;
-
+//! Typedef for PermeabilityBuilder function
 /*!
- * Builder
+ * @typedef PermeabilityBuilder
+ * It is the Builder: takes nothing, returns a PermPtr_Type
  */
-typedef std::shared_ptr<PermeabilityBase> (* PermeabilityBuilder)();
+typedef PermPtr_Type (* PermeabilityBuilder)();
 
-
+//! Factory that produces Permeability classes
 /*!
- * Factory
+ * @class PermeabilityFactory
+ * This class implements a Factory that produces Permeability classes.
  */
 class PermeabilityFactory
 {
 public:
 
-	inline static PermeabilityFactory & Instance();
+    //! Static method that return an instance of this class.
+    /*!
+     * @return PermeabilityFactory instance
+     */
+    static PermeabilityFactory & Instance();
 
-	inline void addProduct(const std::string productName, const PermeabilityBuilder & builder);
+    //! Add a product to the factory
+    /*!
+     * @param productName name of the product
+     * @param builder builder function
+     */
+    void addProduct(const std::string productName, const PermeabilityBuilder & builder);
 
-	inline std::shared_ptr<PermeabilityBase> getProduct(const std::string productName) const;
+    //! Get a product
+    /*!
+     * @param productName product name to get
+     * @return a pointer to the PemeabilityBase class of the product
+     */
+    PermPtr_Type getProduct(const std::string productName) const;
 
-	inline ~PermeabilityFactory();
+    //! Destructor
+    ~PermeabilityFactory() = default;
 
 private:
 
-	//! No default constrcutor
-	inline PermeabilityFactory();
+    //! No default constrcutor
+    PermeabilityFactory() = default;
 
-	//! No copy constructor
-	PermeabilityFactory(const PermeabilityFactory &);
+    //! No copy constructor
+    PermeabilityFactory(const PermeabilityFactory &) = delete;
 
-	//! No assignment operator
-	PermeabilityFactory & operator=(const PermeabilityFactory &);
+    //! No assignment operator
+    PermeabilityFactory & operator=(const PermeabilityFactory &) = delete;
 
-	//! Map that contains the products
-	std::map<std::string,PermeabilityBuilder> M_productList;
+    //! Register the products
+    /*!
+     * Fill the map with the products
+     */
+    void registration();
+
+    //! Map that contains the products
+    std::map<std::string,PermeabilityBuilder> M_productList;
+
+    //! Pointer to the singleton instance
+    static PermeabilityFactory * theOnlyPermeabilityFactory;
 };
 
 
+//! Proxy for PermeabilityFactory
 /*!
- * Proxy
+ * @class PermeabilityProxy
+ * This class implements the Proxy that actually create a new product
  */
 template<typename T>
 class PermeabilityProxy
 {
 public:
 
-	PermeabilityProxy(char const * const & proxyName);
+    //! Constructor
+    /*!
+     * @param proxyName name of the product
+     */
+    PermeabilityProxy(const std::string & proxyName);
 
-	~PermeabilityProxy();
+    //! Destructor
+    ~PermeabilityProxy() = default;
 
-	static std::shared_ptr<PermeabilityBase> Build();
+    //! Static function that creates a new product
+    /*!
+     * @return a pointer to a PermeabilityBase class
+     */
+    static PermPtr_Type Build();
 
 private:
 
-	//! No copy constructor
-	PermeabilityProxy(const PermeabilityProxy &);
+    //! No default constructor
+    PermeabilityProxy() = delete;
 
-	//! No assignment operator
-	PermeabilityProxy & operator=(const PermeabilityProxy &);
+    //! No copy constructor
+    PermeabilityProxy(const PermeabilityProxy &) = delete;
+
+    //! No assignment operator
+    PermeabilityProxy & operator=(const PermeabilityProxy &) = delete;
 };
 
 
@@ -80,47 +118,19 @@ private:
  * IMPLEMENTATION
  */
 
-PermeabilityFactory::PermeabilityFactory()
-{}
-
-PermeabilityFactory & PermeabilityFactory::Instance()
-{
-	static PermeabilityFactory theFactory;
-	return theFactory;
-}
-
-void PermeabilityFactory::addProduct(const std::string productName, const PermeabilityBuilder & builder)
-{
-	M_productList.insert(std::make_pair(productName, builder));
-}
-
-std::shared_ptr<PermeabilityBase> PermeabilityFactory::getProduct(const std::string productName) const
-{
-	std::map<std::string,PermeabilityBuilder>::const_iterator it = M_productList.find(productName);
-
-	return (it == M_productList.end()) ? std::shared_ptr<PermeabilityBase>() : it->second();
-}
-
-PermeabilityFactory::~PermeabilityFactory()
-{}
-
-
 template<typename T>
-PermeabilityProxy<T>::PermeabilityProxy(char const * const & proxyName)
+PermeabilityProxy<T>::PermeabilityProxy(const std::string & proxyName)
 {
-	PermeabilityFactory & theFactory(PermeabilityFactory::Instance());
-	theFactory.addProduct(std::string(proxyName),PermeabilityProxy<T>::Build);
+    PermeabilityFactory & theFactory(PermeabilityFactory::Instance());
+    theFactory.addProduct(std::string(proxyName),PermeabilityProxy<T>::Build);
 }
 
 template<typename T>
-std::shared_ptr<PermeabilityBase> PermeabilityProxy<T>::Build()
+PermPtr_Type PermeabilityProxy<T>::Build()
 {
-	return std::shared_ptr<PermeabilityBase>(new T);
+    return PermPtr_Type(new T);
 }
-
-template<typename T>
-PermeabilityProxy<T>::~PermeabilityProxy()
-{}
 
 } // namespace FVCode3D
+
 #endif /* PERMEABILITYFACTORY_HPP_ */

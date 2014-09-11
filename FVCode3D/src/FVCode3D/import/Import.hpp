@@ -1,6 +1,6 @@
 /*!
- *	@file import.hpp
- *	@brief Classes for loading files.
+ *  @file import.hpp
+ *  @brief Classes for loading files.
  */
 
 #ifndef IMPORT_HPP_
@@ -23,89 +23,97 @@ class Importer
 {
 public:
 
-	//! Constructor
-	/*!
-	 * Constructor from a grid file
-	 * @param filename filename of the file
-	 * @param mesh reference to a Mesh3D
-	 * @param properties reference to a PropertiesMap
-	 */
-	Importer(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
-		M_filename(filename), M_mesh(mesh), M_properties(properties) {}
+    //! Constructor
+    /*!
+     * Constructor from a grid file
+     * @param filename filename of the file
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    Importer(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        M_filename(filename), M_mesh(mesh), M_properties(properties) {}
 
-	//! Import from a grid file
-	/*!
-	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
-	 */
-	virtual void import(bool fracturesOn) = 0;
+    //! Import from a grid file
+    /*!
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn) throw() = 0;
 
-	//! Generate the BC ids from a standard TPFA file format
-	/*!
-	 * Add the BCs ids to the boundary facets.
-	 * The id is set by considering the maximum component and the sign of the normal of a boundary facet.
-	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
-	 * @pre import the file
-	 */
-	virtual void extractBC(const Real theta = 0.);
-	
-	//! Add the fractures network
-	/*!
-	 * Add the fracture network
-	 * @pre import the file
-	 */
-	virtual void addFractures() = 0;
-	
-	//! Add the lacking data
-	/*!
-	 * Add the BCs and the fracture network
-	 * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
-	 * @pre import the file
-	 */
-	virtual void addBCAndFractures(const Real theta = 0.);
-	
-	//! Get filename
-	/*!
-	 * @return the filename
-	 */
-	const std::string getFileName() const
-		{ return M_filename; }
+    //! Generate the BC ids from a standard TPFA file format
+    /*!
+     * Add the BCs ids to the boundary facets.
+     * The id is set by considering the maximum component and the sign of the normal of a boundary facet.
+     * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
+     * @pre import the file
+     */
+    virtual void extractBC(const Real theta = 0.);
 
-	//! Get mesh
-	/*!
-	 * @return reference to the mesh
-	 */
-	const Mesh3D & getMesh() const
-		{ return M_mesh; }
+    //! Add the fractures network
+    /*!
+     * Add the fracture network
+     * @pre import the file
+     */
+    virtual void addFractures() = 0;
 
-	//! Get properties
-	/*!
-	 * @return reference to the properties
-	 */
-	const PropertiesMap & getProperties() const
-		{ return M_properties; }
+    //! Add the lacking data
+    /*!
+     * Add the BCs and the fracture network
+     * @param theta rotation angle along z-axis. It is used only to compute the BC ids. Default = 0
+     * @pre import the file
+     */
+    virtual void addBCAndFractures(const Real theta = 0.);
 
-	//! Destructor
-	virtual ~Importer() = default;
+    //! Add noise to the points
+    /*!
+     * Add noise to the points following a normal distribution with mean @a mean and standard deviation @a stDev
+     * @param mean mean. Default = 0.
+     * @param stDev standard deviation. Default = 1.
+     */
+    void addNoiseToPoint(const Real mean = 0., const Real stDev = 1.);
+
+    //! Get filename
+    /*!
+     * @return the filename
+     */
+    const std::string getFileName() const
+        { return M_filename; }
+
+    //! Get mesh
+    /*!
+     * @return reference to the mesh
+     */
+    const Mesh3D & getMesh() const
+        { return M_mesh; }
+
+    //! Get properties
+    /*!
+     * @return reference to the properties
+     */
+    const PropertiesMap & getProperties() const
+        { return M_properties; }
+
+    //! Destructor
+    virtual ~Importer() = default;
 
 protected:
 
-	//! Filename
-	std::string M_filename;
-	//! Reference to a Mesh3D
-	Mesh3D & M_mesh;
-	//! Reference to a PropertiesMap
-	PropertiesMap & M_properties;
+    //! Filename
+    std::string M_filename;
+    //! Reference to a Mesh3D
+    Mesh3D & M_mesh;
+    //! Reference to a PropertiesMap
+    PropertiesMap & M_properties;
 
 private:
 
-	//! No default constructor
-	Importer();
+    //! No default constructor
+    Importer() = delete;
 
-	//! No copy-constructor
-	Importer(const Importer &);
+    //! No copy-constructor
+    Importer(const Importer &) = delete;
 
-	//! No assignment operator
-	Importer & operator=(const Importer &);
+    //! No assignment operator
+    Importer & operator=(const Importer &) = delete;
 
 };
 
@@ -118,43 +126,43 @@ class ImporterMedit : public Importer
 {
 public:
 
-	//! Constructor
-	/*!
-	 * Constructor from a medit file
-	 * @param filename filename of the .mesh file
-	 * @param mesh reference to a Mesh3D
-	 * @param properties reference to a PropertiesMap
-	 */
-	ImporterMedit(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
-		Importer(filename, mesh, properties) {}
+    //! Constructor
+    /*!
+     * Constructor from a medit file
+     * @param filename filename of the .mesh file
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterMedit(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        Importer(filename, mesh, properties) {}
 
-	//! Import from a .mesh file
-	/*!
-	 * Read points, polygons, polyhedra
-	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
-	 */
-	virtual void import(bool fracturesOn = true);
-	
-	//! Add the fractures network
-	/*!
-	 * Add the fracture network
-	 * @pre import the file
-	 */
-	virtual void addFractures();
-	
-	//! Destructor
-	virtual ~ImporterMedit() = default;
+    //! Import from a .mesh file
+    /*!
+     * Read points, polygons, polyhedra
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
+
+    //! Add the fractures network
+    /*!
+     * Add the fracture network
+     * @pre import the file
+     */
+    virtual void addFractures();
+
+    //! Destructor
+    virtual ~ImporterMedit() = default;
 
 private:
 
-	//! No default constructor
-	ImporterMedit();
+    //! No default constructor
+    ImporterMedit() = delete;
 
-	//! No copy-constructor
-	ImporterMedit(const ImporterMedit &);
+    //! No copy-constructor
+    ImporterMedit(const ImporterMedit &) = delete;
 
-	//! No assignment operator
-	ImporterMedit & operator=(const ImporterMedit &);
+    //! No assignment operator
+    ImporterMedit & operator=(const ImporterMedit &) = delete;
 };
 
 //! Class used to read a standard TPFA format file (.grid).
@@ -166,43 +174,43 @@ class ImporterTPFA : public Importer
 {
 public:
 
-	//! Constructor
-	/*!
-	 * Constructor from a grid file
-	 * @param filename filename of the .grid file
-	 * @param mesh reference to a Mesh3D
-	 * @param properties reference to a PropertiesMap
-	 */
-	ImporterTPFA(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
-		Importer(filename, mesh, properties) {}
+    //! Constructor
+    /*!
+     * Constructor from a grid file
+     * @param filename filename of the .grid file
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterTPFA(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        Importer(filename, mesh, properties) {}
 
-	//! Import from a standard grid file
-	/*!
-	 * Read points, polygons, polyhedra, zone properties
-	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
-	 */
-	virtual void import(bool fracturesOn = true);
+    //! Import from a standard grid file
+    /*!
+     * Read points, polygons, polyhedra, zone properties
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
 
-	//! Add the fractures network
-	/*!
-	 * Add the fracture network
-	 * @pre import the file
-	 */
-	virtual void addFractures();
-	
-	//! Destructor
-	virtual ~ImporterTPFA() = default;
+    //! Add the fractures network
+    /*!
+     * Add the fracture network
+     * @pre import the file
+     */
+    virtual void addFractures();
+
+    //! Destructor
+    virtual ~ImporterTPFA() = default;
 
 private:
 
-	//! No default constructor
-	ImporterTPFA();
+    //! No default constructor
+    ImporterTPFA() = delete;
 
-	//! No copy-constructor
-	ImporterTPFA(const ImporterTPFA &);
+    //! No copy-constructor
+    ImporterTPFA(const ImporterTPFA &) = delete;
 
-	//! No assignment operator
-	ImporterTPFA & operator=(const ImporterTPFA &);
+    //! No assignment operator
+    ImporterTPFA & operator=(const ImporterTPFA &) = delete;
 };
 
 //! Class used to read files optimized for the solver (.fvg).
@@ -215,41 +223,40 @@ class ImporterForSolver : public Importer
 {
 public:
 
-	//! Constructor
-	/*!
-	 * Constructor from a file
-	 * @param filename filename of the file
-	 * @param mesh reference to a Mesh3D
-	 * @param properties reference to a PropertiesMap
-	 */
-	ImporterForSolver(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
-		Importer(filename, mesh, properties) {}
+    //! Constructor
+    /*!
+     * Constructor from a file
+     * @param filename filename of the file
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterForSolver(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        Importer(filename, mesh, properties) {}
 
-	//! Import from a file with boundary conditions and fracture network
-	/*!
-	 * Read points, polygons, polyhedra, zone properties, BC ids, fracture network
-	 * @param fracturesOn if true, imports the fractures, else the fractures are disabled
-	 */
-	virtual void import(bool fracturesOn = true);
-	
-	//! Destructor
-	virtual ~ImporterForSolver() = default;
+    //! Import from a file with boundary conditions and fracture network
+    /*!
+     * Read points, polygons, polyhedra, zone properties, BC ids, fracture network
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
+
+    //! Destructor
+    virtual ~ImporterForSolver() = default;
 
 private:
-	//! No default constructor
-	ImporterForSolver();
+    //! No default constructor
+    ImporterForSolver() = delete;
 
-	//! No copy-constructor
-	ImporterForSolver(const ImporterForSolver &);
+    //! No copy-constructor
+    ImporterForSolver(const ImporterForSolver &) = delete;
 
-	//! No assignment operator
-	ImporterForSolver & operator=(const ImporterForSolver &);
-	
-	//! Hidden
-	void addFractures(){};
-	//! Hidden
-	using Importer::addBCAndFractures;
+    //! No assignment operator
+    ImporterForSolver & operator=(const ImporterForSolver &) = delete;
 
+    //! Hidden
+    void addFractures(){};
+    //! Hidden
+    using Importer::addBCAndFractures;
 };
 
 } // namespace FVCode3D

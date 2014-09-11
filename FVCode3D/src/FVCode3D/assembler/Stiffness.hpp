@@ -21,11 +21,11 @@ class PropertiesMap;
 
 //! Class for assembling a stiffness matrix
 /*!
-    @class StiffMatrix
-    This class constructs the stiffness-matrix for the Darcy problem.
-    The adopted technique is a two point finite volume method.
-    The fractures are considered as cells and take part to discretization.
-*/
+ * @class StiffMatrix
+ * This class constructs the stiffness-matrix for the Darcy problem.
+ * The adopted technique is a two point finite volume method.
+ * The fractures are considered as cells and take part to discretization.
+ */
 class StiffMatrix: public MatrixHandler
 {
 
@@ -82,17 +82,22 @@ public:
     //@{
     //! Assemble method
     /*!
-     * @return Assemble the stiffness matrix
+     * Assemble the stiffness matrix
      */
     void assemble();
 
-	//! Set offsets
-	/*!
-	 * @param row row offset
-	 * @param col column offset
-	 */
-	virtual void setOffsets(const UInt row, const UInt col)
-		{ this->setOffsets(row, col); M_b.reset(new Vector( Vector::Constant( this->M_size + this->M_offsetRow, 0.) )); }
+    //! Set offsets
+    /*!
+     * Set offsets and resize the matrix as number of dofs + offsets.
+     * Further, it resizes the RHS and initializes it to zero.
+     * @param row row offset
+     * @param col column offset
+     */
+    virtual void setOffsets(const UInt row, const UInt col)
+    {
+        this->setOffsets(row, col);
+        M_b.reset( new Vector( Vector::Constant( this->M_size + this->M_offsetRow, 0. ) ) );
+    }
 
     //@}
 
@@ -156,25 +161,25 @@ protected:
 
     //! Assemble the porous medium block
     /*!
-     * @return Assemble the porous media block
+     * Assemble the porous media block
      */
     void assemblePorousMatrix();
 
     //! Assemble the BCs for the porous medium
     /*!
-     * @return Assemble the BCs for the porous medium
+     * Assemble the BCs for the porous medium
      */
     void assemblePorousMatrixBC();
 
     //! Assemble the fractures block
     /*!
-     * @return Assemble the fractures block
+     * Assemble the fractures block
      */
     void assembleFracture();
 
     //! Assemble the BCs for the fractures
     /*!
-     * @return Assemble the BCs for the fractures
+     * Assemble the BCs for the fractures
      */
     void assembleFractureBC();
     //@}
@@ -182,9 +187,9 @@ protected:
 protected:
     //! Unique pointer to the vector that contains the effects of BCs on the RHS
     std::unique_ptr<Vector> M_b;
-    //! The container of the BCs
+    //! The constant container of the BCs
     const BoundaryConditions & M_bc;
 };
 
 } // namespace FVCode3D
-#endif
+#endif // __DARCYSTIFFNESS_HPP__

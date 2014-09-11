@@ -11,6 +11,7 @@
 namespace FVCode3D
 {
 
+//! Class to export mesh in GRDECL format type
 /*!
  * @class ExporterCP
  * This class allows to export mesh and fractures.
@@ -27,7 +28,7 @@ public:
      * @param mesh reference of a Geometry::Mesh3D
      * @param filename name of the file
      */
-    virtual void exportMesh(const Mesh3D & mesh, const std::string filename);
+    virtual void exportMesh(const Mesh3D & mesh, const std::string filename) const throw();
 
     //! Destructor
     virtual ~ExporterCP() = default;
@@ -39,74 +40,78 @@ protected:
      * @param mesh reference of a Geometry::Mesh3D
      * @param filename name of the file
      */
-    virtual void exportFractures(const Mesh3D & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportFractures(const Mesh3D & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export a tetrahedral mesh (only cells)
     /*!
      * @param mesh reference of a Geometry::Mesh3D
      * @param filename name of the file
      */
-    virtual void exportTetrahedralMesh(const Mesh3D & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportTetrahedralMesh(const Mesh3D & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the mesh, cells and fracture facets, in a single file
     /*!
      * @param mesh reference of a Geometry::Mesh3D
      * @param filename name of the file
      */
-    virtual void exportMeshWithFractures(const Mesh3D & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportMeshWithFractures(const Mesh3D & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the wireframe
     /*!
      * @param mesh reference of a Geometry::Mesh3D
      * @param filename name of the file
      */
-    virtual void exportWireframe(const Mesh3D & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportWireframe(const Mesh3D & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the edges
     /*!
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      */
-    virtual void exportEdges(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportEdges(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the faces
     /*!
      * @param mesh reference of a Rigid_Mesh
      * @param filename name of the file
      */
-    virtual void exportFacets(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportFacets(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the fracture junctures
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      */
-    virtual void exportFractureJunctures(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportFractureJunctures(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the fracture tips
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      */
-    virtual void exportFractureTips(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/){}
+    virtual void exportFractureTips(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/) const throw(){}
 
     //! Export the solution on cells and fracture facets in a single file
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     * @param fieldName name of the field that appears in the file
      */
     template <typename VectorType>
-    void exportSolution(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/, const VectorType & /*sol*/, const std::string & /*fieldName = "Pressure"*/){}
+    void exportSolution(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/, const VectorType & /*sol*/, const std::string & /*fieldName = "Pressure"*/) const throw(){}
 
     //! Export the solution on fracture facets
     /*!
+     * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     * @param fieldName name of the field that appears in the file
      */
     template <typename VectorType>
-    void exportSolutionOnFractures(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/, const VectorType & /*sol*/, const std::string & /*fieldName = "Pressure"*/){}
+    void exportSolutionOnFractures(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/, const VectorType & /*sol*/, const std::string & /*fieldName = "Pressure"*/) const throw(){}
 
     //! Export the a specific property on cells and fracture facets
     /*!
@@ -116,7 +121,8 @@ protected:
      * @param propertiesType flag used to select which properties to export
      * @param property pointer to a generic property
      */
-    virtual void exportWithProperties(const Mesh3D & /*mesh*/, const PropertiesMap & /*properties*/, const std::string /*filename*/, const Flag16bit /*propertiesType*/, const std::vector<Real> * /*property = nullptr*/){}
+    virtual void exportWithProperties(const Mesh3D & /*mesh*/, const PropertiesMap & /*properties*/, const std::string /*filename*/,
+        const Flag16bit /*propertiesType*/, const std::vector<Real> * /*property = nullptr*/) const throw(){}
 
     //! Export all properties defined on cells and fracture facets
     /*!
@@ -124,15 +130,17 @@ protected:
      * @param properties reference to a Geometry::PropertiesMap
      * @param filename name of the file
      */
-    virtual void exportWithProperties(const Mesh3D & /*mesh*/, const PropertiesMap & /*properties*/, const std::string /*filename*/){}
+    virtual void exportWithProperties(const Mesh3D & /*mesh*/, const PropertiesMap & /*properties*/, const std::string /*filename*/) const throw(){}
 
     //! Export the solution on fracture facets
     /*!
      * @param mesh reference of a Geometry::Rigid_Mesh
      * @param filename name of the file
      * @param sol Eigen vector that contain the solution (cells + fracture facets)
+     * @param property pointer to a generic property
      */
-    virtual void exportWithProperties(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/, const Flag16bit /*propertiesType*/, const std::vector<Real> * /*property = nullptr*/){}
+    virtual void exportWithProperties(const Rigid_Mesh & /*mesh*/, const std::string /*filename*/,
+        const Flag16bit /*propertiesType*/, const std::vector<Real> * /*property = nullptr*/) const throw(){}
 };
 
 } // namespace FVCode3D

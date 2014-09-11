@@ -3,9 +3,11 @@
 #include <FVCode3D/core/BasicType.hpp>
 #include <FVCode3D/geometry/Point3D.hpp>
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/geometry/BoundingBox.hpp>
 #include <FVCode3D/export/ExportVTU.hpp>
 #include <FVCode3D/export/Export.hpp>
 #include <FVCode3D/eigenPatch/RangeSupport.hpp>
+#include <FVCode3D/eigenPatch/SparseBlock.hpp>
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/problem/DarcySteady.hpp>
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
@@ -14,6 +16,7 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/core/Chrono.hpp>
 #include <FVCode3D/solver/Solver.hpp>
+#include <FVCode3D/solver/SolverHandler.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/quadrature/QuadratureRules.hpp>

@@ -1,6 +1,6 @@
 /*!
- *  @file basic_type.hpp
- *  @brief Basic definition types
+ * @file basic_type.hpp
+ * @brief Basic definition types
  */
 
 #ifndef FVCODE3D_BASIC_TYPE_HPP_
@@ -19,6 +19,7 @@
 #include <tuple>
 #include <string>
 #include <map>
+#include <exception>
 
 #include <Eigen/Sparse>
 

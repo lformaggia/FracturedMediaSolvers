@@ -44,10 +44,10 @@ public:
         Medit           = 2
     };
 
-    //! Define where apply the source/sink term
+    //! Define where to apply the source/sink term
     /*!
      * @enum SourceSinkOn
-     * This enumerator allows to select where apply the source/sink term: only on matrix, only on fractures, both or none.
+     * This enumerator allows to select where to apply the source/sink term: only on matrix, only on fractures, both or none.
      */
     enum SourceSinkOn
     {
@@ -70,7 +70,7 @@ public:
     /*!
      * @param dataFileName name of the data file
      */
-    Data(const std::string dataFileName);
+    Data(const std::string dataFileName) throw();
 
     //! Copy constructor
     /*!
@@ -209,6 +209,12 @@ public:
      */
     Real tolSteadyState() const { return M_tolSteadyState; }
 
+    //! Get the type of the permeability
+    /*!
+     * @return the type of the permeability
+     */
+    const std::string getPermeabilityType() const { return M_permeabilityType; }
+
     //! Get the permeability in the porous medium
     /*!
      * @return the permeability in the porous medium
@@ -269,6 +275,24 @@ public:
      */
     Real getCompressibility() const { return M_compressibility; }
 
+    //! Get solver type
+    /*!
+     * @return the solver type
+     */
+    const std::string getSolverType() const { return M_solverType; }
+
+    //! Get maximum iterations of the iterative solver
+    /*!
+     * @return maximum iterations of the iterative solver
+     */
+    UInt getIterativeSolverMaxIter() const { return M_maxIt; }
+
+    //! Get tolerance of the iterative solver
+    /*!
+     * @return tolerance of the iterative solver
+     */
+    Real getIterativeSolverTolerance() const { return M_tol; }
+
     //! Get theta angle
     /*!
      * @return the angle theta used to identify the BC ids
@@ -310,7 +334,7 @@ public:
      * @param type the format type of the mesh
      * @post modifies the mesh extension
      */
-    void setMeshType(const MeshFormatType type);
+    void setMeshType(const MeshFormatType type) throw();
 
     //! Set the output directory
     /*!
@@ -414,6 +438,12 @@ public:
      */
     void tolSteadyState(const Real tol) { M_tolSteadyState = tol; }
 
+    //! Set the type of the permeability
+    /*!
+     * @param type the type of the permeability
+     */
+    void setPermeabilityType(const std::string type) { M_permeabilityType = type; }
+
     //! Set the permeability in the porous medium
     /*!
      * @param perm the permeability in the porous medium
@@ -473,6 +503,24 @@ public:
      * @param compressibility the compressibility
      */
     void setCompressibility(const Real compressibility) { M_compressibility = compressibility; }
+
+    //! Set solver type
+    /*!
+     * @param the solver type
+     */
+    void getSolverType(const std::string solver) { M_solverType = solver; }
+
+    //! Set maximum iterations of the iterative solver
+    /*!
+     * @param maxIt maximum iterations of the iterative solver
+     */
+     void setIterativeSolverMaxIter(const UInt maxIt) { M_maxIt = maxIt; }
+
+    //! Set tolerance of the iterative solver
+    /*!
+     * @param tol tolerance of the iterative solver
+     */
+    void setIterativeSolverTolerance(const Real tol) { M_tol = tol; }
 
     //! Set theta angle
     /*!
@@ -541,6 +589,8 @@ protected:
     UInt M_nbTimeStepSteadyState;
     //! Tolerance to consider a time step at the steady state
     Real M_tolSteadyState;
+    //! Type of the permeability
+    std::string M_permeabilityType;
     //! Permeability in the porous medium
     Real M_permMatrix;
     //! Porosity in the porous medium
@@ -561,11 +611,18 @@ protected:
     Real M_mobility;
     //! Compressibility
     Real M_compressibility;
+
+    //! Solver used
+    std::string M_solverType;
+    //! Maximum iterations of the iterative solver
+    UInt M_maxIt;
+    //! Tolerance of the iterative solver
+    Real M_tol;
+
     //! Angle used to rotate along z-axis the domain. It is used only to compute the normal for detecting BC!
     Real M_theta;
     //! Verbose
     bool M_verbose;
-
 };
 
 //! Class that implements a parser for a generic enumerator
@@ -579,26 +636,25 @@ class EnumParser
 {
 public:
 
-	//! Empty constructor
-    EnumParser() {};
+    //! Empty constructor
+    EnumParser();
 
     //! Parse method
     /*!
      * @param str string of the enumerator value that you want to convert
      * @return the enumerator value associated with the string
      */
-    T parse(const std::string & str) const
+    T parse(const std::string & str) const throw()
     {
         typename std::map<std::string, T>::const_iterator it = M_enumMap.find(str);
         if (it == M_enumMap.end())
         {
-            std::cerr << "This enum does not exist!" << std::endl;
-            exit(0);
+            throw std::runtime_error("Error: parsing an enum that does not exist.");
         }
         return it->second;
     }
 
-	//! Destructor
+    //! Destructor
     ~EnumParser() = default;
 
 private:
@@ -606,6 +662,7 @@ private:
     //! Map that links a string to an enumarator type
     std::map<std::string, T> M_enumMap;
 };
+
 
 //! Specialized class that implements a parser for the Data::ProblemType enum
 template<>

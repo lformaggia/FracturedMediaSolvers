@@ -10,6 +10,7 @@
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
+#include <FVCode3D/solver/SolverHandler.hpp>
 
 namespace FVCode3D
 {
@@ -21,10 +22,9 @@ class Quadrature;
  *  @class Problem
  *  This class defines a generic problem given a mesh, boundary conditions and source term.
  *  It is an abstract base class. It declares the assemble and the solve method.
- *  The first template indicates the Solver used to solve the linear system,
- *  the second and third template parameter indicate the quadrature rule for the matrix and fracture respectively.
+ *  The first and the second template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class Solver, class QRMatrix, class QRFracture, typename MatrixType = SpMat>
+template <class QRMatrix, class QRFracture, typename MatrixType = SpMat>
 class Problem
 {
 public:
@@ -43,11 +43,13 @@ public:
 
     //! Constructor
     /*!
+     * @param solver string the identify the solver
      * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data);
+    Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
+            const Func & func, const DataPtr_Type & data);
 
     //! @name Get Methods
     //@{
@@ -92,6 +94,12 @@ public:
      * @return a reference to the Solver
      */
     Solver & getSolver() { return *M_solver; }
+
+    //! Get the solver pointer
+    /*!
+     * @return a pointer to the Solver
+     */
+    Solver * getSolverPtr() { return M_solver.get(); }
 
     //! Get the matrix A
     /*!
@@ -143,23 +151,23 @@ protected:
     //! Pointer to the quadrature class
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
-    std::unique_ptr<Solver> M_solver;
+    SolverPtr_Type M_solver;
     //! Sparse matrix A from the linear system Ax=b
     Matrix_Type& M_A;
     //! Vector b from the linear system Ax=b
     Vector& M_b;
 };
 
-template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-Problem< Solver, QRMatrix, QRFracture, MatrixType>::
-Problem(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func &
-        func, const DataPtr_Type & data):
+template <class QRMatrix, class QRFracture, typename MatrixType>
+Problem<QRMatrix, QRFracture, MatrixType>::
+Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
+        const Func & func, const DataPtr_Type & data):
     M_mesh(mesh),
     M_bc(bc),
     M_func(func),
     M_ssOn(data->getSourceSinkOn()),
     M_quadrature(nullptr),
-    M_solver( new Solver() ),
+    M_solver( SolverHandler::Instance().getProduct(solver) ),
     M_A( M_solver->getA() ),
     M_b( M_solver->getb() )
 {} // Problem::Problem

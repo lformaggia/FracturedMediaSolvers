@@ -1,5 +1,5 @@
 /*!
- *  @file darcySteady.hpp
+ *  @file DarcySteady.hpp
  *  @brief Class that defines and solves the Darcy's problem at steady state.
  */
 
@@ -9,7 +9,6 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
-#include <FVCode3D/solver/Solver.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
 
 namespace FVCode3D
@@ -20,11 +19,10 @@ namespace FVCode3D
  * @class DarcySteady
  * This class defines the steady-state Darcy problem given a mesh, boundary conditions and source term.
  * It defines the assemble and the solve method.
- * The first template indicates the Solver used to solve the linear system,
- * the second and third template parameter indicate the quadrature rule for the matrix and fracture respectively.
+ * The first and the second template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class Solver, class QRMatrix, class QRFracture, typename MatrixType = SpMat>
-class DarcySteady : public Problem<Solver, QRMatrix, QRFracture, MatrixType>
+template <class QRMatrix, class QRFracture, typename MatrixType = SpMat>
+class DarcySteady : public Problem<QRMatrix, QRFracture, MatrixType>
 {
 public:
 
@@ -42,12 +40,14 @@ public:
 
     //! Constructor
     /*!
+     * @param solver string the identify the solver
      * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
      */
-    DarcySteady(const Rigid_Mesh & mesh, const BoundaryConditions & bc, const Func & func, const DataPtr_Type & data):
-        Problem<Solver, QRMatrix, QRFracture, MatrixType>(mesh, bc, func, data) {};
+    DarcySteady(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
+                const Func & func, const DataPtr_Type & data):
+        Problem<QRMatrix, QRFracture, MatrixType>(solver, mesh, bc, func, data) {};
 
     //! Get the stiffness matrix
     /*!
@@ -78,8 +78,8 @@ public:
     virtual ~DarcySteady() = default;
 };
 
-template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::
+template <class QRMatrix, class QRFracture, typename MatrixType>
+void DarcySteady<QRMatrix, QRFracture, MatrixType >::
 assembleMatrix()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
@@ -92,8 +92,8 @@ assembleMatrix()
     this->M_b = S.getBCVector();
 } // DarcySteady::assembleMatrix
 
-template <class Solver, class QRMatrix, class QRFracture, typename MatrixType>
-void DarcySteady< Solver, QRMatrix, QRFracture, MatrixType >::
+template <class QRMatrix, class QRFracture, typename MatrixType>
+void DarcySteady<QRMatrix, QRFracture, MatrixType >::
 assembleVector()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );

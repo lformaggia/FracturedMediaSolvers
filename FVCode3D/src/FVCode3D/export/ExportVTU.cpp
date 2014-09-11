@@ -8,12 +8,13 @@
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/property/Permeability.hpp>
 #include <FVCode3D/geometry/Operations.hpp>
 
 namespace FVCode3D
 {
 
-void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -25,8 +26,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -124,7 +124,7 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename)
     filestr.close();
 }
 
-void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -136,8 +136,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Tetrahedral Mesh3D in Vtu format... " << std::endl;
@@ -208,7 +207,7 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     filestr.close();
 }
 
-void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -220,8 +219,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");;
     }
 
     std::cout << std::endl << " Exporting Fractures in Vtu format... " << std::endl;
@@ -310,7 +308,7 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -322,8 +320,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -515,7 +512,7 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr.close();
 }
 
-void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename)
+void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -527,8 +524,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Wireframe in Vtu format... " << std::endl;
@@ -639,7 +635,7 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -651,8 +647,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Edges in Vtu format... " << std::endl;
@@ -708,13 +703,13 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr << "\t\t\t\t<DataArray type=\"UInt64\" Name=\"edgeBC\" format=\"ascii\">" << std::endl;
 
     std::for_each( std::begin(regularEdges), std::end(regularEdges),
-    			   [&filestr] (const Regular_Edge &) { filestr << "0" << std::endl; } );
+                   [&filestr] (const Regular_Edge &) { filestr << "0" << std::endl; } );
 
     std::for_each( std::begin(junctureEdges), std::end(junctureEdges),
-    			   [&filestr] (const Juncture_Edge &) { filestr << "0" << std::endl; } );
+                   [&filestr] (const Juncture_Edge &) { filestr << "0" << std::endl; } );
 
     std::for_each( std::begin(intTipEdges), std::end(intTipEdges),
-    			   [&filestr] (const Internal_Tip_Edge &) { filestr << "0" << std::endl; } );
+                   [&filestr] (const Internal_Tip_Edge &) { filestr << "0" << std::endl; } );
 
     for(auto& edge : borTipEdges )
         filestr << *std::begin(edge.getBorderIds()) << std::endl;
@@ -774,7 +769,7 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
     filestr.close();
 }
 
-void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -786,8 +781,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Facets in Vtu format... " << std::endl;
@@ -867,7 +861,7 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     filestr.close();
 }
 
-void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -879,8 +873,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Fracture Junctures in Vtu format... " << std::endl;
@@ -959,7 +952,7 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr.close();
 }
 
-void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename)
+void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -971,8 +964,7 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Fracture Tips in Vtu format... " << std::endl;
@@ -1051,7 +1043,8 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties,
+    const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) const throw()
 {
     std::fstream filestr;
 
@@ -1063,8 +1056,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -1176,7 +1168,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << std::scientific << std::setprecision(10);
         filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
         for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
-            filestr << properties.getProperties(it->second.getZoneCode()).M_permeability << std::endl;
+            filestr << properties.getProperties(it->second.getZoneCode()).M_permeability->norm() << std::endl;
         for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
         {
             for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
@@ -1184,7 +1176,8 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
                 itSet = ids.find(it->getFractureFacetsId()[i]);
                 if(itSet == ids.end())
                 {
-                      filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_permeability << std::endl;
+                      filestr <<
+                      properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_permeability->norm() << std::endl;
                       ids.insert(it->getFractureFacetsId()[i]);
                 }
             }
@@ -1381,7 +1374,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename)
+void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap & properties, const std::string filename) const throw()
 {
     std::fstream filestr;
 
@@ -1393,8 +1386,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -1473,7 +1465,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
 
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
     for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
-        filestr << properties.getProperties(it->second.getZoneCode()).M_permeability << std::endl;
+        filestr << properties.getProperties(it->second.getZoneCode()).M_permeability->norm() << std::endl;
     for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         for(UInt i=0; i < it->getNumberOfFractureFacets(); ++i )
@@ -1481,7 +1473,8 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
             itSet = ids.find(it->getFractureFacetsId()[i]);
             if(itSet == ids.end())
             {
-                  filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_permeability << std::endl;
+                  filestr <<
+                  properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).M_permeability->norm() << std::endl;
                   ids.insert(it->getFractureFacetsId()[i]);
             }
         }
@@ -1648,7 +1641,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr.close();
 }
 
-void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property)
+void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::string filename, const Flag16bit propertiesType, const std::vector<Real> * property) const throw()
 {
     std::fstream filestr;
 
@@ -1660,8 +1653,7 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     }
     else
     {
-        std::cerr << std::endl << " *** Error: file not opened *** " << std::endl << std::endl;
-        return;
+        throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
     std::cout << std::endl << " Exporting Mesh3D in Vtu format... " << std::endl;
@@ -1730,9 +1722,9 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
         filestr << std::scientific << std::setprecision(10);
         filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
         for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
-            filestr << properties.getProperties(it->getZoneCode()).M_permeability << std::endl;
+            filestr << properties.getProperties(it->getZoneCode()).M_permeability->norm() << std::endl;
         for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
-            filestr <<  properties.getProperties(it->getZoneCode()).M_permeability << std::endl;
+            filestr <<  properties.getProperties(it->getZoneCode()).M_permeability->norm() << std::endl;
         filestr << "\t\t\t\t</DataArray>" << std::endl;
     }
     if(propertiesType & BorderID)

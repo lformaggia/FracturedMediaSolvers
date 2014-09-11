@@ -1,6 +1,6 @@
 /*!
- *  @file solver.hpp
- *  @brief These classes allow to solve a linear system.
+ * @file solver.hpp
+ * @brief These classes allow to solve a linear system.
  */
 
 #ifndef SOLVER_HPP_
@@ -10,6 +10,15 @@
 
 namespace FVCode3D
 {
+
+class Solver;
+
+//! Typedef for SolverPtr_Type
+/*!
+ * @typedef SolverPtr_Type
+ * This type definition permits to handle a SolverPtr_Type as a SolverPtr_Type.
+ */
+typedef std::shared_ptr<Solver> SolverPtr_Type;
 
 //! Class Solver
 /*!
@@ -48,6 +57,17 @@ public:
      * @param the vector b
      */
     void setb(const Vector & b) { M_b = b; }
+
+    //! Resize the matrix and vector
+    /*!
+     * @param nbDofs number of the dofs
+     */
+    void setDofs(const UInt nbDofs)
+    {
+        M_A.resize(nbDofs, nbDofs);
+        M_b = Vector::Zero( nbDofs );
+        M_x = Vector::Zero( nbDofs );
+    }
 
     //! Get the matrix A
     /*!
@@ -214,7 +234,7 @@ public:
     //! Destructor
     virtual ~EigenUmfPack() = default;
 };
-#endif
+#endif // FVCODE3D_HAS_UMFPACK
 
 
 //! Class IterativeSolver
@@ -263,9 +283,9 @@ public:
      */
     Real getTolerance() const { return M_tol; }
 
-    //! Get the residual error
+    //! Get the normalized residual error
     /*!
-     * @return residual error ( b - A * x )
+     * @return the normalized residual error || b - A * x || / || b ||
      */
     Real getResidual() const { return M_res; }
 
