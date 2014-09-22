@@ -7,17 +7,22 @@
 namespace FVCode3D
 {
 
+//! Initializes the static pointer to singleton
+std::unique_ptr<SolverHandler> SolverHandler::theOnlySolverHandler = 0;
+
 SolverHandler & SolverHandler::Instance()
 {
-    static SolverHandler theOnlySolverHandler;
-    theOnlySolverHandler.registration();
-    return theOnlySolverHandler;
+    if (theOnlySolverHandler == 0)
+    {
+        theOnlySolverHandler.reset(new SolverHandler());
+        theOnlySolverHandler->registration();
+    }
+
+    return *theOnlySolverHandler;
 } // SolverHandler::Instance
 
 void SolverHandler::registration()
 {
-    if(M_productList.size() > 0)
-        return;
     SolverProxy<EigenCholesky>  SolverChol("EigenCholesky");
     SolverProxy<EigenLU>        SolverLU("EigenLU");
     SolverProxy<EigenUmfPack>   SolverUmfPack("EigenUmfPack");
