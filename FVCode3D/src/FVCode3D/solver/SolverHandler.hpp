@@ -71,9 +71,6 @@ private:
 
     //! Map that contains the products
     std::map<std::string,SolverBuilder> M_productList;
-
-    //! Pointer to the singleton instance
-    static SolverHandler * theOnlySolverHandler;
 };
 
 
