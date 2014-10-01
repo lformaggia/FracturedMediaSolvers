@@ -26,7 +26,7 @@ INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../lib/libtet.a DESTINATION ${INSTALL_
 link_files_to_binary_dir(data_files data.txt ../data)
 
 add_custom_command(
-    TARGET fvcode.exe POST_BUILD                # Adds a post-build event to fvcode.exe
+    TARGET fvcode3d.exe POST_BUILD                # Adds a post-build event to fvcode.exe
     COMMAND ${CMAKE_COMMAND} -E make_directory results
     )
 
