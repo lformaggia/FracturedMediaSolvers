@@ -329,8 +329,11 @@ int main(int argc, char * argv[])
 //    matrixPerm->setPermeability( 1., 4 );
 //    matrixPerm->setPermeability( 1., 8 );
 //    fracturesPerm->setPermeability( 1.e6, 0 );
-//    propMap.setPropertiesOnMatrix(mesh, 0.25, matrixPerm);
-//    propMap.setPropertiesOnFractures(mesh, 1e-2, 1, fracturesPerm);
+//    const Real aperture = 1.e-2;
+//    const Real matrixPoro = 0.25;
+//    const Real fracturesPoro = 1.;
+//    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
+//    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
 //    std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;
