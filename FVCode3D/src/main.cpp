@@ -221,7 +221,12 @@
  *
  */
 
-//#define NDEBUG // add this macro to disable asserts
+// Add this macro to disable asserts
+//#define NDEBUG
+
+// Add this macro the enable the exporter
+#define FVCODE3D_EXPORT
+
 #include <cassert>
 #include <iostream>
 #include <chrono>
@@ -335,7 +340,10 @@ int main(int argc, char * argv[])
 //    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
 //    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
 //    std::cout << " done." << std::endl << std::endl;
+//
+//    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
+#ifdef FVCODE3D_EXPORT
     std::cout << "Export..." << std::flush;
     ExporterVTU exporter;
     exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
@@ -344,12 +352,12 @@ int main(int argc, char * argv[])
     exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
     exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
     exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
-//  if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-//      saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
+//    if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
+//        saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
+#endif // FVCODE3D_EXPORT
 
     std::cout << "Add BCs..." << std::flush;
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fOne );
@@ -382,7 +390,7 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-
+#ifdef FVCODE3D_EXPORT
     std::cout << "Export Fracture Junctures & Tips..." << std::flush;
     exporter.exportFractureJunctures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_junc.vtu");
     exporter.exportFractureTips(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tips.vtu");
@@ -391,7 +399,7 @@ int main(int argc, char * argv[])
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
+#endif // FVCODE3D_EXPORT
 
     std::cout << "Build problem..." << std::flush;
     Pb * darcy(nullptr);
@@ -442,6 +450,7 @@ int main(int argc, char * argv[])
 
         std::cout << std::endl << " ... initial solution, t = " << dataPtr->getInitialTime() << " ..." << std::endl;
 
+#ifdef FVCODE3D_EXPORT
         std::stringstream ss;
         ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_";
         ss << iter;
@@ -453,6 +462,7 @@ int main(int argc, char * argv[])
         ss << ".vtu";
         exporter.exportSolutionOnFractures(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
         std::cout << "  done." << std::endl << std::endl;
+#endif // FVCODE3D_EXPORT
 
         ++iter;
 
@@ -475,6 +485,7 @@ int main(int argc, char * argv[])
                 std::cout << std::endl;
             }
 
+#ifdef FVCODE3D_EXPORT
             ss.str(std::string());
             std::cout << " Export Solution" << std::flush;
             ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_";
@@ -487,6 +498,7 @@ int main(int argc, char * argv[])
             ss << ".vtu";
             exporter.exportSolutionOnFractures(myrmesh, ss.str(), darcy->getSolver().getSolution());
             std::cout << "  done." << std::endl << std::endl;
+#endif // FVCODE3D_EXPORT
         }
     }
     std::cout << " done." << std::endl << std::endl;
@@ -512,6 +524,7 @@ int main(int argc, char * argv[])
     exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
 
+#ifdef FVCODE3D_EXPORT
     if(dataPtr->MSROn())
     {
         std::cout << "Export SubRegions..." << std::flush;
@@ -519,15 +532,17 @@ int main(int argc, char * argv[])
     multipleSubRegions->getColorsVector() );
         std::cout << " done." << std::endl << std::endl;
     }
+#endif // FVCODE3D_EXPORT
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-
+#ifdef FVCODE3D_EXPORT
     std::cout << "Export Property..." << std::flush;
     exporter.exportWithProperties(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_APP.vtu", Aperture | Permeability | Porosity);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+#endif // FVCODE3D_EXPORT
 
     delete darcy;
     delete importer;
