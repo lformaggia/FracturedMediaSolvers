@@ -225,7 +225,7 @@
 //#define NDEBUG
 
 // Add this macro the enable the exporter
-#define FVCODE3D_EXPORT
+//#define FVCODE3D_EXPORT
 
 #include <cassert>
 #include <iostream>
@@ -343,9 +343,10 @@ int main(int argc, char * argv[])
 //
 //    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
+    ExporterVTU exporter;
+
 #ifdef FVCODE3D_EXPORT
     std::cout << "Export..." << std::flush;
-    ExporterVTU exporter;
     exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
     exporter.exportFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_fractures.vtu");
     exporter.exportMeshWithFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh_fracture.vtu");
