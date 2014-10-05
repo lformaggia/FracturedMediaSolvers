@@ -1,0 +1,2093 @@
+//****************************************************************************************
+// file: samg.h
+// automatically created by tool make_amgparms_user
+// created on (yyyy-mm-dd): 2013-01-16, time: 10:42
+//****************************************************************************************
+
+// INTERFACE TO FORTRAN90 SAMG : amg subroutines have
+// to be called as SAMG_XXXX when this interface is used
+// author: Tanja Clees
+// last modified: 2011/10/11 AK
+
+////////////
+/* Macros */
+////////////
+
+/* subroutine naming conventions.
+for Unix / Linux: depending on the names of the Fortran symbols in libamg.a,
+   choose one of the following macros via a -D option for the C++ compiler
+   in your make.inc (as has already been done in the include files provided!):
+      SAMG_LCASE
+      SAMG_LCASE_USCORE   (see below what they do)
+   if none of the above matches the naming conventions for your system,
+   define appropriate macros yourself!
+*/
+
+/* SAMG_C_CALLCONV: macro (for Windows!) defining the standard calling convention.
+   for Unix / Linux: set -DSAMG_UNIX_LINUX as an option for the C++ compiler
+   in your make.inc (as has already been done in the include files provided!) */
+#if SAMG_UNIX_LINUX
+#define SAMG_C_CALLCONV void
+#elif SAMG_CVF
+// for Compaq Visual Fortran (tested with 6.6 X) :
+#define SAMG_C_CALLCONV void __stdcall
+#else
+// for Intel Visual Fortran (tested with 8.X) :
+#define SAMG_C_CALLCONV void __cdecl
+#endif
+
+
+/////////////////////////////////////
+/* directives for subroutine names */
+/////////////////////////////////////
+
+#ifdef SAMG_LCASE
+#define SAMG samg
+#define SAMG_CTIME samg_ctime
+#define SAMG_CPUTIME samg_cputime
+#define SAMG_ELAPSED_TIME samg_elapsed_time
+#define SAMG_ALL_ERRORINFO samg_all_errorinfo
+#define SAMG_SIMPLE samg_simple
+#define SAMG_MAIN samg_main
+#define SAMG_LEAVE samg_leave
+#define SAMG_REFRESH samg_refresh
+#define SAMG_CLEANUP samg_cleanup
+#define SAMG_RESET_HIDDEN samg_reset_hidden
+#define SAMG_GET_COMPLEXITIES samg_get_complexities
+#define SAMG_GET_NFLAG samg_get_nflag
+#define SAMG_GET_LEVELS_CREATED samg_get_levels_created
+#define SAMG_GET_LEV_SIZES samg_get_lev_sizes
+#define SAMG_GET_NUM_SMOOTH_VECTORS samg_get_num_smooth_vectors
+#define SAMG_GET_MEM_ACTIVE samg_get_mem_active
+#define SAMG_GET_TIME_AND_MEM samg_get_time_and_mem
+#define SAMG_EXTRAPRINT samg_extraprint
+#define SAMG_CVEC_ALLOC samg_cvec_alloc
+#define SAMG_CVEC_DEALLOC samg_cvec_dealloc
+#define SAMG_CVEC_SET samg_cvec_set
+#define SAMG_CVEC_GET samg_cvec_get
+#define SAMG_PROPOSE_NSYS_ISCALE_IU samg_propose_nsys_iscale_iu
+#define SAMG_SMOOTH_VECTOR_INIT samg_smooth_vector_init
+#define SAMG_SMOOTH_VECTOR_SET samg_smooth_vector_set
+#define SAMG_PERFINIT samg_perfinit
+#define SAMG_PERFOUT samg_perfout
+#define SAMG_PARALLEL_LIB samg_parallel_lib
+#define SAMG_MEM_INFO samg_mem_info
+#define SAMG_LRATIO samg_lratio
+#define SAMG_ADDTIME samg_addtime
+#define SAMG_COMPTIME samg_comptime
+#define SAMG_COPY_GALERKIN samg_copy_galerkin
+#define SAMG_OMEGA_JACOBI_ALLOC samg_omega_jacobi_alloc
+#define SAMG_OMEGA_JACOBI_DEALLOC samg_omega_jacobi_dealloc
+#define SAMG_OMEGA_JACOBI_SET samg_omega_jacobi_set
+#define SAMG_CURRENT_RESIDUAL samg_current_residual
+#define SAMG_OPEN_LOGFILE samg_open_logfile
+#define SAMG_CLOSE_LOGFILE samg_close_logfile
+#define SAMG_COO_VEC_SET samg_coo_vec_set
+#define SAMG_COO_VEC_ALLOC samg_coo_vec_alloc
+#define SAMG_COO_VEC_DEALLOC samg_coo_vec_dealloc
+#define SAMG_IDEC samg_idec
+#define SAMG_DC samg_dc
+#define XSAMG xsamg
+#define XSAMG_DC xsamg_dc
+#define XSAMG_START xsamg_start
+#define XSAMG_START_IUM xsamg_start_ium
+#define XSAMG_START_SOLVER xsamg_start_solver
+#define XSAMG_END_SOLVER xsamg_end_solver
+#define XSAMG_END xsamg_end
+#define XSAMG_GET_LOGIO xsamg_get_logio
+#define XSAMG_GET_SLAVE_RETURNCODE xsamg_get_slave_returncode
+#define XSAMG_PROCESS_INFO xsamg_process_info
+#define XSAMG_GET_INTERNAL_TIMER xsamg_get_internal_timer
+#define XSAMG_MPI_INIT xsamg_mpi_init
+#define XSAMG_MPI_FINALIZE xsamg_mpi_finalize
+#define XSAMG_MPI_COMM_RANK xsamg_mpi_comm_rank
+#define XSAMG_GET_MPI_COMM_WORLD xsamg_get_mpi_comm_world
+#define XSAMG_GET_PARALLEL_RUN xsamg_get_parallel_run
+#define XSAMG_IO_SETTINGS xsamg_io_settings
+#define XSAMG_IO_SETTINGS2 xsamg_io_settings2
+#define XSAMG_LAST_MSG xsamg_last_msg
+#define XSAMG_READ_CONFIG xsamg_read_config
+#define XSAMG_PRINT_INTERNAL_TIMER xsamg_print_internal_timer
+#define XSAMG_ERROR_INFO xsamg_error_info
+#define XSAMG_GET_IERR_ON_TAG_STOP xsamg_get_ierr_on_tag_stop
+#define XSAMG_CONFIGFILE_MISSING xsamg_configfile_missing
+#define XSAMG_LEAVE xsamg_leave
+#define XSAMG_CLEANUP xsamg_cleanup
+#define SAMG_SET_A_CMPLX_AGG_DEFAULT samg_set_a_cmplx_agg_default
+#define SAMG_GET_A_CMPLX_AGG_DEFAULT samg_get_a_cmplx_agg_default
+#define SAMG_SET_A_CMPLX_DEFAULT samg_set_a_cmplx_default
+#define SAMG_GET_A_CMPLX_DEFAULT samg_get_a_cmplx_default
+#define SAMG_SET_ALLOW_FILNAM_IN samg_set_allow_filnam_in
+#define SAMG_GET_ALLOW_FILNAM_IN samg_get_allow_filnam_in
+#define SAMG_SET_ALLOW_PRIVATE_IN samg_set_allow_private_in
+#define SAMG_GET_ALLOW_PRIVATE_IN samg_get_allow_private_in
+#define SAMG_SET_ALLOW_ELIM samg_set_allow_elim
+#define SAMG_GET_ALLOW_ELIM samg_get_allow_elim
+#define SAMG_SET_ALLUNS_AT_ALLPNTS samg_set_alluns_at_allpnts
+#define SAMG_GET_ALLUNS_AT_ALLPNTS samg_get_alluns_at_allpnts
+#define SAMG_SET_B_CMPLX samg_set_b_cmplx
+#define SAMG_GET_B_CMPLX samg_get_b_cmplx
+#define SAMG_SET_B_CMPLX_AGG_DEFAULT samg_set_b_cmplx_agg_default
+#define SAMG_GET_B_CMPLX_AGG_DEFAULT samg_get_b_cmplx_agg_default
+#define SAMG_SET_B_CMPLX_DEFAULT samg_set_b_cmplx_default
+#define SAMG_GET_B_CMPLX_DEFAULT samg_get_b_cmplx_default
+#define SAMG_SET_BACKUP samg_set_backup
+#define SAMG_GET_BACKUP samg_get_backup
+#define SAMG_SET_BLK_FILLEXP samg_set_blk_fillexp
+#define SAMG_GET_BLK_FILLEXP samg_get_blk_fillexp
+#define SAMG_SET_BLK_STAB samg_set_blk_stab
+#define SAMG_GET_BLK_STAB samg_get_blk_stab
+#define SAMG_SET_BLOCK_SCALE samg_set_block_scale
+#define SAMG_GET_BLOCK_SCALE samg_get_block_scale
+#define SAMG_SET_BLOCK_SCALE2 samg_set_block_scale2
+#define SAMG_GET_BLOCK_SCALE2 samg_get_block_scale2
+#define SAMG_ISET_BND_PARTITION_FILE samg_iset_bnd_partition_file
+#define SAMG_IGET_BND_PARTITION_FILE samg_iget_bnd_partition_file
+#define SAMG_SET_BND_PARTITION_FILE samg_set_bnd_partition_file
+#define SAMG_GET_BND_PARTITION_FILE samg_get_bnd_partition_file
+#define SAMG_SET_CHECK_ALLPNTS samg_set_check_allpnts
+#define SAMG_GET_CHECK_ALLPNTS samg_get_check_allpnts
+#define SAMG_SET_CHECK_ORDER samg_set_check_order
+#define SAMG_GET_CHECK_ORDER samg_get_check_order
+#define SAMG_SET_CL_CPL samg_set_cl_cpl
+#define SAMG_GET_CL_CPL samg_get_cl_cpl
+#define SAMG_SET_CL_ORDER samg_set_cl_order
+#define SAMG_GET_CL_ORDER samg_get_cl_order
+#define SAMG_SET_CL_LEVEL_DEP samg_set_cl_level_dep
+#define SAMG_GET_CL_LEVEL_DEP samg_get_cl_level_dep
+#define SAMG_SET_CL_AUTO_SIZE samg_set_cl_auto_size
+#define SAMG_GET_CL_AUTO_SIZE samg_get_cl_auto_size
+#define SAMG_SET_CL_PROC_BORDER samg_set_cl_proc_border
+#define SAMG_GET_CL_PROC_BORDER samg_get_cl_proc_border
+#define SAMG_SET_CL_QUALITY_MEASURE samg_set_cl_quality_measure
+#define SAMG_GET_CL_QUALITY_MEASURE samg_get_cl_quality_measure
+#define SAMG_SET_CL_GLOBAL_QUALITY samg_set_cl_global_quality
+#define SAMG_GET_CL_GLOBAL_QUALITY samg_get_cl_global_quality
+#define SAMG_SET_CL_OMP samg_set_cl_omp
+#define SAMG_GET_CL_OMP samg_get_cl_omp
+#define SAMG_SET_CL_CMK_REORDER samg_set_cl_cmk_reorder
+#define SAMG_GET_CL_CMK_REORDER samg_get_cl_cmk_reorder
+#define SAMG_SET_CLSOLVER_FINEST samg_set_clsolver_finest
+#define SAMG_GET_CLSOLVER_FINEST samg_get_clsolver_finest
+#define SAMG_SET_CLDENSE_CTRL samg_set_cldense_ctrl
+#define SAMG_GET_CLDENSE_CTRL samg_get_cldense_ctrl
+#define SAMG_SET_CNTRL_ENFORCE samg_set_cntrl_enforce
+#define SAMG_GET_CNTRL_ENFORCE samg_get_cntrl_enforce
+#define SAMG_SET_CNTRL_LOGFILE samg_set_cntrl_logfile
+#define SAMG_GET_CNTRL_LOGFILE samg_get_cntrl_logfile
+#define SAMG_SET_CNTRL_METHOD samg_set_cntrl_method
+#define SAMG_GET_CNTRL_METHOD samg_get_cntrl_method
+#define SAMG_SET_CNTRL_RELEASE samg_set_cntrl_release
+#define SAMG_GET_CNTRL_RELEASE samg_get_cntrl_release
+#define SAMG_SET_CNTRL_RES_DIFF samg_set_cntrl_res_diff
+#define SAMG_GET_CNTRL_RES_DIFF samg_get_cntrl_res_diff
+#define SAMG_SET_CNTRL_RETRY_ITER samg_set_cntrl_retry_iter
+#define SAMG_GET_CNTRL_RETRY_ITER samg_get_cntrl_retry_iter
+#define SAMG_SET_CNTRL_STEADY samg_set_cntrl_steady
+#define SAMG_GET_CNTRL_STEADY samg_get_cntrl_steady
+#define SAMG_SET_CONV_STOP samg_set_conv_stop
+#define SAMG_GET_CONV_STOP samg_get_conv_stop
+#define SAMG_SET_CSET_LASTPNT samg_set_cset_lastpnt
+#define SAMG_GET_CSET_LASTPNT samg_get_cset_lastpnt
+#define SAMG_SET_CSET_LESSVARS samg_set_cset_lessvars
+#define SAMG_GET_CSET_LESSVARS samg_get_cset_lessvars
+#define SAMG_SET_CSET_LONGROW samg_set_cset_longrow
+#define SAMG_GET_CSET_LONGROW samg_get_cset_longrow
+#define SAMG_ISET_CSET_READ samg_iset_cset_read
+#define SAMG_IGET_CSET_READ samg_iget_cset_read
+#define SAMG_SET_CSET_READ samg_set_cset_read
+#define SAMG_GET_CSET_READ samg_get_cset_read
+#define SAMG_SET_CSET_ZERODIAG samg_set_cset_zerodiag
+#define SAMG_GET_CSET_ZERODIAG samg_get_cset_zerodiag
+#define SAMG_SET_CSET_UNKNOWN samg_set_cset_unknown
+#define SAMG_GET_CSET_UNKNOWN samg_get_cset_unknown
+#define SAMG_SET_CSET_UNKNOWN1 samg_set_cset_unknown1
+#define SAMG_GET_CSET_UNKNOWN1 samg_get_cset_unknown1
+#define SAMG_SET_CSET_UNKNOWN2 samg_set_cset_unknown2
+#define SAMG_GET_CSET_UNKNOWN2 samg_get_cset_unknown2
+#define SAMG_SET_DELTA_MILU samg_set_delta_milu
+#define SAMG_GET_DELTA_MILU samg_get_delta_milu
+#define SAMG_SET_DENSX samg_set_densx
+#define SAMG_GET_DENSX samg_get_densx
+#define SAMG_SET_DIVERGENCE samg_set_divergence
+#define SAMG_GET_DIVERGENCE samg_get_divergence
+#define SAMG_SET_DROPTOL samg_set_droptol
+#define SAMG_GET_DROPTOL samg_get_droptol
+#define SAMG_SET_DROPTOL_CL samg_set_droptol_cl
+#define SAMG_GET_DROPTOL_CL samg_get_droptol_cl
+#define SAMG_SET_DROPTOL_2ND samg_set_droptol_2nd
+#define SAMG_GET_DROPTOL_2ND samg_get_droptol_2nd
+#define SAMG_SET_DROPTOL_SMO samg_set_droptol_smo
+#define SAMG_GET_DROPTOL_SMO samg_get_droptol_smo
+#define SAMG_SET_DUMP_CORRECTW samg_set_dump_correctw
+#define SAMG_GET_DUMP_CORRECTW samg_get_dump_correctw
+#define SAMG_SET_ECG samg_set_ecg
+#define SAMG_GET_ECG samg_get_ecg
+#define SAMG_SET_ECG_DEFAULT samg_set_ecg_default
+#define SAMG_GET_ECG_DEFAULT samg_get_ecg_default
+#define SAMG_SET_EPS_ABS samg_set_eps_abs
+#define SAMG_GET_EPS_ABS samg_get_eps_abs
+#define SAMG_SET_EPS_ACCEPT_JAC_UZAWA samg_set_eps_accept_jac_uzawa
+#define SAMG_GET_EPS_ACCEPT_JAC_UZAWA samg_get_eps_accept_jac_uzawa
+#define SAMG_SET_EPS_CONVERG_JAC_UZAWA samg_set_eps_converg_jac_uzawa
+#define SAMG_GET_EPS_CONVERG_JAC_UZAWA samg_get_eps_converg_jac_uzawa
+#define SAMG_SET_EPS_DD samg_set_eps_dd
+#define SAMG_GET_EPS_DD samg_get_eps_dd
+#define SAMG_SET_EPS_DIVERG_JAC_UZAWA samg_set_eps_diverg_jac_uzawa
+#define SAMG_GET_EPS_DIVERG_JAC_UZAWA samg_get_eps_diverg_jac_uzawa
+#define SAMG_SET_EPS_DIAG samg_set_eps_diag
+#define SAMG_GET_EPS_DIAG samg_get_eps_diag
+#define SAMG_SET_EPS_LSQ samg_set_eps_lsq
+#define SAMG_GET_EPS_LSQ samg_get_eps_lsq
+#define SAMG_SET_ETR samg_set_etr
+#define SAMG_GET_ETR samg_get_etr
+#define SAMG_SET_ETR_DEFAULT samg_set_etr_default
+#define SAMG_GET_ETR_DEFAULT samg_get_etr_default
+#define SAMG_SET_ETR2_SMO samg_set_etr2_smo
+#define SAMG_GET_ETR2_SMO samg_get_etr2_smo
+#define SAMG_SET_EWT samg_set_ewt
+#define SAMG_GET_EWT samg_get_ewt
+#define SAMG_SET_EWT_DEFAULT samg_set_ewt_default
+#define SAMG_GET_EWT_DEFAULT samg_get_ewt_default
+#define SAMG_SET_FACTOR_APP_VAR samg_set_factor_app_var
+#define SAMG_GET_FACTOR_APP_VAR samg_get_factor_app_var
+#define SAMG_SET_FACTOR_QUASI_RES samg_set_factor_quasi_res
+#define SAMG_GET_FACTOR_QUASI_RES samg_get_factor_quasi_res
+#define SAMG_SET_FACTOR_RES_VAR samg_set_factor_res_var
+#define SAMG_GET_FACTOR_RES_VAR samg_get_factor_res_var
+#define SAMG_SET_FACTOR_MATRIX_SCALE samg_set_factor_matrix_scale
+#define SAMG_GET_FACTOR_MATRIX_SCALE samg_get_factor_matrix_scale
+#define SAMG_SET_FACTOR_SOL_JAC_UZAWA samg_set_factor_sol_jac_uzawa
+#define SAMG_GET_FACTOR_SOL_JAC_UZAWA samg_get_factor_sol_jac_uzawa
+#define SAMG_ISET_FILNAM samg_iset_filnam
+#define SAMG_IGET_FILNAM samg_iget_filnam
+#define SAMG_SET_FILNAM samg_set_filnam
+#define SAMG_GET_FILNAM samg_get_filnam
+#define SAMG_ISET_FILNAM_DUMP samg_iset_filnam_dump
+#define SAMG_IGET_FILNAM_DUMP samg_iget_filnam_dump
+#define SAMG_SET_FILNAM_DUMP samg_set_filnam_dump
+#define SAMG_GET_FILNAM_DUMP samg_get_filnam_dump
+#define SAMG_ISET_FILNAM_UZAWA samg_iset_filnam_uzawa
+#define SAMG_IGET_FILNAM_UZAWA samg_iget_filnam_uzawa
+#define SAMG_SET_FILNAM_UZAWA samg_set_filnam_uzawa
+#define SAMG_GET_FILNAM_UZAWA samg_get_filnam_uzawa
+#define SAMG_SET_FORCE_ACCEL samg_set_force_accel
+#define SAMG_GET_FORCE_ACCEL samg_get_force_accel
+#define SAMG_SET_FORCE_ACCEL_2ND samg_set_force_accel_2nd
+#define SAMG_GET_FORCE_ACCEL_2ND samg_get_force_accel_2nd
+#define SAMG_SET_FULL_PIVOTING samg_set_full_pivoting
+#define SAMG_GET_FULL_PIVOTING samg_get_full_pivoting
+#define SAMG_SET_FULL_SETUP samg_set_full_setup
+#define SAMG_GET_FULL_SETUP samg_get_full_setup
+#define SAMG_SET_G_CMPLX_AGG_DEFAULT samg_set_g_cmplx_agg_default
+#define SAMG_GET_G_CMPLX_AGG_DEFAULT samg_get_g_cmplx_agg_default
+#define SAMG_SET_G_CMPLX_DEFAULT samg_set_g_cmplx_default
+#define SAMG_GET_G_CMPLX_DEFAULT samg_get_g_cmplx_default
+#define SAMG_SET_GALERKIN_TIMER samg_set_galerkin_timer
+#define SAMG_GET_GALERKIN_TIMER samg_get_galerkin_timer
+#define SAMG_SET_GLK_MULT_ZEROS samg_set_glk_mult_zeros
+#define SAMG_GET_GLK_MULT_ZEROS samg_get_glk_mult_zeros
+#define SAMG_SET_GMAX_MULTIPASS samg_set_gmax_multipass
+#define SAMG_GET_GMAX_MULTIPASS samg_get_gmax_multipass
+#define SAMG_SET_IALL_SMO samg_set_iall_smo
+#define SAMG_GET_IALL_SMO samg_get_iall_smo
+#define SAMG_SET_IAUTO_STOP samg_set_iauto_stop
+#define SAMG_GET_IAUTO_STOP samg_get_iauto_stop
+#define SAMG_SET_IESTIM_SPECT_RADIUS samg_set_iestim_spect_radius
+#define SAMG_GET_IESTIM_SPECT_RADIUS samg_get_iestim_spect_radius
+#define SAMG_SET_IESTIM_SMOOTH_NIT samg_set_iestim_smooth_nit
+#define SAMG_GET_IESTIM_SMOOTH_NIT samg_get_iestim_smooth_nit
+#define SAMG_SET_ISMOAGG_AGGRESSIVE samg_set_ismoagg_aggressive
+#define SAMG_GET_ISMOAGG_AGGRESSIVE samg_get_ismoagg_aggressive
+#define SAMG_SET_ISMOAGG_OVERCORRECTION samg_set_ismoagg_overcorrection
+#define SAMG_GET_ISMOAGG_OVERCORRECTION samg_get_ismoagg_overcorrection
+#define SAMG_SET_ISMOAGG_BLOCK_TYP samg_set_ismoagg_block_typ
+#define SAMG_GET_ISMOAGG_BLOCK_TYP samg_get_ismoagg_block_typ
+#define SAMG_SET_ISMOAGG_COMPRESSION samg_set_ismoagg_compression
+#define SAMG_GET_ISMOAGG_COMPRESSION samg_get_ismoagg_compression
+#define SAMG_SET_ISMOAGG_FILTER_TYP samg_set_ismoagg_filter_typ
+#define SAMG_GET_ISMOAGG_FILTER_TYP samg_get_ismoagg_filter_typ
+#define SAMG_SET_ISMOAGG_SMOOTH_TYP samg_set_ismoagg_smooth_typ
+#define SAMG_GET_ISMOAGG_SMOOTH_TYP samg_get_ismoagg_smooth_typ
+#define SAMG_SET_ISMOAGG_SMOOTH_NIT samg_set_ismoagg_smooth_nit
+#define SAMG_GET_ISMOAGG_SMOOTH_NIT samg_get_ismoagg_smooth_nit
+#define SAMG_SET_ISMOAGG_SMOOTH_NLEV samg_set_ismoagg_smooth_nlev
+#define SAMG_GET_ISMOAGG_SMOOTH_NLEV samg_get_ismoagg_smooth_nlev
+#define SAMG_SET_IB_CMPLX samg_set_ib_cmplx
+#define SAMG_GET_IB_CMPLX samg_get_ib_cmplx
+#define SAMG_SET_IB_CMPLX_AGG_DEFAULT samg_set_ib_cmplx_agg_default
+#define SAMG_GET_IB_CMPLX_AGG_DEFAULT samg_get_ib_cmplx_agg_default
+#define SAMG_SET_IB_CMPLX_DEFAULT samg_set_ib_cmplx_default
+#define SAMG_GET_IB_CMPLX_DEFAULT samg_get_ib_cmplx_default
+#define SAMG_SET_IBGS_PIVOT samg_set_ibgs_pivot
+#define SAMG_GET_IBGS_PIVOT samg_get_ibgs_pivot
+#define SAMG_SET_ICASE_JAC_UZAWA samg_set_icase_jac_uzawa
+#define SAMG_GET_ICASE_JAC_UZAWA samg_get_icase_jac_uzawa
+#define SAMG_SET_ICHECK_SMOINT samg_set_icheck_smoint
+#define SAMG_GET_ICHECK_SMOINT samg_get_icheck_smoint
+#define SAMG_SET_ICOLOR_OMP samg_set_icolor_omp
+#define SAMG_GET_ICOLOR_OMP samg_get_icolor_omp
+#define SAMG_SET_IORDERED_OMP samg_set_iordered_omp
+#define SAMG_GET_IORDERED_OMP samg_get_iordered_omp
+#define SAMG_SET_ICRITS samg_set_icrits
+#define SAMG_GET_ICRITS samg_get_icrits
+#define SAMG_SET_IDTEST_UZAWA samg_set_idtest_uzawa
+#define SAMG_GET_IDTEST_UZAWA samg_get_idtest_uzawa
+#define SAMG_SET_IHUGE samg_set_ihuge
+#define SAMG_GET_IHUGE samg_get_ihuge
+#define SAMG_SET_IJAC_UZAWA samg_set_ijac_uzawa
+#define SAMG_GET_IJAC_UZAWA samg_get_ijac_uzawa
+#define SAMG_SET_ILU4ALLSCHWARZ samg_set_ilu4allschwarz
+#define SAMG_GET_ILU4ALLSCHWARZ samg_get_ilu4allschwarz
+#define SAMG_SET_ILU_SPEED samg_set_ilu_speed
+#define SAMG_GET_ILU_SPEED samg_get_ilu_speed
+#define SAMG_SET_IMPLDO_READ_WRITE_LEN samg_set_impldo_read_write_len
+#define SAMG_GET_IMPLDO_READ_WRITE_LEN samg_get_impldo_read_write_len
+#define SAMG_SET_INFO_KEEPMEM samg_set_info_keepmem
+#define SAMG_GET_INFO_KEEPMEM samg_get_info_keepmem
+#define SAMG_SET_INNER_ACCEL samg_set_inner_accel
+#define SAMG_GET_INNER_ACCEL samg_get_inner_accel
+#define SAMG_SET_IODUMP samg_set_iodump
+#define SAMG_GET_IODUMP samg_get_iodump
+#define SAMG_ISET_IOFILE_OPTA samg_iset_iofile_opta
+#define SAMG_IGET_IOFILE_OPTA samg_iget_iofile_opta
+#define SAMG_SET_IOFILE_OPTA samg_set_iofile_opta
+#define SAMG_GET_IOFILE_OPTA samg_get_iofile_opta
+#define SAMG_ISET_IOFORM samg_iset_ioform
+#define SAMG_IGET_IOFORM samg_iget_ioform
+#define SAMG_SET_IOFORM samg_set_ioform
+#define SAMG_GET_IOFORM samg_get_ioform
+#define SAMG_SET_IOGRID samg_set_iogrid
+#define SAMG_GET_IOGRID samg_get_iogrid
+#define SAMG_SET_IOMOVIE samg_set_iomovie
+#define SAMG_GET_IOMOVIE samg_get_iomovie
+#define SAMG_SET_IOSCRATCH_DEFAULT samg_set_ioscratch_default
+#define SAMG_GET_IOSCRATCH_DEFAULT samg_get_ioscratch_default
+#define SAMG_SET_IOUNIT_OPTA samg_set_iounit_opta
+#define SAMG_GET_IOUNIT_OPTA samg_get_iounit_opta
+#define SAMG_SET_IPASS_MAX_SET samg_set_ipass_max_set
+#define SAMG_GET_IPASS_MAX_SET samg_get_ipass_max_set
+#define SAMG_SET_IRESTRICTION_OPENMP samg_set_irestriction_openmp
+#define SAMG_GET_IRESTRICTION_OPENMP samg_get_irestriction_openmp
+#define SAMG_SET_IPRESSURE_UZAWA samg_set_ipressure_uzawa
+#define SAMG_GET_IPRESSURE_UZAWA samg_get_ipressure_uzawa
+#define SAMG_SET_ISAT_UZAWA samg_set_isat_uzawa
+#define SAMG_GET_ISAT_UZAWA samg_get_isat_uzawa
+#define SAMG_SET_ISET_VIO_DD samg_set_iset_vio_dd
+#define SAMG_GET_ISET_VIO_DD samg_get_iset_vio_dd
+#define SAMG_SET_ISSTEP_UZAWA samg_set_isstep_uzawa
+#define SAMG_GET_ISSTEP_UZAWA samg_get_isstep_uzawa
+#define SAMG_SET_ISTEERING samg_set_isteering
+#define SAMG_GET_ISTEERING samg_get_isteering
+#define SAMG_SET_ISWIT3_USER samg_set_iswit3_user
+#define SAMG_GET_ISWIT3_USER samg_get_iswit3_user
+#define SAMG_SET_ITER_CHECK samg_set_iter_check
+#define SAMG_GET_ITER_CHECK samg_get_iter_check
+#define SAMG_SET_ITER_MATRIX_SCALE samg_set_iter_matrix_scale
+#define SAMG_GET_ITER_MATRIX_SCALE samg_get_iter_matrix_scale
+#define SAMG_SET_ITER_PRE samg_set_iter_pre
+#define SAMG_GET_ITER_PRE samg_get_iter_pre
+#define SAMG_SET_ITMAX_CONV samg_set_itmax_conv
+#define SAMG_GET_ITMAX_CONV samg_get_itmax_conv
+#define SAMG_SET_ITRACE_AMGMAIN samg_set_itrace_amgmain
+#define SAMG_GET_ITRACE_AMGMAIN samg_get_itrace_amgmain
+#define SAMG_SET_ITRACELEVEL samg_set_itracelevel
+#define SAMG_GET_ITRACELEVEL samg_get_itracelevel
+#define SAMG_SET_ITRACE_CLSOL samg_set_itrace_clsol
+#define SAMG_GET_ITRACE_CLSOL samg_get_itrace_clsol
+#define SAMG_SET_ITRACE_CLDENSE samg_set_itrace_cldense
+#define SAMG_GET_ITRACE_CLDENSE samg_get_itrace_cldense
+#define SAMG_SET_ITRACE_JAC_UZAWA samg_set_itrace_jac_uzawa
+#define SAMG_GET_ITRACE_JAC_UZAWA samg_get_itrace_jac_uzawa
+#define SAMG_SET_ITRACE_MATRIX_STORAGE samg_set_itrace_matrix_storage
+#define SAMG_GET_ITRACE_MATRIX_STORAGE samg_get_itrace_matrix_storage
+#define SAMG_SET_ITRACE_SCHWARZ samg_set_itrace_schwarz
+#define SAMG_GET_ITRACE_SCHWARZ samg_get_itrace_schwarz
+#define SAMG_SET_ITRACE_SMO samg_set_itrace_smo
+#define SAMG_GET_ITRACE_SMO samg_get_itrace_smo
+#define SAMG_SET_ITRACE_SOL samg_set_itrace_sol
+#define SAMG_GET_ITRACE_SOL samg_get_itrace_sol
+#define SAMG_SET_ITRACE_SPLIT samg_set_itrace_split
+#define SAMG_GET_ITRACE_SPLIT samg_get_itrace_split
+#define SAMG_SET_ITRACE_UZAWA samg_set_itrace_uzawa
+#define SAMG_GET_ITRACE_UZAWA samg_get_itrace_uzawa
+#define SAMG_SET_STACKTRACE samg_set_stacktrace
+#define SAMG_GET_STACKTRACE samg_get_stacktrace
+#define SAMG_SET_KEEPMEM samg_set_keepmem
+#define SAMG_GET_KEEPMEM samg_get_keepmem
+#define SAMG_SET_K_DISABLE_KRYLOV1 samg_set_k_disable_krylov1
+#define SAMG_GET_K_DISABLE_KRYLOV1 samg_get_k_disable_krylov1
+#define SAMG_SET_K_DYNCYC samg_set_k_dyncyc
+#define SAMG_GET_K_DYNCYC samg_get_k_dyncyc
+#define SAMG_SET_LASTGRID samg_set_lastgrid
+#define SAMG_GET_LASTGRID samg_get_lastgrid
+#define SAMG_SET_LEV_COARSENING_TOO_SLOW samg_set_lev_coarsening_too_slow
+#define SAMG_GET_LEV_COARSENING_TOO_SLOW samg_get_lev_coarsening_too_slow
+#define SAMG_SET_LEVELS_UZAWA samg_set_levels_uzawa
+#define SAMG_GET_LEVELS_UZAWA samg_get_levels_uzawa
+#define SAMG_SET_LEVELX samg_set_levelx
+#define SAMG_GET_LEVELX samg_get_levelx
+#define SAMG_SET_LEVELX_2ND samg_set_levelx_2nd
+#define SAMG_GET_LEVELX_2ND samg_get_levelx_2nd
+#define SAMG_SET_LFIL_CL samg_set_lfil_cl
+#define SAMG_GET_LFIL_CL samg_get_lfil_cl
+#define SAMG_SET_LFIL_2ND samg_set_lfil_2nd
+#define SAMG_GET_LFIL_2ND samg_get_lfil_2nd
+#define SAMG_SET_LFIL_SMO samg_set_lfil_smo
+#define SAMG_GET_LFIL_SMO samg_get_lfil_smo
+#define SAMG_ISET_LOGFILE samg_iset_logfile
+#define SAMG_IGET_LOGFILE samg_iget_logfile
+#define SAMG_SET_LOGFILE samg_set_logfile
+#define SAMG_GET_LOGFILE samg_get_logfile
+#define SAMG_SET_LOGIO samg_set_logio
+#define SAMG_GET_LOGIO samg_get_logio
+#define SAMG_SET_LU_REUSE samg_set_lu_reuse
+#define SAMG_GET_LU_REUSE samg_get_lu_reuse
+#define SAMG_SET_MATRIX_SCALE_RENORM samg_set_matrix_scale_renorm
+#define SAMG_GET_MATRIX_SCALE_RENORM samg_get_matrix_scale_renorm
+#define SAMG_SET_MAX_CALLS samg_set_max_calls
+#define SAMG_GET_MAX_CALLS samg_get_max_calls
+#define SAMG_SET_MAX_CL_SIZE samg_set_max_cl_size
+#define SAMG_GET_MAX_CL_SIZE samg_get_max_cl_size
+#define SAMG_SET_MAXCORR_CLUSTER samg_set_maxcorr_cluster
+#define SAMG_GET_MAXCORR_CLUSTER samg_get_maxcorr_cluster
+#define SAMG_SET_MAX_LEVEL samg_set_max_level
+#define SAMG_GET_MAX_LEVEL samg_get_max_level
+#define SAMG_SET_MAX_NB_LIST_SIZE samg_set_max_nb_list_size
+#define SAMG_GET_MAX_NB_LIST_SIZE samg_get_max_nb_list_size
+#define SAMG_SET_MAXITER_JAC_UZAWA samg_set_maxiter_jac_uzawa
+#define SAMG_GET_MAXITER_JAC_UZAWA samg_get_maxiter_jac_uzawa
+#define SAMG_SET_MAXOP_RESTART samg_set_maxop_restart
+#define SAMG_GET_MAXOP_RESTART samg_get_maxop_restart
+#define SAMG_SET_MAXRETRY_JAC_UZAWA samg_set_maxretry_jac_uzawa
+#define SAMG_GET_MAXRETRY_JAC_UZAWA samg_get_maxretry_jac_uzawa
+#define SAMG_SET_MILU samg_set_milu
+#define SAMG_GET_MILU samg_get_milu
+#define SAMG_SET_MIN_CL_SIZE samg_set_min_cl_size
+#define SAMG_GET_MIN_CL_SIZE samg_get_min_cl_size
+#define SAMG_SET_MIN_MULTI_SIZE samg_set_min_multi_size
+#define SAMG_GET_MIN_MULTI_SIZE samg_get_min_multi_size
+#define SAMG_SET_MINITER_JAC_UZAWA samg_set_miniter_jac_uzawa
+#define SAMG_GET_MINITER_JAC_UZAWA samg_get_miniter_jac_uzawa
+#define SAMG_SET_MODE_CNTRL samg_set_mode_cntrl
+#define SAMG_GET_MODE_CNTRL samg_get_mode_cntrl
+#define SAMG_SET_MODE_DEBUG samg_set_mode_debug
+#define SAMG_GET_MODE_DEBUG samg_get_mode_debug
+#define SAMG_SET_MODE_MESS samg_set_mode_mess
+#define SAMG_GET_MODE_MESS samg_get_mode_mess
+#define SAMG_SET_MODIFY_MAT samg_set_modify_mat
+#define SAMG_GET_MODIFY_MAT samg_get_modify_mat
+#define SAMG_SET_MULTIPASS_ALLCOUP samg_set_multipass_allcoup
+#define SAMG_GET_MULTIPASS_ALLCOUP samg_get_multipass_allcoup
+#define SAMG_SET_NBLK_DEBUG samg_set_nblk_debug
+#define SAMG_GET_NBLK_DEBUG samg_get_nblk_debug
+#define SAMG_SET_NBLK_MAX samg_set_nblk_max
+#define SAMG_GET_NBLK_MAX samg_get_nblk_max
+#define SAMG_SET_NBLK_OVERLAP samg_set_nblk_overlap
+#define SAMG_GET_NBLK_OVERLAP samg_get_nblk_overlap
+#define SAMG_SET_NBLK_RESID samg_set_nblk_resid
+#define SAMG_GET_NBLK_RESID samg_get_nblk_resid
+#define SAMG_SET_NBLK_SOLVE samg_set_nblk_solve
+#define SAMG_GET_NBLK_SOLVE samg_get_nblk_solve
+#define SAMG_SET_NBLK_SOLVER samg_set_nblk_solver
+#define SAMG_GET_NBLK_SOLVER samg_get_nblk_solver
+#define SAMG_SET_NBND_OMEGA samg_set_nbnd_omega
+#define SAMG_GET_NBND_OMEGA samg_get_nbnd_omega
+#define SAMG_SET_NBND_OMEGA_UZAWA samg_set_nbnd_omega_uzawa
+#define SAMG_GET_NBND_OMEGA_UZAWA samg_get_nbnd_omega_uzawa
+#define SAMG_SET_NBND_SWEEPS samg_set_nbnd_sweeps
+#define SAMG_GET_NBND_SWEEPS samg_get_nbnd_sweeps
+#define SAMG_SET_NBND_SWEEPS_UZAWA samg_set_nbnd_sweeps_uzawa
+#define SAMG_GET_NBND_SWEEPS_UZAWA samg_get_nbnd_sweeps_uzawa
+#define SAMG_SET_NCFRAMES samg_set_ncframes
+#define SAMG_GET_NCFRAMES samg_get_ncframes
+#define SAMG_SET_NCG samg_set_ncg
+#define SAMG_GET_NCG samg_get_ncg
+#define SAMG_SET_NCGRAD_DEFAULT samg_set_ncgrad_default
+#define SAMG_GET_NCGRAD_DEFAULT samg_get_ncgrad_default
+#define SAMG_SET_NCYC_DEFAULT samg_set_ncyc_default
+#define SAMG_GET_NCYC_DEFAULT samg_get_ncyc_default
+#define SAMG_SET_NCYC_MIN samg_set_ncyc_min
+#define SAMG_GET_NCYC_MIN samg_get_ncyc_min
+#define SAMG_SET_NCYC_2ND samg_set_ncyc_2nd
+#define SAMG_GET_NCYC_2ND samg_get_ncyc_2nd
+#define SAMG_SET_NCYC_START samg_set_ncyc_start
+#define SAMG_GET_NCYC_START samg_get_ncyc_start
+#define SAMG_SET_NDYN_SMO samg_set_ndyn_smo
+#define SAMG_GET_NDYN_SMO samg_get_ndyn_smo
+#define SAMG_SET_NEG_DIAG samg_set_neg_diag
+#define SAMG_GET_NEG_DIAG samg_get_neg_diag
+#define SAMG_SET_NEG_DIAG_BRUTE samg_set_neg_diag_brute
+#define SAMG_GET_NEG_DIAG_BRUTE samg_get_neg_diag_brute
+#define SAMG_SET_NEW_ENTRIES samg_set_new_entries
+#define SAMG_GET_NEW_ENTRIES samg_get_new_entries
+#define SAMG_SET_NEW_TOPOLOGY samg_set_new_topology
+#define SAMG_GET_NEW_TOPOLOGY samg_get_new_topology
+#define SAMG_SET_NILU_REORDER samg_set_nilu_reorder
+#define SAMG_GET_NILU_REORDER samg_get_nilu_reorder
+#define SAMG_SET_NINT_ROWSUM1 samg_set_nint_rowsum1
+#define SAMG_GET_NINT_ROWSUM1 samg_get_nint_rowsum1
+#define SAMG_SET_NKCYCLE samg_set_nkcycle
+#define SAMG_GET_NKCYCLE samg_get_nkcycle
+#define SAMG_SET_NKDIM_DEFAULT samg_set_nkdim_default
+#define SAMG_GET_NKDIM_DEFAULT samg_get_nkdim_default
+#define SAMG_SET_NSMOAGG samg_set_nsmoagg
+#define SAMG_GET_NSMOAGG samg_get_nsmoagg
+#define SAMG_SET_NSMOAGGLEV samg_set_nsmoagglev
+#define SAMG_GET_NSMOAGGLEV samg_get_nsmoagglev
+#define SAMG_SET_NMIN_MATRIX samg_set_nmin_matrix
+#define SAMG_GET_NMIN_MATRIX samg_get_nmin_matrix
+#define SAMG_SET_NMIN_MATRIX_RESC samg_set_nmin_matrix_resc
+#define SAMG_GET_NMIN_MATRIX_RESC samg_get_nmin_matrix_resc
+#define SAMG_SET_NMIN_VECTOR samg_set_nmin_vector
+#define SAMG_GET_NMIN_VECTOR samg_get_nmin_vector
+#define SAMG_SET_NOTALLUNS_CHEAP samg_set_notalluns_cheap
+#define SAMG_GET_NOTALLUNS_CHEAP samg_get_notalluns_cheap
+#define SAMG_SET_NP_MOD1 samg_set_np_mod1
+#define SAMG_GET_NP_MOD1 samg_get_np_mod1
+#define SAMG_SET_NP_MOD2 samg_set_np_mod2
+#define SAMG_GET_NP_MOD2 samg_get_np_mod2
+#define SAMG_SET_NP_OPT samg_set_np_opt
+#define SAMG_GET_NP_OPT samg_get_np_opt
+#define SAMG_SET_NPRIM_AT_ALLPNTS samg_set_nprim_at_allpnts
+#define SAMG_GET_NPRIM_AT_ALLPNTS samg_get_nprim_at_allpnts
+#define SAMG_SET_NPTMAX samg_set_nptmax
+#define SAMG_GET_NPTMAX samg_get_nptmax
+#define SAMG_SET_NPTMN samg_set_nptmn
+#define SAMG_GET_NPTMN samg_get_nptmn
+#define SAMG_SET_NRC samg_set_nrc
+#define SAMG_GET_NRC samg_get_nrc
+#define SAMG_SET_NRC_EMERGENCY samg_set_nrc_emergency
+#define SAMG_GET_NRC_EMERGENCY samg_get_nrc_emergency
+#define SAMG_SET_NRD samg_set_nrd
+#define SAMG_GET_NRD samg_get_nrd
+#define SAMG_SET_NRD_2ND samg_set_nrd_2nd
+#define SAMG_GET_NRD_2ND samg_get_nrd_2nd
+#define SAMG_SET_NRU samg_set_nru
+#define SAMG_GET_NRU samg_get_nru
+#define SAMG_SET_NRU_2ND samg_set_nru_2nd
+#define SAMG_GET_NRU_2ND samg_get_nru_2nd
+#define SAMG_SET_NSIMPLE_EMERGENCY samg_set_nsimple_emergency
+#define SAMG_GET_NSIMPLE_EMERGENCY samg_get_nsimple_emergency
+#define SAMG_SET_NSOLVE_DEFAULT samg_set_nsolve_default
+#define SAMG_GET_NSOLVE_DEFAULT samg_get_nsolve_default
+#define SAMG_SET_NSOLVE_2ND samg_set_nsolve_2nd
+#define SAMG_GET_NSOLVE_2ND samg_get_nsolve_2nd
+#define SAMG_SET_NSOLVE_UZAWA samg_set_nsolve_uzawa
+#define SAMG_GET_NSOLVE_UZAWA samg_get_nsolve_uzawa
+#define SAMG_SET_NSTAR_TYP samg_set_nstar_typ
+#define SAMG_GET_NSTAR_TYP samg_get_nstar_typ
+#define SAMG_SET_NSW_OMEGA_UZAWA samg_set_nsw_omega_uzawa
+#define SAMG_GET_NSW_OMEGA_UZAWA samg_get_nsw_omega_uzawa
+#define SAMG_SET_NSW_UZAWA samg_set_nsw_uzawa
+#define SAMG_GET_NSW_UZAWA samg_get_nsw_uzawa
+#define SAMG_SET_NTAKE_RES_IN samg_set_ntake_res_in
+#define SAMG_GET_NTAKE_RES_IN samg_get_ntake_res_in
+#define SAMG_SET_NTH_RES_SCRATCH samg_set_nth_res_scratch
+#define SAMG_GET_NTH_RES_SCRATCH samg_get_nth_res_scratch
+#define SAMG_SET_NTR samg_set_ntr
+#define SAMG_GET_NTR samg_get_ntr
+#define SAMG_SET_NTR_PRIM samg_set_ntr_prim
+#define SAMG_GET_NTR_PRIM samg_get_ntr_prim
+#define SAMG_SET_NTYP_ACCEL samg_set_ntyp_accel
+#define SAMG_GET_NTYP_ACCEL samg_get_ntyp_accel
+#define SAMG_SET_NTYP_GALERKIN samg_set_ntyp_galerkin
+#define SAMG_GET_NTYP_GALERKIN samg_get_ntyp_galerkin
+#define SAMG_SET_NUMTRY_MAX_SET samg_set_numtry_max_set
+#define SAMG_GET_NUMTRY_MAX_SET samg_get_numtry_max_set
+#define SAMG_SET_NVERSION samg_set_nversion
+#define SAMG_GET_NVERSION samg_get_nversion
+#define SAMG_SET_NWT samg_set_nwt
+#define SAMG_GET_NWT samg_get_nwt
+#define SAMG_SET_NXTYP_COARSE samg_set_nxtyp_coarse
+#define SAMG_GET_NXTYP_COARSE samg_get_nxtyp_coarse
+#define SAMG_SET_OMEGA_JAC_ES_UZAWA samg_set_omega_jac_es_uzawa
+#define SAMG_GET_OMEGA_JAC_ES_UZAWA samg_get_omega_jac_es_uzawa
+#define SAMG_SET_OMEGA_JAC_P_UZAWA samg_set_omega_jac_p_uzawa
+#define SAMG_GET_OMEGA_JAC_P_UZAWA samg_get_omega_jac_p_uzawa
+#define SAMG_SET_OMEGA_JACOBI samg_set_omega_jacobi
+#define SAMG_GET_OMEGA_JACOBI samg_get_omega_jacobi
+#define SAMG_SET_OMEGA_SOR_DO samg_set_omega_sor_do
+#define SAMG_GET_OMEGA_SOR_DO samg_get_omega_sor_do
+#define SAMG_SET_OMEGA_SOR_UP samg_set_omega_sor_up
+#define SAMG_GET_OMEGA_SOR_UP samg_get_omega_sor_up
+#define SAMG_SET_OMEGA_SMO samg_set_omega_smo
+#define SAMG_GET_OMEGA_SMO samg_get_omega_smo
+#define SAMG_SET_OMEGA_UZAWA samg_set_omega_uzawa
+#define SAMG_GET_OMEGA_UZAWA samg_get_omega_uzawa
+#define SAMG_ISET_OMP_PARTITION_FILE samg_iset_omp_partition_file
+#define SAMG_IGET_OMP_PARTITION_FILE samg_iget_omp_partition_file
+#define SAMG_SET_OMP_PARTITION_FILE samg_set_omp_partition_file
+#define SAMG_GET_OMP_PARTITION_FILE samg_get_omp_partition_file
+#define SAMG_SET_OMP_NUM_THREADS_EXTERNAL samg_set_omp_num_threads_external
+#define SAMG_GET_OMP_NUM_THREADS_EXTERNAL samg_get_omp_num_threads_external
+#define SAMG_SET_OPT_MATRIX_OPS samg_set_opt_matrix_ops
+#define SAMG_GET_OPT_MATRIX_OPS samg_get_opt_matrix_ops
+#define SAMG_SET_P_CMPLX_AGG_DEFAULT samg_set_p_cmplx_agg_default
+#define SAMG_GET_P_CMPLX_AGG_DEFAULT samg_get_p_cmplx_agg_default
+#define SAMG_SET_P_CMPLX_DEFAULT samg_set_p_cmplx_default
+#define SAMG_GET_P_CMPLX_DEFAULT samg_get_p_cmplx_default
+#define SAMG_SET_PARTIAL_FRAC samg_set_partial_frac
+#define SAMG_GET_PARTIAL_FRAC samg_get_partial_frac
+#define SAMG_ISET_PARTITION_FILE samg_iset_partition_file
+#define SAMG_IGET_PARTITION_FILE samg_iget_partition_file
+#define SAMG_SET_PARTITION_FILE samg_set_partition_file
+#define SAMG_GET_PARTITION_FILE samg_get_partition_file
+#define SAMG_SET_PERF_METER_ENABLED samg_set_perf_meter_enabled
+#define SAMG_GET_PERF_METER_ENABLED samg_get_perf_meter_enabled
+#define SAMG_SET_PRIM_NORM samg_set_prim_norm
+#define SAMG_GET_PRIM_NORM samg_get_prim_norm
+#define SAMG_SET_PRIM_PRINT samg_set_prim_print
+#define SAMG_GET_PRIM_PRINT samg_get_prim_print
+#define SAMG_SET_PRINT_NXTYP_COARSE_MSG samg_set_print_nxtyp_coarse_msg
+#define SAMG_GET_PRINT_NXTYP_COARSE_MSG samg_get_print_nxtyp_coarse_msg
+#define SAMG_SET_PRINT_SETUP_ILU_OR_DIRECT samg_set_print_setup_ilu_or_direct
+#define SAMG_GET_PRINT_SETUP_ILU_OR_DIRECT samg_get_print_setup_ilu_or_direct
+#define SAMG_SET_PRNT_STAT_SCHWARZ samg_set_prnt_stat_schwarz
+#define SAMG_GET_PRNT_STAT_SCHWARZ samg_get_prnt_stat_schwarz
+#define SAMG_SET_REDUCT_KCYCLE samg_set_reduct_kcycle
+#define SAMG_GET_REDUCT_KCYCLE samg_get_reduct_kcycle
+#define SAMG_SET_RCONDX samg_set_rcondx
+#define SAMG_GET_RCONDX samg_get_rcondx
+#define SAMG_SET_READ_UZAWA_PARMS samg_set_read_uzawa_parms
+#define SAMG_GET_READ_UZAWA_PARMS samg_get_read_uzawa_parms
+#define SAMG_SET_READ_MARIAN_COARSENING samg_set_read_marian_coarsening
+#define SAMG_GET_READ_MARIAN_COARSENING samg_get_read_marian_coarsening
+#define SAMG_SET_REFRESH_CALLED samg_set_refresh_called
+#define SAMG_GET_REFRESH_CALLED samg_get_refresh_called
+#define SAMG_SET_RHO_MIN samg_set_rho_min
+#define SAMG_GET_RHO_MIN samg_get_rho_min
+#define SAMG_SET_RHO_OK samg_set_rho_ok
+#define SAMG_GET_RHO_OK samg_get_rho_ok
+#define SAMG_SET_SHOW_UN_RES samg_set_show_un_res
+#define SAMG_GET_SHOW_UN_RES samg_get_show_un_res
+#define SAMG_ISET_SCRATCHFILE samg_iset_scratchfile
+#define SAMG_IGET_SCRATCHFILE samg_iget_scratchfile
+#define SAMG_SET_SCRATCHFILE samg_set_scratchfile
+#define SAMG_GET_SCRATCHFILE samg_get_scratchfile
+#define SAMG_SET_SLOW_COARSENING samg_set_slow_coarsening
+#define SAMG_GET_SLOW_COARSENING samg_get_slow_coarsening
+#define SAMG_SET_STABILITY samg_set_stability
+#define SAMG_GET_STABILITY samg_get_stability
+#define SAMG_SET_STRUCT_IDENT samg_set_struct_ident
+#define SAMG_GET_STRUCT_IDENT samg_get_struct_ident
+#define SAMG_SET_TAU_UZAWA samg_set_tau_uzawa
+#define SAMG_GET_TAU_UZAWA samg_get_tau_uzawa
+#define SAMG_SET_TERM_COARSENING samg_set_term_coarsening
+#define SAMG_GET_TERM_COARSENING samg_get_term_coarsening
+#define SAMG_SET_TRACKMEM samg_set_trackmem
+#define SAMG_GET_TRACKMEM samg_get_trackmem
+#define SAMG_SET_TRACK_AP_P samg_set_track_ap_p
+#define SAMG_GET_TRACK_AP_P samg_get_track_ap_p
+#define SAMG_SET_USE_IC samg_set_use_ic
+#define SAMG_GET_USE_IC samg_get_use_ic
+#define SAMG_SET_VIO_DD samg_set_vio_dd
+#define SAMG_GET_VIO_DD samg_get_vio_dd
+#define SAMG_SET_W_AVRGE_AGG_DEFAULT samg_set_w_avrge_agg_default
+#define SAMG_GET_W_AVRGE_AGG_DEFAULT samg_get_w_avrge_agg_default
+#define SAMG_SET_W_AVRGE_DEFAULT samg_set_w_avrge_default
+#define SAMG_GET_W_AVRGE_DEFAULT samg_get_w_avrge_default
+#define SAMG_SET_WCOUPLED samg_set_wcoupled
+#define SAMG_GET_WCOUPLED samg_get_wcoupled
+#define SAMG_SET_WFT samg_set_wft
+#define SAMG_GET_WFT samg_get_wft
+#define SAMG_SET_WRITE_CLUSTER_ID samg_set_write_cluster_id
+#define SAMG_GET_WRITE_CLUSTER_ID samg_get_write_cluster_id
+#define SAMG_SET_WTSL samg_set_wtsl
+#define SAMG_GET_WTSL samg_get_wtsl
+#endif
+
+#ifdef SAMG_LCASE_USCORE
+#define SAMG samg_
+#define SAMG_CTIME samg_ctime_
+#define SAMG_CPUTIME samg_cputime_
+#define SAMG_ELAPSED_TIME samg_elapsed_time_
+#define SAMG_ALL_ERRORINFO samg_all_errorinfo_
+#define SAMG_SIMPLE samg_simple_
+#define SAMG_MAIN samg_main_
+#define SAMG_LEAVE samg_leave_
+#define SAMG_REFRESH samg_refresh_
+#define SAMG_CLEANUP samg_cleanup_
+#define SAMG_RESET_HIDDEN samg_reset_hidden_
+#define SAMG_GET_COMPLEXITIES samg_get_complexities_
+#define SAMG_GET_NFLAG samg_get_nflag_
+#define SAMG_GET_LEVELS_CREATED samg_get_levels_created_
+#define SAMG_GET_LEV_SIZES samg_get_lev_sizes_
+#define SAMG_GET_NUM_SMOOTH_VECTORS samg_get_num_smooth_vectors_
+#define SAMG_GET_MEM_ACTIVE samg_get_mem_active_
+#define SAMG_GET_TIME_AND_MEM samg_get_time_and_mem_
+#define SAMG_EXTRAPRINT samg_extraprint_
+#define SAMG_CVEC_ALLOC samg_cvec_alloc_
+#define SAMG_CVEC_DEALLOC samg_cvec_dealloc_
+#define SAMG_CVEC_SET samg_cvec_set_
+#define SAMG_CVEC_GET samg_cvec_get_
+#define SAMG_PROPOSE_NSYS_ISCALE_IU samg_propose_nsys_iscale_iu_
+#define SAMG_SMOOTH_VECTOR_INIT samg_smooth_vector_init_
+#define SAMG_SMOOTH_VECTOR_SET samg_smooth_vector_set_
+#define SAMG_PERFINIT samg_perfinit_
+#define SAMG_PERFOUT samg_perfout_
+#define SAMG_PARALLEL_LIB samg_parallel_lib_
+#define SAMG_MEM_INFO samg_mem_info_
+#define SAMG_LRATIO samg_lratio_
+#define SAMG_ADDTIME samg_addtime_
+#define SAMG_COMPTIME samg_comptime_
+#define SAMG_COPY_GALERKIN samg_copy_galerkin_
+#define SAMG_OMEGA_JACOBI_ALLOC samg_omega_jacobi_alloc_
+#define SAMG_OMEGA_JACOBI_DEALLOC samg_omega_jacobi_dealloc_
+#define SAMG_OMEGA_JACOBI_SET samg_omega_jacobi_set_
+#define SAMG_CURRENT_RESIDUAL samg_current_residual_
+#define SAMG_OPEN_LOGFILE samg_open_logfile_
+#define SAMG_CLOSE_LOGFILE samg_close_logfile_
+#define SAMG_COO_VEC_SET samg_coo_vec_set_
+#define SAMG_COO_VEC_ALLOC samg_coo_vec_alloc_
+#define SAMG_COO_VEC_DEALLOC samg_coo_vec_dealloc_
+#define SAMG_IDEC samg_idec_
+#define SAMG_DC samg_dc_
+#define XSAMG xsamg_
+#define XSAMG_DC xsamg_dc_
+#define XSAMG_START xsamg_start_
+#define XSAMG_START_IUM xsamg_start_ium_
+#define XSAMG_START_SOLVER xsamg_start_solver_
+#define XSAMG_END_SOLVER xsamg_end_solver_
+#define XSAMG_END xsamg_end_
+#define XSAMG_GET_LOGIO xsamg_get_logio_
+#define XSAMG_GET_SLAVE_RETURNCODE xsamg_get_slave_returncode_
+#define XSAMG_PROCESS_INFO xsamg_process_info_
+#define XSAMG_GET_INTERNAL_TIMER xsamg_get_internal_timer_
+#define XSAMG_MPI_INIT xsamg_mpi_init_
+#define XSAMG_MPI_FINALIZE xsamg_mpi_finalize_
+#define XSAMG_MPI_COMM_RANK xsamg_mpi_comm_rank_
+#define XSAMG_GET_MPI_COMM_WORLD xsamg_get_mpi_comm_world_
+#define XSAMG_GET_PARALLEL_RUN xsamg_get_parallel_run_
+#define XSAMG_IO_SETTINGS xsamg_io_settings_
+#define XSAMG_IO_SETTINGS2 xsamg_io_settings2_
+#define XSAMG_LAST_MSG xsamg_last_msg_
+#define XSAMG_READ_CONFIG xsamg_read_config_
+#define XSAMG_PRINT_INTERNAL_TIMER xsamg_print_internal_timer_
+#define XSAMG_ERROR_INFO xsamg_error_info_
+#define XSAMG_GET_IERR_ON_TAG_STOP xsamg_get_ierr_on_tag_stop_
+#define XSAMG_CONFIGFILE_MISSING xsamg_configfile_missing_
+#define XSAMG_LEAVE xsamg_leave_
+#define XSAMG_CLEANUP xsamg_cleanup_
+#define SAMG_SET_A_CMPLX_AGG_DEFAULT samg_set_a_cmplx_agg_default_
+#define SAMG_GET_A_CMPLX_AGG_DEFAULT samg_get_a_cmplx_agg_default_
+#define SAMG_SET_A_CMPLX_DEFAULT samg_set_a_cmplx_default_
+#define SAMG_GET_A_CMPLX_DEFAULT samg_get_a_cmplx_default_
+#define SAMG_SET_ALLOW_FILNAM_IN samg_set_allow_filnam_in_
+#define SAMG_GET_ALLOW_FILNAM_IN samg_get_allow_filnam_in_
+#define SAMG_SET_ALLOW_PRIVATE_IN samg_set_allow_private_in_
+#define SAMG_GET_ALLOW_PRIVATE_IN samg_get_allow_private_in_
+#define SAMG_SET_ALLOW_ELIM samg_set_allow_elim_
+#define SAMG_GET_ALLOW_ELIM samg_get_allow_elim_
+#define SAMG_SET_ALLUNS_AT_ALLPNTS samg_set_alluns_at_allpnts_
+#define SAMG_GET_ALLUNS_AT_ALLPNTS samg_get_alluns_at_allpnts_
+#define SAMG_SET_B_CMPLX samg_set_b_cmplx_
+#define SAMG_GET_B_CMPLX samg_get_b_cmplx_
+#define SAMG_SET_B_CMPLX_AGG_DEFAULT samg_set_b_cmplx_agg_default_
+#define SAMG_GET_B_CMPLX_AGG_DEFAULT samg_get_b_cmplx_agg_default_
+#define SAMG_SET_B_CMPLX_DEFAULT samg_set_b_cmplx_default_
+#define SAMG_GET_B_CMPLX_DEFAULT samg_get_b_cmplx_default_
+#define SAMG_SET_BACKUP samg_set_backup_
+#define SAMG_GET_BACKUP samg_get_backup_
+#define SAMG_SET_BLK_FILLEXP samg_set_blk_fillexp_
+#define SAMG_GET_BLK_FILLEXP samg_get_blk_fillexp_
+#define SAMG_SET_BLK_STAB samg_set_blk_stab_
+#define SAMG_GET_BLK_STAB samg_get_blk_stab_
+#define SAMG_SET_BLOCK_SCALE samg_set_block_scale_
+#define SAMG_GET_BLOCK_SCALE samg_get_block_scale_
+#define SAMG_SET_BLOCK_SCALE2 samg_set_block_scale2_
+#define SAMG_GET_BLOCK_SCALE2 samg_get_block_scale2_
+#define SAMG_ISET_BND_PARTITION_FILE samg_iset_bnd_partition_file_
+#define SAMG_IGET_BND_PARTITION_FILE samg_iget_bnd_partition_file_
+#define SAMG_SET_BND_PARTITION_FILE samg_set_bnd_partition_file_
+#define SAMG_GET_BND_PARTITION_FILE samg_get_bnd_partition_file_
+#define SAMG_SET_CHECK_ALLPNTS samg_set_check_allpnts_
+#define SAMG_GET_CHECK_ALLPNTS samg_get_check_allpnts_
+#define SAMG_SET_CHECK_ORDER samg_set_check_order_
+#define SAMG_GET_CHECK_ORDER samg_get_check_order_
+#define SAMG_SET_CL_CPL samg_set_cl_cpl_
+#define SAMG_GET_CL_CPL samg_get_cl_cpl_
+#define SAMG_SET_CL_ORDER samg_set_cl_order_
+#define SAMG_GET_CL_ORDER samg_get_cl_order_
+#define SAMG_SET_CL_LEVEL_DEP samg_set_cl_level_dep_
+#define SAMG_GET_CL_LEVEL_DEP samg_get_cl_level_dep_
+#define SAMG_SET_CL_AUTO_SIZE samg_set_cl_auto_size_
+#define SAMG_GET_CL_AUTO_SIZE samg_get_cl_auto_size_
+#define SAMG_SET_CL_PROC_BORDER samg_set_cl_proc_border_
+#define SAMG_GET_CL_PROC_BORDER samg_get_cl_proc_border_
+#define SAMG_SET_CL_QUALITY_MEASURE samg_set_cl_quality_measure_
+#define SAMG_GET_CL_QUALITY_MEASURE samg_get_cl_quality_measure_
+#define SAMG_SET_CL_GLOBAL_QUALITY samg_set_cl_global_quality_
+#define SAMG_GET_CL_GLOBAL_QUALITY samg_get_cl_global_quality_
+#define SAMG_SET_CL_OMP samg_set_cl_omp_
+#define SAMG_GET_CL_OMP samg_get_cl_omp_
+#define SAMG_SET_CL_CMK_REORDER samg_set_cl_cmk_reorder_
+#define SAMG_GET_CL_CMK_REORDER samg_get_cl_cmk_reorder_
+#define SAMG_SET_CLSOLVER_FINEST samg_set_clsolver_finest_
+#define SAMG_GET_CLSOLVER_FINEST samg_get_clsolver_finest_
+#define SAMG_SET_CLDENSE_CTRL samg_set_cldense_ctrl_
+#define SAMG_GET_CLDENSE_CTRL samg_get_cldense_ctrl_
+#define SAMG_SET_CNTRL_ENFORCE samg_set_cntrl_enforce_
+#define SAMG_GET_CNTRL_ENFORCE samg_get_cntrl_enforce_
+#define SAMG_SET_CNTRL_LOGFILE samg_set_cntrl_logfile_
+#define SAMG_GET_CNTRL_LOGFILE samg_get_cntrl_logfile_
+#define SAMG_SET_CNTRL_METHOD samg_set_cntrl_method_
+#define SAMG_GET_CNTRL_METHOD samg_get_cntrl_method_
+#define SAMG_SET_CNTRL_RELEASE samg_set_cntrl_release_
+#define SAMG_GET_CNTRL_RELEASE samg_get_cntrl_release_
+#define SAMG_SET_CNTRL_RES_DIFF samg_set_cntrl_res_diff_
+#define SAMG_GET_CNTRL_RES_DIFF samg_get_cntrl_res_diff_
+#define SAMG_SET_CNTRL_RETRY_ITER samg_set_cntrl_retry_iter_
+#define SAMG_GET_CNTRL_RETRY_ITER samg_get_cntrl_retry_iter_
+#define SAMG_SET_CNTRL_STEADY samg_set_cntrl_steady_
+#define SAMG_GET_CNTRL_STEADY samg_get_cntrl_steady_
+#define SAMG_SET_CONV_STOP samg_set_conv_stop_
+#define SAMG_GET_CONV_STOP samg_get_conv_stop_
+#define SAMG_SET_CSET_LASTPNT samg_set_cset_lastpnt_
+#define SAMG_GET_CSET_LASTPNT samg_get_cset_lastpnt_
+#define SAMG_SET_CSET_LESSVARS samg_set_cset_lessvars_
+#define SAMG_GET_CSET_LESSVARS samg_get_cset_lessvars_
+#define SAMG_SET_CSET_LONGROW samg_set_cset_longrow_
+#define SAMG_GET_CSET_LONGROW samg_get_cset_longrow_
+#define SAMG_ISET_CSET_READ samg_iset_cset_read_
+#define SAMG_IGET_CSET_READ samg_iget_cset_read_
+#define SAMG_SET_CSET_READ samg_set_cset_read_
+#define SAMG_GET_CSET_READ samg_get_cset_read_
+#define SAMG_SET_CSET_ZERODIAG samg_set_cset_zerodiag_
+#define SAMG_GET_CSET_ZERODIAG samg_get_cset_zerodiag_
+#define SAMG_SET_CSET_UNKNOWN samg_set_cset_unknown_
+#define SAMG_GET_CSET_UNKNOWN samg_get_cset_unknown_
+#define SAMG_SET_CSET_UNKNOWN1 samg_set_cset_unknown1_
+#define SAMG_GET_CSET_UNKNOWN1 samg_get_cset_unknown1_
+#define SAMG_SET_CSET_UNKNOWN2 samg_set_cset_unknown2_
+#define SAMG_GET_CSET_UNKNOWN2 samg_get_cset_unknown2_
+#define SAMG_SET_DELTA_MILU samg_set_delta_milu_
+#define SAMG_GET_DELTA_MILU samg_get_delta_milu_
+#define SAMG_SET_DENSX samg_set_densx_
+#define SAMG_GET_DENSX samg_get_densx_
+#define SAMG_SET_DIVERGENCE samg_set_divergence_
+#define SAMG_GET_DIVERGENCE samg_get_divergence_
+#define SAMG_SET_DROPTOL samg_set_droptol_
+#define SAMG_GET_DROPTOL samg_get_droptol_
+#define SAMG_SET_DROPTOL_CL samg_set_droptol_cl_
+#define SAMG_GET_DROPTOL_CL samg_get_droptol_cl_
+#define SAMG_SET_DROPTOL_2ND samg_set_droptol_2nd_
+#define SAMG_GET_DROPTOL_2ND samg_get_droptol_2nd_
+#define SAMG_SET_DROPTOL_SMO samg_set_droptol_smo_
+#define SAMG_GET_DROPTOL_SMO samg_get_droptol_smo_
+#define SAMG_SET_DUMP_CORRECTW samg_set_dump_correctw_
+#define SAMG_GET_DUMP_CORRECTW samg_get_dump_correctw_
+#define SAMG_SET_ECG samg_set_ecg_
+#define SAMG_GET_ECG samg_get_ecg_
+#define SAMG_SET_ECG_DEFAULT samg_set_ecg_default_
+#define SAMG_GET_ECG_DEFAULT samg_get_ecg_default_
+#define SAMG_SET_EPS_ABS samg_set_eps_abs_
+#define SAMG_GET_EPS_ABS samg_get_eps_abs_
+#define SAMG_SET_EPS_ACCEPT_JAC_UZAWA samg_set_eps_accept_jac_uzawa_
+#define SAMG_GET_EPS_ACCEPT_JAC_UZAWA samg_get_eps_accept_jac_uzawa_
+#define SAMG_SET_EPS_CONVERG_JAC_UZAWA samg_set_eps_converg_jac_uzawa_
+#define SAMG_GET_EPS_CONVERG_JAC_UZAWA samg_get_eps_converg_jac_uzawa_
+#define SAMG_SET_EPS_DD samg_set_eps_dd_
+#define SAMG_GET_EPS_DD samg_get_eps_dd_
+#define SAMG_SET_EPS_DIVERG_JAC_UZAWA samg_set_eps_diverg_jac_uzawa_
+#define SAMG_GET_EPS_DIVERG_JAC_UZAWA samg_get_eps_diverg_jac_uzawa_
+#define SAMG_SET_EPS_DIAG samg_set_eps_diag_
+#define SAMG_GET_EPS_DIAG samg_get_eps_diag_
+#define SAMG_SET_EPS_LSQ samg_set_eps_lsq_
+#define SAMG_GET_EPS_LSQ samg_get_eps_lsq_
+#define SAMG_SET_ETR samg_set_etr_
+#define SAMG_GET_ETR samg_get_etr_
+#define SAMG_SET_ETR_DEFAULT samg_set_etr_default_
+#define SAMG_GET_ETR_DEFAULT samg_get_etr_default_
+#define SAMG_SET_ETR2_SMO samg_set_etr2_smo_
+#define SAMG_GET_ETR2_SMO samg_get_etr2_smo_
+#define SAMG_SET_EWT samg_set_ewt_
+#define SAMG_GET_EWT samg_get_ewt_
+#define SAMG_SET_EWT_DEFAULT samg_set_ewt_default_
+#define SAMG_GET_EWT_DEFAULT samg_get_ewt_default_
+#define SAMG_SET_FACTOR_APP_VAR samg_set_factor_app_var_
+#define SAMG_GET_FACTOR_APP_VAR samg_get_factor_app_var_
+#define SAMG_SET_FACTOR_QUASI_RES samg_set_factor_quasi_res_
+#define SAMG_GET_FACTOR_QUASI_RES samg_get_factor_quasi_res_
+#define SAMG_SET_FACTOR_RES_VAR samg_set_factor_res_var_
+#define SAMG_GET_FACTOR_RES_VAR samg_get_factor_res_var_
+#define SAMG_SET_FACTOR_MATRIX_SCALE samg_set_factor_matrix_scale_
+#define SAMG_GET_FACTOR_MATRIX_SCALE samg_get_factor_matrix_scale_
+#define SAMG_SET_FACTOR_SOL_JAC_UZAWA samg_set_factor_sol_jac_uzawa_
+#define SAMG_GET_FACTOR_SOL_JAC_UZAWA samg_get_factor_sol_jac_uzawa_
+#define SAMG_ISET_FILNAM samg_iset_filnam_
+#define SAMG_IGET_FILNAM samg_iget_filnam_
+#define SAMG_SET_FILNAM samg_set_filnam_
+#define SAMG_GET_FILNAM samg_get_filnam_
+#define SAMG_ISET_FILNAM_DUMP samg_iset_filnam_dump_
+#define SAMG_IGET_FILNAM_DUMP samg_iget_filnam_dump_
+#define SAMG_SET_FILNAM_DUMP samg_set_filnam_dump_
+#define SAMG_GET_FILNAM_DUMP samg_get_filnam_dump_
+#define SAMG_ISET_FILNAM_UZAWA samg_iset_filnam_uzawa_
+#define SAMG_IGET_FILNAM_UZAWA samg_iget_filnam_uzawa_
+#define SAMG_SET_FILNAM_UZAWA samg_set_filnam_uzawa_
+#define SAMG_GET_FILNAM_UZAWA samg_get_filnam_uzawa_
+#define SAMG_SET_FORCE_ACCEL samg_set_force_accel_
+#define SAMG_GET_FORCE_ACCEL samg_get_force_accel_
+#define SAMG_SET_FORCE_ACCEL_2ND samg_set_force_accel_2nd_
+#define SAMG_GET_FORCE_ACCEL_2ND samg_get_force_accel_2nd_
+#define SAMG_SET_FULL_PIVOTING samg_set_full_pivoting_
+#define SAMG_GET_FULL_PIVOTING samg_get_full_pivoting_
+#define SAMG_SET_FULL_SETUP samg_set_full_setup_
+#define SAMG_GET_FULL_SETUP samg_get_full_setup_
+#define SAMG_SET_G_CMPLX_AGG_DEFAULT samg_set_g_cmplx_agg_default_
+#define SAMG_GET_G_CMPLX_AGG_DEFAULT samg_get_g_cmplx_agg_default_
+#define SAMG_SET_G_CMPLX_DEFAULT samg_set_g_cmplx_default_
+#define SAMG_GET_G_CMPLX_DEFAULT samg_get_g_cmplx_default_
+#define SAMG_SET_GALERKIN_TIMER samg_set_galerkin_timer_
+#define SAMG_GET_GALERKIN_TIMER samg_get_galerkin_timer_
+#define SAMG_SET_GLK_MULT_ZEROS samg_set_glk_mult_zeros_
+#define SAMG_GET_GLK_MULT_ZEROS samg_get_glk_mult_zeros_
+#define SAMG_SET_GMAX_MULTIPASS samg_set_gmax_multipass_
+#define SAMG_GET_GMAX_MULTIPASS samg_get_gmax_multipass_
+#define SAMG_SET_IALL_SMO samg_set_iall_smo_
+#define SAMG_GET_IALL_SMO samg_get_iall_smo_
+#define SAMG_SET_IAUTO_STOP samg_set_iauto_stop_
+#define SAMG_GET_IAUTO_STOP samg_get_iauto_stop_
+#define SAMG_SET_IESTIM_SPECT_RADIUS samg_set_iestim_spect_radius_
+#define SAMG_GET_IESTIM_SPECT_RADIUS samg_get_iestim_spect_radius_
+#define SAMG_SET_IESTIM_SMOOTH_NIT samg_set_iestim_smooth_nit_
+#define SAMG_GET_IESTIM_SMOOTH_NIT samg_get_iestim_smooth_nit_
+#define SAMG_SET_ISMOAGG_AGGRESSIVE samg_set_ismoagg_aggressive_
+#define SAMG_GET_ISMOAGG_AGGRESSIVE samg_get_ismoagg_aggressive_
+#define SAMG_SET_ISMOAGG_OVERCORRECTION samg_set_ismoagg_overcorrection_
+#define SAMG_GET_ISMOAGG_OVERCORRECTION samg_get_ismoagg_overcorrection_
+#define SAMG_SET_ISMOAGG_BLOCK_TYP samg_set_ismoagg_block_typ_
+#define SAMG_GET_ISMOAGG_BLOCK_TYP samg_get_ismoagg_block_typ_
+#define SAMG_SET_ISMOAGG_COMPRESSION samg_set_ismoagg_compression_
+#define SAMG_GET_ISMOAGG_COMPRESSION samg_get_ismoagg_compression_
+#define SAMG_SET_ISMOAGG_FILTER_TYP samg_set_ismoagg_filter_typ_
+#define SAMG_GET_ISMOAGG_FILTER_TYP samg_get_ismoagg_filter_typ_
+#define SAMG_SET_ISMOAGG_SMOOTH_TYP samg_set_ismoagg_smooth_typ_
+#define SAMG_GET_ISMOAGG_SMOOTH_TYP samg_get_ismoagg_smooth_typ_
+#define SAMG_SET_ISMOAGG_SMOOTH_NIT samg_set_ismoagg_smooth_nit_
+#define SAMG_GET_ISMOAGG_SMOOTH_NIT samg_get_ismoagg_smooth_nit_
+#define SAMG_SET_ISMOAGG_SMOOTH_NLEV samg_set_ismoagg_smooth_nlev_
+#define SAMG_GET_ISMOAGG_SMOOTH_NLEV samg_get_ismoagg_smooth_nlev_
+#define SAMG_SET_IB_CMPLX samg_set_ib_cmplx_
+#define SAMG_GET_IB_CMPLX samg_get_ib_cmplx_
+#define SAMG_SET_IB_CMPLX_AGG_DEFAULT samg_set_ib_cmplx_agg_default_
+#define SAMG_GET_IB_CMPLX_AGG_DEFAULT samg_get_ib_cmplx_agg_default_
+#define SAMG_SET_IB_CMPLX_DEFAULT samg_set_ib_cmplx_default_
+#define SAMG_GET_IB_CMPLX_DEFAULT samg_get_ib_cmplx_default_
+#define SAMG_SET_IBGS_PIVOT samg_set_ibgs_pivot_
+#define SAMG_GET_IBGS_PIVOT samg_get_ibgs_pivot_
+#define SAMG_SET_ICASE_JAC_UZAWA samg_set_icase_jac_uzawa_
+#define SAMG_GET_ICASE_JAC_UZAWA samg_get_icase_jac_uzawa_
+#define SAMG_SET_ICHECK_SMOINT samg_set_icheck_smoint_
+#define SAMG_GET_ICHECK_SMOINT samg_get_icheck_smoint_
+#define SAMG_SET_ICOLOR_OMP samg_set_icolor_omp_
+#define SAMG_GET_ICOLOR_OMP samg_get_icolor_omp_
+#define SAMG_SET_IORDERED_OMP samg_set_iordered_omp_
+#define SAMG_GET_IORDERED_OMP samg_get_iordered_omp_
+#define SAMG_SET_ICRITS samg_set_icrits_
+#define SAMG_GET_ICRITS samg_get_icrits_
+#define SAMG_SET_IDTEST_UZAWA samg_set_idtest_uzawa_
+#define SAMG_GET_IDTEST_UZAWA samg_get_idtest_uzawa_
+#define SAMG_SET_IHUGE samg_set_ihuge_
+#define SAMG_GET_IHUGE samg_get_ihuge_
+#define SAMG_SET_IJAC_UZAWA samg_set_ijac_uzawa_
+#define SAMG_GET_IJAC_UZAWA samg_get_ijac_uzawa_
+#define SAMG_SET_ILU4ALLSCHWARZ samg_set_ilu4allschwarz_
+#define SAMG_GET_ILU4ALLSCHWARZ samg_get_ilu4allschwarz_
+#define SAMG_SET_ILU_SPEED samg_set_ilu_speed_
+#define SAMG_GET_ILU_SPEED samg_get_ilu_speed_
+#define SAMG_SET_IMPLDO_READ_WRITE_LEN samg_set_impldo_read_write_len_
+#define SAMG_GET_IMPLDO_READ_WRITE_LEN samg_get_impldo_read_write_len_
+#define SAMG_SET_INFO_KEEPMEM samg_set_info_keepmem_
+#define SAMG_GET_INFO_KEEPMEM samg_get_info_keepmem_
+#define SAMG_SET_INNER_ACCEL samg_set_inner_accel_
+#define SAMG_GET_INNER_ACCEL samg_get_inner_accel_
+#define SAMG_SET_IODUMP samg_set_iodump_
+#define SAMG_GET_IODUMP samg_get_iodump_
+#define SAMG_ISET_IOFILE_OPTA samg_iset_iofile_opta_
+#define SAMG_IGET_IOFILE_OPTA samg_iget_iofile_opta_
+#define SAMG_SET_IOFILE_OPTA samg_set_iofile_opta_
+#define SAMG_GET_IOFILE_OPTA samg_get_iofile_opta_
+#define SAMG_ISET_IOFORM samg_iset_ioform_
+#define SAMG_IGET_IOFORM samg_iget_ioform_
+#define SAMG_SET_IOFORM samg_set_ioform_
+#define SAMG_GET_IOFORM samg_get_ioform_
+#define SAMG_SET_IOGRID samg_set_iogrid_
+#define SAMG_GET_IOGRID samg_get_iogrid_
+#define SAMG_SET_IOMOVIE samg_set_iomovie_
+#define SAMG_GET_IOMOVIE samg_get_iomovie_
+#define SAMG_SET_IOSCRATCH_DEFAULT samg_set_ioscratch_default_
+#define SAMG_GET_IOSCRATCH_DEFAULT samg_get_ioscratch_default_
+#define SAMG_SET_IOUNIT_OPTA samg_set_iounit_opta_
+#define SAMG_GET_IOUNIT_OPTA samg_get_iounit_opta_
+#define SAMG_SET_IPASS_MAX_SET samg_set_ipass_max_set_
+#define SAMG_GET_IPASS_MAX_SET samg_get_ipass_max_set_
+#define SAMG_SET_IRESTRICTION_OPENMP samg_set_irestriction_openmp_
+#define SAMG_GET_IRESTRICTION_OPENMP samg_get_irestriction_openmp_
+#define SAMG_SET_IPRESSURE_UZAWA samg_set_ipressure_uzawa_
+#define SAMG_GET_IPRESSURE_UZAWA samg_get_ipressure_uzawa_
+#define SAMG_SET_ISAT_UZAWA samg_set_isat_uzawa_
+#define SAMG_GET_ISAT_UZAWA samg_get_isat_uzawa_
+#define SAMG_SET_ISET_VIO_DD samg_set_iset_vio_dd_
+#define SAMG_GET_ISET_VIO_DD samg_get_iset_vio_dd_
+#define SAMG_SET_ISSTEP_UZAWA samg_set_isstep_uzawa_
+#define SAMG_GET_ISSTEP_UZAWA samg_get_isstep_uzawa_
+#define SAMG_SET_ISTEERING samg_set_isteering_
+#define SAMG_GET_ISTEERING samg_get_isteering_
+#define SAMG_SET_ISWIT3_USER samg_set_iswit3_user_
+#define SAMG_GET_ISWIT3_USER samg_get_iswit3_user_
+#define SAMG_SET_ITER_CHECK samg_set_iter_check_
+#define SAMG_GET_ITER_CHECK samg_get_iter_check_
+#define SAMG_SET_ITER_MATRIX_SCALE samg_set_iter_matrix_scale_
+#define SAMG_GET_ITER_MATRIX_SCALE samg_get_iter_matrix_scale_
+#define SAMG_SET_ITER_PRE samg_set_iter_pre_
+#define SAMG_GET_ITER_PRE samg_get_iter_pre_
+#define SAMG_SET_ITMAX_CONV samg_set_itmax_conv_
+#define SAMG_GET_ITMAX_CONV samg_get_itmax_conv_
+#define SAMG_SET_ITRACE_AMGMAIN samg_set_itrace_amgmain_
+#define SAMG_GET_ITRACE_AMGMAIN samg_get_itrace_amgmain_
+#define SAMG_SET_ITRACELEVEL samg_set_itracelevel_
+#define SAMG_GET_ITRACELEVEL samg_get_itracelevel_
+#define SAMG_SET_ITRACE_CLSOL samg_set_itrace_clsol_
+#define SAMG_GET_ITRACE_CLSOL samg_get_itrace_clsol_
+#define SAMG_SET_ITRACE_CLDENSE samg_set_itrace_cldense_
+#define SAMG_GET_ITRACE_CLDENSE samg_get_itrace_cldense_
+#define SAMG_SET_ITRACE_JAC_UZAWA samg_set_itrace_jac_uzawa_
+#define SAMG_GET_ITRACE_JAC_UZAWA samg_get_itrace_jac_uzawa_
+#define SAMG_SET_ITRACE_MATRIX_STORAGE samg_set_itrace_matrix_storage_
+#define SAMG_GET_ITRACE_MATRIX_STORAGE samg_get_itrace_matrix_storage_
+#define SAMG_SET_ITRACE_SCHWARZ samg_set_itrace_schwarz_
+#define SAMG_GET_ITRACE_SCHWARZ samg_get_itrace_schwarz_
+#define SAMG_SET_ITRACE_SMO samg_set_itrace_smo_
+#define SAMG_GET_ITRACE_SMO samg_get_itrace_smo_
+#define SAMG_SET_ITRACE_SOL samg_set_itrace_sol_
+#define SAMG_GET_ITRACE_SOL samg_get_itrace_sol_
+#define SAMG_SET_ITRACE_SPLIT samg_set_itrace_split_
+#define SAMG_GET_ITRACE_SPLIT samg_get_itrace_split_
+#define SAMG_SET_ITRACE_UZAWA samg_set_itrace_uzawa_
+#define SAMG_GET_ITRACE_UZAWA samg_get_itrace_uzawa_
+#define SAMG_SET_STACKTRACE samg_set_stacktrace_
+#define SAMG_GET_STACKTRACE samg_get_stacktrace_
+#define SAMG_SET_KEEPMEM samg_set_keepmem_
+#define SAMG_GET_KEEPMEM samg_get_keepmem_
+#define SAMG_SET_K_DISABLE_KRYLOV1 samg_set_k_disable_krylov1_
+#define SAMG_GET_K_DISABLE_KRYLOV1 samg_get_k_disable_krylov1_
+#define SAMG_SET_K_DYNCYC samg_set_k_dyncyc_
+#define SAMG_GET_K_DYNCYC samg_get_k_dyncyc_
+#define SAMG_SET_LASTGRID samg_set_lastgrid_
+#define SAMG_GET_LASTGRID samg_get_lastgrid_
+#define SAMG_SET_LEV_COARSENING_TOO_SLOW samg_set_lev_coarsening_too_slow_
+#define SAMG_GET_LEV_COARSENING_TOO_SLOW samg_get_lev_coarsening_too_slow_
+#define SAMG_SET_LEVELS_UZAWA samg_set_levels_uzawa_
+#define SAMG_GET_LEVELS_UZAWA samg_get_levels_uzawa_
+#define SAMG_SET_LEVELX samg_set_levelx_
+#define SAMG_GET_LEVELX samg_get_levelx_
+#define SAMG_SET_LEVELX_2ND samg_set_levelx_2nd_
+#define SAMG_GET_LEVELX_2ND samg_get_levelx_2nd_
+#define SAMG_SET_LFIL_CL samg_set_lfil_cl_
+#define SAMG_GET_LFIL_CL samg_get_lfil_cl_
+#define SAMG_SET_LFIL_2ND samg_set_lfil_2nd_
+#define SAMG_GET_LFIL_2ND samg_get_lfil_2nd_
+#define SAMG_SET_LFIL_SMO samg_set_lfil_smo_
+#define SAMG_GET_LFIL_SMO samg_get_lfil_smo_
+#define SAMG_ISET_LOGFILE samg_iset_logfile_
+#define SAMG_IGET_LOGFILE samg_iget_logfile_
+#define SAMG_SET_LOGFILE samg_set_logfile_
+#define SAMG_GET_LOGFILE samg_get_logfile_
+#define SAMG_SET_LOGIO samg_set_logio_
+#define SAMG_GET_LOGIO samg_get_logio_
+#define SAMG_SET_LU_REUSE samg_set_lu_reuse_
+#define SAMG_GET_LU_REUSE samg_get_lu_reuse_
+#define SAMG_SET_MATRIX_SCALE_RENORM samg_set_matrix_scale_renorm_
+#define SAMG_GET_MATRIX_SCALE_RENORM samg_get_matrix_scale_renorm_
+#define SAMG_SET_MAX_CALLS samg_set_max_calls_
+#define SAMG_GET_MAX_CALLS samg_get_max_calls_
+#define SAMG_SET_MAX_CL_SIZE samg_set_max_cl_size_
+#define SAMG_GET_MAX_CL_SIZE samg_get_max_cl_size_
+#define SAMG_SET_MAXCORR_CLUSTER samg_set_maxcorr_cluster_
+#define SAMG_GET_MAXCORR_CLUSTER samg_get_maxcorr_cluster_
+#define SAMG_SET_MAX_LEVEL samg_set_max_level_
+#define SAMG_GET_MAX_LEVEL samg_get_max_level_
+#define SAMG_SET_MAX_NB_LIST_SIZE samg_set_max_nb_list_size_
+#define SAMG_GET_MAX_NB_LIST_SIZE samg_get_max_nb_list_size_
+#define SAMG_SET_MAXITER_JAC_UZAWA samg_set_maxiter_jac_uzawa_
+#define SAMG_GET_MAXITER_JAC_UZAWA samg_get_maxiter_jac_uzawa_
+#define SAMG_SET_MAXOP_RESTART samg_set_maxop_restart_
+#define SAMG_GET_MAXOP_RESTART samg_get_maxop_restart_
+#define SAMG_SET_MAXRETRY_JAC_UZAWA samg_set_maxretry_jac_uzawa_
+#define SAMG_GET_MAXRETRY_JAC_UZAWA samg_get_maxretry_jac_uzawa_
+#define SAMG_SET_MILU samg_set_milu_
+#define SAMG_GET_MILU samg_get_milu_
+#define SAMG_SET_MIN_CL_SIZE samg_set_min_cl_size_
+#define SAMG_GET_MIN_CL_SIZE samg_get_min_cl_size_
+#define SAMG_SET_MIN_MULTI_SIZE samg_set_min_multi_size_
+#define SAMG_GET_MIN_MULTI_SIZE samg_get_min_multi_size_
+#define SAMG_SET_MINITER_JAC_UZAWA samg_set_miniter_jac_uzawa_
+#define SAMG_GET_MINITER_JAC_UZAWA samg_get_miniter_jac_uzawa_
+#define SAMG_SET_MODE_CNTRL samg_set_mode_cntrl_
+#define SAMG_GET_MODE_CNTRL samg_get_mode_cntrl_
+#define SAMG_SET_MODE_DEBUG samg_set_mode_debug_
+#define SAMG_GET_MODE_DEBUG samg_get_mode_debug_
+#define SAMG_SET_MODE_MESS samg_set_mode_mess_
+#define SAMG_GET_MODE_MESS samg_get_mode_mess_
+#define SAMG_SET_MODIFY_MAT samg_set_modify_mat_
+#define SAMG_GET_MODIFY_MAT samg_get_modify_mat_
+#define SAMG_SET_MULTIPASS_ALLCOUP samg_set_multipass_allcoup_
+#define SAMG_GET_MULTIPASS_ALLCOUP samg_get_multipass_allcoup_
+#define SAMG_SET_NBLK_DEBUG samg_set_nblk_debug_
+#define SAMG_GET_NBLK_DEBUG samg_get_nblk_debug_
+#define SAMG_SET_NBLK_MAX samg_set_nblk_max_
+#define SAMG_GET_NBLK_MAX samg_get_nblk_max_
+#define SAMG_SET_NBLK_OVERLAP samg_set_nblk_overlap_
+#define SAMG_GET_NBLK_OVERLAP samg_get_nblk_overlap_
+#define SAMG_SET_NBLK_RESID samg_set_nblk_resid_
+#define SAMG_GET_NBLK_RESID samg_get_nblk_resid_
+#define SAMG_SET_NBLK_SOLVE samg_set_nblk_solve_
+#define SAMG_GET_NBLK_SOLVE samg_get_nblk_solve_
+#define SAMG_SET_NBLK_SOLVER samg_set_nblk_solver_
+#define SAMG_GET_NBLK_SOLVER samg_get_nblk_solver_
+#define SAMG_SET_NBND_OMEGA samg_set_nbnd_omega_
+#define SAMG_GET_NBND_OMEGA samg_get_nbnd_omega_
+#define SAMG_SET_NBND_OMEGA_UZAWA samg_set_nbnd_omega_uzawa_
+#define SAMG_GET_NBND_OMEGA_UZAWA samg_get_nbnd_omega_uzawa_
+#define SAMG_SET_NBND_SWEEPS samg_set_nbnd_sweeps_
+#define SAMG_GET_NBND_SWEEPS samg_get_nbnd_sweeps_
+#define SAMG_SET_NBND_SWEEPS_UZAWA samg_set_nbnd_sweeps_uzawa_
+#define SAMG_GET_NBND_SWEEPS_UZAWA samg_get_nbnd_sweeps_uzawa_
+#define SAMG_SET_NCFRAMES samg_set_ncframes_
+#define SAMG_GET_NCFRAMES samg_get_ncframes_
+#define SAMG_SET_NCG samg_set_ncg_
+#define SAMG_GET_NCG samg_get_ncg_
+#define SAMG_SET_NCGRAD_DEFAULT samg_set_ncgrad_default_
+#define SAMG_GET_NCGRAD_DEFAULT samg_get_ncgrad_default_
+#define SAMG_SET_NCYC_DEFAULT samg_set_ncyc_default_
+#define SAMG_GET_NCYC_DEFAULT samg_get_ncyc_default_
+#define SAMG_SET_NCYC_MIN samg_set_ncyc_min_
+#define SAMG_GET_NCYC_MIN samg_get_ncyc_min_
+#define SAMG_SET_NCYC_2ND samg_set_ncyc_2nd_
+#define SAMG_GET_NCYC_2ND samg_get_ncyc_2nd_
+#define SAMG_SET_NCYC_START samg_set_ncyc_start_
+#define SAMG_GET_NCYC_START samg_get_ncyc_start_
+#define SAMG_SET_NDYN_SMO samg_set_ndyn_smo_
+#define SAMG_GET_NDYN_SMO samg_get_ndyn_smo_
+#define SAMG_SET_NEG_DIAG samg_set_neg_diag_
+#define SAMG_GET_NEG_DIAG samg_get_neg_diag_
+#define SAMG_SET_NEG_DIAG_BRUTE samg_set_neg_diag_brute_
+#define SAMG_GET_NEG_DIAG_BRUTE samg_get_neg_diag_brute_
+#define SAMG_SET_NEW_ENTRIES samg_set_new_entries_
+#define SAMG_GET_NEW_ENTRIES samg_get_new_entries_
+#define SAMG_SET_NEW_TOPOLOGY samg_set_new_topology_
+#define SAMG_GET_NEW_TOPOLOGY samg_get_new_topology_
+#define SAMG_SET_NILU_REORDER samg_set_nilu_reorder_
+#define SAMG_GET_NILU_REORDER samg_get_nilu_reorder_
+#define SAMG_SET_NINT_ROWSUM1 samg_set_nint_rowsum1_
+#define SAMG_GET_NINT_ROWSUM1 samg_get_nint_rowsum1_
+#define SAMG_SET_NKCYCLE samg_set_nkcycle_
+#define SAMG_GET_NKCYCLE samg_get_nkcycle_
+#define SAMG_SET_NKDIM_DEFAULT samg_set_nkdim_default_
+#define SAMG_GET_NKDIM_DEFAULT samg_get_nkdim_default_
+#define SAMG_SET_NSMOAGG samg_set_nsmoagg_
+#define SAMG_GET_NSMOAGG samg_get_nsmoagg_
+#define SAMG_SET_NSMOAGGLEV samg_set_nsmoagglev_
+#define SAMG_GET_NSMOAGGLEV samg_get_nsmoagglev_
+#define SAMG_SET_NMIN_MATRIX samg_set_nmin_matrix_
+#define SAMG_GET_NMIN_MATRIX samg_get_nmin_matrix_
+#define SAMG_SET_NMIN_MATRIX_RESC samg_set_nmin_matrix_resc_
+#define SAMG_GET_NMIN_MATRIX_RESC samg_get_nmin_matrix_resc_
+#define SAMG_SET_NMIN_VECTOR samg_set_nmin_vector_
+#define SAMG_GET_NMIN_VECTOR samg_get_nmin_vector_
+#define SAMG_SET_NOTALLUNS_CHEAP samg_set_notalluns_cheap_
+#define SAMG_GET_NOTALLUNS_CHEAP samg_get_notalluns_cheap_
+#define SAMG_SET_NP_MOD1 samg_set_np_mod1_
+#define SAMG_GET_NP_MOD1 samg_get_np_mod1_
+#define SAMG_SET_NP_MOD2 samg_set_np_mod2_
+#define SAMG_GET_NP_MOD2 samg_get_np_mod2_
+#define SAMG_SET_NP_OPT samg_set_np_opt_
+#define SAMG_GET_NP_OPT samg_get_np_opt_
+#define SAMG_SET_NPRIM_AT_ALLPNTS samg_set_nprim_at_allpnts_
+#define SAMG_GET_NPRIM_AT_ALLPNTS samg_get_nprim_at_allpnts_
+#define SAMG_SET_NPTMAX samg_set_nptmax_
+#define SAMG_GET_NPTMAX samg_get_nptmax_
+#define SAMG_SET_NPTMN samg_set_nptmn_
+#define SAMG_GET_NPTMN samg_get_nptmn_
+#define SAMG_SET_NRC samg_set_nrc_
+#define SAMG_GET_NRC samg_get_nrc_
+#define SAMG_SET_NRC_EMERGENCY samg_set_nrc_emergency_
+#define SAMG_GET_NRC_EMERGENCY samg_get_nrc_emergency_
+#define SAMG_SET_NRD samg_set_nrd_
+#define SAMG_GET_NRD samg_get_nrd_
+#define SAMG_SET_NRD_2ND samg_set_nrd_2nd_
+#define SAMG_GET_NRD_2ND samg_get_nrd_2nd_
+#define SAMG_SET_NRU samg_set_nru_
+#define SAMG_GET_NRU samg_get_nru_
+#define SAMG_SET_NRU_2ND samg_set_nru_2nd_
+#define SAMG_GET_NRU_2ND samg_get_nru_2nd_
+#define SAMG_SET_NSIMPLE_EMERGENCY samg_set_nsimple_emergency_
+#define SAMG_GET_NSIMPLE_EMERGENCY samg_get_nsimple_emergency_
+#define SAMG_SET_NSOLVE_DEFAULT samg_set_nsolve_default_
+#define SAMG_GET_NSOLVE_DEFAULT samg_get_nsolve_default_
+#define SAMG_SET_NSOLVE_2ND samg_set_nsolve_2nd_
+#define SAMG_GET_NSOLVE_2ND samg_get_nsolve_2nd_
+#define SAMG_SET_NSOLVE_UZAWA samg_set_nsolve_uzawa_
+#define SAMG_GET_NSOLVE_UZAWA samg_get_nsolve_uzawa_
+#define SAMG_SET_NSTAR_TYP samg_set_nstar_typ_
+#define SAMG_GET_NSTAR_TYP samg_get_nstar_typ_
+#define SAMG_SET_NSW_OMEGA_UZAWA samg_set_nsw_omega_uzawa_
+#define SAMG_GET_NSW_OMEGA_UZAWA samg_get_nsw_omega_uzawa_
+#define SAMG_SET_NSW_UZAWA samg_set_nsw_uzawa_
+#define SAMG_GET_NSW_UZAWA samg_get_nsw_uzawa_
+#define SAMG_SET_NTAKE_RES_IN samg_set_ntake_res_in_
+#define SAMG_GET_NTAKE_RES_IN samg_get_ntake_res_in_
+#define SAMG_SET_NTH_RES_SCRATCH samg_set_nth_res_scratch_
+#define SAMG_GET_NTH_RES_SCRATCH samg_get_nth_res_scratch_
+#define SAMG_SET_NTR samg_set_ntr_
+#define SAMG_GET_NTR samg_get_ntr_
+#define SAMG_SET_NTR_PRIM samg_set_ntr_prim_
+#define SAMG_GET_NTR_PRIM samg_get_ntr_prim_
+#define SAMG_SET_NTYP_ACCEL samg_set_ntyp_accel_
+#define SAMG_GET_NTYP_ACCEL samg_get_ntyp_accel_
+#define SAMG_SET_NTYP_GALERKIN samg_set_ntyp_galerkin_
+#define SAMG_GET_NTYP_GALERKIN samg_get_ntyp_galerkin_
+#define SAMG_SET_NUMTRY_MAX_SET samg_set_numtry_max_set_
+#define SAMG_GET_NUMTRY_MAX_SET samg_get_numtry_max_set_
+#define SAMG_SET_NVERSION samg_set_nversion_
+#define SAMG_GET_NVERSION samg_get_nversion_
+#define SAMG_SET_NWT samg_set_nwt_
+#define SAMG_GET_NWT samg_get_nwt_
+#define SAMG_SET_NXTYP_COARSE samg_set_nxtyp_coarse_
+#define SAMG_GET_NXTYP_COARSE samg_get_nxtyp_coarse_
+#define SAMG_SET_OMEGA_JAC_ES_UZAWA samg_set_omega_jac_es_uzawa_
+#define SAMG_GET_OMEGA_JAC_ES_UZAWA samg_get_omega_jac_es_uzawa_
+#define SAMG_SET_OMEGA_JAC_P_UZAWA samg_set_omega_jac_p_uzawa_
+#define SAMG_GET_OMEGA_JAC_P_UZAWA samg_get_omega_jac_p_uzawa_
+#define SAMG_SET_OMEGA_JACOBI samg_set_omega_jacobi_
+#define SAMG_GET_OMEGA_JACOBI samg_get_omega_jacobi_
+#define SAMG_SET_OMEGA_SOR_DO samg_set_omega_sor_do_
+#define SAMG_GET_OMEGA_SOR_DO samg_get_omega_sor_do_
+#define SAMG_SET_OMEGA_SOR_UP samg_set_omega_sor_up_
+#define SAMG_GET_OMEGA_SOR_UP samg_get_omega_sor_up_
+#define SAMG_SET_OMEGA_SMO samg_set_omega_smo_
+#define SAMG_GET_OMEGA_SMO samg_get_omega_smo_
+#define SAMG_SET_OMEGA_UZAWA samg_set_omega_uzawa_
+#define SAMG_GET_OMEGA_UZAWA samg_get_omega_uzawa_
+#define SAMG_ISET_OMP_PARTITION_FILE samg_iset_omp_partition_file_
+#define SAMG_IGET_OMP_PARTITION_FILE samg_iget_omp_partition_file_
+#define SAMG_SET_OMP_PARTITION_FILE samg_set_omp_partition_file_
+#define SAMG_GET_OMP_PARTITION_FILE samg_get_omp_partition_file_
+#define SAMG_SET_OMP_NUM_THREADS_EXTERNAL samg_set_omp_num_threads_external_
+#define SAMG_GET_OMP_NUM_THREADS_EXTERNAL samg_get_omp_num_threads_external_
+#define SAMG_SET_OPT_MATRIX_OPS samg_set_opt_matrix_ops_
+#define SAMG_GET_OPT_MATRIX_OPS samg_get_opt_matrix_ops_
+#define SAMG_SET_P_CMPLX_AGG_DEFAULT samg_set_p_cmplx_agg_default_
+#define SAMG_GET_P_CMPLX_AGG_DEFAULT samg_get_p_cmplx_agg_default_
+#define SAMG_SET_P_CMPLX_DEFAULT samg_set_p_cmplx_default_
+#define SAMG_GET_P_CMPLX_DEFAULT samg_get_p_cmplx_default_
+#define SAMG_SET_PARTIAL_FRAC samg_set_partial_frac_
+#define SAMG_GET_PARTIAL_FRAC samg_get_partial_frac_
+#define SAMG_ISET_PARTITION_FILE samg_iset_partition_file_
+#define SAMG_IGET_PARTITION_FILE samg_iget_partition_file_
+#define SAMG_SET_PARTITION_FILE samg_set_partition_file_
+#define SAMG_GET_PARTITION_FILE samg_get_partition_file_
+#define SAMG_SET_PERF_METER_ENABLED samg_set_perf_meter_enabled_
+#define SAMG_GET_PERF_METER_ENABLED samg_get_perf_meter_enabled_
+#define SAMG_SET_PRIM_NORM samg_set_prim_norm_
+#define SAMG_GET_PRIM_NORM samg_get_prim_norm_
+#define SAMG_SET_PRIM_PRINT samg_set_prim_print_
+#define SAMG_GET_PRIM_PRINT samg_get_prim_print_
+#define SAMG_SET_PRINT_NXTYP_COARSE_MSG samg_set_print_nxtyp_coarse_msg_
+#define SAMG_GET_PRINT_NXTYP_COARSE_MSG samg_get_print_nxtyp_coarse_msg_
+#define SAMG_SET_PRINT_SETUP_ILU_OR_DIRECT samg_set_print_setup_ilu_or_direct_
+#define SAMG_GET_PRINT_SETUP_ILU_OR_DIRECT samg_get_print_setup_ilu_or_direct_
+#define SAMG_SET_PRNT_STAT_SCHWARZ samg_set_prnt_stat_schwarz_
+#define SAMG_GET_PRNT_STAT_SCHWARZ samg_get_prnt_stat_schwarz_
+#define SAMG_SET_REDUCT_KCYCLE samg_set_reduct_kcycle_
+#define SAMG_GET_REDUCT_KCYCLE samg_get_reduct_kcycle_
+#define SAMG_SET_RCONDX samg_set_rcondx_
+#define SAMG_GET_RCONDX samg_get_rcondx_
+#define SAMG_SET_READ_UZAWA_PARMS samg_set_read_uzawa_parms_
+#define SAMG_GET_READ_UZAWA_PARMS samg_get_read_uzawa_parms_
+#define SAMG_SET_READ_MARIAN_COARSENING samg_set_read_marian_coarsening_
+#define SAMG_GET_READ_MARIAN_COARSENING samg_get_read_marian_coarsening_
+#define SAMG_SET_REFRESH_CALLED samg_set_refresh_called_
+#define SAMG_GET_REFRESH_CALLED samg_get_refresh_called_
+#define SAMG_SET_RHO_MIN samg_set_rho_min_
+#define SAMG_GET_RHO_MIN samg_get_rho_min_
+#define SAMG_SET_RHO_OK samg_set_rho_ok_
+#define SAMG_GET_RHO_OK samg_get_rho_ok_
+#define SAMG_SET_SHOW_UN_RES samg_set_show_un_res_
+#define SAMG_GET_SHOW_UN_RES samg_get_show_un_res_
+#define SAMG_ISET_SCRATCHFILE samg_iset_scratchfile_
+#define SAMG_IGET_SCRATCHFILE samg_iget_scratchfile_
+#define SAMG_SET_SCRATCHFILE samg_set_scratchfile_
+#define SAMG_GET_SCRATCHFILE samg_get_scratchfile_
+#define SAMG_SET_SLOW_COARSENING samg_set_slow_coarsening_
+#define SAMG_GET_SLOW_COARSENING samg_get_slow_coarsening_
+#define SAMG_SET_STABILITY samg_set_stability_
+#define SAMG_GET_STABILITY samg_get_stability_
+#define SAMG_SET_STRUCT_IDENT samg_set_struct_ident_
+#define SAMG_GET_STRUCT_IDENT samg_get_struct_ident_
+#define SAMG_SET_TAU_UZAWA samg_set_tau_uzawa_
+#define SAMG_GET_TAU_UZAWA samg_get_tau_uzawa_
+#define SAMG_SET_TERM_COARSENING samg_set_term_coarsening_
+#define SAMG_GET_TERM_COARSENING samg_get_term_coarsening_
+#define SAMG_SET_TRACKMEM samg_set_trackmem_
+#define SAMG_GET_TRACKMEM samg_get_trackmem_
+#define SAMG_SET_TRACK_AP_P samg_set_track_ap_p_
+#define SAMG_GET_TRACK_AP_P samg_get_track_ap_p_
+#define SAMG_SET_USE_IC samg_set_use_ic_
+#define SAMG_GET_USE_IC samg_get_use_ic_
+#define SAMG_SET_VIO_DD samg_set_vio_dd_
+#define SAMG_GET_VIO_DD samg_get_vio_dd_
+#define SAMG_SET_W_AVRGE_AGG_DEFAULT samg_set_w_avrge_agg_default_
+#define SAMG_GET_W_AVRGE_AGG_DEFAULT samg_get_w_avrge_agg_default_
+#define SAMG_SET_W_AVRGE_DEFAULT samg_set_w_avrge_default_
+#define SAMG_GET_W_AVRGE_DEFAULT samg_get_w_avrge_default_
+#define SAMG_SET_WCOUPLED samg_set_wcoupled_
+#define SAMG_GET_WCOUPLED samg_get_wcoupled_
+#define SAMG_SET_WFT samg_set_wft_
+#define SAMG_GET_WFT samg_get_wft_
+#define SAMG_SET_WRITE_CLUSTER_ID samg_set_write_cluster_id_
+#define SAMG_GET_WRITE_CLUSTER_ID samg_get_write_cluster_id_
+#define SAMG_SET_WTSL samg_set_wtsl_
+#define SAMG_GET_WTSL samg_get_wtsl_
+#endif
+
+////////////////
+/* interfaces */
+////////////////
+
+// for resetting secondary / all hidden parameters
+extern "C" {
+SAMG_C_CALLCONV SAMG_RESET_HIDDEN(void);
+}
+
+// samg's internal timing routines
+extern "C" {
+SAMG_C_CALLCONV SAMG_CTIME(float * time);
+SAMG_C_CALLCONV SAMG_CPUTIME(float * time);
+SAMG_C_CALLCONV SAMG_ALL_ERRORINFO(char * ch, int len);
+}
+
+// samg and samg_main routines
+extern "C"
+SAMG_C_CALLCONV SAMG(int * nnu, int * nna, int * nsys,
+          int * ia, int * ja, double * a, double * f, double * u,
+          int * iu, int * ndiu, int * ip, int * ndip,
+          int * matrix, int * iscale,
+          double * res_in, double * res_out, int * ncyc_done, int * ierr,
+          int * nsolve, int * ifirst, double * eps, int * ncyc,
+          int * iswtch,
+          double * a_cmplx, double * g_cmplx, double * p_cmplx, double * w_avrge,
+          double * chktol, int * idump, int * iout);
+extern "C"
+SAMG_C_CALLCONV SAMG_MAIN(int * nnu, int * nna, int * nsys,
+          int * ia, int * ja, double * a, double * f, double * u,
+          int * iu, int * ndiu, int * ip, int * ndip,
+          int * matrix, int * iscale,
+          double * res_in, double * res_out, int * ncyc_done, int * ierr,
+          int * nsolve, int * ifirst, double * eps, int * ncyc,
+          int * iswtch,
+          double * a_cmplx, double * g_cmplx, double * p_cmplx, double * w_avrge,
+          double * chktol, int * idump, int * iout);
+extern "C"
+SAMG_C_CALLCONV SAMG_DC(int * nnu, int * nna_i, int * nsys, int * ia_i, int * ja_i,
+                      double * a_i, double * f_o, double * u_o, int * iu, int * ndiu,
+                      int * ip, int * ndip, int * matrix, int * iscale, 
+                      double * res_in_o, double * res_out_o, int * ncyc_done_o, 
+                      int * ierr, int * nsolve, int * ifirst, double * eps_i, 
+                      int * ncyc, int * iswtch, double * a_cmplx, double * g_cmplx, 
+                      double * p_cmplx, double * w_avrge, double * chktol, 
+                      int * idump, int * iout, int * nna_o, int * ia_o, int * ja_o, 
+                      double * a_o, int * nkdim_dc, double * eps_dc, int * ncycle_dc );
+
+// samg's simple interface
+extern "C"
+SAMG_C_CALLCONV SAMG_SIMPLE(int * iounit, int * nnu, int * nna, int * nsys,
+          int * ia, int * ja, double * a, double * f, double * u,
+          int * iu, int * ndiu, int * ip, int * ndip, int * matrix, int * iscale,
+          double * res_in, double * res_out, int * ncyc_done, int * ierr);
+
+// certain other routines
+extern "C"
+{
+SAMG_C_CALLCONV SAMG_LEAVE(int * val);
+SAMG_C_CALLCONV SAMG_REFRESH(int * val);
+SAMG_C_CALLCONV SAMG_CLEANUP(void);
+SAMG_C_CALLCONV SAMG_GET_COMPLEXITIES(int * istat, double * valcmplx);
+SAMG_C_CALLCONV SAMG_GET_NFLAG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LEVELS_CREATED(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MEM_ACTIVE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LEV_SIZES(int *nlev, int * lev_sizes);
+SAMG_C_CALLCONV SAMG_GET_NUM_SMOOTH_VECTORS(int * nsmooth);
+SAMG_C_CALLCONV SAMG_GET_TIME_AND_MEM(int *istat, double *valtime, double *valmem);
+SAMG_C_CALLCONV SAMG_EXTRAPRINT(void);
+SAMG_C_CALLCONV SAMG_CVEC_ALLOC(int *nproc, int *val1, int *val2);
+SAMG_C_CALLCONV SAMG_CVEC_DEALLOC(int *val);
+SAMG_C_CALLCONV SAMG_CVEC_SET(int *val1, int *val2, int *val3);
+SAMG_C_CALLCONV SAMG_CVEC_GET(int *val1, int *val2, int *val3);
+SAMG_C_CALLCONV SAMG_PERFINIT(void);
+SAMG_C_CALLCONV SAMG_PERFOUT(void);
+SAMG_C_CALLCONV SAMG_PARALLEL_LIB(int * ipara);
+SAMG_C_CALLCONV SAMG_LRATIO(int * lratio);
+SAMG_C_CALLCONV SAMG_MEM_INFO(void);
+SAMG_C_CALLCONV SAMG_ADDTIME(float * tres, float * told, float * tnew);
+SAMG_C_CALLCONV SAMG_COMPTIME(float * tres, float * told, float * tnew);
+SAMG_C_CALLCONV SAMG_COPY_GALERKIN(int * nnu, int * nna, double * a, int * ia, int * ja, int * levels_user  );
+SAMG_C_CALLCONV SAMG_OMEGA_JACOBI_ALLOC(int * nsys, int * ierr);
+SAMG_C_CALLCONV SAMG_OMEGA_JACOBI_SET(int * npos, double * val, int * ierr);
+SAMG_C_CALLCONV SAMG_OMEGA_JACOBI_DEALLOC(int * ierr);
+SAMG_C_CALLCONV SAMG_CURRENT_RESIDUAL(int *ncycle, double *residual);
+SAMG_C_CALLCONV SAMG_OPEN_LOGFILE(bool *opened_file, int *ierr);
+SAMG_C_CALLCONV SAMG_CLOSE_LOGFILE(int *ierr);
+SAMG_C_CALLCONV SAMG_COO_VEC_SET(int *i, double *x, double * y, double * z, int * ierr);
+SAMG_C_CALLCONV SAMG_COO_VEC_ALLOC(int *ndim, int *nnu, int * ierr);
+SAMG_C_CALLCONV SAMG_COO_VEC_DEALLOC(int * ierr);
+SAMG_C_CALLCONV SAMG_IDEC(int * int0, int * nnum, int * ndigit, int * iarr);
+SAMG_C_CALLCONV SAMG_PROPOSE_NSYS_ISCALE_IU(int * iscale_new,int * iu_new,int * nsys_new,
+                  int * iout_level,int * io, 
+                  int * imin,int * imax,int * nna,int * iscale,int * matrix,int * iu,int * nsys, 
+                  int * ia, int * ja, double * a, int * imodified, 
+                  int * ic_set_strategy,int * ierr);
+SAMG_C_CALLCONV SAMG_SMOOTH_VECTOR_INIT(int * nnu, int * ndrbm, int * ierr);
+SAMG_C_CALLCONV SAMG_SMOOTH_VECTOR_SET(int * i, int * j, double * val, int * ierr);
+SAMG_C_CALLCONV XSAMG(int * nnu, int * nna, int * nsys,
+                int * ia, int * ja, double * a, double * f, double * u,
+                int * iu, int * ndiu, int * ip, int * ndip,
+                int * matrix, int * iscale,
+                double * res_in, double * res_out, int * ncyc_done, int * ierr,
+                int * nsolve, int * ifirst, double * eps, int * ncyc,
+                int * iswtch,
+                double * a_cmplx, double * g_cmplx, double * p_cmplx, double * w_avrge,
+                double * chktol, int * idump, int * iout);
+SAMG_C_CALLCONV XSAMG_DC(int * nnu, int * nna_i, int * nsys, int * ia_i, int * ja_i,
+                      double * a_i, double * f_o, double * u_o, int * iu, int * ndiu,
+                      int * ip, int * ndip, int * matrix, int * iscale, 
+                      double * res_in_o, double * res_out_o, int * ncyc_done_o, 
+                      int * ierr, int * nsolve, int * ifirst, double * eps_i, 
+                      int * ncyc, int * iswtch, double * a_cmplx, double * g_cmplx, 
+                      double * p_cmplx, double * w_avrge, double * chktol, 
+                      int * idump, int * iout, int * nna_o, int * ia_o, int * ja_o, 
+                      double * a_o, int * nkdim_dc, double * eps_dc, int * ncycle_dc );
+SAMG_C_CALLCONV XSAMG_START(int * icase,     int * mpiinitialize,int * mpifinalize,
+                            int * nulldevice,int * ierr);
+SAMG_C_CALLCONV XSAMG_START_IUM(int *  icase,int *  mpiinitialize,int *  mpifinalize,
+                               int *  ium,int *  nd,int *  nulldevice,int *  ierr);
+SAMG_C_CALLCONV XSAMG_START_SOLVER(int * operating_system,int * host_worker_model,
+           int * io_units,int * n_units,int * host_ok,int * slave_ok,int * error_code);
+SAMG_C_CALLCONV XSAMG_END_SOLVER(int * ierr);
+SAMG_C_CALLCONV XSAMG_END(int * mpifinalize, int * ierr);
+SAMG_C_CALLCONV XSAMG_GET_LOGIO(int * io);
+SAMG_C_CALLCONV XSAMG_GET_SLAVE_RETURNCODE(int * iret);
+SAMG_C_CALLCONV XSAMG_PROCESS_INFO(int * myrank,int * nprocs,int * nprocs_used);
+SAMG_C_CALLCONV XSAMG_GET_INTERNAL_TIMER(float * tim);
+SAMG_C_CALLCONV XSAMG_MPI_INIT(int *ierr);
+SAMG_C_CALLCONV XSAMG_MPI_FINALIZE(int *ierr);
+SAMG_C_CALLCONV XSAMG_MPI_COMM_RANK(int * mcommworld, int * myrank, int *ierr);
+SAMG_C_CALLCONV XSAMG_GET_MPI_COMM_WORLD(int * mcommworld);
+SAMG_C_CALLCONV XSAMG_GET_PARALLEL_RUN(int *ierr);
+SAMG_C_CALLCONV XSAMG_IO_SETTINGS(int * iunit,int * icase,int * ioutcase,int * ium,
+                                  int * nd,int * ierr);
+SAMG_C_CALLCONV XSAMG_IO_SETTINGS2(int * iunit,int * myrank,int * icase,int * ioutcase, 
+                                   int * ium,int * nd,int * ierr);
+SAMG_C_CALLCONV XSAMG_LAST_MSG(int * nprocs,int * nprocs_used,int * myrank);
+SAMG_C_CALLCONV XSAMG_READ_CONFIG(int * iunit,int * icase,int * mpiinitialize,
+                      int * mpifinalize,int * ioutcase,int * nulldevice,int * ierr);
+SAMG_C_CALLCONV XSAMG_PRINT_INTERNAL_TIMER(float * tamg,int * ium);
+SAMG_C_CALLCONV XSAMG_ERROR_INFO(int * ierr);
+SAMG_C_CALLCONV XSAMG_GET_IERR_ON_TAG_STOP(int * ierr);
+SAMG_C_CALLCONV XSAMG_CONFIGFILE_MISSING(void);
+SAMG_C_CALLCONV XSAMG_LEAVE(int * ierr);
+SAMG_C_CALLCONV XSAMG_CLEANUP(void);
+}
+
+// routines for setting single parameters
+// setting character strings might be a problem for some compilers
+// the below variant with two arguments works, e.g., for Intel Fortran for Windows 8.x, ...
+// for other compilers, add an int *length2 ...
+extern "C"
+{
+SAMG_C_CALLCONV SAMG_SET_A_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_A_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_A_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_A_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_ALLOW_FILNAM_IN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ALLOW_FILNAM_IN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ALLOW_PRIVATE_IN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ALLOW_PRIVATE_IN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ALLOW_ELIM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ALLOW_ELIM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ALLUNS_AT_ALLPNTS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ALLUNS_AT_ALLPNTS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_B_CMPLX(double *dval);
+SAMG_C_CALLCONV SAMG_GET_B_CMPLX(double *dval);
+SAMG_C_CALLCONV SAMG_SET_B_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_B_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_B_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_B_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_BACKUP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_BACKUP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_BLK_FILLEXP(double *dval);
+SAMG_C_CALLCONV SAMG_GET_BLK_FILLEXP(double *dval);
+SAMG_C_CALLCONV SAMG_SET_BLK_STAB(double *dval);
+SAMG_C_CALLCONV SAMG_GET_BLK_STAB(double *dval);
+SAMG_C_CALLCONV SAMG_SET_BLOCK_SCALE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_BLOCK_SCALE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_BLOCK_SCALE2(int *ival);
+SAMG_C_CALLCONV SAMG_GET_BLOCK_SCALE2(int *ival);
+SAMG_C_CALLCONV SAMG_ISET_BND_PARTITION_FILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_BND_PARTITION_FILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_BND_PARTITION_FILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_BND_PARTITION_FILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_CHECK_ALLPNTS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CHECK_ALLPNTS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CHECK_ORDER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CHECK_ORDER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_CPL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_CPL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_ORDER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_ORDER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_LEVEL_DEP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_LEVEL_DEP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_AUTO_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_AUTO_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_PROC_BORDER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_PROC_BORDER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_QUALITY_MEASURE(double *dval);
+SAMG_C_CALLCONV SAMG_GET_CL_QUALITY_MEASURE(double *dval);
+SAMG_C_CALLCONV SAMG_SET_CL_GLOBAL_QUALITY(double *dval);
+SAMG_C_CALLCONV SAMG_GET_CL_GLOBAL_QUALITY(double *dval);
+SAMG_C_CALLCONV SAMG_SET_CL_OMP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_OMP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CL_CMK_REORDER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CL_CMK_REORDER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CLSOLVER_FINEST(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CLSOLVER_FINEST(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CLDENSE_CTRL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CLDENSE_CTRL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_ENFORCE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_ENFORCE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_LOGFILE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_LOGFILE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_METHOD(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_METHOD(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_RELEASE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_RELEASE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_RES_DIFF(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_RES_DIFF(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_RETRY_ITER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_RETRY_ITER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CNTRL_STEADY(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CNTRL_STEADY(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CONV_STOP(double *dval);
+SAMG_C_CALLCONV SAMG_GET_CONV_STOP(double *dval);
+SAMG_C_CALLCONV SAMG_SET_CSET_LASTPNT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_LASTPNT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CSET_LESSVARS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_LESSVARS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CSET_LONGROW(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_LONGROW(int *ival);
+SAMG_C_CALLCONV SAMG_ISET_CSET_READ(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_CSET_READ(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_CSET_READ(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_CSET_READ(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_CSET_ZERODIAG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_ZERODIAG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CSET_UNKNOWN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_UNKNOWN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CSET_UNKNOWN1(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_UNKNOWN1(int *ival);
+SAMG_C_CALLCONV SAMG_SET_CSET_UNKNOWN2(int *ival);
+SAMG_C_CALLCONV SAMG_GET_CSET_UNKNOWN2(int *ival);
+SAMG_C_CALLCONV SAMG_SET_DELTA_MILU(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DELTA_MILU(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DENSX(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DENSX(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DIVERGENCE(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DIVERGENCE(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DROPTOL(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DROPTOL(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DROPTOL_CL(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DROPTOL_CL(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DROPTOL_2ND(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DROPTOL_2ND(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DROPTOL_SMO(double *dval);
+SAMG_C_CALLCONV SAMG_GET_DROPTOL_SMO(double *dval);
+SAMG_C_CALLCONV SAMG_SET_DUMP_CORRECTW(int *ival);
+SAMG_C_CALLCONV SAMG_GET_DUMP_CORRECTW(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ECG(double *dval);
+SAMG_C_CALLCONV SAMG_GET_ECG(double *dval);
+SAMG_C_CALLCONV SAMG_SET_ECG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_ECG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_ABS(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_ABS(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_ACCEPT_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_ACCEPT_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_CONVERG_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_CONVERG_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_DD(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_DD(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_DIVERG_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_DIVERG_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_DIAG(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_DIAG(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EPS_LSQ(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EPS_LSQ(double *dval);
+SAMG_C_CALLCONV SAMG_SET_ETR(double *dval);
+SAMG_C_CALLCONV SAMG_GET_ETR(double *dval);
+SAMG_C_CALLCONV SAMG_SET_ETR_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_ETR_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_ETR2_SMO(double *dval);
+SAMG_C_CALLCONV SAMG_GET_ETR2_SMO(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EWT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EWT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_EWT_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_EWT_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_FACTOR_APP_VAR(double *dval);
+SAMG_C_CALLCONV SAMG_GET_FACTOR_APP_VAR(double *dval);
+SAMG_C_CALLCONV SAMG_SET_FACTOR_QUASI_RES(double *dval);
+SAMG_C_CALLCONV SAMG_GET_FACTOR_QUASI_RES(double *dval);
+SAMG_C_CALLCONV SAMG_SET_FACTOR_RES_VAR(double *dval);
+SAMG_C_CALLCONV SAMG_GET_FACTOR_RES_VAR(double *dval);
+SAMG_C_CALLCONV SAMG_SET_FACTOR_MATRIX_SCALE(double *dval);
+SAMG_C_CALLCONV SAMG_GET_FACTOR_MATRIX_SCALE(double *dval);
+SAMG_C_CALLCONV SAMG_SET_FACTOR_SOL_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_FACTOR_SOL_JAC_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_ISET_FILNAM(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_FILNAM(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_FILNAM(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_FILNAM(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_ISET_FILNAM_DUMP(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_FILNAM_DUMP(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_FILNAM_DUMP(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_FILNAM_DUMP(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_ISET_FILNAM_UZAWA(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_FILNAM_UZAWA(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_FILNAM_UZAWA(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_FILNAM_UZAWA(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_FORCE_ACCEL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_FORCE_ACCEL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_FORCE_ACCEL_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_FORCE_ACCEL_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_FULL_PIVOTING(int *ival);
+SAMG_C_CALLCONV SAMG_GET_FULL_PIVOTING(int *ival);
+SAMG_C_CALLCONV SAMG_SET_FULL_SETUP(double *dval);
+SAMG_C_CALLCONV SAMG_GET_FULL_SETUP(double *dval);
+SAMG_C_CALLCONV SAMG_SET_G_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_G_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_G_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_G_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_GALERKIN_TIMER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_GALERKIN_TIMER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_GLK_MULT_ZEROS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_GLK_MULT_ZEROS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_GMAX_MULTIPASS(double *dval);
+SAMG_C_CALLCONV SAMG_GET_GMAX_MULTIPASS(double *dval);
+SAMG_C_CALLCONV SAMG_SET_IALL_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IALL_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IAUTO_STOP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IAUTO_STOP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IESTIM_SPECT_RADIUS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IESTIM_SPECT_RADIUS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IESTIM_SMOOTH_NIT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IESTIM_SMOOTH_NIT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_AGGRESSIVE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_AGGRESSIVE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_OVERCORRECTION(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_OVERCORRECTION(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_BLOCK_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_BLOCK_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_COMPRESSION(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_COMPRESSION(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_FILTER_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_FILTER_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_SMOOTH_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_SMOOTH_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_SMOOTH_NIT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_SMOOTH_NIT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISMOAGG_SMOOTH_NLEV(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISMOAGG_SMOOTH_NLEV(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IB_CMPLX(double *dval);
+SAMG_C_CALLCONV SAMG_GET_IB_CMPLX(double *dval);
+SAMG_C_CALLCONV SAMG_SET_IB_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_IB_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_IB_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_IB_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_IBGS_PIVOT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IBGS_PIVOT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ICASE_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ICASE_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ICHECK_SMOINT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ICHECK_SMOINT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ICOLOR_OMP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ICOLOR_OMP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IORDERED_OMP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IORDERED_OMP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ICRITS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ICRITS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IDTEST_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IDTEST_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IHUGE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IHUGE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IJAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IJAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ILU4ALLSCHWARZ(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ILU4ALLSCHWARZ(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ILU_SPEED(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ILU_SPEED(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IMPLDO_READ_WRITE_LEN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IMPLDO_READ_WRITE_LEN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_INFO_KEEPMEM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_INFO_KEEPMEM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_INNER_ACCEL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_INNER_ACCEL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IODUMP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IODUMP(int *ival);
+SAMG_C_CALLCONV SAMG_ISET_IOFILE_OPTA(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_IOFILE_OPTA(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_IOFILE_OPTA(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_IOFILE_OPTA(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_ISET_IOFORM(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_IOFORM(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_IOFORM(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_IOFORM(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_IOGRID(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IOGRID(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IOMOVIE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IOMOVIE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IOSCRATCH_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IOSCRATCH_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IOUNIT_OPTA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IOUNIT_OPTA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IPASS_MAX_SET(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IPASS_MAX_SET(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IRESTRICTION_OPENMP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IRESTRICTION_OPENMP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_IPRESSURE_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_IPRESSURE_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISAT_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISAT_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISET_VIO_DD(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISET_VIO_DD(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISSTEP_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISSTEP_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISTEERING(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISTEERING(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ISWIT3_USER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ISWIT3_USER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITER_CHECK(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITER_CHECK(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITER_MATRIX_SCALE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITER_MATRIX_SCALE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITER_PRE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITER_PRE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITMAX_CONV(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITMAX_CONV(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_AMGMAIN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_AMGMAIN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACELEVEL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACELEVEL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_CLSOL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_CLSOL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_CLDENSE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_CLDENSE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_MATRIX_STORAGE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_MATRIX_STORAGE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_SCHWARZ(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_SCHWARZ(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_SOL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_SOL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_SPLIT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_SPLIT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_ITRACE_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_ITRACE_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_STACKTRACE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_STACKTRACE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_KEEPMEM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_KEEPMEM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_K_DISABLE_KRYLOV1(int *ival);
+SAMG_C_CALLCONV SAMG_GET_K_DISABLE_KRYLOV1(int *ival);
+SAMG_C_CALLCONV SAMG_SET_K_DYNCYC(int *ival);
+SAMG_C_CALLCONV SAMG_GET_K_DYNCYC(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LASTGRID(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LASTGRID(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LEV_COARSENING_TOO_SLOW(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LEV_COARSENING_TOO_SLOW(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LEVELS_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LEVELS_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LEVELX(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LEVELX(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LEVELX_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LEVELX_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LFIL_CL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LFIL_CL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LFIL_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LFIL_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LFIL_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LFIL_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_ISET_LOGFILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_LOGFILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_LOGFILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_LOGFILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_LOGIO(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LOGIO(int *ival);
+SAMG_C_CALLCONV SAMG_SET_LU_REUSE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_LU_REUSE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MATRIX_SCALE_RENORM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MATRIX_SCALE_RENORM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAX_CALLS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAX_CALLS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAX_CL_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAX_CL_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAXCORR_CLUSTER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAXCORR_CLUSTER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAX_LEVEL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAX_LEVEL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAX_NB_LIST_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAX_NB_LIST_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAXITER_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAXITER_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAXOP_RESTART(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAXOP_RESTART(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MAXRETRY_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MAXRETRY_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MILU(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MILU(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MIN_CL_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MIN_CL_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MIN_MULTI_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MIN_MULTI_SIZE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MINITER_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MINITER_JAC_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MODE_CNTRL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MODE_CNTRL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MODE_DEBUG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MODE_DEBUG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MODE_MESS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MODE_MESS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MODIFY_MAT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MODIFY_MAT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_MULTIPASS_ALLCOUP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_MULTIPASS_ALLCOUP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBLK_DEBUG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBLK_DEBUG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBLK_MAX(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBLK_MAX(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBLK_OVERLAP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBLK_OVERLAP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBLK_RESID(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBLK_RESID(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBLK_SOLVE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBLK_SOLVE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBLK_SOLVER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBLK_SOLVER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBND_OMEGA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBND_OMEGA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBND_OMEGA_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBND_OMEGA_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBND_SWEEPS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBND_SWEEPS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NBND_SWEEPS_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NBND_SWEEPS_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCFRAMES(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCFRAMES(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCGRAD_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCGRAD_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCYC_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCYC_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCYC_MIN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCYC_MIN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCYC_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCYC_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NCYC_START(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NCYC_START(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NDYN_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NDYN_SMO(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NEG_DIAG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NEG_DIAG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NEG_DIAG_BRUTE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NEG_DIAG_BRUTE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NEW_ENTRIES(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NEW_ENTRIES(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NEW_TOPOLOGY(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NEW_TOPOLOGY(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NILU_REORDER(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NILU_REORDER(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NINT_ROWSUM1(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NINT_ROWSUM1(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NKCYCLE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NKCYCLE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NKDIM_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NKDIM_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSMOAGG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSMOAGG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSMOAGGLEV(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSMOAGGLEV(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NMIN_MATRIX(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NMIN_MATRIX(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NMIN_MATRIX_RESC(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NMIN_MATRIX_RESC(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NMIN_VECTOR(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NMIN_VECTOR(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NOTALLUNS_CHEAP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NOTALLUNS_CHEAP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NP_MOD1(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NP_MOD1(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NP_MOD2(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NP_MOD2(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NP_OPT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NP_OPT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NPRIM_AT_ALLPNTS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NPRIM_AT_ALLPNTS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NPTMAX(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NPTMAX(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NPTMN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NPTMN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NRC(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NRC(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NRC_EMERGENCY(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NRC_EMERGENCY(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NRD(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NRD(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NRD_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NRD_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NRU(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NRU(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NRU_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NRU_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSIMPLE_EMERGENCY(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSIMPLE_EMERGENCY(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSOLVE_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSOLVE_DEFAULT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSOLVE_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSOLVE_2ND(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSOLVE_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSOLVE_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSTAR_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSTAR_TYP(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSW_OMEGA_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSW_OMEGA_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NSW_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NSW_UZAWA(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NTAKE_RES_IN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NTAKE_RES_IN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NTH_RES_SCRATCH(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NTH_RES_SCRATCH(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NTR(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NTR(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NTR_PRIM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NTR_PRIM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NTYP_ACCEL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NTYP_ACCEL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NTYP_GALERKIN(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NTYP_GALERKIN(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NUMTRY_MAX_SET(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NUMTRY_MAX_SET(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NVERSION(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NVERSION(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NWT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NWT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_NXTYP_COARSE(int *ival);
+SAMG_C_CALLCONV SAMG_GET_NXTYP_COARSE(int *ival);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_JAC_ES_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_JAC_ES_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_JAC_P_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_JAC_P_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_JACOBI(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_JACOBI(double *dval);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_SOR_DO(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_SOR_DO(double *dval);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_SOR_UP(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_SOR_UP(double *dval);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_SMO(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_SMO(double *dval);
+SAMG_C_CALLCONV SAMG_SET_OMEGA_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_OMEGA_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_ISET_OMP_PARTITION_FILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_OMP_PARTITION_FILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_OMP_PARTITION_FILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_OMP_PARTITION_FILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_OMP_NUM_THREADS_EXTERNAL(int *ival);
+SAMG_C_CALLCONV SAMG_GET_OMP_NUM_THREADS_EXTERNAL(int *ival);
+SAMG_C_CALLCONV SAMG_SET_OPT_MATRIX_OPS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_OPT_MATRIX_OPS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_P_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_P_CMPLX_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_P_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_P_CMPLX_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_PARTIAL_FRAC(double *dval);
+SAMG_C_CALLCONV SAMG_GET_PARTIAL_FRAC(double *dval);
+SAMG_C_CALLCONV SAMG_ISET_PARTITION_FILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_PARTITION_FILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_PARTITION_FILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_PARTITION_FILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_PERF_METER_ENABLED(int *ival);
+SAMG_C_CALLCONV SAMG_GET_PERF_METER_ENABLED(int *ival);
+SAMG_C_CALLCONV SAMG_SET_PRIM_NORM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_PRIM_NORM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_PRIM_PRINT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_PRIM_PRINT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_PRINT_NXTYP_COARSE_MSG(int *ival);
+SAMG_C_CALLCONV SAMG_GET_PRINT_NXTYP_COARSE_MSG(int *ival);
+SAMG_C_CALLCONV SAMG_SET_PRINT_SETUP_ILU_OR_DIRECT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_PRINT_SETUP_ILU_OR_DIRECT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_PRNT_STAT_SCHWARZ(int *ival);
+SAMG_C_CALLCONV SAMG_GET_PRNT_STAT_SCHWARZ(int *ival);
+SAMG_C_CALLCONV SAMG_SET_REDUCT_KCYCLE(double *dval);
+SAMG_C_CALLCONV SAMG_GET_REDUCT_KCYCLE(double *dval);
+SAMG_C_CALLCONV SAMG_SET_RCONDX(double *dval);
+SAMG_C_CALLCONV SAMG_GET_RCONDX(double *dval);
+SAMG_C_CALLCONV SAMG_SET_READ_UZAWA_PARMS(int *ival);
+SAMG_C_CALLCONV SAMG_GET_READ_UZAWA_PARMS(int *ival);
+SAMG_C_CALLCONV SAMG_SET_READ_MARIAN_COARSENING(int *ival);
+SAMG_C_CALLCONV SAMG_GET_READ_MARIAN_COARSENING(int *ival);
+SAMG_C_CALLCONV SAMG_SET_REFRESH_CALLED(int *ival);
+SAMG_C_CALLCONV SAMG_GET_REFRESH_CALLED(int *ival);
+SAMG_C_CALLCONV SAMG_SET_RHO_MIN(double *dval);
+SAMG_C_CALLCONV SAMG_GET_RHO_MIN(double *dval);
+SAMG_C_CALLCONV SAMG_SET_RHO_OK(double *dval);
+SAMG_C_CALLCONV SAMG_GET_RHO_OK(double *dval);
+SAMG_C_CALLCONV SAMG_SET_SHOW_UN_RES(int *ival);
+SAMG_C_CALLCONV SAMG_GET_SHOW_UN_RES(int *ival);
+SAMG_C_CALLCONV SAMG_ISET_SCRATCHFILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_IGET_SCRATCHFILE(int *istring, int *length1);
+SAMG_C_CALLCONV SAMG_SET_SCRATCHFILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_GET_SCRATCHFILE(void  *string, int *length1);
+SAMG_C_CALLCONV SAMG_SET_SLOW_COARSENING(double *dval);
+SAMG_C_CALLCONV SAMG_GET_SLOW_COARSENING(double *dval);
+SAMG_C_CALLCONV SAMG_SET_STABILITY(double *dval);
+SAMG_C_CALLCONV SAMG_GET_STABILITY(double *dval);
+SAMG_C_CALLCONV SAMG_SET_STRUCT_IDENT(int *ival);
+SAMG_C_CALLCONV SAMG_GET_STRUCT_IDENT(int *ival);
+SAMG_C_CALLCONV SAMG_SET_TAU_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_GET_TAU_UZAWA(double *dval);
+SAMG_C_CALLCONV SAMG_SET_TERM_COARSENING(double *dval);
+SAMG_C_CALLCONV SAMG_GET_TERM_COARSENING(double *dval);
+SAMG_C_CALLCONV SAMG_SET_TRACKMEM(int *ival);
+SAMG_C_CALLCONV SAMG_GET_TRACKMEM(int *ival);
+SAMG_C_CALLCONV SAMG_SET_TRACK_AP_P(int *ival);
+SAMG_C_CALLCONV SAMG_GET_TRACK_AP_P(int *ival);
+SAMG_C_CALLCONV SAMG_SET_USE_IC(int *ival);
+SAMG_C_CALLCONV SAMG_GET_USE_IC(int *ival);
+SAMG_C_CALLCONV SAMG_SET_VIO_DD(int *ival);
+SAMG_C_CALLCONV SAMG_GET_VIO_DD(int *ival);
+SAMG_C_CALLCONV SAMG_SET_W_AVRGE_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_W_AVRGE_AGG_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_W_AVRGE_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_W_AVRGE_DEFAULT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_WCOUPLED(int *ival);
+SAMG_C_CALLCONV SAMG_GET_WCOUPLED(int *ival);
+SAMG_C_CALLCONV SAMG_SET_WFT(double *dval);
+SAMG_C_CALLCONV SAMG_GET_WFT(double *dval);
+SAMG_C_CALLCONV SAMG_SET_WRITE_CLUSTER_ID(int *ival);
+SAMG_C_CALLCONV SAMG_GET_WRITE_CLUSTER_ID(int *ival);
+SAMG_C_CALLCONV SAMG_SET_WTSL(double *dval);
+SAMG_C_CALLCONV SAMG_GET_WTSL(double *dval);
+}
+
