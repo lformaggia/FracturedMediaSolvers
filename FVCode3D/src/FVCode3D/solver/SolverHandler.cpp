@@ -25,9 +25,14 @@ void SolverHandler::registration()
 {
     SolverProxy<EigenCholesky>  SolverChol("EigenCholesky");
     SolverProxy<EigenLU>        SolverLU("EigenLU");
+#ifdef FVCODE3D_HAS_UMFPACK
     SolverProxy<EigenUmfPack>   SolverUmfPack("EigenUmfPack");
+#endif // FVCODE3D_HAS_UMFPACK
     SolverProxy<EigenCG>        SolverCG("EigenCG");
     SolverProxy<EigenBiCGSTAB>  SolverBiCGSTAB("EigenBiCGSTAB");
+#ifdef FVCODE3D_HAS_SAMG
+    SolverProxy<Samg>           SolverSamg("Samg");
+#endif // FVCODE3D_HAS_SAMG
 } // SolverHandler::registration
 
 void SolverHandler::addProduct(const std::string productName, const SolverBuilder & builder)

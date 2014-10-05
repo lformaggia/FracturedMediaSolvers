@@ -409,5 +409,41 @@ public:
 
 }; // class EigenBiCGSTAB
 
+#ifdef FVCODE3D_HAS_SAMG
+//! Class Samg
+/*!
+ * @class Samg
+ * This class implements a linear solver for the system Ax=b.
+ * It uses algebraic multi-grid methods (SAMG library).
+ */
+class Samg : public IterativeSolver
+{
+public:
+
+    //! Empty constructor
+    Samg( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    Samg( const SpMat & A, const Vector & b,
+             const UInt maxIter = IterativeSolver::S_referenceTol,
+             const Real tol = IterativeSolver::S_referenceMaxIter ):
+        IterativeSolver(A, b,maxIter,tol) {}
+
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b by means of the conjugate gradient method.
+     */
+    virtual void solve();
+
+    //! Destructor
+    virtual ~Samg() = default;
+
+}; // class Samg
+#endif // FVCODE3D_HAS_SAMG
+
 } // namespace FVCode3D
 #endif /* SOLVER_HPP_ */
