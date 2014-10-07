@@ -37,6 +37,7 @@ theta       = 0.
 ## solver
 [solver]
 type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
+                        # SamgSym , SamgNotSym
 
     [./iterative]
     maxIt       = 1000
