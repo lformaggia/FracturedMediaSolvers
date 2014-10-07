@@ -31,7 +31,8 @@ void SolverHandler::registration()
     SolverProxy<EigenCG>        SolverCG("EigenCG");
     SolverProxy<EigenBiCGSTAB>  SolverBiCGSTAB("EigenBiCGSTAB");
 #ifdef FVCODE3D_HAS_SAMG
-    SolverProxy<Samg>           SolverSamg("Samg");
+    SolverProxy<SamgSym>        SolverSamgSym("SamgSym");
+    SolverProxy<SamgNotSym>     SolverSamgNotSym("SamgNotSym");
 #endif // FVCODE3D_HAS_SAMG
 } // SolverHandler::registration
 
