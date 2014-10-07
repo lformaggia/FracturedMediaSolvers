@@ -77,10 +77,10 @@ void EigenBiCGSTAB::solve()
 
 
 #ifdef FVCODE3D_HAS_SAMG
-void Samg::solve()
+void SamgSolver::solve()
 {
     // Set general SAMG parameters
-    SamgParameters SP;
+    SamgSolver::SamgParameters SP;
 
     // Set specific SAMG parameters, max-iterations and tolerance
     setSamgParameters(SP);
@@ -104,7 +104,7 @@ void Samg::solve()
 
     UInt i=0;
     double tmp;
-    for(UInt row=0; i=0; row < rows; ++row)
+    for(UInt row=0, i=0; row < rows; ++row)
     {
         ia[row] = static_cast<int>(i+1);
         a[i] = static_cast<double>(M_A.coeff(row, row));
@@ -136,12 +136,12 @@ void Samg::solve()
     f = new double[SP.nnu];
     u = new double[SP.nnu];
 
-    for(i=0; i < SP.nnu; ++i)
+    for(i=0; i < cols; ++i)
     {
         f[i] = M_b[i];
     }
 
-    for(i=0; i < SP.nnu ; ++i)
+    for(i=0; i < cols; ++i)
     {
         u[i] = 0.;
     }
@@ -153,7 +153,7 @@ void Samg::solve()
           &SP.matrix, &SP.iscale[0],
           &SP.res_in, &SP.res_out, &SP.ncyc_done, &SP.ierr,
           &SP.nsolve, &SP.ifirst, &SP.eps, &SP.ncyc, &SP.iswtch,
-          &Sp.a_cmplx, &SP.g_cmplx, &SP.p_cmplx, &SP.w_avrge,
+          &SP.a_cmplx, &SP.g_cmplx, &SP.p_cmplx, &SP.w_avrge,
           &SP.chktol, &SP.idump, &SP.iout);
 
     if (SP.ierr > 0)
@@ -169,7 +169,7 @@ void Samg::solve()
 
     // Copy solution from SAMG to Eigen
     M_x.resize( cols );
-    for(i=0; i < SP.nnu ; ++i)
+    for(i=0; i < cols; ++i)
     {
         M_x[i] = u[i];
     }
@@ -181,7 +181,11 @@ void Samg::solve()
     // Clear SAMG parameters
     SAMG_LEAVE(&SP.ierrl);
 
-    delete[] ia,ja,a,f,u;
+    delete[] ia;
+    delete[] ja;
+    delete[] a;
+    delete[] f;
+    delete[] u;
 
     if (SP.ierrl != 0)
     {
@@ -190,7 +194,7 @@ void Samg::solve()
     }
 } // Samg::solve
 
-Samg::SamgParameters::SamgParameters():
+SamgSolver::SamgParameters::SamgParameters()
 {
     // Set primary parameters
     ndiu      = 1;      // Dummy for scalar system, = 1
@@ -200,9 +204,9 @@ Samg::SamgParameters::SamgParameters():
     ifirst    = 1;      // Initialization of the solution. In this case, = 0
 
     eps       = static_cast<double> // Tolerance on the residual. Res_0 = ifirst = 0. In this case normalized_residual < eps
-                IterativeSolver::S_referenceTol;
+                (IterativeSolver::S_referenceTol);
 
-    stringstream ss;
+    std::stringstream ss;
     ss << 120           // Cycles: V-cycle, =1
                         // Precond: CG for sym matrix, =1
                         //          BiCGstab for not sym matrix, =2
@@ -259,7 +263,7 @@ Samg::SamgParameters::SamgParameters():
     // AMG declarations
     nsys    = 1;            // Scalar system, =1
     npnt    = 0;            // Number of points
-    SP.matrix = 22;         // Sym or not: not sym, =2
+    matrix = 22;         // Sym or not: not sym, =2
                             //             sym, =1
                             // Sum zero or not: not sum zero, =2
 
@@ -270,19 +274,19 @@ Samg::SamgParameters::SamgParameters():
     ip[0]   = 0;
 
     iscale  = new int[1];   // No scaling of solution, = 0
-    iscale[0] = 0
-} // Samg::SamgParameters::SamgParameters
+    iscale[0] = 0;
+} // SamgSolver::SamgParameters::SamgParameters
 
-Samg::SamgParameters::~SamgParameters():
+SamgSolver::SamgParameters::~SamgParameters()
 {
-    delete iu[];
-    delete ip[];
-    delete iscale[];
-} // Samg::SamgParameters::~SamgParameters
+    delete[] iu;
+    delete[] ip;
+    delete[] iscale;
+} // SamgSolver::SamgParameters::~SamgParameters
 
-void SamgSym::setSamgParameters(SamgParameters & SP)
+void SamgSym::setSamgParameters(SamgSolver::SamgParameters & SP)
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << 110           // Cycles: V-cycle, =1
                         // Precond: CG for sym matrix, =1
                         //          BiCGstab for not sym matrix, =2
@@ -297,9 +301,9 @@ void SamgSym::setSamgParameters(SamgParameters & SP)
                         // Sum zero or not: not sum zero, =2
 } // SamgSym::setSamgParameters
 
-void SamgNotSym::setSamgParameters(SamgParameters & SP)
+void SamgNotSym::setSamgParameters(SamgSolver::SamgParameters & SP)
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << 120           // Cycles: V-cycle, =1
                         // Precond: CG for sym matrix, =1
                         //          BiCGstab for not sym matrix, =2

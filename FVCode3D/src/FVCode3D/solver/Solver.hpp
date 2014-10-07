@@ -465,7 +465,7 @@ protected:
         SamgParameters();
 
         //! No copy constructor
-        SamgParameters(const & SamgParameters) = delete;
+        SamgParameters(const SamgParameters &) = delete;
 
         //! Destructor
         ~SamgParameters();
@@ -578,7 +578,7 @@ protected:
     /*!
      * @param SP SamgParameters instance
      */
-    virtual void setSamgParameters(SamgParameters & SP);
+    virtual void setSamgParameters(SamgSolver::SamgParameters & SP);
 
 }; // class SamgSym
 
@@ -615,7 +615,7 @@ protected:
     /*!
      * @param SP SamgParameters instance
      */
-    virtual void setSamgParameters(SamgParameters & SP);
+    virtual void setSamgParameters(SamgSolver::SamgParameters & SP);
 
 }; // class SamgNotSym
 #endif // FVCODE3D_HAS_SAMG
