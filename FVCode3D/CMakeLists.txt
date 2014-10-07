@@ -135,6 +135,7 @@ set(LIBRARIES
     ${BLAS_LIBRARIES}
     rt
     tet
+    samg
     CACHE INTERNAL "")
 message(STATUS "LIBRARIES = ${LIBRARIES}")
 
