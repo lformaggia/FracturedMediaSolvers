@@ -3,13 +3,15 @@
  * @brief These classes allow to solve a linear system (definitions).
  */
 
+#include <sstream>
+
 #include <FVCode3D/solver/Solver.hpp>
 #ifdef FVCODE3D_HAS_UMFPACK
 #include <Eigen/UmfPackSupport>
 #endif // FVCODE3D_HAS_UMFPACK
 
 #ifdef FVCODE3D_HAS_SAMG
-#include <samg.h>
+#include <FVCode3D/samg.h>
 #endif // FVCODE3D_HAS_SAMG
 
 namespace FVCode3D
@@ -21,6 +23,7 @@ void EigenCholesky::solve()
     M_x = chol.solve(M_b);
 } // EigenCholesky::solve
 
+
 void EigenLU::solve()
 {
     Eigen::SparseLU<SpMat> lu;
@@ -28,6 +31,7 @@ void EigenLU::solve()
     lu.factorize(M_A);
     M_x = lu.solve(M_b);
 } // EigenLU::solve
+
 
 #ifdef FVCODE3D_HAS_UMFPACK
 void EigenUmfPack::solve()
@@ -37,8 +41,10 @@ void EigenUmfPack::solve()
 } // EigenUmfPack::solve
 #endif // FVCODE3D_HAS_UMFPACK
 
+
 Real IterativeSolver::S_referenceTol = 1e-6;
 UInt IterativeSolver::S_referenceMaxIter = 100;
+
 
 void EigenCG::solve()
 {
@@ -54,6 +60,7 @@ void EigenCG::solve()
     M_res = cg.error();
 } // EigenCG::solve
 
+
 void EigenBiCGSTAB::solve()
 {
     Eigen::BiCGSTAB<SpMat> bicgstab;
@@ -68,204 +75,244 @@ void EigenBiCGSTAB::solve()
     M_res = bicgstab.error();
 } // EigenBiCGSTAB::solve
 
+
 #ifdef FVCODE3D_HAS_SAMG
 void Samg::solve()
 {
-    // set somehow the max iter
-    // ... M_maxIter
+    // Set general SAMG parameters
+    SamgParameters SP;
 
-    // set somehow the tolerance
-    // ... M_tol
+    // Set specific SAMG parameters, max-iterations and tolerance
+    setSamgParameters(SP);
 
-    // copy from eigen to samg
+    // Copy from Eigen to SAMG
+    int * ia;   // i indices
+    int * ja;   // j indices
+    double * a; // A entries
+    double * u; // solution
+    double * f; // rhs
 
-    // solve with samg
+    const UInt rows = M_A.rows();
+    const UInt cols = M_A.cols();
+    SP.nnu     = cols;              // Number of unknowns
+    SP.nna     = M_A.nonZeros();    // Number of entries
+                                    // Hp: diagonal entries are non-zeros
 
-    // copy solution from samg to eigen
-    // ... M_x
+    ia = new int[SP.nnu+1];
+    ja = new int[SP.nna];
+    a  = new double[SP.nna];
 
-    // get iteration used
-    // ... M_iter
+    UInt i=0;
+    double tmp;
+    for(UInt row=0; i=0; row < rows; ++row)
+    {
+        ia[row] = static_cast<int>(i+1);
+        a[i] = static_cast<double>(M_A.coeff(row, row));
+        ja[i] = static_cast<int>(row+1);
+        ++i;
+        for(UInt col=0; col < row; ++col)
+        {
+            tmp = M_A.coeff(row, col);
+            if (tmp != 0.)
+            {
+                a[i] = tmp;
+                ja[i] = static_cast<int>(col+1);
+                ++i;
+            }
+        }
+        for(UInt col=row+1; col < cols; ++col)
+        {
+            tmp = M_A.coeff(row, col);
+            if (tmp != 0.)
+            {
+                a[i] = tmp;
+                ja[i] = static_cast<int>(col+1);
+                ++i;
+            }
+        }
+    }
+    ia[rows] = SP.nna;
 
-    // get residual
-    // ... M_res
-/*
-      cout << " *** Demo C++ driver which reads demo.* files and calls SAMG ***" << endl;
+    f = new double[SP.nnu];
+    u = new double[SP.nnu];
 
-// ===> Set primary parameters. Others can be set by access functions as shown below.
+    for(i=0; i < SP.nnu; ++i)
+    {
+        f[i] = M_b[i];
+    }
 
-      int    ndiu      = 1;        // dimension of (dummy) vector iu
-      int    ndip      = 1;        // dimension of (dummy) vector ip
+    for(i=0; i < SP.nnu ; ++i)
+    {
+        u[i] = 0.;
+    }
 
-      int    nsolve    = 2;        // results in scalar approach (current system is scalar)
-      int    ifirst    = 1;        // first approximation = zero
-      double eps       = 1.0e-8;   // required (relative) residual reduction
-      int    ncyc      = 11050;    // V-cycle as pre-conditioner for CG; at most 50 iterations
+    // Solve with SAMG
+    SAMG( &SP.nnu, &SP.nna, &SP.nsys,
+          &ia[0], &ja[0], &a[0], &f[0], &u[0],
+          &SP.iu[0], &SP.ndiu, &SP.ip[0], &SP.ndip,
+          &SP.matrix, &SP.iscale[0],
+          &SP.res_in, &SP.res_out, &SP.ncyc_done, &SP.ierr,
+          &SP.nsolve, &SP.ifirst, &SP.eps, &SP.ncyc, &SP.iswtch,
+          &Sp.a_cmplx, &SP.g_cmplx, &SP.p_cmplx, &SP.w_avrge,
+          &SP.chktol, &SP.idump, &SP.iout);
 
-      double a_cmplx   = 2.2;      // estimated dimensioning
-      double g_cmplx   = 1.7;      // estimated dimensioning
-      double w_avrge   = 2.4;      // estimated dimensioning
-      double p_cmplx   = 0.0;      // estimated dimensioning (irrelevant for scalar case)
+    if (SP.ierr > 0)
+    {
+        std::cout << std::endl << " Error occurred at SAMG."
+                  << std::endl;
+    }
+    else if (SP.ierr < 0)
+    {
+        std::cout << std::endl << " Warning occurred at SAMG."
+                  << std::endl;
+    }
 
-      double chktol    = -1.0;     // input checking de-activated (we know it's ok!)
-      int    idump     = 0;        // minimum output during setup
-      int    iout      = 2;        // display residuals per iteration and work statistics
+    // Copy solution from SAMG to Eigen
+    M_x.resize( cols );
+    for(i=0; i < SP.nnu ; ++i)
+    {
+        M_x[i] = u[i];
+    }
 
-      int    n_default = 20;       // select default settings for secondary parameters
-                                   // CURRENTLY AVAILABLE: 10-13, 15-18, 20-23, 25-28
-                                   // NOTE: the higher the respective SECOND digit, the
-                                   // more aggressive the coarsening (--> lower memory at
-                                   // the expense of slower convergence)
-      int    iswtch    = 5100+n_default; // complete SAMG run ....
-                                   // ... memory de-allocation upon return ....
-                                   // ... memory extension feature activated ....
-                                   // ... residuals measured in the L2-norm .....
-                                   // ... secondary parameter default setting # n_default
+    // Save iterations done and final residual
+    M_iter = SP.ncyc_done;
+    M_res = SP.res_out;
 
-// ===> Secondary parameters which have to be set if n_default=0
-//      (at the same time a demonstration of how to access secondary or hidden parameters)
+    // Clear SAMG parameters
+    SAMG_LEAVE(&SP.ierrl);
 
-      int intin;
-      double dblin;
+    delete[] ia,ja,a,f,u;
 
-      if (n_default == 0) {
-         intin=25;    SAMG_SET_LEVELX(&intin);
-         intin=100;   SAMG_SET_NPTMN(&intin);
-         intin=4;     SAMG_SET_NCG(&intin);
-         intin=2;     SAMG_SET_NWT(&intin);
-         intin=1;     SAMG_SET_NTR(&intin);
-         intin=131;   SAMG_SET_NRD(&intin);
-         intin=131;   SAMG_SET_NRU(&intin);
-         intin=0;     SAMG_SET_NRC(&intin);
-         intin=0;     SAMG_SET_NP_OPT(&intin);
-
-         dblin=21.25; SAMG_SET_ECG(&dblin);
-         dblin=0.20;  SAMG_SET_EWT(&dblin);
-         dblin=12.20; SAMG_SET_ETR(&dblin);
-      }
-
-// ===> amg declarations
-
-      // input:
-
-      int npnt,nsys,matrix,nnu,nna;
-
-      int * ia, * ja;
-      int * iu     = new int[1];
-      int * ip     = new int[1];
-      int * iscale = new int[1];
-
-      double * a, * u, * f;
-
-      // output:
-      int ierr,ierrl,ncyc_done;
-      double res_out,res_in;
-
-// ===> Read data from stdin
-
-      // header data
-
-      ifstream frmfile("demo.frm", ios::in);    // open demo.frm
-
-      int iversion;
-      char ch;
-
-      frmfile >> ch >> iversion;
-      frmfile >> nna >> nnu >> matrix >> nsys >> npnt;
-
-      frmfile.close();
-
-      if (ch!='f' || iversion != 4) {
-          cout << "invalid file format for this test driver " << endl;
-          ierr=1; return ierr;
-      }
-
-      // matrix
-
-      int i;
-
-      ia = new int[nnu+1];
-      ja = new int[nna];
-      a  = new double[nna];
-
-      if (!(ia && ja && a)) {
-          cout << " allocation failed (ia,ja,a) " << endl;
-          ierr=1; return ierr;
-      }
-
-      ifstream amgfile("demo.amg", ios::in);    // open demo.amg
-
-      for (i=0;i<nnu+1;i++) amgfile >> ia[i];
-      for (i=0;i<nna;i++)   amgfile >> ja[i];
-      for (i=0;i<nna;i++)   amgfile >> a[i];
-
-      amgfile.close();
-
-      // right hand side
-
-      f = new double[nnu]; u = new double[nnu];
-      if (!(f && u)) {
-          cout << " allocation failed (f,u) " << endl;
-          ierr=1; return ierr;
-      }
-      for (i=0;i<nnu;i++) u[i]=0.0;
-
-      ifstream rhsfile("demo.rhs", ios::in);    // open demo.rhs
-
-      for (i=0;i<nnu;i++) rhsfile >> f[i];
-
-      rhsfile.close();
-
-// ===> if, e.g., the finest-level matrix shall be dumped:
-//
-//    char *string ="myfilename";
-//    int length=10;
-//    SAMG_SET_FILNAM_DUMP(&string[0],&length,&length);
-//    idump=8;
-
-// ===> Call FORTRAN90 SAMG
-
-//    SAMG_RESET_SECONDARY();   // necessary before a second SAMG run
-                            // if secondary parameters have to be reset
-                            // see manual.
-
-      float told,tnew,tamg;
-      SAMG_CTIME(&told);
-
-      SAMG(&nnu,&nna,&nsys,
-           &ia[0],&ja[0],&a[0],&f[0],&u[0],&iu[0],&ndiu,&ip[0],&ndip,&matrix,&iscale[0],
-           &res_in,&res_out,&ncyc_done,&ierr,
-           &nsolve,&ifirst,&eps,&ncyc,&iswtch,
-           &a_cmplx,&g_cmplx,&p_cmplx,&w_avrge,
-           &chktol,&idump,&iout);
-
-      if (ierr > 0) {
-          cout << endl << " SAMG terminated with error code "
-               << ierr << " **** " << endl;
-      }
-      else if (ierr < 0) {
-          cout << endl << " SAMG terminated with warning code "
-               << ierr << " **** " << endl;
-      }
-
-      SAMG_CTIME(&tnew);
-      tamg=tnew-told;
-      cout << endl << " ***** total run time: " << tamg << " ***** " << endl;
-
-      SAMG_LEAVE(&ierrl);
-
-      if (ierrl != 0) {
-          cout << endl << " error at samg_leave"
-               << ierr << " **** " << endl;
-      }
-
-      delete[] ia,ja,a,f,u,iu,ip,iscale;
-
-      if (ierr == 0 && ierrl == 0) return 0;
-      if (ierr > 0 || ierrl > 0) return 2;
-      return 1;
-*/
+    if (SP.ierrl != 0)
+    {
+        std::cout << std::endl << "Error at samg_leave call."
+                  << std::endl;
+    }
 } // Samg::solve
+
+Samg::SamgParameters::SamgParameters():
+{
+    // Set primary parameters
+    ndiu      = 1;      // Dummy for scalar system, = 1
+    ndip      = 1;      // Dummy for scalar system, = 1
+    nsolve    = 10;     // Variable-based approach, scalar system, = 1
+                        // Smoothing strategy, plain relaxation, = 0
+    ifirst    = 1;      // Initialization of the solution. In this case, = 0
+
+    eps       = static_cast<double> // Tolerance on the residual. Res_0 = ifirst = 0. In this case normalized_residual < eps
+                IterativeSolver::S_referenceTol;
+
+    stringstream ss;
+    ss << 120           // Cycles: V-cycle, =1
+                        // Precond: CG for sym matrix, =1
+                        //          BiCGstab for not sym matrix, =2
+                        // Re-start points: default, =0
+       << static_cast<int>  // # of cycles: default iterations, =dafault
+          (IterativeSolver::S_referenceMaxIter);
+    ss >> ncyc;
+
+    // All 0.0: initially a default dimensioning, it can be automatically extended
+    // All 1.0: initially no memory, it can be automatically extended
+    a_cmplx   = 0.0;    // 2.2
+    g_cmplx   = 0.0;    // 1.7
+    w_avrge   = 0.0;    // 2.4
+    p_cmplx   = 0.0;    // 0.0
+
+    chktol    = -1.0;   // No checking, <0
+                        // Logical checking, =0
+                        // Full checking, >0 (very expensive, for tests)
+    idump     = 0;      // No printout (except warnings and errors), <0
+                        // Minimal output =0
+                        // More output, >0
+    iout      = 1;      // No printout (except warnings and errors), <0
+                        // Minimal output =0
+                        // More output, >0
+    n_default = 10;     // Coarsening strategy: no "critical" positive off-diagonal entries =10
+                        //                      "critical" positive off-diagonal entries =20
+    iswtch    = 5100+n_default; // No re-call of SAMG, =5
+                                // Memory extension feature activted, =1
+                                // Coarsening strategy, see n_default
+                                // Residuals measured in the L2-norm, =0 (implicit)
+
+    // Set secondary parameters which have to be set if n_default=0
+    int intin;
+    double dblin;
+
+    if (n_default == 0)
+    {
+        intin = 25;    SAMG_SET_LEVELX(&intin);
+        intin = 100;   SAMG_SET_NPTMN(&intin);
+        intin = 4;     SAMG_SET_NCG(&intin);
+        intin = 2;     SAMG_SET_NWT(&intin);
+        intin = 1;     SAMG_SET_NTR(&intin);
+        intin = 131;   SAMG_SET_NRD(&intin);
+        intin = 131;   SAMG_SET_NRU(&intin);
+        intin = 0;     SAMG_SET_NRC(&intin);
+        intin = 0;     SAMG_SET_NP_OPT(&intin);
+        //intin = -3;    SAMG_SET_MODE_MESS(&intin); // No output at all
+
+        dblin = 21.25; SAMG_SET_ECG(&dblin);
+        dblin = 0.20;  SAMG_SET_EWT(&dblin);
+        dblin = 12.20; SAMG_SET_ETR(&dblin);
+    }
+
+    // AMG declarations
+    nsys    = 1;            // Scalar system, =1
+    npnt    = 0;            // Number of points
+    SP.matrix = 22;         // Sym or not: not sym, =2
+                            //             sym, =1
+                            // Sum zero or not: not sum zero, =2
+
+    iu      = new int[1];   // Dummy for scalar system, = 0
+    iu[0]   = 0;
+
+    ip      = new int[1];   // Dummy for scalar system, = 0
+    ip[0]   = 0;
+
+    iscale  = new int[1];   // No scaling of solution, = 0
+    iscale[0] = 0
+} // Samg::SamgParameters::SamgParameters
+
+Samg::SamgParameters::~SamgParameters():
+{
+    delete iu[];
+    delete ip[];
+    delete iscale[];
+} // Samg::SamgParameters::~SamgParameters
+
+void SamgSym::setSamgParameters(SamgParameters & SP)
+{
+    stringstream ss;
+    ss << 110           // Cycles: V-cycle, =1
+                        // Precond: CG for sym matrix, =1
+                        //          BiCGstab for not sym matrix, =2
+                        // Re-start points: default, =0
+       << static_cast<int>(M_maxIter);  // # of cycles: M_maxIter iterations, =M_maxIter
+    ss >> SP.ncyc;
+
+    SP.eps = static_cast<double>(M_tol); // Tolerance on the residual. Res_0 = ifirst = 0. In this case normalized_residual < eps
+
+    SP.matrix = 12;     // Sym or not: not sym, =2
+                        //             sym, =1
+                        // Sum zero or not: not sum zero, =2
+} // SamgSym::setSamgParameters
+
+void SamgNotSym::setSamgParameters(SamgParameters & SP)
+{
+    stringstream ss;
+    ss << 120           // Cycles: V-cycle, =1
+                        // Precond: CG for sym matrix, =1
+                        //          BiCGstab for not sym matrix, =2
+                        // Re-start points: default, =0
+       << static_cast<int>(M_maxIter);  // # of cycles: M_maxIter iterations, =M_maxIter
+    ss >> SP.ncyc;
+
+    SP.eps = static_cast<double>(M_tol); // Tolerance on the residual. Res_0 = ifirst = 0. In this case normalized_residual < eps
+
+    SP.matrix = 22;     // Sym or not: not sym, =2
+                        //             sym, =1
+                        // Sum zero or not: not sum zero, =2
+} // SamgNotSym::setSamgParameters
 #endif // FVCODE3D_HAS_SAMG
 
 } // namespace FVCode3D

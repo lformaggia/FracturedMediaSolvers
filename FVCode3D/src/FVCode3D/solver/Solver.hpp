@@ -410,39 +410,214 @@ public:
 }; // class EigenBiCGSTAB
 
 #ifdef FVCODE3D_HAS_SAMG
-//! Class Samg
+//! Class SamgSolver
 /*!
- * @class Samg
+ * @class SamgSolver
  * This class implements a linear solver for the system Ax=b.
  * It uses algebraic multi-grid methods (SAMG library).
  */
-class Samg : public IterativeSolver
+class SamgSolver : public IterativeSolver
 {
 public:
 
     //! Empty constructor
-    Samg( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
+    SamgSolver( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-    Samg( const SpMat & A, const Vector & b,
-             const UInt maxIter = IterativeSolver::S_referenceTol,
-             const Real tol = IterativeSolver::S_referenceMaxIter ):
+    SamgSolver( const SpMat & A, const Vector & b,
+                const UInt maxIter = IterativeSolver::S_referenceTol,
+                const Real tol = IterativeSolver::S_referenceMaxIter ):
         IterativeSolver(A, b,maxIter,tol) {}
 
     //! Solve the linear system
-    /*!
-     * Solve the linear system Ax=b by means of the conjugate gradient method.
-     */
     virtual void solve();
 
     //! Destructor
-    virtual ~Samg() = default;
+    virtual ~SamgSolver() = default;
 
-}; // class Samg
+protected:
+
+    class SamgParameters;
+
+    //! Set the parameters for the specific method
+    /*!
+     * @param SP SamgParameters instance
+     */
+    virtual void setSamgParameters(SamgParameters & SP) = 0;
+
+    //! Class SamgParameters
+    /*!
+     * @class SamgParameters
+     * This class contains the parameters used to the SAMG solver.
+     */
+    class SamgParameters
+    {
+    public:
+
+        //! Default constructor
+        /*!
+         * Initialize the parameters
+         */
+        SamgParameters();
+
+        //! No copy constructor
+        SamgParameters(const & SamgParameters) = delete;
+
+        //! Destructor
+        ~SamgParameters();
+
+    public:
+
+        //! Primary parameters
+        //@{
+        //! Dimension of (dummy) vector iu
+        int    ndiu;
+        //! Dimension of (dummy) vector ip
+        int    ndip;
+        //! Solution approach
+        int    nsolve;
+        //! First approximation of the solution
+        int    ifirst;
+        //! Required residual reduction
+        double eps;
+        //! Cycling and acceleration strategy
+        int    ncyc;
+        //! Estimated dimensioning: operator completity
+        double a_cmplx;
+        //! Estimated dimensioning: grid complexity
+        double g_cmplx;
+        //! Estimated dimensioning: average row length of interpolation
+        double w_avrge;
+        //! Estimated dimensioning: point complexity
+        double p_cmplx;
+        //! Input matrix checking
+        double chktol;
+        //! Printed output during the setup phase
+        int    idump;
+        //! Printed output during the solution phase
+        int    iout;
+        //! Select coarsening strategy
+        int    n_default;
+        //! General control switch
+        int    iswtch;
+        //@}
+
+        //! AMG declarations
+        //@{
+            //! Input
+            //@{
+        //! Number of points
+        int npnt;
+        //! Number of unknown
+        int nsys;
+        //! Matrix type
+        int matrix;
+        //! Number of variables
+        int nnu;
+        //! Number of entries
+        int nna;
+        //! Map variable to unknown
+        int * iu;
+        //! Map variable to point
+        int * ip;
+        //! Scale the output solution
+        int * iscale;
+            //@}
+
+            //! Output
+            //@{
+        //! Code indicating warnings(<0) or errors(>0)
+        int ierr;
+        //! Code indicating warnings(<0) or errors(>0) at samg_leave call
+        int ierrl;
+        //! Total number of cycles
+        int ncyc_done;
+        //! Residual of final approximation
+        double res_out;
+        //! Residual of first guess
+        double res_in;
+            //@}
+        //@}
+    }; // class SamgParameters
+}; // class SamgSolver
+
+//! Class SamgSym
+/*!
+ * @class SamgSym
+ * This class implements a linear solver for the system Ax=b.
+ * It uses algebraic multi-grid methods (SAMG library).
+ * It is used in the case of symmetric matrix A.
+ */
+class SamgSym : public SamgSolver
+{
+public:
+
+    //! Empty constructor
+    SamgSym( const UInt nbDofs = 0 ): SamgSolver( nbDofs ) {}
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    SamgSym( const SpMat & A, const Vector & b,
+             const UInt maxIter = IterativeSolver::S_referenceTol,
+             const Real tol = IterativeSolver::S_referenceMaxIter ):
+        SamgSolver(A, b,maxIter,tol) {}
+
+    //! Destructor
+    virtual ~SamgSym() = default;
+
+protected:
+
+    //! Set the parameters for the specific method
+    /*!
+     * @param SP SamgParameters instance
+     */
+    virtual void setSamgParameters(SamgParameters & SP);
+
+}; // class SamgSym
+
+//! Class SamgNotSym
+/*!
+ * @class SamgNotSym
+ * This class implements a linear solver for the system Ax=b.
+ * It uses algebraic multi-grid methods (SAMG library).
+ * It is used in the case of not symmetric matrix A.
+ */
+class SamgNotSym : public SamgSolver
+{
+public:
+
+    //! Empty constructor
+    SamgNotSym( const UInt nbDofs = 0 ): SamgSolver( nbDofs ) {}
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    SamgNotSym( const SpMat & A, const Vector & b,
+                const UInt maxIter = IterativeSolver::S_referenceTol,
+                const Real tol = IterativeSolver::S_referenceMaxIter ):
+        SamgSolver(A, b,maxIter,tol) {}
+
+    //! Destructor
+    virtual ~SamgNotSym() = default;
+
+protected:
+
+    //! Set the parameters for the specific method
+    /*!
+     * @param SP SamgParameters instance
+     */
+    virtual void setSamgParameters(SamgParameters & SP);
+
+}; // class SamgNotSym
 #endif // FVCODE3D_HAS_SAMG
 
 } // namespace FVCode3D
