@@ -339,7 +339,7 @@ void ImporterForSolver::import(bool fracturesOn) throw()
 
     UInt nNodes, nFacets, nCells, nFractures;
     UInt nodesFacet, facetsCell, facetsFracture, nSepCells, bcId, isFrac;
-    UInt zone;
+    UInt zone, facetId;
     UInt i, j;
     Real x, y, z;
     Real aperture, porosity, permeability;
@@ -391,6 +391,12 @@ void ImporterForSolver::import(bool fracturesOn) throw()
             file >> buffer;
         file >> bcId;
         file >> isFrac;
+        if (bcId && isFrac)
+        {
+            isFrac = 0;
+            for(UInt j=0; j<permSize + 2; ++j)
+                file >> buffer;
+        }
 
         if(isFrac)
         {
@@ -418,7 +424,9 @@ void ImporterForSolver::import(bool fracturesOn) throw()
                 permPtr->operator[](j) = permeability;
             }
         }
-        facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, isFrac*static_cast<UInt>(fracturesOn)*zone, bcId) );
+        facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i),
+                           std::forward_as_tuple(&M_mesh, tmp,
+                           isFrac*static_cast<UInt>(fracturesOn)*zone, bcId) );
         if (isFrac*static_cast<UInt>(fracturesOn))
         {
             prop.setProperties(aperture, porosity, permPtr);
@@ -446,18 +454,18 @@ void ImporterForSolver::import(bool fracturesOn) throw()
         file >> porosity;
         switch(permSize)
         {
-			case 1:
-				permPtr.reset( new PermeabilityScalar);
-				break;
-			case 3:
-				permPtr.reset( new PermeabilityDiagonal);
-				break;
-			case 6:
-				permPtr.reset( new PermeabilitySymTensor);
-				break;
-			case 9:
-				permPtr.reset( new PermeabilityFullTensor);
-				break;
+            case 1:
+                permPtr.reset( new PermeabilityScalar);
+                break;
+            case 3:
+                permPtr.reset( new PermeabilityDiagonal);
+                break;
+            case 6:
+                permPtr.reset( new PermeabilitySymTensor);
+                break;
+            case 9:
+                permPtr.reset( new PermeabilityFullTensor);
+                break;
         }
 
         for(UInt j=0; j<permSize; ++j)
@@ -482,14 +490,20 @@ void ImporterForSolver::import(bool fracturesOn) throw()
 
     FN.getNetwork().reserve(nFractures);
 
-    for(i=0; i < nFractures*static_cast<UInt>(fracturesOn); ++i)
+    const UInt fracOn = nFractures*static_cast<UInt>(fracturesOn);
+    for(i=0; i < fracOn; ++i)
     {
         file >> facetsFracture;
-        tmp.resize(facetsFracture);
+        tmp.reserve(facetsFracture);
         for(j=0; j < facetsFracture; ++j)
-            file >> tmp[j];
-        if(facetsFracture>0)
+        {
+            file >> facetId;
+            if( ! facetsRef[facetId].isBorderFacet() )
+                tmp.push_back(facetId);
+        }
+        if(tmp.size()>0)
             FN.getNetwork().emplace_back(M_mesh, tmp, i); // Fracture3D
+        tmp.clear();
     }
 
     file.close();
