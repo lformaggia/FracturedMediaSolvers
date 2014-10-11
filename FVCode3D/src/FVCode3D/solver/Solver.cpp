@@ -11,7 +11,7 @@
 #endif // FVCODE3D_HAS_UMFPACK
 
 #ifdef FVCODE3D_HAS_SAMG
-#include <FVCode3D/samg.h>
+#include <samg.h>
 #endif // FVCODE3D_HAS_SAMG
 
 namespace FVCode3D

@@ -13,7 +13,7 @@ set(${PROJECT_NAME}_VERSION
 # (this way we have a variable which is not dependent on the project name)
 set(PROJECT_VERSION ${${PROJECT_NAME}_VERSION})
 
-#SET(CMAKE_VERBOSE_MAKEFILE TRUE CACHE BOOL "Verbose Makefile" FORCE)
+SET(CMAKE_VERBOSE_MAKEFILE TRUE CACHE BOOL "Verbose Makefile" FORCE)
 SET(CMAKE_COLOR_MAKEFILE TRUE CACHE BOOL "Colored Makefile" FORCE)
 
 # This file contains the definition of special functions
@@ -26,7 +26,7 @@ IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 ENDIF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -frounding-math -DSAMG_UNIX_LINUX -DSAMG_LCASE_USCORE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -frounding-math")
 
 # release and debug mode -Wno-deprecated
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DEIGEN_NO_DEBUG")
@@ -90,6 +90,17 @@ find_package(Eigen3 QUIET)
 if(NOT EIGEN3_FOUND)
     message(FATAL_ERROR "Eigen not found. Try setting TPL_Eigen_DIR to the installation path of Eigen")
 endif()
+# SAMG
+set(TPL_Samg_DIR "" CACHE PATH "Samg installation base directory")
+set(CMAKE_PREFIX_PATH ${TPL_Samg_DIR})
+find_package(Samg QUIET)
+if(NOT SAMG_FOUND)
+    message(WARNING "Samg not found. If needed, try setting TPL_Samg_DIR to the installation path of Samg")
+    set(SAMG_INCLUDES "")
+    set(SAMG_LIBRARIES "")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSAMG_UNIX_LINUX -DSAMG_LCASE_USCORE -DFVCODE3D_HAS_SAMG")
+endif()
 # BLAS
 set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
 set(TPL_BLAS_DIR "" CACHE PATH "BLAS installation base directory")
@@ -106,6 +117,7 @@ set(${PROJECT_NAME}_TPL_INCLUDE_DIRS
     ${CHOLMOD_INCLUDES}
     ${UMFPACK_INCLUDES}
     ${EIGEN3_INCLUDE_DIR}
+    ${SAMG_INCLUDES}
     )
 message(STATUS "${PROJECT_NAME}_TPL_INCLUDE_DIRS = ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}")
 
@@ -133,7 +145,7 @@ set(LIBRARIES
     ${UMFPACK_LIBRARIES}
     ${CHOLMOD_LIBRARIES}
     ${BLAS_LIBRARIES}
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/libsamg.so
+    ${SAMG_LIBRARIES}
     rt
     tet
     CACHE INTERNAL "")
