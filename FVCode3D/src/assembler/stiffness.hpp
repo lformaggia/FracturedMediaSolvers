@@ -1,6 +1,6 @@
 /*!
- *	@file stiffness.hpp
- *	@brief This class build a Stiffness-matrix of the Darcy problem.
+ *  @file stiffness.hpp
+ *  @brief This class build a Stiffness-matrix of the Darcy problem.
  */
 
 #ifndef __DARCYSTIFFNESS_HPP__
@@ -21,138 +21,140 @@ namespace Darcy
 
 //! Class for assembling a stiffness matrix
 /*!
-	@class StiffMatrix
-	This class constructs the stiffness-matrix for the Darcy problem.
-	The adopted technique is a two point finite volume method.
-	The fractures are considered as cells and take part to discretization.
+    @class StiffMatrix
+    This class constructs the stiffness-matrix for the Darcy problem.
+    The adopted technique is a two point finite volume method.
+    The fractures are considered as cells and take part to discretization.
 */
 class StiffMatrix: public MatrixHandler
 {
 
-	//! Typedef for std::pair<UInt,UInt>
-	/*!
-		@typedef Fracture_Juncture
-   		This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
-   	*/
-	typedef std::pair<UInt,UInt> Fracture_Juncture;
-	//! Typedef for Geometry::Rigid_Mesh::Facet_ID
-	/*!
-		@typedef Facet_ID
-   		This type definition permits to treat Geometry::Rigid_Mesh::Facet_ID as a Facet_ID.
-   	*/
-	typedef Geometry::Rigid_Mesh::Facet_ID Facet_ID;
+    //! Typedef for std::pair<UInt,UInt>
+    /*!
+        @typedef Fracture_Juncture
+        This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
+    */
+    typedef std::pair<UInt,UInt> Fracture_Juncture;
+    //! Typedef for Geometry::Rigid_Mesh::Facet_ID
+    /*!
+        @typedef Facet_ID
+        This type definition permits to treat Geometry::Rigid_Mesh::Facet_ID as a Facet_ID.
+    */
+    typedef Geometry::Rigid_Mesh::Facet_ID Facet_ID;
 
 public:
-	//! @name Constructor & Destructor
-	//@{
+    //! @name Constructor & Destructor
+    //@{
 
-	//! Construct a stiffness-Matrix, given a Geometry::Rigid_Mesh and the boundary conditions
-	/*!
-		@param rigid_mesh A Geometry::Rigid_Mesh used to build the matrix
-		@param BC Boundary conditions given in the container Darcy::BoundaryConditions
-	*/
-	StiffMatrix(const Geometry::Rigid_Mesh & rigid_mesh, const BoundaryConditions & Bc):
-		MatrixHandler(rigid_mesh), _b (new Vector(this->M_size)),
-		M_properties(rigid_mesh.getPropertiesMap()), m_Bc(Bc) {}
-	//! No Copy-Constructor
-	StiffMatrix(const StiffMatrix &) = delete;
-	//! No Empty-Constructor
-	StiffMatrix() = delete;
-	//! Destructor
-	~StiffMatrix() = default;
-	//@}
+    //! Construct a stiffness-Matrix, given a Geometry::Rigid_Mesh and the boundary conditions
+    /*!
+        @param rigid_mesh A Geometry::Rigid_Mesh used to build the matrix
+        @param BC Boundary conditions given in the container Darcy::BoundaryConditions
+    */
+    StiffMatrix(const Geometry::Rigid_Mesh & rigid_mesh, const BoundaryConditions & Bc):
+        MatrixHandler(rigid_mesh), _b (new Vector(this->M_size)),
+        M_properties(rigid_mesh.getPropertiesMap()), m_Bc(Bc) {}
+    //! No Copy-Constructor
+    StiffMatrix(const StiffMatrix &) = delete;
+    //! No Empty-Constructor
+    StiffMatrix() = delete;
+    //! Destructor
+    ~StiffMatrix() = default;
+    //@}
 
-	//! @name Get Methods
-	//@{
-	//! Get BC vector (const)
-	/*!
-	 * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
-	 */
-	const Vector & getBCVector() const
-		{return *_b;}
-	//@}
+    //! @name Get Methods
+    //@{
+    //! Get BC vector (const)
+    /*!
+     * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    const Vector & getBCVector() const
+        {return *_b;}
+    //@}
 
-	//! @name Methods
-	//@{
-	//! Assemble method
-	/*!
-	 * @return Assemble the stiffness matrix
-	 */
-	void assemble();
-	/*!
-	 * @return Assemble the stiffness Mimetic FD matrix
-	 */
-	//void assembleMFD(Real tCoeff=6.);
-	//@}
+    //! @name Methods
+    //@{
+    //! Assemble method
+    /*!
+     * @return Assemble the stiffness matrix
+     */
+    void assemble();
+    /*!
+     * @return Assemble the stiffness Mimetic FD matrix
+     */
+    //void assembleMFD(Real tCoeff=6.);
+    //@}
 
 public:
 
-	//! @name Alpha Methods
-	//@{
+    //! @name Alpha Methods
+    //@{
 
-	//! Border center
-	/*!
-	 * @param fj the Id of the juncture of two Fracture_Facet in 3D
-	 * @return The center of the juncture between two Fracure_Facet
-	 */
-	Generic_Point border_center(Fracture_Juncture fj) const;
+    //! Border center
+    /*!
+     * @param fj the Id of the juncture of two Fracture_Facet in 3D
+     * @return The center of the juncture between two Fracure_Facet
+     */
+    Generic_Point border_center(Fracture_Juncture fj) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha
-	/*!
-	 * @param cellId the Id of a Cell
-	 * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
-	 * @return The computed coefficient alpha
-	 */
-	Real Findalpha (const UInt & cellId, Facet_ID * const facet) const;
+    //! It is called by the method assemble() and it computes the coefficient alpha
+    /*!
+     * @param cellId the Id of a Cell
+     * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
+     * @return The computed coefficient alpha
+     */
+    Real Findalpha (const UInt & cellId, Facet_ID * const facet) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
-	/*!
-	 * @param cellId the Id of a Cell
-	 * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
-	 * @return The computed coefficient alpha
-	 */
-	Real FindDirichletalpha (const UInt & cellId, Facet_ID * const facet) const;
+    //! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
+    /*!
+     * @param cellId the Id of a Cell
+     * @param facet A pointer to a Geometry::Rigid_mesh::Facet_ID
+     * @return The computed coefficient alpha
+     */
+    Real FindDirichletalpha (const UInt & cellId, Facet_ID * const facet) const;
 
-	//! It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture in 3D
-	/*!
-	 * @param fj is a Fracture_Juncture
-	 * @param n_Id The Id of the Fracture_Facet
-	 * @return The computed coefficient alpha
-	 */
-	Real Findfracturesalpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
-	//@}
+    //! It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture in 3D
+    /*!
+     * @param fj is a Fracture_Juncture
+     * @param n_Id The Id of the Fracture_Facet
+     * @return The computed coefficient alpha
+     */
+    Real Findfracturesalpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
+    //@}
 
 public:
         //! @name Get Methods
-    //@{    
+    //@{
     const Vector & getFlux() const
         { return M_flux; };
-    
+
     Vector & getFlux()
         { return M_flux; };
     //@}
 
     //! @name Methods
-    //@{        
+    //@{
     //! Execute the reconstruction of flux/velocity
     void reconstructFlux(const Vector & pressure);
     //@}
-    
+
 protected:
-	//! Unique pointer to the vector that contains the effects of BCs on the RHS
-	std::unique_ptr<Vector> _b;
-	//! A reference to a Geometry::PropertiesMap
-	const Geometry::PropertiesMap & M_properties;
-	//! The container of the BCs
-	const BoundaryConditions & m_Bc;
-    
-protected:    
+    //! Unique pointer to the vector that contains the effects of BCs on the RHS
+    std::unique_ptr<Vector> _b;
+    //! A reference to a Geometry::PropertiesMap
+    const Geometry::PropertiesMap & M_properties;
+    //! The container of the BCs
+    const BoundaryConditions & m_Bc;
+
+protected:
     //! Vector that contains the flux on the facets
     Eigen::Matrix<double,Eigen::Dynamic,1> M_flux;
-    
+
     Eigen::SparseMatrix<double,Eigen::RowMajor> Z;
     Eigen::SparseMatrix<double,Eigen::RowMajor> B;
+    Eigen::SparseMatrix<double,Eigen::RowMajor> Bmod;
     Eigen::SparseMatrix<double,Eigen::RowMajor> Bd;
+    Eigen::SparseMatrix<double,Eigen::RowMajor> Bdmod;
 };
 
 } // namespace Darcy
