@@ -964,7 +964,7 @@ void ExporterVTU::exportFluxOnFractures(const Rigid_Mesh & mesh, const std::stri
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << 2*nFractures << "\">" << std::endl;
 
     // CellData
-    filestr << "\t\t\t<CellData Scalars=\"Pressure\">" << std::endl;
+    filestr << "\t\t\t<CellData Scalars=\"Flux\">" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Pressure\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
     for( UInt i = 0; i < 2*nFractures; ++i )

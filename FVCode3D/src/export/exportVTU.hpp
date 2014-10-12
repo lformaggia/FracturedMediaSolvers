@@ -307,7 +307,7 @@ void ExporterVTU::exportFlux(const Rigid_Mesh & mesh, const std::string filename
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nTotal << "\">" << std::endl;
 
     // CellData
-    filestr << "\t\t\t<CellData Scalars=\"Pressure\">" << std::endl;
+    filestr << "\t\t\t<CellData Scalars=\"Flux\">" << std::endl;
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Pressure\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
     for( UInt i = 0; i < nTotal; ++i )
