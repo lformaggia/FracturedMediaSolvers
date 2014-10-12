@@ -1,4 +1,5 @@
 //#define NDEBUG // add this macro to disable asserts
+//#define FluxFracture
 #include <cassert>
 #include <iostream>
 #include <chrono>
@@ -9,6 +10,7 @@
 
 #include "core/TypeDefinition.hpp"
 #include "core/data.hpp"
+//#include "geometry/"
 #include "mesh/Rigid_Mesh.hpp"
 #include "property/Properties.hpp"
 #include "mesh/cartesianGrid.hpp"
@@ -30,220 +32,220 @@ typedef DarcyPseudoSteady<EigenBiCGSTAB, CentroidQuadrature, CentroidQuadrature,
 
 int main(int argc, char * argv[])
 {
-	GetPot command_line(argc,argv);
-	const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
+    GetPot command_line(argc,argv);
+    const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
 
-	Chrono chrono;
-	chrono.start();
+    Chrono chrono;
+    chrono.start();
 
-	std::cout << "Read Data..." << std::flush;
-	DataPtr_Type dataPtr(new Data(dataFileName));
-	std::cout << " done." << std::endl;
+    std::cout << "Read Data..." << std::flush;
+    DataPtr_Type dataPtr(new Data(dataFileName));
+    std::cout << " done." << std::endl;
 
-	std::cout << std::endl;
-	dataPtr->showMe();
-	std::cout << std::endl;
-
-
-	std::cout << "Define Mesh and Properties..." << std::flush;
-	Geometry::Mesh3D mesh;
-	Geometry::PropertiesMap propMap(dataPtr->getMobility(), dataPtr->getCompressibility());
-	std::cout << " done." << std::endl;
+    std::cout << std::endl;
+    dataPtr->showMe();
+    std::cout << std::endl;
 
 
-	std::cout << "Create Importer..." << std::flush;
-	Importer * importer = 0;
-	if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-		importer = new ImporterTPFA(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
-	else if(dataPtr->getMeshType() == Data::MeshFormatType::forSolver)
-		importer = new ImporterForSolver(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
-	std::cout << " done." << std::endl;
+    std::cout << "Define Mesh and Properties..." << std::flush;
+    Geometry::Mesh3D mesh;
+    Geometry::PropertiesMap propMap(dataPtr->getMobility(), dataPtr->getCompressibility());
+    std::cout << " done." << std::endl;
 
 
-	std::cout << "Import grid file..." << std::flush;
-	importer->import(dataPtr->fractureOn());
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
-
-	std::cout << "Compute separated cells..." << std::flush;
-	mesh.updateFacetsWithCells();
-	std::cout << " done." << std::endl;
+    std::cout << "Create Importer..." << std::flush;
+    Importer * importer = 0;
+    if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
+        importer = new ImporterTPFA(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
+    else if(dataPtr->getMeshType() == Data::MeshFormatType::forSolver)
+        importer = new ImporterForSolver(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
+    std::cout << " done." << std::endl;
 
 
-	std::cout << "Compute neighboring cells..." << std::flush;
-	mesh.updateCellsWithNeighbors();
-	std::cout << " done." << std::endl << std::endl;
+    std::cout << "Import grid file..." << std::flush;
+    importer->import(dataPtr->fractureOn());
+    std::cout << " done." << std::endl << std::endl;
 
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
-
-	std::cout << "Set labels on boundary" << std::flush;
-	if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-	{
-		std::cout << " & add Fractures..." << std::flush;
-		importer->addBCAndFractures(dataPtr->getTheta());
-	}
-	else if(dataPtr->getMeshType() == Data::MeshFormatType::forSolver)
-	{
-		std::cout << "..." << std::flush;
-		importer->extractBC(dataPtr->getTheta());
-	}
-	std::cout << " done." << std::endl;
-
-	std::cout << "Compute facet ids of the fractures..." << std::flush;
-	mesh.updateFacetsWithFractures();
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
-	propMap.setPropertiesOnMatrix(mesh, 0.25, 1);
-	propMap.setPropertiesOnFractures(mesh, 1e-2, 1, 1e6);
-
-	std::cout << "Export..." << std::flush;
-	ExporterVTU exporter;
-	exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
-	exporter.exportFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_fractures.vtu");
-	exporter.exportMeshWithFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh_fracture.vtu");
-	exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
-	exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
-	exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
-//	if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-//		saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_new.fvg", mesh, propMap);
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Add BCs..." << std::flush;
-	BoundaryConditions::BorderBC backBC	(1, Dirichlet, fOne );
-	BoundaryConditions::BorderBC frontBC(2, Dirichlet, fZero );
-	BoundaryConditions::BorderBC leftBC	(3, Neumann, fZero );
-	BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
-	BoundaryConditions::BorderBC upBC	(5, Neumann, fZero );
-	BoundaryConditions::BorderBC downBC	(6, Neumann, fZero );
-
-	std::vector<BoundaryConditions::BorderBC> borders;
-
-	borders.push_back( backBC );
-	borders.push_back( frontBC );
-	borders.push_back( leftBC );
-	borders.push_back( rightBC );
-	borders.push_back( upBC );
-	borders.push_back( downBC );
-
-	BoundaryConditions BC(borders);
-	std::cout << " done." << std::endl << std::endl;
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Compute separated cells..." << std::flush;
+    mesh.updateFacetsWithCells();
+    std::cout << " done." << std::endl;
 
 
-	std::cout << "Assemble rigid mesh..." << std::flush;
-	Geometry::Rigid_Mesh myrmesh(mesh, propMap);
-	std::cout << " done." << std::endl << std::endl;
+    std::cout << "Compute neighboring cells..." << std::flush;
+    mesh.updateCellsWithNeighbors();
+    std::cout << " done." << std::endl << std::endl;
 
-	myrmesh.showMe();
-
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Export Fracture Junctures & Tips..." << std::flush;
-	exporter.exportFractureJunctures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_junc.vtu");
-	exporter.exportFractureTips(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tips.vtu");
-	std::cout << " done." << std::endl << std::endl;
+    std::cout << "Set labels on boundary" << std::flush;
+    if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
+    {
+        std::cout << " & add Fractures..." << std::flush;
+        importer->addBCAndFractures(dataPtr->getTheta());
+    }
+    else if(dataPtr->getMeshType() == Data::MeshFormatType::forSolver)
+    {
+        std::cout << "..." << std::flush;
+        importer->extractBC(dataPtr->getTheta());
+    }
+    std::cout << " done." << std::endl;
 
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Compute facet ids of the fractures..." << std::flush;
+    mesh.updateFacetsWithFractures();
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+    propMap.setPropertiesOnMatrix(mesh, 0.25, 1);
+    propMap.setPropertiesOnFractures(mesh, 1e-2, 1, 1e6);
+
+    std::cout << "Export..." << std::flush;
+    ExporterVTU exporter;
+    exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
+    exporter.exportFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_fractures.vtu");
+    exporter.exportMeshWithFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh_fracture.vtu");
+    exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
+    exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
+    exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
+//  if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
+//      saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_new.fvg", mesh, propMap);
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Build problem..." << std::flush;
-	Pb * darcy(nullptr);
-	if(dataPtr->getProblemType() == Data::ProblemType::steady)
-		darcy = new DarcyPb(myrmesh, BC, SS, dataPtr);
-	else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
-		darcy = new PseudoDarcyPb(myrmesh, BC, SS, dataPtr);
-	std::cout << " done." << std::endl << std::endl;
+    std::cout << "Add BCs..." << std::flush;
+    BoundaryConditions::BorderBC backBC (1, Neumann, fMinusOne );
+    BoundaryConditions::BorderBC frontBC(2, Dirichlet, fOne );
+    BoundaryConditions::BorderBC leftBC (3, Neumann, fZero );
+    BoundaryConditions::BorderBC rightBC(4, Neumann, fZero );
+    BoundaryConditions::BorderBC upBC   (5, Neumann, fZero );
+    BoundaryConditions::BorderBC downBC (6, Neumann, fZero );
 
-	if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
-	{
-		dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setMaxIter(1000);
-		dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
-	}
-	
-	std::cout << "Solve problem..." << std::flush;
-	if(dataPtr->getProblemType() == Data::ProblemType::steady)
-	{
-		darcy->assemble();
-		if(dataPtr->pressuresInFractures())
-		{
-			FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
-			fpd.apply(dataPtr->getPressuresInFractures());
-		}
-		darcy->solve();
-		if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
-		{
-			std::cout << std::endl;
-			std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
-			std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
-		}
-	}
-	else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
-	{
-		dynamic_cast<PseudoDarcyPb *>(darcy)->initialize();
-		UInt iter=0;
+    std::vector<BoundaryConditions::BorderBC> borders;
 
-		std::cout << std::endl << " ... initial solution, t = " << dataPtr->getInitialTime() << " ..." << std::endl;
+    borders.push_back( backBC );
+    borders.push_back( frontBC );
+    borders.push_back( leftBC );
+    borders.push_back( rightBC );
+    borders.push_back( upBC );
+    borders.push_back( downBC );
 
-		std::stringstream ss;
-		ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_";
-		ss << iter;
-		ss << ".vtu";
-		exporter.exportSolution(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
-		ss.str(std::string());
-		ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_";
-		ss << iter;
-		ss << ".vtu";
-		exporter.exportSolutionOnFractures(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
-		std::cout << "  done." << std::endl << std::endl;
+    BoundaryConditions BC(borders);
+    std::cout << " done." << std::endl << std::endl;
 
-		++iter;
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-		for(Real t = dataPtr->getInitialTime() + dataPtr->getTimeStep() ; t <= dataPtr->getEndTime(); t+=dataPtr->getTimeStep(), ++iter)
-		{
-			std::cout << " ... at t = " << t << " ..." << std::endl;
-			darcy->assemble();
-			if(dataPtr->pressuresInFractures())
-			{
-				FixPressureDofs<PseudoDarcyPb> fpd(dynamic_cast<PseudoDarcyPb *>(darcy));
-				fpd.apply(dataPtr->getPressuresInFractures());
-			}
-			darcy->solve();
 
-			if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
-			{
-				std::cout << std::endl;
-				std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
-				std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
-				std::cout << std::endl;
-			}
+    std::cout << "Assemble rigid mesh..." << std::flush;
+    Geometry::Rigid_Mesh myrmesh(mesh, propMap);
+    std::cout << " done." << std::endl << std::endl;
 
-			ss.str(std::string());
-			std::cout << " Export Solution" << std::flush;
-			ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_";
-			ss << iter;
-			ss << ".vtu";
-			exporter.exportSolution(myrmesh, ss.str(), darcy->getSolver().getSolution());
-			ss.str(std::string());
-			ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_";
-			ss << iter;
-			ss << ".vtu";
-			exporter.exportSolutionOnFractures(myrmesh, ss.str(), darcy->getSolver().getSolution());
-			std::cout << "  done." << std::endl << std::endl;
-		}
-	}
-	std::cout << " done." << std::endl << std::endl;
+    myrmesh.showMe();
 
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+
+    std::cout << "Export Fracture Junctures & Tips..." << std::flush;
+    exporter.exportFractureJunctures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_junc.vtu");
+    exporter.exportFractureTips(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tips.vtu");
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+
+    std::cout << "Build problem..." << std::flush;
+    Pb * darcy(nullptr);
+    if(dataPtr->getProblemType() == Data::ProblemType::steady)
+        darcy = new DarcyPb(myrmesh, BC, SS, dataPtr);
+    else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
+        darcy = new PseudoDarcyPb(myrmesh, BC, SS, dataPtr);
+    std::cout << " done." << std::endl << std::endl;
+
+    if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+    {
+        dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setMaxIter(1000);
+        dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->setTolerance(1e-8);
+    }
+
+    std::cout << "Solve problem..." << std::flush;
+    if(dataPtr->getProblemType() == Data::ProblemType::steady)
+    {
+        darcy->assemble();
+        if(dataPtr->pressuresInFractures())
+        {
+            FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
+            fpd.apply(dataPtr->getPressuresInFractures());
+        }
+        darcy->solve();
+        if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+        {
+            std::cout << std::endl;
+            std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
+            std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
+        }
+    }
+    else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
+    {
+        dynamic_cast<PseudoDarcyPb *>(darcy)->initialize();
+        UInt iter=0;
+
+        std::cout << std::endl << " ... initial solution, t = " << dataPtr->getInitialTime() << " ..." << std::endl;
+
+        std::stringstream ss;
+        ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_";
+        ss << iter;
+        ss << ".vtu";
+        exporter.exportSolution(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
+        ss.str(std::string());
+        ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_";
+        ss << iter;
+        ss << ".vtu";
+        exporter.exportSolutionOnFractures(myrmesh, ss.str(), dynamic_cast<PseudoDarcyPb *>(darcy)->getOldSolution());
+        std::cout << "  done." << std::endl << std::endl;
+
+        ++iter;
+
+        for(Real t = dataPtr->getInitialTime() + dataPtr->getTimeStep() ; t <= dataPtr->getEndTime(); t+=dataPtr->getTimeStep(), ++iter)
+        {
+            std::cout << " ... at t = " << t << " ..." << std::endl;
+            darcy->assemble();
+            if(dataPtr->pressuresInFractures())
+            {
+                FixPressureDofs<PseudoDarcyPb> fpd(dynamic_cast<PseudoDarcyPb *>(darcy));
+                fpd.apply(dataPtr->getPressuresInFractures());
+            }
+            darcy->solve();
+
+            if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
+            {
+                std::cout << std::endl;
+                std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getIter() << std::endl;
+                std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(&(darcy->getSolver()))->getResidual() << std::endl;
+                std::cout << std::endl;
+            }
+
+            ss.str(std::string());
+            std::cout << " Export Solution" << std::flush;
+            ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_";
+            ss << iter;
+            ss << ".vtu";
+            exporter.exportSolution(myrmesh, ss.str(), darcy->getSolver().getSolution());
+            ss.str(std::string());
+            ss << dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_";
+            ss << iter;
+            ss << ".vtu";
+            exporter.exportSolutionOnFractures(myrmesh, ss.str(), darcy->getSolver().getSolution());
+            std::cout << "  done." << std::endl << std::endl;
+        }
+    }
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
     // Save matrix and rhs
@@ -264,37 +266,41 @@ int main(int argc, char * argv[])
     StiffM.assemble();
     StiffM.reconstructFlux(solution);
     const Vector & flux = StiffM.getFlux();
-    
+
     std::cout << " Export Flux" << std::flush;
     exporter.exportFlux(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_flux.vtu", flux);
     //exporter.exportFluxOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_flux_f.vtu", flux);
     std::cout << "  done." << std::endl << std::endl;
-        
+
     // Boundary fluxes
     for ( auto facet_it : myrmesh.getBorderFacetsIdsVector() )
     {
         const UInt borderID = facet_it.getBorderId();
-        if (BC.getBordersBCMap().at(borderID).getBCType() == Dirichlet)
+        const UInt facetID = facet_it.getFacetId();
+        if (borderID == 1 || borderID == 2)
         {
             const UInt cellId = facet_it.getSeparated()[0];
-            const Real alpha1 = StiffM.Findalpha(cellId, &facet_it);
-            const Real alpha2 = StiffM.FindDirichletalpha(cellId, &facet_it);
-            Real trasmissibility = alpha1*alpha2/(alpha1 + alpha2) * propMap.getMobility();
-            const Real flux = trasmissibility *
-                    ( darcy->getSolver().getSolution()[cellId] - BC.getBordersBCMap().at(borderID).getBC()(facet_it.getCentroid()));
+            const Real pD = BC.getBordersBCMap().at(borderID).getBC()(facet_it.getCentroid());
+            const Real pC = solution[cellId];
+            const Geometry::Point3D UNormal = facet_it.getUNormal();
+            const Geometry::Point3D mGradP = (pD > pC) ?
+                                (myrmesh.getCellsVector()[cellId].getCentroid() - facet_it.getCentroid()) :
+                                (facet_it.getCentroid() - myrmesh.getCellsVector()[cellId].getCentroid());
+            const Real alpha = (dotProduct(UNormal, mGradP) >= 0.) ? 1. : -1. ;
+            const Real fluxC = alpha * flux[facetID];
 
             if(borderID == 1)
             {
-                inletFlux += flux;
+                inletFlux += fluxC;
             }
             if(borderID == 2)
             {
-                outletFlux += flux;
+                outletFlux += fluxC;
             }
 
         }
     }
-    
+
     const Real deltaFlux( std::abs(inletFlux) - std::abs(outletFlux) );
 
     std::cout << std::setprecision(16)
@@ -310,6 +316,7 @@ int main(int argc, char * argv[])
               << std::endl;
 
     // Transmissibility fracture-frature
+#ifdef FluxFracture
     for ( auto facet_it : myrmesh.getFractureFacetsIdsVector() )
     {
         const auto& facetNeighbors = facet_it.getFractureNeighbors ();
@@ -423,29 +430,29 @@ int main(int argc, char * argv[])
     std::cout << std::setprecision(16)
                 << " Et " << 2*1.e-16 * std::max(pressure1, pressure2) / ( (pressure1 - pressure2)*(pressure1 - pressure2))
                 << std::endl;
-    
-    
-	std::cout << "Export Solution..." << std::flush;
-	exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
-	std::cout << " done." << std::endl << std::endl;
+#endif
 
-	std::cout << "Export Solution on Fractures..." << std::flush;
-	exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
-	std::cout << " done." << std::endl << std::endl;
+    std::cout << "Export Solution..." << std::flush;
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
+    std::cout << " done." << std::endl << std::endl;
 
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Export Solution on Fractures..." << std::flush;
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 
-	std::cout << "Export Property..." << std::flush;
-	exporter.exportWithProperties(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_APP.vtu", Aperture | Permeability | Porosity);
-	std::cout << " done." << std::endl << std::endl;
+    std::cout << "Export Property..." << std::flush;
+    exporter.exportWithProperties(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_APP.vtu", Aperture | Permeability | Porosity);
+    std::cout << " done." << std::endl << std::endl;
 
-	std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-	delete darcy;
-	delete importer;
-	
-	chrono.stop();
+    delete darcy;
+    delete importer;
 
-	return 0;
+    chrono.stop();
+
+    return 0;
 }

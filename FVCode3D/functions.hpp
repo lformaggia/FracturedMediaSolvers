@@ -12,7 +12,7 @@
 Func fZero = [](Geometry::Point3D){ return 0.; };
 Func fOne = [](Geometry::Point3D){ return 1.; };
 Func fTwo = [](Geometry::Point3D){ return 2.; };
-Func fMinusOne = [](Geometry::Point3D){ return -1.; };
+Func fMinusOne = [](Geometry::Point3D){ return -10.; };
 
 /* grid2 */
 Func SourceGrid2 = [](Geometry::Point3D p)
