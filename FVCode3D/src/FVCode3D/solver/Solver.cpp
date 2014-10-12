@@ -131,7 +131,7 @@ void SamgSolver::solve()
             }
         }
     }
-    ia[rows] = SP.nna;
+    ia[rows] = SP.nna + 1;
 
     f = new double[SP.nnu];
     u = new double[SP.nnu];
@@ -225,10 +225,10 @@ SamgSolver::SamgParameters::SamgParameters()
     chktol    = -1.0;   // No checking, <0
                         // Logical checking, =0
                         // Full checking, >0 (very expensive, for tests)
-    idump     = 0;      // No printout (except warnings and errors), <0
+    idump     = -1;      // No printout (except warnings and errors), <0
                         // Minimal output =0
                         // More output, >0
-    iout      = 1;      // No printout (except warnings and errors), <0
+    iout      = 0;      // No printout (except warnings and errors), <0
                         // Minimal output =0
                         // More output, >0
     n_default = 10;     // Coarsening strategy: no "critical" positive off-diagonal entries =10
@@ -253,6 +253,9 @@ SamgSolver::SamgParameters::SamgParameters()
         intin = 131;   SAMG_SET_NRU(&intin);
         intin = 0;     SAMG_SET_NRC(&intin);
         intin = 0;     SAMG_SET_NP_OPT(&intin);
+//        intin = 0;     SAMG_SET_ICOLOR_OMP(&intin);
+//        intin = 0;     SAMG_SET_IRESTRICTION_OPENMP(&intin);
+//        intin = 0;     SAMG_SET_NTYP_GALERKIN(&intin);
         //intin = -3;    SAMG_SET_MODE_MESS(&intin); // No output at all
 
         dblin = 21.25; SAMG_SET_ECG(&dblin);
