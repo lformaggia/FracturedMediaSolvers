@@ -29,6 +29,22 @@ if(SAMG_LIBRARIES)
     get_filename_component(SAMG_LIBDIR ${SAMG_LIBRARIES} PATH)
   endif(NOT SAMG_LIBDIR)
 
+  find_library(IOMP5_LIBRARY
+    NAMES
+    iomp5
+    PATHS
+    $ENV{SAMGDIR}
+    ${LIB_INSTALL_DIR}
+    PATH_SUFFIXES
+    samg
+  )
+
+  if(IOMP5_LIBRARY)
+    set(SAMG_LIBRARIES ${SAMG_LIBRARIES} ${IOMP5_LIBRARY})
+  else(IOMP5_LIBRARY)
+    set(SAMG_LIBRARIES FALSE)
+  endif(IOMP5_LIBRARY)
+
 endif(SAMG_LIBRARIES)
 
 include(FindPackageHandleStandardArgs)
