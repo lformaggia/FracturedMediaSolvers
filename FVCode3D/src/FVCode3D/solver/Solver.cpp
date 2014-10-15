@@ -176,7 +176,7 @@ void SamgSolver::solve()
 
     // Save iterations done and final residual
     M_iter = SP.ncyc_done;
-    M_res = SP.res_out;
+    M_res = SP.res_out / SP.res_in;
 
     // Clear SAMG parameters
     SAMG_LEAVE(&SP.ierrl);
