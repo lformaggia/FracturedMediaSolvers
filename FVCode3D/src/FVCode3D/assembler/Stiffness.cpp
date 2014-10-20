@@ -1,6 +1,6 @@
 /*!
- *  @file stiffness.cpp
- *  @brief This class build a Stiffness-matrix of the Darcy problem (definitions).
+ * @file Stiffness.cpp
+ * @brief This class build a Stiffness-matrix of the Darcy problem (definitions).
  */
 
 #include <FVCode3D/assembler/Stiffness.hpp>
