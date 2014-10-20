@@ -10,7 +10,8 @@
 namespace FVCode3D
 {
 
-void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt Ny, const UInt Nz)
+void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt
+Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
 {
     Real hx = Lx/Nx;
     Real hy = Ly/Ny;
@@ -35,7 +36,7 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
         {
             for(i=0; i <= Nx; ++i)
             {
-                nodesRef.emplace_back(hx*i, hy*j, hz*k); // Point3D
+                nodesRef.emplace_back(hx*i + Sx, hy*j + Sy, hz*k + Sz); // Point3D
             }
         }
     }
