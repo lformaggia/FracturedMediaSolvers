@@ -291,8 +291,12 @@ initialize()
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
     M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
-    M_S->assemble();
-    M_S->closeMatrix();
+    /* MFD */
+    M_S->assembleMFD();
+
+    /* FV */
+//    M_S->assemble();
+//    M_S->closeMatrix();
 
     this->M_A = M_S->getMatrix() + M_M->getMatrix();
 
@@ -354,8 +358,13 @@ initialize()
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
     M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
-    M_S->assemble();
-    M_S->closeMatrix();
+
+    /* MFD */
+    M_S->assembleMFD();
+
+    /* FV */
+//    M_S->assemble();
+//    M_S->closeMatrix();
 
     this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
 
