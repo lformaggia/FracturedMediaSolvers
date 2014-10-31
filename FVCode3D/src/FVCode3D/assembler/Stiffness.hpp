@@ -1,6 +1,6 @@
 /*!
- *  @file stiffness.hpp
- *  @brief This class build a Stiffness-matrix of the Darcy problem.
+ * @file Stiffness.hpp
+ * @brief This class build a Stiffness-matrix of the Darcy problem.
  */
 
 #ifndef __DARCYSTIFFNESS_HPP__
@@ -31,21 +31,21 @@ class StiffMatrix: public MatrixHandler
 
     //! Typedef for std::pair<UInt,UInt>
     /*!
-        @typedef Fracture_Juncture
-        This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
-    */
+     * @typedef Fracture_Juncture
+     * This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
+     */
     typedef std::pair<UInt,UInt> Fracture_Juncture;
     //! Typedef for Rigid_Mesh::Facet_ID
     /*!
-        @typedef Facet_ID
-        This type definition permits to treat Rigid_Mesh::Facet_ID as a Facet_ID.
-    */
+     * @typedef Facet_ID
+     * This type definition permits to treat Rigid_Mesh::Facet_ID as a Facet_ID.
+     */
     typedef Rigid_Mesh::Facet_ID Facet_ID;
     //! Typedef for Rigid_Mesh::Edge_ID
     /*!
-        @typedef Edge_ID
-        This type definition permits to treat Rigid_Mesh::Edge_ID as a Edge_ID.
-    */
+     * @typedef Edge_ID
+     * This type definition permits to treat Rigid_Mesh::Edge_ID as a Edge_ID.
+     */
     typedef Rigid_Mesh::Edge_ID Edge_ID;
 
 public:
@@ -54,9 +54,9 @@ public:
 
     //! Construct a stiffness-Matrix, given a Rigid_Mesh and the boundary conditions
     /*!
-        @param rigid_mesh A Rigid_Mesh used to build the matrix
-        @param BC Boundary conditions given in the container BoundaryConditions
-    */
+     * @param rigid_mesh A Rigid_Mesh used to build the matrix
+     * @param BC Boundary conditions given in the container BoundaryConditions
+     */
     StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC):
         MatrixHandler(rigid_mesh), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
         M_bc(BC) {}
@@ -85,6 +85,14 @@ public:
      * Assemble the stiffness matrix
      */
     void assemble();
+
+    //! @name Methods
+    //@{
+    //! Assemble method with MFD
+    /*!
+     * Assemble the stiffness matrix
+     */
+    void assembleMFD();
 
     //! Set offsets
     /*!
@@ -154,6 +162,34 @@ public:
     Real findFracturesAlpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
     //@}
 
+public:
+
+    //! @name Get Methods
+    //@{
+    //! Get flux (const)
+    /*!
+     * @return the flux
+     */
+    const Vector & getFlux() const
+    { return M_flux; };
+
+    //! Get flux
+    /*!
+     * @return the flux
+     */
+    Vector & getFlux()
+    { return M_flux; };
+    //@}
+
+    //! @name Methods
+    //@{
+    //! Execute the reconstruction of flux/velocity
+    /*!
+     * @param pressure the pressure solution
+     */
+    void reconstructFlux(const Vector & pressure);
+    //@}
+
 protected:
 
     //! @name Assemble Methods
@@ -189,6 +225,21 @@ protected:
     std::unique_ptr<Vector> M_b;
     //! The constant container of the BCs
     const BoundaryConditions & M_bc;
+
+protected:
+    //! Vector that contains the flux on the facets
+    Eigen::Matrix<double,Eigen::Dynamic,1> M_flux;
+
+    //! Z matrix for internal product= \f$ M^{-1}\f$
+    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Z;
+    //! B matrix for signed area
+    Eigen::SparseMatrix<double,Eigen::RowMajor> M_B;
+    //! B matrix for unsigned area
+    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Bmod;
+    //! B matrix for Dirichlet area
+    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Bd;
+    //! B matrix for Dirichlet unsigned area
+    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Bdmod;
 };
 
 } // namespace FVCode3D
