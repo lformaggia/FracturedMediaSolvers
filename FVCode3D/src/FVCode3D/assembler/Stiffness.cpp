@@ -231,7 +231,7 @@ void StiffMatrix::assemblePorousMatrixBC()
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-            M_b->operator()(M_offsetRow + neighbor1id) += Q1o;
+            M_b->operator()(M_offsetRow + neighbor1id) -= Q1o;
         } // if
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
@@ -320,7 +320,7 @@ void StiffMatrix::assembleFractureBC()
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
+                    M_b->operator()(M_offsetRow + neighborIdAsCell) -= Q1o;
                 } // if
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {
@@ -390,7 +390,12 @@ void StiffMatrix::assembleMFD()
         {
             UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
-            if(fac.isBorderFacet() && M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)
+            if(
+                ( fac.isBorderFacet() &&
+                  (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)
+                ) ||
+                ( fac.isFracture() )
+              )
             {
                 continue;
             }
@@ -446,7 +451,12 @@ void StiffMatrix::assembleMFD()
             UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 
-            if(fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann))
+            if(
+                ( fac.isBorderFacet() &&
+                  (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)
+                ) ||
+                ( fac.isFracture() )
+              )
             {
                 continue;
             }
@@ -484,12 +494,40 @@ void StiffMatrix::assembleMFD()
 
         Qp = Rp.fullPivLu().image(Rp);
 
+        Eigen::Matrix<double,Dynamic,Dynamic> RtR = Qp.transpose() * Qp;
+        Eigen::Matrix<double,Dynamic,Dynamic> RRtRiRt = Qp * RtR.inverse() * Qp.transpose();
+
+/*
+        std::stringstream  ss;
+        ss << "RRtRiRt_" << cellId << ".m";
+        Eigen::Matrix<double,3,3> RtR = Rp.transpose() * Rp;
+        Real det = RtR.determinant();
+        std::cout<<"ID: "<<cellId<<" Det: "<<det<<std::endl;
+        if(std::fabs(det) >= 1e-10)
+        {
+            Eigen::Matrix<double,Dynamic,Dynamic> RRtRiRt = Rp * RtR.inverse() * Rp.transpose();
+            Eigen::saveMarket( RRtRiRt, ss.str() );
+        }
+        Eigen::Matrix<double,Dynamic,Dynamic> QQt = Qp * Qp.transpose();
+        ss.str(std::string());
+        ss << "QQt_" << cellId << ".m";
+        Eigen::saveMarket( QQt, ss.str() );
+        ss.str(std::string());
+        ss << "Rp_" << cellId << ".m";
+        Eigen::saveMarket( Rp, ss.str() );
+        ss.str(std::string());
+        ss << "Qp_" << cellId << ".m";
+        Eigen::saveMarket( Qp, ss.str() );
+*/
+
         Z0p = ( K->norm() * ( 1. / cellMeasure ) ) *
               (Np * Np.transpose());
         Z1p = ( tCoeff * ( K->operator()(0,0) + K->operator()(1,1) + K->operator()(2,2) ) *
               ( 1. / cellMeasure ) ) *
               ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
-                Qp * Qp.transpose() );
+                RRtRiRt
+//                Qp * Qp.transpose()
+              );
 
         Zp  = Z0p + Z1p;
 
@@ -632,7 +670,7 @@ void StiffMatrix::assembleMFD()
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-            M_b->operator()(neighbor1id) += Q1o;
+            M_b->operator()(neighbor1id) -= Q1o;
         }
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
@@ -684,7 +722,7 @@ void StiffMatrix::assembleMFD()
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
+                    M_b->operator()(M_offsetRow + neighborIdAsCell) -= Q1o;
                 } // if
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {
@@ -724,9 +762,9 @@ void StiffMatrix::reconstructFlux(const Vector & pressure)
     auto&& facetVectorRef  = this->M_mesh.getFacetsVector();
     auto&& fractureVectorRef = this->M_mesh.getFractureFacetsIdsVector();
     auto&& borderVectorRef = this->M_mesh.getBorderFacetsIdsVector();
-    UInt numFacets = facetVectorRef.size();
-    UInt numFractures = fractureVectorRef.size();
-    UInt numFacetsTot = numFacets + numFractures;
+    const UInt numFacets = facetVectorRef.size();
+    const UInt numFractures = fractureVectorRef.size();
+    const UInt numFacetsTot = numFacets + numFractures;
 
     // Resize the vectors
     M_flux = Vector::Constant(numFacetsTot, 0.);
@@ -737,7 +775,6 @@ void StiffMatrix::reconstructFlux(const Vector & pressure)
     Vector pressureD(Vector::Constant(M_Bdmod.cols(), 0.));
     for (auto facet_it : borderVectorRef)
     {
-        UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
         UInt borderId = facet_it.getBorderId();
         UInt facetId = facet_it.getId();
 
@@ -754,8 +791,9 @@ void StiffMatrix::reconstructFlux(const Vector & pressure)
 
     M_flux += - M_Z * M_Bdmod.transpose() * pressureD;
 
-//     for(UInt i=0; i<(numFacets + numFractures); ++i)
-//         M_flux(i) /= 2;
+    for(UInt i=0; i<(numFacets + numFractures); ++i)
+        M_flux(i) /= 2;
+
 
 }
 
