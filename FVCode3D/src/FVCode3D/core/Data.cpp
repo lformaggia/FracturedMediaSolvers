@@ -13,6 +13,7 @@ Data::Data():
     M_meshDir("./data/"), M_meshFile("grid.fvg"), M_meshExt(".fvg"), M_meshType(forSolver),
     M_outputDir("./results/"), M_outputFile("sol"),
     M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
+    M_numet(FV), M_lumpedMim(false),
     M_problemType(steady), M_fracturesOn(true), M_ssOn(None),
     M_setFracturesPressure(false), M_fracturesPressure(0.),
     M_MSR(false), M_nbSubRegions(1),
@@ -29,6 +30,7 @@ Data::Data():
 Data::Data(const std::string dataFileName) throw()
 {
     EnumParser<MeshFormatType> parserMeshType;
+    EnumParser<NumericalMethodType> parserNumericalMethodType;
     EnumParser<ProblemType> parserProblemType;
     EnumParser<SourceSinkOn> parserSourceSinkOn;
 
@@ -59,6 +61,9 @@ Data::Data(const std::string dataFileName) throw()
     M_Nx = dataFile("domain/Nx", 10);
     M_Ny = dataFile("domain/Ny", 5);
     M_Nz = dataFile("domain/Nz", 5);
+
+    M_numet = parserNumericalMethodType.parse( dataFile("numet/method", "FV") );
+    M_lumpedMim = static_cast<bool>(dataFile("mimetic/lumped", 0));
 
     M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
     M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
@@ -150,6 +155,25 @@ void Data::showMe( std::ostream & output ) const
     output << "Output Directory: " << M_outputDir << std::endl;
     output << "Output Filename: " << M_outputFile << std::endl;
 
+    output << "Numerical Method: ";
+    switch(M_numet)
+    {
+        case FV:
+            output << "Finite Volume" << std::endl;
+            break;
+        case MFD:
+            output << "Mimetic Finite Difference" << std::endl;
+            break;
+        default:
+            exit(0);
+            break;
+    }
+
+    if(M_numet == MFD)
+    {
+        output << "Lumped: " << M_lumpedMim << std::endl;
+    }
+
     output << "Type of the problem: ";
     switch(M_problemType)
     {
@@ -230,6 +254,13 @@ void Data::showMe( std::ostream & output ) const
 
 template<class T>
 EnumParser<T>::EnumParser() = default;
+
+template<>
+EnumParser<Data::NumericalMethodType>::EnumParser()
+{
+    M_enumMap["FV"] = Data::NumericalMethodType::FV;
+    M_enumMap["MFD"] = Data::NumericalMethodType::MFD;
+}
 
 template<>
 EnumParser<Data::ProblemType>::EnumParser()

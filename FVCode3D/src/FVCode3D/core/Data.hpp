@@ -21,6 +21,17 @@ namespace FVCode3D
 class Data{
 public:
 
+    //! Define the numerical method type
+    /*!
+     * @enum NumericalMethodType
+     * This enumerator allows to select the numerical method: Finite Volume or Mimetic Finite Difference
+     */
+    enum NumericalMethodType
+    {
+        FV          = 0,
+        MFD         = 1
+    };
+
     //! Define the problem type
     /*!
      * @enum ProblemType
@@ -154,6 +165,18 @@ public:
      * @return the number of cells along z-axis
      */
     Real getNz() const { return M_Nz; }
+
+    //! Get the numerical method used to solve the problem
+    /*!
+     * @return the numerical method used to solve the problem
+     */
+    NumericalMethodType getNumericalMethod() const { return M_numet; }
+
+    //! Get if the stiffness matrix in the mimetic method is lumped
+    /*!
+     * @return lumped true if the stiffness matrix is lumped
+     */
+    bool getLumpedMimetic() const { return M_lumpedMim; }
 
     //! Get the problem type
     /*!
@@ -384,11 +407,23 @@ public:
      */
     void setNz(const Real Nz) { M_Nz = Nz; }
 
+    //! Set the numerical method
+    /*!
+     * @param type the type of the numerical method
+     */
+    void setNumericalMethodType(const NumericalMethodType type) { M_numet = type; }
+
+    //! Set if the stiffness matrix in the mimetic method is lumped
+    /*!
+     * @param lumped true if the stiffness matrix is lumped
+     */
+    void setLumpedMimetic(const bool lumped) { M_lumpedMim = lumped; }
+
     //! Set the problem type
     /*!
      * @param type the type of the problem
      */
-    void setProblemType(const ProblemType type) { M_problemType = type; };
+    void setProblemType(const ProblemType type) { M_problemType = type; }
 
     //! Enable or disable the fractures
     /*!
@@ -571,6 +606,10 @@ protected:
     UInt M_Ny;
     //! Number of cells along z-axis
     UInt M_Nz;
+    //! Type of the numerical method
+    NumericalMethodType M_numet;
+    //! If true the stiffness matrix for the mimetic method is lumped
+    bool M_lumpedMim;
     //! Type of the problem
     ProblemType M_problemType;
     //! Enable or disable fractures
@@ -663,6 +702,9 @@ private:
     std::map<std::string, T> M_enumMap;
 };
 
+//! Specialized class that implements a parser for the Data::NumericalMethodType enum
+template<>
+EnumParser<Data::NumericalMethodType>::EnumParser();
 
 //! Specialized class that implements a parser for the Data::ProblemType enum
 template<>
