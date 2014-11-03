@@ -39,8 +39,12 @@ public:
      * @param Nx number of elements along x axis
      * @param Ny number of elements along y axis
      * @param Nz number of elements along z axis
+     * @param Sx shift domain along x axis
+     * @param Sy shift domain along y axis
+     * @param Sz shift domain along z axis
      */
-    virtual void generate(bool fracturesOn = true, const Real Lx = 2., const Real Ly = 1., const Real Lz = 1., const UInt Nx = 40, const UInt Ny = 20, const UInt Nz = 20);
+    virtual void generate(bool fracturesOn = true, const Real Lx = 2., const Real Ly = 1., const Real Lz = 1., const
+    UInt Nx = 40, const UInt Ny = 20, const UInt Nz = 20, const Real Sx = 0, const Real Sy = 0, const Real Sz = 0);
 
     //! Generate the BC ids
     /*!

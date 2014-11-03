@@ -166,6 +166,24 @@ public:
      */
     Real getNz() const { return M_Nz; }
 
+    //! Get the shift domain along x-axis
+    /*!
+     * @return the shift domain along x-axis
+     */
+    Real getSx() const { return M_Sx; }
+
+    //! Get the shift domain along y-axis
+    /*!
+     * @return the shift domain along y-axis
+     */
+    Real getSy() const { return M_Sy; }
+
+    //! Get the shift domain z-axis
+    /*!
+     * @return the shift domain along z-axis
+     */
+    Real getSz() const { return M_Sz; }
+
     //! Get the numerical method used to solve the problem
     /*!
      * @return the numerical method used to solve the problem
@@ -407,6 +425,24 @@ public:
      */
     void setNz(const Real Nz) { M_Nz = Nz; }
 
+    //! Set the shift domain along x-axis
+    /*!
+     * @param the shift domain along x-axis
+     */
+    void setSx(const Real Sx) { M_Sx = Sx; }
+
+    //! Set the shift domain along y-axis
+    /*!
+     * @param the shift domain along y-axis
+     */
+    void setSy(const Real Sy) { M_Sy = Sy; }
+
+    //! Set the shift domain along z-axis
+    /*!
+     * @param the shift domain along z-axis
+     */
+    void setSz(const Real Sz) { M_Sz = Sz; }
+
     //! Set the numerical method
     /*!
      * @param type the type of the numerical method
@@ -606,6 +642,12 @@ protected:
     UInt M_Ny;
     //! Number of cells along z-axis
     UInt M_Nz;
+    //! Shift domain along x-axis
+    Real M_Sx;
+    //! Shift Domain along y-axis
+    Real M_Sy;
+    //! Shift Domain along z-axis
+    Real M_Sz;
     //! Type of the numerical method
     NumericalMethodType M_numet;
     //! If true the stiffness matrix for the mimetic method is lumped
