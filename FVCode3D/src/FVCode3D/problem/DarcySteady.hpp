@@ -85,12 +85,16 @@ assembleMatrix()
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
     StiffMatrix S(this->M_mesh, this->M_bc);
-    /* MFD */
-    S.assembleMFD();
 
-    /* FV */
-    //S.assemble();
-    //S.closeMatrix();
+    if(this->M_numet == Data::NumericalMethodType::FV)
+    {
+        S.assemble();
+        S.closeMatrix();
+    }
+    else if(this->M_numet == Data::NumericalMethodType::MFD)
+    {
+        S.assembleMFD();
+    }
 
     this->M_A = S.getMatrix();
     this->M_b = S.getBCVector();
