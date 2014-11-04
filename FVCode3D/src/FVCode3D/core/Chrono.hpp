@@ -6,7 +6,7 @@
 #ifndef CHRONO_HPP_
 #define CHRONO_HPP_
 
-#include <ctime>
+#include <chrono>
 
 namespace FVCode3D
 {
@@ -29,17 +29,17 @@ public:
     ~Chrono() = default;
 
     //! Start the chrono
-    inline void start() { M_start = clock(); };
+    inline void start() { M_start = Clock::now(); };
 
     //! Stop the chrono
-    inline void stop() { M_end = clock(); };
+    inline void stop() { M_end = Clock::now(); };
 
     //! Get the passed time, until this moment
     /*!
      * @return the seconds passed from the start
      * @pre call start()
      */
-    inline double partial() const { return (double) ( (clock() - M_start) / CLOCKS_PER_SEC ); };
+    inline double partial() const { return std::chrono::duration_cast<chrono_milli>(Clock::now() - M_start).count() / 1000.; }
 
     //! Get the passed time
     /*!
@@ -47,13 +47,20 @@ public:
      * @pre call start()
      * @pre call stop()
      */
-    inline double time() const { return (double) ( (M_end - M_start) / CLOCKS_PER_SEC ); };
+    inline double time() const { return std::chrono::duration_cast<chrono_milli>(M_end - M_start).count() / 1000.; }
 
 private:
+    //! Type for std::chrono::high_resolution_clock
+    typedef std::chrono::high_resolution_clock Clock;
+
+    //! Type for std::chrono::milliseconds
+    typedef std::chrono::milliseconds chrono_milli;
+
+    //! Type for std::chrono::seconds
+    typedef std::chrono::seconds chrono_sec;
 
     //! Time at start and stop
-    clock_t M_start, M_end;
-
+    Clock::time_point M_start, M_end;
 };
 
 } // namespace FVCode3D
