@@ -15,6 +15,7 @@ namespace FVCode3D
 Func fZero = [](Point3D){ return 0.; };
 Func fOne = [](Point3D){ return 1.; };
 Func fMinusOne = [](Point3D){ return -1.; };
+Func fOneZero = [](Point3D p){ return (2. - p.x()) / 2.; };
 
 /* grid2 */
 Func SourceGrid2 = [](Point3D p)
