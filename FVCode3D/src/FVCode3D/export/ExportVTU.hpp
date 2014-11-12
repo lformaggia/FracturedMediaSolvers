@@ -559,7 +559,7 @@ exportFlux(const Rigid_Mesh & mesh, const std::string filename, const VectorType
 
     // CellData
     filestr << "\t\t\t<CellData Scalars=\"Flux\">" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Pressure\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"" << fieldName << "\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
     for( UInt i = 0; i < nTotal; ++i )
         filestr << sol[i] << std::endl;
@@ -682,7 +682,7 @@ exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const
 
     // CellData
     filestr << "\t\t\t<CellData Scalars=\"Flux\">" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Pressure\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"" << fieldName << "\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
     for( UInt i = 0; i < 2*nFractures; ++i )
         filestr << sol[i] << std::endl;
