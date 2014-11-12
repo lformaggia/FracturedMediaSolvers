@@ -7,6 +7,7 @@
 #include <FVCode3D/property/Properties.hpp>
 #include <FVCode3D/property/Permeability.hpp>
 
+#include <FVCode3D/export/ExportVTU.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 // MFD: Lumped version of the stiffness matrix
@@ -154,7 +155,7 @@ void StiffMatrix::assemble()
         assembleFracture();
     } // if
 
-    if( !this->M_mesh.getInternalFacetsIdsVector().empty() )
+    if( !this->M_mesh.getBorderFacetsIdsVector().empty() )
     {
         assemblePorousMatrixBC();
     } // if
@@ -352,14 +353,13 @@ void StiffMatrix::assembleMFD()
     Real tCoeff=2.;
 
     // Local Matrices for Mimetic
-    Eigen::Matrix<double,Dynamic,3> Np;         // facet normals
-    Eigen::Matrix<double,1,Dynamic> Bp;         // areas
-    Eigen::Matrix<double,Dynamic,3> Rp;         // centroid * area
-    Eigen::Matrix<double,Dynamic,Dynamic> Z0p;  // Component of Z matrix
-    Eigen::Matrix<double,Dynamic,Dynamic> Z1p;  // Component of Z Matrix
-    Eigen::Matrix<double,Dynamic,Dynamic> Zp;   // Z matrix for internal product= \f$ M^{-1}\f$
-    Eigen::Matrix<double,1,Dynamic> Bpmod;      // areas, all positive
-    Eigen::Matrix<double,Dynamic,Dynamic> Qp;   // Base for the column space of Rp
+    Eigen::Matrix<Real,Dynamic,3> Np;         // facet normals
+    Eigen::Matrix<Real,1,Dynamic> Bp;         // areas
+    Eigen::Matrix<Real,Dynamic,3> Rp;         // centroid * area
+    Eigen::Matrix<Real,Dynamic,Dynamic> Z0p;  // Component of Z matrix
+    Eigen::Matrix<Real,Dynamic,Dynamic> Z1p;  // Component of Z Matrix
+    Eigen::Matrix<Real,Dynamic,Dynamic> Zp;   // Z matrix for internal product= \f$ M^{-1}\f$
+    Eigen::Matrix<Real,Dynamic,Dynamic> Qp;   // Base for the column space of Rp
 
     // Extract info of mesh. auto&& resolves const &
     auto&& cellVectorRef  = this->M_mesh.getCellsVector();
@@ -369,15 +369,16 @@ void StiffMatrix::assembleMFD()
     const UInt numCellsTot = cellVectorRef.size() + this->M_mesh.getFractureFacetsIdsVector().size();
 
     // Sizing global matrices
-    Eigen::SparseMatrix<double,ColMajor> T(numCells,numCells);
-    Eigen::SparseMatrix<double,ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
+    Eigen::SparseMatrix<Real, RowMajor> Z;  // Z matrix for internal product= \f$ M^{-1}\f$
+    Eigen::SparseMatrix<Real, RowMajor> B;  // B matrix for signed area
+    Eigen::SparseMatrix<Real, RowMajor> Bd; // B matrix for Dirichlet area
+    Eigen::SparseMatrix<Real, ColMajor> T(numCells,numCells);
+    Eigen::SparseMatrix<Real, ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
     ZMatrix_elements.resize(numFacets,0);
     BMatrix_elements.resize(numCells,0);
-    M_Z.resize(numFacets,numFacets);
-    M_B.resize(numCells,numFacets);
-    M_Bmod.resize(numCells,numFacets);
-    M_Bd.resize(numFacets,numFacets);
-    M_Bdmod.resize(numFacets,numFacets);
+    Z.resize(numFacets,numFacets);
+    B.resize(numCells,numFacets);
+    Bd.resize(numFacets,numFacets);
 
     // First loop to size matrices and avoid memory realloc
     for (auto&& cell : cellVectorRef)
@@ -407,9 +408,8 @@ void StiffMatrix::assembleMFD()
 #endif // DIAGONALZ
         }
     }
-    M_Z.reserve(ZMatrix_elements);
-    M_B.reserve(BMatrix_elements);
-    M_Bmod.reserve(BMatrix_elements);
+    Z.reserve(ZMatrix_elements);
+    B.reserve(BMatrix_elements);
     ZMatrix_elements.clear();
     ZMatrix_elements.shrink_to_fit();
     BMatrix_elements.clear();
@@ -443,8 +443,6 @@ void StiffMatrix::assembleMFD()
         Z1p.setZero();
         Bp.resize(Eigen::NoChange,numCellFacets);
         Bp.setZero();
-        Bpmod.resize(Eigen::NoChange,numCellFacets);
-        Bpmod.setZero();
 
         for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
         {
@@ -475,7 +473,6 @@ void StiffMatrix::assembleMFD()
             Np(localFacetId,1)    = facetNormal[1];
             Np(localFacetId,2)    = facetNormal[2];
             Bp(0,localFacetId)    = alpha * facetMeasure;
-            Bpmod(0,localFacetId) = facetMeasure;
 
             g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0];
             g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1];
@@ -487,28 +484,27 @@ void StiffMatrix::assembleMFD()
 
             if (fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Dirichlet))
             {
-                M_Bd.coeffRef(globalFacetId,globalFacetId) = alpha * facetMeasure;
-                M_Bdmod.coeffRef(globalFacetId,globalFacetId) = facetMeasure;
+                Bd.coeffRef(globalFacetId,globalFacetId) = alpha * facetMeasure;
             }
         }
 
         Qp = Rp.fullPivLu().image(Rp);
 
-        Eigen::Matrix<double,Dynamic,Dynamic> RtR = Qp.transpose() * Qp;
-        Eigen::Matrix<double,Dynamic,Dynamic> RRtRiRt = Qp * RtR.inverse() * Qp.transpose();
+        Eigen::Matrix<Real,Dynamic,Dynamic> RtR = Qp.transpose() * Qp;
+        Eigen::Matrix<Real,Dynamic,Dynamic> RRtRiRt = Qp * RtR.inverse() * Qp.transpose();
 
 /*
         std::stringstream  ss;
         ss << "RRtRiRt_" << cellId << ".m";
-        Eigen::Matrix<double,3,3> RtR = Rp.transpose() * Rp;
+        Eigen::Matrix<Real,3,3> RtR = Rp.transpose() * Rp;
         Real det = RtR.determinant();
         std::cout<<"ID: "<<cellId<<" Det: "<<det<<std::endl;
         if(std::fabs(det) >= 1e-10)
         {
-            Eigen::Matrix<double,Dynamic,Dynamic> RRtRiRt = Rp * RtR.inverse() * Rp.transpose();
+            Eigen::Matrix<Real,Dynamic,Dynamic> RRtRiRt = Rp * RtR.inverse() * Rp.transpose();
             Eigen::saveMarket( RRtRiRt, ss.str() );
         }
-        Eigen::Matrix<double,Dynamic,Dynamic> QQt = Qp * Qp.transpose();
+        Eigen::Matrix<Real,Dynamic,Dynamic> QQt = Qp * Qp.transpose();
         ss.str(std::string());
         ss << "QQt_" << cellId << ".m";
         Eigen::saveMarket( QQt, ss.str() );
@@ -530,24 +526,25 @@ void StiffMatrix::assembleMFD()
               );
 
         Zp  = Z0p + Z1p;
+        Eigen::saveMarket( Z0p, "Z0p.m" );
+        Eigen::saveMarket( Z1p, "Z1p.m" );
+        Eigen::saveMarket( Zp, "Zp.m" );
 
         for(UInt iloc=0; iloc<numCellFacets; ++iloc)
         {
             const UInt i = cellFacetsId[iloc];
             const Real Bcoeff = Bp(0,iloc);
-            const Real Bcoeffmod = Bpmod(0,iloc);
 
             if(Bcoeff != 0.)
             {
-                M_B.insert(cellId,i) = Bcoeff;
-                M_Bmod.insert(cellId,i) = Bcoeffmod;
+                B.insert(cellId,i) = Bcoeff;
             }
 
             Real Zcoeff = Zp(iloc,iloc);
 
             if( Zcoeff != 0. )
             {
-                M_Z.coeffRef(i,i) += Zp(iloc,iloc);
+                Z.coeffRef(i,i) += Zp(iloc,iloc);
             }
 
             for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc)
@@ -558,11 +555,11 @@ void StiffMatrix::assembleMFD()
                 if (Zcoeff != 0.)
                 {
 #ifdef DIAGONALZ
-                    M_Z.coeffRef(i,i) += Zcoeff;
-                    M_Z.coeffRef(j,j) += Zcoeff;
+                    Z.coeffRef(i,i) += Zcoeff;
+                    Z.coeffRef(j,j) += Zcoeff;
 #else // DIAGONALZ
-                    M_Z.coeffRef(i,j) += Zcoeff;
-                    M_Z.coeffRef(j,i) += Zcoeff;
+                    Z.coeffRef(i,j) += Zcoeff;
+                    Z.coeffRef(j,i) += Zcoeff;
 #endif // DIAGONALZ
                 }
             }
@@ -572,12 +569,12 @@ void StiffMatrix::assembleMFD()
     // Now I Need to build T
     std::cout<<"Building Trasmissibility matrix (global)"<<std::endl;
 
-    T = M_B * M_Z * M_B.transpose();
+    T = B * Z * B.transpose();
     T.makeCompressed();
 
     std::cout<<"Building Trasmissibility Dirichelt matrix (global)"<<std::endl;
 
-    Td = M_B * M_Z * M_Bd.transpose();
+    Td = B * Z * Bd.transpose();
     Td.makeCompressed();
 
     // Clean up to seve memory (I hope)
@@ -589,9 +586,9 @@ void StiffMatrix::assembleMFD()
     std::cout.flush();
     Eigen::saveMarket( T, "T.m" );
     Eigen::saveMarket( Td, "Td.m" );
-    Eigen::saveMarket( M_B, "B.m" );
-    Eigen::saveMarket( M_Bd, "Bd.m" );
-    Eigen::saveMarket( M_Z, "Z.m" );
+    Eigen::saveMarket( B, "B.m" );
+    Eigen::saveMarket( Bd, "Bd.m" );
+    Eigen::saveMarket( Z, "Z.m" );
 
     Real Df;
     Real T1f, Q1f, T2f, Q2f, QFf, Q1o;
@@ -674,7 +671,7 @@ void StiffMatrix::assembleMFD()
         }
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
-            for (Eigen::SparseMatrix<double>::InnerIterator it(Td,facetId); it; ++it)
+            for (Eigen::SparseMatrix<Real>::InnerIterator it(Td,facetId); it; ++it)
             {
                 M_b->operator()(it.row()) += it.value() * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
             }
@@ -741,7 +738,7 @@ void StiffMatrix::assembleMFD()
     } // for
 
     // Put everything together
-    Eigen::SparseMatrix<double,ColMajor> Mborder(numCellsTot,numCellsTot);
+    Eigen::SparseMatrix<Real,ColMajor> Mborder(numCellsTot,numCellsTot);
     Mborder.setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
     this->M_Matrix->resize(numCellsTot,numCellsTot);
     T.conservativeResize(numCellsTot,numCellsTot);
@@ -750,51 +747,6 @@ void StiffMatrix::assembleMFD()
     Eigen::saveMarket( *M_b, "RHS.m" );
     //this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
     std::cout<<" Assembling ended"<<std::endl;
-}
-
-void StiffMatrix::reconstructFlux(const Vector & pressure)
-{
-    using Eigen::Dynamic;
-    using Eigen::RowMajor;
-    using Eigen::ColMajor;
-
-    // Extract info of mesh. auto&& resolves const &
-    auto&& facetVectorRef  = this->M_mesh.getFacetsVector();
-    auto&& fractureVectorRef = this->M_mesh.getFractureFacetsIdsVector();
-    auto&& borderVectorRef = this->M_mesh.getBorderFacetsIdsVector();
-    const UInt numFacets = facetVectorRef.size();
-    const UInt numFractures = fractureVectorRef.size();
-    const UInt numFacetsTot = numFacets + numFractures;
-
-    // Resize the vectors
-    M_flux = Vector::Constant(numFacetsTot, 0.);
-    //M_velocity.resize(3*numFacetsTot);
-
-    M_flux = - M_Z * M_Bmod.transpose() * pressure;
-
-    Vector pressureD(Vector::Constant(M_Bdmod.cols(), 0.));
-    for (auto facet_it : borderVectorRef)
-    {
-        UInt borderId = facet_it.getBorderId();
-        UInt facetId = facet_it.getId();
-
-        if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
-        {
-            // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
-            M_flux(facetId) = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
-        }
-        else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
-        {
-            pressureD(facetId) = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
-        }
-    }
-
-    M_flux += - M_Z * M_Bdmod.transpose() * pressureD;
-
-    for(UInt i=0; i<(numFacets + numFractures); ++i)
-        M_flux(i) /= 2;
-
-
-}
+} // StiffMatrix::assembleMFD
 
 } // namespace FVCode3D

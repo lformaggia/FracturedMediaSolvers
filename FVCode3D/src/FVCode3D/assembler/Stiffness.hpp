@@ -162,34 +162,6 @@ public:
     Real findFracturesAlpha (const std::pair<UInt,UInt> fj, const UInt n_Id) const;
     //@}
 
-public:
-
-    //! @name Get Methods
-    //@{
-    //! Get flux (const)
-    /*!
-     * @return the flux
-     */
-    const Vector & getFlux() const
-    { return M_flux; };
-
-    //! Get flux
-    /*!
-     * @return the flux
-     */
-    Vector & getFlux()
-    { return M_flux; };
-    //@}
-
-    //! @name Methods
-    //@{
-    //! Execute the reconstruction of flux/velocity
-    /*!
-     * @param pressure the pressure solution
-     */
-    void reconstructFlux(const Vector & pressure);
-    //@}
-
 protected:
 
     //! @name Assemble Methods
@@ -225,21 +197,6 @@ protected:
     std::unique_ptr<Vector> M_b;
     //! The constant container of the BCs
     const BoundaryConditions & M_bc;
-
-protected:
-    //! Vector that contains the flux on the facets
-    Eigen::Matrix<double,Eigen::Dynamic,1> M_flux;
-
-    //! Z matrix for internal product= \f$ M^{-1}\f$
-    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Z;
-    //! B matrix for signed area
-    Eigen::SparseMatrix<double,Eigen::RowMajor> M_B;
-    //! B matrix for unsigned area
-    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Bmod;
-    //! B matrix for Dirichlet area
-    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Bd;
-    //! B matrix for Dirichlet unsigned area
-    Eigen::SparseMatrix<double,Eigen::RowMajor> M_Bdmod;
 };
 
 } // namespace FVCode3D
