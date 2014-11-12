@@ -48,11 +48,10 @@ public:
     /*!
      * @param rigid_mesh A Rigid_Mesh used to build the matrix
      * @param BC Boundary conditions given in the container BoundaryConditions
-     * @param pressure vector of the pressure on cells
      */
-    FluxReconstruction(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & bc, const std::vector<Real> & pressure):
-        StiffMatrix(rigid_mesh, bc), M_pressure(pressure)
-        {};
+    FluxReconstruction(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & bc):
+        StiffMatrix(rigid_mesh, bc)
+    {};
 
     //! No Copy-Constructor
     FluxReconstruction(const FluxReconstruction &) = delete;
@@ -70,47 +69,30 @@ public:
     /*!
      * @return the flux vector
      */
-    const std::vector<Real> & getFlux() const
+    const Vector & getFlux() const
     { return M_flux; };
 
     //! Get the flux
     /*!
      * @return the flux vector
      */
-    std::vector<Real> & getFlux()
+    Vector & getFlux()
     { return M_flux; };
-
-    //! Get the velocity (const)
-    /*!
-     * @return the velocity vector
-     */
-    const std::vector<Real> & getVelocity() const
-    { return M_velocity; };
-
-    //! Get the velocity (const)
-    /*!
-     * @return the velocity vector
-     */
-    std::vector<Real> & getVelocity()
-    { return M_velocity; };
     //@}
 
     //! @name Methods
     //@{
-    //! Execute the reconstruction of flux/velocity
-    void reconstruct();
+    //! Execute the reconstruction of flux
+    void reconstruct(const Vector & pressure);
+
+    //! Execute the reconstruction of flux
+    void localReconstruct(const UInt facetId, const Vector & pressure);
     //@}
 
 private:
-
     //! Vector that contains the flux on the facets
-    std::vector<Real> M_flux;
-    //! Vector that contains the velocity on each cell: [ Vx1 ... VxN  Vy1 ... VyN  Vz1 ... VzN ]
-    std::vector<Real> M_velocity;
-
-    //! Vector that contains the pressure
-    const std::vector<Real> & M_pressure;
-}; // namespace FluxReconstruction
+    Vector M_flux;
+}; // FluxReconstruction
 
 } // namespace FVCode3D
 
