@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 
+#include <unsupported/Eigen/SparseExtra>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
@@ -104,21 +105,21 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-//    std::cout << "Set uniform properties..." << std::flush;
-//    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
-//    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
-//    matrixPerm->setPermeability( 1., 0 );
-//    matrixPerm->setPermeability( 1., 4 );
-//    matrixPerm->setPermeability( 1., 8 );
-//    fracturesPerm->setPermeability( 1.e6, 0 );
-//    const Real aperture = 1.e-2;
-//    const Real matrixPoro = 0.25;
-//    const Real fracturesPoro = 1.;
-//    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
-//    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
-//    std::cout << " done." << std::endl << std::endl;
-//
-//    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+    std::cout << "Set uniform properties..." << std::flush;
+    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
+    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+    matrixPerm->setPermeability( 1., 0 );
+    matrixPerm->setPermeability( 1., 4 );
+    matrixPerm->setPermeability( 1., 8 );
+    fracturesPerm->setPermeability( 1.e6, 0 );
+    const Real aperture = 1.e-2;
+    const Real matrixPoro = 0.25;
+    const Real fracturesPoro = 1.;
+    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
+    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
     ExporterVTU exporter;
 
@@ -138,12 +139,40 @@ int main(int argc, char * argv[])
 #endif // FVCODE3D_EXPORT
 
     std::cout << "Add BCs..." << std::flush;
-    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fOne );
-    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Neumann, fOne );
+//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fMinusOne );
+//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Dirichlet, fZero );
+
+    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fZero );
+    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fOne );
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
     BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Neumann, fZero );
     BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
     BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
+
+//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fOne );
+//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
+//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Neumann, fZero );
+//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
+//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
+
+//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Neumann, fOne );
+//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Dirichlet, fZero );
+
+//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Dirichlet, fZero );
+//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Dirichlet, fZero );
 
     std::vector<BoundaryConditions::BorderBC> borders;
 
@@ -220,6 +249,81 @@ int main(int argc, char * argv[])
             std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getIter() << std::endl;
             std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getResidual() << std::endl;
         }
+//        std::vector<Real> totalBC1Flux,
+//                            totalBC2Flux;
+//        auto& solution = darcy->getSolver().getSolution();
+//        StiffMatrix StiffM(myrmesh, BC);
+//        for ( auto facet_it : myrmesh.getBorderFacetsIdsVector() )
+//        {
+//            const UInt borderID = facet_it.getBorderId();
+//            if ( BC.getBordersBCMap().at( borderID ).getBCType() == Dirichlet )
+//            {
+//                const UInt cellId = facet_it.getSeparatedCellsIds()[0];
+//                const Real alpha1 = StiffM.findAlpha(cellId, &facet_it);
+//                const Real alpha2 = StiffM.findDirichletAlpha(cellId, &facet_it);
+//                const Real trasmissibility = alpha1*alpha2/(alpha1 + alpha2) * propMap.getMobility();
+//                const Real bcSolution = BC.getBordersBCMap().at( borderID ).getBC()( facet_it.getCentroid() );
+//                if( borderID == 1 )
+//                {
+//                    totalBC1Flux += trasmissibility * ( solution[ cellId ] - bcSolution );
+//                } // if
+//                else
+//                {
+//                    totalBC2Flux += trasmissibility * ( solution[ cellId ] - bcSolution );
+//                } // else
+//            } // if
+//        } // for
+//
+//        for ( auto edge_it : myrmesh.getBorderTipEdgesIdsVector() )
+//        {
+//            bool isD = false;
+//            UInt borderId = 0;
+//
+//            // select which BC to apply
+//            for(auto border_it : edge_it.getBorderIds())
+//            {
+//                // BC = D > N && the one with greatest id
+//                if(BC.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
+//                {
+//                    if(!isD)
+//                    {
+//                        isD = true;
+//                        borderId = border_it;
+//                    }
+//                    else
+//                    {
+//                        borderId = (border_it > borderId) ? border_it : borderId;
+//                    }
+//                }
+//                else if(!isD && BC.getBordersBCMap().at(border_it).getBCType() == Neumann)
+//                {
+//                    borderId = (border_it > borderId) ? border_it : borderId;
+//                }
+//            }
+//
+//            for(auto facet_it : edge_it.getSeparatedFacetsIds())
+//            {
+//                if(myrmesh.getFacetsVector()[facet_it].isFracture() &&
+//                   BC.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
+//                {
+//                    const UInt neighborIdAsCell = myrmesh.getFacetsVector()[facet_it].getFractureFacetId() + myrmesh.getCellsVector().size();
+//                    const Real alpha1 = StiffM.findAlpha (facet_it, &edge_it);
+//                    const Real alpha2 = StiffM.findDirichletAlpha (facet_it, &edge_it);
+//                    const Real trasmissibility = alpha1*alpha2/(alpha1 + alpha2) * propMap.getMobility();
+//                    const Real bcSolution = BC.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
+//                    if( borderId == 1 )
+//                    {
+//                        totalBC1Flux += trasmissibility * ( solution[ neighborIdAsCell ] - bcSolution );
+//                    } // if
+//                    else
+//                    {
+//                        totalBC2Flux += trasmissibility * ( solution[ neighborIdAsCell ] - bcSolution );
+//                    } // else
+//                } // if
+//            }// for
+//        }
+
+
     }
     else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
     {
