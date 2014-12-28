@@ -98,12 +98,13 @@ Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * face
     const PermPtr_Type & k =
             M_properties.getProperties(this->M_mesh.getCellsVector()[cellId].getZoneCode()).M_permeability;
 
-    const Point3D f = cellCenter - facetCenter;
+    Point3D f = cellCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
+    f /= D;
 
     const Point3D normal = facet->getUnsignedNormal();
 
-    const Real KnDotF = fabs(dotProduct(k * normal, normal)); // K n * n, I suppose that for the ghost cell n // f
+    const Real KnDotF = fabs(dotProduct(k * normal, f)); // K n * f
 
     return facet->getSize() * KnDotF / D;
 }
@@ -121,6 +122,7 @@ Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge
 
     Point3D f = borderCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
+    f /= D;
 
     Point3D normal = crossProduct(  f,
                             this->M_mesh.getNodesVector()[edge->getEdge().getVerticesIds()[0]] -
@@ -130,7 +132,7 @@ Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge
                             normal); // n = l x k
     normal.normalize();
 
-    const Real KnDotF = fabs(dotProduct(k * normal, normal)); // K n * n, I suppose that for the ghost facet n // f
+    const Real KnDotF = fabs(dotProduct(k * normal, f)); // K n * f
 
     return A * KnDotF / D;
 }
@@ -233,7 +235,7 @@ void StiffMatrix::assemblePorousMatrixBC()
             const Real alpha1 = findAlpha (neighbor1id, &facet_it);
             const Real alpha2 = findDirichletAlpha (neighbor1id, &facet_it);
 
-            const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
+            const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
             const Real Q12 = T12 * M_properties.getMobility();
             const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 
@@ -322,7 +324,7 @@ void StiffMatrix::assembleFractureBC()
                     const Real alpha1 = findAlpha (facet_it, &edge_it);
                     const Real alpha2 = findDirichletAlpha (facet_it, &edge_it);
 
-                    const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
+                    const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
