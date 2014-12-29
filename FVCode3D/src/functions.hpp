@@ -9,13 +9,15 @@
 namespace FVCode3D
 {
 
-//Func SourceDomain = [](Point3D p){return (p.x()*p.x() + p.y()*p.y() + p.z()*p.z()) < 1;};
+Func SourceDomain = [](Point3D p){return ((p.x() - 1.)*(p.x() - 1.) + (p.y() - 0.5)*(p.y() - 0.5) + (p.z() - 0.5)*(p.z()
+- 0.5)) < 1;};
 //Func SinkDomain = [](Point3D p){return (p.x()*p.x() + p.y()*p.y()) < 1;};
 
 Func fZero = [](Point3D){ return 0.; };
 Func fOne = [](Point3D){ return 1.; };
 Func fMinusOne = [](Point3D){ return -1.; };
 Func fOneZero = [](Point3D p){ return (2. - p.x()) / 2.; };
+Func fTen = [](Point3D){ return 10.; };
 
 /* grid2 */
 Func SourceGrid2 = [](Point3D p)
@@ -108,7 +110,7 @@ Func SSOGrid3 = [](Point3D p)
 Func SSEDFM = [](Point3D p)
     { return 1*( p.x() <= 0.2 ); };
 
-Func SS = fZero;//SSGrid2;
+Func SS = fZero;//SourceDomain; //fZero;//SSGrid2;
 
 } // namespace FVCode3D
 #endif /* FUNCTIONS_HPP_ */
