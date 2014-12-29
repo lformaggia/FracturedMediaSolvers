@@ -14,7 +14,7 @@
 //#define DIAGONALZ
 
 // MFD: compute the exact inverse of M
-//#define INVERSEM
+#define INVERSEM
 
 namespace FVCode3D
 {
@@ -543,7 +543,7 @@ void StiffMatrix::assembleMFD()
 
 /*
         std::stringstream  ss;
-        ss << "RRtRiRt_" << cellId << ".m";
+        ss << "./mMatrix/RRtRiRt_" << cellId << ".m";
         Eigen::Matrix<Real,3,3> RtR = Rp.transpose() * Rp;
         Real det = RtR.determinant();
         std::cout<<"ID: "<<cellId<<" Det: "<<det<<std::endl;
@@ -554,13 +554,13 @@ void StiffMatrix::assembleMFD()
         }
         Eigen::Matrix<Real,Dynamic,Dynamic> QQt = Qp * Qp.transpose();
         ss.str(std::string());
-        ss << "QQt_" << cellId << ".m";
+        ss << "./mMatrix/QQt_" << cellId << ".m";
         Eigen::saveMarket( QQt, ss.str() );
         ss.str(std::string());
-        ss << "Rp_" << cellId << ".m";
+        ss << "./mMatrix/Rp_" << cellId << ".m";
         Eigen::saveMarket( Rp, ss.str() );
         ss.str(std::string());
-        ss << "Qp_" << cellId << ".m";
+        ss << "./mMatrix/Qp_" << cellId << ".m";
         Eigen::saveMarket( Qp, ss.str() );
 */
 
@@ -573,7 +573,7 @@ void StiffMatrix::assembleMFD()
 
         M0p = ( 1. / cellMeasure ) *
               (Rp * Kp.inverse() * Rp.transpose());
-        M1p = ( M0p.trace() ) *
+        M1p = M0p.trace() * // / numCellFacets *
               ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
                 NNtNiNt
               );
@@ -582,7 +582,8 @@ void StiffMatrix::assembleMFD()
 
         Z0p = ( 1. / cellMeasure ) *
               (Np * Kp.inverse() * Np.transpose());
-        Z1p = tCoeff * Kp.trace() / cellMeasure *
+//        Z1p = tCoeff * Kp.trace() / cellMeasure *
+        Z1p = tCoeff * Z0p.trace() / numCellFacets *
               ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
                 RRtRiRt
 //                Qp * Qp.transpose()
@@ -590,22 +591,26 @@ void StiffMatrix::assembleMFD()
 
         Zp  = Z0p + Z1p;
 
-        std::cout<<"Zp*Mp: "<<std::endl<<Zp*Mp<<std::endl;
-        std::cout<<"Zp0*Mp0: "<<std::endl<<Z0p*M0p<<std::endl;
-        std::cout<<"Zp0*Mp1: "<<std::endl<<Z0p*M1p<<std::endl;
-        std::cout<<"Zp1*Mp0: "<<std::endl<<Z1p*M0p<<std::endl;
-        std::cout<<"Zp1*Mp1: "<<std::endl<<Z1p*M1p<<std::endl;
-        std::cout<<"Np*Rpt: "<<std::endl<<Np*Rp.transpose()<<std::endl;
+//        std::cout<<"Zp*Mp: "<<std::endl<<Zp*Mp<<std::endl;
+//        std::cout<<"Zp0*Mp0: "<<std::endl<<Z0p*M0p<<std::endl;
+//        std::cout<<"Zp0*Mp1: "<<std::endl<<Z0p*M1p<<std::endl;
+//        std::cout<<"Zp1*Mp0: "<<std::endl<<Z1p*M0p<<std::endl;
+//        std::cout<<"Zp1*Mp1: "<<std::endl<<Z1p*M1p<<std::endl;
+//        std::cout<<"Np*Rpt: "<<std::endl<<Np*Rp.transpose()<<std::endl;
 //        std::cout<<"Zp*Rp: "<<std::endl<<Zp*Rp<<std::endl;
-        std::cout<<"Np: "<<std::endl<<Np<<std::endl;
-        std::cout<<"Np*Npt: "<<std::endl<<Np*Np.transpose()<<std::endl;
+//        std::cout<<"Np: "<<std::endl<<Np<<std::endl;
+//        std::cout<<"Zp0: "<<std::endl<<Z0p<<std::endl;
+//        std::cout<<"Qp: "<<std::endl<<Qp<<std::endl;
+//        std::cout<<"Np*Npt: "<<std::endl<<Np*Np.transpose()<<std::endl;
+//        std::cout<<"Old: "<<tCoeff * Kp.trace() / cellMeasure<<std::endl;
+//        std::cout<<"New: "<<tCoeff * Z0p.trace() / 6.<<std::endl;
 //        std::cout<<"Zp*Rp Norm: "<<(Zp*Rp).norm()<<std::endl;
 //        std::cout<<"Np Norm: "<<Np.norm()<<std::endl;
 
-        Eigen::saveMarket( Z0p, "Z0p.m" );
-        Eigen::saveMarket( Z1p, "Z1p.m" );
-        Eigen::saveMarket( Zp, "Zp.m" );
-        Eigen::saveMarket( Mp, "Mp.m" );
+//        Eigen::saveMarket( Z0p, "./mMatrix/Z0p.m" );
+//        Eigen::saveMarket( Z1p, "./mMatrix/Z1p.m" );
+//        Eigen::saveMarket( Zp, "./mMatrix/Zp.m" );
+//        Eigen::saveMarket( Mp, "./mMatrix/Mp.m" );
 
         for(UInt iloc=0; iloc<numCellFacets; ++iloc)
         {
@@ -678,8 +683,8 @@ void StiffMatrix::assembleMFD()
 //    Eigen::Matrix<Real,Dynamic,Dynamic> fullZ(Z);
 //    Eigen::Matrix<Real,Dynamic,Dynamic> MZ = M*fullZ;
 //    std::cout<<"Norm M*Z: "<<MZ.norm()<<std::endl;
-//    Eigen::saveMarket( MZ, "MZ.m" );
-//    Eigen::saveMarket( M, "M.m" );
+//    Eigen::saveMarket( MZ, "./mMatrix/MZ.m" );
+//    Eigen::saveMarket( M, "./mMatrix/M.m" );
 
     Eigen::Matrix<Real,Dynamic,Dynamic> invM(M);
     std::cout<<"Compute inverse of M"<<std::endl;
@@ -687,7 +692,7 @@ void StiffMatrix::assembleMFD()
 
 //    Eigen::Matrix<Real,Dynamic,Dynamic> diffMZ = invM-fullZ;
 //    std::cout<<"Norm M^-1-Z: "<<diffMZ.norm()<<std::endl;
-//    Eigen::saveMarket( diffMZ, "diffMZ.m" );
+//    Eigen::saveMarket( diffMZ, "./mMatrix/diffMZ.m" );
 #endif // INVERSEM
 
     for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
@@ -743,14 +748,14 @@ void StiffMatrix::assembleMFD()
     std::cout<<" Num Facets: "<<numFacets<<std::endl;
     std::cout<<" Num Cells + Fracs: "<<numCellsTot<<std::endl;
     std::cout.flush();
-    Eigen::saveMarket( T, "T.m" );
-    Eigen::saveMarket( Td, "Td.m" );
-    Eigen::saveMarket( B, "B.m" );
-    Eigen::saveMarket( C, "C.m" );
-    Eigen::saveMarket( Bd, "Bd.m" );
-    Eigen::saveMarket( Z, "Z.m" );
+    Eigen::saveMarket( T, "./mMatrix/T.m" );
+    Eigen::saveMarket( Td, "./mMatrix/Td.m" );
+    Eigen::saveMarket( B, "./mMatrix/B.m" );
+    Eigen::saveMarket( C, "./mMatrix/C.m" );
+    Eigen::saveMarket( Bd, "./mMatrix/Bd.m" );
+    Eigen::saveMarket( Z, "./mMatrix/Z.m" );
 #ifdef INVERSEM
-    Eigen::saveMarket( invM, "invM.m" );
+    Eigen::saveMarket( invM, "./mMatrix/invM.m" );
 #endif // INVERSEM
 
     Real Df;
@@ -918,8 +923,8 @@ void StiffMatrix::assembleMFD()
 //    this->M_Matrix->coeffRef(39, 39) = 1.;
 //    M_b->operator()(0) = 0.;
 //    M_b->operator()(39) = 1.;
-    Eigen::saveMarket( *(this->M_Matrix), "A.m" );
-    Eigen::saveMarket( *M_b, "RHS.m" );
+    Eigen::saveMarket( *(this->M_Matrix), "./mMatrix/A.m" );
+    Eigen::saveMarket( *M_b, "./mMatrix/RHS.m" );
     //this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
     std::cout<<" Assembling ended"<<std::endl;
 } // StiffMatrix::assembleMFD
