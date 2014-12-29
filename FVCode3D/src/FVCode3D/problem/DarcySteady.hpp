@@ -72,7 +72,8 @@ public:
      * Solve the system Ax=b.
      * @pre call assemble().
      */
-    virtual void solve() { this->M_solver->solve(); }
+    virtual void solve() { this->M_solver->solve();
+        Eigen::saveMarket( this->M_solver->getSolution(), "./mMatrix/sol.m" ); }
 
     //! Destructor
     virtual ~DarcySteady() = default;
