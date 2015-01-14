@@ -46,6 +46,14 @@ public:
     virtual void generate(bool fracturesOn = true, const Real Lx = 2., const Real Ly = 1., const Real Lz = 1., const
     UInt Nx = 40, const UInt Ny = 20, const UInt Nz = 20, const Real Sx = 0, const Real Sy = 0, const Real Sz = 0);
 
+    //! Add noise to the points
+    /*!
+     * Add noise to the points following a normal distribution with mean @a mean and standard deviation @a stDev
+     * @param mean mean. Default = 0.
+     * @param stDev standard deviation. Default = 1.
+     */
+    void addNoiseToPoint(const Real mean = 0., const Real stDev = 1.);
+
     //! Generate the BC ids
     /*!
      * Add the BCs ids to the boundary facets.
