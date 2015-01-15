@@ -228,7 +228,7 @@ void StiffMatrix::assemblePorousMatrixBC()
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-            M_b->operator()(M_offsetRow + neighbor1id) += Q1o;
+            M_b->operator()(M_offsetRow + neighbor1id) -= Q1o;
         } // if
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
@@ -317,7 +317,7 @@ void StiffMatrix::assembleFractureBC()
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
+                    M_b->operator()(M_offsetRow + neighborIdAsCell) -= Q1o;
                 } // if
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {
