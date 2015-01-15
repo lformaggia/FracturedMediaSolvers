@@ -1,5 +1,4 @@
-#include <Libgeo.h>
-#include <src/geometry/mesh3d.hpp>
+#include <FVCode3D/FVCode3D.hpp>
 
 int main (int argc, char** argv)
 {
