@@ -42,11 +42,11 @@ int main (int argc, char** argv)
 
     Func fZero  = [](Point3D){ return 0.; };
     Func SS     = [aperture, kf](const Point3D & p) { return (1 - kf) * std::cosh(aperture/2.) * std::cos(p.x()); };
-    Func u_ex   = [aperture, kf](const Point3D & p) { return p.y() == 0 ?
+    Func u_ex   = [aperture, kf](const Point3D & p) { return p.y() == 0. ?
                                                  std::cos(p.x()) * std::cosh(p.y())
                                                  :
                                                  kf * std::cos(p.x()) * std::cosh(p.y()) +
-                                                 (1 - kf) * std::cosh(aperture/2.) * std::cos(p.x());
+                                                 (1. - kf) * std::cosh(aperture/2.) * std::cos(p.x());
                                         };
 
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, u_ex );
