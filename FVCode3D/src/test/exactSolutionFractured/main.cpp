@@ -75,12 +75,19 @@ int main (int argc, char** argv)
     darcy->assemble();
     darcy->solve();
 
-    Vector u_h_ex = evaluate(myrmesh, u_ex);
+    Vector u_h_ex_M = evaluateMatrix(myrmesh, u_ex);
+    Vector u_h_ex_F = evaluateFracture(myrmesh, u_ex);
 
     Quadrature q(myrmesh);
 
-    const Real err = q.L2Norm( u_h_ex - darcy->getSolver().getSolution() );
+    const Vector uh_M = darcy->getSolver().getSolution().head(myrmesh.getCellsVector().size());
+    const Vector uh_F = darcy->getSolver().getSolution().tail(myrmesh.getFractureFacetsIdsVector().size());
+    const Real err_M = q.L2Norm( u_h_ex_M - uh_M );
+    const Real err_F = q.L2Norm( u_h_ex_F - uh_F );
+    const Real err = std::sqrt(err_M * err_M + err_F * err_F);
     std::cout << std::setprecision(15) << "L2 norm: " << err << std::endl;
+    std::cout << std::setprecision(15) << "Matrix L2 norm: " << err_M / q.L2Norm( u_h_ex_M ) << std::endl;
+    std::cout << std::setprecision(15) << "Fracture L2 norm: " << err_F / q.L2Norm( u_h_ex_F ) << std::endl;
 
 #ifdef FVCODE3D_EXPORT
     ExporterVTU exporter;
