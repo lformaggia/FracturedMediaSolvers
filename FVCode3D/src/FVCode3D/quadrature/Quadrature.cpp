@@ -174,12 +174,12 @@ Real Quadrature::L2NormMatrix(const Vector& integrand)
         integral += cell_it.getVolume()*integrand(cell_it.getId())*integrand(cell_it.getId());
     }
 
-    for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
-    {
-        Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
+//    for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
+//    {
+//        Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 //        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0])*integrand(facet_it.getSeparatedCellsIds()[0]);
 //        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1])*integrand(facet_it.getSeparatedCellsIds()[1]);
-    }
+//    }
 
     return sqrt(integral);
 }
