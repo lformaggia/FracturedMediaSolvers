@@ -41,6 +41,27 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
         }
     }
 
+/*
+    std::default_random_engine generator;
+    std::normal_distribution<Real> distribution(0., 7.5e-3);
+
+    for(j=1; j < Ny; ++j)
+    {
+        for(i=1; i < Nx; ++i)
+        {
+            const Real varX = distribution(generator);
+            const Real varY = distribution(generator);
+            for(k=0; k <= Nz; ++k)
+            {
+                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                nodesRef[index].x() += varX;
+                nodesRef[index].y() += varY;
+//                nodesRef[i + Nx * j + Nx * Ny * k].z() += distribution(generator);
+            }
+        }
+    }
+*/
+
     tmp.resize(4);
 
     // create facets parallel to x axis
