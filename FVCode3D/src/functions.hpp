@@ -15,6 +15,7 @@ Func SourceDomain = [](Point3D p){return ((p.x() - 1.)*(p.x() - 1.) + (p.y() - 0
 
 Func fZero = [](Point3D){ return 0.; };
 Func fOne = [](Point3D){ return 1.; };
+Func fMinusTwo = [](Point3D){ return -2.; };
 Func fMinusOne = [](Point3D){ return -1.; };
 Func fOneZero = [](Point3D p){ return (2. - p.x()) / 2.; };
 Func fTen = [](Point3D){ return 10.; };
