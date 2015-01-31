@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir    = ./data/
-mesh_file   = cartBC1.fvg
+mesh_file   = cartN10x10x1.fvg
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
@@ -23,7 +23,7 @@ method      = MFD    # FV or MFD
 ## problem parameter
 [problem]
 type        = steady    # steady or pseudoSteady
-fracturesOn = 1     # 1 enable fractures, 0 disable fractures
+fracturesOn = 0     # 1 enable fractures, 0 disable fractures
 sourceOn    = none      # all, matrix, fractures, none
 fracPressOn = 0     # 1 set pressure inside fracture, 0 otherwise
 fracPress   = 1.
