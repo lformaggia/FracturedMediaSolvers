@@ -10,6 +10,7 @@
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
+#include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
 {
