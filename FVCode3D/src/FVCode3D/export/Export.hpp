@@ -170,6 +170,16 @@ public:
     template <typename VectorType>
     void exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const Eigen::VectorXd & sol, const std::string & fieldName = "Flux") const throw();
 
+    //! Export a solution on facets
+    /*!
+     * @param mesh reference of a Rigid_Mesh
+     * @param filename name of the file
+     * @param sol a vector to be exported
+     * @param fieldName name of the field that appears in the file
+     */
+    template <typename VectorType>
+    void exportSolutionOnFacets(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Transmissibility") const throw();
+
     //! Export the a specific property on cells and fracture facets
     /*!
      * @param mesh reference of a Mesh3D

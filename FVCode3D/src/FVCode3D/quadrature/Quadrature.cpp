@@ -29,7 +29,7 @@ Quadrature::Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & qu
     M_size (rigid_mesh.getCellsVector().size()+ rigid_mesh.getFractureFacetsIdsVector().size()),
     M_quadrature(std::move(quadrature.clone())),
     M_fractureQuadrature(std::move(fracturequadrature.clone()))
-    {}
+{}
 
 Real Quadrature::integrate(const Vector & integrand) throw()
 {
@@ -50,8 +50,8 @@ Real Quadrature::integrate(const Vector & integrand) throw()
     {
         Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
         integral += _volume*integrand(facet_it.getIdAsCell());
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0]);
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1]);
     }
 
     return integral;
@@ -75,8 +75,8 @@ Real Quadrature::integrateMatrix(const Vector & integrand) throw()
     for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {
         Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0]);
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1]);
     }
 
     return integral;
@@ -159,8 +159,8 @@ Real Quadrature::L2Norm(const Vector& integrand)
     {
         Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
         integral += _volume*integrand(facet_it.getIdAsCell())*integrand(facet_it.getIdAsCell());
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0])*integrand(facet_it.getSeparatedCellsIds()[0]);
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1])*integrand(facet_it.getSeparatedCellsIds()[1]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0])*integrand(facet_it.getSeparatedCellsIds()[0]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1])*integrand(facet_it.getSeparatedCellsIds()[1]);
     }
 
     return sqrt(integral);
@@ -174,12 +174,12 @@ Real Quadrature::L2NormMatrix(const Vector& integrand)
         integral += cell_it.getVolume()*integrand(cell_it.getId())*integrand(cell_it.getId());
     }
 
-    for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
-    {
-        Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0])*integrand(facet_it.getSeparatedCellsIds()[0]);
-        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1])*integrand(facet_it.getSeparatedCellsIds()[1]);
-    }
+//    for(auto& facet_it : M_mesh.getFractureFacetsIdsVector())
+//    {
+//        Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[0])*integrand(facet_it.getSeparatedCellsIds()[0]);
+//        integral -= _volume/2.*integrand(facet_it.getSeparatedCellsIds()[1])*integrand(facet_it.getSeparatedCellsIds()[1]);
+//    }
 
     return sqrt(integral);
 }
@@ -217,18 +217,18 @@ Vector Quadrature::cellIntegrate (const std::function<Real(Point3D)> & func)
         result (facet_it.getIdAsCell()) = M_fractureQuadrature->apply(M_mesh.getFacetsVector()[facet_it.getId()], _volume, func);
 
         // remove the contribution of the fracture from the first separated cell
-        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[0];
-
-        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
-
-        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
+//        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[0];
+//
+//        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
+//
+//        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
 
         // remove the contribution of the fracture from the second separated cell
-        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[1];
-
-        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
-
-        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
+//        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[1];
+//
+//        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
+//
+//        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
     }
 
     return result;
@@ -252,22 +252,21 @@ Vector Quadrature::cellIntegrateMatrix (const std::function<Real(Point3D)> & fun
         const Real _volume = M_properties.getProperties(facet_it.getZoneCode()).M_aperture * facet_it.getFacet().area();
 
         // remove the contribution of the fracture from the first separated cell
-        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[0];
-
-        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
-
-        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
+//        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[0];
+//
+//        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
+//
+//        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
 
         // remove the contribution of the fracture from the second separated cell
-        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[1];
-
-        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
-
-        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
+//        NeighboursId = M_mesh.getFacetsVector()[facet_it.getId()].getSeparatedCellsIds()[1];
+//
+//        partRes = M_quadrature->apply(M_mesh.getCellsVector()[NeighboursId], func);
+//
+//        result (NeighboursId) -= _volume/2. * partRes / M_mesh.getCellsVector()[NeighboursId].getVolume();
     } // for
 
     return result;
-
 } // CellIntegrateMatrix
 
 Vector Quadrature::cellIntegrateFractures (const std::function<Real(Point3D)> & func)
@@ -285,6 +284,5 @@ Vector Quadrature::cellIntegrateFractures (const std::function<Real(Point3D)> & 
 
     return result;
 } // CellIntegrateFractures
-
 
 } // namespace FVCode3D

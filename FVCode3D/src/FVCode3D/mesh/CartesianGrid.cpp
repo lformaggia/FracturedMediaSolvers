@@ -61,6 +61,7 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
         }
     }
 */
+//    addNoiseToPoint(0., 7.5e-3);
 
     tmp.resize(4);
 
@@ -193,6 +194,19 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
                 ++count;
             }
         }
+    }
+}
+
+void CartesianGrid::addNoiseToPoint(const Real mean, const Real stDev)
+{
+    std::default_random_engine generator;
+    std::normal_distribution<Real> distribution(mean, stDev);
+
+    for(auto& node : M_mesh.getNodesVector())
+    {
+        node.x() += distribution(generator);
+        node.z() += distribution(generator);
+        node.y() += distribution(generator);
     }
 }
 
