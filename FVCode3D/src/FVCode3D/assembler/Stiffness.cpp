@@ -14,7 +14,7 @@
 //#define DIAGONALZ
 
 // MFD: compute the exact inverse of M
-#define INVERSEM
+//#define INVERSEM
 
 namespace FVCode3D
 {
@@ -575,7 +575,7 @@ void StiffMatrix::assembleMFD()
 
         M0p = ( 1. / cellMeasure ) *
               (Rp * Kp.inverse() * Rp.transpose());
-        M1p = M0p.trace() * // / numCellFacets *
+        M1p = M0p.trace() * tCoeff / numCellFacets *
               ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
                 NNtNiNt
               );
@@ -584,8 +584,7 @@ void StiffMatrix::assembleMFD()
 
         Z0p = ( 1. / cellMeasure ) *
               (Np * Kp.inverse() * Np.transpose());
-//        Z1p = tCoeff * Kp.trace() / cellMeasure *
-        Z1p = tCoeff * Z0p.trace() / numCellFacets *
+        Z1p = Z0p.trace() * tCoeff / numCellFacets *
               ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
                 RRtRiRt
 //                Qp * Qp.transpose()
