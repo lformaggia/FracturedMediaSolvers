@@ -1,6 +1,6 @@
 #include <FVCode3D/FVCode3D.hpp>
 
-//#define FVCODE3D_EXPORT
+#define FVCODE3D_EXPORT
 
 using namespace FVCode3D;
 
@@ -31,22 +31,27 @@ int main (int argc, char** argv)
 
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityScalar );
     std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
-    const Real kf = 1.e6;
+    const Real kf = 1.e-3;
     matrixPerm->setPermeability( 1., 0 );
     fracturesPerm->setPermeability( kf, 0 );
-    const Real aperture = 1.e-3;
+    const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
     const Real fracturesPoro = 1.;
     propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
     propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
 
     Func fZero  = [](Point3D){ return 0.; };
-    Func SS     = [aperture, kf](const Point3D & p) { return (1 - kf) * std::cosh(aperture/2.) * std::cos(p.x()); };
-    Func u_ex   = [aperture, kf](const Point3D & p) { return p.y() == 0. ?
+    Func SS     = [aperture, kf](const Point3D & p) {
+                                                 return p.y() == 0. ?
+                                                 0.
+                                                 :
+                                                 (1 - kf) * std::cos(p.x()) * std::cosh(aperture/2.); };
+    Func u_ex   = [aperture, kf](const Point3D & p) {
+                                                 return p.y() == 0. ?
                                                  std::cos(p.x()) * std::cosh(p.y())
                                                  :
                                                  kf * std::cos(p.x()) * std::cosh(p.y()) +
-                                                 (1. - kf) * std::cosh(aperture/2.) * std::cos(p.x());
+                                                 (1. - kf) * std::cos(p.x()) * std::cosh(aperture/2.);
                                         };
 
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, u_ex );
@@ -80,8 +85,9 @@ int main (int argc, char** argv)
     Quadrature q(myrmesh);
 
     const Vector & uh = darcy->getSolver().getSolution();
-    const Real err_M = q.L2NormMatrix( u_h_ex - uh );
-    const Real err_F = q.L2NormFractures( u_h_ex - uh );
+    Vector u_diff = u_h_ex - uh;
+    const Real err_M = q.L2NormMatrix( u_diff );
+    const Real err_F = q.L2NormFractures( u_diff );
     const Real err = std::sqrt(err_M * err_M + err_F * err_F);
     std::cout << std::setprecision(15) << "L2 norm: " << err << std::endl;
     std::cout << std::setprecision(15) << "Matrix L2 norm: " << err_M / q.L2NormMatrix( u_h_ex ) << std::endl;
@@ -93,6 +99,10 @@ int main (int argc, char** argv)
     exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
     exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_ex.vtu", u_h_ex);
     exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_ex_f.vtu", u_h_ex);
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff.vtu",
+    u_diff.cwiseAbs() );
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff_f.vtu",
+    u_diff.cwiseAbs() );
     exporter.exportWithProperties(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_APP.vtu", Aperture | Permeability | Porosity);
 #endif // FVCODE3D_EXPORT
 
