@@ -1,3 +1,3 @@
 #add_subdirectory(dummy)
 add_subdirectory(exactSolutionMFD)
-add_subdirectory(exactSolutionFracturedMFD)
+#add_subdirectory(exactSolutionFracturedMFD)
