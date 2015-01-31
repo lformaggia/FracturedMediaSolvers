@@ -73,6 +73,8 @@ public:
      * @pre call assemble().
      */
     virtual void solve() { this->M_solver->solve();
+        Eigen::saveMarket( this->M_A, "./mMatrix/A.m" );
+        Eigen::saveMarket( this->M_b, "./mMatrix/b.m" );
         Eigen::saveMarket( this->M_solver->getSolution(), "./mMatrix/sol.m" ); }
 
     //! Destructor
