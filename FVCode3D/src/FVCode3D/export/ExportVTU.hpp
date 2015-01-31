@@ -119,6 +119,16 @@ public:
     template <typename VectorType>
     void exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Pressure") const throw();
 
+    //! Export a solution on facets
+    /*!
+     * @param mesh reference of a Rigid_Mesh
+     * @param filename name of the file
+     * @param sol a vector to be exported
+     * @param fieldName name of the field that appears in the file
+     */
+    template <typename VectorType>
+    void exportSolutionOnFacets(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Transmissibility") const throw();
+
     //! Export the solution on cells and fracture facets in a single file
     /*!
      * @tparam VectorType vector type (e.g., std::vector, Eigen::Vector ...)
@@ -140,16 +150,6 @@ public:
      */
     template <typename VectorType>
     void exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Flux") const throw();
-
-    //! Export a solution on facets
-    /*!
-     * @param mesh reference of a Rigid_Mesh
-     * @param filename name of the file
-     * @param sol a vector to be exported
-     * @param fieldName name of the field that appears in the file
-     */
-    template <typename VectorType>
-    void exportSolutionOnFacets(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName = "Transmissibility") const throw();
 
     //! Export the a specific property on cells and fracture facets
     /*!
@@ -533,15 +533,8 @@ exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::string filename, c
     filestr.close();
 }
 
-<<<<<<< HEAD
-template <typename VectorType>
-void ExporterVTU::
-exportFlux(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName) const throw()
-=======
-
 template <typename VectorType>
 void ExporterVTU::exportSolutionOnFacets(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName ) const throw()
->>>>>>> master
 {
     std::fstream filestr;
 
@@ -556,7 +549,109 @@ void ExporterVTU::exportSolutionOnFacets(const Rigid_Mesh & mesh, const std::str
         throw std::runtime_error("Error: file " + filename + " not opened.");
     }
 
-<<<<<<< HEAD
+    std::cout << std::endl << " Exporting Facets in Vtu format... " << std::endl;
+
+    const std::vector<Point3D> & nodes = mesh.getNodesVector();
+    const std::vector<Facet> & facets = mesh.getFacetsVector();
+    UInt nPoints = nodes.size();
+    UInt nFacets = facets.size();
+    UInt offsets = 0;
+
+    // Header
+    filestr << "<?xml version=\"1.0\"?>" << std::endl;
+    filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
+    filestr << "\t<UnstructuredGrid>" << std::endl;
+    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nFacets << "\">" << std::endl;
+
+    // CellData
+    filestr << "\t\t\t<CellData Scalars=\"facetId\">" << std::endl;
+
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetId\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(10);
+    for(auto& facet_it : facets)
+        filestr << facet_it.getId() << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderId\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(10);
+    for(auto& facet_it : facets)
+        filestr << facet_it.getBorderId() << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t</CellData>" << std::endl;
+
+    // CellData
+    filestr << "\t\t\t<CellData Scalars=\""<< fieldName << "\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\""<< fieldName << "\" format=\"ascii\">" << std::endl;
+    filestr << std::scientific << std::setprecision(16);
+    for( auto& facet_it : facets )
+        filestr << static_cast<Real>(sol[ facet_it.getId() ]) << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</CellData>" << std::endl;
+
+    filestr << std::scientific << std::setprecision(10);
+
+    // Points
+    filestr << "\t\t\t<Points>" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
+        filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+    filestr << "\t\t\t</Points>" << std::endl;
+
+    // Cells
+    filestr << "\t\t\t<Cells>" << std::endl;
+    //  Connectivity
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
+    for(auto& facet_it : facets)
+    {
+        for(auto vertex_it : facet_it.getVerticesIds())
+            filestr << vertex_it << " ";
+        filestr << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Offsets
+    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
+    for(auto& facet_it : facets)
+    {
+        offsets += facet_it.verticesNumber();
+        filestr << offsets << std::endl;
+    }
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    //  Types
+    filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
+    for(UInt i=0; i < nFacets ; ++i)
+        filestr << "7" << std::endl;
+    filestr << "\t\t\t\t</DataArray>" << std::endl;
+
+    filestr << "\t\t\t</Cells>" << std::endl;
+
+    filestr << "\t\t</Piece>" << std::endl;
+    filestr << "\t</UnstructuredGrid>" << std::endl;
+    filestr << "\t</VTKFile>" << std::endl;
+
+    filestr.close();
+} // ExporterVTU::exportSolutionOnFacets
+
+template <typename VectorType>
+void ExporterVTU::
+exportFlux(const Rigid_Mesh & mesh, const std::string filename, const VectorType & sol, const std::string & fieldName) const throw()
+{
+    std::fstream filestr;
+
+    filestr.open (filename.c_str(), std::ios_base::out);
+
+    if (filestr.is_open())
+    {
+        std::cout << std::endl << " File: " << filename << ", successfully opened";
+    }
+    else
+    {
+        throw std::runtime_error("Error: file " + filename + " not opened.");
+    }
+
     std::cout << std::endl << " Exporting Flux in Vtu format... " << std::endl;
 
     const std::vector<Point3D> & nodes = mesh.getNodesVector();
@@ -567,21 +662,11 @@ void ExporterVTU::exportSolutionOnFacets(const Rigid_Mesh & mesh, const std::str
     UInt nFractures = mesh.getFractureFacetsIdsVector().size();
     UInt nTotal = nFacets + nFractures;
     UInt offsets = 0, faceOffsets = 0;
-=======
-    std::cout << std::endl << " Exporting Facets in Vtu format... " << std::endl;
-
-    const std::vector<Point3D> & nodes = mesh.getNodesVector();
-    const std::vector<Facet> & facets = mesh.getFacetsVector();
-    UInt nPoints = nodes.size();
-    UInt nFacets = facets.size();
-    UInt offsets = 0;
->>>>>>> master
 
     // Header
     filestr << "<?xml version=\"1.0\"?>" << std::endl;
     filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
     filestr << "\t<UnstructuredGrid>" << std::endl;
-<<<<<<< HEAD
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nTotal << "\">" << std::endl;
 
     // CellData
@@ -713,33 +798,6 @@ exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const
     filestr << std::scientific << std::setprecision(10);
     for( UInt i = 0; i < 2*nFractures; ++i )
         filestr << sol[i] << std::endl;
-=======
-    filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nFacets << "\">" << std::endl;
-
-    // CellData
-    filestr << "\t\t\t<CellData Scalars=\"facetId\">" << std::endl;
-
-    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetId\" format=\"ascii\">" << std::endl;
-    filestr << std::scientific << std::setprecision(10);
-    for(auto& facet_it : facets)
-        filestr << facet_it.getId() << std::endl;
-    filestr << "\t\t\t\t</DataArray>" << std::endl;
-
-    filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderId\" format=\"ascii\">" << std::endl;
-    filestr << std::scientific << std::setprecision(10);
-    for(auto& facet_it : facets)
-        filestr << facet_it.getBorderId() << std::endl;
-    filestr << "\t\t\t\t</DataArray>" << std::endl;
-
-    filestr << "\t\t\t</CellData>" << std::endl;
-
-    // CellData
-    filestr << "\t\t\t<CellData Scalars=\""<< fieldName << "\">" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\""<< fieldName << "\" format=\"ascii\">" << std::endl;
-    filestr << std::scientific << std::setprecision(16);
-    for( auto& facet_it : facets )
-        filestr << static_cast<Real>(sol[ facet_it.getId() ]) << std::endl;
->>>>>>> master
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
@@ -757,41 +815,26 @@ exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const
     filestr << "\t\t\t<Cells>" << std::endl;
     //  Connectivity
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"connectivity\" format=\"ascii\">" << std::endl;
-<<<<<<< HEAD
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         const Facet & f = it->getFacet();
         for(std::vector<UInt>::const_iterator jt = f.getVerticesIds().begin(); jt != f.getVerticesIds().end()-1; ++jt )
             filestr << *jt << " ";
         filestr << *(f.getVerticesIds().rbegin()) << std::endl;
-=======
-    for(auto& facet_it : facets)
-    {
-        for(auto vertex_it : facet_it.getVerticesIds())
-            filestr << vertex_it << " ";
-        filestr << std::endl;
->>>>>>> master
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     //  Offsets
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"offsets\" format=\"ascii\">" << std::endl;
-<<<<<<< HEAD
     for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
     {
         offsets += it->getFacet().verticesNumber();
-=======
-    for(auto& facet_it : facets)
-    {
-        offsets += facet_it.verticesNumber();
->>>>>>> master
         filestr << offsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     //  Types
     filestr << "\t\t\t\t<DataArray type=\"UInt8\" Name=\"types\" format=\"ascii\">" << std::endl;
-<<<<<<< HEAD
     for( UInt i=0; i < 2*nFractures ; ++i )
         filestr << "42" << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -817,12 +860,6 @@ exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const
         filestr << faceOffsets << std::endl;
     }
     filestr << "\t\t\t\t</DataArray>" << std::endl;
-=======
-    for(UInt i=0; i < nFacets ; ++i)
-        filestr << "7" << std::endl;
-    filestr << "\t\t\t\t</DataArray>" << std::endl;
-
->>>>>>> master
     filestr << "\t\t\t</Cells>" << std::endl;
 
     filestr << "\t\t</Piece>" << std::endl;
@@ -830,11 +867,7 @@ exportFluxOnFractures(const Rigid_Mesh & mesh, const std::string filename, const
     filestr << "\t</VTKFile>" << std::endl;
 
     filestr.close();
-<<<<<<< HEAD
 }
-=======
-} // ExporterVTU::exportSolutionOnFacets
->>>>>>> master
 
 } // namespace FVCode3D
 #endif /* EXPORTVTU_HPP_ */
