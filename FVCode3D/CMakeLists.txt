@@ -19,8 +19,6 @@ SET(CMAKE_COLOR_MAKEFILE TRUE CACHE BOOL "Colored Makefile" FORCE)
 # This file contains the definition of special functions
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/IncludeFunctions.cmake)
 
-#ENABLE_TESTING()
-
 # compiler stuff
 IF(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
@@ -158,6 +156,7 @@ option(${PROJECT_NAME}_ENABLE_TESTS "Enable tests" ON)
 if(${PROJECT_NAME}_ENABLE_TESTS)
     enable_testing()
 endif()
+
 add_subdirectory(src)
 
 # Add documentation
