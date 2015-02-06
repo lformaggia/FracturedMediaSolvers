@@ -32,6 +32,8 @@ Real StiffMatrix::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_I
 
     Point3D f = borderCenter - cellCenter;
     const Real D = sqrt(dotProduct(f, f));
+    assert( D != 0 );
+
     f /= D;
 
     Point3D normal = crossProduct(f, this->M_mesh.getNodesVector()[fj.second]-this->M_mesh.getNodesVector()[fj.first]); // k = f x l
@@ -53,6 +55,8 @@ Real StiffMatrix::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 
     Point3D f = cellCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
+    assert( D != 0 );
+
     f /= D;
 
     const Point3D normal = facet->getUnsignedNormal();
@@ -75,6 +79,8 @@ Real StiffMatrix::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 
     Point3D f = edgeCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
+    assert( D != 0 );
+
     f /= D;
 
     Point3D normal = crossProduct(  f,
@@ -100,6 +106,8 @@ Real StiffMatrix::findDirichletAlpha (const UInt & cellId, const Facet_ID * face
 
     Point3D f = cellCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
+    assert( D != 0 );
+
     f /= D;
 
     const Point3D normal = facet->getUnsignedNormal();
@@ -122,6 +130,8 @@ Real StiffMatrix::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge
 
     Point3D f = borderCenter - facetCenter;
     const Real D = sqrt(dotProduct(f, f));
+    assert( D != 0 );
+
     f /= D;
 
     Point3D normal = crossProduct(  f,
@@ -171,6 +181,7 @@ void StiffMatrix::assemblePorousMatrix()
 
         const Real alpha1 = findAlpha(neighbor1id, &facet_it);
         const Real alpha2 = findAlpha(neighbor2id, &facet_it);
+        assert( ( alpha1 + alpha2 ) != 0 );
 
         const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
         const Real Q12 = T12 * M_properties.getMobility();
@@ -186,6 +197,8 @@ void StiffMatrix::assemblePorousMatrix()
         const PermPtr_Type & F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
         const Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
         const Real Df = F_aperture/2.;
+        assert( Df != 0 );
+
         Point3D normal = facet_it.getUnsignedNormal();
 
         const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal)); // K n * n, I suppose that for the ghost facet n // f
@@ -198,9 +211,11 @@ void StiffMatrix::assemblePorousMatrix()
         const Real alpha1 = findAlpha(neighbor1id, &facet_it);
         const Real alpha2 = findAlpha(neighbor2id, &facet_it);
 
+        assert( ( alpha1 + alphaf ) != 0 );
         const Real T1f = alpha1*alphaf/(alpha1 + alphaf);
         const Real Q1f = T1f * M_properties.getMobility();
 
+        assert( ( alphaf + alpha2 ) != 0 );
         const Real T2f = alphaf*alpha2/(alphaf + alpha2);
         const Real Q2f = T2f * M_properties.getMobility();
 
@@ -235,6 +250,7 @@ void StiffMatrix::assemblePorousMatrixBC()
             const Real alpha1 = findAlpha (neighbor1id, &facet_it);
             const Real alpha2 = findDirichletAlpha (neighbor1id, &facet_it);
 
+            assert( ( alpha1 + alpha2 ) != 0 );
             const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
             const Real Q12 = T12 * M_properties.getMobility();
             const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
@@ -262,6 +278,8 @@ void StiffMatrix::assembleFracture()
             Real a_sum = alphaF;
             auto sum_maker = [&a_sum](Real item){a_sum += item;};
             std::for_each(alphas.begin(), alphas.end(), sum_maker);
+
+            assert( a_sum != 0 );
 
             for(UInt counter = 0; counter < alphas.size(); ++counter)
             {
@@ -324,6 +342,7 @@ void StiffMatrix::assembleFractureBC()
                     const Real alpha1 = findAlpha (facet_it, &edge_it);
                     const Real alpha2 = findDirichletAlpha (facet_it, &edge_it);
 
+                    assert( ( alpha1 + alpha2 ) != 0 );
                     const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
