@@ -188,7 +188,7 @@ void StiffMatrix::assemblePorousMatrix()
         const Real Df = F_aperture/2.;
         Point3D normal = facet_it.getUnsignedNormal();
 
-        const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal)); // K n * n, I suppose that for the ghost facet n // f
+        const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal));
 
         const Real alphaf = facet_it.getSize() * KnDotF / Df;
 
