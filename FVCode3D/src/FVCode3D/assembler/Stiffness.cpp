@@ -211,11 +211,11 @@ void StiffMatrix::assemblePorousMatrix()
         const Real alpha1 = findAlpha(neighbor1id, &facet_it);
         const Real alpha2 = findAlpha(neighbor2id, &facet_it);
 
-        assert( ( alpha1 + alphaf ) != 0 );
+        assert( alpha1 != 0 && alphaf != 0 );
         const Real T1f = alpha1*alphaf/(alpha1 + alphaf);
         const Real Q1f = T1f * M_properties.getMobility();
 
-        assert( ( alphaf + alpha2 ) != 0 );
+        assert( alphaf != 0 && alpha2 != 0 );
         const Real T2f = alphaf*alpha2/(alphaf + alpha2);
         const Real Q2f = T2f * M_properties.getMobility();
 
@@ -250,7 +250,7 @@ void StiffMatrix::assemblePorousMatrixBC()
             const Real alpha1 = findAlpha (neighbor1id, &facet_it);
             const Real alpha2 = findDirichletAlpha (neighbor1id, &facet_it);
 
-            assert( ( alpha1 + alpha2 ) != 0 );
+            assert( alpha1 != 0 && alpha2 != 0 );
             const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
             const Real Q12 = T12 * M_properties.getMobility();
             const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
@@ -342,7 +342,7 @@ void StiffMatrix::assembleFractureBC()
                     const Real alpha1 = findAlpha (facet_it, &edge_it);
                     const Real alpha2 = findDirichletAlpha (facet_it, &edge_it);
 
-                    assert( ( alpha1 + alpha2 ) != 0 );
+                    assert( alpha1 != 0 && alpha2 != 0 );
                     const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
