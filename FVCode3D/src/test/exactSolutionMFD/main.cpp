@@ -1,7 +1,7 @@
 #include <FVCode3D/FVCode3D.hpp>
 
 // Add this macro the enable the exporter
-//#define FVCODE3D_EXPORT
+#define FVCODE3D_EXPORT
 
 using namespace FVCode3D;
 
@@ -38,8 +38,13 @@ int main (int argc, char** argv)
     Func SS     = [](const Point3D & p) { return 2 * M_PI * M_PI * std::sin(M_PI * p.x()) * std::sin(M_PI * p.y()); };
     Func u_ex   = [](const Point3D & p) { return std::sin(M_PI * p.x()) * std::sin(M_PI * p.y()); };
 
+//    Func fNeu   = [](const Point3D & p) { return - p.y() - 1.; };
+//    Func SS     = [](Point3D) { return 0.; };
+//    Func u_ex   = [](const Point3D & p) { return p.x() * p.y() + p.x() - p.y(); };
+
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, u_ex );
-    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fNeu );
+//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fNeu );
+    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, u_ex );
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, u_ex );
     BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, u_ex );
     BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
@@ -65,6 +70,8 @@ int main (int argc, char** argv)
     darcy->solve();
 
     Vector u_h_ex = evaluateMatrix(myrmesh, u_ex);
+    Vector u_h = darcy->getSolver().getSolution();
+    Vector u_diff = u_h_ex - u_h ;
 
     Quadrature q(myrmesh);
 
@@ -74,6 +81,8 @@ int main (int argc, char** argv)
 #ifdef FVCODE3D_EXPORT
     ExporterVTU exporter;
     exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff.vtu",
+    u_diff.cwiseAbs());
     exporter.exportWithProperties(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_APP.vtu", Aperture | Permeability | Porosity);
 #endif // FVCODE3D_EXPORT
 
