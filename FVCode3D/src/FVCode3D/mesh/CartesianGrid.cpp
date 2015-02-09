@@ -43,7 +43,7 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
 
 /*
     std::default_random_engine generator;
-    std::normal_distribution<Real> distribution(0., 7.5e-3);
+    std::normal_distribution<Real> distribution(0., 7.5e-3); // 7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
 
     for(j=1; j < Ny; ++j)
     {
