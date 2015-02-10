@@ -1,6 +1,6 @@
 /*!
- *  @file stiffness.hpp
- *  @brief This class build a Stiffness-matrix of the Darcy problem.
+ * @file Stiffness.hpp
+ * @brief This class build a Stiffness-matrix of the Darcy problem.
  */
 
 #ifndef __DARCYSTIFFNESS_HPP__

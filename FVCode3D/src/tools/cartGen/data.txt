@@ -15,6 +15,9 @@ Lz  = 1.
 Nx  = 40
 Ny  = 20
 Nz  = 20
+Sx  = 0.
+Sy  = 0.
+Sz  = 0.
 
 ## problem parameter
 [problem]

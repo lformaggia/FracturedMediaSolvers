@@ -24,6 +24,7 @@
 #include <Eigen/Sparse>
 
 #define FVCODE3D_HAS_UMFPACK
+//#define FVCODE3D_HAS_SAMG
 
 namespace FVCode3D
 {
@@ -54,6 +55,9 @@ const Real _PI_ = std::atan(1)*4;
 
 //! Type for eigen column-major sparse matrix of Real
 typedef Eigen::SparseMatrix<Real> SpMat;
+
+//! Type for eigen row-major sparse matrix of Real
+typedef Eigen::SparseMatrix<Real, Eigen::RowMajor> SpMatRM;
 
 //! Type for eigen vectors
 typedef Eigen::VectorXd Vector;

@@ -73,7 +73,7 @@ private:
     std::map<std::string,SolverBuilder> M_productList;
 
     //! Pointer to the singleton instance
-    static SolverHandler * theOnlySolverHandler;
+    static std::unique_ptr<SolverHandler> theOnlySolverHandler;
 };
 
 

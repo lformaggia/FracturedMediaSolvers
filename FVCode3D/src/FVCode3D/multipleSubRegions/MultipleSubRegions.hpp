@@ -256,7 +256,7 @@ void MSR<ProblemType>::computeAveragePressure( std::vector<Real> & _averagePress
         } // for
     } // for
 
-    for(size_t i = 0; i < M_multipleSubRegions.size(); ++i )
+    for(size_t i = 0; i < static_cast<size_t>(M_multipleSubRegions.size()); ++i )
     {
         const UInt regionId = M_multipleSubRegions[ i ];
         const Real cellMeasure = measures[ i ];

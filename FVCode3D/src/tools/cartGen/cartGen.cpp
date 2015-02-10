@@ -39,7 +39,8 @@ int main(int argc, char * argv[])
 
     std::cout << "Generate Cartesian grid..." << std::flush;
     CartesianGrid cart(mesh, propMap);
-    cart.generate(true, data.getLx(), data.getLy(), data.getLz(), data.getNx(), data.getNy(), data.getNz());
+    cart.generate(true, data.getLx(), data.getLy(), data.getLz(), data.getNx(), data.getNy(), data.getNz(),
+                        data.getSx(), data.getSy(), data.getSz());
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "# of cells: " << mesh.getCellsMap().size() << std::endl << std::endl;

@@ -10,7 +10,8 @@
 namespace FVCode3D
 {
 
-void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt Ny, const UInt Nz)
+void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt
+Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
 {
     Real hx = Lx/Nx;
     Real hy = Ly/Ny;
@@ -35,11 +36,12 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
         {
             for(i=0; i <= Nx; ++i)
             {
-                nodesRef.emplace_back(hx*i, hy*j, hz*k); // Point3D
+                nodesRef.emplace_back(hx*i + Sx, hy*j + Sy, hz*k + Sz); // Point3D
             }
         }
     }
 
+//    addNoiseToPoint(0., 7.5e-3);
     tmp.resize(4);
 
     // create facets parallel to x axis
@@ -171,6 +173,19 @@ void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, con
                 ++count;
             }
         }
+    }
+}
+
+void CartesianGrid::addNoiseToPoint(const Real mean, const Real stDev)
+{
+    std::default_random_engine generator;
+    std::normal_distribution<Real> distribution(mean, stDev);
+
+    for(auto& node : M_mesh.getNodesVector())
+    {
+        node.x() += distribution(generator);
+        node.z() += distribution(generator);
+        node.y() += distribution(generator);
     }
 }
 

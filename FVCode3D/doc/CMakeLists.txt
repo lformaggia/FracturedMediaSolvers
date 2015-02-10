@@ -15,13 +15,13 @@ if(DOXYGEN_FOUND)
             )
 
     install(
-        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/html
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html
         DESTINATION doc
         COMPONENT doc
         OPTIONAL
         )
     install(
-        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc/latex
+        DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/latex
         DESTINATION doc
         COMPONENT doc
         OPTIONAL
