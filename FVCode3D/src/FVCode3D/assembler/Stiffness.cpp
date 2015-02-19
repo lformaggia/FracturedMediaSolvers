@@ -759,31 +759,27 @@ void StiffMatrix::assembleMFD()
     Eigen::saveMarket( invM, "./mMatrix/invM.m" );
 #endif // INVERSEM
 
-    Real Df;
-    Real T1f, Q1f, T2f, Q2f, QFf, Q1o;
-    Real alpha1, alpha2, alphaF, alphaf;
-    UInt neighbor1id, neighbor2id;
-    std::vector<Real> alphas;
-
     // assemble fractures with FV
     for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
         auto& F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
         Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
-        Df = F_aperture/2.;
-        alphaf = facet_it.getSize() * F_permeability->norm() * ( 1. / Df );
+        const Real Df = F_aperture/2.;
+        Point3D normal = facet_it.getUnsignedNormal();
+        const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal));
+        const Real alphaf = facet_it.getSize() * KnDotF * Df;
 
-        neighbor1id = facet_it.getSeparatedCellsIds()[0];
-        neighbor2id = facet_it.getSeparatedCellsIds()[1];
+        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
+        const UInt neighbor2id = facet_it.getSeparatedCellsIds()[1];
 
-        alpha1 = findAlpha(neighbor1id, &facet_it);
-        alpha2 = findAlpha(neighbor2id, &facet_it);
+        const Real alpha1 = findAlpha(neighbor1id, &facet_it);
+        const Real alpha2 = findAlpha(neighbor2id, &facet_it);
 
-        T1f = alpha1*alphaf/(alpha1 + alphaf);
-        Q1f = T1f * M_properties.getMobility();
+        const Real T1f = alpha1*alphaf/(alpha1 + alphaf);
+        const Real Q1f = T1f * M_properties.getMobility();
 
-        T2f = alphaf*alpha2/(alphaf + alpha2);
-        Q2f = T2f * M_properties.getMobility();
+        const Real T2f = alphaf*alpha2/(alphaf + alpha2);
+        const Real Q2f = T2f * M_properties.getMobility();
 
         Matrix_elements.emplace_back(Triplet (neighbor1id, neighbor1id, Q1f));
         Matrix_elements.emplace_back(Triplet (neighbor1id, facet_it.getIdAsCell(), -Q1f));
@@ -797,7 +793,8 @@ void StiffMatrix::assembleMFD()
 
         for (auto juncture_it : facet_it.getFractureNeighbors())
         {
-            alphaF = findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
+            std::vector<Real> alphas;
+            const Real alphaF = findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
 
             for (auto neighbors_it : juncture_it.second)
             {
@@ -810,7 +807,7 @@ void StiffMatrix::assembleMFD()
 
             for (UInt counter = 0; counter < alphas.size(); ++counter)
             {
-                QFf = alphaF*alphas[counter] * M_properties.getMobility() / a_sum;
+                const Real QFf = alphaF * alphas[counter] * M_properties.getMobility() / a_sum;
                 Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(), facet_it.getIdAsCell(), QFf));
                 Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(),
                 this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getIdAsCell(), -QFf));
@@ -827,14 +824,14 @@ void StiffMatrix::assembleMFD()
     // assemble BC on porous matrix
     for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector())
     {
-        neighbor1id = facet_it.getSeparatedCellsIds()[0];
+        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
         const UInt borderId = facet_it.getBorderId();
         const UInt facetId = facet_it.getId();
 
         if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
         {
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
-            Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
+            const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
 //            std::cout<<"Q1o: "<<Q1o<<std::endl;
             M_b->operator()(neighbor1id) -= Q1o;
@@ -898,7 +895,7 @@ void StiffMatrix::assembleMFD()
                     const Real alpha1 = findAlpha (facet_it, &edge_it);
                     const Real alpha2 = findDirichletAlpha (facet_it, &edge_it);
 
-                    const Real T12 = alpha1*alpha2/(alpha1 + alpha2);
+                    const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
