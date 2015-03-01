@@ -168,7 +168,7 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_bc(bc),
     M_func(func),
     M_ssOn(data->getSourceSinkOn()),
-    M_numet(data->getNumericalMethod()),
+    M_numet(data->getNumericalMethodType()),
     M_quadrature(nullptr),
     M_solver( SolverHandler::Instance().getProduct(solver) ),
     M_A( M_solver->getA() ),
