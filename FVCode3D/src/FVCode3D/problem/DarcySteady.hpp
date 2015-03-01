@@ -102,18 +102,6 @@ assembleMatrix()
 
     this->M_A = S.getMatrix();
     this->M_b = S.getBCVector();
-//    if(this->M_numet == Data::NumericalMethodType::FV)
-//    {
-//        for(UInt i=0; i < this->M_A.cols(); ++i)
-//        {
-//            this->M_A.coeffRef(0, i) = 0.;
-//            this->M_A.coeffRef(39, i) = 0.;
-//        }
-//        this->M_A.coeffRef(0, 0) = 1.;
-//        this->M_A.coeffRef(39, 39) = 1.;
-//        this->M_b(0) = 0.;
-//        this->M_b(39) = 1.;
-//    }
 } // DarcySteady::assembleMatrix
 
 template <class QRMatrix, class QRFracture, typename MatrixType>
