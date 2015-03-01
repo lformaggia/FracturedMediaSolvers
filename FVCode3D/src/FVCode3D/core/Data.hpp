@@ -188,7 +188,7 @@ public:
     /*!
      * @return the numerical method used to solve the problem
      */
-    NumericalMethodType getNumericalMethod() const { return M_numet; }
+    NumericalMethodType getNumericalMethodType() const { return M_numet; }
 
     //! Get if the stiffness matrix in the mimetic method is lumped
     /*!
