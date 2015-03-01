@@ -14,7 +14,10 @@
 //#define DIAGONALZ
 
 // MFD: compute the exact inverse of M
-//#define INVERSEM
+#define INVERSEM
+
+// MFD: export some matrices
+//#define MFD_VERBOSE
 
 namespace FVCode3D
 {
@@ -356,24 +359,24 @@ void StiffMatrix::assembleMFD()
     std::vector<UInt> ZMatrix_elements;
     std::vector<UInt> BMatrix_elements;
     std::vector<UInt> CMatrix_elements;
-    Real tCoeff=2.;
+    const Real tCoeff=2.;
 
     // Local Matrices for Mimetic
     Eigen::Matrix<Real,Dynamic,3> Np;         // facet normals
     Eigen::Matrix<Real,3,3> Kp;               // permability tensor
     Eigen::Matrix<Real,1,Dynamic> Bp;         // areas
-    Eigen::Matrix<Real,1,Dynamic> Cp;         // areas no neumann
+    Eigen::Matrix<Real,1,Dynamic> Cp;         // areas no neumann/fractures
     Eigen::Matrix<Real,Dynamic,3> Rp;         // centroid * area
-    Eigen::Matrix<Real,Dynamic,Dynamic> Z0p;  // Component of Z matrix
-    Eigen::Matrix<Real,Dynamic,Dynamic> Z1p;  // Component of Z Matrix
-    Eigen::Matrix<Real,Dynamic,Dynamic> Zp;   // Z matrix for internal product= \f$ M^{-1}\f$
-    Eigen::Matrix<Real,Dynamic,Dynamic> M0p;  // Component of M matrix
-    Eigen::Matrix<Real,Dynamic,Dynamic> M1p;  // Component of M Matrix
+    Eigen::Matrix<Real,Dynamic,Dynamic> Z0p;  // Component of Z matrix (similar to Mp0)
+    Eigen::Matrix<Real,Dynamic,Dynamic> Z1p;  // Component of Z Matrix (similar to Mp1)
+    Eigen::Matrix<Real,Dynamic,Dynamic> Zp;   // Z inverse matrix for local internal product= \f$ Mp^{-1}\f$
+    Eigen::Matrix<Real,Dynamic,Dynamic> M0p;  // Component of M matrix (consistency)
+    Eigen::Matrix<Real,Dynamic,Dynamic> M1p;  // Component of M Matrix (stability)
     Eigen::Matrix<Real,Dynamic,Dynamic> Mp;   // M matrix for internal product
     Eigen::Matrix<Real,Dynamic,Dynamic> Sp;   // Base for the column space of Np
     Eigen::Matrix<Real,Dynamic,Dynamic> Qp;   // Base for the column space of Rp
 
-    std::vector<UInt> globalNeumannFaces;
+    std::vector<UInt> globalNeumannFaces;     // Indices of Neumann/fracture facets
 
     // Extract info of mesh. auto&& resolves const &
     auto& cellVectorRef  = this->M_mesh.getCellsVector();
@@ -385,10 +388,10 @@ void StiffMatrix::assembleMFD()
     const UInt numCellsTot = numCells + numFracs;
 
     // Sizing global matrices
-    Eigen::SparseMatrix<Real, RowMajor> Z;  // Z matrix for internal product= \f$ M^{-1}\f$
+    Eigen::SparseMatrix<Real, RowMajor> Z;  // Z inverse matrix for internal product= \f$ M^{-1}\f$
     Eigen::SparseMatrix<Real, RowMajor> M;  // M matrix for internal product
     Eigen::SparseMatrix<Real, RowMajor> B;  // B matrix for signed area
-    Eigen::SparseMatrix<Real, RowMajor> C;  // C matrix for signed area, no neumann
+    Eigen::SparseMatrix<Real, RowMajor> C;  // C matrix for signed area, no neumann/fractures
     Eigen::SparseMatrix<Real, RowMajor> Bd; // B matrix for Dirichlet area
     Eigen::SparseMatrix<Real, ColMajor> T(numCells,numCells);
     Eigen::SparseMatrix<Real, ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
@@ -506,9 +509,9 @@ void StiffMatrix::assembleMFD()
 
             Bp(0,localFacetId)    = alpha * facetMeasure;
 
-            g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0];
-            g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1];
-            g[2] = std::fabs(g[2]) < 1e-15 ? 0 : g[2];
+            g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0]; // TODO set relative eps
+            g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1]; // TODO set relative eps
+            g[2] = std::fabs(g[2]) < 1e-15 ? 0 : g[2]; // TODO set relative eps
 
             Rp(localFacetId,0) = alpha * g[0] * facetMeasure;
             Rp(localFacetId,1) = alpha * g[1] * facetMeasure;
@@ -533,17 +536,19 @@ void StiffMatrix::assembleMFD()
             }
         }
 
+#ifdef INVERSEM
         Sp = Np.fullPivLu().image(Np);
 
         Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
         Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
+#endif // INVERSEM
 
         Qp = Rp.fullPivLu().image(Rp);
 
         Eigen::Matrix<Real,Dynamic,Dynamic> RtR = Qp.transpose() * Qp;
         Eigen::Matrix<Real,Dynamic,Dynamic> RRtRiRt = Qp * RtR.inverse() * Qp.transpose();
 
-/*
+#ifdef MFD_VERBOSE
         std::stringstream  ss;
         ss << "./mMatrix/RRtRiRt_" << cellId << ".m";
         Eigen::Matrix<Real,3,3> RtR = Rp.transpose() * Rp;
@@ -564,8 +569,9 @@ void StiffMatrix::assembleMFD()
         ss.str(std::string());
         ss << "./mMatrix/Qp_" << cellId << ".m";
         Eigen::saveMarket( Qp, ss.str() );
-*/
+#endif // MFD_VERBOSE
 
+#if defined INVERSEM || defined MFD_VERBOSE
         M0p.resize(numCellFacets,numCellFacets);
         M0p.setZero();
         M1p.resize(numCellFacets,numCellFacets);
@@ -581,6 +587,7 @@ void StiffMatrix::assembleMFD()
               );
 
         Mp  = M0p + M1p;
+#endif // INVERSEM || MFD_VERBOSE
 
         Z0p = ( 1. / cellMeasure ) *
               (Np * Kp.inverse() * Np.transpose());
@@ -592,26 +599,28 @@ void StiffMatrix::assembleMFD()
 
         Zp  = Z0p + Z1p;
 
-//        std::cout<<"Zp*Mp: "<<std::endl<<Zp*Mp<<std::endl;
-//        std::cout<<"Zp0*Mp0: "<<std::endl<<Z0p*M0p<<std::endl;
-//        std::cout<<"Zp0*Mp1: "<<std::endl<<Z0p*M1p<<std::endl;
-//        std::cout<<"Zp1*Mp0: "<<std::endl<<Z1p*M0p<<std::endl;
-//        std::cout<<"Zp1*Mp1: "<<std::endl<<Z1p*M1p<<std::endl;
-//        std::cout<<"Np*Rpt: "<<std::endl<<Np*Rp.transpose()<<std::endl;
-//        std::cout<<"Zp*Rp: "<<std::endl<<Zp*Rp<<std::endl;
-//        std::cout<<"Np: "<<std::endl<<Np<<std::endl;
-//        std::cout<<"Zp0: "<<std::endl<<Z0p<<std::endl;
-//        std::cout<<"Qp: "<<std::endl<<Qp<<std::endl;
-//        std::cout<<"Np*Npt: "<<std::endl<<Np*Np.transpose()<<std::endl;
-//        std::cout<<"Old: "<<tCoeff * Kp.trace() / cellMeasure<<std::endl;
-//        std::cout<<"New: "<<tCoeff * Z0p.trace() / 6.<<std::endl;
-//        std::cout<<"Zp*Rp Norm: "<<(Zp*Rp).norm()<<std::endl;
-//        std::cout<<"Np Norm: "<<Np.norm()<<std::endl;
+#ifdef MFD_VERBOSE
+        std::cout<<"Zp*Mp: "<<std::endl<<Zp*Mp<<std::endl;
+        std::cout<<"Zp0*Mp0: "<<std::endl<<Z0p*M0p<<std::endl;
+        std::cout<<"Zp0*Mp1: "<<std::endl<<Z0p*M1p<<std::endl;
+        std::cout<<"Zp1*Mp0: "<<std::endl<<Z1p*M0p<<std::endl;
+        std::cout<<"Zp1*Mp1: "<<std::endl<<Z1p*M1p<<std::endl;
+        std::cout<<"Np*Rpt: "<<std::endl<<Np*Rp.transpose()<<std::endl;
+        std::cout<<"Zp*Rp: "<<std::endl<<Zp*Rp<<std::endl;
+        std::cout<<"Np: "<<std::endl<<Np<<std::endl;
+        std::cout<<"Zp0: "<<std::endl<<Z0p<<std::endl;
+        std::cout<<"Qp: "<<std::endl<<Qp<<std::endl;
+        std::cout<<"Np*Npt: "<<std::endl<<Np*Np.transpose()<<std::endl;
+        std::cout<<"Old: "<<tCoeff * Kp.trace() / cellMeasure<<std::endl;
+        std::cout<<"New: "<<tCoeff * Z0p.trace() / 6.<<std::endl;
+        std::cout<<"Zp*Rp Norm: "<<(Zp*Rp).norm()<<std::endl;
+        std::cout<<"Np Norm: "<<Np.norm()<<std::endl;
 
-//        Eigen::saveMarket( Z0p, "./mMatrix/Z0p.m" );
-//        Eigen::saveMarket( Z1p, "./mMatrix/Z1p.m" );
-//        Eigen::saveMarket( Zp, "./mMatrix/Zp.m" );
-//        Eigen::saveMarket( Mp, "./mMatrix/Mp.m" );
+        Eigen::saveMarket( Z0p, "./mMatrix/Z0p.m" );
+        Eigen::saveMarket( Z1p, "./mMatrix/Z1p.m" );
+        Eigen::saveMarket( Zp, "./mMatrix/Zp.m" );
+        Eigen::saveMarket( Mp, "./mMatrix/Mp.m" );
+#endif // MFD_VERBOSE
 
         for(UInt iloc=0; iloc<numCellFacets; ++iloc)
         {
@@ -680,20 +689,24 @@ void StiffMatrix::assembleMFD()
         }
     }
 
-#ifdef INVERSEM
-//    Eigen::Matrix<Real,Dynamic,Dynamic> fullZ(Z);
-//    Eigen::Matrix<Real,Dynamic,Dynamic> MZ = M*fullZ;
-//    std::cout<<"Norm M*Z: "<<MZ.norm()<<std::endl;
-//    Eigen::saveMarket( MZ, "./mMatrix/MZ.m" );
-//    Eigen::saveMarket( M, "./mMatrix/M.m" );
+#ifdef MFD_VERBOSE
+    Eigen::Matrix<Real,Dynamic,Dynamic> fullZ(Z);
+    Eigen::Matrix<Real,Dynamic,Dynamic> MZ = M*fullZ;
+    std::cout<<"Norm M*Z: "<<MZ.norm()<<std::endl;
+    Eigen::saveMarket( MZ, "./mMatrix/MZ.m" );
+    Eigen::saveMarket( M, "./mMatrix/M.m" );
+#endif // MFD_VERBOSE
 
+#ifdef INVERSEM
     Eigen::Matrix<Real,Dynamic,Dynamic> invM(M);
     std::cout<<"Compute inverse of M"<<std::endl;
     invM = invM.inverse();
 
-//    Eigen::Matrix<Real,Dynamic,Dynamic> diffMZ = invM-fullZ;
-//    std::cout<<"Norm M^-1-Z: "<<diffMZ.norm()<<std::endl;
-//    Eigen::saveMarket( diffMZ, "./mMatrix/diffMZ.m" );
+#ifdef MFD_VERBOSE
+    Eigen::Matrix<Real,Dynamic,Dynamic> diffMZ = invM-fullZ;
+    std::cout<<"Norm M^-1-Z: "<<diffMZ.norm()<<std::endl;
+    Eigen::saveMarket( diffMZ, "./mMatrix/diffMZ.m" );
+#endif // MFD_VERBOSE
 #endif // INVERSEM
 
     for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
@@ -748,6 +761,7 @@ void StiffMatrix::assembleMFD()
     std::cout<<" Num Cells: "<<numCells<<std::endl;
     std::cout<<" Num Facets: "<<numFacets<<std::endl;
     std::cout<<" Num Cells + Fracs: "<<numCellsTot<<std::endl;
+#ifdef MFD_VERBOSE
     std::cout.flush();
     Eigen::saveMarket( T, "./mMatrix/T.m" );
     Eigen::saveMarket( Td, "./mMatrix/Td.m" );
@@ -758,14 +772,15 @@ void StiffMatrix::assembleMFD()
 #ifdef INVERSEM
     Eigen::saveMarket( invM, "./mMatrix/invM.m" );
 #endif // INVERSEM
+#endif // MFD_VERBOSE
 
     // assemble fractures with FV
     for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
         auto& F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
-        Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
+        const Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
         const Real Df = F_aperture/2.;
-        Point3D normal = facet_it.getUnsignedNormal();
+        const Point3D normal = facet_it.getUnsignedNormal();
         const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal));
         const Real alphaf = facet_it.getSize() * KnDotF * Df;
 
@@ -833,15 +848,12 @@ void StiffMatrix::assembleMFD()
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-//            std::cout<<"Q1o: "<<Q1o<<std::endl;
             M_b->operator()(neighbor1id) -= Q1o;
         }
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
             for (Eigen::SparseMatrix<Real>::InnerIterator it(Td,facetId); it; ++it)
             {
-//                std::cout<<"it.row: "<<it.row()<<" it.col: "<<it.col()<<" it.value: "<<it.value();
-//                std::cout<<" BC: "<< M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())<<std::endl;
                 M_b->operator()(it.row()) += it.value() * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
             }
         }
@@ -912,18 +924,8 @@ void StiffMatrix::assembleMFD()
     this->M_Matrix->resize(numCellsTot,numCellsTot);
     T.conservativeResize(numCellsTot,numCellsTot);
     *(this->M_Matrix) = T + Mborder;
-//    for(UInt i=0; i < numCellsTot; ++i)
-//    {
-//        this->M_Matrix->coeffRef(0, i) = 0.;
-//        this->M_Matrix->coeffRef(39, i) = 0.;
-//    }
-//    this->M_Matrix->coeffRef(0, 0) = 1.;
-//    this->M_Matrix->coeffRef(39, 39) = 1.;
-//    M_b->operator()(0) = 0.;
-//    M_b->operator()(39) = 1.;
     Eigen::saveMarket( *(this->M_Matrix), "./mMatrix/A.m" );
     Eigen::saveMarket( *M_b, "./mMatrix/RHS.m" );
-    //this->M_Matrix->setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
     std::cout<<" Assembling ended"<<std::endl;
 } // StiffMatrix::assembleMFD
 
