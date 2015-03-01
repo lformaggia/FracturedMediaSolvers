@@ -126,7 +126,7 @@ assembleVector()
                 ||
               this->M_ssOn == Data::SourceSinkOn::Fractures ) )
     {
-        f = this->M_quadrature->cellIntegrateFractures(this->M_func);
+        f += this->M_quadrature->cellIntegrateFractures(this->M_func);
     } // if
 
     if ( this->M_b.size() == 0 )

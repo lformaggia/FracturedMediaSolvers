@@ -305,10 +305,23 @@ initialize()
     this->M_A = M_S->getMatrix() + M_M->getMatrix();
 
     M_f = Vector::Constant(M_S->getSize(), 0.);
-    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
+    if ( this->M_mesh.getCellsVector().size() != 0
+            &&
+            ( this->M_ssOn == Data::SourceSinkOn::Both
+                ||
+              this->M_ssOn == Data::SourceSinkOn::Matrix ) )
+    {
         M_f = this->M_quadrature->cellIntegrateMatrix(this->M_func);
-    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
+    } // if
+
+    if (this->M_mesh.getFractureFacetsIdsVector().size() != 0
+            &&
+            ( this->M_ssOn == Data::SourceSinkOn::Both
+                ||
+              this->M_ssOn == Data::SourceSinkOn::Fractures ) )
+    {
         M_f += this->M_quadrature->cellIntegrateFractures(this->M_func);
+    } // if
 
     M_xOld = Vector::Constant(M_M->getSize(), 0.);
     M_x = &M_xOld;
@@ -376,10 +389,23 @@ initialize()
     this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
 
     M_f = Vector::Constant(M_S->getSize(), 0.);
-    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Matrix)
+    if ( this->M_mesh.getCellsVector().size() != 0
+            &&
+            ( this->M_ssOn == Data::SourceSinkOn::Both
+                ||
+              this->M_ssOn == Data::SourceSinkOn::Matrix ) )
+    {
         M_f = this->M_quadrature->cellIntegrateMatrix(this->M_func);
-    if (this->M_ssOn == Data::SourceSinkOn::Both || this->M_ssOn == Data::SourceSinkOn::Fractures)
+    } // if
+
+    if (this->M_mesh.getFractureFacetsIdsVector().size() != 0
+            &&
+            ( this->M_ssOn == Data::SourceSinkOn::Both
+                ||
+              this->M_ssOn == Data::SourceSinkOn::Fractures ) )
+    {
         M_f += this->M_quadrature->cellIntegrateFractures(this->M_func);
+    } // if
 
     M_xOldOld = Vector::Constant(M_M->getSize(), 0.);
     M_xOld = Vector::Constant(M_M->getSize(), 0.);
