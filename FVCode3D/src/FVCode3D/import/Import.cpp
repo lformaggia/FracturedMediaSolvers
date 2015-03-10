@@ -134,6 +134,7 @@ void ImporterMedit::import(bool fracturesOn) throw()
         {
             prop.setProperties(1., 1., permPtr);
             M_properties.setZone(zone, prop);
+            zones.insert(zone);
         }
     }
     tmp.clear();
