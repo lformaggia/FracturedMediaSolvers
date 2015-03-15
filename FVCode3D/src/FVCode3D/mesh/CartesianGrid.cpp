@@ -41,27 +41,7 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
         }
     }
 
-/*
-    std::default_random_engine generator;
-    std::normal_distribution<Real> distribution(0., 7.5e-3); // 7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
-
-    for(j=1; j < Ny; ++j)
-    {
-        for(i=1; i < Nx; ++i)
-        {
-            const Real varX = distribution(generator);
-            const Real varY = distribution(generator);
-            for(k=0; k <= Nz; ++k)
-            {
-                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
-                nodesRef[index].x() += varX;
-                nodesRef[index].y() += varY;
-//                nodesRef[i + Nx * j + Nx * Ny * k].z() += distribution(generator);
-            }
-        }
-    }
-*/
-//    addNoiseToPoint(0., 7.5e-3);
+//    addNoiseToPoint(0., 7.5e-3); // 5.0e-2  7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
 
     tmp.resize(4);
 
@@ -208,6 +188,72 @@ void CartesianGrid::addNoiseToPoint(const Real mean, const Real stDev)
         node.z() += distribution(generator);
         node.y() += distribution(generator);
     }
+
+//    for(j=1; j < Ny; ++j)
+//    {
+//        for(i=1; i < Nx; ++i)
+//        {
+//            for(k=1; k < Nz; ++k)
+//            {
+//                const Real varX = distribution(generator);
+//                const Real varY = distribution(generator);
+//                const Real varZ = distribution(generator);
+//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+//                nodesRef[index].x() += varX;
+//                nodesRef[index].y() += varY;
+//                nodesRef[index].z() += varZ;
+//            }
+//        }
+//    }
+//
+//    std::array<UInt,2> Cx={{0,Nx}};
+//    std::array<UInt,2> Cy={{0,Ny}};
+//    std::array<UInt,2> Cz={{0,Nz}};
+//
+//    for(auto j : Cy)
+//    {
+//        for(i=1; i < Nx; ++i)
+//        {
+//            for(k=1; k < Nz; ++k)
+//            {
+//                const Real varX = distribution(generator);
+//                const Real varZ = distribution(generator);
+//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+//                nodesRef[index].x() += varX;
+//                nodesRef[index].z() += varZ;
+//            }
+//        }
+//    }
+//
+//    for(auto i : Cx)
+//    {
+//        for(j=1; j < Ny; ++j)
+//        {
+//            for(k=1; k < Nz; ++k)
+//            {
+//                const Real varY = distribution(generator);
+//                const Real varZ = distribution(generator);
+//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+//                nodesRef[index].y() += varY;
+//                nodesRef[index].z() += varZ;
+//            }
+//        }
+//    }
+//
+//    for(auto k : Cz)
+//    {
+//        for(i=1; i < Nx; ++i)
+//        {
+//            for(j=1; j < Ny; ++j)
+//            {
+//                const Real varX = distribution(generator);
+//                const Real varY = distribution(generator);
+//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+//                nodesRef[index].x() += varX;
+//                nodesRef[index].y() += varY;
+//            }
+//        }
+//    }
 }
 
 void CartesianGrid::extractBC(const Real theta)
