@@ -184,6 +184,24 @@ public:
      */
     Real getSz() const { return M_Sz; }
 
+    //! Test if the noise is added to the points
+    /*!
+     * @return true if the noise is added to the points
+     */
+    bool noiseOn() const { return M_noise; }
+
+    //! Get the mean of the normal distribution
+    /*!
+     * @return the mean of the normal distribution
+     */
+    Real getMeanNormalDistribution() const { return M_meanNDist; }
+
+    //! Get the standard deviation of the normal distribution
+    /*!
+     * @return the standard deviation of the normal distribution
+     */
+    Real getStDevNormalDistribution() const { return M_stDevNDist; }
+
     //! Get the numerical method used to solve the problem
     /*!
      * @return the numerical method used to solve the problem
@@ -443,6 +461,24 @@ public:
      */
     void setSz(const Real Sz) { M_Sz = Sz; }
 
+    //! Enable or disable the noise to the points
+    /*!
+     * @param noise true to enable the noise to the points
+     */
+    void noiseOn(const bool noise) { M_noise = noise; }
+
+    //! Set the mean of the normal distribution
+    /*!
+     * @param mean the mean of the normal distribution
+     */
+    void setMeanNormalDistribution(const Real mean) { M_meanNDist = mean; }
+
+    //! set the standard deviation of the normal distribution
+    /*!
+     * @param stDev the standard deviation of the normal distribution
+     */
+    void setStDevNormalDistribution(const Real stDev) { M_stDevNDist = stDev; }
+
     //! Set the numerical method
     /*!
      * @param type the type of the numerical method
@@ -465,7 +501,7 @@ public:
     /*!
      * @param fracture true to enable the fractures
      */
-    void fractureOn(bool fracture) { M_fracturesOn = fracture; }
+    void fractureOn(const bool fracture) { M_fracturesOn = fracture; }
 
     //! Set where the source/sink term is applied
     /*!
@@ -477,7 +513,7 @@ public:
     /*!
      * @param fracPress if true fix a pressure value inside the fractures
      */
-    void pressuresInFractures(bool fracPress) { M_setFracturesPressure = fracPress; }
+    void pressuresInFractures(const bool fracPress) { M_setFracturesPressure = fracPress; }
 
     //! Set the pressure inside the fracture
     /*!
@@ -489,7 +525,7 @@ public:
     /*!
      * @param msr if true the multiple sub-regions method is activated
      */
-    void MSROn(bool msr) { M_MSR = msr; }
+    void MSROn(const bool msr) { M_MSR = msr; }
 
     //! Set the number of sub-regions
     /*!
@@ -648,6 +684,12 @@ protected:
     Real M_Sy;
     //! Shift Domain along z-axis
     Real M_Sz;
+    //! If true noise is added to the points
+    bool M_noise;
+    //! Mean of the normal distribution
+    Real M_meanNDist;
+    //! Standard deviation of the normal distribution
+    Real M_stDevNDist;
     //! Type of the numerical method
     NumericalMethodType M_numet;
     //! If true the stiffness matrix for the mimetic method is lumped

@@ -14,6 +14,7 @@ Data::Data():
     M_outputDir("./results/"), M_outputFile("sol"),
     M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
     M_Sx(0.), M_Sy(0.), M_Sz(0.),
+    M_noise(false), M_meanNDist(0.), M_stDevNDist(1.),
     M_numet(FV), M_lumpedMim(false),
     M_problemType(steady), M_fracturesOn(true), M_ssOn(None),
     M_setFracturesPressure(false), M_fracturesPressure(0.),
@@ -65,6 +66,9 @@ Data::Data(const std::string dataFileName) throw()
     M_Sx = dataFile("domain/Sx", 0.);
     M_Sy = dataFile("domain/Sy", 0.);
     M_Sz = dataFile("domain/Sz", 0.);
+    M_noise = static_cast<bool>(dataFile("domain/noise", 0));
+    M_meanNDist = dataFile("domain/meanN", 0.);
+    M_stDevNDist = dataFile("domain/stDevN", 1.);
 
     M_numet = parserNumericalMethodType.parse( dataFile("numet/method", "FV") );
     M_lumpedMim = static_cast<bool>(dataFile("mimetic/lumped", 0));
