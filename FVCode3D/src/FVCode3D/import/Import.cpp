@@ -1,5 +1,5 @@
 /*!
- * @file import.cpp
+ * @file Import.cpp
  * @brief Classes for loading files (definitions).
  */
 
@@ -55,19 +55,6 @@ void Importer::addBCAndFractures(const Real theta)
 {
     extractBC(theta);
     addFractures();
-}
-
-void Importer::addNoiseToPoint(const Real mean, const Real stDev)
-{
-    std::default_random_engine generator;
-    std::normal_distribution<Real> distribution(mean, stDev);
-
-    for(auto& node : M_mesh.getNodesVector())
-    {
-        node.x() += distribution(generator);
-        node.z() += distribution(generator);
-        node.y() += distribution(generator);
-    }
 }
 
 void ImporterMedit::import(bool fracturesOn) throw()
@@ -366,8 +353,6 @@ void ImporterForSolver::import(bool fracturesOn) throw()
         file >> x; file >> y; file >> z;
         nodesRef.emplace_back(x,y,z); // Point3D
     }
-
-//  addNoiseToPoint(0., 7.5e-3);
 
     // Read facets with properties
     const std::string s2findF = "FACETS";
