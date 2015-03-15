@@ -1,17 +1,19 @@
  /*!
- * @file cartesianGrid.cpp
+ * @file CartesianGrid.cpp
  * @brief Class that generate a hexahedral structured (Cartesian) grid (definitions).
  */
 
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/property/Properties.hpp>
 #include <FVCode3D/mesh/CartesianGrid.hpp>
+#include <FVCode3D/mesh/MeshUtility.hpp>
 
 namespace FVCode3D
 {
 
 void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt
-Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
+Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz,
+bool noise, const Real mean, const Real stDev)
 {
     Real hx = Lx/Nx;
     Real hy = Ly/Ny;
@@ -41,7 +43,10 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
         }
     }
 
-//    addNoiseToPoint(0., 7.5e-3); // 5.0e-2  7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
+    if(noise)
+    {
+        addNoiseToPoint(M_mesh, mean, stDev);
+    }
 
     tmp.resize(4);
 
@@ -177,84 +182,6 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
     }
 }
 
-void CartesianGrid::addNoiseToPoint(const Real mean, const Real stDev)
-{
-    std::default_random_engine generator;
-    std::normal_distribution<Real> distribution(mean, stDev);
-
-    for(auto& node : M_mesh.getNodesVector())
-    {
-        node.x() += distribution(generator);
-        node.z() += distribution(generator);
-        node.y() += distribution(generator);
-    }
-
-//    for(j=1; j < Ny; ++j)
-//    {
-//        for(i=1; i < Nx; ++i)
-//        {
-//            for(k=1; k < Nz; ++k)
-//            {
-//                const Real varX = distribution(generator);
-//                const Real varY = distribution(generator);
-//                const Real varZ = distribution(generator);
-//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
-//                nodesRef[index].x() += varX;
-//                nodesRef[index].y() += varY;
-//                nodesRef[index].z() += varZ;
-//            }
-//        }
-//    }
-//
-//    std::array<UInt,2> Cx={{0,Nx}};
-//    std::array<UInt,2> Cy={{0,Ny}};
-//    std::array<UInt,2> Cz={{0,Nz}};
-//
-//    for(auto j : Cy)
-//    {
-//        for(i=1; i < Nx; ++i)
-//        {
-//            for(k=1; k < Nz; ++k)
-//            {
-//                const Real varX = distribution(generator);
-//                const Real varZ = distribution(generator);
-//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
-//                nodesRef[index].x() += varX;
-//                nodesRef[index].z() += varZ;
-//            }
-//        }
-//    }
-//
-//    for(auto i : Cx)
-//    {
-//        for(j=1; j < Ny; ++j)
-//        {
-//            for(k=1; k < Nz; ++k)
-//            {
-//                const Real varY = distribution(generator);
-//                const Real varZ = distribution(generator);
-//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
-//                nodesRef[index].y() += varY;
-//                nodesRef[index].z() += varZ;
-//            }
-//        }
-//    }
-//
-//    for(auto k : Cz)
-//    {
-//        for(i=1; i < Nx; ++i)
-//        {
-//            for(j=1; j < Ny; ++j)
-//            {
-//                const Real varX = distribution(generator);
-//                const Real varY = distribution(generator);
-//                const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
-//                nodesRef[index].x() += varX;
-//                nodesRef[index].y() += varY;
-//            }
-//        }
-//    }
-}
 
 void CartesianGrid::extractBC(const Real theta)
 {
