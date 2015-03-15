@@ -4,6 +4,8 @@
 // Add this macro the enable the exporter
 //#define FVCODE3D_EXPORT
 
+//#define OTHERNUM
+
 #include <cassert>
 #include <iostream>
 #include <chrono>
@@ -27,6 +29,7 @@
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/multipleSubRegions/MultipleSubRegions.hpp>
+#include <FVCode3D/utility/Evaluate.hpp>
 #include "functions.hpp"
 
 using namespace FVCode3D;
@@ -111,7 +114,8 @@ int main(int argc, char * argv[])
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    fracturesPerm->setPermeability( 1.e6, 0 );
+    const Real kf = 1.e3;
+    fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
     const Real fracturesPoro = 1.;
@@ -131,48 +135,40 @@ int main(int argc, char * argv[])
     exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
     exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
     exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
-//    if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-//        saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 #endif // FVCODE3D_EXPORT
 
     std::cout << "Add BCs..." << std::flush;
-//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Neumann, fOne );
-//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fMinusOne );
-//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Dirichlet, fZero );
 
-    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fZero );
-    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fOne );
+//    Func SS     = [aperture, kf](const Point3D & p) {
+//                                                 return p.y() == 0. ?
+//                                                 0.
+//                                                 :
+//                                                 (1 - kf) * std::cos(p.x()) * std::cosh(aperture/2.);
+//                                        };
+    Func u_ex   = [aperture, kf](const Point3D & p) {
+                                                 return p.y() == 0. ?
+                                                 std::cos(p.x()) * std::cosh(p.y())
+                                                 :
+                                                 kf * std::cos(p.x()) * std::cosh(p.y()) +
+                                                 (1. - kf) * std::cos(p.x()) * std::cosh(aperture/2.);
+                                        };
+
+//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, u_ex );
+//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, u_ex );
+//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, u_ex );
+//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, u_ex );
+//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
+//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
+
+    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fOne );
+    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
     BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Neumann, fZero );
     BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
     BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
-
-//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fOne );
-//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
-//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Neumann, fZero );
-//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
-//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
-
-//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Neumann, fOne );
-//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Dirichlet, fZero );
-
-//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Dirichlet, fZero );
-//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Dirichlet, fZero );
 
     std::vector<BoundaryConditions::BorderBC> borders;
 
@@ -249,81 +245,6 @@ int main(int argc, char * argv[])
             std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getIter() << std::endl;
             std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getResidual() << std::endl;
         }
-//        std::vector<Real> totalBC1Flux,
-//                            totalBC2Flux;
-//        auto& solution = darcy->getSolver().getSolution();
-//        StiffMatrix StiffM(myrmesh, BC);
-//        for ( auto facet_it : myrmesh.getBorderFacetsIdsVector() )
-//        {
-//            const UInt borderID = facet_it.getBorderId();
-//            if ( BC.getBordersBCMap().at( borderID ).getBCType() == Dirichlet )
-//            {
-//                const UInt cellId = facet_it.getSeparatedCellsIds()[0];
-//                const Real alpha1 = StiffM.findAlpha(cellId, &facet_it);
-//                const Real alpha2 = StiffM.findDirichletAlpha(cellId, &facet_it);
-//                const Real trasmissibility = alpha1*alpha2/(alpha1 + alpha2) * propMap.getMobility();
-//                const Real bcSolution = BC.getBordersBCMap().at( borderID ).getBC()( facet_it.getCentroid() );
-//                if( borderID == 1 )
-//                {
-//                    totalBC1Flux += trasmissibility * ( solution[ cellId ] - bcSolution );
-//                } // if
-//                else
-//                {
-//                    totalBC2Flux += trasmissibility * ( solution[ cellId ] - bcSolution );
-//                } // else
-//            } // if
-//        } // for
-//
-//        for ( auto edge_it : myrmesh.getBorderTipEdgesIdsVector() )
-//        {
-//            bool isD = false;
-//            UInt borderId = 0;
-//
-//            // select which BC to apply
-//            for(auto border_it : edge_it.getBorderIds())
-//            {
-//                // BC = D > N && the one with greatest id
-//                if(BC.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
-//                {
-//                    if(!isD)
-//                    {
-//                        isD = true;
-//                        borderId = border_it;
-//                    }
-//                    else
-//                    {
-//                        borderId = (border_it > borderId) ? border_it : borderId;
-//                    }
-//                }
-//                else if(!isD && BC.getBordersBCMap().at(border_it).getBCType() == Neumann)
-//                {
-//                    borderId = (border_it > borderId) ? border_it : borderId;
-//                }
-//            }
-//
-//            for(auto facet_it : edge_it.getSeparatedFacetsIds())
-//            {
-//                if(myrmesh.getFacetsVector()[facet_it].isFracture() &&
-//                   BC.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
-//                {
-//                    const UInt neighborIdAsCell = myrmesh.getFacetsVector()[facet_it].getFractureFacetId() + myrmesh.getCellsVector().size();
-//                    const Real alpha1 = StiffM.findAlpha (facet_it, &edge_it);
-//                    const Real alpha2 = StiffM.findDirichletAlpha (facet_it, &edge_it);
-//                    const Real trasmissibility = alpha1*alpha2/(alpha1 + alpha2) * propMap.getMobility();
-//                    const Real bcSolution = BC.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
-//                    if( borderId == 1 )
-//                    {
-//                        totalBC1Flux += trasmissibility * ( solution[ neighborIdAsCell ] - bcSolution );
-//                    } // if
-//                    else
-//                    {
-//                        totalBC2Flux += trasmissibility * ( solution[ neighborIdAsCell ] - bcSolution );
-//                    } // else
-//                } // if
-//            }// for
-//        }
-
-
     }
     else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
     {
@@ -397,14 +318,101 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
+    const Vector u_h_ex = evaluate(myrmesh, u_ex);
 
+    Quadrature q(myrmesh);
+
+    const Vector & uh = darcy->getSolver().getSolution();
+    Vector u_diff = u_h_ex - uh;
+    const Real err_M = q.L2NormMatrix( u_diff );
+    const Real err_F = q.L2NormFractures( u_diff );
+    const Real err = std::sqrt(err_M * err_M + err_F * err_F);
+    std::cout << std::setprecision(15) << "L2 norm: " << err << std::endl;
+    std::cout << std::setprecision(15) << "Matrix L2 norm: " << err_M / q.L2NormMatrix( u_h_ex ) << std::endl;
+    std::cout << std::setprecision(15) << "Fracture L2 norm: " << err_F / q.L2NormFractures( u_h_ex ) << std::endl;
+
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff.vtu",
+    u_diff.cwiseAbs() );
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff_f.vtu",
+    u_diff.cwiseAbs() );
+
+    const std::string numMeth = dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ? "FV" : "MFD" ;
     std::cout << "Export Solution..." << std::flush;
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_" + numMeth + ".vtu", darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export Solution on Fractures..." << std::flush;
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_" +
+    numMeth + ".vtu", darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
+
+#ifdef OTHERNUM
+//----------- THE OTHER NUMERICAL SCHEME --------------//
+    dataPtr->setNumericalMethodType( dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ?
+    Data::NumericalMethodType::MFD : Data::NumericalMethodType::FV  );
+
+    std::cout << "Build problem..." << std::flush;
+    Pb * darcy2(nullptr);
+    if(dataPtr->getProblemType() == Data::ProblemType::steady)
+    {
+        darcy2 = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+    }
+    std::cout << " done." << std::endl << std::endl;
+
+    if(dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr()))
+    {
+        dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->setMaxIter(dataPtr->getIterativeSolverMaxIter());
+        dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->setTolerance(dataPtr->getIterativeSolverTolerance());
+    }
+
+    std::cout << "Solve problem..." << std::flush;
+    if(dataPtr->getProblemType() == Data::ProblemType::steady)
+    {
+        darcy2->assemble();
+        if(dataPtr->pressuresInFractures())
+        {
+            FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy2));
+            fpd.apply(dataPtr->getPressuresInFractures());
+        }
+        darcy2->solve();
+        if(dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr()))
+        {
+            std::cout << std::endl;
+            std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->getIter() << std::endl;
+            std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->getResidual() << std::endl;
+        }
+    }
+
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+    const std::string numMeth2 = dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ? "FV" : "MFD" ;
+
+    std::cout << "Export Solution..." << std::flush;
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_" + numMeth2 + ".vtu", darcy2->getSolver().getSolution());
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Export Solution on Fractures..." << std::flush;
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_" +
+    numMeth2 +  ".vtu",
+    darcy2->getSolver().getSolution());
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Export Diff Solution..." << std::flush;
+    Vector uh_diff = (darcy2->getSolver().getSolution() - darcy->getSolver().getSolution()).cwiseAbs();
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff.vtu", uh_diff);
+    std::cout << " done." << std::endl << std::endl;
+
+    std::cout << "Export Diff Solution on Fractures..." << std::flush;
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() +
+    "_solution_f_diff.vtu", uh_diff);
+    std::cout << " done." << std::endl << std::endl;
+
+    dataPtr->setNumericalMethodType( dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ?
+    Data::NumericalMethodType::MFD : Data::NumericalMethodType::FV  );
+//----------- end THE OTHER NUMERICAL SCHEME --------------//
+#endif // OTHERNUM
 
 #ifdef FVCODE3D_EXPORT
     if(dataPtr->MSROn())
@@ -427,6 +435,9 @@ int main(int argc, char * argv[])
 #endif // FVCODE3D_EXPORT
 
     delete darcy;
+#ifdef OTHERNUM
+    delete darcy2;
+#endif // OTHERNUM
     delete importer;
 
     chrono.stop();
