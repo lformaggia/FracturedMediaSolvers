@@ -40,7 +40,8 @@ int main(int argc, char * argv[])
     std::cout << "Generate Cartesian grid..." << std::flush;
     CartesianGrid cart(mesh, propMap);
     cart.generate(true, data.getLx(), data.getLy(), data.getLz(), data.getNx(), data.getNy(), data.getNz(),
-                        data.getSx(), data.getSy(), data.getSz());
+                        data.getSx(), data.getSy(), data.getSz(),
+                        data.noiseOn(), data.getMeanNormalDistribution(), data.getStDevNormalDistribution()); // 5.0e-2  7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "# of cells: " << mesh.getCellsMap().size() << std::endl << std::endl;
@@ -103,8 +104,46 @@ int main(int argc, char * argv[])
     for(std::map<UInt,Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
     {
         Point3D centroid = it->second.getCentroid();
-        if( centroid[0] >= 0.2 && centroid[0] <= 1.8 &&
-            centroid[2] > 0.2 - 0.01 && centroid[2] < 0.2 + 0.01)
+        if(
+            (
+                (centroid[1] > 0. - 0.01 && centroid[1] < 0. + 0.01)
+                &&
+                (centroid[0] > -0.4 - 0.01 && centroid[0] < 0.8 + 0.01)
+            )
+            ||
+            (
+                (centroid[0] > 0.4 - 0.01 && centroid[0] < 0.8 + 0.01)
+                &&
+                (centroid[2] > -0.25 - 0.01 && centroid[2] < -0.25 + 0.01)
+                &&
+                (centroid[1] > -0.4 - 0.01 && centroid[1] < 0.7 + 0.01)
+            )
+            ||
+            (
+                (centroid[2] > 0.75 - 0.01 && centroid[2] < 0.75 + 0.01)
+                &&
+                (centroid[1] > -0.25 - 0.01 && centroid[1] < 0.25 + 0.01)
+                &&
+                (centroid[0] > -0.5 - 0.01 && centroid[0] < 0.75 + 0.01)
+            )
+            ||
+            (
+                (centroid[2] > -0.75 - 0.01 && centroid[2] < -0.75 + 0.01)
+                &&
+                (centroid[1] > -0.75 - 0.01 && centroid[1] < 0.25 + 0.01)
+                &&
+                (centroid[0] > -0.5 - 0.01 && centroid[0] < -0.25 + 0.01)
+            )
+            ||
+            (
+                (centroid[2] > 0. - 0.01 && centroid[2] < 0. + 0.01)
+                &&
+                (centroid[1] > -1. - 0.01 && centroid[1] < -0.25 + 0.01)
+                &&
+                (centroid[0] > -0.75 - 0.01 && centroid[0] < 0.75 + 0.01)
+            )
+
+          )
         {
             facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
         }
