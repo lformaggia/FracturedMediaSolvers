@@ -10,14 +10,17 @@ output_file = cartesian
 ## domain
 [domain]
 Lx  = 2.
-Ly  = 1.
-Lz  = 1.
-Nx  = 40
-Ny  = 20
-Nz  = 20
-Sx  = 0.
-Sy  = 0.
-Sz  = 0.
+Ly  = 2.
+Lz  = 2.
+Nx  = 8
+Ny  = 8
+Nz  = 8
+Sx  = -1.
+Sy  = -1.
+Sz  = -1.
+noise   = 0
+meanN   = 0.
+stDevN  = 1.
 
 ## problem parameter
 [problem]
