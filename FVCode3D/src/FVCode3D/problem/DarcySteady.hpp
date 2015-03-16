@@ -45,6 +45,7 @@ public:
      * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
+     * @param data reference to a Data class
      */
     DarcySteady(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
                 const Func & func, const DataPtr_Type & data):
