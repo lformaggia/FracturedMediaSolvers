@@ -55,12 +55,25 @@ public:
         Medit           = 2
     };
 
+    //! Define where the noise is applied
+    /*!
+     * @enum NoiseOn
+     * This enumerator allows to select where the noise is applied:
+     * only on matrix nodes, only on fracture nodes, on all nodes.
+     */
+    enum class NoiseOn
+    {
+        Matrix          = 0,
+        Fractures       = 1,
+        All             = 2
+    };
+
     //! Define where to apply the source/sink term
     /*!
      * @enum SourceSinkOn
      * This enumerator allows to select where to apply the source/sink term: only on matrix, only on fractures, both or none.
      */
-    enum SourceSinkOn
+    enum class SourceSinkOn
     {
         Matrix          = 0,
         Fractures       = 1,
@@ -189,6 +202,12 @@ public:
      * @return true if the noise is added to the points
      */
     bool noiseOn() const { return M_noise; }
+
+    //! Get where the noise is applied
+    /*!
+     * @return where the noise is applied
+     */
+    NoiseOn getNoiseOn() const { return M_noiseOn; }
 
     //! Get the mean of the normal distribution
     /*!
@@ -467,6 +486,12 @@ public:
      */
     void noiseOn(const bool noise) { M_noise = noise; }
 
+    //! Set where the noise is applied
+    /*!
+     * @param noiseOn where the noise is applied
+     */
+    void getNoiseOn(const NoiseOn noiseOn) { M_noiseOn = noiseOn; }
+
     //! Set the mean of the normal distribution
     /*!
      * @param mean the mean of the normal distribution
@@ -686,6 +711,8 @@ protected:
     Real M_Sz;
     //! If true noise is added to the points
     bool M_noise;
+    //! Where the noise is applied
+    NoiseOn M_noiseOn;
     //! Mean of the normal distribution
     Real M_meanNDist;
     //! Standard deviation of the normal distribution
@@ -797,6 +824,10 @@ EnumParser<Data::ProblemType>::EnumParser();
 //! Specialized class that implements a parser for the Data::MeshFormatType enum
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser();
+
+//! Specialized class that implements a parser for the Data::NoiseOn enum
+template<>
+EnumParser<Data::NoiseOn>::EnumParser();
 
 //! Specialized class that implements a parser for the Data::SourceSinkOn enum
 template<>

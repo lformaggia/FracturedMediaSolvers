@@ -15,8 +15,9 @@ Data::Data():
     M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
     M_Sx(0.), M_Sy(0.), M_Sz(0.),
     M_noise(false), M_meanNDist(0.), M_stDevNDist(1.),
+    M_noiseOn(NoiseOn::Matrix),
     M_numet(FV), M_lumpedMim(false),
-    M_problemType(steady), M_fracturesOn(true), M_ssOn(None),
+    M_problemType(steady), M_fracturesOn(true), M_ssOn(SourceSinkOn::None),
     M_setFracturesPressure(false), M_fracturesPressure(0.),
     M_MSR(false), M_nbSubRegions(1),
     M_nbTimeStepSteadyState(0), M_tolSteadyState(1e-8),
@@ -34,6 +35,7 @@ Data::Data(const std::string dataFileName) throw()
     EnumParser<MeshFormatType> parserMeshType;
     EnumParser<NumericalMethodType> parserNumericalMethodType;
     EnumParser<ProblemType> parserProblemType;
+    EnumParser<NoiseOn> parserNoiseOn;
     EnumParser<SourceSinkOn> parserSourceSinkOn;
 
     std::ifstream file(dataFileName.c_str());
@@ -67,6 +69,7 @@ Data::Data(const std::string dataFileName) throw()
     M_Sy = dataFile("domain/Sy", 0.);
     M_Sz = dataFile("domain/Sz", 0.);
     M_noise = static_cast<bool>(dataFile("domain/noise", 0));
+    M_noiseOn = parserNoiseOn.parse( dataFile("domain/noiseOn", "matrix") );
     M_meanNDist = dataFile("domain/meanN", 0.);
     M_stDevNDist = dataFile("domain/stDevN", 1.);
 
@@ -200,16 +203,16 @@ void Data::showMe( std::ostream & output ) const
     output << "Source/Sink on: ";
     switch(M_ssOn)
     {
-        case Matrix:
+        case SourceSinkOn::Matrix:
             output << "matrix" << std::endl;
             break;
-        case Fractures:
+        case SourceSinkOn::Fractures:
             output << "fractures" << std::endl;
             break;
-        case Both:
+        case SourceSinkOn::Both:
             output << "all" << std::endl;
             break;
-        case None:
+        case SourceSinkOn::None:
             output << "none" << std::endl;
             break;
         default:
@@ -283,6 +286,14 @@ EnumParser<Data::MeshFormatType>::EnumParser()
     M_enumMap[".grid"] = Data::MeshFormatType::TPFA;
     M_enumMap[".fvg"] = Data::MeshFormatType::forSolver;
     M_enumMap[".mesh"] = Data::MeshFormatType::Medit;
+}
+
+template<>
+EnumParser<Data::NoiseOn>::EnumParser()
+{
+    M_enumMap["matrix"] = Data::NoiseOn::Matrix;
+    M_enumMap["fractures"] = Data::NoiseOn::Fractures;
+    M_enumMap["all"] = Data::NoiseOn::All;
 }
 
 template<>
