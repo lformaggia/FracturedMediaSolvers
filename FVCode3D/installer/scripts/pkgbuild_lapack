@@ -3,8 +3,8 @@
 ver='3.5.0'
 
 download_lapack() {
-    if [ -f ${PACKAGE_SRC_DIR}/lapack-${ver}.tgz ]; then
-        cp ${PACKAGE_SRC_DIR}/lapack-${ver}.tgz ${src_dir}
+    if [ -f ${packages_src_dir}/lapack-${ver}.tgz ]; then
+        cp ${packages_src_dir}/lapack-${ver}.tgz ${src_dir}
     else
         wget -nv "http://www.netlib.org/lapack/lapack-${ver}.tgz"
     fi
@@ -17,21 +17,21 @@ unpack_lapack() {
 build_lapack() {
     mkdir -p ${build_dir}
 
-    CMAKE_BIN=cmake
+    cmake_bin=cmake
     if [ -n "${cmake_install_dir}" ]; then
-        CMAKE_BIN="${cmake_install_dir}/bin/cmake"
+        cmake_bin="${cmake_install_dir}/bin/cmake"
     fi
 
     cd ${build_dir}
-    ${CMAKE_BIN} \
-        -DCMAKE_BUILD_TYPE=Release \
+    ${cmake_bin} \
+        -DCMAKE_build_type=Release \
         -DBUILD_SHARED_LIBS=ON \
         -DUSE_OPTIMIZED_BLAS:BOOL=ON \
         -DCMAKE_PREFIX_PATH:PATH=${blas_install_dir} \
         -DCMAKE_INSTALL_PREFIX:PATH=${install_dir} \
         ${src_dir}/lapack-${ver}
  
-    make -j$NUM_PROC
+    make -j$num_proc
 }
 
 install_lapack() {

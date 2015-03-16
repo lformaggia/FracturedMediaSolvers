@@ -3,8 +3,8 @@
 ver="2.8.12"
 
 download_cmake() {
-    if [ -f ${PACKAGE_SRC_DIR}/cmake-${ver}.tar.gz ]; then
-        cp ${PACKAGE_SRC_DIR}/cmake-${ver}.tar.gz ${src_dir}
+    if [ -f ${packages_src_dir}/cmake-${ver}.tar.gz ]; then
+        cp ${packages_src_dir}/cmake-${ver}.tar.gz ${src_dir}
     else
         wget -nv http://www.cmake.org/files/v2.8/cmake-${ver}.tar.gz
     fi
@@ -19,14 +19,14 @@ build_cmake() {
     cd ${src_dir}/cmake-${ver}
 
     ./bootstrap --prefix=${install_dir} \
-        --parallel=${NUM_PROC}
+        --parallel=${num_proc}
 
-    make -j${NUM_PROC}
+    make -j${num_proc}
 }
 
 install_cmake() {
     cd ${src_dir}/cmake-${ver}
-    make -j${NUM_PROC} install
+    make -j${num_proc} install
 }
 
 

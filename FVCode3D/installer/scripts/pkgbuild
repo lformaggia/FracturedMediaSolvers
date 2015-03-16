@@ -1,7 +1,11 @@
 #! /bin/bash
 
 # include configuration file
-source ../config
+pushd .. > /dev/null
+source config
+source progress-printing
+set_default_basic_options
+popd > /dev/null
 
 # abort if no package is specified
 if [ $# -lt 1 ]; then
@@ -11,89 +15,87 @@ fi
 
 # define list of library packages
 package_list=("$@")
-package_number=$#
+number_of_packages=$#
 
 main() {
 
-echo
-echo "Installing packages in: $INSTALL_DIR"
-echo
+    echo
+    echo "Installing packages in: ${packages_install_dir}"
+    echo
 
 
-package_root=$PWD
+    package_root=$PWD
 
-# iterate on packages
-for(( i=0; i < $package_number; i++ )); do
+    # iterate on packages
+    for(( i=0; i < $number_of_packages; i++ )); do
 
-    package=${package_list[$i]}
-    echo "====================================="
-    echo " $i: installing $package package"
-    echo "====================================="
+        package=${package_list[$i]}
+    #    echo "====================================="
+    #    echo " $i: installing ${package} package"
+    #    echo "====================================="
+        echo -n "[${i}/${number_of_packages}] ${package}: "
 
-    build_package $package || { echo -e "Error installing package ${package}\nCheck log file: ${install_dir}/${package}.log"; exit 1; }
+        build_package ${package} ${i} || { echo -e "\nError installing package ${package}\nCheck log file: ${build_dir}/${package}.log"; exit 1; }
 
-done
+    done
 }
 
 build_package() {
 
     package=$1
+    i=$2
 
     # load package specific functions
-    echo_dbg "loading pkgbuild_$package script"
-    source pkgbuild_$package || return 1
+    source pkgbuild_${package} || return 1
 
     # set directory
-    mkdir -p $BUILD_DIR/scratch/$package
-    pushd $BUILD_DIR/scratch/$package >/dev/null
+    mkdir -p ${packages_build_dir}/scratch/$package
+    pushd ${packages_build_dir}/scratch/$package >/dev/null
 
         src_dir=$PWD/src
         build_dir=$PWD/build
         eval install_dir=\${${package}_install_dir}
+        mkdir -p ${src_dir}
+        mkdir -p ${build_dir}
         mkdir -p ${install_dir}
 
         # redirect stdout to log file if requested
         redirect_to_log=""
-        if [ $LOG ]; then
-            redirect_to_log=">> ${install_dir}/${package}.log 2>&1"
+        if [ $log_packages_installation ]; then
+            redirect_to_log=">> ${build_dir}/${package}.log 2>&1"
             # clear log file
-            echo -n "" > ${install_dir}/${package}.log
+            echo -n "" > ${build_dir}/${package}.log
         fi
 
         # download library sources
-        mkdir -p $src_dir
         pushd src >/dev/null
-        if [ $DOWNLOAD ]; then
-            echo_dbg "downloading $package package"
-            eval download_$package ${redirect_to_log} || return 1
-        fi
+            if [ $download_packages ]; then
+                echo_package_status ${package} ${i} ${number_of_packages} "downloading..."
+                eval download_$package ${redirect_to_log} || return 1
+            fi
 
-        # unpack
-        if [ $UNPACK ]; then
-            echo_dbg "unpacking $package package"
-            eval unpack_$package ${redirect_to_log} || return 1
-        fi
+            # unpack
+            if [ $unpack_packages ]; then
+                echo_package_status ${package} ${i} ${number_of_packages} "extracting..."
+                eval unpack_$package ${redirect_to_log} || return 1
+            fi
         popd >/dev/null # $src_dir
 
         # build
-        mkdir -p $build_dir
         pushd build >/dev/null
-            echo_dbg "building $package package"
+            echo_package_status ${package} ${i} ${number_of_packages} "building..."
             eval build_$package ${redirect_to_log} || return 1
 
             # install
-            echo_dbg "installing $package package to $install_dir"
+            echo_package_status ${package} ${i} ${number_of_packages} "installing..."
             eval install_$package ${redirect_to_log} || return 1
         popd >/dev/null # $build_dir
 
-    popd >/dev/null # $BUILD_DIR/scratch/$package
+    popd >/dev/null # $packages_build_dir/scratch/$package
 
     # clean build directory if RM_DIR defined
-    if [ $RM_TMP ]; then rm -rf $BUILD_DIR/scratch/$package; fi
-}
-
-echo_dbg() {
-  if [ $DBG ]; then echo "DBG: " $* >&2; fi
+    if [ $rm_tmp_dir ]; then rm -rf ${packages_build_dir}/scratch/$package; fi
+    echo_package_status ${package} ${i} ${number_of_packages} "done.\n"
 }
 
 # execute main function

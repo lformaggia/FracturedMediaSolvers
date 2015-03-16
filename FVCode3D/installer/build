@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # list of packages
 # the key should be:
@@ -8,13 +8,13 @@
 # - SYSTEM : the system version of the package will be used
 # - NO : the package will not be used
 
-for package in "${PACKAGE_ARRAY[@]}"; do
+for package in "${package_array[@]}"; do
     if [ -z "${!package}" ]; then
         eval ${package}="INSTALL"
     fi
     eval package_install_dir=\${${package}_install_dir}
     if [ -z "${package_install_dir}" ] && [ "${!package}" != "NO" ] && [ "${!package}" != "SYSTEM" ]; then
-        eval ${package}_install_dir=${INSTALL_DIR}/external/${package}
+        eval ${package}_install_dir=${packages_install_dir}/${package}
     fi
 done
 
@@ -24,13 +24,13 @@ package_system=()
 package_no=()
 
 echo "-- Packages:"
-for package in "${PACKAGE_ARRAY[@]}"; do
+for package in "${package_array[@]}"; do
     if [[ "${!package}" == "INSTALL" ]]; then
         echo "     $package will be installed"
         package_install=( ${package_install[@]} $package )
     elif [[ "${!package}" == "CUSTOM" ]]; then
         eval package_install_dir=\${${package}_install_dir}
-        echo "     $package is already installed in ${package_install_dir}"
+        echo "     $package is assumed to be already installed in ${package_install_dir}"
         package_custom=( ${package_custom[@]} $package )
     elif [[ "${!package}" == "SYSTEM" ]]; then
         echo "     $package default system version will be used"
@@ -47,7 +47,7 @@ if [ ${#package_install[@]} -ne 0 ]; then
 fi
 
 if [ ${#package_custom[@]} -ne 0 ] || [ ${#package_system[@]} -ne 0 ]; then
-    echo "-- The following packages are already installed: "
+    echo "-- The following packages are assumed to be already installed: "
     installed_packages=( ${package_custom[@]} ${package_system[@]} )
     echo "     ${installed_packages[@]}"
 fi

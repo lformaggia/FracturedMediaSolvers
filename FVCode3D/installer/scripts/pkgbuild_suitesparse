@@ -3,8 +3,8 @@
 ver="4.2.1"
 
 download_suitesparse() {
-    if [ -f ${PACKAGE_SRC_DIR}/SuiteSparse-${ver}.tar.gz ]; then
-        cp -R ${PACKAGE_SRC_DIR}/SuiteSparse-${ver}.tar.gz ${src_dir}
+    if [ -f ${packages_src_dir}/SuiteSparse-${ver}.tar.gz ]; then
+        cp -R ${packages_src_dir}/SuiteSparse-${ver}.tar.gz ${src_dir}
     else
         wget -nv http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-${ver}.tar.gz
     fi
@@ -25,8 +25,8 @@ build_suitesparse() {
     mkdir cmake
     cd cmake
 
-    if [ -z "${FORTRAN_COMPILER}" ]; then
-        FORTRAN_COMPILER=gfortran
+    if [ -z "${fortran_compiler}" ]; then
+        fortran_compiler=gfortran
     fi
     cat > SuiteSparse_config.mk.in <<EOF
 CF = \$(CFLAGS) \$(CPPFLAGS) \$(TARGET_ARCH) -O3 -fexceptions -fPIC
@@ -34,7 +34,7 @@ RANLIB = ranlib
 ARCHIVE = \$(AR) \$(ARFLAGS)
 CP = cp -f
 MV = mv -f
-F77 = ${FORTRAN_COMPILER}
+F77 = ${fortran_compiler}
 F77FLAGS = \$(FFLAGS) -O
 F77LIB =
 LIB = -lm
@@ -82,17 +82,17 @@ endforeach(lib)
 configure_file(\${CMAKE_CURRENT_SOURCE_DIR}/SuiteSparse_config.mk.in \${CMAKE_CURRENT_SOURCE_DIR}/../SuiteSparse_config/SuiteSparse_config.mk @ONLY)
 EOF
 
-    CMAKE_BIN=cmake
+    cmake_bin=cmake
     if [ -n "${cmake_install_dir}" ]; then
-        CMAKE_BIN="${cmake_install_dir}/bin/cmake"
+        cmake_bin="${cmake_install_dir}/bin/cmake"
     fi
-    ${CMAKE_BIN} \
+    ${cmake_bin} \
         -DTPL_BLAS_DIR:PATH=${blas_install_dir} \
         -DTPL_LAPACK_DIR:PATh=${lapack_install_dir} \
         .
     cd ..
 
-    make library -j$NUM_PROC
+    make library -j${num_proc}
 }
 
 install_suitesparse() {
