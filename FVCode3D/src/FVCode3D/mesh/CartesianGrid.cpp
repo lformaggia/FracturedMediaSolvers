@@ -1,18 +1,32 @@
  /*!
- * @file cartesianGrid.cpp
+ * @file CartesianGrid.cpp
  * @brief Class that generate a hexahedral structured (Cartesian) grid (definitions).
  */
 
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/property/Properties.hpp>
 #include <FVCode3D/mesh/CartesianGrid.hpp>
+#include <FVCode3D/mesh/MeshUtility.hpp>
 
 namespace FVCode3D
 {
 
-void CartesianGrid::generate(bool fracturesOn, const Real Lx, const Real Ly, const Real Lz, const UInt Nx, const UInt
-Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
+void CartesianGrid::generate(bool fracturesOn)
 {
+    const Real Lx = M_data->getLx();
+    const Real Ly = M_data->getLy();
+    const Real Lz = M_data->getLz();
+    const UInt Nx = M_data->getNx();
+    const UInt Ny = M_data->getNy();
+    const UInt Nz = M_data->getNz();
+    const Real Sx = M_data->getSx();
+    const Real Sy = M_data->getSy();
+    const Real Sz = M_data->getSz();
+    const bool noise = M_data->noiseOn();
+    const Data::NoiseOn noiseOn = M_data->getNoiseOn();
+    const Real mean = M_data->getMeanNormalDistribution();
+    const Real stDev = M_data->getStDevNormalDistribution(); // 5.0e-2  7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
+
     Real hx = Lx/Nx;
     Real hy = Ly/Ny;
     Real hz = Lz/Nz;
@@ -41,7 +55,11 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
         }
     }
 
-//    addNoiseToPoint(0., 7.5e-3);
+    if(noise && (noiseOn == Data::NoiseOn::All))
+    {
+        addNoiseToPoint(M_mesh, mean, stDev);
+    }
+
     tmp.resize(4);
 
     // create facets parallel to x axis
@@ -176,19 +194,6 @@ Ny, const UInt Nz, const Real Sx, const Real Sy, const Real Sz)
     }
 }
 
-void CartesianGrid::addNoiseToPoint(const Real mean, const Real stDev)
-{
-    std::default_random_engine generator;
-    std::normal_distribution<Real> distribution(mean, stDev);
-
-    for(auto& node : M_mesh.getNodesVector())
-    {
-        node.x() += distribution(generator);
-        node.z() += distribution(generator);
-        node.y() += distribution(generator);
-    }
-}
-
 void CartesianGrid::extractBC(const Real theta)
 {
     Point3D normal, center, centerFace;
@@ -234,6 +239,13 @@ void CartesianGrid::addFractures(const std::map<UInt,UInt> & facetIdToZone)
     std::map<UInt, Fracture3D> fracturesMap;
     std::map<UInt, Fracture3D>::iterator itF;
     Point3D normal, center, centerFace;
+    const UInt Nx = M_data->getNx();
+    const UInt Ny = M_data->getNy();
+    const UInt Nz = M_data->getNz();
+    const bool noise = M_data->noiseOn();
+    const Data::NoiseOn noiseOn = M_data->getNoiseOn();
+    const Real mean = M_data->getMeanNormalDistribution();
+    const Real stDev = M_data->getStDevNormalDistribution();
 
     for(std::map<UInt,UInt>::const_iterator it = facetIdToZone.begin(); it!= facetIdToZone.end(); ++it)
         if(facetsRef.find(it->first) != facetsRef.end())
@@ -262,6 +274,116 @@ void CartesianGrid::addFractures(const std::map<UInt,UInt> & facetIdToZone)
     FN.addFractures(fracturesVector);
 
     M_mesh.addFractureNetwork(FN);
+
+    if(noise && (noiseOn != Data::NoiseOn::All))
+    {
+        const bool initVal = (noiseOn == Data::NoiseOn::Matrix) ? true : false;
+        const bool setVal = !initVal;
+        std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+        std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+        std::vector<bool> nodesWithNoise( nodesRef.size(), initVal );
+        std::array<UInt,2> Cx={{0,Nx}};
+        std::array<UInt,2> Cy={{0,Ny}};
+        std::array<UInt,2> Cz={{0,Nz}};
+
+        for(std::map<UInt, Fracture3D>::iterator it = fracturesMap.begin(); it != fracturesMap.end(); ++it)
+        {
+            for(auto facetId : it->second.getFractureFacetsId() )
+            {
+                for(auto nodeId : facetsRef[facetId].getVerticesVector())
+                {
+                    nodesWithNoise[nodeId] = setVal;
+                }
+            }
+        }
+
+        for(auto i : Cx)
+        {
+            for(auto j : Cy)
+            {
+                for(UInt k=0; k <= Nz; ++k)
+                {
+                    const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                    nodesWithNoise[index] = false;
+                }
+            }
+            for(auto k : Cz)
+            {
+                for(UInt j=0; j <= Ny; ++j)
+                {
+                    const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                    nodesWithNoise[index] = false;
+                }
+            }
+        }
+        for(auto j : Cy)
+        {
+            for(auto k : Cz)
+            {
+                for(UInt i=0; i <= Nx; ++i)
+                {
+                    const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                    nodesWithNoise[index] = false;
+                }
+            }
+        }
+
+        std::vector<bool> nodesWithNoiseX( nodesRef.size(), false );
+        std::vector<bool> nodesWithNoiseY( nodesRef.size(), false );
+        std::vector<bool> nodesWithNoiseZ( nodesRef.size(), false );
+
+        for(auto i : Cx)
+        {
+            for(UInt j=1; j < Ny; ++j)
+            {
+                for(UInt k=1; k < Nz; ++k)
+                {
+                    const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                    nodesWithNoiseX[index] = nodesWithNoise[index];
+                    nodesWithNoise[index] = false;
+                }
+            }
+        }
+        for(auto j : Cy)
+        {
+            for(UInt i=1; i < Nx; ++i)
+            {
+                for(UInt k=1; k < Nz; ++k)
+                {
+                    const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                    nodesWithNoiseY[index] = nodesWithNoise[index];
+                    nodesWithNoise[index] = false;
+                }
+            }
+        }
+        for(auto k : Cz)
+        {
+            for(UInt i=1; i < Nx; ++i)
+            {
+                for(UInt j=1; j < Ny; ++j)
+                {
+                    const Real index = i + (Nx+1) * j + (Nx+1) * (Ny+1) * k;
+                    nodesWithNoiseZ[index] = nodesWithNoise[index];
+                    nodesWithNoise[index] = false;
+                }
+            }
+        }
+
+        addNoiseToPoint(M_mesh, nodesWithNoise, mean, stDev);
+        addNoiseToPoint(M_mesh, nodesWithNoiseX, std::vector<UInt>{1,2}, mean, stDev);
+        addNoiseToPoint(M_mesh, nodesWithNoiseY, std::vector<UInt>{0,2}, mean, stDev);
+        addNoiseToPoint(M_mesh, nodesWithNoiseZ, std::vector<UInt>{0,1}, mean, stDev);
+
+        for(std::map<UInt, Mesh3D::Facet3D>::iterator it = facetsRef.begin(); it != facetsRef.end(); ++it)
+        {
+            it->second.computeCentroidAndNormalAndArea();
+        }
+
+        for(std::map<UInt, Mesh3D::Cell3D>::iterator it = cellsRef.begin(); it != cellsRef.end(); ++it)
+        {
+            it->second.computeVolumeAndCentroid();
+        }
+    }
 }
 
 void CartesianGrid::addBCAndFractures(const std::map<UInt,UInt> & facetIdToZone, const Real theta)

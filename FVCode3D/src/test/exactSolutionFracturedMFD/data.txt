@@ -4,13 +4,13 @@
 
 ## input
 [mesh]
-mesh_dir    = ./data/
+mesh_dir    = ./
 mesh_file   = cartN10x10x1.fvg
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
 [output]
-output_dir  = ./results/
+output_dir  = ./
 output_file = sol
 
 ## numerical method
@@ -24,7 +24,7 @@ method      = MFD    # FV or MFD
 [problem]
 type        = steady    # steady or pseudoSteady
 fracturesOn = 0     # 1 enable fractures, 0 disable fractures
-sourceOn    = none      # all, matrix, fractures, none
+sourceOn    = all      # all, matrix, fractures, none
 fracPressOn = 0     # 1 set pressure inside fracture, 0 otherwise
 fracPress   = 1.
 perm_size   = ScalarPermeability    # ScalarPermeability, DiagonalPermeability, SymTensorPermeability, FullTensorPermeability
@@ -47,5 +47,5 @@ type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , Eig
                         # SamgSym , SamgNotSym
 
     [./iterative]
-    maxIt       = 10000
-    tolerance   = 1e-6
+    maxIt       = 1000
+    tolerance   = 1e-5
