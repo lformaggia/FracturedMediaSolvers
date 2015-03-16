@@ -13,9 +13,9 @@ target_link_libraries(exactSolution_test ${LIBRARIES})
 # we can specify them here. These files will be copied to this build
 # directory regardless of their source directory
 copy_files_to_binary_dir(exactSolution_test_files # target name
-    ./cart100x100x1.fvg
-    ./cart50x50x1.fvg
-    ./cart200x200x1.fvg
+#    ./cart100x100x1.fvg
+#    ./cart50x50x1.fvg
+#    ./cart200x200x1.fvg
     ./cart25x25x1.fvg
     ./data.txt
 )
