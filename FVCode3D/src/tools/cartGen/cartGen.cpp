@@ -24,24 +24,22 @@ int main(int argc, char * argv[])
     const std::string dataFileName = command_line.follow("data.txt", 2, "-f", "--file");
 
     std::cout << "Read Data..." << std::flush;
-    Data data(dataFileName);
-    data.verbose(true);
+    DataPtr_Type dataPtr(new Data(dataFileName));
+    dataPtr->verbose(true);
     std::cout << " done." << std::endl;
 
     std::cout << std::endl;
-    data.showMe();
+    dataPtr->showMe();
     std::cout << std::endl;
 
     std::cout << "Define Mesh and Properties..." << std::flush;
     Mesh3D mesh;
-    PropertiesMap propMap(data.getMobility());
+    PropertiesMap propMap(dataPtr->getMobility());
     std::cout << " done." << std::endl;
 
     std::cout << "Generate Cartesian grid..." << std::flush;
-    CartesianGrid cart(mesh, propMap);
-    cart.generate(true, data.getLx(), data.getLy(), data.getLz(), data.getNx(), data.getNy(), data.getNz(),
-                        data.getSx(), data.getSy(), data.getSz(),
-                        data.noiseOn(), data.getMeanNormalDistribution(), data.getStDevNormalDistribution()); // 5.0e-2  7.5e-3 , 3.75e-3 , 1.875e-3 , 9.375e-4
+    CartesianGrid cart(mesh, propMap, dataPtr);
+    cart.generate(true);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "# of cells: " << mesh.getCellsMap().size() << std::endl << std::endl;
@@ -100,7 +98,7 @@ int main(int argc, char * argv[])
             }
         }
     }*/
-    /*
+
     for(std::map<UInt,Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin(); it != mesh.getFacetsMap().end(); ++it)
     {
         Point3D centroid = it->second.getCentroid();
@@ -148,7 +146,7 @@ int main(int argc, char * argv[])
             facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
         }
     }
-    */
+
     // then call "addFractures()"
     cart.addFractures(facetIdToZone);
 
@@ -161,17 +159,17 @@ int main(int argc, char * argv[])
     std::cout << "Set uniform properties..." << std::flush;
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityScalar );
     std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
-    matrixPerm->setPermeability( data.getMatrixPermeability(), 0 );
-    fracturesPerm->setPermeability( data.getFracturePermeability(), 0 );
-    propMap.setPropertiesOnMatrix(mesh, data.getMatrixPorosity(), matrixPerm);
-    propMap.setPropertiesOnFractures(mesh, data.getFractureAperture(), data.getFracturePorosity(), fracturesPerm);
+    matrixPerm->setPermeability( dataPtr->getMatrixPermeability(), 0 );
+    fracturesPerm->setPermeability( dataPtr->getFracturePermeability(), 0 );
+    propMap.setPropertiesOnMatrix(mesh, dataPtr->getMatrixPorosity(), matrixPerm);
+    propMap.setPropertiesOnFractures(mesh, dataPtr->getFractureAperture(), dataPtr->getFracturePorosity(), fracturesPerm);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;
-    saveAsSolverFormat(data.getOutputDir() + data.getOutputFile() + ".fvg", mesh, propMap);
+    saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".fvg", mesh, propMap);
 
     ExporterCP exporter;
-    exporter.exportMesh(mesh, data.getOutputDir() + data.getOutputFile() + ".GRDECL");
+    exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".GRDECL");
     std::cout << " done." << std::endl;
 
     return 0;
