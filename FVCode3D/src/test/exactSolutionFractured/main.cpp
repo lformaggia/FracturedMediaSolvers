@@ -1,6 +1,6 @@
 #include <FVCode3D/FVCode3D.hpp>
 
-#define FVCODE3D_EXPORT
+//#define FVCODE3D_EXPORT
 
 using namespace FVCode3D;
 
@@ -109,7 +109,7 @@ int main (int argc, char** argv)
     delete darcy;
     delete importer;
 
-    if(std::fabs(err - 2045.31188998165) <= 1e-8)
+    if(std::fabs(err - 0.000957652233025229) <= 1e-13)
     {
         return EXIT_SUCCESS;
     }

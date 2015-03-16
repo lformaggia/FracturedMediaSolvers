@@ -14,8 +14,8 @@ target_link_libraries(exactSolutionFractured_test ${LIBRARIES})
 # directory regardless of their source directory
 copy_files_to_binary_dir(exactSolutionFractured_test_files # target name
     ./cart20x20x1.fvg
-    ./cart40x40x1.fvg
-    ./cart80x80x1.fvg
-    ./cart160x160x1.fvg
+#    ./cart40x40x1.fvg
+#    ./cart80x80x1.fvg
+#    ./cart160x160x1.fvg
     ./data.txt
 )
