@@ -105,42 +105,83 @@ int main(int argc, char * argv[])
         if(
             (
                 (centroid[1] > 0. - 0.01 && centroid[1] < 0. + 0.01)
-                &&
-                (centroid[0] > -0.4 - 0.01 && centroid[0] < 0.8 + 0.01)
-            )
-            ||
-            (
-                (centroid[0] > 0.4 - 0.01 && centroid[0] < 0.8 + 0.01)
-                &&
-                (centroid[2] > -0.25 - 0.01 && centroid[2] < -0.25 + 0.01)
-                &&
-                (centroid[1] > -0.4 - 0.01 && centroid[1] < 0.7 + 0.01)
-            )
-            ||
-            (
-                (centroid[2] > 0.75 - 0.01 && centroid[2] < 0.75 + 0.01)
-                &&
-                (centroid[1] > -0.25 - 0.01 && centroid[1] < 0.25 + 0.01)
-                &&
-                (centroid[0] > -0.5 - 0.01 && centroid[0] < 0.75 + 0.01)
-            )
-            ||
-            (
-                (centroid[2] > -0.75 - 0.01 && centroid[2] < -0.75 + 0.01)
-                &&
-                (centroid[1] > -0.75 - 0.01 && centroid[1] < 0.25 + 0.01)
-                &&
-                (centroid[0] > -0.5 - 0.01 && centroid[0] < -0.25 + 0.01)
-            )
-            ||
-            (
-                (centroid[2] > 0. - 0.01 && centroid[2] < 0. + 0.01)
-                &&
-                (centroid[1] > -1. - 0.01 && centroid[1] < -0.25 + 0.01)
-                &&
-                (centroid[0] > -0.75 - 0.01 && centroid[0] < 0.75 + 0.01)
             )
 
+//            (
+//                (centroid[1] > 0. - 0.01 && centroid[1] < 0. + 0.01)
+//                &&
+//                (centroid[0] > -0.4 - 0.01 && centroid[0] < 0.8 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[0] > 0.4 - 0.01 && centroid[0] < 0.8 + 0.01)
+//                &&
+//                (centroid[2] > -0.25 - 0.01 && centroid[2] < -0.25 + 0.01)
+//                &&
+//                (centroid[1] > -0.4 - 0.01 && centroid[1] < 0.7 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[2] > 0.75 - 0.01 && centroid[2] < 0.75 + 0.01)
+//                &&
+//                (centroid[1] > -0.25 - 0.01 && centroid[1] < 0.25 + 0.01)
+//                &&
+//                (centroid[0] > -0.5 - 0.01 && centroid[0] < 0.75 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[2] > -0.75 - 0.01 && centroid[2] < -0.75 + 0.01)
+//                &&
+//                (centroid[1] > -0.75 - 0.01 && centroid[1] < 0.25 + 0.01)
+//                &&
+//                (centroid[0] > -0.5 - 0.01 && centroid[0] < -0.25 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[2] > 0. - 0.01 && centroid[2] < 0. + 0.01)
+//                &&
+//                (centroid[1] > -1. - 0.01 && centroid[1] < -0.25 + 0.01)
+//                &&
+//                (centroid[0] > -0.75 - 0.01 && centroid[0] < 0.75 + 0.01)
+//            )
+
+//            (
+//                (centroid[1] > 0.25 - 0.01 && centroid[1] < 0.25 + 0.01)
+//                &&
+//                (centroid[0] > 0. - 0.01 && centroid[0] < 0.9 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[0] > 0.1 - 0.01 && centroid[0] < 0.4 + 0.01)
+//                &&
+//                (centroid[2] > -0.75 - 0.01 && centroid[2] < -0.75 + 0.01)
+//                &&
+//                (centroid[1] > -0.3 - 0.01 && centroid[1] < 1. + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[2] > 0.75 - 0.01 && centroid[2] < 0.75 + 0.01)
+//                &&
+//                (centroid[1] > -0.25 - 0.01 && centroid[1] < 0.25 + 0.01)
+//                &&
+//                (centroid[0] > -0.75 - 0.01 && centroid[0] < 0.75 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[2] > -0.75 - 0.01 && centroid[2] < 0.75 + 0.01)
+//                &&
+//                (centroid[1] > -0.75 - 0.01 && centroid[1] < 0.5 + 0.01)
+//                &&
+//                (centroid[0] > -0.5 - 0.01 && centroid[0] < -0.5 + 0.01)
+//            )
+//            ||
+//            (
+//                (centroid[2] > 0.25 - 0.01 && centroid[2] < 0.25 + 0.01)
+//                &&
+//                (centroid[1] > -1. - 0.01 && centroid[1] < -0.25 + 0.01)
+//                &&
+//                (centroid[0] > -0.75 - 0.01 && centroid[0] < 0.75 + 0.01)
+//            )
           )
         {
             facetIdToZone.insert( std::pair<UInt,UInt>(it->first,2));
