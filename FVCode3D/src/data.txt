@@ -15,7 +15,7 @@ output_file = sol
 
 ## numerical method
 [numet]
-method      = MFD    # FV or MFD
+method      = FV    # FV or MFD
 
 ## problem parameter
 [problem]
