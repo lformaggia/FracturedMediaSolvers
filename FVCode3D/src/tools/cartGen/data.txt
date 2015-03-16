@@ -19,6 +19,7 @@ Sx  = -1.
 Sy  = -1.
 Sz  = -1.
 noise   = 0
+noiseOn = matrix # matrix , fractures , all
 meanN   = 0.
 stDevN  = 1.
 
