@@ -4,8 +4,6 @@
 // Add this macro the enable the exporter
 //#define FVCODE3D_EXPORT
 
-//#define OTHERNUM
-
 #include <cassert>
 #include <iostream>
 #include <chrono>
@@ -108,20 +106,20 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-    std::cout << "Set uniform properties..." << std::flush;
-    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
-    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
-    matrixPerm->setPermeability( 1., 0 );
-    matrixPerm->setPermeability( 1., 4 );
-    matrixPerm->setPermeability( 1., 8 );
-    const Real kf = 1.e3;
-    fracturesPerm->setPermeability( kf, 0 );
-    const Real aperture = 1.e-2;
-    const Real matrixPoro = 0.25;
-    const Real fracturesPoro = 1.;
-    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
-    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
-    std::cout << " done." << std::endl << std::endl;
+//    std::cout << "Set uniform properties..." << std::flush;
+//    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
+//    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+//    matrixPerm->setPermeability( 1., 0 );
+//    matrixPerm->setPermeability( 1., 4 );
+//    matrixPerm->setPermeability( 1., 8 );
+//    const Real kf = 1.e3;
+//    fracturesPerm->setPermeability( kf, 0 );
+//    const Real aperture = 1.e-2;
+//    const Real matrixPoro = 0.25;
+//    const Real fracturesPoro = 1.;
+//    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
+//    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
+//    std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
@@ -141,27 +139,6 @@ int main(int argc, char * argv[])
 #endif // FVCODE3D_EXPORT
 
     std::cout << "Add BCs..." << std::flush;
-
-//    Func SS     = [aperture, kf](const Point3D & p) {
-//                                                 return p.y() == 0. ?
-//                                                 0.
-//                                                 :
-//                                                 (1 - kf) * std::cos(p.x()) * std::cosh(aperture/2.);
-//                                        };
-    Func u_ex   = [aperture, kf](const Point3D & p) {
-                                                 return p.y() == 0. ?
-                                                 std::cos(p.x()) * std::cosh(p.y())
-                                                 :
-                                                 kf * std::cos(p.x()) * std::cosh(p.y()) +
-                                                 (1. - kf) * std::cos(p.x()) * std::cosh(aperture/2.);
-                                        };
-
-//    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, u_ex );
-//    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, u_ex );
-//    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, u_ex );
-//    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, u_ex );
-//    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
-//    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
 
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fOne );
     BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
@@ -318,101 +295,15 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-    const Vector u_h_ex = evaluate(myrmesh, u_ex);
 
-    Quadrature q(myrmesh);
-
-    const Vector & uh = darcy->getSolver().getSolution();
-    Vector u_diff = u_h_ex - uh;
-    const Real err_M = q.L2NormMatrix( u_diff );
-    const Real err_F = q.L2NormFractures( u_diff );
-    const Real err = std::sqrt(err_M * err_M + err_F * err_F);
-    std::cout << std::setprecision(15) << "L2 norm: " << err << std::endl;
-    std::cout << std::setprecision(15) << "Matrix L2 norm: " << err_M / q.L2NormMatrix( u_h_ex ) << std::endl;
-    std::cout << std::setprecision(15) << "Fracture L2 norm: " << err_F / q.L2NormFractures( u_h_ex ) << std::endl;
-
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff.vtu",
-    u_diff.cwiseAbs() );
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff_f.vtu",
-    u_diff.cwiseAbs() );
-
-    const std::string numMeth = dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ? "FV" : "MFD" ;
     std::cout << "Export Solution..." << std::flush;
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_" + numMeth + ".vtu", darcy->getSolver().getSolution());
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export Solution on Fractures..." << std::flush;
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_" +
-    numMeth + ".vtu", darcy->getSolver().getSolution());
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu",
+        darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
-
-#ifdef OTHERNUM
-//----------- THE OTHER NUMERICAL SCHEME --------------//
-    dataPtr->setNumericalMethodType( dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ?
-    Data::NumericalMethodType::MFD : Data::NumericalMethodType::FV  );
-
-    std::cout << "Build problem..." << std::flush;
-    Pb * darcy2(nullptr);
-    if(dataPtr->getProblemType() == Data::ProblemType::steady)
-    {
-        darcy2 = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
-    }
-    std::cout << " done." << std::endl << std::endl;
-
-    if(dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr()))
-    {
-        dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->setMaxIter(dataPtr->getIterativeSolverMaxIter());
-        dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->setTolerance(dataPtr->getIterativeSolverTolerance());
-    }
-
-    std::cout << "Solve problem..." << std::flush;
-    if(dataPtr->getProblemType() == Data::ProblemType::steady)
-    {
-        darcy2->assemble();
-        if(dataPtr->pressuresInFractures())
-        {
-            FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy2));
-            fpd.apply(dataPtr->getPressuresInFractures());
-        }
-        darcy2->solve();
-        if(dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr()))
-        {
-            std::cout << std::endl;
-            std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->getIter() << std::endl;
-            std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy2->getSolverPtr())->getResidual() << std::endl;
-        }
-    }
-
-    std::cout << " done." << std::endl << std::endl;
-
-    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-
-    const std::string numMeth2 = dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ? "FV" : "MFD" ;
-
-    std::cout << "Export Solution..." << std::flush;
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_" + numMeth2 + ".vtu", darcy2->getSolver().getSolution());
-    std::cout << " done." << std::endl << std::endl;
-
-    std::cout << "Export Solution on Fractures..." << std::flush;
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f_" +
-    numMeth2 +  ".vtu",
-    darcy2->getSolver().getSolution());
-    std::cout << " done." << std::endl << std::endl;
-
-    std::cout << "Export Diff Solution..." << std::flush;
-    Vector uh_diff = (darcy2->getSolver().getSolution() - darcy->getSolver().getSolution()).cwiseAbs();
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_diff.vtu", uh_diff);
-    std::cout << " done." << std::endl << std::endl;
-
-    std::cout << "Export Diff Solution on Fractures..." << std::flush;
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() +
-    "_solution_f_diff.vtu", uh_diff);
-    std::cout << " done." << std::endl << std::endl;
-
-    dataPtr->setNumericalMethodType( dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV ?
-    Data::NumericalMethodType::MFD : Data::NumericalMethodType::FV  );
-//----------- end THE OTHER NUMERICAL SCHEME --------------//
-#endif // OTHERNUM
 
 #ifdef FVCODE3D_EXPORT
     if(dataPtr->MSROn())
@@ -435,9 +326,6 @@ int main(int argc, char * argv[])
 #endif // FVCODE3D_EXPORT
 
     delete darcy;
-#ifdef OTHERNUM
-    delete darcy2;
-#endif // OTHERNUM
     delete importer;
 
     chrono.stop();
