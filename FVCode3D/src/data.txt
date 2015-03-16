@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir    = ./data/
-mesh_file   = cartN10x10x1.fvg
+mesh_file   = cartBC1.fvg
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
@@ -17,13 +17,10 @@ output_file = sol
 [numet]
 method      = MFD    # FV or MFD
 
-    [./mimetic]
-    lumped  = 0     # 0 or 1
-
 ## problem parameter
 [problem]
 type        = steady    # steady or pseudoSteady
-fracturesOn = 0     # 1 enable fractures, 0 disable fractures
+fracturesOn = 1     # 1 enable fractures, 0 disable fractures
 sourceOn    = none      # all, matrix, fractures, none
 fracPressOn = 0     # 1 set pressure inside fracture, 0 otherwise
 fracPress   = 1.
