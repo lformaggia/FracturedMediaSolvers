@@ -13,9 +13,9 @@ target_link_libraries(exactSolutionMFD_test ${LIBRARIES})
 # we can specify them here. These files will be copied to this build
 # directory regardless of their source directory
 copy_files_to_binary_dir(exactSolutionMFD_test_files # target name
-    ./cartN10x10x1.fvg
-    ./cartN20x20x1.fvg
-    ./cartN40x40x1.fvg
-    ./cartN80x80x1.fvg
+    ./cartN8x8x8.fvg
+#    ./cartN20x20x1.fvg
+#    ./cartN40x40x1.fvg
+#    ./cartN80x80x1.fvg
     ./data.txt
 )
