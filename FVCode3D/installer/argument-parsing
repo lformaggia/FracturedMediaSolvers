@@ -10,8 +10,12 @@ print_basic_help ()
     echo "Install ${project_name}"
     echo "Default installation directory is \"../install\" and default build type is \"Release\""
     echo "Paths:"
-    echo "  --prefix=<path>             installation directory;"
-    echo "                              default value is \"../${lowercase_project_name}-install\";"
+    echo "  --prefix=<path>             installation directory; default value is:"
+    echo "                              \"../${lowercase_project_name}-install\";"
+    echo "  --packages-prefix=<path>    installation directory for packages;"
+    echo "                              default value is <install_path>/opt, where"
+    echo "                              <install_path> is the path specified with the"
+    echo "                              option --prefix"
     echo "  --build-dir=<path>          build directory;"
     echo "                              default value is \"<install_dir>/build\""
     echo "                              where <install_dir> can be specified with"
@@ -74,9 +78,16 @@ function handle_basic_argument ()
         --prefix=*)
             project_install_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
             # Expand ~ ~+ ~- ~user and remove starting and trailing quotes
-            eval project_install_dir=$project_install_dir
+            eval project_install_dir=${project_install_dir}
             # If it's not an absolute path prefix it with ${PWD}
             [[ ${project_install_dir} == /* ]] || project_install_dir="${PWD}/${project_install_dir}"
+        ;;
+        --packages-prefix=*)
+            packages_install_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
+            # Expand ~ ~+ ~- ~user and remove starting and trailing quotes
+            eval packages_install_dir=${packages_install_dir}
+            # If it's not an absolute path prefix it with ${PWD}
+            [[ ${packages_install_dir} == /* ]] || packages_install_dir="${PWD}/${packages_install_dir}"
         ;;
         --build-dir=*)
             project_build_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
