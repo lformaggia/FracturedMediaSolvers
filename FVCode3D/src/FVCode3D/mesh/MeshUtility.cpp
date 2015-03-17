@@ -30,7 +30,7 @@ void addNoiseToPoint(Mesh3D & mesh, const std::vector<bool> & nodesWithNoise, co
     std::vector<Point3D> & nodesRef = mesh.getNodesVector();
     const UInt NoN ( mesh.getNumberOfNodes() );
 
-    for(auto i = 0; i<NoN; ++i)
+    for(UInt i = 0; i<NoN; ++i)
     {
         if(nodesWithNoise[i])
         {
@@ -49,7 +49,7 @@ void addNoiseToPoint(Mesh3D & mesh, const std::vector<bool> & nodesWithNoise, co
     std::vector<Point3D> & nodesRef = mesh.getNodesVector();
     const UInt NoN ( mesh.getNumberOfNodes() );
 
-    for(auto i = 0; i<NoN; ++i)
+    for(UInt i = 0; i<NoN; ++i)
     {
         if(nodesWithNoise[i])
         {
