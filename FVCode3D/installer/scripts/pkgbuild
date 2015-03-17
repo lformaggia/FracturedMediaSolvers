@@ -30,9 +30,6 @@ main() {
     for(( i=0; i < $number_of_packages; i++ )); do
 
         package=${package_list[$i]}
-    #    echo "====================================="
-    #    echo " $i: installing ${package} package"
-    #    echo "====================================="
         echo -n "[${i}/${number_of_packages}] ${package}: "
 
         build_package ${package} ${i} || { echo -e "\nError installing package ${package}\nCheck log file: ${build_dir}/${package}.log"; exit 1; }
