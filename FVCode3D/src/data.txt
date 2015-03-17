@@ -13,6 +13,10 @@ mesh_type   = .fvg      # .grid or .fvg or .mesh
 output_dir  = ./results/
 output_file = sol
 
+## numerical method
+[numet]
+method      = FV    # FV or MFD
+
 ## problem parameter
 [problem]
 type        = steady    # steady or pseudoSteady
@@ -40,5 +44,5 @@ type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , Eig
                         # SamgSym , SamgNotSym
 
     [./iterative]
-    maxIt       = 1000
-    tolerance   = 1e-5
+    maxIt       = 10000
+    tolerance   = 1e-6

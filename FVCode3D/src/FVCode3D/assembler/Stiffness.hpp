@@ -31,21 +31,21 @@ class StiffMatrix: public MatrixHandler
 
     //! Typedef for std::pair<UInt,UInt>
     /*!
-        @typedef Fracture_Juncture
-        This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
-    */
+     * @typedef Fracture_Juncture
+     * This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
+     */
     typedef std::pair<UInt,UInt> Fracture_Juncture;
     //! Typedef for Rigid_Mesh::Facet_ID
     /*!
-        @typedef Facet_ID
-        This type definition permits to treat Rigid_Mesh::Facet_ID as a Facet_ID.
-    */
+     * @typedef Facet_ID
+     * This type definition permits to treat Rigid_Mesh::Facet_ID as a Facet_ID.
+     */
     typedef Rigid_Mesh::Facet_ID Facet_ID;
     //! Typedef for Rigid_Mesh::Edge_ID
     /*!
-        @typedef Edge_ID
-        This type definition permits to treat Rigid_Mesh::Edge_ID as a Edge_ID.
-    */
+     * @typedef Edge_ID
+     * This type definition permits to treat Rigid_Mesh::Edge_ID as a Edge_ID.
+     */
     typedef Rigid_Mesh::Edge_ID Edge_ID;
 
 public:
@@ -54,9 +54,9 @@ public:
 
     //! Construct a stiffness-Matrix, given a Rigid_Mesh and the boundary conditions
     /*!
-        @param rigid_mesh A Rigid_Mesh used to build the matrix
-        @param BC Boundary conditions given in the container BoundaryConditions
-    */
+     * @param rigid_mesh A Rigid_Mesh used to build the matrix
+     * @param BC Boundary conditions given in the container BoundaryConditions
+     */
     StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC):
         MatrixHandler(rigid_mesh), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
         M_bc(BC) {}
@@ -85,6 +85,14 @@ public:
      * Assemble the stiffness matrix
      */
     void assemble();
+
+    //! @name Methods
+    //@{
+    //! Assemble method with MFD
+    /*!
+     * Assemble the stiffness matrix
+     */
+    void assembleMFD();
 
     //! Set offsets
     /*!

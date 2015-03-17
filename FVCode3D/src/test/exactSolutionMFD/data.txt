@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir    = ./
-mesh_file   = cart25x25x1.fvg
+mesh_file   = cartN8x8x8.fvg
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
@@ -15,7 +15,7 @@ output_file = sol
 
 ## numerical method
 [numet]
-method      = FV    # FV or MFD
+method      = MFD    # FV or MFD
 
 ## problem parameter
 [problem]

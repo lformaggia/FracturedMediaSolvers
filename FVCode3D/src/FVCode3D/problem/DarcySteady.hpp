@@ -10,6 +10,7 @@
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
+#include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
 {
@@ -44,6 +45,7 @@ public:
      * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
+     * @param data reference to a Data class
      */
     DarcySteady(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
                 const Func & func, const DataPtr_Type & data):
@@ -72,7 +74,10 @@ public:
      * Solve the system Ax=b.
      * @pre call assemble().
      */
-    virtual void solve() { this->M_solver->solve(); }
+    virtual void solve() { this->M_solver->solve();
+        Eigen::saveMarket( this->M_A, "./mMatrix/A.m" );
+        Eigen::saveMarket( this->M_b, "./mMatrix/b.m" );
+        Eigen::saveMarket( this->M_solver->getSolution(), "./mMatrix/sol.m" ); }
 
     //! Destructor
     virtual ~DarcySteady() = default;
@@ -85,8 +90,16 @@ assembleMatrix()
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
     StiffMatrix S(this->M_mesh, this->M_bc);
-    S.assemble();
-    S.closeMatrix();
+
+    if(this->M_numet == Data::NumericalMethodType::FV)
+    {
+        S.assemble();
+        S.closeMatrix();
+    }
+    else if(this->M_numet == Data::NumericalMethodType::MFD)
+    {
+        S.assembleMFD();
+    }
 
     this->M_A = S.getMatrix();
     this->M_b = S.getBCVector();
