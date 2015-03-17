@@ -69,8 +69,8 @@ set(${PROJECT_NAME}_TPL_LIBRARY_DIRS "" CACHE INTERNAL "")
 set(${PROJECT_NAME}_TPL_LIBRARIES "" CACHE INTERNAL "")
 set(${PROJECT_NAME}_TPL_PACKAGES_PROVIDING_USE_FILES "" CACHE INTERNAL "")
 
-find_third_party_library(CHOLMOD)
 find_third_party_library(UMFPACK)
+find_third_party_library(CHOLMOD)
 find_third_party_library(BLAS)
 find_third_party_library(EIGEN3)
 # SAMG
