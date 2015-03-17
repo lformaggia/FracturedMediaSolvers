@@ -439,7 +439,7 @@ void ExporterVTU::exportSolutionOnFractures(const Rigid_Mesh & mesh, const std::
     filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\""<< fieldName << "\" format=\"ascii\">" << std::endl;
     filestr << std::scientific << std::setprecision(10);
     for( UInt i = nCells; i < nTotal; ++i )
-        filestr << sol[i] << std::endl;
+        filestr << static_cast<Real>(sol[i]) << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
