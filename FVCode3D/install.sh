@@ -137,7 +137,7 @@ if [ -n "${install_project}" ]; then
         -DTPL_BLAS_DIR:PATH="${blas_install_dir}" \
         -DTPL_EIGEN3_DIR:PATH="${eigen_install_dir}" \
         -DTPL_CHOLMOD_DIR:PATH="${suitesparse_install_dir}" \
-        -DTPL_UUMFPACK_DIR:PATH="${suitesparse_install_dir}" \
+        -DTPL_UMFPACK_DIR:PATH="${suitesparse_install_dir}" \
         -DCMAKE_build_type:STRING=${build_type} \
         -DCMAKE_INSTALL_PREFIX:PATH="${project_install_dir}" \
         -D${project_name}_ENABLE_TESTS:BOOL=${build_project_tests} \
