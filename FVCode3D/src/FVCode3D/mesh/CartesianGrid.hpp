@@ -1,5 +1,5 @@
 /*!
- * @file cartesianGrid.hpp
+ * @file CartesianGrid.hpp
  * @brief Class that generate a hexahedral structured (Cartesian) grid.
  */
 
@@ -7,6 +7,7 @@
 #define CARTESIANGRID_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
@@ -27,32 +28,16 @@ public:
     /*!
      * @param mesh reference to a Mesh3D
      * @param properties reference to a PropertiesMap
+     * @param data reference to a Data class
      */
-    CartesianGrid(Mesh3D & mesh, PropertiesMap & properties):
-        M_mesh(mesh), M_properties(properties) {}
+    CartesianGrid(Mesh3D & mesh, PropertiesMap & properties, const DataPtr_Type & data):
+        M_mesh(mesh), M_properties(properties), M_data(data) {}
 
     //! Generate a Cartesian mesh
     /*!
-     * @param Lx domain dimension along x axis
-     * @param Ly domain dimension along y axis
-     * @param Lz domain dimension along z axis
-     * @param Nx number of elements along x axis
-     * @param Ny number of elements along y axis
-     * @param Nz number of elements along z axis
-     * @param Sx shift domain along x axis
-     * @param Sy shift domain along y axis
-     * @param Sz shift domain along z axis
+     * @param fracturesOn true to load fractures
      */
-    virtual void generate(bool fracturesOn = true, const Real Lx = 2., const Real Ly = 1., const Real Lz = 1., const
-    UInt Nx = 40, const UInt Ny = 20, const UInt Nz = 20, const Real Sx = 0, const Real Sy = 0, const Real Sz = 0);
-
-    //! Add noise to the points
-    /*!
-     * Add noise to the points following a normal distribution with mean @a mean and standard deviation @a stDev
-     * @param mean mean. Default = 0.
-     * @param stDev standard deviation. Default = 1.
-     */
-    void addNoiseToPoint(const Real mean = 0., const Real stDev = 1.);
+    virtual void generate(bool fracturesOn);
 
     //! Generate the BC ids
     /*!
@@ -103,6 +88,8 @@ protected:
     Mesh3D & M_mesh;
     //! Reference to a PropertiesMap
     PropertiesMap & M_properties;
+    //! Pointer to Data
+    const DataPtr_Type & M_data;
 
 private:
 

@@ -10,6 +10,7 @@
 #include <vector>
 #include <fstream>
 
+#include <unsupported/Eigen/SparseExtra>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
@@ -26,6 +27,7 @@
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/multipleSubRegions/MultipleSubRegions.hpp>
+#include <FVCode3D/utility/Evaluate.hpp>
 #include "functions.hpp"
 
 using namespace FVCode3D;
@@ -110,15 +112,16 @@ int main(int argc, char * argv[])
 //    matrixPerm->setPermeability( 1., 0 );
 //    matrixPerm->setPermeability( 1., 4 );
 //    matrixPerm->setPermeability( 1., 8 );
-//    fracturesPerm->setPermeability( 1.e6, 0 );
+//    const Real kf = 1.e3;
+//    fracturesPerm->setPermeability( kf, 0 );
 //    const Real aperture = 1.e-2;
 //    const Real matrixPoro = 0.25;
 //    const Real fracturesPoro = 1.;
 //    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
 //    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
 //    std::cout << " done." << std::endl << std::endl;
-//
-//    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
     ExporterVTU exporter;
 
@@ -130,14 +133,13 @@ int main(int argc, char * argv[])
     exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
     exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
     exporter.exportTetrahedralMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_tet.vtu");
-//    if(dataPtr->getMeshType() == Data::MeshFormatType::TPFA)
-//        saveAsSolverFormat(dataPtr->getMeshDir() + dataPtr->getMeshFile() + "_new.fvg", mesh, propMap);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 #endif // FVCODE3D_EXPORT
 
     std::cout << "Add BCs..." << std::flush;
+
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fOne );
     BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
@@ -299,7 +301,8 @@ int main(int argc, char * argv[])
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export Solution on Fractures..." << std::flush;
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", darcy->getSolver().getSolution());
+    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu",
+        darcy->getSolver().getSolution());
     std::cout << " done." << std::endl << std::endl;
 
 #ifdef FVCODE3D_EXPORT

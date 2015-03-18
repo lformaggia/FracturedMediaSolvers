@@ -1,4 +1,6 @@
 #add_subdirectory(dummy)
 add_subdirectory(exactSolution)
 add_subdirectory(exactSolutionFractured)
+add_subdirectory(exactSolutionMFD)
+#add_subdirectory(exactSolutionFracturedMFD)
 add_subdirectory(testQuadrature)

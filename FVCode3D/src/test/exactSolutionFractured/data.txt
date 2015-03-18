@@ -13,6 +13,10 @@ mesh_type   = .fvg      # .grid or .fvg or .mesh
 output_dir  = ./
 output_file = sol
 
+## numerical method
+[numet]
+method      = FV    # FV or MFD
+
 ## problem parameter
 [problem]
 type        = steady    # steady or pseudoSteady

@@ -291,8 +291,16 @@ initialize()
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
     M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
-    M_S->assemble();
-    M_S->closeMatrix();
+
+    if(this->M_numet == Data::NumericalMethodType::FV)
+    {
+        M_S->assemble();
+        M_S->closeMatrix();
+    }
+    else if(this->M_numet == Data::NumericalMethodType::MFD)
+    {
+        M_S->assembleMFD();
+    }
 
     this->M_A = M_S->getMatrix() + M_M->getMatrix();
 
@@ -367,8 +375,16 @@ initialize()
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
     M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
-    M_S->assemble();
-    M_S->closeMatrix();
+
+    if(this->M_numet == Data::NumericalMethodType::FV)
+    {
+        M_S->assemble();
+        M_S->closeMatrix();
+    }
+    else if(this->M_numet == Data::NumericalMethodType::MFD)
+    {
+        M_S->assembleMFD();
+    }
 
     this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
 

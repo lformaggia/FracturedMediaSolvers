@@ -38,4 +38,5 @@
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/mesh/ProxyRigidMesh.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/mesh/MeshUtility.hpp>
 //#include <FVCode3D/multipleSubRegions/MultipleSubRegions.hpp>
