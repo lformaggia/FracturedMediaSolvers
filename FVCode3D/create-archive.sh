@@ -11,7 +11,7 @@ scripts_dir=installer
 
 source project-config
 
-lowercase_project_name=msrupscaling
+lowercase_project_name=$(echo ${project_name} | tr '[:upper:]' '[:lower:]')
 
 output_file="../${lowercase_project_name}.tar.gz"
 if [ $# -eq 1 ]; then
