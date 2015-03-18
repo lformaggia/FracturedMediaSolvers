@@ -24,13 +24,13 @@ build_lapack() {
 
     cd ${build_dir}
     ${cmake_bin} \
-        -DCMAKE_build_type=Release \
+        -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=ON \
         -DUSE_OPTIMIZED_BLAS:BOOL=ON \
         -DCMAKE_PREFIX_PATH:PATH=${blas_install_dir} \
         -DCMAKE_INSTALL_PREFIX:PATH=${install_dir} \
         ${src_dir}/lapack-${ver}
- 
+
     make -j$num_proc
 }
 
