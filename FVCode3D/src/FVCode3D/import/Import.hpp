@@ -157,6 +157,47 @@ private:
     ImporterMedit & operator=(const ImporterMedit &) = delete;
 };
 
+//! Class used to read TetGen format files (.node, .face, .ele).
+/*!
+ * @class ImporterTetGen
+ * This class allows to read TetGen format files (.node, .face, .ele).
+ */
+class ImporterTetGen : public ImporterMedit
+{
+public:
+
+    //! Constructor
+    /*!
+     * Constructor from TetGen files
+     * @param filename prefix filename of the .node, .face, .ele files
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterTetGen(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        ImporterMedit(filename, mesh, properties) {}
+
+    //! Import from .node, .face, .ele files
+    /*!
+     * Read points, faces, tetrahedra
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
+
+    //! Destructor
+    virtual ~ImporterTetGen() = default;
+
+private:
+
+    //! No default constructor
+    ImporterTetGen() = delete;
+
+    //! No copy-constructor
+    ImporterTetGen(const ImporterTetGen &) = delete;
+
+    //! No assignment operator
+    ImporterTetGen & operator=(const ImporterTetGen &) = delete;
+};
+
 //! Class used to read a standard TPFA format file (.grid).
 /*!
  * @class ImporterTPFA
