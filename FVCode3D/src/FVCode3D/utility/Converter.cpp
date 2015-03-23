@@ -375,7 +375,7 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
                file << facetsRef[index].getVertexId(j) << " ";
            }
 
-           file << " )" << std::endl;
+           file << ")" << std::endl;
         }
     }
     file << ")" << std::endl;
