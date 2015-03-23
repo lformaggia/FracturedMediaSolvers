@@ -138,7 +138,7 @@ if [ -n "${install_project}" ]; then
         -DTPL_EIGEN3_DIR:PATH="${eigen_install_dir}" \
         -DTPL_CHOLMOD_DIR:PATH="${suitesparse_install_dir}" \
         -DTPL_UMFPACK_DIR:PATH="${suitesparse_install_dir}" \
-        -DCMAKE_build_type:STRING=${build_type} \
+        -DCMAKE_BUILD_TYPE:STRING=${build_type} \
         -DCMAKE_INSTALL_PREFIX:PATH="${project_install_dir}" \
         -D${project_name}_ENABLE_TESTS:BOOL=${build_project_tests} \
         $root_dir > ${log_file} 2>&1 || { echo -e "\nError configuring ${project_name}\nCheck log file: ${log_file}"; exit 1; }
