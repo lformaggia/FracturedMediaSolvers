@@ -247,11 +247,17 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     UInt nNodes, nFacets, nCells;
     UInt nInternalFacets = 0;
     UInt nPatches = 0;
+    UInt thresholdId = 0;
+    UInt maxBorderId = 0;
     UInt i, j, startPatch;
 
     std::vector<UInt> internalFacets;
+    std::vector<UInt> borderFacets;
+    std::vector<UInt> fractureFacets;
     std::map< UInt, std::vector<UInt> > patchMap;
     std::map< UInt, std::vector<UInt> >::iterator itP;
+    std::map< UInt, UInt > zoneToBorder;
+    std::map< UInt, UInt >::iterator itZ;
 
     std::vector<Point3D> & nodesRef = mesh.getNodesVector();
     std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
@@ -262,6 +268,8 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     nCells = cellsRef.size();
 
     internalFacets.reserve(nFacets);
+    borderFacets.reserve(nFacets);
+    fractureFacets.reserve(nFacets);
 
     std::cout << std::endl << " Save as polyMesh format... " << std::endl;
 
@@ -321,10 +329,12 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
 
     for(i=0; i < nFacets; ++i)
     {
+        const bool isBorder = facetsRef[i].isBorderFacet();
+        const bool isFracture = facetsRef[i].isFracture();
         if (
-             !(facetsRef[i].isBorderFacet())
-//                &&
-//             !(facetsRef[i].isFracture())
+             !(isBorder)
+                &&
+             !(isFracture)
            )
         {
             nInternalFacets++;
@@ -332,19 +342,59 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
         }
         else
         {
-            const UInt borderId = facetsRef[i].getBorderId();
-            itP = patchMap.find(borderId);
-            if (itP != patchMap.end())
+            if(isBorder)
             {
-                itP->second.push_back(i);
+                borderFacets.emplace_back(i);
             }
             else
             {
-                patchMap.emplace(std::piecewise_construct, std::forward_as_tuple(borderId),
-                                 std::forward_as_tuple(std::vector<UInt>()) );
-                patchMap[borderId].push_back(i);
+                fractureFacets.emplace_back(i);
             }
         }
+    }
+
+    for(auto i : borderFacets)
+    {
+        const UInt borderId = facetsRef[i].getBorderId();
+        itP = patchMap.find(borderId);
+        if (itP != patchMap.end())
+        {
+            itP->second.push_back(i);
+        }
+        else
+        {
+            patchMap.emplace(std::piecewise_construct, std::forward_as_tuple(borderId),
+                             std::forward_as_tuple(std::vector<UInt>()) );
+            patchMap[borderId].push_back(i);
+            maxBorderId = (borderId > maxBorderId) ? borderId : maxBorderId;
+        }
+    }
+
+    thresholdId = maxBorderId;
+
+    for(auto i : fractureFacets)
+    {
+        const UInt zone = facetsRef[i].getZoneCode();
+        UInt borderId;
+
+        itZ = zoneToBorder.find(zone);
+        if (itZ != zoneToBorder.end())
+        {
+            borderId = itZ->second;
+            patchMap[borderId].push_back(i);
+        }
+        else
+        {
+            zoneToBorder.emplace(std::piecewise_construct,
+                                 std::forward_as_tuple(zone),
+                                 std::forward_as_tuple(++maxBorderId)
+                                );
+            borderId = maxBorderId;
+            patchMap.emplace(std::piecewise_construct, std::forward_as_tuple(borderId),
+                             std::forward_as_tuple(std::vector<UInt>()) );
+            patchMap[borderId].push_back(i);
+        }
+        nFacets++;
     }
 
     nPatches = patchMap.size();
@@ -366,22 +416,52 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     }
     for(auto & patch : patchMap)
     {
+        const UInt patchId = patch.first;
         const std::vector<UInt> & patchFaces = patch.second;
         const UInt nPatchFaces = patchFaces.size();
 
-        for(i=0; i < nPatchFaces; ++i)
+        if ( patchId <= thresholdId )
         {
-           const UInt index = patchFaces[i];
-           const UInt nodesFacet = facetsRef[index].getNumberOfVertices();
+            for(i=0; i < nPatchFaces; ++i)
+            {
+                const UInt index = patchFaces[i];
+                const UInt nodesFacet = facetsRef[index].getNumberOfVertices();
 
-           file << nodesFacet << "( ";
+                file << nodesFacet << "( ";
 
-           for(j=0; j < nodesFacet; ++j)
-           {
-               file << facetsRef[index].getVertexId(j) << " ";
-           }
+                for(j=0; j < nodesFacet; ++j)
+                {
+                    file << facetsRef[index].getVertexId(j) << " ";
+                }
 
-           file << ")" << std::endl;
+                file << ")" << std::endl;
+            }
+        }
+        else
+        {
+            for(i=0; i < nPatchFaces; ++i)
+            {
+                const UInt index = patchFaces[i];
+                const UInt nodesFacet = facetsRef[index].getNumberOfVertices();
+
+                file << nodesFacet << "( ";
+
+                for(j=0; j < nodesFacet; ++j)
+                {
+                    file << facetsRef[index].getVertexId(j) << " ";
+                }
+
+                file << ")" << std::endl;
+
+                file << nodesFacet << "( ";
+
+                for(j=0; j < nodesFacet; ++j)
+                {
+                    file << facetsRef[index].getVertexId(nodesFacet-1-j) << " ";
+                }
+
+                file << ")" << std::endl;
+            }
         }
     }
     file << ")" << std::endl;
@@ -420,12 +500,24 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     }
     for(auto & patch : patchMap)
     {
+        const UInt patchId = patch.first;
         const std::vector<UInt> & patchFaces = patch.second;
         const UInt nPatchFaces = patchFaces.size();
 
-        for(i=0; i < nPatchFaces; ++i)
+        if ( patchId <= thresholdId )
         {
-            file << *std::begin( facetsRef[patchFaces[i]].getSeparatedCells() ) << std::endl;
+            for(i=0; i < nPatchFaces; ++i)
+            {
+                file << *std::begin( facetsRef[patchFaces[i]].getSeparatedCells() ) << std::endl;
+            }
+        }
+        else
+        {
+            for(i=0; i < nPatchFaces; ++i)
+            {
+                file << *std::begin( facetsRef[patchFaces[i]].getSeparatedCells() ) << std::endl;
+                file << *( facetsRef[patchFaces[i]].getSeparatedCells().rbegin() ) << std::endl;
+            }
         }
     }
     file << ")" << std::endl;
@@ -494,14 +586,21 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     file << nPatches << " (" << std::endl;
     for(auto & patch : patchMap)
     {
+        const UInt patchId = patch.first;
+        bool doubleF = false;
+        if ( patchId > thresholdId )
+        {
+            doubleF = true;
+        }
+        const UInt patchSize =( static_cast<UInt>(doubleF) * patch.second.size()) +  patch.second.size();
         file << "    patch" << patch.first << std::endl;
         file << "    {" << std::endl;
         file << "        type            patch;" << std::endl;
         file << "        physicalType    patch;" << std::endl;
-        file << "        nFaces          " << patch.second.size() << ";" << std::endl;
+        file << "        nFaces          " << patchSize << ";" << std::endl;
         file << "        startFace       " << startPatch << ";" << std::endl;
         file << "    }" << std::endl;
-        startPatch += patch.second.size();
+        startPatch += patchSize;
     }
     file << ")" << std::endl;
 
