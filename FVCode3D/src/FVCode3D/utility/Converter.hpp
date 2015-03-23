@@ -33,5 +33,14 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
  */
 void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw();
 
+//! Save a file in OpenFOAM format (polyMesh)
+/*!
+ * Save mesh and fractures(as a suitable label).
+ * @param filename name of the file
+ * @param mesh reference to a Mesh3D
+ * @pre import the file
+ */
+void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw();
+
 } // namespace FVCode3D
 #endif /* CONVERTER_HPP_ */

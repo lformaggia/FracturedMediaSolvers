@@ -102,7 +102,7 @@ void ImporterMedit::import(bool fracturesOn) throw()
 
     file >> nFacets;
 
-    std::shared_ptr<PermeabilityScalar> permPtr;
+    std::shared_ptr<PermeabilityScalar> permPtr(new PermeabilityScalar);
     permPtr->setPermeability(1. , 0);
 
     tmp.resize(3);
@@ -133,7 +133,7 @@ void ImporterMedit::import(bool fracturesOn) throw()
 
     file >> nCells;
 
-    maxZone = *std::max_element(zones.begin(), zones.end());
+    maxZone = (zones.size() > 0) ? *std::max_element(zones.begin(), zones.end()) : 0;
     prop.setProperties(1., 1., permPtr);
     M_properties.setZone(maxZone+1, prop);
 
@@ -197,6 +197,133 @@ void ImporterMedit::addFractures()
     FN.addFractures(fracturesVector);
 
     M_mesh.addFractureNetwork(FN);
+}
+
+void ImporterTetGen::import(bool fracturesOn) throw()
+{
+    std::ifstream file;
+    file.open( (M_filename + ".node").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing TetGen mesh (.node).");
+    }
+    file.close();
+    file.open( (M_filename + ".face").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing TetGen mesh (.face).");
+    }
+    file.close();
+    file.open( (M_filename + ".ele").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing TetGen mesh (.ele).");
+    }
+    file.close();
+
+    UInt nNodes, nFacets, nCells;
+    UInt zone, maxZone, bcId;
+    UInt i, j;
+    Real x, y, z;
+    std::vector<UInt> tmp, tmpNodes(3), tmpFacets(4);
+    std::set<UInt> zones;
+    std::string buffer = "";
+
+    std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+    std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+    std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+
+    Properties prop;
+
+    // Read nodes
+    file.open( (M_filename + ".node").c_str(), std::ios_base::in);
+
+    file >> nNodes;
+    nodesRef.reserve(nNodes);
+    file >> buffer; // garbage
+    file >> buffer; // garbage
+    file >> buffer; // garbage
+
+    for(i=0; i < nNodes; ++i)
+    {
+        file >> buffer; // id, garbage
+        file >> x; file >> y; file >> z;
+        nodesRef.emplace_back(x,y,z); // Point3D
+    }
+
+    file.close();
+
+    // Read facets
+    file.open( (M_filename + ".face").c_str(), std::ios_base::in);
+
+    file >> nFacets;
+    file >> buffer; // garbage
+
+    std::shared_ptr<PermeabilityScalar> permPtr(new PermeabilityScalar);
+    permPtr->setPermeability(1. , 0);
+
+    tmp.resize(3);
+    for(i=0; i < nFacets; ++i)
+    {
+        file >> buffer; // id, garbage
+        for(UInt j=0; j < 3; ++j)
+        {
+            file >> tmp[j];
+            tmp[j]--;
+        }
+        file >> zone;
+        bcId = (zone <= 1000 && zone > 0) ? 1 : 0;
+        zone = (zone > 1000) && (zone <= 2000) ? zone : 0;
+        facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmp, (zone)*static_cast<UInt>(fracturesOn), bcId) );
+        if(zone > 1 && fracturesOn && zones.find(zone) == zones.end())
+        {
+            prop.setProperties(1., 1., permPtr);
+            M_properties.setZone(zone, prop);
+            zones.insert(zone);
+        }
+    }
+    tmp.clear();
+
+    file.close();
+
+    // Read cells
+    file.open( (M_filename + ".ele").c_str(), std::ios_base::in);
+
+    file >> nCells;
+    file >> buffer; // garbage
+    file >> buffer; // garbage
+
+    maxZone = (zones.size() > 0) ? *std::max_element(zones.begin(), zones.end()) : 0;
+    prop.setProperties(1., 1., permPtr);
+    M_properties.setZone(maxZone+1, prop);
+
+    M_mesh.buildNodesToFacetMap();
+
+    tmp.resize(4);
+    for(i=0; i < nCells; ++i)
+    {
+        file >> buffer; // id, garbage
+        // get the nodes that define the cell
+        for(UInt j=0; j < 4; ++j)
+        {
+            file >> tmp[j];
+            tmp[j]--;
+        }
+
+        // costruisco le facce della cella partendo dai nodi
+        for(j=0; j < 4; ++j)
+        {
+            tmpNodes[0] = tmp[j % 4];
+            tmpNodes[1] = tmp[(j+1) % 4];
+            tmpNodes[2] = tmp[(j+2) % 4];
+            tmpFacets[j] = M_mesh.getFacetFromNodes(tmpNodes);
+        }
+
+        cellsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i), std::forward_as_tuple(&M_mesh, tmpFacets, maxZone+1) );
+    }
+    tmp.clear();
+
+    file.close();
 }
 
 void ImporterTPFA::import(bool fracturesOn) throw()
@@ -263,7 +390,7 @@ void ImporterTPFA::import(bool fracturesOn) throw()
     }
     tmp.clear();
 
-    std::shared_ptr<PermeabilityScalar> permPtr;
+    std::shared_ptr<PermeabilityScalar> permPtr(new PermeabilityScalar);
 
     // Read properties
     for(i=0; i < nZones; ++i)
