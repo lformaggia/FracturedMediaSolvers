@@ -1,0 +1,38 @@
+#-----------------------------#
+#    Data file for cartGen    #
+#-----------------------------#
+
+## input
+[mesh]
+mesh_dir    = ./data/
+mesh_file   = twoT
+mesh_type   = .node      # .fvg or .mesh or .node (TetGen)
+
+## output
+[output]
+output_dir  = ./results/
+output_file = test
+
+## domain
+[domain]
+noise   = 0
+noiseOn = matrix # matrix , fractures , all
+meanN   = 0.
+stDevN  = 1.
+
+## boundary conditions
+[bc]
+theta       = 0.
+
+## fluid parameters
+[fluid]
+mobility    = 1.
+compressibility = 1.
+
+## problem parameter
+[problem]
+perm_matrix = 1
+poro_matrix = 0.25
+perm_frac   = 1e6
+poro_frac   = 1.
+aper_frac   = 1e-2
