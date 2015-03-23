@@ -222,4 +222,287 @@ void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw()
     file.close();
 }
 
+void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
+{
+    std::fstream file;
+
+    file.open ( (filename + "points").c_str(), std::ios_base::out);
+
+    if (file.is_open())
+    {
+        std::cout << std::endl << " File: " << (filename + "points") << ", successfully opened";
+    }
+    else
+    {
+        throw std::runtime_error("Error: file " + filename + "points" + " not opened.");
+        return;
+    }
+
+    file.close();
+
+    UInt nNodes, nFacets, nCells;
+    UInt nInternalFacets = 0;
+    UInt nPatches = 0;
+    UInt i, j, startPatch;
+
+    std::vector<UInt> internalFacets;
+    std::map< UInt, std::vector<UInt> > patchMap;
+    std::map< UInt, std::vector<UInt> >::iterator itP;
+
+    std::vector<Point3D> & nodesRef = mesh.getNodesVector();
+    std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+    std::map<UInt, Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+
+    nNodes = nodesRef.size();
+    nFacets = facetsRef.size();
+    nCells = cellsRef.size();
+
+    internalFacets.reserve(nFacets);
+
+    std::cout << std::endl << " Save as polyMesh format... " << std::endl;
+
+    // write points
+    file.open ( (filename + "points").c_str(), std::ios_base::out);
+    file << "/*--------------------------------*- C++ -*----------------------------------*\\" << std::endl;
+    file << "| =========                 |                                                 |" << std::endl;
+    file << "| \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |" << std::endl;
+    file << "|  \\\\    /   O peration     | Version:  2.3.1                                 |" << std::endl;
+    file << "|   \\\\  /    A nd           | Web:      www.OpenFOAM.org                      |" << std::endl;
+    file << "|    \\\\/     M anipulation  |                                                 |" << std::endl;
+    file << "\\*---------------------------------------------------------------------------*/" << std::endl;
+    file << "FoamFile" << std::endl;
+    file << "{" << std::endl;
+    file << "    version     2.0;" << std::endl;
+    file << "    format      ascii;" << std::endl;
+    file << "    class       vectorField;" << std::endl;
+    file << "    location    \"constant/polyMesh\";" << std::endl; // need to be fixed?
+    file << "    object      points;" << std::endl;
+    file << "}" << std::endl;
+    file << "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //" << std::endl;
+    file << std::endl;
+
+    file << nNodes << "(" << std::endl;
+    for(i=0; i < nNodes; ++i)
+    {
+        file << "( " << nodesRef[i].x() << " " << nodesRef[i].y() << " " << nodesRef[i].z() << " )" << std::endl;
+    }
+    file << ")" << std::endl;
+
+    file << std::endl;
+    file << "// ************************************************************************* //" << std::endl;
+
+    file.close();
+
+    // write faces
+    file.open ( (filename + "faces").c_str(), std::ios_base::out);
+    file << "/*--------------------------------*- C++ -*----------------------------------*\\" << std::endl;
+    file << "| =========                 |                                                 |" << std::endl;
+    file << "| \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |" << std::endl;
+    file << "|  \\\\    /   O peration     | Version:  2.3.1                                 |" << std::endl;
+    file << "|   \\\\  /    A nd           | Web:      www.OpenFOAM.org                      |" << std::endl;
+    file << "|    \\\\/     M anipulation  |                                                 |" << std::endl;
+    file << "\\*---------------------------------------------------------------------------*/" << std::endl;
+    file << "FoamFile" << std::endl;
+    file << "{" << std::endl;
+    file << "    version     2.0;" << std::endl;
+    file << "    format      ascii;" << std::endl;
+    file << "    class       faceList;" << std::endl;
+    file << "    location    \"constant/polyMesh\";" << std::endl; // need to be fixed?
+    file << "    object      faces;" << std::endl;
+    file << "}" << std::endl;
+    file << "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //" << std::endl;
+    file << std::endl;
+
+    for(i=0; i < nFacets; ++i)
+    {
+        if (
+             !(facetsRef[i].isBorderFacet())
+//                &&
+//             !(facetsRef[i].isFracture())
+           )
+        {
+            nInternalFacets++;
+            internalFacets.emplace_back(i);
+        }
+        else
+        {
+            const UInt borderId = facetsRef[i].getBorderId();
+            itP = patchMap.find(borderId);
+            if (itP != patchMap.end())
+            {
+                itP->second.push_back(i);
+            }
+            else
+            {
+                patchMap.emplace(std::piecewise_construct, std::forward_as_tuple(borderId),
+                                 std::forward_as_tuple(std::vector<UInt>()) );
+                patchMap[borderId].push_back(i);
+            }
+        }
+    }
+
+    nPatches = patchMap.size();
+
+    file << nFacets << "(" << std::endl;
+    for(i=0; i < nInternalFacets; ++i)
+    {
+        const UInt index = internalFacets[i];
+        const UInt nodesFacet = facetsRef[index].getNumberOfVertices();
+
+        file << nodesFacet << "( ";
+
+        for(j=0; j < nodesFacet; ++j)
+        {
+            file << facetsRef[index].getVertexId(j) << " ";
+        }
+
+        file << ")" << std::endl;
+    }
+    for(auto & patch : patchMap)
+    {
+        const std::vector<UInt> & patchFaces = patch.second;
+        const UInt nPatchFaces = patchFaces.size();
+
+        for(i=0; i < nPatchFaces; ++i)
+        {
+           const UInt index = patchFaces[i];
+           const UInt nodesFacet = facetsRef[index].getNumberOfVertices();
+
+           file << nodesFacet << "( ";
+
+           for(j=0; j < nodesFacet; ++j)
+           {
+               file << facetsRef[index].getVertexId(j) << " ";
+           }
+
+           file << " )" << std::endl;
+        }
+    }
+    file << ")" << std::endl;
+
+    file << std::endl;
+    file << "// ************************************************************************* //" << std::endl;
+
+    file.close();
+
+    // write owner
+    file.open ( (filename + "owner").c_str(), std::ios_base::out);
+    file << "/*--------------------------------*- C++ -*----------------------------------*\\" << std::endl;
+    file << "| =========                 |                                                 |" << std::endl;
+    file << "| \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |" << std::endl;
+    file << "|  \\\\    /   O peration     | Version:  2.3.1                                 |" << std::endl;
+    file << "|   \\\\  /    A nd           | Web:      www.OpenFOAM.org                      |" << std::endl;
+    file << "|    \\\\/     M anipulation  |                                                 |" << std::endl;
+    file << "\\*---------------------------------------------------------------------------*/" << std::endl;
+    file << "FoamFile" << std::endl;
+    file << "{" << std::endl;
+    file << "    version     2.0;" << std::endl;
+    file << "    format      ascii;" << std::endl;
+    file << "    class       labelList;" << std::endl;
+    file << "    note        \"nPoints: " << nNodes << " nCells: " << nCells
+         << " nFaces: " << nFacets << " nInternalFaces: " << nInternalFacets << "\";" << std::endl;
+    file << "    location    \"constant/polyMesh\";" << std::endl; // need to be fixed?
+    file << "    object      owner;" << std::endl;
+    file << "}" << std::endl;
+    file << "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //" << std::endl;
+    file << std::endl;
+
+    file << nFacets << "(" << std::endl;
+    for(i=0; i < nInternalFacets; ++i)
+    {
+        file << *std::begin( facetsRef[internalFacets[i]].getSeparatedCells() ) << std::endl;
+    }
+    for(auto & patch : patchMap)
+    {
+        const std::vector<UInt> & patchFaces = patch.second;
+        const UInt nPatchFaces = patchFaces.size();
+
+        for(i=0; i < nPatchFaces; ++i)
+        {
+            file << *std::begin( facetsRef[patchFaces[i]].getSeparatedCells() ) << std::endl;
+        }
+    }
+    file << ")" << std::endl;
+
+    file << std::endl;
+    file << "// ************************************************************************* //" << std::endl;
+
+    file.close();
+
+    // write neighbour
+    file.open ( (filename + "neighbour").c_str(), std::ios_base::out);
+    file << "/*--------------------------------*- C++ -*----------------------------------*\\" << std::endl;
+    file << "| =========                 |                                                 |" << std::endl;
+    file << "| \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |" << std::endl;
+    file << "|  \\\\    /   O peration     | Version:  2.3.1                                 |" << std::endl;
+    file << "|   \\\\  /    A nd           | Web:      www.OpenFOAM.org                      |" << std::endl;
+    file << "|    \\\\/     M anipulation  |                                                 |" << std::endl;
+    file << "\\*---------------------------------------------------------------------------*/" << std::endl;
+    file << "FoamFile" << std::endl;
+    file << "{" << std::endl;
+    file << "    version     2.0;" << std::endl;
+    file << "    format      ascii;" << std::endl;
+    file << "    class       labelList;" << std::endl;
+    file << "    note        \"nPoints: " << nNodes << " nCells: " << nCells
+         << " nFaces: " << nFacets << " nInternalFaces: " << nInternalFacets << "\";" << std::endl;
+    file << "    location    \"constant/polyMesh\";" << std::endl; // need to be fixed?
+    file << "    object      neighbour;" << std::endl;
+    file << "}" << std::endl;
+    file << "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //" << std::endl;
+    file << std::endl;
+
+    file << nInternalFacets << "(" << std::endl;
+    for(i=0; i < nInternalFacets; ++i)
+    {
+        file << *( facetsRef[internalFacets[i]].getSeparatedCells().rbegin() ) << std::endl;
+    }
+    file << ")" << std::endl;
+
+    file << std::endl;
+    file << "// ************************************************************************* //" << std::endl;
+
+    file.close();
+
+    // write boundary
+    file.open ( (filename + "boundary").c_str(), std::ios_base::out);
+    file << "/*--------------------------------*- C++ -*----------------------------------*\\" << std::endl;
+    file << "| =========                 |                                                 |" << std::endl;
+    file << "| \\\\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |" << std::endl;
+    file << "|  \\\\    /   O peration     | Version:  2.3.1                                 |" << std::endl;
+    file << "|   \\\\  /    A nd           | Web:      www.OpenFOAM.org                      |" << std::endl;
+    file << "|    \\\\/     M anipulation  |                                                 |" << std::endl;
+    file << "\\*---------------------------------------------------------------------------*/" << std::endl;
+    file << "FoamFile" << std::endl;
+    file << "{" << std::endl;
+    file << "    version     2.0;" << std::endl;
+    file << "    format      ascii;" << std::endl;
+    file << "    class       polyBoundaryMesh;" << std::endl;
+    file << "    location    \"constant/polyMesh\";" << std::endl; // need to be fixed?
+    file << "    object      boundary;" << std::endl;
+    file << "}" << std::endl;
+    file << "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //" << std::endl;
+    file << std::endl;
+
+    startPatch = nInternalFacets;
+
+    file << nPatches << " (" << std::endl;
+    for(auto & patch : patchMap)
+    {
+        startPatch += patch.second.size();
+        file << "\tpatch" << patch.first << std::endl;
+        file << "\t{" << std::endl;
+        file << "\t\ttype            patch;" << std::endl;
+        file << "\t\tphysicalType    patch;" << std::endl;
+        file << "\t\tnFaces          " << patch.second.size() << ";" << std::endl;
+        file << "\t\tstartFace       " << startPatch << ";" << std::endl;
+        file << "\t}" << std::endl;
+    }
+    file << ")" << std::endl;
+
+    file << std::endl;
+    file << "// ************************************************************************* //" << std::endl;
+
+    file.close();
+}
+
 } // namespace FVCode3D
