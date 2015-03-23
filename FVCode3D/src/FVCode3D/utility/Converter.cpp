@@ -186,6 +186,8 @@ void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw()
     file << "Vertices" << std::endl;
     file << nNodes << std::endl;
 
+    file << std::scientific << std::setprecision(10);
+
     for(i=0; i<nNodes; ++i)
     {
         file << nodesRef[i].x() << "  ";
@@ -193,6 +195,8 @@ void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw()
         file << nodesRef[i].z() << "  ";
         file << "0" << std::endl;
     }
+
+    file << std::scientific << std::setprecision(0);
 
     file << std::endl;
     file << "Triangles" << std::endl;
@@ -282,10 +286,12 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     file << std::endl;
 
     file << nNodes << "(" << std::endl;
+    file << std::scientific << std::setprecision(10);
     for(i=0; i < nNodes; ++i)
     {
         file << "( " << nodesRef[i].x() << " " << nodesRef[i].y() << " " << nodesRef[i].z() << " )" << std::endl;
     }
+    file << std::scientific << std::setprecision(0);
     file << ")" << std::endl;
 
     file << std::endl;
@@ -488,14 +494,14 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
     file << nPatches << " (" << std::endl;
     for(auto & patch : patchMap)
     {
+        file << "    patch" << patch.first << std::endl;
+        file << "    {" << std::endl;
+        file << "        type            patch;" << std::endl;
+        file << "        physicalType    patch;" << std::endl;
+        file << "        nFaces          " << patch.second.size() << ";" << std::endl;
+        file << "        startFace       " << startPatch << ";" << std::endl;
+        file << "    }" << std::endl;
         startPatch += patch.second.size();
-        file << "\tpatch" << patch.first << std::endl;
-        file << "\t{" << std::endl;
-        file << "\t\ttype            patch;" << std::endl;
-        file << "\t\tphysicalType    patch;" << std::endl;
-        file << "\t\tnFaces          " << patch.second.size() << ";" << std::endl;
-        file << "\t\tstartFace       " << startPatch << ";" << std::endl;
-        file << "\t}" << std::endl;
     }
     file << ")" << std::endl;
 
