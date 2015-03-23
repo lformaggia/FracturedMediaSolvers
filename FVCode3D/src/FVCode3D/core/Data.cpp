@@ -132,6 +132,9 @@ void Data::setMeshType(const MeshFormatType type) throw()
         case Medit:
             M_meshExt = ".mesh";
             break;
+        case TetGen:
+            M_meshExt = ".node";
+            break;
         default:
             throw std::runtime_error("Error: the mesh type set does not exist.");
             break;
@@ -158,6 +161,9 @@ void Data::showMe( std::ostream & output ) const
             break;
         case Medit:
             output << "Medit" << std::endl;
+            break;
+        case TetGen:
+            output << "TetGen" << std::endl;
             break;
         default:
             exit(0);
@@ -287,6 +293,7 @@ EnumParser<Data::MeshFormatType>::EnumParser()
     M_enumMap[".grid"] = Data::MeshFormatType::TPFA;
     M_enumMap[".fvg"] = Data::MeshFormatType::forSolver;
     M_enumMap[".mesh"] = Data::MeshFormatType::Medit;
+    M_enumMap[".node"] = Data::MeshFormatType::TetGen;
 }
 
 template<>

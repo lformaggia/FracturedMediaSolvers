@@ -46,13 +46,15 @@ public:
     //! Define the format of the input mesh
     /*!
      * @enum MeshFormatType
-     * This enumerator allows to select the format type of the mesh: TPFA(.grid) or forSolver(.fvg)
+     * This enumerator allows to select the format type of the mesh:
+     * TPFA(.grid), forSolver(.fvg), Medit(.mesh) or TetGen(.node, .face, .ele)
      */
     enum MeshFormatType
     {
         TPFA            = 0,
         forSolver       = 1,
-        Medit           = 2
+        Medit           = 2,
+        TetGen          = 3
     };
 
     //! Define where the noise is applied
