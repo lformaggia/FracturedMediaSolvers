@@ -7,10 +7,12 @@
 #include <FVCode3D/property/Properties.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/property/Permeability.hpp>
+#include <FVCode3D/utility/StringManipolator.hpp>
 
 #include <utility>
 #include <map>
 #include <random>
+#include <locale>
 
 namespace FVCode3D
 {
@@ -49,6 +51,39 @@ void Importer::extractBC(const Real theta)
                 it->second.setBorderID(2*compMax+2);
         }
     }
+}
+
+void Importer::addFractures()
+{
+    FractureNetwork3D FN(M_mesh);
+    std::vector<Fracture3D> fracturesVector;
+    std::map<UInt, Fracture3D> fracturesMap;
+    std::map<UInt, Fracture3D>::iterator itF;
+    Point3D normal, center, centerFace;
+
+    for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+    {
+        if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
+        {
+            itF = fracturesMap.find(it->second.getZoneCode());
+            if (itF != fracturesMap.end())
+                itF->second.push_back(it->first);
+            else
+            {
+                fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(M_mesh) );
+                fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
+                fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
+            }
+        }
+    }
+
+    fracturesVector.reserve(fracturesMap.size());
+    for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
+        fracturesVector.push_back(itF->second);
+
+    FN.addFractures(fracturesVector);
+
+    M_mesh.addFractureNetwork(FN);
 }
 
 void Importer::addBCAndFractures(const Real theta)
@@ -164,39 +199,6 @@ void ImporterMedit::import(bool fracturesOn) throw()
     tmp.clear();
 
     file.close();
-}
-
-void ImporterMedit::addFractures()
-{
-    FractureNetwork3D FN(M_mesh);
-    std::vector<Fracture3D> fracturesVector;
-    std::map<UInt, Fracture3D> fracturesMap;
-    std::map<UInt, Fracture3D>::iterator itF;
-    Point3D normal, center, centerFace;
-
-    for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
-    {
-        if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
-        {
-            itF = fracturesMap.find(it->second.getZoneCode());
-            if (itF != fracturesMap.end())
-                itF->second.push_back(it->first);
-            else
-            {
-                fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(M_mesh) );
-                fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
-                fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
-            }
-        }
-    }
-
-    fracturesVector.reserve(fracturesMap.size());
-    for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
-        fracturesVector.push_back(itF->second);
-
-    FN.addFractures(fracturesVector);
-
-    M_mesh.addFractureNetwork(FN);
 }
 
 void ImporterTetGen::import(bool fracturesOn) throw()
@@ -410,37 +412,328 @@ void ImporterTPFA::import(bool fracturesOn) throw()
     file.close();
 }
 
-void ImporterTPFA::addFractures()
+void ImporterOpenFOAM::import(bool fracturesOn) throw()
 {
-    FractureNetwork3D FN(M_mesh);
-    std::vector<Fracture3D> fracturesVector;
-    std::map<UInt, Fracture3D> fracturesMap;
-    std::map<UInt, Fracture3D>::iterator itF;
-    Point3D normal, center, centerFace;
+    std::ifstream file;
 
-    for(std::map<UInt, Mesh3D::Facet3D>::iterator it = M_mesh.getFacetsMap().begin(); it != M_mesh.getFacetsMap().end(); ++it)
+    file.open( (M_filename + "points").c_str(), std::ios_base::in);
+    if(!file)
     {
-        if (it->second.getZoneCode() > 0 && it->second.getBorderId()==0)
+        throw std::runtime_error("Error: file not opened when importing points.");
+    }
+    file.close();
+    file.open( (M_filename + "faces").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing faces.");
+    }
+    file.close();
+    file.open( (M_filename + "owner").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing owner.");
+    }
+    file.close();
+    file.open( (M_filename + "neighbour").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing neighbour.");
+    }
+    file.close();
+    file.open( (M_filename + "boundary").c_str(), std::ios_base::in);
+    if(!file)
+    {
+        throw std::runtime_error("Error: file not opened when importing boundary.");
+    }
+    file.close();
+
+    UInt nNodes, nFacets, nOwner, nNeigh, nPatch;
+    UInt nodesFacet;
+    UInt i, j;
+    Real x,y,z;
+    UInt cellId, patchId, maxPatchId = 0;
+    std::vector<UInt> tmp;
+
+    enum class faceType : SUInt
+    {
+        None, Internal, Boundary, Fracture
+    };
+
+    std::map<Point3D, UInt> vertexMap;
+    std::map<Mesh3D::Facet3D, UInt> facetMap;
+    std::pair< std::map<Point3D,UInt>::iterator, bool > itMap;
+    std::pair< std::map<Mesh3D::Facet3D,UInt>::iterator, bool > itMapF;
+    std::vector<UInt> fullToLocal;
+    std::vector<UInt> fullToLocalFaces;
+    std::vector<faceType> typeFaces;
+    UInt vertexId = 0;
+    UInt facetId = 0;
+
+    std::vector<Point3D> & nodesRef = M_mesh.getNodesVector();
+    std::map<UInt, Mesh3D::Facet3D> & facetsRef = M_mesh.getFacetsMap();
+    std::map<UInt, Mesh3D::Cell3D> & cellsRef = M_mesh.getCellsMap();
+    Properties prop;
+    std::shared_ptr<PermeabilityScalar> permPtr(new PermeabilityScalar);
+    permPtr->setPermeability(1. , 0);
+
+    std::string buffer = "";
+    std::vector< std::string > tokens;
+    std::vector< std::string > subTokens;
+    const std::string initString =
+        "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //";
+
+    // Read nodes
+    file.open( (M_filename + "points").c_str(), std::ios_base::in);
+
+    while(buffer != initString)
+    {
+        std::getline(file, buffer);
+    }
+
+    file.imbue(std::locale(file.getloc(), new MyDelimiters));
+
+    buffer.clear();
+    while(buffer == "")
+    {
+        file >> buffer;
+    }
+
+    nNodes = lexical_cast<UInt>(buffer);
+    nodesRef.reserve(nNodes);
+    fullToLocal.resize(nNodes);
+
+    for(i=0; i < nNodes; ++i)
+    {
+        file >> x; file >> y; file >> z;
+
+        Point3D V(x, y, z);
+        itMap = vertexMap.insert(std::pair<FVCode3D::Point3D,UInt>(V, 0));
+
+        if (itMap.second)
         {
-            itF = fracturesMap.find(it->second.getZoneCode());
-            if (itF != fracturesMap.end())
-                itF->second.push_back(it->first);
+            itMap.first->second = vertexId;
+            nodesRef.emplace_back(x, y, z); // Point3D
+            ++vertexId;
+        }
+        fullToLocal[i] = itMap.first->second;
+    }
+    nNodes = vertexId;
+
+    file.imbue(std::locale::classic());
+    file.close();
+
+    // Read faces
+    file.open( (M_filename + "faces").c_str(), std::ios_base::in);
+
+    while(buffer != initString)
+    {
+        std::getline(file, buffer);
+    }
+
+    file.imbue(std::locale(file.getloc(), new MyDelimiters));
+
+    buffer.clear();
+    while(buffer == "")
+    {
+        file >> buffer;
+    }
+
+    nFacets = lexical_cast<UInt>(buffer);
+    fullToLocalFaces.resize(nFacets);
+
+    for(i=0; i < nFacets; ++i)
+    {
+        file >> nodesFacet;
+        tmp.resize(nodesFacet);
+
+        for(j=0; j < nodesFacet; ++j)
+        {
+            file >> tmp[j];
+            tmp[j] = fullToLocal[tmp[j]];
+        }
+
+        Mesh3D::Facet3D facet(&M_mesh, tmp, 0, 0);
+        itMapF = facetMap.insert(std::pair<Mesh3D::Facet3D, UInt>(facet,0));
+
+        if(itMapF.second)
+        {
+            itMapF.first->second = facetId;
+            facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(facetId), std::forward_as_tuple(&M_mesh, tmp, 0, 0) );
+            ++facetId;
+        }
+        fullToLocalFaces[i] = itMapF.first->second;
+    }
+    nFacets = facetId;
+
+    file.imbue(std::locale::classic());
+    file.close();
+
+    // Read owner
+    file.open( (M_filename + "owner").c_str(), std::ios_base::in);
+
+    while(buffer != initString)
+    {
+        std::getline(file, buffer);
+    }
+
+    file.imbue(std::locale(file.getloc(), new MyDelimiters));
+
+    buffer = "";
+    while(buffer == "")
+    {
+        file >> buffer;
+    }
+
+    nOwner = lexical_cast<UInt>(buffer);
+    typeFaces.resize(nFacets, faceType::None);
+
+    for(i=0; i < nOwner; ++i)
+    {
+        file >> cellId;
+        if( facetsRef[fullToLocalFaces[i]].getSeparatedCells().size() > 0 )
+        {
+            typeFaces[fullToLocalFaces[i]] = faceType::Fracture;
+        }
+        facetsRef[fullToLocalFaces[i]].getSeparatedCells().insert(cellId);
+
+        cellsRef.emplace( std::piecewise_construct, std::forward_as_tuple(cellId), std::forward_as_tuple() );
+        cellsRef[cellId].setMesh(&M_mesh);
+        cellsRef[cellId].getFacetsSet().insert(fullToLocalFaces[i]);
+    }
+    file.imbue(std::locale::classic());
+    file.close();
+
+// Probably this is useless. I don't know how the double faces are managed in openFoam.
+// Enable this piece of code if you can't load the fractures, and try...
+//    for(auto facet : facetsRef)
+//    {
+//        if( facet.second.getSeparatedCells().size() == 2 )
+//        {
+//            typeFaces[facet.first] = faceType::Fracture;
+//        }
+//    }
+
+    // Read neighbour
+    file.open( (M_filename + "neighbour").c_str(), std::ios_base::in);
+
+    while(buffer != initString)
+    {
+        std::getline(file, buffer);
+    }
+
+    file.imbue(std::locale(file.getloc(), new MyDelimiters));
+
+    buffer = "";
+    while(buffer == "")
+    {
+        file >> buffer;
+    }
+
+    nNeigh = lexical_cast<UInt>(buffer);
+
+    for(i=0; i < nNeigh; ++i)
+    {
+        file >> cellId;
+        facetsRef[fullToLocalFaces[i]].getSeparatedCells().insert(cellId);
+
+        cellsRef.emplace( std::piecewise_construct, std::forward_as_tuple(cellId), std::forward_as_tuple() );
+        cellsRef[cellId].setMesh(&M_mesh);
+        cellsRef[cellId].getFacetsSet().insert(fullToLocalFaces[i]);
+    }
+    file.imbue(std::locale::classic());
+    file.close();
+
+    for(auto facet : facetsRef)
+    {
+        if( typeFaces[facet.first] == faceType::None)
+        {
+            if( facet.second.getSeparatedCells().size() == 1 )
+            {
+                typeFaces[facet.first] = faceType::Boundary;
+            }
             else
             {
-                fracturesMap.emplace(std::piecewise_construct, std::forward_as_tuple(it->second.getZoneCode()), std::forward_as_tuple(M_mesh) );
-                fracturesMap.at(it->second.getZoneCode()).push_back(it->first);
-                fracturesMap.at(it->second.getZoneCode()).getId() = it->second.getZoneCode();
+                typeFaces[facet.first] = faceType::Internal;
             }
         }
     }
 
-    fracturesVector.reserve(fracturesMap.size());
-    for(itF = fracturesMap.begin();  itF != fracturesMap.end(); ++itF)
-        fracturesVector.push_back(itF->second);
+    // Read boundary
+    file.open( (M_filename + "boundary").c_str(), std::ios_base::in);
 
-    FN.addFractures(fracturesVector);
+    while(buffer != initString)
+    {
+        std::getline(file, buffer);
+    }
 
-    M_mesh.addFractureNetwork(FN);
+    file.imbue(std::locale(file.getloc(), new MyDelimiters));
+
+    buffer = "";
+    while(buffer == "")
+    {
+        file >> buffer;
+    }
+
+    nPatch = lexical_cast<UInt>(buffer);
+
+    for(i=0; i < nPatch; ++i)
+    {
+        std::size_t found;
+        UInt startId, patchLength;
+
+        do
+        {
+            std::getline(file, buffer);
+            found = buffer.find("patch");
+        }
+        while(found==std::string::npos);
+
+        patchId = lexical_cast<UInt>(buffer.substr(found+5));
+        maxPatchId = (patchId > maxPatchId) ? patchId : maxPatchId;
+
+        for(j=0; j<6; ++j)
+        {
+            file >> buffer; // garbage
+        }
+
+        file >> patchLength;
+        file >> buffer; // garbage
+        file >> startId;
+
+        for(j=startId; j < (startId+patchLength); ++j)
+        {
+            if(typeFaces[fullToLocalFaces[j]]==faceType::Boundary)
+            {
+                facetsRef[fullToLocalFaces[j]].setBorderID(patchId);
+            }
+            else if (fracturesOn)
+            {
+                facetsRef[fullToLocalFaces[j]].setZoneCode( patchId );
+                prop.setProperties(1., 1., permPtr);
+                M_properties.setZone(patchId, prop);
+            }
+        }
+    }
+
+    file.imbue(std::locale::classic());
+    file.close();
+
+    // build cells
+    ++maxPatchId;
+    for(auto & cell : cellsRef)
+    {
+        cell.second.setZoneCode(maxPatchId);
+        cell.second.computeVertexIds();
+        cell.second.computeVolumeAndCentroid();
+    }
+    prop.setProperties(1., 1., permPtr);
+    M_properties.setZone(maxPatchId, prop);
+
+    // clear the separated cells from the facets
+    for(auto & facet : facetsRef)
+    {
+        facet.second.getSeparatedCells().clear();
+    }
 }
 
 void ImporterForSolver::import(bool fracturesOn) throw()

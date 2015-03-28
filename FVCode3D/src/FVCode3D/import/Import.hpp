@@ -53,7 +53,7 @@ public:
      * Add the fracture network
      * @pre import the file
      */
-    virtual void addFractures() = 0;
+    virtual void addFractures();
 
     //! Add the lacking data
     /*!
@@ -134,13 +134,6 @@ public:
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
     virtual void import(bool fracturesOn = true) throw();
-
-    //! Add the fractures network
-    /*!
-     * Add the fracture network
-     * @pre import the file
-     */
-    virtual void addFractures();
 
     //! Destructor
     virtual ~ImporterMedit() = default;
@@ -224,13 +217,6 @@ public:
      */
     virtual void import(bool fracturesOn = true) throw();
 
-    //! Add the fractures network
-    /*!
-     * Add the fracture network
-     * @pre import the file
-     */
-    virtual void addFractures();
-
     //! Destructor
     virtual ~ImporterTPFA() = default;
 
@@ -244,6 +230,47 @@ private:
 
     //! No assignment operator
     ImporterTPFA & operator=(const ImporterTPFA &) = delete;
+};
+
+//! Class used to read the OpenFOAM format file.
+/*!
+ * @class ImporterOpenFOAM
+ * This class allows to read the OpenFOAM format file.
+ */
+class ImporterOpenFOAM : public Importer
+{
+public:
+
+    //! Constructor
+    /*!
+     * Constructor from the OpenFOAM files
+     * @param filename filename of the OpenFOAM files
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterOpenFOAM(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        Importer(filename, mesh, properties) {}
+
+    //! Import from the OpenFOAM files
+    /*!
+     * Read points, faces, owner, neighbour, boundary
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
+
+    //! Destructor
+    virtual ~ImporterOpenFOAM() = default;
+
+private:
+
+    //! No default constructor
+    ImporterOpenFOAM() = delete;
+
+    //! No copy-constructor
+    ImporterOpenFOAM(const ImporterOpenFOAM &) = delete;
+
+    //! No assignment operator
+    ImporterOpenFOAM & operator=(const ImporterOpenFOAM &) = delete;
 };
 
 //! Class used to read files optimized for the solver (.fvg).
