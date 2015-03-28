@@ -4,9 +4,12 @@
 
 # Make relative paths absolute (needed later on)
 foreach(p LIB BIN INCLUDE CMAKE)
-    set(var INSTALL_${p}_DIR)
-    if(NOT IS_ABSOLUTE "${${var}}")
-        set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+    set(VAR_NAME INSTALL_${p}_DIR)
+    set(ABSOLUTE_VAR_NAME INSTALL_${p}_ABSOLUTE_DIR)
+    if(NOT IS_ABSOLUTE "${${VAR_NAME}}")
+        set(${ABSOLUTE_VAR_NAME} "${CMAKE_INSTALL_PREFIX}/${${VAR_NAME}}")
+    else()
+        set(${ABSOLUTE_VAR_NAME} "${${VAR_NAME}}")
     endif()
 endforeach()
 
@@ -27,10 +30,10 @@ endforeach()
 
 # Create the ${PROJECT_NAME}Config.cmake and ${PROJECT_NAME}ConfigVersion files
 set(CMAKE_FILES_DIRECTORY "")
-file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
-    "${INSTALL_INCLUDE_DIR}")
-file(RELATIVE_PATH REL_LIBRARY_DIR "${INSTALL_CMAKE_DIR}"
-    "${INSTALL_LIB_DIR}")
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_ABSOLUTE_DIR}"
+    "${INSTALL_INCLUDE_ABSOLUTE_DIR}")
+file(RELATIVE_PATH REL_LIBRARY_DIR "${INSTALL_CMAKE_ABSOLUTE_DIR}"
+    "${INSTALL_LIB_ABSOLUTE_DIR}")
 # ... for the install tree
 set(CONF_INCLUDE_DIRS "\${${PROJECT_NAME}_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 set(CONF_LIBRARY_DIRS "\${${PROJECT_NAME}_CMAKE_DIR}/${REL_LIBRARY_DIR}")
