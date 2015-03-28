@@ -43,6 +43,8 @@ int main(int argc, char * argv[])
         importer = new ImporterMedit(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
     else if(dataPtr->getMeshType() == Data::MeshFormatType::TetGen)
         importer = new ImporterTetGen(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
+    else if(dataPtr->getMeshType() == Data::MeshFormatType::OpenFOAM)
+        importer = new ImporterOpenFOAM(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
     else if(dataPtr->getMeshType() == Data::MeshFormatType::forSolver)
         importer = new ImporterForSolver(dataPtr->getMeshDir() + dataPtr->getMeshFile(), mesh, propMap);
     std::cout << " done." << std::endl;
@@ -76,6 +78,11 @@ int main(int argc, char * argv[])
         std::cout << "..." << std::flush;
         importer->extractBC(dataPtr->getTheta());
     }
+    else if(dataPtr->getMeshType() == Data::MeshFormatType::OpenFOAM)
+    {
+        std::cout << "..." << std::flush;
+        importer->addFractures();
+    }
     std::cout << " done." << std::endl;
 
 
@@ -99,9 +106,21 @@ int main(int argc, char * argv[])
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export..." << std::flush;
-    saveAsOpenFOAMFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile(), mesh);
+    if(dataPtr->getMeshType() == Data::MeshFormatType::TetGen)
+    {
+        saveAsOpenFOAMFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile(), mesh);
+    }
     saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".fvg", mesh, propMap);
     std::cout << " done." << std::endl;
+
+    std::cout << "Export VTU" << std::flush;
+    ExporterVTU exporter;
+    exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
+    exporter.exportFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_fractures.vtu");
+    exporter.exportMeshWithFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh_fracture.vtu");
+    exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
+    exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
+    std::cout << " done." << std::endl << std::endl;
 
     delete importer;
 

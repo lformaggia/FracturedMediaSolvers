@@ -5,13 +5,13 @@
 ## input
 [mesh]
 mesh_dir    = ./data/
-mesh_file   = twoT
-mesh_type   = .node      # .fvg or .mesh or .node (TetGen)
+mesh_file   = init.
+mesh_type   = .foam      # .fvg or .mesh or .node (TetGen) or .foam (polyMesh)
 
 ## output
 [output]
 output_dir  = ./results/
-output_file = test
+output_file = polyGrid
 
 ## domain
 [domain]
