@@ -344,8 +344,17 @@ Mesh3D::Cell3D::Cell3D(const Cell3D & cell) :
         M_centroid(cell.getCentroid()),
         M_volume(cell.volume()), M_zone(cell.getZoneCode()) {}
 
-Mesh3D::Cell3D::Cell3D( const Mesh3D * mesh, const std::vector<UInt> & facets, const UInt zone ) :
+Mesh3D::Cell3D::Cell3D( Mesh3D * const mesh, const std::vector<UInt> & facets, const UInt zone ) :
         M_mesh(mesh), M_facetIds(facets.begin(), facets.end()), M_zone(zone)
+{
+    computeVertexIds();
+    computeVolumeAndCentroid();
+}
+
+// ==================================================
+// Methods
+// ==================================================
+void Mesh3D::Cell3D::computeVertexIds()
 {
     for(std::set<UInt>::const_iterator it=M_facetIds.begin(); it != M_facetIds.end(); ++it)
     {
@@ -358,13 +367,8 @@ Mesh3D::Cell3D::Cell3D( const Mesh3D * mesh, const std::vector<UInt> & facets, c
 
     sort(M_vertexIds.begin(), M_vertexIds.end());
     M_vertexIds.erase( unique( M_vertexIds.begin(), M_vertexIds.end() ), M_vertexIds.end() );
-
-    computeVolumeAndCentroid();
 }
 
-// ==================================================
-// Methods
-// ==================================================
 Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const throw()
 {
     bool found(false);
