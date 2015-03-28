@@ -23,6 +23,7 @@
 #include <FVCode3D/utility/Matrix.hpp>
 #include <FVCode3D/utility/Converter.hpp>
 #include <FVCode3D/utility/Evaluate.hpp>
+#include <FVCode3D/utility/StringManipolator.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/assembler/Mass.hpp>
