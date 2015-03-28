@@ -135,6 +135,9 @@ void Data::setMeshType(const MeshFormatType type) throw()
         case TetGen:
             M_meshExt = ".node";
             break;
+        case OpenFOAM:
+            M_meshExt = ".foam";
+            break;
         default:
             throw std::runtime_error("Error: the mesh type set does not exist.");
             break;
@@ -164,6 +167,9 @@ void Data::showMe( std::ostream & output ) const
             break;
         case TetGen:
             output << "TetGen" << std::endl;
+            break;
+        case OpenFOAM:
+            output << "OpenFOAM" << std::endl;
             break;
         default:
             exit(0);
@@ -294,6 +300,7 @@ EnumParser<Data::MeshFormatType>::EnumParser()
     M_enumMap[".fvg"] = Data::MeshFormatType::forSolver;
     M_enumMap[".mesh"] = Data::MeshFormatType::Medit;
     M_enumMap[".node"] = Data::MeshFormatType::TetGen;
+    M_enumMap[".foam"] = Data::MeshFormatType::OpenFOAM;
 }
 
 template<>

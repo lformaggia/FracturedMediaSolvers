@@ -54,7 +54,8 @@ public:
         TPFA            = 0,
         forSolver       = 1,
         Medit           = 2,
-        TetGen          = 3
+        TetGen          = 3,
+        OpenFOAM        = 4
     };
 
     //! Define where the noise is applied
