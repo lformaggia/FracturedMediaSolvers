@@ -59,8 +59,8 @@ public:
      * @return the center of mass of the polyhedron
      * @pre call computeCenterOfMass()
      */
-    Real getCenterOfMass() const
-        { return M_volume; }
+    Point3D getCenterOfMass() const
+        { return M_centerOfMass; }
 
     //! Get i-th element
     /*!
