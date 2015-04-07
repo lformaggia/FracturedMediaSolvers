@@ -663,7 +663,7 @@ protected:
     FractureNetwork3D M_fn;
     //! The vector storing all the nodes of the mesh
     std::vector<Point3D> M_nodes;
-    //! The set storing all the edges of the mesh
+    //! The set storing all the facets of the mesh
     std::map<UInt,Facet3D> M_facets;
     //! The map storing all the cells of the mesh
     std::map<UInt,Cell3D> M_cells;
