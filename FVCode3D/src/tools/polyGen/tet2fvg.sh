@@ -1,19 +1,22 @@
 #! /bin/bash
 
+# set the following variables
+TETGEN_DIR="/home/viskius/tetgen1.5.0/build/"
+TETGEN_EXE="tetgen"
+POLYDUAL_DIR="/opt/openfoam231/platforms/linux64GccDPOpt/bin/"
+POLYDUAL_EXE="myPolyDualMesh"
+
+##############################################################
+
 if [ "$#" -ne 2 ]; then
     echo "$0 <refinement> <input_prefix>"
     exit
 fi
 
-TETGEN_DIR="/home/viskius/tetgen1.5.0/build/"
-TETGEN_EXE="tetgen"
 REFINEMENT=$1
 TET_IN="./data/tetgen/in/"$2
 TET_IN_FULL=$TET_IN".poly"
 TET_OUT="./data/tetgen/out/"
-
-POLYDUAL_DIR="/opt/openfoam231/platforms/linux64GccDPOpt/bin/"
-POLYDUAL_EXE="myPolyDualMesh"
 
 # create .node .face and .ele file from .poly file
 $TETGEN_DIR/$TETGEN_EXE -pfa$REFINEMENT $TET_IN_FULL
