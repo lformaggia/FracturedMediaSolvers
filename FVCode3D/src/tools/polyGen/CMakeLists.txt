@@ -20,10 +20,17 @@ add_custom_command(
     ${CMAKE_CURRENT_SOURCE_DIR}/tet2fvg.sh
     ${CMAKE_CURRENT_BINARY_DIR}/tet2fvg.sh
 
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_SOURCE_DIR}/README
+    ${CMAKE_CURRENT_BINARY_DIR}/README
+
+    COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_SOURCE_DIR}/myPolyDualMesh.tar.gz
+    ${CMAKE_CURRENT_BINARY_DIR}/myPolyDualMesh.tar.gz
+
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_CURRENT_SOURCE_DIR}/data
     ${CMAKE_CURRENT_BINARY_DIR}/data
-
 
     COMMAND ${CMAKE_COMMAND} -E make_directory results
 
