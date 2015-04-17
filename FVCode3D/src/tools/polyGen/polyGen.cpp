@@ -91,11 +91,6 @@ int main(int argc, char * argv[])
     std::cout << " done." << std::endl << std::endl;
 
 
-//    std::cout << "Generate Polyhedral grid..." << std::flush;
-
-    // ...
-
-
     std::cout << "Set uniform properties..." << std::flush;
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityScalar );
     std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
@@ -105,22 +100,27 @@ int main(int argc, char * argv[])
     propMap.setPropertiesOnFractures(mesh, dataPtr->getFractureAperture(), dataPtr->getFracturePorosity(), fracturesPerm);
     std::cout << " done." << std::endl << std::endl;
 
-    std::cout << "Export..." << std::flush;
     if(dataPtr->getMeshType() == Data::MeshFormatType::TetGen)
     {
+        std::cout << "Export FOAM" << std::flush;
         saveAsOpenFOAMFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile(), mesh);
+        std::cout << " done." << std::endl;
     }
-    saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".fvg", mesh, propMap);
-    std::cout << " done." << std::endl;
 
-    std::cout << "Export VTU" << std::flush;
-    ExporterVTU exporter;
-    exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
-    exporter.exportFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_fractures.vtu");
-    exporter.exportMeshWithFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh_fracture.vtu");
-    exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
-    exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
-    std::cout << " done." << std::endl << std::endl;
+    if(dataPtr->getMeshType() == Data::MeshFormatType::OpenFOAM)
+    {
+        std::cout << "Export FVG" << std::flush;
+        saveAsSolverFormat(dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".fvg", mesh, propMap);
+        std::cout << " done." << std::endl;
+        std::cout << "Export VTU" << std::flush;
+        ExporterVTU exporter;
+        exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh.vtu");
+        exporter.exportFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_fractures.vtu");
+        exporter.exportMeshWithFractures(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_mesh_fracture.vtu");
+        exporter.exportWithProperties(mesh, propMap, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_prop.vtu");
+        exporter.exportWireframe(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_wire.vtu");
+        std::cout << " done." << std::endl << std::endl;
+    }
 
     delete importer;
 
