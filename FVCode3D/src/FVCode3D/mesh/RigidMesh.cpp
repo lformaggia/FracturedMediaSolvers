@@ -18,14 +18,14 @@ namespace FVCode3D
 Rigid_Mesh::Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber, const bool buildEdges):
     M_nodes(generic_mesh.getNodesVector()), M_properties(prop), M_renumber(renumber)
 {
-    std::map<UInt, UInt> old_to_new_mapCells;
-    std::map<UInt, UInt> old_to_new_mapFacets;
-    cellsVectorBuilder(generic_mesh, old_to_new_mapCells);
+    std::map<UInt, UInt> oldToNewMapCells;
+    std::map<UInt, UInt> oldToNewMapFacets;
+    cellsVectorBuilder(generic_mesh, oldToNewMapCells);
     if(M_renumber)
-        adjustCellNeighbors(old_to_new_mapCells);
-    facetsVectorsBuilder(generic_mesh, old_to_new_mapCells, old_to_new_mapFacets);
+        adjustCellNeighbors(oldToNewMapCells);
+    facetsVectorsBuilder(generic_mesh, oldToNewMapCells, oldToNewMapFacets);
     if(M_renumber)
-        adjustCellFacets(old_to_new_mapFacets);
+        adjustCellFacets(oldToNewMapFacets);
     if(buildEdges)
         edgesVectorBuilder();
 }
@@ -144,7 +144,7 @@ Rigid_Mesh::Rigid_Mesh(const Rigid_Mesh & mymesh):
 // Protected Method
 // ==================================================
 
-void Rigid_Mesh::cellsVectorBuilder (Mesh3D & generic_mesh, std::map<UInt, UInt> & old_to_new_map)
+void Rigid_Mesh::cellsVectorBuilder (Mesh3D & generic_mesh, std::map<UInt, UInt> & oldToNewMapCells)
 {
     M_cells.reserve(generic_mesh.getCellsMap().size());
 
@@ -160,21 +160,22 @@ void Rigid_Mesh::cellsVectorBuilder (Mesh3D & generic_mesh, std::map<UInt, UInt>
         UInt position = 0;
         for (auto& it : generic_mesh.getCellsMap())
         {
-            old_to_new_map[it.first] = position;
+            oldToNewMapCells[it.first] = position;
             M_cells.emplace_back(it.second, this, position); // Cell
             ++position;
         }
     }
 }
 
-void Rigid_Mesh::adjustCellNeighbors ( const std::map<UInt, UInt> & old_to_new_map )
+void Rigid_Mesh::adjustCellNeighbors ( const std::map<UInt, UInt> & oldToNewMapCells )
 {
     for(auto& it : M_cells)
         for(auto& Neighbors_it : it.M_neighborsIds)
-            Neighbors_it = old_to_new_map.at(Neighbors_it);
+            Neighbors_it = oldToNewMapCells.at(Neighbors_it);
 }
 
-void Rigid_Mesh::facetsVectorsBuilder ( Mesh3D & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets)
+void Rigid_Mesh::facetsVectorsBuilder ( Mesh3D & generic_mesh, const std::map<UInt, UInt> & oldToNewMapCells,
+    std::map<UInt, UInt> & oldToNewMapFacets)
 {
     // Define which facets are fracture ones, which are border ones and which are regular ones.
     const Facet3DMap & facet_container = generic_mesh.getFacetsMap();
@@ -189,7 +190,7 @@ void Rigid_Mesh::facetsVectorsBuilder ( Mesh3D & generic_mesh, const std::map<UI
     {
         for(auto& it : facet_container)
         {
-            M_facets.emplace_back(it.second, this, old_to_new_mapCells, it.first); // Facet
+            M_facets.emplace_back(it.second, this, oldToNewMapCells, it.first); // Facet
 
             if (it.second.isFracture())
             {
@@ -213,9 +214,9 @@ void Rigid_Mesh::facetsVectorsBuilder ( Mesh3D & generic_mesh, const std::map<UI
 
         for(auto& it : facet_container)
         {
-            M_facets.emplace_back(it.second, this, old_to_new_mapCells, position); // Facet
+            M_facets.emplace_back(it.second, this, oldToNewMapCells, position); // Facet
 
-            old_to_new_mapFacets[it.first] = position;
+            oldToNewMapFacets[it.first] = position;
 
             if (it.second.isFracture())
             {
@@ -306,11 +307,11 @@ void Rigid_Mesh::facetsVectorsBuilder ( Mesh3D & generic_mesh, const std::map<UI
     }
 }
 
-void Rigid_Mesh::adjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFacets)
+void Rigid_Mesh::adjustCellFacets(const std::map<UInt, UInt> & oldToNewMapFacets)
 {
     for(auto& it : M_cells)
         for(auto& Facets_it : it.M_facetsIds)
-            Facets_it = old_to_new_mapFacets.at(Facets_it);
+            Facets_it = oldToNewMapFacets.at(Facets_it);
 }
 
 void Rigid_Mesh::edgesBuilder()
@@ -503,8 +504,8 @@ const Point3D Rigid_Mesh::Edge::getCentroid () const
 
 Real Rigid_Mesh::Edge::length() const
 {
-    Point3D first (M_mesh->getNodesVector()[M_edge.first]);
-    Point3D second (M_mesh->getNodesVector()[M_edge.second]);
+    const Point3D & first (M_mesh->getNodesVector()[M_edge.first]);
+    const Point3D & second (M_mesh->getNodesVector()[M_edge.second]);
     return (second-first).norm();
 }
 
@@ -534,7 +535,8 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 // Constructors & Destructor
 // ==================================================
 
-Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt,UInt> & old_to_new_map, const UInt m_id):
+Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh,
+                         const std::map<UInt,UInt> & oldToNewMapCells, const UInt m_id):
     M_mesh(mesh), M_id(m_id), M_verticesIds(generic_facet.getVerticesVector()), M_area(generic_facet.getArea()),
     M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.getUnsignedNormal()),
     M_isFracture(generic_facet.isFracture()), M_fractureFacetId(0), M_borderId(generic_facet.getBorderId()),
@@ -545,7 +547,7 @@ Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh,
             M_separatedCellsIds.push_back(it);
     else
         for(auto it : generic_facet.getSeparatedCells())
-            M_separatedCellsIds.push_back(old_to_new_map.at(it));
+            M_separatedCellsIds.push_back(oldToNewMapCells.at(it));
 }
 
 Rigid_Mesh::Facet::Facet(const Facet & facet):
