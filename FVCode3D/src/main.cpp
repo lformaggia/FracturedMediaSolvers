@@ -167,6 +167,9 @@ int main(int argc, char * argv[])
     std::cout << " done." << std::endl << std::endl;
 
     myrmesh.showMe();
+    std::cout << "hMin: " << myrmesh.getMinEdgeSize() << std::endl;
+    std::cout << "hMax: " << myrmesh.getMaxEdgeSize() << std::endl;
+    std::cout << "hAve: " << myrmesh.getAveEdgeSize() << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
