@@ -316,7 +316,7 @@ void Rigid_Mesh::adjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFac
 void Rigid_Mesh::edgesBuilder()
 {
     UInt edgeId = 0;
-    std::map<UInt,UInt> nFracFacets;
+    UInt nFracFacets;
 
     // edge as pair -> separated facets
     std::map<Edge3D, std::vector<UInt> > edgesMap;
@@ -375,27 +375,20 @@ void Rigid_Mesh::edgesBuilder()
 
     for(auto& edge_it : M_edges)
     {
-        nFracFacets.clear();
+        nFracFacets = 0;
         edgeId = edge_it.getId();
 
         for(auto it : M_edges[edgeId].M_separatedFacetsIds)
         {
-            edge_it.M_isFracture |= M_facets[it].M_isFracture;
             if (M_facets[it].M_isFracture)
             {
-                for(UInt jt = 0 ; jt < M_facets[it].M_representedFractureIds.size(); ++jt)
-                {
-                    nFracFacets.insert(std::pair<UInt,UInt>(std::make_pair(it,0)));
-                    nFracFacets[it]++;
-                }
+                edge_it.M_isFracture = true;
+                nFracFacets++;
             }
             edge_it.M_isBorderEdge |= M_facets[it].isBorderFacet();
         }
 
-        for(auto& it : nFracFacets)
-        {
-            edge_it.M_isTip |= (it.second == 1) ? true : false;
-        }
+        edge_it.M_isTip = (nFracFacets == 1) ? true : false;
     }
 }
 

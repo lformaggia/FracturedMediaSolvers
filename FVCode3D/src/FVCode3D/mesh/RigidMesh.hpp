@@ -8,6 +8,7 @@
 
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/property/Properties.hpp>
 
 #include <cmath>
 #include <set>
@@ -20,7 +21,7 @@
 namespace FVCode3D
 {
 
-class PropertiesMap;
+//class PropertiesMap;
 class ProxyRigidMesh;
 class ProxyEdge;
 class ProxyBorderEdge;
@@ -1230,8 +1231,9 @@ public:
      * @param generic_mesh is a reference to a Mesh3D from which the Rigid_Mesh is constructed
      * @param prop reference to a PropertiesMap
      * @param renumber If False the facets and cells are not renumbered (Default = false)
+     * @param buildEdges If true the edges and edges ids are built (Default = true)
      */
-    Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber = false, const bool buildEdges = true);
+    Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop = PropertiesMap(), const bool renumber = false, const bool buildEdges = true);
 
     //! Copy constructor
     /*!
