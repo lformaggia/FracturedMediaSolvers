@@ -14,10 +14,17 @@
 //#define DIAGONALZ
 
 // MFD: compute the exact inverse of M
-#define INVERSEM
+//#define INVERSEM
+// MFD: compute M^-1 C with tensor-vector product: INVERSEM needed!
+//#define TVM
 
-// MFD: export some matrices
+// MFD: export some matrices, requires both INVERSEM and APPROXM
 //#define MFD_VERBOSE
+
+// Assure that INVERSEM is defined
+#ifdef TVM
+#define INVERSEM
+#endif // TVM
 
 namespace FVCode3D
 {
@@ -409,17 +416,29 @@ void StiffMatrix::assembleMFD()
     // Sizing global matrices
     Eigen::SparseMatrix<Real, RowMajor> Z;  // Z inverse matrix for internal product= \f$ M^{-1}\f$
     Eigen::SparseMatrix<Real, RowMajor> M;  // M matrix for internal product
+#ifdef TVM
+    Eigen::SparseMatrix<Real, ColMajor> Bt;  // Bt matrix for signed area
+#else // TVM
     Eigen::SparseMatrix<Real, RowMajor> B;  // B matrix for signed area
+#endif // TVM
     Eigen::SparseMatrix<Real, RowMajor> C;  // C matrix for signed area, no neumann/fractures
     Eigen::SparseMatrix<Real, RowMajor> Bd; // B matrix for Dirichlet area
     Eigen::SparseMatrix<Real, ColMajor> T(numCells,numCells);
     Eigen::SparseMatrix<Real, ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
     ZMatrix_elements.resize(numFacets,0);
+#ifdef TVM
+    BMatrix_elements.resize(numFacets,0);
+#else // TVM
     BMatrix_elements.resize(numCells,0);
+#endif // TVM
     CMatrix_elements.resize(numCells,0);
     Z.resize(numFacets,numFacets);
     M.resize(numFacets,numFacets);
+#ifdef TVM
+    Bt.resize(numFacets,numCells);
+#else // TVM
     B.resize(numCells,numFacets);
+#endif // TVM
     C.resize(numCells,numFacets);
     Bd.resize(numFacets,numFacets);
 
@@ -434,7 +453,11 @@ void StiffMatrix::assembleMFD()
         {
             const UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
+#ifdef TVM
+            BMatrix_elements[globalFacetId] += 1;
+#else // TVM
             BMatrix_elements[cellId] += 1;
+#endif // TVM
 
             if(
                 ( fac.isBorderFacet() &&
@@ -456,7 +479,11 @@ void StiffMatrix::assembleMFD()
     }
     Z.reserve(ZMatrix_elements);
     M.reserve(ZMatrix_elements);
+#ifdef TVM
+    Bt.reserve(BMatrix_elements);
+#else // TVM
     B.reserve(BMatrix_elements);
+#endif // TVM
     C.reserve(CMatrix_elements);
     ZMatrix_elements.clear();
     ZMatrix_elements.shrink_to_fit();
@@ -560,12 +587,37 @@ void StiffMatrix::assembleMFD()
 
         Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
         Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
-#endif // INVERSEM
 
+        M0p.resize(numCellFacets,numCellFacets);
+        M0p.setZero();
+        M1p.resize(numCellFacets,numCellFacets);
+        M1p.setZero();
+        Mp.resize(numCellFacets,numCellFacets);
+        Mp.setZero();
+
+        M0p = ( 1. / cellMeasure ) *
+              (Rp * Kp.inverse() * Rp.transpose());
+        M1p = M0p.trace() * tCoeff / numCellFacets *
+              ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
+                NNtNiNt
+              );
+
+        Mp  = M0p + M1p;
+#else // INVERSEM
         Qp = Rp.fullPivLu().image(Rp);
 
         Eigen::Matrix<Real,Dynamic,Dynamic> RtR = Qp.transpose() * Qp;
         Eigen::Matrix<Real,Dynamic,Dynamic> RRtRiRt = Qp * RtR.inverse() * Qp.transpose();
+
+        Z0p = ( 1. / cellMeasure ) *
+              (Np * Kp.inverse() * Np.transpose());
+        Z1p = Z0p.trace() * tCoeff / numCellFacets *
+              ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
+                RRtRiRt
+//                Qp * Qp.transpose()
+              );
+
+        Zp  = Z0p + Z1p;
 
 #ifdef MFD_VERBOSE
         std::stringstream  ss;
@@ -589,57 +641,7 @@ void StiffMatrix::assembleMFD()
         ss << "./mMatrix/Qp_" << cellId << ".m";
         Eigen::saveMarket( Qp, ss.str() );
 #endif // MFD_VERBOSE
-
-#if defined INVERSEM || defined MFD_VERBOSE
-        M0p.resize(numCellFacets,numCellFacets);
-        M0p.setZero();
-        M1p.resize(numCellFacets,numCellFacets);
-        M1p.setZero();
-        Mp.resize(numCellFacets,numCellFacets);
-        Mp.setZero();
-
-        M0p = ( 1. / cellMeasure ) *
-              (Rp * Kp.inverse() * Rp.transpose());
-        M1p = M0p.trace() * tCoeff / numCellFacets *
-              ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
-                NNtNiNt
-              );
-
-        Mp  = M0p + M1p;
-#endif // INVERSEM || MFD_VERBOSE
-
-        Z0p = ( 1. / cellMeasure ) *
-              (Np * Kp.inverse() * Np.transpose());
-        Z1p = Z0p.trace() * tCoeff / numCellFacets *
-              ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
-                RRtRiRt
-//                Qp * Qp.transpose()
-              );
-
-        Zp  = Z0p + Z1p;
-
-#ifdef MFD_VERBOSE
-        std::cout<<"Zp*Mp: "<<std::endl<<Zp*Mp<<std::endl;
-        std::cout<<"Zp0*Mp0: "<<std::endl<<Z0p*M0p<<std::endl;
-        std::cout<<"Zp0*Mp1: "<<std::endl<<Z0p*M1p<<std::endl;
-        std::cout<<"Zp1*Mp0: "<<std::endl<<Z1p*M0p<<std::endl;
-        std::cout<<"Zp1*Mp1: "<<std::endl<<Z1p*M1p<<std::endl;
-        std::cout<<"Np*Rpt: "<<std::endl<<Np*Rp.transpose()<<std::endl;
-        std::cout<<"Zp*Rp: "<<std::endl<<Zp*Rp<<std::endl;
-        std::cout<<"Np: "<<std::endl<<Np<<std::endl;
-        std::cout<<"Zp0: "<<std::endl<<Z0p<<std::endl;
-        std::cout<<"Qp: "<<std::endl<<Qp<<std::endl;
-        std::cout<<"Np*Npt: "<<std::endl<<Np*Np.transpose()<<std::endl;
-        std::cout<<"Old: "<<tCoeff * Kp.trace() / cellMeasure<<std::endl;
-        std::cout<<"New: "<<tCoeff * Z0p.trace() / 6.<<std::endl;
-        std::cout<<"Zp*Rp Norm: "<<(Zp*Rp).norm()<<std::endl;
-        std::cout<<"Np Norm: "<<Np.norm()<<std::endl;
-
-        Eigen::saveMarket( Z0p, "./mMatrix/Z0p.m" );
-        Eigen::saveMarket( Z1p, "./mMatrix/Z1p.m" );
-        Eigen::saveMarket( Zp, "./mMatrix/Zp.m" );
-        Eigen::saveMarket( Mp, "./mMatrix/Mp.m" );
-#endif // MFD_VERBOSE
+#endif // INVERSEM
 
         for(UInt iloc=0; iloc<numCellFacets; ++iloc)
         {
@@ -649,34 +651,14 @@ void StiffMatrix::assembleMFD()
 
             if(Bcoeff != 0.)
             {
+#ifdef TVM
+                Bt.insert(i,cellId) = Bcoeff;
+#else // TVM
                 B.insert(cellId,i) = Bcoeff;
+#endif // TVM
                 if(Ccoeff != 0.)
                 {
                     C.insert(cellId,i) = Ccoeff;
-                }
-            }
-
-            Real Zcoeff = Zp(iloc,iloc);
-
-            if( Zcoeff != 0. )
-            {
-                Z.coeffRef(i,i) += Zcoeff;
-            }
-
-            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc)
-            {
-                const UInt j = cellFacetsId[jloc];
-                Zcoeff = Zp(iloc,jloc);
-
-                if (Zcoeff != 0.)
-                {
-#ifdef DIAGONALZ
-                    Z.coeffRef(i,i) += Zcoeff;
-                    Z.coeffRef(j,j) += Zcoeff;
-#else // DIAGONALZ
-                    Z.coeffRef(i,j) += Zcoeff;
-                    Z.coeffRef(j,i) += Zcoeff;
-#endif // DIAGONALZ
                 }
             }
 
@@ -704,30 +686,86 @@ void StiffMatrix::assembleMFD()
 #endif // DIAGONALZ
                 }
             }
-#endif //INVERSEM
+#else //INVERSEM
+            Real Zcoeff = Zp(iloc,iloc);
+
+            if( Zcoeff != 0. )
+            {
+                Z.coeffRef(i,i) += Zcoeff;
+            }
+
+            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc)
+            {
+                const UInt j = cellFacetsId[jloc];
+                Zcoeff = Zp(iloc,jloc);
+
+                if (Zcoeff != 0.)
+                {
+#ifdef DIAGONALZ
+                    Z.coeffRef(i,i) += Zcoeff;
+                    Z.coeffRef(j,j) += Zcoeff;
+#else // DIAGONALZ
+                    Z.coeffRef(i,j) += Zcoeff;
+                    Z.coeffRef(j,i) += Zcoeff;
+#endif // DIAGONALZ
+                }
+            }
+#endif // INVERSEM
         }
     }
 
-#ifdef MFD_VERBOSE
-    Eigen::Matrix<Real,Dynamic,Dynamic> fullZ(Z);
-    Eigen::Matrix<Real,Dynamic,Dynamic> MZ = M*fullZ;
-    std::cout<<"Norm M*Z: "<<MZ.norm()<<std::endl;
-    Eigen::saveMarket( MZ, "./mMatrix/MZ.m" );
-    Eigen::saveMarket( M, "./mMatrix/M.m" );
-#endif // MFD_VERBOSE
-
 #ifdef INVERSEM
+#ifdef TVM
+    Eigen::SparseMatrix<Real, ColMajor> WtCM;
+    WtCM.resize(numFacets,numFacets);
+    std::cout << "Compute B M^-1" << std::endl;
+
+    Eigen::ConjugateGradient< Eigen::SparseMatrix<Real, RowMajor> > cg;
+
+    cg.setMaxIterations(10^6);
+    cg.setTolerance(1e-12);
+
+    cg.compute(M);
+//    WtCM = cg.solve(Bt); // Bt RowMajor!
+    for(UInt i=0; i<Bt.cols(); ++i) // Bt ColMajor!
+    {
+        const Vector t_rhs(Bt.col(i));
+        Vector t_x;
+        t_x = cg.solve(t_rhs);
+        WtCM.col(i) = t_x.sparseView();
+    }
+    Eigen::SparseMatrix<Real, RowMajor> Wt(WtCM);
+
+    std::cout << "# It:  " << cg.iterations() << std::endl;
+    std::cout << "# Err: " << cg.error() << std::endl;
+
+    std::cout << "Zero the Neumann row of M" << std::endl;
+    for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
+    {
+        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Wt,globalNeumannFaces[i]); it; ++it)
+        {
+            it.valueRef() = 0.;
+        }
+//        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Bt,globalNeumannFaces[i]); it; ++it)
+//        {
+//            Wt.coeffRef(globalNeumannFaces[i], it.col()-1) = it.valueRef();
+//        }
+    }
+#else // TVM
     Eigen::Matrix<Real,Dynamic,Dynamic> invM(M);
     std::cout<<"Compute inverse of M"<<std::endl;
     invM = invM.inverse();
 
-#ifdef MFD_VERBOSE
-    Eigen::Matrix<Real,Dynamic,Dynamic> diffMZ = invM-fullZ;
-    std::cout<<"Norm M^-1-Z: "<<diffMZ.norm()<<std::endl;
-    Eigen::saveMarket( diffMZ, "./mMatrix/diffMZ.m" );
-#endif // MFD_VERBOSE
-#endif // INVERSEM
-
+    std::cout<<"Zero the Neumann row of M"<<std::endl;
+    for(UInt i = 0; i < globalNeumannFaces.size(); ++i)
+    {
+        invM.row(globalNeumannFaces[i]).setZero();
+        invM.coeffRef(globalNeumannFaces[i], globalNeumannFaces[i]) = 1.;
+    }
+    Eigen::SparseMatrix<Real, RowMajor> invMSp;  // M matrix for internal product
+    invMSp = invM.sparseView();
+#endif //TVM
+#else // INVERSEM
     for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
     {
         for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Z,globalNeumannFaces[i]); it; ++it)
@@ -745,32 +783,32 @@ void StiffMatrix::assembleMFD()
 //        }
 //        Z.coeffRef(globalNeumannFaces[i], globalNeumannFaces[i]) = 1.;
 //    }
-
-#ifdef INVERSEM
-    std::cout<<"Zero the Neumann row of M"<<std::endl;
-    for(UInt i = 0; i < globalNeumannFaces.size(); ++i)
-    {
-        invM.row(globalNeumannFaces[i]).setZero();
-        invM.coeffRef(globalNeumannFaces[i], globalNeumannFaces[i]) = 1.;
-    }
-    Eigen::SparseMatrix<Real, RowMajor> invMSp;  // M matrix for internal product
-    invMSp = invM.sparseView();
 #endif // INVERSEM
 
     // Now I Need to build T
     std::cout<<"Building Trasmissibility matrix (global)"<<std::endl;
 
-    T = B * Z * C.transpose();
 #ifdef INVERSEM
+#ifdef TVM
+    T = Wt.transpose() * C.transpose();
+#else // TVM
     T = B * invMSp * C.transpose();
+#endif // TVM
+#else // INVERSEM
+    T = B * Z * C.transpose();
 #endif // INVERSEM
     T.makeCompressed();
 
     std::cout<<"Building Trasmissibility Dirichelt matrix (global)"<<std::endl;
 
-    Td = B * Z * Bd.transpose();
 #ifdef INVERSEM
+#ifdef TVM
+    Td = Wt.transpose() * Bd.transpose();
+#else // TVM
     Td = B * invMSp * Bd.transpose();
+#endif // TVM
+#else // INVERSEM
+    Td = B * Z * Bd.transpose();
 #endif // INVERSEM
     Td.makeCompressed();
 
@@ -784,12 +822,17 @@ void StiffMatrix::assembleMFD()
     std::cout.flush();
     Eigen::saveMarket( T, "./mMatrix/T.m" );
     Eigen::saveMarket( Td, "./mMatrix/Td.m" );
+#ifdef TVM
+    Eigen::saveMarket( Bt, "./mMatrix/Bt.m" );
+#else // TVM
     Eigen::saveMarket( B, "./mMatrix/B.m" );
+#endif // TVM
     Eigen::saveMarket( C, "./mMatrix/C.m" );
     Eigen::saveMarket( Bd, "./mMatrix/Bd.m" );
-    Eigen::saveMarket( Z, "./mMatrix/Z.m" );
 #ifdef INVERSEM
     Eigen::saveMarket( invM, "./mMatrix/invM.m" );
+#else // INVERSEM
+    Eigen::saveMarket( Z, "./mMatrix/Z.m" );
 #endif // INVERSEM
 #endif // MFD_VERBOSE
 
