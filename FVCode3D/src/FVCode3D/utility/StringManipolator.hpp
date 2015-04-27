@@ -27,6 +27,14 @@ T lexical_cast( const std::string& str )
     return var;
 } // lexical_cast
 
+//! Convert a string to its upper case version
+inline std::string toUpper ( const std::string& _string )
+{
+    std::string out( _string );
+    std::transform( std::begin( out ), std::end( out ), std::begin( out ), ::toupper );
+    return out;
+} // toUpper
+
 //! Splits a string into tokes
 /*!
  * @warning empty tokens are skipped

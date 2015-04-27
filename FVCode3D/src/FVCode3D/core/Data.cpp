@@ -282,42 +282,42 @@ EnumParser<T>::EnumParser() = default;
 template<>
 EnumParser<Data::NumericalMethodType>::EnumParser()
 {
-    M_enumMap["FV"] = Data::NumericalMethodType::FV;
-    M_enumMap["MFD"] = Data::NumericalMethodType::MFD;
+    M_enumMap[ toUpper( "FV" ) ] = Data::NumericalMethodType::FV;
+    M_enumMap[ toUpper( "MFD" ) ] = Data::NumericalMethodType::MFD;
 }
 
 template<>
 EnumParser<Data::ProblemType>::EnumParser()
 {
-    M_enumMap["steady"] = Data::ProblemType::steady;
-    M_enumMap["pseudoSteady"] = Data::ProblemType::pseudoSteady;
+    M_enumMap[ toUpper( "steady" ) ] = Data::ProblemType::steady;
+    M_enumMap[ toUpper( "pseudoSteady" ) ] = Data::ProblemType::pseudoSteady;
 }
 
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser()
 {
-    M_enumMap[".grid"] = Data::MeshFormatType::TPFA;
-    M_enumMap[".fvg"] = Data::MeshFormatType::forSolver;
-    M_enumMap[".mesh"] = Data::MeshFormatType::Medit;
-    M_enumMap[".node"] = Data::MeshFormatType::TetGen;
-    M_enumMap[".foam"] = Data::MeshFormatType::OpenFOAM;
+    M_enumMap[ toUpper( ".grid" ) ] = Data::MeshFormatType::TPFA;
+    M_enumMap[ toUpper( ".fvg" ) ] = Data::MeshFormatType::forSolver;
+    M_enumMap[ toUpper( ".mesh" ) ] = Data::MeshFormatType::Medit;
+    M_enumMap[ toUpper( ".node" ) ] = Data::MeshFormatType::TetGen;
+    M_enumMap[ toUpper( ".foam" ) ] = Data::MeshFormatType::OpenFOAM;
 }
 
 template<>
 EnumParser<Data::NoiseOn>::EnumParser()
 {
-    M_enumMap["matrix"] = Data::NoiseOn::Matrix;
-    M_enumMap["fractures"] = Data::NoiseOn::Fractures;
-    M_enumMap["all"] = Data::NoiseOn::All;
+    M_enumMap[ toUpper( "matrix" ) ] = Data::NoiseOn::Matrix;
+    M_enumMap[ toUpper( "fractures" ) ] = Data::NoiseOn::Fractures;
+    M_enumMap[ toUpper( "all" ) ] = Data::NoiseOn::All;
 }
 
 template<>
 EnumParser<Data::SourceSinkOn>::EnumParser()
 {
-    M_enumMap["matrix"] = Data::SourceSinkOn::Matrix;
-    M_enumMap["fractures"] = Data::SourceSinkOn::Fractures;
-    M_enumMap["all"] = Data::SourceSinkOn::Both;
-    M_enumMap["none"] = Data::SourceSinkOn::None;
+    M_enumMap[ toUpper( "matrix" ) ] = Data::SourceSinkOn::Matrix;
+    M_enumMap[ toUpper( "fractures" ) ] = Data::SourceSinkOn::Fractures;
+    M_enumMap[ toUpper( "all" ) ] = Data::SourceSinkOn::Both;
+    M_enumMap[ toUpper( "none" ) ] = Data::SourceSinkOn::None;
 }
 
 } // namespace FVCode3D

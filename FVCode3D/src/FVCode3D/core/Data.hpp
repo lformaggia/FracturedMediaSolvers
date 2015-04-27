@@ -7,6 +7,7 @@
 #define DATA_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/utility/StringManipolator.hpp>
 
 namespace FVCode3D
 {
@@ -799,7 +800,7 @@ public:
      */
     T parse(const std::string & str) const throw()
     {
-        typename std::map<std::string, T>::const_iterator it = M_enumMap.find(str);
+        typename std::map<std::string, T>::const_iterator it = M_enumMap.find( toUpper( str ) );
         if (it == M_enumMap.end())
         {
             throw std::runtime_error("Error: parsing an enum that does not exist.");

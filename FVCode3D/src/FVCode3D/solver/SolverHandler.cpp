@@ -3,6 +3,7 @@
  * @brief Factory that handles the creation of the Solver classes (definitions).
  */
 #include <FVCode3D/solver/SolverHandler.hpp>
+#include <FVCode3D/utility/StringManipolator.hpp>
 
 namespace FVCode3D
 {
@@ -23,16 +24,16 @@ SolverHandler & SolverHandler::Instance()
 
 void SolverHandler::registration()
 {
-    SolverProxy<EigenCholesky>  SolverChol("EigenCholesky");
-    SolverProxy<EigenLU>        SolverLU("EigenLU");
+    SolverProxy<EigenCholesky>  SolverChol( toUpper( "EigenCholesky" ) );
+    SolverProxy<EigenLU>        SolverLU( toUpper( "EigenLU" ) );
 #ifdef FVCODE3D_HAS_UMFPACK
-    SolverProxy<EigenUmfPack>   SolverUmfPack("EigenUmfPack");
+    SolverProxy<EigenUmfPack>   SolverUmfPack( toUpper( "EigenUmfPack" ) );
 #endif // FVCODE3D_HAS_UMFPACK
-    SolverProxy<EigenCG>        SolverCG("EigenCG");
-    SolverProxy<EigenBiCGSTAB>  SolverBiCGSTAB("EigenBiCGSTAB");
+    SolverProxy<EigenCG>        SolverCG( toUpper( "EigenCG" ) );
+    SolverProxy<EigenBiCGSTAB>  SolverBiCGSTAB( toUpper( "EigenBiCGSTAB" ) );
 #ifdef FVCODE3D_HAS_SAMG
-    SolverProxy<SamgSym>        SolverSamgSym("SamgSym");
-    SolverProxy<SamgNotSym>     SolverSamgNotSym("SamgNotSym");
+    SolverProxy<SamgSym>        SolverSamgSym( toUpper( "SamgSym" ) );
+    SolverProxy<SamgNotSym>     SolverSamgNotSym( toUpper( "SamgNotSym" ) );
 #endif // FVCODE3D_HAS_SAMG
 } // SolverHandler::registration
 
@@ -43,7 +44,7 @@ void SolverHandler::addProduct(const std::string productName, const SolverBuilde
 
 SolverPtr_Type SolverHandler::getProduct(const std::string productName) const
 {
-    std::map<std::string,SolverBuilder>::const_iterator it = M_productList.find(productName);
+    std::map<std::string,SolverBuilder>::const_iterator it = M_productList.find( toUpper( productName ) );
 
     return (it == M_productList.end()) ? SolverPtr_Type() : it->second();
 } // SolverHandler::getProduct
