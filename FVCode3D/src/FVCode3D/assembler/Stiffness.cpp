@@ -722,8 +722,8 @@ void StiffMatrix::assembleMFD()
 
     Eigen::ConjugateGradient< Eigen::SparseMatrix<Real, RowMajor> > cg;
 
-    cg.setMaxIterations(10^6);
-    cg.setTolerance(1e-12);
+    cg.setMaxIterations(10e3);
+    cg.setTolerance(1e-6);
 
     cg.compute(M);
     for(UInt i=0; i<Bt.cols(); ++i)
