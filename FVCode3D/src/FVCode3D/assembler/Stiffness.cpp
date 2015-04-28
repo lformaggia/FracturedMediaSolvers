@@ -14,7 +14,7 @@
 //#define DIAGONALZ
 
 // MFD: compute the exact inverse of M
-//#define INVERSEM
+#define INVERSEM
 // MFD: compute M^-1 C with tensor-vector product: INVERSEM needed!
 //#define TVM
 
@@ -726,31 +726,50 @@ void StiffMatrix::assembleMFD()
     cg.setTolerance(1e-12);
 
     cg.compute(M);
-//    WtCM = cg.solve(Bt); // Bt RowMajor!
-    for(UInt i=0; i<Bt.cols(); ++i) // Bt ColMajor!
+    for(UInt i=0; i<Bt.cols(); ++i)
     {
+        if(i % 100 == 0)
+        {
+            std::cout << "System: " << i << " ..." << std::endl;
+        }
+
         const Vector t_rhs(Bt.col(i));
         Vector t_x;
         t_x = cg.solve(t_rhs);
         WtCM.col(i) = t_x.sparseView();
+
+#ifdef MFD_VERBOSE
+        if(i % 100 == 0)
+        {
+            std::cout << "# It:  " << cg.iterations() << std::endl;
+            std::cout << "# Err: " << cg.error() << std::endl;
+        }
+#endif // MFD_VERBOSE
     }
+    std::cout << "System: " << (Bt.cols() - 1) << " done." << std::endl;
     Eigen::SparseMatrix<Real, RowMajor> Wt(WtCM);
+    WtCM.resize(0,0);
+    WtCM.data().squeeze();
+    Eigen::SparseMatrix<Real, RowMajor> BtRM(Bt);
+    Bt.resize(0,0);
+    Bt.data().squeeze();
 
-    std::cout << "# It:  " << cg.iterations() << std::endl;
-    std::cout << "# Err: " << cg.error() << std::endl;
-
-    std::cout << "Zero the Neumann row of M" << std::endl;
+    std::cout << "Non zeros Bt: " << BtRM.nonZeros() << std::endl;
+    std::cout << "Non zeros Wt: " << Wt.nonZeros() << std::endl;
+    std::cout << "Zero the Neumann row of W" << std::endl;
     for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
     {
         for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Wt,globalNeumannFaces[i]); it; ++it)
         {
             it.valueRef() = 0.;
         }
-//        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Bt,globalNeumannFaces[i]); it; ++it)
-//        {
-//            Wt.coeffRef(globalNeumannFaces[i], it.col()-1) = it.valueRef();
-//        }
+        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(BtRM,globalNeumannFaces[i]); it; ++it)
+        {
+            Wt.coeffRef(globalNeumannFaces[i], it.col()-1) = it.valueRef();
+        }
     }
+    Wt.prune(0.);
+    std::cout << "Non zeros Wt: " << Wt.nonZeros() << std::endl;
 #else // TVM
     Eigen::Matrix<Real,Dynamic,Dynamic> invM(M);
     std::cout<<"Compute inverse of M"<<std::endl;
@@ -823,7 +842,7 @@ void StiffMatrix::assembleMFD()
     Eigen::saveMarket( T, "./mMatrix/T.m" );
     Eigen::saveMarket( Td, "./mMatrix/Td.m" );
 #ifdef TVM
-    Eigen::saveMarket( Bt, "./mMatrix/Bt.m" );
+    Eigen::saveMarket( BtRM, "./mMatrix/Bt.m" );
 #else // TVM
     Eigen::saveMarket( B, "./mMatrix/B.m" );
 #endif // TVM
