@@ -16,15 +16,15 @@
 // MFD: compute the exact inverse of M
 #define INVERSEM
 // MFD: compute M^-1 C with tensor-vector product: INVERSEM needed!
-//#define TVM
+//#define TVP
 
 // MFD: export some matrices, requires both INVERSEM and APPROXM
 //#define MFD_VERBOSE
 
 // Assure that INVERSEM is defined
-#ifdef TVM
+#ifdef TVP
 #define INVERSEM
-#endif // TVM
+#endif // TVP
 
 namespace FVCode3D
 {
@@ -416,29 +416,29 @@ void StiffMatrix::assembleMFD()
     // Sizing global matrices
     Eigen::SparseMatrix<Real, RowMajor> Z;  // Z inverse matrix for internal product= \f$ M^{-1}\f$
     Eigen::SparseMatrix<Real, RowMajor> M;  // M matrix for internal product
-#ifdef TVM
+#ifdef TVP
     Eigen::SparseMatrix<Real, ColMajor> Bt;  // Bt matrix for signed area
-#else // TVM
+#else // TVP
     Eigen::SparseMatrix<Real, RowMajor> B;  // B matrix for signed area
-#endif // TVM
+#endif // TVP
     Eigen::SparseMatrix<Real, RowMajor> C;  // C matrix for signed area, no neumann/fractures
     Eigen::SparseMatrix<Real, RowMajor> Bd; // B matrix for Dirichlet area
     Eigen::SparseMatrix<Real, ColMajor> T(numCells,numCells);
     Eigen::SparseMatrix<Real, ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
     ZMatrix_elements.resize(numFacets,0);
-#ifdef TVM
+#ifdef TVP
     BMatrix_elements.resize(numFacets,0);
-#else // TVM
+#else // TVP
     BMatrix_elements.resize(numCells,0);
-#endif // TVM
+#endif // TVP
     CMatrix_elements.resize(numCells,0);
     Z.resize(numFacets,numFacets);
     M.resize(numFacets,numFacets);
-#ifdef TVM
+#ifdef TVP
     Bt.resize(numFacets,numCells);
-#else // TVM
+#else // TVP
     B.resize(numCells,numFacets);
-#endif // TVM
+#endif // TVP
     C.resize(numCells,numFacets);
     Bd.resize(numFacets,numFacets);
 
@@ -453,11 +453,11 @@ void StiffMatrix::assembleMFD()
         {
             const UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
-#ifdef TVM
+#ifdef TVP
             BMatrix_elements[globalFacetId] += 1;
-#else // TVM
+#else // TVP
             BMatrix_elements[cellId] += 1;
-#endif // TVM
+#endif // TVP
 
             if(
                 ( fac.isBorderFacet() &&
@@ -479,11 +479,11 @@ void StiffMatrix::assembleMFD()
     }
     Z.reserve(ZMatrix_elements);
     M.reserve(ZMatrix_elements);
-#ifdef TVM
+#ifdef TVP
     Bt.reserve(BMatrix_elements);
-#else // TVM
+#else // TVP
     B.reserve(BMatrix_elements);
-#endif // TVM
+#endif // TVP
     C.reserve(CMatrix_elements);
     ZMatrix_elements.clear();
     ZMatrix_elements.shrink_to_fit();
@@ -651,11 +651,11 @@ void StiffMatrix::assembleMFD()
 
             if(Bcoeff != 0.)
             {
-#ifdef TVM
+#ifdef TVP
                 Bt.insert(i,cellId) = Bcoeff;
-#else // TVM
+#else // TVP
                 B.insert(cellId,i) = Bcoeff;
-#endif // TVM
+#endif // TVP
                 if(Ccoeff != 0.)
                 {
                     C.insert(cellId,i) = Ccoeff;
@@ -715,9 +715,9 @@ void StiffMatrix::assembleMFD()
     }
 
 #ifdef INVERSEM
-#ifdef TVM
+#ifdef TVP
     Eigen::SparseMatrix<Real, ColMajor> WtCM;
-    WtCM.resize(numFacets,numFacets);
+    WtCM.resize(numFacets,numCells);
     std::cout << "Compute B M^-1" << std::endl;
 
     Eigen::ConjugateGradient< Eigen::SparseMatrix<Real, RowMajor> > cg;
@@ -754,8 +754,6 @@ void StiffMatrix::assembleMFD()
     Bt.resize(0,0);
     Bt.data().squeeze();
 
-    std::cout << "Non zeros Bt: " << BtRM.nonZeros() << std::endl;
-    std::cout << "Non zeros Wt: " << Wt.nonZeros() << std::endl;
     std::cout << "Zero the Neumann row of W" << std::endl;
     for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
     {
@@ -769,8 +767,8 @@ void StiffMatrix::assembleMFD()
         }
     }
     Wt.prune(0.);
-    std::cout << "Non zeros Wt: " << Wt.nonZeros() << std::endl;
-#else // TVM
+    std::cout<<" Matrix Wt has "<<Wt.rows()<<" rows and "<<Wt.cols()<<" columns and "<<Wt.nonZeros()<<" Non zeros"<<std::endl;
+#else // TVP
     Eigen::Matrix<Real,Dynamic,Dynamic> invM(M);
     std::cout<<"Compute inverse of M"<<std::endl;
     invM = invM.inverse();
@@ -783,7 +781,7 @@ void StiffMatrix::assembleMFD()
     }
     Eigen::SparseMatrix<Real, RowMajor> invMSp;  // M matrix for internal product
     invMSp = invM.sparseView();
-#endif //TVM
+#endif //TVP
 #else // INVERSEM
     for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
     {
@@ -808,11 +806,11 @@ void StiffMatrix::assembleMFD()
     std::cout<<"Building Trasmissibility matrix (global)"<<std::endl;
 
 #ifdef INVERSEM
-#ifdef TVM
+#ifdef TVP
     T = Wt.transpose() * C.transpose();
-#else // TVM
+#else // TVP
     T = B * invMSp * C.transpose();
-#endif // TVM
+#endif // TVP
 #else // INVERSEM
     T = B * Z * C.transpose();
 #endif // INVERSEM
@@ -821,11 +819,11 @@ void StiffMatrix::assembleMFD()
     std::cout<<"Building Trasmissibility Dirichelt matrix (global)"<<std::endl;
 
 #ifdef INVERSEM
-#ifdef TVM
+#ifdef TVP
     Td = Wt.transpose() * Bd.transpose();
-#else // TVM
+#else // TVP
     Td = B * invMSp * Bd.transpose();
-#endif // TVM
+#endif // TVP
 #else // INVERSEM
     Td = B * Z * Bd.transpose();
 #endif // INVERSEM
@@ -841,11 +839,11 @@ void StiffMatrix::assembleMFD()
     std::cout.flush();
     Eigen::saveMarket( T, "./mMatrix/T.m" );
     Eigen::saveMarket( Td, "./mMatrix/Td.m" );
-#ifdef TVM
+#ifdef TVP
     Eigen::saveMarket( BtRM, "./mMatrix/Bt.m" );
-#else // TVM
+#else // TVP
     Eigen::saveMarket( B, "./mMatrix/B.m" );
-#endif // TVM
+#endif // TVP
     Eigen::saveMarket( C, "./mMatrix/C.m" );
     Eigen::saveMarket( Bd, "./mMatrix/Bd.m" );
 #ifdef INVERSEM
@@ -1005,8 +1003,8 @@ void StiffMatrix::assembleMFD()
     this->M_Matrix->resize(numCellsTot,numCellsTot);
     T.conservativeResize(numCellsTot,numCellsTot);
     *(this->M_Matrix) = T + Mborder;
-    Eigen::saveMarket( *(this->M_Matrix), "./mMatrix/A.m" );
-    Eigen::saveMarket( *M_b, "./mMatrix/RHS.m" );
+//    Eigen::saveMarket( *(this->M_Matrix), "./mMatrix/A.m" );
+//    Eigen::saveMarket( *M_b, "./mMatrix/RHS.m" );
     std::cout<<" Assembling ended"<<std::endl;
 } // StiffMatrix::assembleMFD
 
