@@ -16,7 +16,7 @@
 // MFD: compute the exact inverse of M
 #define INVERSEM
 // MFD: compute M^-1 C with tensor-vector product: INVERSEM needed!
-//#define TVP
+#define TVP
 
 // MFD: export some matrices, requires both INVERSEM and APPROXM
 //#define MFD_VERBOSE
