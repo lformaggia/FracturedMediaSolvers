@@ -1,0 +1,48 @@
+#------------------------------#
+#    Data file for FVCode3D    #
+#------------------------------#
+
+## input
+[mesh]
+mesh_dir    = ./
+mesh_file   = cart20x20x1.fvg
+mesh_type   = .fvg      # .grid or .fvg or .mesh
+
+## output
+[output]
+output_dir  = ./
+output_file = sol
+
+## numerical method
+[numet]
+method      = FV    # FV or MFD
+
+## problem parameter
+[problem]
+type        = steady    # steady or pseudoSteady
+fracturesOn = 1     # 1 enable fractures, 0 disable fractures
+sourceOn    = matrix      # all, matrix, fractures, none
+fracPressOn = 0     # 1 set pressure inside fracture, 0 otherwise
+fracPress   = 1.
+perm_size   = ScalarPermeability    # ScalarPermeability, DiagonalPermeability, SymTensorPermeability, FullTensorPermeability
+initial_time    = 0.
+end_time    = 2.e6
+time_step   = 1.e5
+
+## fluid parameters
+[fluid]
+mobility    = 1.
+compressibility = 1.
+
+## boundary conditions
+[bc]
+theta       = 0.
+
+## solver
+[solver]
+type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
+                        # SamgSym , SamgNotSym
+
+    [./iterative]
+    maxIt       = 1000
+    tolerance   = 1e-5
