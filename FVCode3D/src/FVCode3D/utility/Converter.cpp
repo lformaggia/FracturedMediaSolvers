@@ -337,7 +337,6 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
              !(isFracture)
            )
         {
-            nInternalFacets++;
             internalFacets.emplace_back(i);
         }
         else
@@ -352,6 +351,8 @@ void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
             }
         }
     }
+
+    nInternalFacets = internalFacets.size();
 
     for(auto i : borderFacets)
     {
