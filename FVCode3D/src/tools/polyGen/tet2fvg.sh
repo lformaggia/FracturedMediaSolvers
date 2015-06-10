@@ -32,7 +32,7 @@ pushd .
 cd ./data/foam
 
 # create the dual polyhedral mesh using openFoam
-$POLYDUAL_DIR/$POLYDUAL_EXE -concaveMultiCells -internalFeatures 0
+$POLYDUAL_DIR/$POLYDUAL_EXE -concaveMultiCells -internalFeatures 180
 
 popd
 
