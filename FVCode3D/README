@@ -34,8 +34,9 @@ BLAS, SuiteSparse and Eigen to be already installed:
     cd /path/to/build/dir
     cmake \
         -DTPL_BLAS_DIR:path=/path/to/blas/install \
-        -DTPL_SuiteSparse_DIR:path=/path/to/suitesparse/install \
-        -DTPL_Eigen_DIR:path=/path/to/eigen/install \
+        -DTPL_CHOLMOD_DIR:path=/path/to/suitesparse/install \
+        -DTPL_UMFPACK_DIR:path=/path/to/suitesparse/install \
+        -DTPL_EIGEN3_DIR:path=/path/to/eigen/install \
         /path/to/source/dir
     make
 
