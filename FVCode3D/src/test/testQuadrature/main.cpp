@@ -34,9 +34,9 @@ int main (int argc, char** argv)
     const Real kf = 1.e3;
     matrixPerm->setPermeability( 1., 0 );
     fracturesPerm->setPermeability( kf, 0 );
-    const Real aperture = 1.e-2;
-    const Real matrixPoro = 0.25;
-    const Real fracturesPoro = 1.;
+    constexpr Real aperture = 1.e-2;
+    constexpr Real matrixPoro = 0.25;
+    constexpr Real fracturesPoro = 1.;
     propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
     propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
 
