@@ -861,7 +861,7 @@ void StiffMatrix::assembleMFD()
         const Real Df = F_aperture/2.;
         const Point3D normal = facet_it.getUnsignedNormal();
         const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal));
-        const Real alphaf = facet_it.getSize() * KnDotF * Df;
+        const Real alphaf = facet_it.getSize() * KnDotF / Df;
 
         const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
         const UInt neighbor2id = facet_it.getSeparatedCellsIds()[1];
