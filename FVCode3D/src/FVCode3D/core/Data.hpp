@@ -7,6 +7,7 @@
 #define DATA_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/utility/StringManipolator.hpp>
 
 namespace FVCode3D
 {
@@ -20,6 +21,17 @@ namespace FVCode3D
  */
 class Data{
 public:
+
+    //! Define the numerical method type
+    /*!
+     * @enum NumericalMethodType
+     * This enumerator allows to select the numerical method: Finite Volume or Mimetic Finite Difference
+     */
+    enum NumericalMethodType
+    {
+        FV          = 0,
+        MFD         = 1
+    };
 
     //! Define the problem type
     /*!
@@ -35,13 +47,29 @@ public:
     //! Define the format of the input mesh
     /*!
      * @enum MeshFormatType
-     * This enumerator allows to select the format type of the mesh: TPFA(.grid) or forSolver(.fvg)
+     * This enumerator allows to select the format type of the mesh:
+     * TPFA(.grid), forSolver(.fvg), Medit(.mesh) or TetGen(.node, .face, .ele)
      */
     enum MeshFormatType
     {
         TPFA            = 0,
         forSolver       = 1,
-        Medit           = 2
+        Medit           = 2,
+        TetGen          = 3,
+        OpenFOAM        = 4
+    };
+
+    //! Define where the noise is applied
+    /*!
+     * @enum NoiseOn
+     * This enumerator allows to select where the noise is applied:
+     * only on matrix nodes, only on fracture nodes, on all nodes.
+     */
+    enum class NoiseOn
+    {
+        Matrix          = 0,
+        Fractures       = 1,
+        All             = 2
     };
 
     //! Define where to apply the source/sink term
@@ -49,7 +77,7 @@ public:
      * @enum SourceSinkOn
      * This enumerator allows to select where to apply the source/sink term: only on matrix, only on fractures, both or none.
      */
-    enum SourceSinkOn
+    enum class SourceSinkOn
     {
         Matrix          = 0,
         Fractures       = 1,
@@ -172,6 +200,42 @@ public:
      * @return the shift domain along z-axis
      */
     Real getSz() const { return M_Sz; }
+
+    //! Test if the noise is added to the points
+    /*!
+     * @return true if the noise is added to the points
+     */
+    bool noiseOn() const { return M_noise; }
+
+    //! Get where the noise is applied
+    /*!
+     * @return where the noise is applied
+     */
+    NoiseOn getNoiseOn() const { return M_noiseOn; }
+
+    //! Get the mean of the normal distribution
+    /*!
+     * @return the mean of the normal distribution
+     */
+    Real getMeanNormalDistribution() const { return M_meanNDist; }
+
+    //! Get the standard deviation of the normal distribution
+    /*!
+     * @return the standard deviation of the normal distribution
+     */
+    Real getStDevNormalDistribution() const { return M_stDevNDist; }
+
+    //! Get the numerical method used to solve the problem
+    /*!
+     * @return the numerical method used to solve the problem
+     */
+    NumericalMethodType getNumericalMethodType() const { return M_numet; }
+
+    //! Get if the stiffness matrix in the mimetic method is lumped
+    /*!
+     * @return lumped true if the stiffness matrix is lumped
+     */
+    bool getLumpedMimetic() const { return M_lumpedMim; }
 
     //! Get the problem type
     /*!
@@ -420,17 +484,53 @@ public:
      */
     void setSz(const Real Sz) { M_Sz = Sz; }
 
+    //! Enable or disable the noise to the points
+    /*!
+     * @param noise true to enable the noise to the points
+     */
+    void noiseOn(const bool noise) { M_noise = noise; }
+
+    //! Set where the noise is applied
+    /*!
+     * @param noiseOn where the noise is applied
+     */
+    void getNoiseOn(const NoiseOn noiseOn) { M_noiseOn = noiseOn; }
+
+    //! Set the mean of the normal distribution
+    /*!
+     * @param mean the mean of the normal distribution
+     */
+    void setMeanNormalDistribution(const Real mean) { M_meanNDist = mean; }
+
+    //! set the standard deviation of the normal distribution
+    /*!
+     * @param stDev the standard deviation of the normal distribution
+     */
+    void setStDevNormalDistribution(const Real stDev) { M_stDevNDist = stDev; }
+
+    //! Set the numerical method
+    /*!
+     * @param type the type of the numerical method
+     */
+    void setNumericalMethodType(const NumericalMethodType type) { M_numet = type; }
+
+    //! Set if the stiffness matrix in the mimetic method is lumped
+    /*!
+     * @param lumped true if the stiffness matrix is lumped
+     */
+    void setLumpedMimetic(const bool lumped) { M_lumpedMim = lumped; }
+
     //! Set the problem type
     /*!
      * @param type the type of the problem
      */
-    void setProblemType(const ProblemType type) { M_problemType = type; };
+    void setProblemType(const ProblemType type) { M_problemType = type; }
 
     //! Enable or disable the fractures
     /*!
      * @param fracture true to enable the fractures
      */
-    void fractureOn(bool fracture) { M_fracturesOn = fracture; }
+    void fractureOn(const bool fracture) { M_fracturesOn = fracture; }
 
     //! Set where the source/sink term is applied
     /*!
@@ -442,7 +542,7 @@ public:
     /*!
      * @param fracPress if true fix a pressure value inside the fractures
      */
-    void pressuresInFractures(bool fracPress) { M_setFracturesPressure = fracPress; }
+    void pressuresInFractures(const bool fracPress) { M_setFracturesPressure = fracPress; }
 
     //! Set the pressure inside the fracture
     /*!
@@ -454,7 +554,7 @@ public:
     /*!
      * @param msr if true the multiple sub-regions method is activated
      */
-    void MSROn(bool msr) { M_MSR = msr; }
+    void MSROn(const bool msr) { M_MSR = msr; }
 
     //! Set the number of sub-regions
     /*!
@@ -613,6 +713,18 @@ protected:
     Real M_Sy;
     //! Shift Domain along z-axis
     Real M_Sz;
+    //! If true noise is added to the points
+    bool M_noise;
+    //! Where the noise is applied
+    NoiseOn M_noiseOn;
+    //! Mean of the normal distribution
+    Real M_meanNDist;
+    //! Standard deviation of the normal distribution
+    Real M_stDevNDist;
+    //! Type of the numerical method
+    NumericalMethodType M_numet;
+    //! If true the stiffness matrix for the mimetic method is lumped
+    bool M_lumpedMim;
     //! Type of the problem
     ProblemType M_problemType;
     //! Enable or disable fractures
@@ -688,7 +800,7 @@ public:
      */
     T parse(const std::string & str) const throw()
     {
-        typename std::map<std::string, T>::const_iterator it = M_enumMap.find(str);
+        typename std::map<std::string, T>::const_iterator it = M_enumMap.find( toUpper( str ) );
         if (it == M_enumMap.end())
         {
             throw std::runtime_error("Error: parsing an enum that does not exist.");
@@ -705,6 +817,9 @@ private:
     std::map<std::string, T> M_enumMap;
 };
 
+//! Specialized class that implements a parser for the Data::NumericalMethodType enum
+template<>
+EnumParser<Data::NumericalMethodType>::EnumParser();
 
 //! Specialized class that implements a parser for the Data::ProblemType enum
 template<>
@@ -713,6 +828,10 @@ EnumParser<Data::ProblemType>::EnumParser();
 //! Specialized class that implements a parser for the Data::MeshFormatType enum
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser();
+
+//! Specialized class that implements a parser for the Data::NoiseOn enum
+template<>
+EnumParser<Data::NoiseOn>::EnumParser();
 
 //! Specialized class that implements a parser for the Data::SourceSinkOn enum
 template<>

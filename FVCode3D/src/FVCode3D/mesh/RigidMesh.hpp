@@ -8,6 +8,7 @@
 
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
+#include <FVCode3D/property/Properties.hpp>
 
 #include <cmath>
 #include <set>
@@ -20,7 +21,7 @@
 namespace FVCode3D
 {
 
-class PropertiesMap;
+//class PropertiesMap;
 class ProxyRigidMesh;
 class ProxyEdge;
 class ProxyBorderEdge;
@@ -232,10 +233,10 @@ public:
         /*!
          * @param generic_facet is a facet of a Mesh3D.
          * @param mesh is a constant pointer to the mesh to which the Facet belongs
-         * @param old_to_new_map is a map from the old Id of the Neighbour-Cells in the Mesh3D to the new Id of those cells in the Rigid_Mesh
+         * @param oldToNewMapCells is a map from the old Id of the Neighbour-Cells in the Mesh3D to the new Id of those cells in the Rigid_Mesh
          * @param m_id is the Id of the facet in the Rigid_Mesh
          */
-        Facet (const Facet3D & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt, UInt> &old_to_new_map, const UInt m_id);
+        Facet (const Facet3D & generic_facet, Rigid_Mesh * const mesh, const std::map<UInt, UInt> &oldToNewMapCells, const UInt m_id);
 
         //! Copy constructor for a Facet from a Facet of another Rigid_Mesh
         /*!
@@ -1230,8 +1231,9 @@ public:
      * @param generic_mesh is a reference to a Mesh3D from which the Rigid_Mesh is constructed
      * @param prop reference to a PropertiesMap
      * @param renumber If False the facets and cells are not renumbered (Default = false)
+     * @param buildEdges If true the edges and edges ids are built (Default = true)
      */
-    Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop, const bool renumber = false, const bool buildEdges = true);
+    Rigid_Mesh (Mesh3D & generic_mesh, const PropertiesMap & prop = PropertiesMap(), const bool renumber = false, const bool buildEdges = true);
 
     //! Copy constructor
     /*!
@@ -1355,6 +1357,39 @@ public:
     const std::vector<Fracture_Facet> & getFractureFacetsIdsVector () const
         { return M_fractureFacets; }
 
+    //! Get size of biggest edge (const)
+    /*!
+     * @return the size of the biggest edge
+     */
+    Real getMaxEdgeSize () const
+    {
+        auto comp=[](const Edge & e1, const Edge & e2){return e1.length()<e2.length();};
+        return std::max_element(M_edges.begin(),M_edges.end(), comp)->length();
+    }
+
+    //! Get size of smallest edge (const)
+    /*!
+     * @return the size of the smallest edge
+     */
+    Real getMinEdgeSize () const
+    {
+        auto comp=[](const Edge & e1, const Edge & e2){return e1.length()<e2.length();};
+        return std::min_element(M_edges.begin(),M_edges.end(), comp)->length();
+    }
+
+    //! Get average size of edges (const)
+    /*!
+     * @return the average size of the edges
+     */
+    Real getAveEdgeSize () const
+    {
+        Real ave = 0;
+        auto sum = [&ave](const Edge & e){ ave += e.length();};
+        for(auto & it: M_edges)
+            sum(it);
+        return ave/M_edges.size();
+    }
+
     //! Get size of biggest facet (const)
     /*!
      * @return the size of the biggest facet
@@ -1445,17 +1480,18 @@ protected:
     //! Builds the vector of cells. It is called by constructor
     /*!
      * @param generic_mesh the generic_mesh
-     * @param old_to_new_map is a map that binds the id of a cell in the original Mesh3D to the id in the Rigid_Mesh
+     * @param oldToNewMapCells is a map that binds the id of a cell in the original Mesh3D to the id in the Rigid_Mesh
      */
-    void cellsVectorBuilder(Mesh3D & generic_mesh, std::map<UInt, UInt> & old_to_new_map );
+    void cellsVectorBuilder(Mesh3D & generic_mesh, std::map<UInt, UInt> & oldToNewMapCells );
 
     //! Builds the vector of facets. It is called by constructor
     /*!
      * @param generic_mesh the generic_mesh
-     * @param old_to_new_mapCells is a map that binds the id of a cell in the original Mesh3D to the id in the Rigid_Mesh
-     * @param old_to_new_mapFacets is a map that binds the id of a facet in the original Mesh3D to the id in the Rigid_Mesh
+     * @param oldToNewMapCells is a map that binds the id of a cell in the original Mesh3D to the id in the Rigid_Mesh
+     * @param oldToNewMapFacets is a map that binds the id of a facet in the original Mesh3D to the id in the Rigid_Mesh
      */
-    void facetsVectorsBuilder(Mesh3D & generic_mesh, const std::map<UInt, UInt> & old_to_new_mapCells, std::map<UInt, UInt> & old_to_new_mapFacets);
+    void facetsVectorsBuilder(Mesh3D & generic_mesh, const std::map<UInt, UInt> & oldToNewMapCells,
+        std::map<UInt, UInt> & oldToNewMapFacets);
 
     //! Builds the vector of edges. It is called by constructor
     void edgesVectorBuilder()
@@ -1469,15 +1505,15 @@ protected:
 
     //! Converts the neighbors ids of cells from old one to new one. It is called by constructor
     /*!
-     * @param old_to_new_map a map that binds the id of a cell in the original Mesh3D to the id in the Rigid_Mesh
+     * @param oldToNewMapCells a map that binds the id of a cell in the original Mesh3D to the id in the Rigid_Mesh
      */
-    void adjustCellNeighbors(const std::map<UInt, UInt> & old_to_new_map);
+    void adjustCellNeighbors(const std::map<UInt, UInt> & oldToNewMapCells);
 
     //! Converts the facets id of the cells from old one to new one. It is called by constructor
     /*!
-     * @param old_to_new_mapFacets a map that binds the id of a facet in the original Mesh3D to the id in the Rigid_Mesh
+     * @param oldToNewMapFacets a map that binds the id of a facet in the original Mesh3D to the id in the Rigid_Mesh
      */
-    void adjustCellFacets(const std::map<UInt, UInt> & old_to_new_mapFacets);
+    void adjustCellFacets(const std::map<UInt, UInt> & oldToNewMapFacets);
 
 protected:
 

@@ -47,6 +47,7 @@ public:
      * @param mesh reference to a Rigid_mesh
      * @param bc reference to a BoundaryConditions
      * @param func reference to a Func
+     * @param data reference to a Data class
      */
     Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
             const Func & func, const DataPtr_Type & data);
@@ -148,6 +149,8 @@ protected:
     const Func & M_func;
     //! Indicates where the source/sink term is applied
     const Data::SourceSinkOn M_ssOn;
+    //! Indicates the numerical method
+    const Data::NumericalMethodType M_numet;
     //! Pointer to the quadrature class
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
@@ -166,6 +169,7 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_bc(bc),
     M_func(func),
     M_ssOn(data->getSourceSinkOn()),
+    M_numet(data->getNumericalMethodType()),
     M_quadrature(nullptr),
     M_solver( SolverHandler::Instance().getProduct(solver) ),
     M_A( M_solver->getA() ),

@@ -1,5 +1,5 @@
 /*!
- *  @file import.hpp
+ *  @file Import.hpp
  *  @brief Classes for loading files.
  */
 
@@ -53,7 +53,7 @@ public:
      * Add the fracture network
      * @pre import the file
      */
-    virtual void addFractures() = 0;
+    virtual void addFractures();
 
     //! Add the lacking data
     /*!
@@ -62,14 +62,6 @@ public:
      * @pre import the file
      */
     virtual void addBCAndFractures(const Real theta = 0.);
-
-    //! Add noise to the points
-    /*!
-     * Add noise to the points following a normal distribution with mean @a mean and standard deviation @a stDev
-     * @param mean mean. Default = 0.
-     * @param stDev standard deviation. Default = 1.
-     */
-    void addNoiseToPoint(const Real mean = 0., const Real stDev = 1.);
 
     //! Get filename
     /*!
@@ -143,13 +135,6 @@ public:
      */
     virtual void import(bool fracturesOn = true) throw();
 
-    //! Add the fractures network
-    /*!
-     * Add the fracture network
-     * @pre import the file
-     */
-    virtual void addFractures();
-
     //! Destructor
     virtual ~ImporterMedit() = default;
 
@@ -163,6 +148,47 @@ private:
 
     //! No assignment operator
     ImporterMedit & operator=(const ImporterMedit &) = delete;
+};
+
+//! Class used to read TetGen format files (.node, .face, .ele).
+/*!
+ * @class ImporterTetGen
+ * This class allows to read TetGen format files (.node, .face, .ele).
+ */
+class ImporterTetGen : public ImporterMedit
+{
+public:
+
+    //! Constructor
+    /*!
+     * Constructor from TetGen files
+     * @param filename prefix filename of the .node, .face, .ele files
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterTetGen(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        ImporterMedit(filename, mesh, properties) {}
+
+    //! Import from .node, .face, .ele files
+    /*!
+     * Read points, faces, tetrahedra
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
+
+    //! Destructor
+    virtual ~ImporterTetGen() = default;
+
+private:
+
+    //! No default constructor
+    ImporterTetGen() = delete;
+
+    //! No copy-constructor
+    ImporterTetGen(const ImporterTetGen &) = delete;
+
+    //! No assignment operator
+    ImporterTetGen & operator=(const ImporterTetGen &) = delete;
 };
 
 //! Class used to read a standard TPFA format file (.grid).
@@ -191,13 +217,6 @@ public:
      */
     virtual void import(bool fracturesOn = true) throw();
 
-    //! Add the fractures network
-    /*!
-     * Add the fracture network
-     * @pre import the file
-     */
-    virtual void addFractures();
-
     //! Destructor
     virtual ~ImporterTPFA() = default;
 
@@ -211,6 +230,47 @@ private:
 
     //! No assignment operator
     ImporterTPFA & operator=(const ImporterTPFA &) = delete;
+};
+
+//! Class used to read the OpenFOAM format file.
+/*!
+ * @class ImporterOpenFOAM
+ * This class allows to read the OpenFOAM format file.
+ */
+class ImporterOpenFOAM : public Importer
+{
+public:
+
+    //! Constructor
+    /*!
+     * Constructor from the OpenFOAM files
+     * @param filename filename of the OpenFOAM files
+     * @param mesh reference to a Mesh3D
+     * @param properties reference to a PropertiesMap
+     */
+    ImporterOpenFOAM(const std::string filename, Mesh3D & mesh, PropertiesMap & properties):
+        Importer(filename, mesh, properties) {}
+
+    //! Import from the OpenFOAM files
+    /*!
+     * Read points, faces, owner, neighbour, boundary
+     * @param fracturesOn if true, imports the fractures, else the fractures are disabled
+     */
+    virtual void import(bool fracturesOn = true) throw();
+
+    //! Destructor
+    virtual ~ImporterOpenFOAM() = default;
+
+private:
+
+    //! No default constructor
+    ImporterOpenFOAM() = delete;
+
+    //! No copy-constructor
+    ImporterOpenFOAM(const ImporterOpenFOAM &) = delete;
+
+    //! No assignment operator
+    ImporterOpenFOAM & operator=(const ImporterOpenFOAM &) = delete;
 };
 
 //! Class used to read files optimized for the solver (.fvg).

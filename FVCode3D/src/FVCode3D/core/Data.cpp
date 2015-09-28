@@ -14,7 +14,11 @@ Data::Data():
     M_outputDir("./results/"), M_outputFile("sol"),
     M_Lx(2.), M_Ly(1.), M_Lz(1.), M_Nx(10), M_Ny(5), M_Nz(5),
     M_Sx(0.), M_Sy(0.), M_Sz(0.),
-    M_problemType(steady), M_fracturesOn(true), M_ssOn(None),
+    M_noise(false),
+    M_noiseOn(NoiseOn::Matrix),
+    M_meanNDist(0.), M_stDevNDist(1.),
+    M_numet(FV), M_lumpedMim(false),
+    M_problemType(steady), M_fracturesOn(true), M_ssOn(SourceSinkOn::None),
     M_setFracturesPressure(false), M_fracturesPressure(0.),
     M_MSR(false), M_nbSubRegions(1),
     M_nbTimeStepSteadyState(0), M_tolSteadyState(1e-8),
@@ -30,7 +34,9 @@ Data::Data():
 Data::Data(const std::string dataFileName) throw()
 {
     EnumParser<MeshFormatType> parserMeshType;
+    EnumParser<NumericalMethodType> parserNumericalMethodType;
     EnumParser<ProblemType> parserProblemType;
+    EnumParser<NoiseOn> parserNoiseOn;
     EnumParser<SourceSinkOn> parserSourceSinkOn;
 
     std::ifstream file(dataFileName.c_str());
@@ -63,6 +69,13 @@ Data::Data(const std::string dataFileName) throw()
     M_Sx = dataFile("domain/Sx", 0.);
     M_Sy = dataFile("domain/Sy", 0.);
     M_Sz = dataFile("domain/Sz", 0.);
+    M_noise = static_cast<bool>(dataFile("domain/noise", 0));
+    M_noiseOn = parserNoiseOn.parse( dataFile("domain/noiseOn", "matrix") );
+    M_meanNDist = dataFile("domain/meanN", 0.);
+    M_stDevNDist = dataFile("domain/stDevN", 1.);
+
+    M_numet = parserNumericalMethodType.parse( dataFile("numet/method", "FV") );
+    M_lumpedMim = static_cast<bool>(dataFile("mimetic/lumped", 0));
 
     M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
     M_fracturesOn = static_cast<bool>(dataFile("problem/fracturesOn", 1));
@@ -119,6 +132,12 @@ void Data::setMeshType(const MeshFormatType type) throw()
         case Medit:
             M_meshExt = ".mesh";
             break;
+        case TetGen:
+            M_meshExt = ".node";
+            break;
+        case OpenFOAM:
+            M_meshExt = ".foam";
+            break;
         default:
             throw std::runtime_error("Error: the mesh type set does not exist.");
             break;
@@ -146,6 +165,12 @@ void Data::showMe( std::ostream & output ) const
         case Medit:
             output << "Medit" << std::endl;
             break;
+        case TetGen:
+            output << "TetGen" << std::endl;
+            break;
+        case OpenFOAM:
+            output << "OpenFOAM" << std::endl;
+            break;
         default:
             exit(0);
             break;
@@ -153,6 +178,25 @@ void Data::showMe( std::ostream & output ) const
 
     output << "Output Directory: " << M_outputDir << std::endl;
     output << "Output Filename: " << M_outputFile << std::endl;
+
+    output << "Numerical Method: ";
+    switch(M_numet)
+    {
+        case FV:
+            output << "Finite Volume" << std::endl;
+            break;
+        case MFD:
+            output << "Mimetic Finite Difference" << std::endl;
+            break;
+        default:
+            exit(0);
+            break;
+    }
+
+    if(M_numet == MFD)
+    {
+        output << "Lumped: " << M_lumpedMim << std::endl;
+    }
 
     output << "Type of the problem: ";
     switch(M_problemType)
@@ -172,16 +216,16 @@ void Data::showMe( std::ostream & output ) const
     output << "Source/Sink on: ";
     switch(M_ssOn)
     {
-        case Matrix:
+        case SourceSinkOn::Matrix:
             output << "matrix" << std::endl;
             break;
-        case Fractures:
+        case SourceSinkOn::Fractures:
             output << "fractures" << std::endl;
             break;
-        case Both:
+        case SourceSinkOn::Both:
             output << "all" << std::endl;
             break;
-        case None:
+        case SourceSinkOn::None:
             output << "none" << std::endl;
             break;
         default:
@@ -236,27 +280,44 @@ template<class T>
 EnumParser<T>::EnumParser() = default;
 
 template<>
+EnumParser<Data::NumericalMethodType>::EnumParser()
+{
+    M_enumMap[ toUpper( "FV" ) ] = Data::NumericalMethodType::FV;
+    M_enumMap[ toUpper( "MFD" ) ] = Data::NumericalMethodType::MFD;
+}
+
+template<>
 EnumParser<Data::ProblemType>::EnumParser()
 {
-    M_enumMap["steady"] = Data::ProblemType::steady;
-    M_enumMap["pseudoSteady"] = Data::ProblemType::pseudoSteady;
+    M_enumMap[ toUpper( "steady" ) ] = Data::ProblemType::steady;
+    M_enumMap[ toUpper( "pseudoSteady" ) ] = Data::ProblemType::pseudoSteady;
 }
 
 template<>
 EnumParser<Data::MeshFormatType>::EnumParser()
 {
-    M_enumMap[".grid"] = Data::MeshFormatType::TPFA;
-    M_enumMap[".fvg"] = Data::MeshFormatType::forSolver;
-    M_enumMap[".mesh"] = Data::MeshFormatType::Medit;
+    M_enumMap[ toUpper( ".grid" ) ] = Data::MeshFormatType::TPFA;
+    M_enumMap[ toUpper( ".fvg" ) ] = Data::MeshFormatType::forSolver;
+    M_enumMap[ toUpper( ".mesh" ) ] = Data::MeshFormatType::Medit;
+    M_enumMap[ toUpper( ".node" ) ] = Data::MeshFormatType::TetGen;
+    M_enumMap[ toUpper( ".foam" ) ] = Data::MeshFormatType::OpenFOAM;
+}
+
+template<>
+EnumParser<Data::NoiseOn>::EnumParser()
+{
+    M_enumMap[ toUpper( "matrix" ) ] = Data::NoiseOn::Matrix;
+    M_enumMap[ toUpper( "fractures" ) ] = Data::NoiseOn::Fractures;
+    M_enumMap[ toUpper( "all" ) ] = Data::NoiseOn::All;
 }
 
 template<>
 EnumParser<Data::SourceSinkOn>::EnumParser()
 {
-    M_enumMap["matrix"] = Data::SourceSinkOn::Matrix;
-    M_enumMap["fractures"] = Data::SourceSinkOn::Fractures;
-    M_enumMap["all"] = Data::SourceSinkOn::Both;
-    M_enumMap["none"] = Data::SourceSinkOn::None;
+    M_enumMap[ toUpper( "matrix" ) ] = Data::SourceSinkOn::Matrix;
+    M_enumMap[ toUpper( "fractures" ) ] = Data::SourceSinkOn::Fractures;
+    M_enumMap[ toUpper( "all" ) ] = Data::SourceSinkOn::Both;
+    M_enumMap[ toUpper( "none" ) ] = Data::SourceSinkOn::None;
 }
 
 } // namespace FVCode3D

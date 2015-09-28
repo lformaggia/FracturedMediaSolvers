@@ -1,0 +1,47 @@
+#! /bin/bash
+
+download_blas() {
+    if [ -f ${packages_src_dir}/blas.tgz ]; then
+        cp ${packages_src_dir}/blas.tgz ${src_dir}
+    else
+        wget -nv "http://www.netlib.org/blas/blas.tgz"
+    fi
+}
+
+unpack_blas() {
+  tar xzf blas.tgz
+}
+
+build_blas() {
+    cd ${src_dir}/BLAS
+    if [ -z "${fortran_compiler}" ]; then
+        fortran_compiler=gfortran
+    fi
+    fortran_compiler_option="FORTRAN  = ${fortran_compiler}"
+    loader_option="LOADER  = ${fortran_compiler}"
+
+    cat > make.inc <<EOF
+SHELL = /bin/sh
+PLAT = _LINUX
+${fortran_compiler_option}
+OPTS     = -O3 -shared -fPIC
+DRVOPTS  = \$(OPTS)
+NOOPT    =
+${loader_option}
+LOADOPTS =
+ARCH     = ar
+ARCHFLAGS= cr
+RANLIB   = ranlib
+BLASLIB      = libblas.a
+EOF
+
+    make -j${num_proc}
+    ${fortran_compiler} -shared -Wl,-soname,libblas.so -o libblas.so *.o
+}
+
+install_blas() {
+    mkdir -p ${install_dir}/lib
+    cp libblas.so ${install_dir}/lib/libblas.so
+}
+
+

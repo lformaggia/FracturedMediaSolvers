@@ -1,0 +1,84 @@
+#!/bin/bash
+
+function set_default_basic_options()
+{
+    if [ -z "${root_dir}" ]; then
+        root_dir=$PWD/../
+    fi
+
+    # Select installation path
+    if [ -z "${project_install_dir}" ]; then
+        project_install_dir=${root_dir}/../${lowercase_project_name}-install
+    fi
+
+    # Select build directory
+    if [ -z "${project_build_dir}" ]; then
+        project_build_dir="$project_install_dir/build"
+    fi
+
+    # Select packages installation path
+    if [ -z "${packages_install_dir}" ]; then
+        packages_install_dir=${project_install_dir}/opt
+    fi
+
+    # Select temporary packages build directory
+    if [ -z "${packages_build_dir}" ]; then
+        packages_build_dir="${project_build_dir}/packages"
+    fi
+
+    # Select directory containing packages source files
+    if [ -z "${packages_src_dir}" ]; then
+        packages_src_dir="${PWD}/src"
+    fi
+
+    # comment next line to keep build files
+    rm_tmp_dir=1
+
+    # comment next line to avoid log files
+    log_packages_installation=1
+
+    # comment next line to disable download
+    download_packages=1
+
+    # comment next line to disable unpack
+    unpack_packages=1
+
+    # set number of parallel builds to use
+    num_proc=$(grep processor /proc/cpuinfo | wc -l)
+    if [ $num_proc -gt 8 ]; then num_proc=8; fi
+}
+
+function set_default_compiler_variables ()
+{
+    c_compiler=""
+    cxx_compiler=""
+    fortran_compiler=""
+
+    c_library_dirs=()
+    cxx_library_dirs=()
+    fortran_library_dirs=()
+}
+
+function export_compiler_variables ()
+{
+    # Set environment variables to configure compilers
+    if [ -n "${c_compiler}" ]; then
+        export CC="${c_compiler}"
+    fi
+    if [ -n "${cxx_compiler}" ]; then
+        export CXX="${cxx_compiler}"
+    fi
+    if [ -n "${fortran_compiler}" ]; then
+        export FC="${fortran_compiler}"
+    fi
+
+    for C_LIBRARY_DIR in "${c_library_dirs[@]}"; do
+        export CFLAGS="${CFLAGS} -Wl,-rpath,${C_LIBRARY_DIR} -L${C_LIBRARY_DIR}"
+    done
+    for CXX_LIBRARY_DIR in "${cxx_library_dirs[@]}"; do
+        export CXXFLAGS="${CXXFLAGS} -Wl,-rpath,${CXX_LIBRARY_DIR} -L${CXX_LIBRARY_DIR}"
+    done
+    for FORTRAN_LIBRARY_DIR in "${fortran_library_dirs[@]}"; do
+        export FFLAGS="${FFLAGS} -Wl,-rpath,${FORTRAN_LIBRARY_DIR} -L${FORTRAN_LIBRARY_DIR}"
+    done
+}

@@ -32,6 +32,9 @@ namespace FVCode3D
 //! Type for real numbers
 typedef double Real;
 
+//! Type for unsigned short int
+typedef uint8_t SUInt;
+
 //! Type for integer numbers
 typedef uint64_t UInt;
 

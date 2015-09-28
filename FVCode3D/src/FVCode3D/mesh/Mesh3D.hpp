@@ -74,11 +74,18 @@ public:
         //! @name Get Methods
         //@{
 
+        //! Get mesh
+        /*!
+         * @return the pointer to the mesh
+         */
+        Mesh3D * getMesh() const
+            { return M_mesh; }
+
         //! Get mesh (const)
         /*!
          * @return the pointer to the mesh
          */
-        const Mesh3D * getMesh() const
+        Mesh3D * getMesh()
             { return M_mesh; }
 
         //! Get the i-th vertex id of the current facet (const)
@@ -254,7 +261,7 @@ public:
 
     private:
         //! The pointer to the mesh containing this facet
-        const Mesh3D * M_mesh;
+        Mesh3D * M_mesh;
         //! The ids of the vertices of the facet
         std::vector<UInt> M_vertexIds;
         //! The set containing the ids of the cells separated by this facet
@@ -300,7 +307,7 @@ public:
          * @param facets the vector that contains the facets ids
          * @param zone code of the zone
          */
-        Cell3D( const Mesh3D * mesh,
+        Cell3D( Mesh3D * const mesh,
                 const std::vector<UInt> & facets,
                 const UInt zone );
 
@@ -313,7 +320,14 @@ public:
         /*!
          * @return the pointer to the mesh
          */
-        const Mesh3D * getMesh() const
+        Mesh3D * getMesh() const
+            { return M_mesh; }
+
+        //! Get mesh
+        /*!
+         * @return the pointer to the mesh
+         */
+        Mesh3D * getMesh()
             { return M_mesh; }
 
         //! Get the vector that contains the vertexes ids (const)
@@ -384,6 +398,13 @@ public:
         //! @name Set Methods
         //@{
 
+        //! Set mesh (const)
+        /*!
+         * @param the pointer to the mesh
+         */
+        void setMesh(Mesh3D * const mesh)
+            { M_mesh = mesh; }
+
         //! Set the zone code
         /*!
          * @param zone the zone code of the cell
@@ -433,9 +454,15 @@ public:
          */
         bool hasNeighborsThroughFacet( const UInt & facetId, UInt & idNeighbor) const;
 
+        //! Compute the vertex ids that composed the cell
+        /*!
+         * Compute the vertex ids that composed the cell
+         */
+        void computeVertexIds();
+
         //! Computes the volume and the centroid of the cell
         /*!
-         * @return the volume and the ccentroid of the cell
+         * Compute the volume and the ccentroid of the cell
          */
         void computeVolumeAndCentroid();
 
@@ -450,7 +477,7 @@ public:
     private:
 
         //! The pointer to the mesh containing this cell
-        const Mesh3D * M_mesh;
+        Mesh3D * M_mesh;
         //! The vector containing the vertexes ids. The order doesn't matter.
         std::vector<UInt> M_vertexIds;
         //! The vector containing the facets ids
@@ -636,7 +663,7 @@ protected:
     FractureNetwork3D M_fn;
     //! The vector storing all the nodes of the mesh
     std::vector<Point3D> M_nodes;
-    //! The set storing all the edges of the mesh
+    //! The set storing all the facets of the mesh
     std::map<UInt,Facet3D> M_facets;
     //! The map storing all the cells of the mesh
     std::map<UInt,Cell3D> M_cells;

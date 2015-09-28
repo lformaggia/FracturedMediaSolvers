@@ -1,0 +1,7 @@
+#!/bin/bash
+
+project_name="FVCode3D"
+
+package_array=(cmake blas lapack suitesparse eigen)
+
+

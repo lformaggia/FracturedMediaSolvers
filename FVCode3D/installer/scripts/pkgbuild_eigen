@@ -1,0 +1,39 @@
+#! /bin/bash
+
+ver="3.2.1"
+
+download_eigen() {
+    if [ -f ${packages_src_dir}/${ver}.tar.gz ]; then
+        cp ${packages_src_dir}/${ver}.tar.gz ${src_dir}
+    else
+        wget -nv http://bitbucket.org/eigen/eigen/get/${ver}.tar.gz
+    fi
+}
+
+unpack_eigen() {
+    tar xzf ${ver}.tar.gz
+    original_dir_name=$(ls | grep eigen)
+    mv ${original_dir_name} eigen-${ver}
+}
+
+build_eigen() {
+    mkdir -p ${build_dir}
+    cd ${build_dir}
+
+    cmake_bin=cmake
+    if [ -n "${cmake_install_dir}" ]; then
+        cmake_bin="${cmake_install_dir}/bin/cmake"
+    fi
+
+    ${cmake_bin} \
+        -DCMAKE_INSTALL_PREFIX:PATH=${install_dir} \
+        ${src_dir}/eigen-${ver}
+
+    make -j${num_proc}
+}
+
+install_eigen() {
+    make -j${num_proc} install
+}
+
+

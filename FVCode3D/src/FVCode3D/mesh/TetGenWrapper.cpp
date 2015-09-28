@@ -80,7 +80,7 @@ void TetGenWrapper::generateMesh()
         M_elements[i][2] = out.tetrahedronlist[4*i+2];
         M_elements[i][3] = out.tetrahedronlist[4*i+3];
     }
-}
+} // TetGenWrapper::generateMesh
 
 Real TetGenWrapper::computeVolume()
 {
@@ -98,7 +98,7 @@ Real TetGenWrapper::computeVolume()
     }
 
     return M_volume;
-}
+} // TetGenWrapper::computeVolume
 
 Point3D TetGenWrapper::computeCenterOfMass()
 {
@@ -121,7 +121,7 @@ Point3D TetGenWrapper::computeCenterOfMass()
     M_centerOfMass /= totVol;
 
     return M_centerOfMass;
-}
+} // TetGenWrapper::computeCenterOfMass
 
 const std::vector<Point3D> TetGenWrapper::getElement(const UInt i) const
 {
@@ -133,6 +133,6 @@ const std::vector<Point3D> TetGenWrapper::getElement(const UInt i) const
     points[3] = M_outNodes[M_elements[i][3]];
 
     return points;
-}
+} // TetGenWrapper::getElement
 
 }// namespace FVCode3D

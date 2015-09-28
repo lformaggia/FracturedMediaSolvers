@@ -59,35 +59,20 @@ mark_as_advanced(INSTALL_LIB_DIR INSTALL_BIN_DIR INSTALL_INCLUDE_DIR INSTALL_CMA
 #================================
 # Third Party Libraries
 #================================
-# find_package uses a Find<package>.cmake module which it tries to find
-# in CMAKE_MODULE_PATH. Since there are no default modules for Cholmod
-# and Umfpack, we use those in ${CMAKE_CURRENT_SOURCE_DIR}/cmake
-# (we later restore CMAKE_MODULE_PATH its value).
-# CMAKE_PREFIX_PATH is where find_package, find_library and find_file
-# look for files. We set this to the user defined TPL_<package>_DIR
-set(ENV_CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH})
-set(ENV_CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-# CHOLMOD
-set(TPL_SuiteSparse_DIR "" CACHE PATH "SuiteSparse installation base directory")
-set(CMAKE_PREFIX_PATH ${TPL_SuiteSparse_DIR})
-find_package(Cholmod QUIET)
-if(NOT CHOLMOD_FOUND)
-    message(FATAL_ERROR "Cholmod not found. Try setting TPL_SuiteSparse_DIR to the installation path of SuiteSparse")
-endif()
-# UMFPACK
-set(CMAKE_PREFIX_PATH ${TPL_SuiteSparse_DIR})
-find_package(Umfpack QUIET)
-if(NOT UMFPACK_FOUND)
-    message(FATAL_ERROR "Umfpack not found. Try setting TPL_SuiteSparse_DIR to the installation path of SuiteSparse")
-endif()
-# Eigen
-set(TPL_Eigen_DIR "" CACHE PATH "Eigen installation base directory")
-set(CMAKE_PREFIX_PATH ${TPL_Eigen_DIR})
-find_package(Eigen3 QUIET)
-if(NOT EIGEN3_FOUND)
-    message(FATAL_ERROR "Eigen not found. Try setting TPL_Eigen_DIR to the installation path of Eigen")
-endif()
+# find_third_party_library looks for a library in TPL_${PACKAGE_NAME}_DIR
+# or in the default system paths and appends its include dirs, library dirs
+# and library names to the following variables. Some packages don't
+# use any variables, but rather provide a USE_FILE that sets up CMake
+# to link and include the proper files and directories
+set(${PROJECT_NAME}_TPL_INCLUDE_DIRS "" CACHE INTERNAL "")
+set(${PROJECT_NAME}_TPL_LIBRARY_DIRS "" CACHE INTERNAL "")
+set(${PROJECT_NAME}_TPL_LIBRARIES "" CACHE INTERNAL "")
+set(${PROJECT_NAME}_TPL_PACKAGES_PROVIDING_USE_FILES "" CACHE INTERNAL "")
+
+find_third_party_library(UMFPACK)
+find_third_party_library(CHOLMOD)
+find_third_party_library(BLAS)
+find_third_party_library(EIGEN3)
 # SAMG
 set(TPL_Samg_DIR "" CACHE PATH "Samg installation base directory")
 set(CMAKE_PREFIX_PATH ${TPL_Samg_DIR})
@@ -98,52 +83,33 @@ if(NOT SAMG_FOUND)
     set(SAMG_LIBRARIES "")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSAMG_UNIX_LINUX -DSAMG_LCASE_USCORE -DFVCODE3D_HAS_SAMG")
+    set(${PROJECT_NAME}_TPL_INCLUDE_DIRS
+        ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}
+        ${SAMG_INCLUDES}
+        CACHE INTERNAL "")
+    set(${PROJECT_NAME}_TPL_LIBRARIES
+        ${${PROJECT_NAME}_TPL_LIBRARIES}
+        ${SAMG_LIBRARIES}
+        CACHE INTERNAL "")
 endif()
-# BLAS
-set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
-set(TPL_BLAS_DIR "" CACHE PATH "BLAS installation base directory")
-set(CMAKE_PREFIX_PATH ${TPL_BLAS_DIR})
-find_package(BLAS QUIET)
-if(NOT BLAS_FOUND)
-    message(FATAL_ERROR "BLAS not found. Try setting TPL_BLAS_DIR to the installation path of BLAS")
-endif()
-# Restore variables to their original values
-set(CMAKE_PREFIX_PATH ${ENV_CMAKE_PREFIX_PATH})
-set(CMAKE_MODULE_PATH ${ENV_CMAKE_MODULE_PATH})
 
-set(${PROJECT_NAME}_TPL_INCLUDE_DIRS
-    ${CHOLMOD_INCLUDES}
-    ${UMFPACK_INCLUDES}
-    ${EIGEN3_INCLUDE_DIR}
-    ${SAMG_INCLUDES}
-    )
 message(STATUS "${PROJECT_NAME}_TPL_INCLUDE_DIRS = ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}")
-
-set(${PROJECT_NAME}_TPL_LIBRARY_DIRS
-    ""
-    )
 message(STATUS "${PROJECT_NAME}_TPL_LIBRARY_DIRS = ${${PROJECT_NAME}_TPL_LIBRARY_DIRS}")
+message(STATUS "${PROJECT_NAME}_TPL_LIBRARIES = ${${PROJECT_NAME}_TPL_LIBRARIES}")
+message(STATUS "${PROJECT_NAME}_TPL_PACKAGES_PROVIDING_USE_FILES = ${${PROJECT_NAME}_TPL_PACKAGES_PROVIDING_USE_FILES}")
 
-# Make sure the compiler can find include files.
-include_directories (
+include_directories(SYSTEM ${${PROJECT_NAME}_TPL_INCLUDE_DIRS})
+include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${${PROJECT_NAME}_TPL_INCLUDE_DIRS}
     )
 
-
-# Make sure the linker can find the library.
-link_directories (
+link_directories(${${PROJECT_NAME}_TPL_LIBRARY_DIRS}
     ${CMAKE_CURRENT_BINARY_DIR}/lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib
-    ${${PROJECT_NAME}_TPL_LIBRARY_DIRS}
-    )
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 set(LIBRARIES
-    ${UMFPACK_LIBRARIES}
-    ${CHOLMOD_LIBRARIES}
-    ${BLAS_LIBRARIES}
-    ${SAMG_LIBRARIES}
+    ${${PROJECT_NAME}_TPL_LIBRARIES}
     rt
     tet
     CACHE INTERNAL "")

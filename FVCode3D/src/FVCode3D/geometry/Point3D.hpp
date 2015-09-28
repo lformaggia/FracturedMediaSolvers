@@ -89,6 +89,9 @@ public:
     //! Normalize the current point
     void normalize();
 
+    //! Return the normalized point
+    Point3D normalized() const { return Point3D( *this ) / norm(); }
+
     //! Set coordinates
     /*!
      * @param x x-coordinate

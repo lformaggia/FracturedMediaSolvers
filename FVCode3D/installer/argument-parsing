@@ -1,0 +1,162 @@
+#!/bin/bash
+
+#BASIC_HADLED_ARGUMENTS=("--prefix=*" "--build-dir=*" \
+#    "--c-compiler=*" "--cxx-compiler=*" "--fortran-compiler=*" \
+#    "--c-library-dir=*" "--cxx-library-dir=*" "--fortran-library-dir=*" \
+#    "--install=*" "--skip-*-installation" "--with-system-*" "--with-*=*")
+
+print_basic_help ()
+{
+    echo "Install ${project_name}"
+    echo "Default installation directory is \"../install\" and default build type is \"Release\""
+    echo "Paths:"
+    echo "  --prefix=<path>             installation directory; default value is:"
+    echo "                              \"../${lowercase_project_name}-install\";"
+    echo "  --packages-prefix=<path>    installation directory for packages;"
+    echo "                              default value is <install_path>/opt, where"
+    echo "                              <install_path> is the path specified with the"
+    echo "                              option --prefix"
+    echo "  --build-dir=<path>          build directory;"
+    echo "                              default value is \"<install_dir>/build\""
+    echo "                              where <install_dir> can be specified with"
+    echo "                              the --prefix option and defaults to"
+    echo "                              \"../${lowercase_project_name}-install\";"
+    echo "                              unless --leave-build-dir is specified, this "
+    echo "                              directory will be deleted at the end of the build"
+    echo ""
+    echo "Compilers:"
+    echo "  --c-compiler=<path>         c compiler"
+    echo "  --cxx-compiler=<path>       c++ compiler"
+    echo "  --fortan-compiler=<path>    fortran compiler"
+    echo "  --c-library-dir=<path>      extra library directory to be used when compiling"
+    echo "                              c programs (can be used multiple times)"
+    echo "  --cxx-library-dir=<path>    extra library directory to be used when compiling"
+    echo "                              c++ programs (can be used multiple times)"
+    echo "  --fortran-library-dir=<path> extra library directory to be used when compiling"
+    echo "                              fortran programs (can be used multiple times)"
+    echo ""
+    echo "Dependencies:"
+    echo "  --install-<package>         install <package>; <package> can be one of:"
+    for package in "${package_array[@]}"; do
+        echo "                                - $package"
+    done
+    echo "                              (this is enabled by default for all packages)"
+    echo "  --skip-packages-installation"
+    echo "                              don't install third party libraries"
+    echo "                              (assume all packages have already been installed"
+    echo "                              during a previous execution of this script)"
+    echo "  --skip-<package>-installation"
+    echo "                              don't install <package>"
+    echo "                              (assume <package> has already been installed"
+    echo "                              during a previous execution of this script)"
+    echo "                              <package> can be one of:"
+    for package in "${package_array[@]}"; do
+        echo "                                - $package"
+    done
+    echo "  --with-system-<package>     use the default version of <package> installed on"
+    echo "                              the system; <package> can be one of:"
+    for package in "${package_array[@]}"; do
+        echo "                                - $package"
+    done
+    echo "  --with-system-packages      use the default version installed on the system"
+    echo "                              for all packages"
+    echo "  --with-<package>=<path>     specify where a package is already installed;"
+    echo "                              <package> can be one of:"
+    for package in "${package_array[@]}"; do
+        echo "                                - $package"
+    done
+    echo "                              <package> won't be installed; <path> is the"
+    echo "                              prefix where the package was installed and"
+    echo "                              typically contains the subdirectories bin, lib and"
+    echo "                              include (e.g. --with-${package_array[1]}=/usr)"
+}
+
+function handle_basic_argument ()
+{
+    i="$1"
+    case $i in
+        --prefix=*)
+            project_install_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
+            # Expand ~ ~+ ~- ~user and remove starting and trailing quotes
+            eval project_install_dir=${project_install_dir}
+            # If it's not an absolute path prefix it with ${PWD}
+            [[ ${project_install_dir} == /* ]] || project_install_dir="${PWD}/${project_install_dir}"
+        ;;
+        --packages-prefix=*)
+            packages_install_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
+            # Expand ~ ~+ ~- ~user and remove starting and trailing quotes
+            eval packages_install_dir=${packages_install_dir}
+            # If it's not an absolute path prefix it with ${PWD}
+            [[ ${packages_install_dir} == /* ]] || packages_install_dir="${PWD}/${packages_install_dir}"
+        ;;
+        --build-dir=*)
+            project_build_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
+            # Expand ~ ~+ ~- ~user and remove starting and trailing quotes
+            eval project_build_dir=${project_build_dir}
+            # If it's not an absolute path prefix it with ${PWD}
+            [[ ${project_build_dir} == /* ]] || project_build_dir="${PWD}/${project_build_dir}"
+        ;;
+        --c-compiler=*)
+            c_compiler="$(echo $i | sed 's/[-a-zA-Z0-9]*=//')"
+        ;;
+        --cxx-compiler=*)
+            cxx_compiler="$(echo $i | sed 's/[-a-zA-Z0-9]*=//')"
+        ;;
+        --fortran-compiler=*)
+            fortran_compiler="$(echo $i | sed 's/[-a-zA-Z0-9]*=//')"
+        ;;
+        --c-library-dir=*)
+            c_library_dirs+="$(echo $i | sed 's/[-a-zA-Z0-9]*=//')"
+        ;;
+        --cxx-library-dir=*)
+            cxx_library_dirs+="$(echo $i | sed 's/[-a-zA-Z0-9]*=//')"
+        ;;
+        --fortran-library-dir=*)
+            fortran_library_dirs+="$(echo $i | sed 's/[-a-zA-Z0-9]*=//')"
+        ;;
+        --install-*)
+            package_name=$(echo $i | sed 's/--install-//' | tr '[:upper:]' '[:lower:]')
+            eval ${package_name}="INSTALL" # 'INSTALL' means the package has to be installed
+        ;;
+        --with-system-*)
+            package_name=$(echo $i | sed 's/--with-system-//' | tr '[:upper:]' '[:lower:]')
+            if [ "${package_name}" == "packages" ]; then
+                # use the system version for all packages
+                for package in "${package_array[@]}"; do
+                    eval ${package}="SYSTEM" # 'SYSTEM' means the system version of the package will be used
+                done
+            else
+                # use the system version of this package
+                eval ${package_name}="SYSTEM" # 'SYSTEM' means the system version of the package will be used
+            fi
+        ;;
+        --with-*=*)
+            package_name=$(echo $i | sed 's/--with-//' | sed 's/=.*//' | tr '[:upper:]' '[:lower:]')
+            eval ${package_name}="CUSTOM" # 'CUSTOM' means the package is already installed and its path has been specified
+            package_install_dir=$(echo $i | sed 's/[-a-zA-Z0-9]*=//')
+            # Expand ~ ~+ ~- ~user and remove starting and trailing quotes
+            eval package_install_dir=${package_install_dir}
+            # If it's not an absolute path prefix it with ${PWD}
+            [[ ${package_install_dir} == /* ]] || package_install_dir="${PWD}/${package_install_dir}"
+            eval ${package_name}_install_dir=${package_install_dir}
+        ;;
+        --skip-*-installation)
+            package_name=$(echo $i | sed 's/--skip-//' | sed 's/-installation//' | tr '[:upper:]' '[:lower:]')
+            # 'CUSTOM' means the package is already installed
+            # The "build" script will take care of setting the default path where the package should have been installed
+            if [ "${package_name}" == "packages" ]; then
+                # don't reinstall any package
+                for package in "${package_array[@]}"; do
+                    eval ${package}="CUSTOM"
+                done
+            else
+                # use the system version of this package
+                eval ${package_name}="CUSTOM"
+            fi
+        ;;
+        *)
+            return 1
+        ;;
+    esac
+    return 0
+}
