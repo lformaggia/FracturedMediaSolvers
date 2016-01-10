@@ -6,7 +6,7 @@ download_suitesparse() {
     if [ -f ${packages_src_dir}/SuiteSparse-${ver}.tar.gz ]; then
         cp -R ${packages_src_dir}/SuiteSparse-${ver}.tar.gz ${src_dir}
     else
-        wget -nv http://www.cise.ufl.edu/research/sparse/SuiteSparse/SuiteSparse-${ver}.tar.gz
+        wget -nv http://faculty.cse.tamu.edu/davis/SuiteSparse/SuiteSparse-${ver}.tar.gz
     fi
 }
 
@@ -42,7 +42,7 @@ INSTALL_LIB = ${install_dir}/lib
 INSTALL_INCLUDE = ${install_dir}/include
 BLAS = @BLAS_FULL_LINKER_OPTIONS@
 LAPACK = @LAPACK_FULL_LINKER_OPTIONS@
-XERBLA = 
+XERBLA =
 GPU_BLAS_PATH =
 GPU_CONFIG =
 METIS_PATH = ../../metis-4.0
