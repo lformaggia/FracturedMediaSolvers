@@ -11,11 +11,13 @@
 namespace FVCode3D
 {
 
-void CartesianGrid::generate(bool fracturesOn)
+void CartesianGrid::
+generate( bool fracturesOn,
+          const std::function<Real(const Point3D&)> & _surface )
 {
     const Real Lx = M_data->getLx();
     const Real Ly = M_data->getLy();
-    const Real Lz = M_data->getLz();
+//    const Real Lz = M_data->getLz();
     const UInt Nx = M_data->getNx();
     const UInt Ny = M_data->getNy();
     const UInt Nz = M_data->getNz();
@@ -29,7 +31,7 @@ void CartesianGrid::generate(bool fracturesOn)
 
     Real hx = Lx/Nx;
     Real hy = Ly/Ny;
-    Real hz = Lz/Nz;
+//    Real hz = Lz/Nz;
     UInt nNodes = (Nx+1)*(Ny+1)*(Nz+1);
     UInt i,j,k;
 
@@ -50,7 +52,11 @@ void CartesianGrid::generate(bool fracturesOn)
         {
             for(i=0; i <= Nx; ++i)
             {
-                nodesRef.emplace_back(hx*i + Sx, hy*j + Sy, hz*k + Sz); // Point3D
+                const Real abscissa = hx*i + Sx;
+                const Real ordinate = hy*j + Sy;
+                const Real Lz = _surface( Point3D( abscissa, ordinate, 0. ) );
+                const Real quota = Lz/Nz*k + Sz;
+                nodesRef.emplace_back( abscissa, ordinate, quota ); // Point3D
             }
         }
     }

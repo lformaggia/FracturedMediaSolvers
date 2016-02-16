@@ -13,19 +13,16 @@ namespace FVCode3D
 
 void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) const throw()
 {
+
     std::ostringstream specGridSS, coordSS, zCornSS, actnumSS;
 
     const std::vector<Point3D> & pointsRef = mesh.getNodesVector();
 
-    auto conf = [](Point3D p1, Point3D p2) { return p1.z() < p2.z(); };
-
-    Real zmax, zmin;
-
-    zmax = (std::max_element(std::begin(pointsRef), std::end(pointsRef), conf))->z();
-    zmin = (std::min_element(std::begin(pointsRef), std::end(pointsRef), conf))->z();
-
     typedef std::pair<Real, Real> basePillar;
-    std::function<bool(basePillar, basePillar)> compPillar = [](basePillar b1, basePillar b2)
+    typedef std::pair<Real, Real> baseIJPillar;
+    typedef std::function<bool(basePillar, basePillar)> compPillarFct;
+
+    compPillarFct compPillar = [](basePillar b1, basePillar b2)
     {
         if(b1.second == b2.second)
             return b1.first < b2.first;
@@ -33,53 +30,113 @@ void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) con
             return b1.second < b2.second;
     };
 
-    std::set<basePillar, std::function<bool(basePillar, basePillar)> > pillarSet(compPillar);
+    std::map< basePillar, std::vector<Real>, compPillarFct > coordPillar( compPillar);
+    std::map< baseIJPillar, basePillar, compPillarFct > ijPillar( compPillar );
+
+    std::set<basePillar, compPillarFct > pillarSet(compPillar);
 
     for(auto it : pointsRef)
-        pillarSet.insert( std::make_pair(it.x(), it.y()) );
+    {
+        basePillar pairPillar{ it.x(), it.y() };
+        pillarSet.insert( pairPillar );
+
+        auto cIt = coordPillar.find( pairPillar );
+        if ( cIt == std::end( coordPillar ) )
+        {
+            std::vector<Real> value ( 1, it.z() );
+            coordPillar.insert( std::make_pair( pairPillar, value ) );
+        } // if
+        else
+        {
+            cIt->second.push_back( it.z() );
+        } // else
+    } // for
+
+    for( auto it: coordPillar )
+    {
+        std::sort( std::begin( it.second ), std::end( it.second ) );
+    } // for
 
     coordSS << "COORD" << std::endl;
     UInt Nx = 0, Ny = 0, Nz = 0;
-    Real prevY = std::begin(pillarSet)->second;
+    Real prevY = std::begin( coordPillar )->first.second;
 
     coordSS.precision(15);
 
-    for(auto it : pillarSet)
+    Int iPillar(-1), jPillar(0);
+    for(auto it : coordPillar )
     {
-        if(prevY == it.second)
+        if(prevY == it.first.second)
         {
-            if(Ny == 0)
-                Nx++;
+            if(Ny == 0) Nx++;
+            iPillar++;
         }
         else
+        {
             Ny++;
+            jPillar++;
+            iPillar = 0;
+        }
 
-        coordSS << it.first << " " << it.second << " " << zmin << " "
-                << it.first << " " << it.second << " " << zmax << std::endl;
+        const Real x = it.first.first;
+        const Real y = it.first.second;
 
-        prevY = it.second;
-    }
+        const Real zmin = *std::min_element( std::begin( it.second ),
+                                             std::end( it.second ) );
+
+        const Real zmax = *std::max_element( std::begin( it.second ),
+                                             std::end( it.second ) );
+
+        coordSS << x << " " << y << " " << zmin << " "
+                << x << " " << y << " " << zmax
+                << std::endl;
+
+        baseIJPillar ij{ iPillar, jPillar };
+        ijPillar.insert( std::make_pair( ij, it.first ) );
+
+        prevY = it.first.second;
+    } // for
     coordSS << "/" << std::endl << std::endl;
 
     Nx--;
+    Nz = std::begin( coordPillar )->second.size() - 1;
 
-    basePillar prevPillar = *std::begin(pillarSet);
-
-    Nz = std::count_if(std::begin(pointsRef), std::end(pointsRef),
-            [&prevPillar](Point3D p){ return (p.x() == prevPillar.first) && (p.y() == prevPillar.second); }) - 1;
-
+    zCornSS.precision(15);
     zCornSS << "ZCORN" << std::endl;
 
-    zCornSS << 4*(Nx+1)*(Ny+1) - 4*(Nx+1) - 4*(Ny-1) - 4 << "*" << zmin << " ";
+    for ( UInt k = 0; k < Nz + 1; ++k )
+    {
+        UInt numJ(1);
+        if( k != 0 && k != Nz ) numJ = 2;
 
-    for(UInt i=1; i < Nz; ++i)
-        zCornSS << 2*(4*(Nx+1)*(Ny+1) - 4*(Nx+1) - 4*(Ny-1) - 4) << "*" << (zmax-zmin)/Nz*i+zmin << " ";
+        for( UInt jk = 0; jk < numJ; ++jk )
+        {
+            for( UInt j = 0; j < Ny + 1; ++j )
+            {
+                UInt numI(1);
+                if( j != 0 && j != Ny ) numI = 2;
 
-    zCornSS << 4*(Nx+1)*(Ny+1) - 4*(Nx+1) - 4*(Ny-1) - 4 << "*" << zmax << std::endl << "/" << std::endl << std::endl;
+                for( UInt ij = 0; ij < numI; ++ij )
+                {
+                    for( UInt i = 0; i < Nx; ++i )
+                    {
+                        auto first = ijPillar.find( { i, j } )->second;
+                        auto second = ijPillar.find( { i + 1, j } )->second;
 
-    actnumSS << "ACTNUM" << std::endl;
+                        const Real z1 = coordPillar.find( first )->second[ k ];
+                        const Real z2 = coordPillar.find( second )->second[ k ];
 
-    actnumSS << Nx*Ny*Nz << "*1 " << "/" << std::endl;
+                        zCornSS << z1 << " " << z2 << std::endl;
+                    } // for
+                } // for
+            } // for
+        } // for
+    } // for
+
+    zCornSS << std::endl << "/" << std::endl << std::endl;
+
+    actnumSS << "ACTNUM" << std::endl
+             << Nx*Ny*Nz << "*1 " << std::endl << "/" << std::endl;
 
     std::fstream cpFile;
 
@@ -104,6 +161,7 @@ void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) con
     cpFile << specGridSS.str() << coordSS.str() << zCornSS.str() << actnumSS.str();
 
     cpFile.close();
-}
+
+} // exportMesh
 
 } // namespace FVCode3D
