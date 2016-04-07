@@ -1,5 +1,7 @@
 #! /bin/bash
 
+ver="3.5.0"
+
 download_blas() {
     if [ -f ${packages_src_dir}/blas.tgz ]; then
         cp ${packages_src_dir}/blas.tgz ${src_dir}
@@ -13,7 +15,7 @@ unpack_blas() {
 }
 
 build_blas() {
-    cd ${src_dir}/BLAS
+    cd ${src_dir}/BLAS-${ver}
     if [ -z "${fortran_compiler}" ]; then
         fortran_compiler=gfortran
     fi

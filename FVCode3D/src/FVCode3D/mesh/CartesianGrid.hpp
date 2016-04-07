@@ -6,6 +6,8 @@
 #ifndef CARTESIANGRID_HPP_
 #define CARTESIANGRID_HPP_
 
+#include <functional>
+
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/core/Data.hpp>
 
@@ -33,11 +35,20 @@ public:
     CartesianGrid(Mesh3D & mesh, PropertiesMap & properties, const DataPtr_Type & data):
         M_mesh(mesh), M_properties(properties), M_data(data) {}
 
+    //! Generate a Cartesian mesh with a prescribed surface
+    /*!
+     * @param fracturesOn true to load fractures
+     */
+    void generate( bool fracturesOn,
+                   const std::function<Real(const Point3D&)> & _surface );
+
     //! Generate a Cartesian mesh
     /*!
      * @param fracturesOn true to load fractures
      */
-    virtual void generate(bool fracturesOn);
+    virtual void generate( bool fracturesOn )
+    { generate( fracturesOn,
+                [&](const Point3D&){ return M_data->getLz(); } ); }
 
     //! Generate the BC ids
     /*!

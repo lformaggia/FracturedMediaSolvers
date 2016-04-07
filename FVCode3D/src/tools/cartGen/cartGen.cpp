@@ -39,7 +39,52 @@ int main(int argc, char * argv[])
 
     std::cout << "Generate Cartesian grid..." << std::flush;
     CartesianGrid cart(mesh, propMap, dataPtr);
-    cart.generate(true);
+
+    // Idrocoin simplified
+    cart.generate(true, [](const Point3D& _p) -> Real {
+        if ( _p.x() <= 400. && _p.x() >= 0. )
+            return ( 100. - 150. )/( 400. - 0. )*( _p.x() - 0. ) + 150. + 1000.;
+
+        if( _p.x() >= 400. && _p.x() <= 800. )
+            return ( 150. - 100. )/( 800. - 400. )*( _p.x() - 400. ) + 100. + 1000.;
+
+        if( _p.x() >= 800. && _p.x() <= 1200. )
+            return ( 100. - 150. )/( 1200. - 800. )*( _p.x() - 800. ) + 150. + 1000.;
+
+        if( _p.x() >= 1200. && _p.x() <= 1600. )
+            return ( 150. - 100. )/( 1600. - 1200. )*( _p.x() - 1200. ) + 100. + 1000.;
+    });
+
+/*    cart.generate(true, [](const Point3D& _p) -> Real {
+        if ( _p.x() <= 10. && _p.x() >= 0. )
+            return 150. + 1000.;
+
+        if( _p.x() >= 10. && _p.x() <= 395. )
+            return ( 100. - 150. )/( 395. - 10. )*( _p.x() - 10. ) + 150. + 1000.;
+
+        if( _p.x() >= 395. && _p.x() <= 405. )
+            return 100. + 1000.;
+
+        if( _p.x() >= 405. && _p.x() <= 800. )
+            return ( 150. - 100. )/( 800. - 405. )*( _p.x() - 405. ) + 100. + 1000.;
+
+        if( _p.x() >= 800. && _p.x() <= 1192.5 )
+            return ( 100. - 150. )/( 1192.5 - 800. )*( _p.x() - 800. ) + 150. + 1000.;
+
+        if( _p.x() >= 1192.5 && _p.x() <= 1207.5 )
+            return 100. + 1000.;
+
+        if( _p.x() >= 1207.5 && _p.x() <= 1590. )
+            return ( 150. - 100. )/( 1590. - 1207.5 )*( _p.x() - 1207.5 ) + 100. + 1000.;
+
+        if( _p.x() >= 1590. && _p.x() <= 1600. )
+            return 150. + 1000.;
+    });*/
+
+//    cart.generate( true, []( const Point3D& _p) -> Real { return 0.5 * std::sin( 3.14 * 2 * _p.x() ) + 1.; } );
+
+//    cart.generate( true );
+
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "# of cells: " << mesh.getCellsMap().size() << std::endl << std::endl;
@@ -212,6 +257,9 @@ int main(int argc, char * argv[])
     ExporterCP exporter;
     exporter.exportMesh(mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".GRDECL");
     std::cout << " done." << std::endl;
+
+    FVCode3D::ExporterVTU exporterVTU;
+    exporterVTU.exportMesh( mesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + ".vtu" );
 
     return 0;
 }
