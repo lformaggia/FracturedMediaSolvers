@@ -3,6 +3,8 @@
  * @brief This unit contains some utilities concerning meshes (definitions).
  */
 
+#include <random>
+
 #include <FVCode3D/mesh/MeshUtility.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
 
