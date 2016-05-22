@@ -87,6 +87,14 @@ void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) con
         const Real zmax = *std::max_element( std::begin( it.second ),
                                              std::end( it.second ) );
 
+//        const Real Rz = 45. / 180. * _PI_;
+//        constexpr Real Sx = 9597160.25;
+//        constexpr Real Sy = 5143433.37;
+//
+//        coordSS << (x*cos(Rz) - y*sin(Rz) + Sx) << " " << (x*sin(Rz) + y*cos(Rz) + Sy) << " " << zmin << " "
+//                << (x*cos(Rz) - y*sin(Rz) + Sx) << " " << (x*sin(Rz) + y*cos(Rz) + Sy) << " " << zmax
+//                << std::endl;
+
         coordSS << x << " " << y << " " << zmin << " "
                 << x << " " << y << " " << zmax
                 << std::endl;
