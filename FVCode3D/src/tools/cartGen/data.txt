@@ -18,6 +18,7 @@ Nz  = 8
 Sx  = -1.
 Sy  = -1.
 Sz  = -1.
+Rz  = 0.
 noise   = 0
 noiseOn = matrix # matrix , fractures , all
 meanN   = 0.
