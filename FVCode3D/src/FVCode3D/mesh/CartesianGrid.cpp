@@ -24,6 +24,7 @@ generate( bool fracturesOn,
     const Real Sx = M_data->getSx();
     const Real Sy = M_data->getSy();
     const Real Sz = M_data->getSz();
+    const Real Rz = M_data->getRz() / 180. * _PI_;
     const bool noise = M_data->noiseOn();
     const Data::NoiseOn noiseOn = M_data->getNoiseOn();
     const Real mean = M_data->getMeanNormalDistribution();
@@ -52,8 +53,8 @@ generate( bool fracturesOn,
         {
             for(i=0; i <= Nx; ++i)
             {
-                const Real abscissa = hx*i + Sx;
-                const Real ordinate = hy*j + Sy;
+                const Real abscissa = hx*i*cos(Rz) - hy*j*sin(Rz) + Sx;
+                const Real ordinate = hx*i*sin(Rz) + hy*j*cos(Rz) + Sy;
                 const Real Lz = _surface( Point3D( abscissa, ordinate, 0. ) );
                 const Real quota = Lz/Nz*k + Sz;
                 nodesRef.emplace_back( abscissa, ordinate, quota ); // Point3D
