@@ -41,6 +41,7 @@ int main(int argc, char * argv[])
     CartesianGrid cart(mesh, propMap, dataPtr);
 
     // Idrocoin simplified
+/*
     cart.generate(true, [](const Point3D& _p) -> Real {
         if ( _p.x() <= 400. && _p.x() >= 0. )
             return ( 100. - 150. )/( 400. - 0. )*( _p.x() - 0. ) + 150. + 1000.;
@@ -54,6 +55,7 @@ int main(int argc, char * argv[])
         if( _p.x() >= 1200. && _p.x() <= 1600. )
             return ( 150. - 100. )/( 1600. - 1200. )*( _p.x() - 1200. ) + 100. + 1000.;
     });
+*/
 
 /*    cart.generate(true, [](const Point3D& _p) -> Real {
         if ( _p.x() <= 10. && _p.x() >= 0. )
@@ -83,7 +85,7 @@ int main(int argc, char * argv[])
 
 //    cart.generate( true, []( const Point3D& _p) -> Real { return 0.5 * std::sin( 3.14 * 2 * _p.x() ) + 1.; } );
 
-//    cart.generate( true );
+    cart.generate( true );
 
     std::cout << " done." << std::endl << std::endl;
 
