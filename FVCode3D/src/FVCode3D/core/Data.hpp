@@ -201,6 +201,12 @@ public:
      */
     Real getSz() const { return M_Sz; }
 
+    //! Get the rotation domain z-axis
+    /*!
+     * @return the rotation domain along z-axis
+     */
+    Real getRz() const { return M_Rz; }
+
     //! Test if the noise is added to the points
     /*!
      * @return true if the noise is added to the points
@@ -484,6 +490,12 @@ public:
      */
     void setSz(const Real Sz) { M_Sz = Sz; }
 
+    //! Set the rotation domain along z-axis
+    /*!
+     * @param the rotation domain along z-axis
+     */
+    void setRz(const Real Rz) { M_Rz = Rz; }
+
     //! Enable or disable the noise to the points
     /*!
      * @param noise true to enable the noise to the points
@@ -713,6 +725,8 @@ protected:
     Real M_Sy;
     //! Shift Domain along z-axis
     Real M_Sz;
+    //! Rotation Domain along z-axis
+    Real M_Rz;
     //! If true noise is added to the points
     bool M_noise;
     //! Where the noise is applied
