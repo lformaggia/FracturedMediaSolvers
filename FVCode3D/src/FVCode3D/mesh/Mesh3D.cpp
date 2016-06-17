@@ -1032,11 +1032,11 @@ bool Mesh3D::exportVTU(const std::string & filename) const throw()
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = M_nodes.begin(); it != M_nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -1144,11 +1144,11 @@ bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Pointdata
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<UInt>::const_iterator it = idCells.begin(); it != idCells.end(); ++it )
         for( std::vector<UInt>::const_iterator jt = M_cells.at(*it).getVerticesVector().begin(); jt != M_cells.at(*it).getVerticesVector().end(); ++jt)
             filestr << M_nodes[*jt].x() << " " << M_nodes[*jt].y() << " " << M_nodes[*jt].z() <<std::endl;

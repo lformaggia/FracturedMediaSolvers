@@ -53,11 +53,11 @@ void ExporterVTU::exportMesh(const Mesh3D & mesh, const std::string filename) co
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -162,11 +162,11 @@ void ExporterVTU::exportTetrahedralMesh(const Mesh3D & mesh, const std::string f
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -256,11 +256,11 @@ void ExporterVTU::exportFractures(const Mesh3D & mesh, const std::string filenam
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -381,11 +381,11 @@ void ExporterVTU::exportMeshWithFractures(const Mesh3D & mesh, const std::string
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -593,11 +593,11 @@ void ExporterVTU::exportWireframe(const Mesh3D & mesh, const std::string filenam
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -719,11 +719,11 @@ void ExporterVTU::exportEdges(const Rigid_Mesh & mesh, const std::string filenam
 
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -802,24 +802,24 @@ void ExporterVTU::exportFacets(const Rigid_Mesh & mesh, const std::string filena
     filestr << "\t\t\t<CellData Scalars=\"facetId\">" << std::endl;
 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"facetId\" format=\"ascii\">" << std::endl;
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
     for(auto& facet_it : facets)
         filestr << facet_it.getId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     filestr << "\t\t\t\t<DataArray type=\"Int64\" Name=\"borderId\" format=\"ascii\">" << std::endl;
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
     for(auto& facet_it : facets)
         filestr << facet_it.getBorderId() << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -908,11 +908,11 @@ void ExporterVTU::exportFractureJunctures(const Rigid_Mesh & mesh, const std::st
     filestr << "\t<UnstructuredGrid>" << std::endl;
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nCells << "\">" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for(std::set<UInt>::const_iterator it = localPoints.begin(); it != localPoints.end(); ++it )
     {
         GlobalToLocal.insert( std::make_pair(*it, count++) );
@@ -999,11 +999,11 @@ void ExporterVTU::exportFractureTips(const Rigid_Mesh & mesh, const std::string 
     filestr << "\t<UnstructuredGrid>" << std::endl;
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nCells << "\">" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for(std::set<UInt>::const_iterator it = localPoints.begin(); it != localPoints.end(); ++it )
     {
         GlobalToLocal.insert( std::make_pair(*it, count++) );
@@ -1086,7 +1086,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
     filestr << "\t<UnstructuredGrid>" << std::endl;
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nTotal << "\">" << std::endl;
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // CellData
     filestr << "\t\t\t<CellData Scalars=\"Prop\">" << std::endl;
@@ -1123,8 +1123,8 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     if(propertiesType & Aperture)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"aperture\" format=\"ascii\">" << std::endl;
         for(UInt i=0; i < nCells; ++i )
             filestr << "-1" << std::endl;
         for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1144,8 +1144,8 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     if(propertiesType & Porosity)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"porosity\" format=\"ascii\">" << std::endl;
         for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << properties.getProperties(it->second.getZoneCode()).M_porosity << std::endl;
         for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1165,8 +1165,8 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     if(propertiesType & Permeability)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"permeability\" format=\"ascii\">" << std::endl;
         for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << properties.getProperties(it->second.getZoneCode()).M_permeability->norm() << std::endl;
         for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1235,19 +1235,19 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     }
     if(propertiesType & Other)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"prop\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"prop\" format=\"ascii\">" << std::endl;
         for( UInt i=0; i < nTotal ; ++i )
             filestr << (*property)[i] << std::endl;
         filestr << "\t\t\t\t</DataArray>" << std::endl;
     }
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -1416,7 +1416,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "<VTKFile type=\"UnstructuredGrid\" version=\"0.1\" byte_order=\"LittleEndian\" compressor=\"vtkZLibDataCompressor\">" << std::endl;
     filestr << "\t<UnstructuredGrid>" << std::endl;
     filestr << "\t\t<Piece NumberOfPoints=\"" << nPoints << "\" NumberOfCells=\"" << nTotal << "\">" << std::endl;
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // CellData
     filestr << "\t\t\t<CellData Scalars=\"PropScal\">" << std::endl;
@@ -1427,7 +1427,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
         filestr << "1" << std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"aperture\" format=\"ascii\">" << std::endl;
     for(UInt i=0; i < nCells; ++i )
         filestr << "-1" << std::endl;
     for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1445,7 +1445,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     ids.clear();
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"porosity\" format=\"ascii\">" << std::endl;
     for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
         filestr << properties.getProperties(it->second.getZoneCode()).M_porosity << std::endl;
     for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1463,7 +1463,7 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     ids.clear();
     filestr << "\t\t\t\t</DataArray>" << std::endl;
 
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"permeability\" format=\"ascii\">" << std::endl;
     for(std::map<UInt,Cell3D>::const_iterator it = cells.begin(); it != cells.end(); ++it )
         filestr << properties.getProperties(it->second.getZoneCode()).M_permeability->norm() << std::endl;
     for(std::vector<Fracture3D>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1510,11 +1510,11 @@ void ExporterVTU::exportWithProperties(const Mesh3D & mesh, const PropertiesMap 
     filestr << "\t\t\t\t</DataArray>" << std::endl;
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"" << "Float32" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"" << "Float64" << "\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
@@ -1699,8 +1699,8 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     }
     if(propertiesType & Aperture)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"aperture\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"aperture\" format=\"ascii\">" << std::endl;
         for(UInt i=0; i < nCells; ++i )
             filestr << "-1" << std::endl;
         for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1709,8 +1709,8 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     }
     if(propertiesType & Porosity)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"porosity\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"porosity\" format=\"ascii\">" << std::endl;
         for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << properties.getProperties(it->getZoneCode()).M_porosity << std::endl;
         for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1719,8 +1719,8 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     }
     if(propertiesType & Permeability)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"permeability\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"permeability\" format=\"ascii\">" << std::endl;
         for(std::vector<Cell>::const_iterator it = cells.begin(); it != cells.end(); ++it )
             filestr << properties.getProperties(it->getZoneCode()).M_permeability->norm() << std::endl;
         for(std::vector<Fracture_Facet>::const_iterator it = fractures.begin(); it != fractures.end(); ++it )
@@ -1757,19 +1757,19 @@ void ExporterVTU::exportWithProperties(const Rigid_Mesh & mesh, const std::strin
     }
     if(propertiesType & Other)
     {
-        filestr << std::scientific << std::setprecision(10);
-        filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"prop\" format=\"ascii\">" << std::endl;
+        filestr << std::scientific << std::setprecision(16);
+        filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"prop\" format=\"ascii\">" << std::endl;
         for( UInt i=0; i < nTotal ; ++i )
             filestr << (*property)[i] << std::endl;
         filestr << "\t\t\t\t</DataArray>" << std::endl;
     }
     filestr << "\t\t\t</CellData>" << std::endl;
 
-    filestr << std::scientific << std::setprecision(10);
+    filestr << std::scientific << std::setprecision(16);
 
     // Points
     filestr << "\t\t\t<Points>" << std::endl;
-    filestr << "\t\t\t\t<DataArray type=\"Float32\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
+    filestr << "\t\t\t\t<DataArray type=\"Float64\" Name=\"Points\" NumberOfComponents=\"3\" format=\"ascii\">" << std::endl;
     for( std::vector<Point3D>::const_iterator it = nodes.begin(); it != nodes.end(); ++it )
         filestr << it->x() << " " << it->y() << " " << it->z() <<std::endl;
     filestr << "\t\t\t\t</DataArray>" << std::endl;
