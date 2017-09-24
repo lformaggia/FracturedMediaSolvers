@@ -106,20 +106,20 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-//    std::cout << "Set uniform properties..." << std::flush;
-//    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
-//    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
-//    matrixPerm->setPermeability( 1., 0 );
-//    matrixPerm->setPermeability( 1., 4 );
-//    matrixPerm->setPermeability( 1., 8 );
-//    const Real kf = 1.e3;
-//    fracturesPerm->setPermeability( kf, 0 );
-//    const Real aperture = 1.e-2;
-//    const Real matrixPoro = 0.25;
-//    const Real fracturesPoro = 1.;
-//    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
-//    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
-//    std::cout << " done." << std::endl << std::endl;
+    std::cout << "Set uniform properties..." << std::flush;
+    std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
+    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+    matrixPerm->setPermeability( 1., 0 );
+    matrixPerm->setPermeability( 1., 4 );
+    matrixPerm->setPermeability( 1., 8 );
+    const Real kf = 1.e3;
+    fracturesPerm->setPermeability( kf, 0 );
+    const Real aperture = 1.e-2;
+    const Real matrixPoro = 0.25;
+    const Real fracturesPoro = 1.;
+    propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
+    propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
+    std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
