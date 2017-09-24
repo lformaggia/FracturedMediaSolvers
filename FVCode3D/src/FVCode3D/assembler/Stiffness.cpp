@@ -380,30 +380,7 @@ void StiffMatrix::assembleMFD()
     using Eigen::Dynamic;
     using Eigen::RowMajor;
     using Eigen::ColMajor;
-
-    std::vector<Triplet> Matrix_elements;
-    std::vector<UInt> ZMatrix_elements;
-    std::vector<UInt> BMatrix_elements;
-    std::vector<UInt> CMatrix_elements;
-    const Real tCoeff=2.;
-
-    // Local Matrices for Mimetic
-    Eigen::Matrix<Real,Dynamic,3> Np;         // facet normals
-    Eigen::Matrix<Real,3,3> Kp;               // permability tensor
-    Eigen::Matrix<Real,1,Dynamic> Bp;         // areas
-    Eigen::Matrix<Real,1,Dynamic> Cp;         // areas no neumann/fractures
-    Eigen::Matrix<Real,Dynamic,3> Rp;         // centroid * area
-    Eigen::Matrix<Real,Dynamic,Dynamic> Z0p;  // Component of Z matrix (similar to Mp0)
-    Eigen::Matrix<Real,Dynamic,Dynamic> Z1p;  // Component of Z Matrix (similar to Mp1)
-    Eigen::Matrix<Real,Dynamic,Dynamic> Zp;   // Z inverse matrix for local internal product= \f$ Mp^{-1}\f$
-    Eigen::Matrix<Real,Dynamic,Dynamic> M0p;  // Component of M matrix (consistency)
-    Eigen::Matrix<Real,Dynamic,Dynamic> M1p;  // Component of M Matrix (stability)
-    Eigen::Matrix<Real,Dynamic,Dynamic> Mp;   // M matrix for internal product
-    Eigen::Matrix<Real,Dynamic,Dynamic> Sp;   // Base for the column space of Np
-    Eigen::Matrix<Real,Dynamic,Dynamic> Qp;   // Base for the column space of Rp
-
-    std::vector<UInt> globalNeumannFaces;     // Indices of Neumann/fracture facets
-
+    
     // Extract info of mesh. auto&& resolves const &
     auto& cellVectorRef  = this->M_mesh.getCellsVector();
     auto& facetVectorRef = this->M_mesh.getFacetsVector();
@@ -411,86 +388,80 @@ void StiffMatrix::assembleMFD()
     const UInt numFacets = facetVectorRef.size();
     const UInt numCells = cellVectorRef.size();
     const UInt numFracs = fracVectorRef.size();
+    const UInt numFacetsTot = numFacets + numFracs;
     const UInt numCellsTot = numCells + numFracs;
 
-    // Sizing global matrices
-    Eigen::SparseMatrix<Real, RowMajor> Z;  // Z inverse matrix for internal product= \f$ M^{-1}\f$
-    Eigen::SparseMatrix<Real, RowMajor> M;  // M matrix for internal product
-#ifdef TVP
-    Eigen::SparseMatrix<Real, ColMajor> Bt;  // Bt matrix for signed area
-#else // TVP
-    Eigen::SparseMatrix<Real, RowMajor> B;  // B matrix for signed area
-#endif // TVP
-    Eigen::SparseMatrix<Real, RowMajor> C;  // C matrix for signed area, no neumann/fractures
-    Eigen::SparseMatrix<Real, RowMajor> Bd; // B matrix for Dirichlet area
-    Eigen::SparseMatrix<Real, ColMajor> T(numCells,numCells);
-    Eigen::SparseMatrix<Real, ColMajor> Td(numCells,numFacets); // T matrix that contains the Dirichlet contributes
-    ZMatrix_elements.resize(numFacets,0);
-#ifdef TVP
-    BMatrix_elements.resize(numFacets,0);
-#else // TVP
-    BMatrix_elements.resize(numCells,0);
-#endif // TVP
-    CMatrix_elements.resize(numCells,0);
-    Z.resize(numFacets,numFacets);
-    M.resize(numFacets,numFacets);
-#ifdef TVP
-    Bt.resize(numFacets,numCells);
-#else // TVP
-    B.resize(numCells,numFacets);
-#endif // TVP
-    C.resize(numCells,numFacets);
-    Bd.resize(numFacets,numFacets);
+    // Define vector to reserve space for matrices
+//    std::vector<Triplet> TMatrix_elements;
+    std::vector<UInt> MMatrix_elements(numFacetsTot,0);
+    std::vector<UInt> BMatrix_elements(numFacetsTot,0);
+    std::vector<UInt> DtMatrix_elements(numCells,0);
+    const Real tCoeff=2.;
+
+    // Local MFD matrices
+    Eigen::Matrix<Real,Dynamic,3> Np;         // facet normals, necessary to build Mp
+    Eigen::Matrix<Real,3,3> Kp;               // permability tensor
+    Eigen::Matrix<Real,1,Dynamic> Bp;         // local B
+    Eigen::Matrix<Real,1,Dynamic> Dtp;        // local Dt
+    Eigen::Matrix<Real,Dynamic,3> Rp;         // centroid * area, necessary to build Mp
+    Eigen::Matrix<Real,Dynamic,Dynamic> M0p;  // Component of local M matrix (consistency)
+    Eigen::Matrix<Real,Dynamic,Dynamic> M1p;  // Component of local M Matrix (stability)
+    Eigen::Matrix<Real,Dynamic,Dynamic> Mp;   // local M matrix for internal product
+    Eigen::Matrix<Real,Dynamic,Dynamic> Sp;   // Base for the column space of Np
+
+    std::vector<UInt> globalNeumannFaces;     // Indices of Neumann/fracture facets
+
+    // Define global matrices
+    Eigen::SparseMatrix<Real, RowMajor> M(numFacetsTot,numFacetsTot);    // M matrix for internal product
+    Eigen::SparseMatrix<Real, ColMajor> B(numCells,numFacetsTot);     // B matrix for signed area, it's the divh mimetic operator
+    Eigen::SparseMatrix<Real, ColMajor> Dt(numFacetsTot,numCells);    // Dt matrix for signed area, no neumann
+    Eigen::SparseVector<Real> g0(numFacets);                       // g0 vector for Dirichlet area*DirData
+//  Eigen::SparseMatrix<Real, RowMajor> C(numFracs,numFacets);    // C matrix for coupling conditions
+//  Eigen::SparseMatrix<Real, ColMajor> T(numFracs,numFracs);    // T matrix for fractures-fractures trasmissibilities
 
     // First loop to size matrices and avoid memory realloc
-    for (auto& cell : cellVectorRef)
-    {
+    for (auto& cell : cellVectorRef){
+		
         const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
         UInt numCellFacets = cellFacetsId.size();
         UInt cellId        = cell.getId();
 
-        for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
-        {
-            const UInt globalFacetId = cellFacetsId[localFacetId];
-            const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
-#ifdef TVP
+        for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId){	
+			
+			UInt globalFacetId = cellFacetsId[localFacetId];
+			const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
+			
+			if( fac.isFracture() ){
+				
+				const Point3D facetNormal = fac.getUnsignedNormal();
+				const Point3D g   = fac.getCentroid() - cell.getCentroid();
+				const Real dotp   = dotProduct(g,facetNormal);
+				
+				if( dotp < 0 )
+					globalFacetId = numFacets + fac.getFractureFacetId();
+				
+				}
+
+			MMatrix_elements[globalFacetId] += numCellFacets;
             BMatrix_elements[globalFacetId] += 1;
-#else // TVP
-            BMatrix_elements[cellId] += 1;
-#endif // TVP
 
-            if(
-                ( fac.isBorderFacet() &&
-                  (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)
-                ) ||
-                ( fac.isFracture() )
-              )
-            {
+            if( fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann) )
                 continue;
-            }
 
-            CMatrix_elements[cellId] += 1;
-#ifdef DIAGONALZ
-            ZMatrix_elements[globalFacetId] += 1;
-#else // DIAGONALZ
-            ZMatrix_elements[globalFacetId] += numCellFacets;
-#endif // DIAGONALZ
+            DtMatrix_elements[cellId] += 1;
+            
         }
     }
-    Z.reserve(ZMatrix_elements);
-    M.reserve(ZMatrix_elements);
-#ifdef TVP
-    Bt.reserve(BMatrix_elements);
-#else // TVP
+    
+    M.reserve(MMatrix_elements);
     B.reserve(BMatrix_elements);
-#endif // TVP
-    C.reserve(CMatrix_elements);
-    ZMatrix_elements.clear();
-    ZMatrix_elements.shrink_to_fit();
+    Dt.reserve(DtMatrix_elements);
+    MMatrix_elements.clear();
+    MMatrix_elements.shrink_to_fit();
     BMatrix_elements.clear();
     BMatrix_elements.shrink_to_fit();
-    CMatrix_elements.clear();
-    CMatrix_elements.shrink_to_fit();
+    DtMatrix_elements.clear();
+    DtMatrix_elements.shrink_to_fit();
 
     // Loop on cells
     for (auto& cell : cellVectorRef)
