@@ -409,13 +409,13 @@ void StiffMatrix::assembleMFD()
     Eigen::Matrix<Real,Dynamic,Dynamic> Mp;   // local M matrix for internal product
     Eigen::Matrix<Real,Dynamic,Dynamic> Sp;   // Base for the column space of Np
 
-    std::vector<UInt> globalNeumannFaces;     // Indices of Neumann/fracture facets
+    std::vector<UInt> NeumannFaces;     // Indices of Neumann/fracture facets
 
     // Define global matrices
     Eigen::SparseMatrix<Real, RowMajor> M(numFacetsTot,numFacetsTot);    // M matrix for internal product
     Eigen::SparseMatrix<Real, ColMajor> B(numCells,numFacetsTot);     // B matrix for signed area, it's the divh mimetic operator
     Eigen::SparseMatrix<Real, ColMajor> Dt(numFacetsTot,numCells);    // Dt matrix for signed area, no neumann
-    Eigen::SparseVector<Real> g0(numFacets);                       // g0 vector for Dirichlet area*DirData
+    Eigen::SparseVector<Real> g0(numFacetsTot);                       // g0 vector for Dirichlet area*DirData
 //  Eigen::SparseMatrix<Real, RowMajor> C(numFracs,numFacets);    // C matrix for coupling conditions
 //  Eigen::SparseMatrix<Real, ColMajor> T(numFracs,numFracs);    // T matrix for fractures-fractures trasmissibilities
 
@@ -431,11 +431,12 @@ void StiffMatrix::assembleMFD()
 			UInt globalFacetId = cellFacetsId[localFacetId];
 			const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 			
+			// This is to take into account the decoupling of fractures facets
 			if( fac.isFracture() ){
 				
 				const Point3D facetNormal = fac.getUnsignedNormal();
-				const Point3D g   = fac.getCentroid() - cell.getCentroid();
-				const Real dotp   = dotProduct(g,facetNormal);
+				const Point3D g           = fac.getCentroid() - cell.getCentroid();
+				const Real dotp           = dotProduct(g,facetNormal);
 				
 				if( dotp < 0 )
 					globalFacetId = numFacets + fac.getFractureFacetId();
@@ -463,36 +464,27 @@ void StiffMatrix::assembleMFD()
     DtMatrix_elements.clear();
     DtMatrix_elements.shrink_to_fit();
 
-    // Loop on cells
-    for (auto& cell : cellVectorRef)
-    {
+    // Loop on cells to build MFD local matrices and assemble them in MFD global matrices
+    for (auto& cell : cellVectorRef){
+		
         const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
         const UInt numCellFacets  = cellFacetsId.size();
         auto& K = M_properties.getProperties(cell.getZoneCode()).M_permeability;
-        auto cellBaricenter = cell.getCentroid();
-        auto cellMeasure    = cell.getVolume();
-        auto cellId         = cell.getId();
+        const Real cellMeasure    = cell.getVolume();
+        const UInt cellId         = cell.getId();
 
         if(cellId % 500 == 0)
-        {
             std::cout<<"Done "<< cellId<<" Cells"<<std::endl;
-        }
 
         // Resize local matrices
         Np.resize(numCellFacets,Eigen::NoChange);
         Np.setZero();
         Rp.resize(numCellFacets,Eigen::NoChange);
         Rp.setZero();
-        Zp.resize(numCellFacets,numCellFacets);
-        Zp.setZero();
-        Z0p.resize(numCellFacets,numCellFacets);
-        Z0p.setZero();
-        Z1p.resize(numCellFacets,numCellFacets);
-        Z1p.setZero();
         Bp.resize(Eigen::NoChange,numCellFacets);
         Bp.setZero();
-        Cp.resize(Eigen::NoChange,numCellFacets);
-        Cp.setZero();
+        Dtp.resize(Eigen::NoChange,numCellFacets);
+        Dtp.setZero();
 
         Kp(0,0) = K->operator()(0,0);
         Kp(0,1) = K->operator()(0,1);
@@ -504,27 +496,27 @@ void StiffMatrix::assembleMFD()
         Kp(2,1) = K->operator()(2,1);
         Kp(2,2) = K->operator()(2,2);
 
-        for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
-        {
+		// Loop on facets to build Rp, Np, Bp, Dtp
+        for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId){
+			
             const UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 
-            const Point3D facetBaricenter = fac.getCentroid();
-            const Point3D facetNormal     = fac.getUnsignedNormal();
-            Point3D g   = facetBaricenter - cellBaricenter;
-            const Real facetMeasure       = fac.area();
-            const Real dotp   = dotProduct(g,facetNormal);
-            const Real alpha  = (dotp >=0. ? 1.0 : -1.0);
+            const Point3D facetNormal  = fac.getUnsignedNormal();
+            const Point3D g            = fac.getCentroid() - cell.getCentroid();
+            const Real facetMeasure    = fac.area();
+            const Real dotp            = dotProduct(g,facetNormal);
+            const Real alpha           = (dotp >=0. ? 1.0 : -1.0);
 
             //! @todo I use the formulation of Nicola (to be reviewed)
             // BEWARE FOR THE CONDITION ON VELOCITY I NEED THE AVERAGE
             // VELOCITY NOT THE FLUX
-            Np(localFacetId,0)    = facetNormal[0];
-            Np(localFacetId,1)    = facetNormal[1];
-            Np(localFacetId,2)    = facetNormal[2];
+            Np(localFacetId,0) = facetNormal[0];
+            Np(localFacetId,1) = facetNormal[1];
+            Np(localFacetId,2) = facetNormal[2];
             Np *= Kp;
 
-            Bp(0,localFacetId)    = alpha * facetMeasure;
+            Bp(0,localFacetId) =  - alpha * facetMeasure;    // The minus because I have changed the sign to the conservation equation
 
             g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0]; // TODO set relative eps
             g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1]; // TODO set relative eps
@@ -534,27 +526,21 @@ void StiffMatrix::assembleMFD()
             Rp(localFacetId,1) = alpha * g[1] * facetMeasure;
             Rp(localFacetId,2) = alpha * g[2] * facetMeasure;
 
-            if(
-                ( fac.isBorderFacet() &&
-                  (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann)
-                ) ||
-                ( fac.isFracture() )
-              )
+            if( fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann) )
             {
-                globalNeumannFaces.push_back(globalFacetId);
+                NeumannFaces.push_back(globalFacetId);
                 continue;
             }
 
-            Cp(0,localFacetId)    = alpha * facetMeasure;
+            Dtp(0,localFacetId) = - alpha * facetMeasure;
 
             if (fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Dirichlet))
-            {
-                Bd.coeffRef(globalFacetId,globalFacetId) = alpha * facetMeasure;
-            }
+                g0.coeffRef(globalFacetId) = - alpha * facetMeasure;
+                
         }
 
-#ifdef INVERSEM
-        Sp = Np.fullPivLu().image(Np);
+		// Building the Mp matrix
+        Sp = Np.fullPivLu().image(Np);    // Because otherwise NtN could be singulare in the unlucky case of 2 parallelel faces
 
         Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
         Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
@@ -574,21 +560,7 @@ void StiffMatrix::assembleMFD()
               );
 
         Mp  = M0p + M1p;
-#else // INVERSEM
-        Qp = Rp.fullPivLu().image(Rp);
 
-        Eigen::Matrix<Real,Dynamic,Dynamic> RtR = Qp.transpose() * Qp;
-        Eigen::Matrix<Real,Dynamic,Dynamic> RRtRiRt = Qp * RtR.inverse() * Qp.transpose();
-
-        Z0p = ( 1. / cellMeasure ) *
-              (Np * Kp.inverse() * Np.transpose());
-        Z1p = Z0p.trace() * tCoeff / numCellFacets *
-              ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
-                RRtRiRt
-//                Qp * Qp.transpose()
-              );
-
-        Zp  = Z0p + Z1p;
 
 #ifdef MFD_VERBOSE
         std::stringstream  ss;
@@ -603,85 +575,66 @@ void StiffMatrix::assembleMFD()
         }
         Eigen::Matrix<Real,Dynamic,Dynamic> QQt = Qp * Qp.transpose();
         ss.str(std::string());
-        ss << "./mMatrix/QQt_" << cellId << ".m";
-        Eigen::saveMarket( QQt, ss.str() );
-        ss.str(std::string());
         ss << "./mMatrix/Rp_" << cellId << ".m";
         Eigen::saveMarket( Rp, ss.str() );
-        ss.str(std::string());
-        ss << "./mMatrix/Qp_" << cellId << ".m";
-        Eigen::saveMarket( Qp, ss.str() );
 #endif // MFD_VERBOSE
-#endif // INVERSEM
 
-        for(UInt iloc=0; iloc<numCellFacets; ++iloc)
-        {
-            const UInt i = cellFacetsId[iloc];
+
+        for(UInt iloc=0; iloc<numCellFacets; ++iloc){
+			
+            UInt i = cellFacetsId[iloc];
+            const Rigid_Mesh::Facet & fac = facetVectorRef[i];
             const Real Bcoeff = Bp(0,iloc);
-            const Real Ccoeff = Cp(0,iloc);
+            const Real Dtcoeff = Dtp(0,iloc);
+            
+            // This is to take into account the decoupling of fractures facets
+            if( fac.isFracture() ){
+				
+				const Point3D facetNormal = fac.getUnsignedNormal();
+				const Point3D g           = fac.getCentroid() - cell.getCentroid();
+				const Real dotp           = dotProduct(g,facetNormal);
+				
+				if( dotp < 0 )
+					i = numFacets + fac.getFractureFacetId();
+			}
 
-            if(Bcoeff != 0.)
-            {
-#ifdef TVP
-                Bt.insert(i,cellId) = Bcoeff;
-#else // TVP
-                B.insert(cellId,i) = Bcoeff;
-#endif // TVP
-                if(Ccoeff != 0.)
-                {
-                    C.insert(cellId,i) = Ccoeff;
-                }
-            }
+            if( Bcoeff != 0. ){
 
-#ifdef INVERSEM
+				B.insert(cellId,i) = Bcoeff;
+
+                if( Dtcoeff != 0. )
+                    Dt.insert(i,cellId) = Dtcoeff;
+			}
+
             Real Mcoeff = Mp(iloc,iloc);
 
             if( Mcoeff != 0. )
-            {
                 M.coeffRef(i,i) += Mcoeff;
-            }
 
-            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc)
-            {
-                const UInt j = cellFacetsId[jloc];
+            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc){
+
+                UInt j = cellFacetsId[jloc];
+                const Rigid_Mesh::Facet & fac = facetVectorRef[j];
                 Mcoeff = Mp(iloc,jloc);
+                
+                // This is to take into account the decoupling of fractures facets
+				if( fac.isFracture() ){
+				
+					const Point3D facetNormal = fac.getUnsignedNormal();
+					const Point3D g           = fac.getCentroid() - cell.getCentroid();
+					const Real dotp           = dotProduct(g,facetNormal);
+				
+					if( dotp < 0 )
+						j = numFacets + fac.getFractureFacetId();		
+				}
 
-                if (Mcoeff != 0.)
-                {
-#ifdef DIAGONALZ
-                    M.coeffRef(i,i) += Mcoeff;
-                    M.coeffRef(j,j) += Mcoeff;
-#else // DIAGONALZ
+                if (Mcoeff != 0.){
                     M.coeffRef(i,j) += Mcoeff;
                     M.coeffRef(j,i) += Mcoeff;
-#endif // DIAGONALZ
                 }
-            }
-#else //INVERSEM
-            Real Zcoeff = Zp(iloc,iloc);
-
-            if( Zcoeff != 0. )
-            {
-                Z.coeffRef(i,i) += Zcoeff;
+                
             }
 
-            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc)
-            {
-                const UInt j = cellFacetsId[jloc];
-                Zcoeff = Zp(iloc,jloc);
-
-                if (Zcoeff != 0.)
-                {
-#ifdef DIAGONALZ
-                    Z.coeffRef(i,i) += Zcoeff;
-                    Z.coeffRef(j,j) += Zcoeff;
-#else // DIAGONALZ
-                    Z.coeffRef(i,j) += Zcoeff;
-                    Z.coeffRef(j,i) += Zcoeff;
-#endif // DIAGONALZ
-                }
-            }
-#endif // INVERSEM
         }
     }
 
