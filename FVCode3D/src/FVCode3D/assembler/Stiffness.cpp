@@ -382,21 +382,25 @@ void StiffMatrix::assembleMFD()
     using Eigen::ColMajor;
     
     // Extract info of mesh. auto&& resolves const &
-    auto& cellVectorRef  = this->M_mesh.getCellsVector();
-    auto& facetVectorRef = this->M_mesh.getFacetsVector();
-    auto& fracVectorRef = this->M_mesh.getFractureFacetsIdsVector();
-    const UInt numFacets = facetVectorRef.size();
-    const UInt numCells = cellVectorRef.size();
-    const UInt numFracs = fracVectorRef.size();
-    const UInt numFacetsTot = numFacets + numFracs;
-    const UInt numCellsTot = numCells + numFracs;
+    auto& cellVectorRef    = this->M_mesh.getCellsVector();
+    auto& facetVectorRef   = this->M_mesh.getFacetsVector();
+    auto& fracVectorRef    = this->M_mesh.getFractureFacetsIdsVector();
+    const UInt numFacets        = facetVectorRef.size();
+    const UInt numCells         = cellVectorRef.size();
+    const UInt numFracs         = fracVectorRef.size();
+    const UInt numFacetsTot     = numFacets + numFracs;
+    const UInt numCellsTot      = numCells + numFracs;
+    const Uint numGDL           = numFacetsTot + numCellsTot;
 
-    // Define vector to reserve space for matrices
-//    std::vector<Triplet> TMatrix_elements;
-    std::vector<UInt> MMatrix_elements(numFacetsTot,0);
-    std::vector<UInt> BMatrix_elements(numFacetsTot,0);
-    std::vector<UInt> DtMatrix_elements(numCells,0);
-    const Real tCoeff=2.;
+    // Define global matrix and vector to reserve space
+    Eigen::VectorXd & g0                        = *(this->M_b)          // rhs  
+    Eigen::SparseMatrix<Real,ColMajor> & S      = *(this->M_Matrix);    // global matrix
+    std::vector<UInt> Matrix_elements(numGDL,0);                        // vector to reserve space
+    
+    // Problem coefficients
+    const Real tCoeff = 2.;                         // mimetic coefficient         
+    const Real xsi = 1.;                            // coupling coefficient
+    const Real xsi0 = ( 2. * xsi - 1. ) / 4.;       // coupling modified coefficient
 
     // Local MFD matrices
     Eigen::Matrix<Real,Dynamic,3> Np;         // facet normals, necessary to build Mp
@@ -409,15 +413,6 @@ void StiffMatrix::assembleMFD()
     Eigen::Matrix<Real,Dynamic,Dynamic> Mp;   // local M matrix for internal product
     Eigen::Matrix<Real,Dynamic,Dynamic> Sp;   // Base for the column space of Np
 
-    std::vector<UInt> NeumannFaces;     // Indices of Neumann/fracture facets
-
-    // Define global matrices
-    Eigen::SparseMatrix<Real, RowMajor> M(numFacetsTot,numFacetsTot);    // M matrix for internal product
-    Eigen::SparseMatrix<Real, ColMajor> B(numCells,numFacetsTot);     // B matrix for signed area, it's the divh mimetic operator
-    Eigen::SparseMatrix<Real, ColMajor> Dt(numFacetsTot,numCells);    // Dt matrix for signed area, no neumann
-    Eigen::SparseVector<Real> g0(numFacetsTot);                       // g0 vector for Dirichlet area*DirData
-//  Eigen::SparseMatrix<Real, RowMajor> C(numFracs,numFacets);    // C matrix for coupling conditions
-//  Eigen::SparseMatrix<Real, ColMajor> T(numFracs,numFracs);    // T matrix for fractures-fractures trasmissibilities
 
     // First loop to size matrices and avoid memory realloc
     for (auto& cell : cellVectorRef){
@@ -439,30 +434,21 @@ void StiffMatrix::assembleMFD()
 				const Real dotp           = dotProduct(g,facetNormal);
 				
 				if( dotp < 0 )
-					globalFacetId = numFacets + fac.getFractureFacetId();
+					globalFacetId = (numFacets-1) + fac.getFractureFacetId();
 				
 				}
 
-			MMatrix_elements[globalFacetId] += numCellFacets;
-            BMatrix_elements[globalFacetId] += 1;
+			Matrix_elements[globalFacetId] += numCellFacets + 1;        // numCellFacets for the M, the 1 for the B
 
             if( fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann) )
                 continue;
 
-            DtMatrix_elements[cellId] += 1;
+            Matrix_elements[numFacetsTot + cellId] += 1;                // this is for the Dt
             
         }
     }
     
-    M.reserve(MMatrix_elements);
-    B.reserve(BMatrix_elements);
-    Dt.reserve(DtMatrix_elements);
-    MMatrix_elements.clear();
-    MMatrix_elements.shrink_to_fit();
-    BMatrix_elements.clear();
-    BMatrix_elements.shrink_to_fit();
-    DtMatrix_elements.clear();
-    DtMatrix_elements.shrink_to_fit();
+    S.reserve(Matrix_elements);
 
     // Loop on cells to build MFD local matrices and assemble them in MFD global matrices
     for (auto& cell : cellVectorRef){
@@ -527,15 +513,12 @@ void StiffMatrix::assembleMFD()
             Rp(localFacetId,2) = alpha * g[2] * facetMeasure;
 
             if( fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann) )
-            {
-                NeumannFaces.push_back(globalFacetId);
                 continue;
-            }
 
             Dtp(0,localFacetId) = - alpha * facetMeasure;
 
             if (fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Dirichlet))
-                g0.coeffRef(globalFacetId) = - alpha * facetMeasure;
+                g0[globalFacetId] = - alpha * facetMeasure;
                 
         }
 
@@ -595,21 +578,21 @@ void StiffMatrix::assembleMFD()
 				const Real dotp           = dotProduct(g,facetNormal);
 				
 				if( dotp < 0 )
-					i = numFacets + fac.getFractureFacetId();
+					i = (numFacets-1) + fac.getFractureFacetId();
 			}
 
             if( Bcoeff != 0. ){
 
-				B.insert(cellId,i) = Bcoeff;
+				S.insert( (numFacetsTot-1) + cellId, i) = Bcoeff;
 
                 if( Dtcoeff != 0. )
-                    Dt.insert(i,cellId) = Dtcoeff;
+                    S.insert(i, (numFacetsTot-1) + cellId) = Dtcoeff;
 			}
 
             Real Mcoeff = Mp(iloc,iloc);
 
             if( Mcoeff != 0. )
-                M.coeffRef(i,i) += Mcoeff;
+                S.coeffRef(i,i) += Mcoeff;
 
             for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc){
 
@@ -625,189 +608,84 @@ void StiffMatrix::assembleMFD()
 					const Real dotp           = dotProduct(g,facetNormal);
 				
 					if( dotp < 0 )
-						j = numFacets + fac.getFractureFacetId();		
+						j = (numFacets-1) + fac.getFractureFacetId();		
 				}
 
                 if (Mcoeff != 0.){
-                    M.coeffRef(i,j) += Mcoeff;
-                    M.coeffRef(j,i) += Mcoeff;
+                    S.coeffRef(i,j) += Mcoeff;
+                    S.coeffRef(j,i) += Mcoeff;
                 }
                 
             }
 
         }
     }
+    
 
-#ifdef INVERSEM
-#ifdef TVP
-    Eigen::SparseMatrix<Real, ColMajor> WtCM;
-    WtCM.resize(numFacets,numCells);
-    std::cout << "Compute B M^-1" << std::endl;
+    std::cout << "Zero the Neumann row of S" << std::endl;
 
-    Eigen::ConjugateGradient< Eigen::SparseMatrix<Real, RowMajor> > cg;
+	for( auto facet_it : this->M_mesh.getBorderFacetsIdsVector() ){
+		
+		Uint borderId = facet_it.getBorderId();
+		Uint facetId  = facet_it.getId();
+		
+		if( this->M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann ){
+			
+			S.prune( [facetId]( Uint i, Uint j, Real val )
+				{ return ( i!= facetId ); });
+			
+			S.coeffRef(facetId,facetId) = 1;
+			
+			}
+		
+		}
 
-    cg.setMaxIterations(10e3);
-    cg.setTolerance(1e-6);
 
-    cg.compute(M);
-    for(UInt i=0; i<Bt.cols(); ++i)
-    {
-        if(i % 100 == 0)
-        {
-            std::cout << "System: " << i << " ..." << std::endl;
-        }
-
-        const Vector t_rhs(Bt.col(i));
-        Vector t_x;
-        t_x = cg.solve(t_rhs);
-        WtCM.col(i) = t_x.sparseView();
-
-#ifdef MFD_VERBOSE
-        if(i % 100 == 0)
-        {
-            std::cout << "# It:  " << cg.iterations() << std::endl;
-            std::cout << "# Err: " << cg.error() << std::endl;
-        }
-#endif // MFD_VERBOSE
-    }
-    std::cout << "System: " << (Bt.cols() - 1) << " done." << std::endl;
-    Eigen::SparseMatrix<Real, RowMajor> Wt(WtCM);
-    WtCM.resize(0,0);
-    WtCM.data().squeeze();
-    Eigen::SparseMatrix<Real, RowMajor> BtRM(Bt);
-    Bt.resize(0,0);
-    Bt.data().squeeze();
-
-    std::cout << "Zero the Neumann row of W" << std::endl;
-    for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
-    {
-        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Wt,globalNeumannFaces[i]); it; ++it)
-        {
-            it.valueRef() = 0.;
-        }
-        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(BtRM,globalNeumannFaces[i]); it; ++it)
-        {
-            Wt.coeffRef(globalNeumannFaces[i], it.col()-1) = it.valueRef();
-        }
-    }
-    Wt.prune(0.);
-    std::cout<<" Matrix Wt has "<<Wt.rows()<<" rows and "<<Wt.cols()<<" columns and "<<Wt.nonZeros()<<" Non zeros"<<std::endl;
-#else // TVP
-    Eigen::Matrix<Real,Dynamic,Dynamic> invM(M);
-    std::cout<<"Compute inverse of M"<<std::endl;
-    invM = invM.inverse();
-
-    std::cout<<"Zero the Neumann row of M"<<std::endl;
-    for(UInt i = 0; i < globalNeumannFaces.size(); ++i)
-    {
-        invM.row(globalNeumannFaces[i]).setZero();
-        invM.coeffRef(globalNeumannFaces[i], globalNeumannFaces[i]) = 1.;
-    }
-    Eigen::SparseMatrix<Real, RowMajor> invMSp;  // M matrix for internal product
-    invMSp = invM.sparseView();
-#endif //TVP
-#else // INVERSEM
-    for (UInt i = 0; i < globalNeumannFaces.size(); ++i)
-    {
-        for (Eigen::SparseMatrix<Real, RowMajor>::InnerIterator it(Z,globalNeumannFaces[i]); it; ++it)
-        {
-            it.valueRef() = 0.;
-        }
-        Z.coeffRef(globalNeumannFaces[i], globalNeumannFaces[i]) = 1.;
-    }
-
-//    for(UInt i = 0; i < globalNeumannFaces.size(); ++i)
-//    {
-//        for(UInt col = 0; col < Z.cols(); ++col)
-//        {
-//            Z.coeffRef(globalNeumannFaces[i],col) = 0.;
-//        }
-//        Z.coeffRef(globalNeumannFaces[i], globalNeumannFaces[i]) = 1.;
-//    }
-#endif // INVERSEM
-
-    // Now I Need to build T
-    std::cout<<"Building Trasmissibility matrix (global)"<<std::endl;
-
-#ifdef INVERSEM
-#ifdef TVP
-    T = Wt.transpose() * C.transpose();
-#else // TVP
-    T = B * invMSp * C.transpose();
-#endif // TVP
-#else // INVERSEM
-    T = B * Z * C.transpose();
-#endif // INVERSEM
-    T.makeCompressed();
-
-    std::cout<<"Building Trasmissibility Dirichelt matrix (global)"<<std::endl;
-
-#ifdef INVERSEM
-#ifdef TVP
-    Td = Wt.transpose() * Bd.transpose();
-#else // TVP
-    Td = B * invMSp * Bd.transpose();
-#endif // TVP
-#else // INVERSEM
-    Td = B * Z * Bd.transpose();
-#endif // INVERSEM
-    Td.makeCompressed();
-
-    // Clean up to seve memory (I hope)
-    std::cout<<" Matrix T has "<<T.rows()<<" rows and "<<T.cols()<<" columns and "<<T.nonZeros()<<" Non zeros"<<std::endl;
-    std::cout<<" Matrix Td has "<<Td.rows()<<" rows and "<<Td.cols()<<" columns and "<<Td.nonZeros()<<" Non zeros"<<std::endl;
     std::cout<<" Num Cells: "<<numCells<<std::endl;
     std::cout<<" Num Facets: "<<numFacets<<std::endl;
+    std::cout<<" Num Facets + Fracs: "<<numFacetsTot<<std::endl;
     std::cout<<" Num Cells + Fracs: "<<numCellsTot<<std::endl;
-#ifdef MFD_VERBOSE
-    std::cout.flush();
-    Eigen::saveMarket( T, "./mMatrix/T.m" );
-    Eigen::saveMarket( Td, "./mMatrix/Td.m" );
-#ifdef TVP
-    Eigen::saveMarket( BtRM, "./mMatrix/Bt.m" );
-#else // TVP
-    Eigen::saveMarket( B, "./mMatrix/B.m" );
-#endif // TVP
-    Eigen::saveMarket( C, "./mMatrix/C.m" );
-    Eigen::saveMarket( Bd, "./mMatrix/Bd.m" );
-#ifdef INVERSEM
-    Eigen::saveMarket( invM, "./mMatrix/invM.m" );
-#else // INVERSEM
-    Eigen::saveMarket( Z, "./mMatrix/Z.m" );
-#endif // INVERSEM
-#endif // MFD_VERBOSE
+    std::cout<<" Num GDL: "<<numGDL<<std::endl;
 
-    // assemble fractures with FV
-    for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
-    {
+
+
+	// Loop to avoid memory reallocation
+	std::fill( Matrix_elements.begin(), Matrix_elements.begin() + (numFacetsTot-1), 1)	
+	std::fill( Matrix_elements.begin() + numFacetsTot, Matrix_elements.begin() + (numFacetsTot+numCells-1), 0);
+    std::fill( Matrix_elements.begin() + numFacetsTot+numCells, Matrix_elements.end(), 2);
+    
+    for (auto& cell : cellVectorRef){
+		
+		Uint N_Neighbors = cell.getNeighborsIds().size();
+		Uint Id_cell     = cell.getId();
+		Matrix_elements[ numFacetsTot+numCells + Id_cell ] += N_Neighbors;
+		
+	}
+    
+    S.reserve(Matrix_elements);
+
+
+    // assemble fractures with FV and impose coupling conditions
+    for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector()){
+		
         auto& F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
+        const Real Kfn = F_permeability->operator()(0,0);
         const Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
-        const Real Df = F_aperture/2.;
-        const Point3D normal = facet_it.getUnsignedNormal();
-        const Real KnDotF = fabs(dotProduct(F_permeability * normal, normal));
-        const Real alphaf = facet_it.getSize() * KnDotF / Df;
-
-        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
-        const UInt neighbor2id = facet_it.getSeparatedCellsIds()[1];
-
-        const Real alpha1 = findAlpha(neighbor1id, &facet_it);
-        const Real alpha2 = findAlpha(neighbor2id, &facet_it);
-
-        const Real T1f = alpha1*alphaf/(alpha1 + alphaf);
-        const Real Q1f = T1f * M_properties.getMobility();
-
-        const Real T2f = alphaf*alpha2/(alphaf + alpha2);
-        const Real Q2f = T2f * M_properties.getMobility();
-
-        Matrix_elements.emplace_back(Triplet (neighbor1id, neighbor1id, Q1f));
-        Matrix_elements.emplace_back(Triplet (neighbor1id, facet_it.getIdAsCell(), -Q1f));
-        Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(), neighbor1id, -Q1f));
-        Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(), facet_it.getIdAsCell(), Q1f));
-
-        Matrix_elements.emplace_back(Triplet (neighbor2id, neighbor2id, Q2f));
-        Matrix_elements.emplace_back(Triplet (neighbor2id, facet_it.getIdAsCell(), -Q2f));
-        Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(), neighbor2id, -Q2f));
-        Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(), facet_it.getIdAsCell(), Q2f));
+		const Real eta = F_aperture / Kfn;
+		
+		const Uint Id_plus         = facet_it.getId();
+		const Uint Id_minus        = numFacets + facet_it.getFractureId();
+		const Real facetMeasure    = facet_it.getSize();
+		
+		// Coupling terms on M
+		M.coeffRef(Id_plus,Id_plus)    +=   eta*facetMeasure/4 + eta*xsi0*facetMeasure;
+		M.coeffRef(Id_plus,Id_minus)   +=   eta*facetMeasure/4 - eta*xsi0*facetMeasure;
+		M.coeffRef(Id_minus,Id_minus)  +=   eta*facetMeasure/4 + eta*xsi0*facetMeasure;
+		M.coeffRef(Id_minus,Id_plus)   +=   eta*facetMeasure/4 - eta*xsi0*facetMeasure;
+		
+		// Coupling matrix Ct
+		Ct.insert()
+		
 
         for (auto juncture_it : facet_it.getFractureNeighbors())
         {
