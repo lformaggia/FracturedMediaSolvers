@@ -393,14 +393,14 @@ void StiffMatrix::assembleMFD()
     const Uint numGDL           = numFacetsTot + numCellsTot;
 
     // Define global matrix and vector to reserve space
-    Eigen::VectorXd & g0                        = *(this->M_b)          // rhs  
+    Eigen::VectorXd & rhs                       = *(this->M_b)          // rhs  
     Eigen::SparseMatrix<Real,ColMajor> & S      = *(this->M_Matrix);    // global matrix
     std::vector<UInt> Matrix_elements(numGDL,0);                        // vector to reserve space
     
     // Problem coefficients
-    const Real tCoeff = 2.;                         // mimetic coefficient         
-    const Real xsi = 1.;                            // coupling coefficient
-    const Real xsi0 = ( 2. * xsi - 1. ) / 4.;       // coupling modified coefficient
+    const Real tCoeff     = 2.;                            // mimetic coefficient         
+    const Real xsi        = 1.;                            // coupling coefficient
+    const Real xsi0       = ( 2. * xsi - 1. ) / 4.;        // coupling modified coefficient
 
     // Local MFD matrices
     Eigen::Matrix<Real,Dynamic,3> Np;         // facet normals, necessary to build Mp
@@ -518,7 +518,7 @@ void StiffMatrix::assembleMFD()
             Dtp(0,localFacetId) = - alpha * facetMeasure;
 
             if (fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Dirichlet))
-                g0[globalFacetId] = - alpha * facetMeasure;
+                rhs[globalFacetId] = - alpha * facetMeasure;
                 
         }
 
@@ -650,22 +650,35 @@ void StiffMatrix::assembleMFD()
 
 
 	// Loop to avoid memory reallocation
+	// This is fot C and Ct
 	std::fill( Matrix_elements.begin(), Matrix_elements.begin() + (numFacetsTot-1), 1)	
 	std::fill( Matrix_elements.begin() + numFacetsTot, Matrix_elements.begin() + (numFacetsTot+numCells-1), 0);
     std::fill( Matrix_elements.begin() + numFacetsTot+numCells, Matrix_elements.end(), 2);
     
-    for (auto& cell : cellVectorRef){
+    // This is for T and the modification of M due to coupling conditions
+    for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector()){
 		
-		Uint N_Neighbors = cell.getNeighborsIds().size();
-		Uint Id_cell     = cell.getId();
-		Matrix_elements[ numFacetsTot+numCells + Id_cell ] += N_Neighbors;
+		auto f_neighbors = facet_it.getFractureNeighbors();
+		
+		Uint N_neighbors = 0;
+        auto sum_maker = [&N_neighbors](pair< Fracture_Juncture, vector<Uint> > p){N_neighbors += p.second.size() ;};
+        std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
+        
+		Matrix_elements[ numFacetsTot+numCells + face_it.getFractureId() ] += N_Neighbors + 1;
+		
+		Uint Id_plus   = facet_it.getId();
+		Uint Id_minus  = (numFacets-1) + facet_it.getFractureId();
+		Matrix_elements[ Id_plus ]   += 1;
+		Matrix_elements[ Id_minus ]  += 1;
 		
 	}
     
     S.reserve(Matrix_elements);
+    Matrix_elements.clear();
+    Matrix_elements.shrink_to_fit();
 
 
-    // assemble fractures with FV and impose coupling conditions
+    // Assemble fractures with FV and impose coupling conditions
     for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector()){
 		
         auto& F_permeability = M_properties.getProperties(facet_it.getZoneCode()).M_permeability;
@@ -674,75 +687,76 @@ void StiffMatrix::assembleMFD()
 		const Real eta = F_aperture / Kfn;
 		
 		const Uint Id_plus         = facet_it.getId();
-		const Uint Id_minus        = numFacets + facet_it.getFractureId();
+		const Uint Id_F            = facet_it.getFractureId();
+		const Uint Id_minus        = (numFacets-1) + Id_F;
 		const Real facetMeasure    = facet_it.getSize();
 		
 		// Coupling terms on M
-		M.coeffRef(Id_plus,Id_plus)    +=   eta*facetMeasure/4 + eta*xsi0*facetMeasure;
-		M.coeffRef(Id_plus,Id_minus)   +=   eta*facetMeasure/4 - eta*xsi0*facetMeasure;
-		M.coeffRef(Id_minus,Id_minus)  +=   eta*facetMeasure/4 + eta*xsi0*facetMeasure;
-		M.coeffRef(Id_minus,Id_plus)   +=   eta*facetMeasure/4 - eta*xsi0*facetMeasure;
+		S.coeffRef(Id_plus,Id_plus)    +=   eta*facetMeasure/4 + eta*xsi0*facetMeasure;
+		S.coeffRef(Id_plus,Id_minus)   +=   eta*facetMeasure/4 - eta*xsi0*facetMeasure;
+		S.coeffRef(Id_minus,Id_minus)  +=   eta*facetMeasure/4 + eta*xsi0*facetMeasure;
+		S.coeffRef(Id_minus,Id_plus)   +=   eta*facetMeasure/4 - eta*xsi0*facetMeasure;
 		
-		// Coupling matrix Ct
-		Ct.insert()
-		
-
-        for (auto juncture_it : facet_it.getFractureNeighbors())
-        {
+		// Coupling matrix Ct and C
+		S.insert(Id_plus, numFacetsTot+numCells + Id_F)     = facetMeasure;
+		S.insert(Id_minus, numFacetsTot+numCells + Id_F)    = -facetMeasure;
+		S.insert(numFacetsTot+numCells + Id_F, Id_plus)     = facetMeasure;
+		S.insert(numFacetsTot+numCells + Id_F, Id_minus)    = -facetMeasure;
+	
+		// Assemble -T matrix
+        for (auto juncture_it : facet_it.getFractureNeighbors()){
+			
             std::vector<Real> alphas;
             const Real alphaF = findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
 
             for (auto neighbors_it : juncture_it.second)
-            {
                 alphas.emplace_back(findFracturesAlpha (juncture_it.first, neighbors_it));
-            }
 
             Real a_sum = alphaF;
             auto sum_maker = [&a_sum](Real item){a_sum += item;};
             std::for_each(alphas.begin(), alphas.end(), sum_maker);
 
-            for (UInt counter = 0; counter < alphas.size(); ++counter)
-            {
+            for (UInt counter = 0; counter < alphas.size(); ++counter){
+				
                 const Real QFf = alphaF * alphas[counter] * M_properties.getMobility() / a_sum;
-                Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(), facet_it.getIdAsCell(), QFf));
-                Matrix_elements.emplace_back(Triplet (facet_it.getIdAsCell(),
-                this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getIdAsCell(), -QFf));
+                
+                S.insert( numFacetsTot+numCells + Id_F, numFacetsTot+numCells + Id_F ) = -QFf;
+                
+                S.insert( numFacetsTot+numCells + Id_F, numFacetsTot+numCells +
+					this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getFractureId() ) = Qf; 
+                
             }
             alphas.clear();
         }
     }
 
+
     for(UInt i=0; i<this->M_size; ++i)
-    {
-        M_b->operator()(i) = 0.;
-    }
+       rhs[i] = 0.;
 
     // assemble BC on porous matrix
-    for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector())
-    {
-        const UInt neighbor1id = facet_it.getSeparatedCellsIds()[0];
+    for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector()){
+		
         const UInt borderId = facet_it.getBorderId();
         const UInt facetId = facet_it.getId();
 
-        if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
-        {
+        if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann ){
+			
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
-            const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
-
-            M_b->operator()(neighbor1id) -= Q1o;
+            const Real vel_N = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+            rhs[facetId] = vel_N;
         }
-        else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
-        {
-            for (Eigen::SparseMatrix<Real>::InnerIterator it(Td,facetId); it; ++it)
-            {
-                M_b->operator()(it.row()) += it.value() * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
-            }
-        }
+        
+        else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet){
+			
+			const Real pD = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+			rhs[facetId] *= pD;
+		}
     }
 
     // assemble BC on fractures
-    for (auto& edge_it : this->M_mesh.getBorderTipEdgesIdsVector())
-    {
+    for (auto& edge_it : this->M_mesh.getBorderTipEdgesIdsVector()){
+		
         bool isD = false;
         UInt borderId = 0;
 
@@ -769,22 +783,23 @@ void StiffMatrix::assembleMFD()
         }
 
         // loop over the fracture facets
-        for(auto facet_it : edge_it.getSeparatedFacetsIds())
-        {
-            if(this->M_mesh.getFacetsVector()[facet_it].isFracture())
-            {
-                const UInt neighborIdAsCell = M_mesh.getFacetsVector()[facet_it].getFractureFacetId() + M_mesh.getCellsVector().size();
-                const Real aperture = M_properties.getProperties(this->M_mesh.getFacetsVector()[facet_it].getZoneCode()).M_aperture;
+        for(auto facet_it : edge_it.getSeparatedFacetsIds()){
+			 
+            if(facetVectorRef[facet_it].isFracture()){
+				
+                const UInt neighborId = facetVectorRef[facet_it].getFractureFacetId();
+                const Real aperture = M_properties.getProperties( facetVectorRef[facet_it].getZoneCode() ).M_aperture;
 
-                if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
-                {
+                if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann){
+					
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) -= Q1o;
+                    rhs[ numFacetsTot+numCells + neighborId ] = Q1o;
                 } // if
-                else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
-                {
+                
+                else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet){
+					
                     const Real alpha1 = findAlpha (facet_it, &edge_it);
                     const Real alpha2 = findDirichletAlpha (facet_it, &edge_it);
 
@@ -792,22 +807,19 @@ void StiffMatrix::assembleMFD()
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
-                    Matrix_elements.emplace_back(M_offsetRow + neighborIdAsCell, M_offsetCol + neighborIdAsCell, Q12); // Triplet
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
+                    S.coeffRef( numFacets+numCells + neighborId, numFacets+numCells + neighborId) = -Q12; 
+                    rhs[ numFacets+numCells + neighborId ] = -Q1o;
                 } // else if
             } // if
         }// for
     } // for
-
-    // Put everything together
-    Eigen::SparseMatrix<Real,ColMajor> Mborder(numCellsTot,numCellsTot);
-    Mborder.setFromTriplets(Matrix_elements.begin(), Matrix_elements.end());
-    this->M_Matrix->resize(numCellsTot,numCellsTot);
-    T.conservativeResize(numCellsTot,numCellsTot);
-    *(this->M_Matrix) = T + Mborder;
-//    Eigen::saveMarket( *(this->M_Matrix), "./mMatrix/A.m" );
-//    Eigen::saveMarket( *M_b, "./mMatrix/RHS.m" );
+    
+    
+    S.makeCompressed();
+    
     std::cout<<" Assembling ended"<<std::endl;
+    
+    
 } // StiffMatrix::assembleMFD
 
 } // namespace FVCode3D
