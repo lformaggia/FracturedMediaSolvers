@@ -390,10 +390,10 @@ void StiffMatrix::assembleMFD()
     const UInt numFracs         = fracVectorRef.size();
     const UInt numFacetsTot     = numFacets + numFracs;
     const UInt numCellsTot      = numCells + numFracs;
-    const Uint numGDL           = numFacetsTot + numCellsTot;
+    const UInt numGDL           = numFacetsTot + numCellsTot;
 
     // Define global matrix and vector to reserve space
-    Eigen::VectorXd & rhs                       = *(this->M_b)          // rhs  
+    Eigen::VectorXd & rhs                       = *(this->M_b);         // rhs  
     Eigen::SparseMatrix<Real,ColMajor> & S      = *(this->M_Matrix);    // global matrix
     std::vector<UInt> Matrix_elements(numGDL,0);                        // vector to reserve space
     
@@ -458,6 +458,7 @@ void StiffMatrix::assembleMFD()
         auto& K = M_properties.getProperties(cell.getZoneCode()).M_permeability;
         const Real cellMeasure    = cell.getVolume();
         const UInt cellId         = cell.getId();
+        auto cellBaricenter = cell.getCentroid();
 
         if(cellId % 500 == 0)
             std::cout<<"Done "<< cellId<<" Cells"<<std::endl;
@@ -489,7 +490,8 @@ void StiffMatrix::assembleMFD()
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 
             const Point3D facetNormal  = fac.getUnsignedNormal();
-            const Point3D g            = fac.getCentroid() - cell.getCentroid();
+            const Point3D facetBaricenter = fac.getCentroid();
+            Point3D g            = facetBaricenter - cellBaricenter;
             const Real facetMeasure    = fac.area();
             const Real dotp            = dotProduct(g,facetNormal);
             const Real alpha           = (dotp >=0. ? 1.0 : -1.0);
@@ -626,12 +628,12 @@ void StiffMatrix::assembleMFD()
 
 	for( auto facet_it : this->M_mesh.getBorderFacetsIdsVector() ){
 		
-		Uint borderId = facet_it.getBorderId();
-		Uint facetId  = facet_it.getId();
+		UInt borderId = facet_it.getBorderId();
+		UInt facetId  = facet_it.getId();
 		
 		if( this->M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann ){
 			
-			S.prune( [facetId]( Uint i, Uint j, Real val )
+						S.prune( [facetId]( UInt i, UInt j, Real val )
 				{ return ( i!= facetId ); });
 			
 			S.coeffRef(facetId,facetId) = 1;
@@ -651,7 +653,7 @@ void StiffMatrix::assembleMFD()
 
 	// Loop to avoid memory reallocation
 	// This is fot C and Ct
-	std::fill( Matrix_elements.begin(), Matrix_elements.begin() + (numFacetsTot-1), 1)	
+	std::fill( Matrix_elements.begin(), Matrix_elements.begin() + (numFacetsTot-1), 1);	
 	std::fill( Matrix_elements.begin() + numFacetsTot, Matrix_elements.begin() + (numFacetsTot+numCells-1), 0);
     std::fill( Matrix_elements.begin() + numFacetsTot+numCells, Matrix_elements.end(), 2);
     
@@ -660,14 +662,14 @@ void StiffMatrix::assembleMFD()
 		
 		auto f_neighbors = facet_it.getFractureNeighbors();
 		
-		Uint N_neighbors = 0;
-        auto sum_maker = [&N_neighbors](pair< Fracture_Juncture, vector<Uint> > p){N_neighbors += p.second.size() ;};
+		UInt N_neighbors = 0;
+        auto sum_maker = [&N_neighbors](std::pair< Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
         
-		Matrix_elements[ numFacetsTot+numCells + face_it.getFractureId() ] += N_Neighbors + 1;
+		Matrix_elements[ numFacetsTot+numCells + facet_it.getFractureId() ] += N_neighbors + 1;
 		
-		Uint Id_plus   = facet_it.getId();
-		Uint Id_minus  = (numFacets-1) + facet_it.getFractureId();
+		UInt Id_plus   = facet_it.getId();
+		UInt Id_minus  = (numFacets-1) + facet_it.getFractureId();
 		Matrix_elements[ Id_plus ]   += 1;
 		Matrix_elements[ Id_minus ]  += 1;
 		
@@ -686,9 +688,9 @@ void StiffMatrix::assembleMFD()
         const Real F_aperture = M_properties.getProperties(facet_it.getZoneCode()).M_aperture;
 		const Real eta = F_aperture / Kfn;
 		
-		const Uint Id_plus         = facet_it.getId();
-		const Uint Id_F            = facet_it.getFractureId();
-		const Uint Id_minus        = (numFacets-1) + Id_F;
+		const UInt Id_plus         = facet_it.getId();
+		const UInt Id_F            = facet_it.getFractureId();
+		const UInt Id_minus        = (numFacets-1) + Id_F;
 		const Real facetMeasure    = facet_it.getSize();
 		
 		// Coupling terms on M
@@ -720,19 +722,21 @@ void StiffMatrix::assembleMFD()
 				
                 const Real QFf = alphaF * alphas[counter] * M_properties.getMobility() / a_sum;
                 
-                S.insert( numFacetsTot+numCells + Id_F, numFacetsTot+numCells + Id_F ) = -QFf;
+                S.coeffRef( numFacetsTot+numCells + Id_F, numFacetsTot+numCells + Id_F ) -= QFf;
                 
                 S.insert( numFacetsTot+numCells + Id_F, numFacetsTot+numCells +
-					this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getFractureId() ) = Qf; 
+					this->M_mesh.getFractureFacetsIdsVector()[juncture_it.second[counter]].getFractureId() ) = QFf; 
                 
             }
             alphas.clear();
         }
     }
+                            
+    S.makeCompressed();
                          
- //Vector::Constant( this->M_size, 0.)
-    for(UInt i=0; i<this->M_size; ++i)
-       rhs[i] = 0.;
+    rhs = Vector::Constant(numGDL, 0.);
+ //   for(UInt i=0; i<this->M_size; ++i)
+ //      rhs[i] = 0.;
 
     // assemble BC on porous matrix
     for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector()){
@@ -807,15 +811,13 @@ void StiffMatrix::assembleMFD()
                     const Real Q12 = T12 * M_properties.getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
-                    S.coeffRef( numFacets+numCells + neighborId, numFacets+numCells + neighborId) = -Q12; 
+                    S.coeffRef( numFacets+numCells + neighborId, numFacets+numCells + neighborId) -= Q12; 
                     rhs[ numFacets+numCells + neighborId ] = -Q1o;
                 } // else if
             } // if
         }// for
     } // for
     
-    
-    S.makeCompressed();
     
     std::cout<<" Assembling ended"<<std::endl;
     

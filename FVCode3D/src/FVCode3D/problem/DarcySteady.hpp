@@ -111,7 +111,7 @@ assembleVector()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 		
-		Uint numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+		UInt numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
 		Vector f( Vector::Constant( numCellsTot, 0.) );   
 		
     if ( this->M_mesh.getCellsVector().size() != 0
@@ -142,7 +142,7 @@ assembleVector()
 		}
     if(this->M_numet == Data::NumericalMethodType::MFD)
     {
-		Uint numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+		UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
         this->M_b.segment(numFacetsTot,numCellsTot) -= f;
     } 
 } // DarcySteady::assembleVector
