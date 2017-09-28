@@ -52,7 +52,7 @@ public:
     */
     MatrixHandler(const Rigid_Mesh & rigid_mesh, DType dtype = D_Cell):
         M_mesh (rigid_mesh), M_properties(M_mesh.getPropertiesMap()), M_policy(dtype),
-        M_size ((1-dtype)*(rigid_mesh.getCellsVector().size()+rigid_mesh.getFractureFacetsIdsVector().size())+dtype*(rigid_mesh.getNodesVector().size())),
+        M_size ((1-dtype)*(rigid_mesh.getFacetsVector().size()+rigid_mesh.getCellsVector().size()+2*rigid_mesh.getFractureFacetsIdsVector().size())+dtype*(rigid_mesh.getNodesVector().size())),
         M_offsetRow(0), M_offsetCol(0),
         M_Matrix(new SpMat(this->M_size, this->M_size)) {}
     //! No Copy-Constructor

@@ -110,8 +110,10 @@ void DarcySteady<QRMatrix, QRFracture, MatrixType >::
 assembleVector()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
-
-    Vector f( Vector::Constant( this->M_A.rows(), 0.) );
+		
+		Uint numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+		Vector f( Vector::Constant( numCellsTot, 0.) );   
+		
     if ( this->M_mesh.getCellsVector().size() != 0
             &&
             ( this->M_ssOn == Data::SourceSinkOn::Both
@@ -134,10 +136,15 @@ assembleVector()
     {
         this->M_b = f;
     } // if
-    else
+    if(this->M_numet == Data::NumericalMethodType::FV)
     {
-        this->M_b += f;
-    } // else
+		this->M_b += f;
+		}
+    if(this->M_numet == Data::NumericalMethodType::MFD)
+    {
+		Uint numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+        this->M_b.segment(numFacetsTot,numCellsTot) -= f;
+    } 
 } // DarcySteady::assembleVector
 
 } // namespace FVCode3D

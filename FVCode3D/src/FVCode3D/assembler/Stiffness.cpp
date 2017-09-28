@@ -729,8 +729,8 @@ void StiffMatrix::assembleMFD()
             alphas.clear();
         }
     }
-
-
+                         
+ //Vector::Constant( this->M_size, 0.)
     for(UInt i=0; i<this->M_size; ++i)
        rhs[i] = 0.;
 

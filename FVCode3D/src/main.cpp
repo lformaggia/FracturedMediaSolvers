@@ -298,9 +298,16 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-
+	if(dataPtr->getNumericalMethodType() == MFD){
+    Uint numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
+    Uint numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
+    auto solTot = darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot);
+	}
+	else
+	auto solTot = darcy->getSolver().getSolution();
+    
     std::cout << "Export Solution..." << std::flush;
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
+    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", solTot);
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Export Solution on Fractures..." << std::flush;
