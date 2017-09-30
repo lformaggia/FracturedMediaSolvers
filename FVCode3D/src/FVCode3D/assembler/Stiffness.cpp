@@ -399,7 +399,7 @@ void StiffMatrix::assembleMFD()
     
     // Problem coefficients
     const Real tCoeff     = 2.;                            // mimetic coefficient         
-    const Real xsi        = 0.75;                             // coupling coefficient
+    const Real xsi        = 1;                             // coupling coefficient
     const Real xsi0       = ( 2. * xsi - 1. ) / 4.;        // coupling modified coefficient
 
     // Local MFD matrices
@@ -486,9 +486,9 @@ void StiffMatrix::assembleMFD()
             const UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 
-            const Point3D facetNormal  = fac.getUnsignedNormal();
+            const Point3D facetNormal     = fac.getUnsignedNormal();
             const Point3D facetBaricenter = fac.getCentroid();
-            Point3D g            = facetBaricenter - cellBaricenter;
+            Point3D g                     = facetBaricenter - cellBaricenter;
             const Real facetMeasure    = fac.area();
             const Real dotp            = dotProduct(g,facetNormal);
             const Real alpha           = (dotp >=0. ? 1.0 : -1.0);
@@ -781,7 +781,7 @@ void StiffMatrix::assembleMFD()
 					
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
-                    rhs[ numFacetsTot+numCells + neighborId ] = Q1o;
+                    rhs[ numFacetsTot+numCells + neighborId ] += Q1o;
                 } // if
                 
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet){
@@ -794,7 +794,7 @@ void StiffMatrix::assembleMFD()
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
                     S.coeffRef( numFacetsTot+numCells + neighborId, numFacetsTot+numCells + neighborId) -= Q12; 
-                    rhs[ numFacetsTot+numCells + neighborId ] = -Q1o;
+                    rhs[ numFacetsTot+numCells + neighborId ] -= Q1o;
 //                    std::cout<<rhs[ numFacetsTot+numCells + neighborId ]<<std::endl;
                 } // else if
             } // if
