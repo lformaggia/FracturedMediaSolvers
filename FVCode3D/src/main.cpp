@@ -298,21 +298,27 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
     
-    std::cout << "Export Solution..." << std::flush;
+    
     if(dataPtr->getNumericalMethodType() == Data::MFD){
-	UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
-    UInt numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
-    const Vector sol_pres = darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot);
-    exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", sol_pres);
+		UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
+		UInt numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
+		const Vector sol_pres = darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot);
+		std::cout << "Export Solution..." << std::flush;
+		exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", sol_pres);
+		std::cout << "Export Solution on Fractures..." << std::flush;
+		exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", sol_pres);
+		std::cout << " done." << std::endl << std::endl;
+		std::cout<< sol_pres.segment( myrmesh.getCellsVector().size(), myrmesh.getFractureFacetsIdsVector().size() ) <<std::endl;
 	}
-	else
-	exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
-    std::cout << " done." << std::endl << std::endl;
-
-    std::cout << "Export Solution on Fractures..." << std::flush;
-    exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu",
+	    
+    else{
+		std::cout << "Export Solution..." << std::flush;
+		exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", darcy->getSolver().getSolution());
+		std::cout << "Export Solution on Fractures..." << std::flush;
+		exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu",
         darcy->getSolver().getSolution());
-    std::cout << " done." << std::endl << std::endl;
+        std::cout << " done." << std::endl << std::endl;
+	}
 
 #ifdef FVCODE3D_EXPORT
     if(dataPtr->MSROn())
