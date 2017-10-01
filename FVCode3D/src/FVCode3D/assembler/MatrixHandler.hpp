@@ -12,16 +12,10 @@
 #include <algorithm>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
-
-//! Type for matrix size
-/*!
- * @enum DiscretizationType
- * It is possible to choose the size of the matrix.
- */
-enum DiscretizationType {D_Cell, D_Nodes};
 
 //! Base class for assembling a matrix
 /*!
@@ -34,13 +28,6 @@ class MatrixHandler
 {
 public:
 
-    //! Typedef for DiscretizationType
-    /*!
-        @typedef DType
-        This type definition permits to treat DiscretizationType as a DType.
-    */
-    typedef DiscretizationType DType;
-
 public:
     //! @name Constructor & Destructor
     //@{
@@ -50,11 +37,14 @@ public:
         @param rigid_mesh A Rigid_Mesh used to build the matrix
         @param dtype It is the policy adopted for the discretization: per Cell or per Nodes (default Cell)
     */
-    MatrixHandler(const Rigid_Mesh & rigid_mesh, DType dtype = D_Cell):
-        M_mesh (rigid_mesh), M_properties(M_mesh.getPropertiesMap()), M_policy(dtype),
-        M_size ((1-dtype)*(rigid_mesh.getFacetsVector().size()+rigid_mesh.getCellsVector().size()+2*rigid_mesh.getFractureFacetsIdsVector().size())+dtype*(rigid_mesh.getNodesVector().size())),
+    
+    MatrixHandler(const Rigid_Mesh & rigid_mesh, Data::NumericalMethodType M_numet = Data::NumericalMethodType::FV):
+        M_mesh (rigid_mesh), M_properties(M_mesh.getPropertiesMap()),
+        M_size (M_numet*(rigid_mesh.getFacetsVector().size()+rigid_mesh.getCellsVector().size()+2*rigid_mesh.getFractureFacetsIdsVector().size())+
+        (1-M_numet)*(rigid_mesh.getCellsVector().size()+rigid_mesh.getFractureFacetsIdsVector().size())),
         M_offsetRow(0), M_offsetCol(0),
-        M_Matrix(new SpMat(this->M_size, this->M_size)) {}
+        M_Matrix(new SpMat(this->M_size, this->M_size)){}
+			
     //! No Copy-Constructor
     MatrixHandler(const MatrixHandler &) = delete;
     //! No Empty-Constructor
@@ -135,8 +125,6 @@ protected:
     const Rigid_Mesh & M_mesh;
     //! A constant reference to a PropertiesMap
     const PropertiesMap & M_properties;
-    //! It explains if the matrix has the size of the number of Cells or the number of Nodes
-    DType M_policy;
     //! The number of dofs of the matrix
     UInt M_size;
 

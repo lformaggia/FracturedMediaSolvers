@@ -35,7 +35,7 @@ public:
         @param rigid_mesh A Rigid_Mesh used to build the matrix
     */
     MassMatrix(const Rigid_Mesh & rigid_mesh):
-        MatrixHandler(rigid_mesh, D_Cell) {}
+        MatrixHandler(rigid_mesh) {}
     //! No Copy-Constructor
     MassMatrix(const MassMatrix&) = delete;
     //! No Empty-Constructor

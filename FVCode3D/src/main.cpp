@@ -308,7 +308,6 @@ int main(int argc, char * argv[])
 		std::cout << "Export Solution on Fractures..." << std::flush;
 		exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", sol_pres);
 		std::cout << " done." << std::endl << std::endl;
-//		std::cout<< sol_pres.segment( myrmesh.getCellsVector().size(), myrmesh.getFractureFacetsIdsVector().size() ) <<std::endl;
 	}
 	    
     else{

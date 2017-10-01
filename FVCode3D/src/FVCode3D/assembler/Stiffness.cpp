@@ -439,10 +439,7 @@ void StiffMatrix::assembleMFD()
 
 			Matrix_elements[globalFacetId] += numCellFacets + 1;        // numCellFacets for the M, the 1 for the B
 
-            if( fac.isBorderFacet() && (M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann) )
-                continue;
-
-            Matrix_elements[numFacetsTot + cellId] += 1;                // this is for the Dt
+            Matrix_elements[numFacetsTot + cellId] += 1;                // this is for the Bt
             
         }
     }
@@ -539,24 +536,6 @@ void StiffMatrix::assembleMFD()
         Mp  = M0p + M1p;
 
 
-#ifdef MFD_VERBOSE
-        std::stringstream  ss;
-        ss << "./mMatrix/RRtRiRt_" << cellId << ".m";
-        Eigen::Matrix<Real,3,3> RtR = Rp.transpose() * Rp;
-        Real det = RtR.determinant();
-        std::cout<<"ID: "<<cellId<<" Det: "<<det<<std::endl;
-        if(std::fabs(det) >= 1e-10)
-        {
-            Eigen::Matrix<Real,Dynamic,Dynamic> RRtRiRt = Rp * RtR.inverse() * Rp.transpose();
-            Eigen::saveMarket( RRtRiRt, ss.str() );
-        }
-        Eigen::Matrix<Real,Dynamic,Dynamic> QQt = Qp * Qp.transpose();
-        ss.str(std::string());
-        ss << "./mMatrix/Rp_" << cellId << ".m";
-        Eigen::saveMarket( Rp, ss.str() );
-#endif // MFD_VERBOSE
-
-
         for(UInt iloc=0; iloc<numCellFacets; ++iloc){
 			
             UInt i = cellFacetsId[iloc];
@@ -614,7 +593,7 @@ void StiffMatrix::assembleMFD()
     
 
     std::cout << "Zero the Neumann row of S" << std::endl;
-
+    
 	for( auto facet_it : this->M_mesh.getBorderFacetsIdsVector() ){
 		
 		UInt borderId = facet_it.getBorderId();
@@ -622,7 +601,7 @@ void StiffMatrix::assembleMFD()
 		
 		if( this->M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann ){
 			
-						S.prune( [facetId]( UInt i, UInt, Real ){ return ( i!= facetId ); });
+			S.prune( [facetId]( UInt i, UInt, Real ){ return ( i!= facetId ); });
 			
 			S.coeffRef(facetId,facetId) = 1;
 			
@@ -640,26 +619,24 @@ void StiffMatrix::assembleMFD()
 
 
 	// Loop to avoid memory reallocation
-	// This is for C and Ct
-	std::fill( Matrix_elements.begin(), Matrix_elements.begin() + (numFacetsTot-1), 1);	
-	std::fill( Matrix_elements.begin() + numFacetsTot, Matrix_elements.begin() + (numFacetsTot+numCells-1), 0);
+	// This is for Ct
+	std::fill( Matrix_elements.begin(), Matrix_elements.begin() + (numFacetsTot+numCells-1), 0);	
     std::fill( Matrix_elements.begin() + numFacetsTot+numCells, Matrix_elements.end(), 2);
     
-    // This is for T and the modification of M due to coupling conditions
     for (auto& facet_it : this->M_mesh.getFractureFacetsIdsVector()){
 		
+		//This is for -T
 		auto f_neighbors = facet_it.getFractureNeighbors();
-		
 		UInt N_neighbors = 0;
         auto sum_maker = [&N_neighbors](std::pair< Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
-        
 		Matrix_elements[ numFacetsTot+numCells + facet_it.getFractureId() ] += N_neighbors + 1;
 		
+		// This is for C and coupling terms on M
 		UInt Id_plus   = facet_it.getId();
 		UInt Id_minus  = numFacets + facet_it.getFractureId();
-		Matrix_elements[ Id_plus ]   += 1;
-		Matrix_elements[ Id_minus ]  += 1;
+		Matrix_elements[ Id_plus ]   += 2;
+		Matrix_elements[ Id_minus ]  += 2;
 		
 	}
     
@@ -688,12 +665,12 @@ void StiffMatrix::assembleMFD()
 		S.coeffRef(Id_minus,Id_plus)   +=   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
 		
 		// Coupling matrix Ct and C
-		S.insert(Id_plus, numFacetsTot+numCells + Id_F)     = facetMeasure;
+		S.insert(Id_plus, numFacetsTot+numCells + Id_F)     =  facetMeasure;
 		S.insert(Id_minus, numFacetsTot+numCells + Id_F)    = -facetMeasure;
-		S.insert(numFacetsTot+numCells + Id_F, Id_plus)     = facetMeasure;
+		S.insert(numFacetsTot+numCells + Id_F, Id_plus)     =  facetMeasure;
 		S.insert(numFacetsTot+numCells + Id_F, Id_minus)    = -facetMeasure;
 	
-		// Assemble -T matrix
+		// Assemble -T matrix taking into account fractures intersections with the "star-delta" transformation
         for (auto juncture_it : facet_it.getFractureNeighbors()){
 			
             std::vector<Real> alphas;
@@ -729,7 +706,6 @@ void StiffMatrix::assembleMFD()
 
         if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann ){
 			
-            // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             const Real vel_N = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
             rhs[facetId] = vel_N;
         }
@@ -748,28 +724,25 @@ void StiffMatrix::assembleMFD()
         UInt borderId = 0;
 
         // select which BC to apply
-        for(auto border_it : edge_it.getBorderIds())
-        {
+        for(auto border_it : edge_it.getBorderIds()){
+			
             // BC = D > N && the one with greatest id
-            if(M_bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
-            {
-                if(!isD)
-                {
+            if(M_bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet){
+				
+                if(!isD){
                     isD = true;
                     borderId = border_it;
                 }
                 else
-                {
                     borderId = (border_it > borderId) ? border_it : borderId;
-                }
             }
-            else if(!isD && M_bc.getBordersBCMap().at(border_it).getBCType() == Neumann)
-            {
+            else if(!isD && M_bc.getBordersBCMap().at(border_it).getBCType() == Neumann){
+				
                 borderId = (border_it > borderId) ? border_it : borderId;
-            }
+			}
         }
 
-        // loop over the fracture facets
+        // loop over the fracture facets to impose BC on fractures
         for(auto facet_it : edge_it.getSeparatedFacetsIds()){
 			 
             if(facetVectorRef[facet_it].isFracture()){
@@ -779,7 +752,6 @@ void StiffMatrix::assembleMFD()
 
                 if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann){
 					
-                    // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
                     rhs[ numFacetsTot+numCells + neighborId ] += Q1o;
                 } // if
@@ -795,11 +767,12 @@ void StiffMatrix::assembleMFD()
 
                     S.coeffRef( numFacetsTot+numCells + neighborId, numFacetsTot+numCells + neighborId) -= Q12; 
                     rhs[ numFacetsTot+numCells + neighborId ] -= Q1o;
-//                    std::cout<<rhs[ numFacetsTot+numCells + neighborId ]<<std::endl;
+
                 } // else if
             } // if
         }// for
     } // for
+    
     std::cout<<" Assembling ended"<<std::endl;
     
     

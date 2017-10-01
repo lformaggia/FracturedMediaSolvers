@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <FVCode3D/assembler/MatrixHandler.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
@@ -57,8 +58,9 @@ public:
      * @param rigid_mesh A Rigid_Mesh used to build the matrix
      * @param BC Boundary conditions given in the container BoundaryConditions
      */
-    StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC):
-        MatrixHandler(rigid_mesh), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
+    StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC,
+     Data::NumericalMethodType M_numet = Data::NumericalMethodType::FV):
+        MatrixHandler(rigid_mesh,M_numet), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
         M_bc(BC) {}
     //! No Copy-Constructor
     StiffMatrix(const StiffMatrix &) = delete;

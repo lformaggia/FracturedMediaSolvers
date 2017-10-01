@@ -89,7 +89,7 @@ assembleMatrix()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    StiffMatrix S(this->M_mesh, this->M_bc);
+	StiffMatrix S(this->M_mesh, this->M_bc, this->M_numet);
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
