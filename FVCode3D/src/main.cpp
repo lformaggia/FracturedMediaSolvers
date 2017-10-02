@@ -112,11 +112,11 @@ int main(int argc, char * argv[])
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    const Real kf = 1.e3;
+    const Real kf = 1.e3 ; 
     fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
-    const Real fracturesPoro = 1.;
+    const Real fracturesPoro = 1; 
     propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
     propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
     std::cout << " done." << std::endl << std::endl;
@@ -302,11 +302,12 @@ int main(int argc, char * argv[])
     if(dataPtr->getNumericalMethodType() == Data::MFD){
 		UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
 		UInt numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
-		const Vector sol_pres = darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot);
 		std::cout << "Export Solution..." << std::flush;
-		exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", sol_pres);
+		exporter.exportSolution( myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", 
+			darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot) );
 		std::cout << "Export Solution on Fractures..." << std::flush;
-		exporter.exportSolutionOnFractures(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", sol_pres);
+		exporter.exportSolutionOnFractures( myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", 
+			darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot) );
 		std::cout << " done." << std::endl << std::endl;
 	}
 	    

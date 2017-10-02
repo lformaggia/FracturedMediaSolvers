@@ -621,6 +621,32 @@ Rigid_Mesh::Cell::Cell(const Cell & cell):
     M_verticesIds(cell.getVerticesIds()), M_facetsIds(cell.getFacetsIds()),
     M_neighborsIds(cell.getNeighborsIds()), M_centroid(cell.getCentroid()),
     M_volume(cell.getVolume()){}
+    
+Real Rigid_Mesh::Cell::orientationFacet(const Facet & fac) const throw()
+{
+    bool found(false);
+    UInt facetId = fac.getId();
+
+    // control that facetId is a facet of this cell
+    for( std::vector<UInt>::const_iterator it = M_facetsIds.begin(); it != M_facetsIds.end(); ++it )
+    {
+        if( *it == facetId )
+            found = true;
+    }
+
+    // check if the facet exists in this cell
+    if( !found )
+    {
+        std::stringstream error;
+        error << "Error: the facet " << facetId << " is not in the cell.";
+        throw std::runtime_error(error.str());
+    }
+
+    const Point3D facetNormal = fac.getUnsignedNormal();
+    const Point3D g           = fac.getCentroid() - Rigid_Mesh::Cell::M_centroid;
+    
+	return ( (dotProduct(g,facetNormal)>=0.) ? 1.0 : -1.0 );	
+}
 
 // ==================================================
 // Methods

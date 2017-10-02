@@ -506,6 +506,13 @@ public:
          */
         UInt neighborsNumber() const
             { return M_neighborsIds.size (); }
+            
+        //! The facet orientation wrt the cell
+        /*!
+         * @param the Facet
+         * @return the alpha orientation of the facet
+         */
+        Real orientationFacet(const Facet & fac) const throw();
 
         //! Get volume (const)
         /*!

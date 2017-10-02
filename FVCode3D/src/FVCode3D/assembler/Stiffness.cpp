@@ -426,16 +426,8 @@ void StiffMatrix::assembleMFD()
 			const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 			
 			// This is to take into account the decoupling of fractures facets
-			if( fac.isFracture() ){
-				
-				const Point3D facetNormal = fac.getUnsignedNormal();
-				const Point3D g           = fac.getCentroid() - cell.getCentroid();
-				const Real dotp           = dotProduct(g,facetNormal);
-				
-				if( dotp < 0 )
+			if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
 					globalFacetId = numFacets + fac.getFractureFacetId();
-				
-				}
 
 			Matrix_elements[globalFacetId] += numCellFacets + 1;        // numCellFacets for the M, the 1 for the B
 
@@ -454,7 +446,6 @@ void StiffMatrix::assembleMFD()
         auto& K = M_properties.getProperties(cell.getZoneCode()).M_permeability;
         const Real cellMeasure    = cell.getVolume();
         const UInt cellId         = cell.getId();
-        auto cellBaricenter = cell.getCentroid();
 
         if(cellId % 500 == 0)
             std::cout<<"Done "<< cellId<<" Cells"<<std::endl;
@@ -483,13 +474,11 @@ void StiffMatrix::assembleMFD()
             const UInt globalFacetId = cellFacetsId[localFacetId];
             const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 
-            const Point3D facetNormal     = fac.getUnsignedNormal();
-            const Point3D facetBaricenter = fac.getCentroid();
-            Point3D g                     = facetBaricenter - cellBaricenter;
-            const Real facetMeasure    = fac.area();
-            const Real dotp            = dotProduct(g,facetNormal);
-            const Real alpha           = (dotp >=0. ? 1.0 : -1.0);
-
+			const Point3D facetNormal     = fac.getUnsignedNormal();
+            Point3D g                     = fac.getCentroid() - cell.getCentroid();
+            const Real facetMeasure       = fac.area();
+            const Real alpha              = cell.orientationFacet(fac);
+            
             //! @todo I use the formulation of Nicola (to be reviewed)
             // BEWARE FOR THE CONDITION ON VELOCITY I NEED THE AVERAGE
             // VELOCITY NOT THE FLUX
@@ -543,15 +532,8 @@ void StiffMatrix::assembleMFD()
             const Real Bcoeff = Bp(0,iloc);
             
             // This is to take into account the decoupling of fractures facets
-            if( fac.isFracture() ){
-				
-				const Point3D facetNormal = fac.getUnsignedNormal();
-				const Point3D g           = fac.getCentroid() - cell.getCentroid();
-				const Real dotp           = dotProduct(g,facetNormal);
-				
-				if( dotp < 0 )
+			if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
 					i = numFacets + fac.getFractureFacetId();
-			}
 
             if( Bcoeff != 0. ){
 
@@ -571,15 +553,8 @@ void StiffMatrix::assembleMFD()
                 Mcoeff = Mp(iloc,jloc);
                 
                 // This is to take into account the decoupling of fractures facets
-				if( fac.isFracture() ){
-				
-					const Point3D facetNormal = fac.getUnsignedNormal();
-					const Point3D g           = fac.getCentroid() - cell.getCentroid();
-					const Real dotp           = dotProduct(g,facetNormal);
-				
-					if( dotp < 0 )
-						j = numFacets + fac.getFractureFacetId();		
-				}
+				if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+					j = numFacets + fac.getFractureFacetId();
 
                 if (Mcoeff != 0.){
                     S.coeffRef(i,j) += Mcoeff;
