@@ -1,0 +1,87 @@
+\hypertarget{Matrix_8cpp_source}{}\section{Matrix.\+cpp}
+\label{Matrix_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Matrix.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Matrix.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{Matrix_8hpp}{FVCode3D/utility/Matrix.hpp}>}
+00007 
+00008 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00009 \{
+00010 
+\hypertarget{Matrix_8cpp_source.tex_l00011}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a2f72653e42581403405df3559264f4b4}{00011} \hyperlink{classFVCode3D_1_1SparseMatrix_a2f72653e42581403405df3559264f4b4}{SparseMatrix::SparseMatrix}():
+00012     M\_nonZeros(0), M\_options(\hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48aa66707b15fb7654854e39760f95fe1bf}{Store}), M\_file(0) \{\}
+00013 
+\hypertarget{Matrix_8cpp_source.tex_l00014}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a7961e085c9e55f2520110910c8aad990}{00014} \hyperlink{classFVCode3D_1_1SparseMatrix_a2f72653e42581403405df3559264f4b4}{SparseMatrix::SparseMatrix}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4eac36ed1d93d886ecdcf46c6386b415}{Flag8bit} options, \textcolor{keyword}{const} std::string 
+      filename):
+00015     \hyperlink{classFVCode3D_1_1SparseMatrix_a4c0c92274503986d2f529a39d50c2efd}{M\_nonZeros}(0), \hyperlink{classFVCode3D_1_1SparseMatrix_ae83070ee319a49c35bf64bc0af03868f}{M\_options}(options | \hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48a404305166bee1d9f70fd4121aa96efe7}{SaveOnFile}), 
+      \hyperlink{classFVCode3D_1_1SparseMatrix_ab1c614856c8b31a81368163619fc7ba6}{M\_filename}(filename), \hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file}(0)
+00016 \{
+00017     \hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file} = \textcolor{keyword}{new} std::ofstream;
+00018     \hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file}->open(\hyperlink{classFVCode3D_1_1SparseMatrix_ab1c614856c8b31a81368163619fc7ba6}{M\_filename}.c\_str(), std::ios\_base::out);
+00019 \}
+00020 
+\hypertarget{Matrix_8cpp_source.tex_l00021}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a7cf40c4af2ad22d73fc31f3685e48b93}{00021} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1SparseMatrix_a7cf40c4af2ad22d73fc31f3685e48b93}{SparseMatrix::getValue}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} j)\textcolor{keyword}{ const}
+00022 \textcolor{keyword}{}\{
+00023     \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1SparseMatrix_a7cf40c4af2ad22d73fc31f3685e48b93}{getValue}(std::make\_pair(i,j));
+00024 \}
+00025 
+\hypertarget{Matrix_8cpp_source.tex_l00026}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a57e71069d98acd9b52f0dfe4b7235647}{00026} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1SparseMatrix_a7cf40c4af2ad22d73fc31f3685e48b93}{SparseMatrix::getValue}(\textcolor{keyword}{const} std::pair<UInt, UInt> ij)\textcolor{keyword}{ const}
+00027 \textcolor{keyword}{}\{
+00028     \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.size() == 0)
+00029         \textcolor{keywordflow}{return} 0.;
+00030 
+00031     std::map<std::pair<UInt, UInt>, \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}, \hyperlink{classFVCode3D_1_1lessOnMatrixIndices}{lessOnMatrixIndices}>::const\_iterator it = 
+      \hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.find(ij);
+00032 
+00033     \textcolor{keywordflow}{if} ( it != \hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.end())
+00034         \textcolor{keywordflow}{return} it->second;
+00035 
+00036     \textcolor{keywordflow}{return} 0.;
+00037 \}
+00038 
+\hypertarget{Matrix_8cpp_source.tex_l00039}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a129abefb84ed2aa704d0fc45bcc62b59}{00039} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1SparseMatrix_a129abefb84ed2aa704d0fc45bcc62b59}{SparseMatrix::nonZeros}()\textcolor{keyword}{ const}
+00040 \textcolor{keyword}{}\{
+00041     \textcolor{keywordflow}{if} (\hyperlink{classFVCode3D_1_1SparseMatrix_ae83070ee319a49c35bf64bc0af03868f}{M\_options} & \hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48aa66707b15fb7654854e39760f95fe1bf}{Store})
+00042         \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.size();
+00043 
+00044     \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1SparseMatrix_a4c0c92274503986d2f529a39d50c2efd}{M\_nonZeros};
+00045 \}
+00046 
+\hypertarget{Matrix_8cpp_source.tex_l00047}{}\hyperlink{classFVCode3D_1_1SparseMatrix_aa232dd2521469ec2b6f5e33332e1db63}{00047} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1SparseMatrix_aa232dd2521469ec2b6f5e33332e1db63}{SparseMatrix::fill}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} j, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} value)
+00048 \{
+00049     \hyperlink{classFVCode3D_1_1SparseMatrix_aa232dd2521469ec2b6f5e33332e1db63}{fill}(std::make\_pair(i,j), value);
+00050 \}
+00051 
+\hypertarget{Matrix_8cpp_source.tex_l00052}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a378e604e4b74837d52f7a49bb7037023}{00052} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1SparseMatrix_aa232dd2521469ec2b6f5e33332e1db63}{SparseMatrix::fill}(\textcolor{keyword}{const} std::pair<UInt, UInt> ij, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} value)
+00053 \{
+00054     \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1SparseMatrix_ae83070ee319a49c35bf64bc0af03868f}{M\_options} & \hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48aa66707b15fb7654854e39760f95fe1bf}{Store})
+00055     \{
+00056         \textcolor{keyword}{const} std::map<std::pair<UInt, UInt>, \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}, \hyperlink{classFVCode3D_1_1lessOnMatrixIndices}{lessOnMatrixIndices}>::iterator 
+      it = \hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.find(ij);
+00057 
+00058         \textcolor{keywordflow}{if} (it != \hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.end())
+00059             it->second = value;
+00060         \textcolor{keywordflow}{else}
+00061             \hyperlink{classFVCode3D_1_1SparseMatrix_a129734d57bfde842f4b90dcb2e8d85e3}{M\_matrix}.insert(std::make\_pair(ij,value));
+00062     \}
+00063     \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1SparseMatrix_ae83070ee319a49c35bf64bc0af03868f}{M\_options} & \hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48a404305166bee1d9f70fd4121aa96efe7}{SaveOnFile})
+00064     \{
+00065         *\hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file}<<ij.first<<\textcolor{stringliteral}{" "}<<ij.second<<\textcolor{stringliteral}{" "}<<value<<std::endl;
+00066         \hyperlink{classFVCode3D_1_1SparseMatrix_a4c0c92274503986d2f529a39d50c2efd}{M\_nonZeros}++;
+00067     \}
+00068 \}
+00069 
+\hypertarget{Matrix_8cpp_source.tex_l00070}{}\hyperlink{classFVCode3D_1_1SparseMatrix_a58a40b119145886426ad68c51a0ef9fd}{00070} \hyperlink{classFVCode3D_1_1SparseMatrix_a58a40b119145886426ad68c51a0ef9fd}{SparseMatrix::~SparseMatrix}()
+00071 \{
+00072     \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file})
+00073     \{
+00074         \hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file}->close();
+00075         \textcolor{keyword}{delete} \hyperlink{classFVCode3D_1_1SparseMatrix_a535d7125855e754fda8ca78895c475e2}{M\_file};
+00076     \}
+00077 \}
+00078 
+00079 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

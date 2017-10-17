@@ -1,0 +1,9 @@
+<map id="FVCode3D::ImporterMedit::import" name="FVCode3D::ImporterMedit::import">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D.html#a04162ec60e0fe52674b3ecbb7de1185c" title="Get the vector storing the nodes of the mesh (const) " alt="" coords="241,5,449,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D.html#a76de387da2a552e3e1210d795bc7acf9" title="Get the set storing the facets of the mesh (const) " alt="" coords="228,71,463,98"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1Mesh3D.html#ad904ef5e068c89951d77e9364e960bf3" title="Get the map storing the cells of the mesh (const) " alt="" coords="233,122,458,149"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1Properties.html#a0ddb477254cfacdb96a440ddedc2548c" title="Set properties. " alt="" coords="268,173,423,215"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1PropertiesMap.html#ac303adadd1101e7bee62ecad0e8ea6ac" title="Set the properties of a selected zone. " alt="" coords="256,239,435,280"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1Mesh3D.html#a609f980329f5a98e9fad724049e509d2" title="Fill a map that associates to node ids of each facet the facet id. " alt="" coords="237,304,454,345"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1Mesh3D.html#a2ac0b84c13a15ed42cdd8c98066eae98" title="Find the facet id given the list of the nodes. " alt="" coords="244,369,447,411"/>
+</map>

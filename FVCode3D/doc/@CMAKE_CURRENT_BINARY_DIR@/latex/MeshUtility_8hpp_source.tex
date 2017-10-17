@@ -1,0 +1,34 @@
+\hypertarget{MeshUtility_8hpp_source}{}\section{Mesh\+Utility.\+hpp}
+\label{MeshUtility_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Mesh\+Utility.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Mesh\+Utility.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef MESHUTILITY\_HPP\_}
+00007 \textcolor{preprocessor}{#define MESHUTILITY\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{Data_8hpp}{FVCode3D/core/Data.hpp}>}
+00011 
+00012 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00013 \{
+00014 
+00015 \textcolor{keyword}{class }Mesh3D;
+00016 
+00018 
+00024 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{addNoiseToPoint}(Mesh3D & mesh, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean = 0., \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} stDev = 1.);
+00025 
+00027 
+00034 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{addNoiseToPoint}(Mesh3D & mesh, \textcolor{keyword}{const} std::vector<bool> & nodesWithNoise, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean = 0.,
+00035     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} stDev = 1.);
+00036 
+00038 
+00046 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{addNoiseToPoint}(Mesh3D & mesh, \textcolor{keyword}{const} std::vector<bool> & nodesWithNoise, \textcolor{keyword}{const} 
+      std::vector<UInt> & coords,
+00047     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean = 0., \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} stDev = 1.);
+00048 
+00049 \} \textcolor{comment}{// namespace FVCode3D}
+00050 
+00051 \textcolor{preprocessor}{#endif // MESHUTILITY\_HPP\_}
+\end{DoxyCode}

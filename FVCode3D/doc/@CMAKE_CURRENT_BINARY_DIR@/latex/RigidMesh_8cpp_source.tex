@@ -1,0 +1,1007 @@
+\hypertarget{RigidMesh_8cpp_source}{}\section{Rigid\+Mesh.\+cpp}
+\label{RigidMesh_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Rigid\+Mesh.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Rigid\+Mesh.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00007 \textcolor{preprocessor}{#include <\hyperlink{Properties_8hpp}{FVCode3D/property/Properties.hpp}>}
+00008 
+00009 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00010 \{
+00011 
+00012 \textcolor{comment}{// --------------------   Class Rigid\_Mesh   --------------------}
+00013 
+00014 \textcolor{comment}{// ==================================================}
+00015 \textcolor{comment}{// Constructors & Destructor}
+00016 \textcolor{comment}{// ==================================================}
+00017 
+\hypertarget{RigidMesh_8cpp_source.tex_l00018}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a711f71a2f30f71f108264dee2be9a09a}{00018} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a46bc8bc78b842c5cba9bc8f93e68de8a}{Rigid\_Mesh::Rigid\_Mesh} (\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & generic\_mesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap} & prop, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} renumber, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} buildEdges):
+00019     M\_nodes(generic\_mesh.getNodesVector()), M\_properties(prop), M\_renumber(renumber)
+00020 \{
+00021     std::map<UInt, UInt> oldToNewMapCells;
+00022     std::map<UInt, UInt> oldToNewMapFacets;
+00023     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3ddbd3589db60840edbbd76d4a69ec0a}{cellsVectorBuilder}(generic\_mesh, oldToNewMapCells);
+00024     \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3d9468c34407de926f494d4aa47af64f}{M\_renumber})
+00025         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a137e1a9da5d7fadfac8053c15ff4749b}{adjustCellNeighbors}(oldToNewMapCells);
+00026     \hyperlink{classFVCode3D_1_1Rigid__Mesh_aa425c5b71169c77ee04ad9fe3ebf9123}{facetsVectorsBuilder}(generic\_mesh, oldToNewMapCells, oldToNewMapFacets);
+00027     \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3d9468c34407de926f494d4aa47af64f}{M\_renumber})
+00028         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a24c847643d9dc98dc3e7b2435e22cdf6}{adjustCellFacets}(oldToNewMapFacets);
+00029     \textcolor{keywordflow}{if}(buildEdges)
+00030         \hyperlink{classFVCode3D_1_1Rigid__Mesh_ac06b1206bf25e6045a2b361b5e7508f4}{edgesVectorBuilder}();
+00031 \}
+00032 
+\hypertarget{RigidMesh_8cpp_source.tex_l00033}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a46f8ae18ba262a08fb82ea00e3770985}{00033} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a46bc8bc78b842c5cba9bc8f93e68de8a}{Rigid\_Mesh::Rigid\_Mesh}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mymesh):
+00034     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a400c29e5aa35a8dbdbcdca33c104a4b9}{M\_nodes}(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_a6affc34229309c2b58be292fc01bb1fc}{M\_properties}(mymesh.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3d9468c34407de926f494d4aa47af64f}{M\_renumber}(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a845d1684e535cded4e128ca116ab90e9}{isRenumbered}())
+00035 \{
+00036     \textcolor{comment}{// Geometrical entities}
+00037     \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size());
+00038     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00039     \{
+00040         \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Cell}
+00041     \}
+00042 
+00043     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size());
+00044     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}())
+00045     \{
+00046         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Facet}
+00047     \}
+00048 
+00049     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a807a6932cb5b80eb73bf86c3dae06a80}{getEdgesVector}().size());
+00050     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a807a6932cb5b80eb73bf86c3dae06a80}{getEdgesVector}())
+00051     \{
+00052         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Edge}
+00053     \}
+00054 
+00055     \textcolor{comment}{// Facet ids vectors}
+00056     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a21700f8c7b816da944a829ee9d3ab7fb}{M\_borderFacets}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa72b7fad937f0d1586fc10b176ef5d3e}{getBorderFacetsIdsVector}().size());
+00057     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa72b7fad937f0d1586fc10b176ef5d3e}{getBorderFacetsIdsVector}())
+00058     \{
+00059         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a21700f8c7b816da944a829ee9d3ab7fb}{M\_borderFacets}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Border\_Facet}
+00060     \}
+00061 
+00062     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a8ede7966973fec708327b95fc379a4e1}{M\_internalFacets}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a838ebf69155c115c2646d1a20b0ad249}{getInternalFacetsIdsVector}().
+      size());
+00063     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a838ebf69155c115c2646d1a20b0ad249}{getInternalFacetsIdsVector}())
+00064     \{
+00065         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a8ede7966973fec708327b95fc379a4e1}{M\_internalFacets}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Regular\_Facet}
+00066     \}
+00067 
+00068     \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().
+      size());
+00069     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00070     \{
+00071         \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Fracture\_Facet}
+00072     \}
+00073 
+00074     \textcolor{comment}{// Edge ids vectors}
+00075     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3b689233b2590d76d663195b89d380fb}{M\_internalEdges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa6978e883bc7ef09478a0c85c25fabb2}{getInternalEdgesIdsVector}().size
+      ());
+00076     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa6978e883bc7ef09478a0c85c25fabb2}{getInternalEdgesIdsVector}())
+00077     \{
+00078         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3b689233b2590d76d663195b89d380fb}{M\_internalEdges}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Regular\_Edge}
+00079     \}
+00080 
+00081     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a72e5bc2acebdc3bca417fa55dfd4c8c0}{M\_pureBorderEdges}.reserve(mymesh.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad18503d8be34525dd4ccbd7d6bc972c0}{getPureBorderEdgesIdsVector}().size());
+00082     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ad18503d8be34525dd4ccbd7d6bc972c0}{getPureBorderEdgesIdsVector}())
+00083     \{
+00084         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a72e5bc2acebdc3bca417fa55dfd4c8c0}{M\_pureBorderEdges}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Pure\_Border\_Edge}
+00085     \}
+00086 
+00087     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a01850de43f4d5d1dcf617d7697bcf3e8}{M\_junctureEdges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab5e13da1e797fbbb301b15272a96c27a}{getJunctureEdgesIdsVector}().size
+      ());
+00088     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab5e13da1e797fbbb301b15272a96c27a}{getJunctureEdgesIdsVector}())
+00089     \{
+00090         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a01850de43f4d5d1dcf617d7697bcf3e8}{M\_junctureEdges}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Juncture\_Edge}
+00091     \}
+00092 
+00093     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.reserve(mymesh.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a167962718f17ff75f349a1a072d1627b}{getInternalTipEdgesIdsVector}().size());
+00094     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a167962718f17ff75f349a1a072d1627b}{getInternalTipEdgesIdsVector}())
+00095     \{
+00096         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Internal\_Tip\_Edge}
+00097     \}
+00098 
+00099     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}().
+      size());
+00100     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}())
+00101     \{
+00102         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.emplace\_back(it, \textcolor{keyword}{this}); \textcolor{comment}{// Border\_Tip\_Edge}
+00103     \}
+00104 
+00105     \textcolor{comment}{// Edge pointer ids vectors}
+00106     \textcolor{comment}{//border}
+00107     \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ad18503d8be34525dd4ccbd7d6bc972c0}{getPureBorderEdgesIdsVector}().size
+      () + mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}().size());
+00108     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ad18503d8be34525dd4ccbd7d6bc972c0}{getPureBorderEdgesIdsVector}())
+00109     \{
+00110         \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.push\_back(&it);
+00111     \}
+00112 
+00113     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}())
+00114     \{
+00115         \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.push\_back(&it);
+00116     \}
+00117 
+00118     \textcolor{comment}{//tip}
+00119     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a167962718f17ff75f349a1a072d1627b}{getInternalTipEdgesIdsVector}().size() +
+       mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}().size());
+00120     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a167962718f17ff75f349a1a072d1627b}{getInternalTipEdgesIdsVector}())
+00121     \{
+00122         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.push\_back(&it);
+00123     \}
+00124 
+00125     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}())
+00126     \{
+00127         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.push\_back(&it);
+00128     \}
+00129 
+00130     \textcolor{comment}{//fracture}
+00131     \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.reserve(mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab5e13da1e797fbbb301b15272a96c27a}{getJunctureEdgesIdsVector}().size
+      () + mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_af886299593ba5c9f9a33ee9d8ff4d4a6}{getTipEdgesIdsVector}().size());
+00132     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab5e13da1e797fbbb301b15272a96c27a}{getJunctureEdgesIdsVector}())
+00133     \{
+00134         \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.push\_back(&it);
+00135     \}
+00136 
+00137     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} it : mymesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_af886299593ba5c9f9a33ee9d8ff4d4a6}{getTipEdgesIdsVector}())
+00138     \{
+00139         \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.push\_back(it);
+00140     \}
+00141 \}
+00142 
+00143 \textcolor{comment}{// ==================================================}
+00144 \textcolor{comment}{// Protected Method}
+00145 \textcolor{comment}{// ==================================================}
+00146 
+\hypertarget{RigidMesh_8cpp_source.tex_l00147}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3ddbd3589db60840edbbd76d4a69ec0a}{00147} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3ddbd3589db60840edbbd76d4a69ec0a}{Rigid\_Mesh::cellsVectorBuilder} (\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & generic\_mesh, 
+      std::map<UInt, UInt> & oldToNewMapCells)
+00148 \{
+00149     \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells}.reserve(generic\_mesh.\hyperlink{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3}{getCellsMap}().size());
+00150 
+00151     \textcolor{keywordflow}{if}(!\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3d9468c34407de926f494d4aa47af64f}{M\_renumber})
+00152     \{
+00153         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : generic\_mesh.\hyperlink{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3}{getCellsMap}())
+00154         \{
+00155             \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells}.emplace\_back(it.second, \textcolor{keyword}{this}, it.first); \textcolor{comment}{// Cell}
+00156         \}
+00157     \}
+00158     \textcolor{keywordflow}{else}
+00159     \{
+00160         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} position = 0;
+00161         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& it : generic\_mesh.\hyperlink{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3}{getCellsMap}())
+00162         \{
+00163             oldToNewMapCells[it.first] = position;
+00164             \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells}.emplace\_back(it.second, \textcolor{keyword}{this}, position); \textcolor{comment}{// Cell}
+00165             ++position;
+00166         \}
+00167     \}
+00168 \}
+00169 
+\hypertarget{RigidMesh_8cpp_source.tex_l00170}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a137e1a9da5d7fadfac8053c15ff4749b}{00170} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a137e1a9da5d7fadfac8053c15ff4749b}{Rigid\_Mesh::adjustCellNeighbors} ( \textcolor{keyword}{const} std::map<UInt, UInt> & 
+      oldToNewMapCells )
+00171 \{
+00172     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells})
+00173         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& Neighbors\_it : it.M\_neighborsIds)
+00174             Neighbors\_it = oldToNewMapCells.at(Neighbors\_it);
+00175 \}
+00176 
+\hypertarget{RigidMesh_8cpp_source.tex_l00177}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa425c5b71169c77ee04ad9fe3ebf9123}{00177} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_aa425c5b71169c77ee04ad9fe3ebf9123}{Rigid\_Mesh::facetsVectorsBuilder} ( \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & generic\_mesh, \textcolor{keyword}{const} 
+      std::map<UInt, UInt> & oldToNewMapCells,
+00178     std::map<UInt, UInt> & oldToNewMapFacets)
+00179 \{
+00180     \textcolor{comment}{// Define which facets are fracture ones, which are border ones and which are regular ones.}
+00181     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_ae579d78d6aa68fb20068061a01c71225}{Facet3DMap} & facet\_container = generic\_mesh.\hyperlink{classFVCode3D_1_1Mesh3D_a76de387da2a552e3e1210d795bc7acf9}{getFacetsMap}();
+00182     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} fractureId = 0;
+00183 
+00184     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.reserve(facet\_container.size());
+00185     \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets}.reserve(facet\_container.size());
+00186     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a21700f8c7b816da944a829ee9d3ab7fb}{M\_borderFacets}.reserve(facet\_container.size());
+00187     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a8ede7966973fec708327b95fc379a4e1}{M\_internalFacets}.reserve(facet\_container.size());
+00188 
+00189     \textcolor{keywordflow}{if}(!\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3d9468c34407de926f494d4aa47af64f}{M\_renumber})
+00190     \{
+00191         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : facet\_container)
+00192         \{
+00193             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.emplace\_back(it.second, \textcolor{keyword}{this}, oldToNewMapCells, it.first); \textcolor{comment}{// Facet}
+00194 
+00195             \textcolor{keywordflow}{if} (it.second.isFracture())
+00196             \{
+00197                 \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets}.emplace\_back(it.first, \textcolor{keyword}{this}); \textcolor{comment}{// Fracture\_Facet}
+00198 
+00199                 \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.rbegin()->M\_fractureFacetId = fractureId;
+00200                 ++fractureId;
+00201             \}
+00202             \textcolor{keywordflow}{else}
+00203             \{
+00204                 \textcolor{keywordflow}{if} (it.second.getSeparatedCells().size() == 1)
+00205                     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a21700f8c7b816da944a829ee9d3ab7fb}{M\_borderFacets}.emplace\_back(it.first, \textcolor{keyword}{this}); \textcolor{comment}{// Border\_Facet}
+00206                 \textcolor{keywordflow}{else}
+00207                     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a8ede7966973fec708327b95fc379a4e1}{M\_internalFacets}.emplace\_back(it.first, \textcolor{keyword}{this}); \textcolor{comment}{// Regular\_Facet}
+00208             \}
+00209         \}
+00210     \}
+00211     \textcolor{keywordflow}{else}
+00212     \{
+00213         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} position = 0;
+00214 
+00215         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : facet\_container)
+00216         \{
+00217             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.emplace\_back(it.second, \textcolor{keyword}{this}, oldToNewMapCells, position); \textcolor{comment}{// Facet}
+00218 
+00219             oldToNewMapFacets[it.first] = position;
+00220 
+00221             \textcolor{keywordflow}{if} (it.second.isFracture())
+00222             \{
+00223                 \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets}.emplace\_back(position, \textcolor{keyword}{this}); \textcolor{comment}{// Fracture\_Facet}
+00224 
+00225                 \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.rbegin()->M\_fractureFacetId = fractureId;
+00226                 ++fractureId;
+00227             \}
+00228             \textcolor{keywordflow}{else}
+00229             \{
+00230                 \textcolor{keywordflow}{if} (it.second.getSeparatedCells().size() == 1)
+00231                     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a21700f8c7b816da944a829ee9d3ab7fb}{M\_borderFacets}.emplace\_back(position, \textcolor{keyword}{this}); \textcolor{comment}{// Border\_Facet}
+00232                 \textcolor{keywordflow}{else}
+00233                     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a8ede7966973fec708327b95fc379a4e1}{M\_internalFacets}.emplace\_back(position, \textcolor{keyword}{this}); \textcolor{comment}{// Regular\_Facet}
+00234             \}
+00235             ++ position;
+00236         \}
+00237     \}
+00238     \textcolor{comment}{// TODO shrink to fit or not shrink to fit?}
+00239 
+00240     \textcolor{comment}{// Create Junctures}
+00241     std::map<Fracture\_Juncture, std::vector<UInt> > nodes\_fracture\_map;
+00242 
+00243     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets})
+00244     \{
+00245         \textcolor{keyword}{auto} vertex\_it  = it.getFacet().getVerticesIds().begin();
+00246         \textcolor{keyword}{auto} vertex\_it2 = vertex\_it;
+00247         ++vertex\_it2;
+00248 
+00249         \textcolor{keywordflow}{for}( ; vertex\_it2!=it.getFacet().getVerticesIds().end(); ++vertex\_it, ++vertex\_it2)
+00250         \{
+00251             \textcolor{comment}{//The if state is necessary in order to order the vertexes!!}
+00252             \textcolor{keywordflow}{if} (*(vertex\_it2) < *(vertex\_it))
+00253                 nodes\_fracture\_map[\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7c7beee55763889ef7a4d0bc48392084}{Fracture\_Juncture}(*(vertex\_it2), *(vertex\_it))].
+      push\_back(it.getFractureId());
+00254             \textcolor{keywordflow}{else}
+00255                 nodes\_fracture\_map[\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7c7beee55763889ef7a4d0bc48392084}{Fracture\_Juncture}(*(vertex\_it), *(vertex\_it2))].
+      push\_back(it.getFractureId());
+00256         \}
+00257 
+00258         vertex\_it2 = it.getFacet().getVerticesIds().begin();
+00259 
+00260         \textcolor{comment}{//The if state is necessary in order to order the vertexes!!}
+00261         \textcolor{keywordflow}{if} (*(vertex\_it2) < *(vertex\_it))
+00262             nodes\_fracture\_map[\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7c7beee55763889ef7a4d0bc48392084}{Fracture\_Juncture}(*(vertex\_it2), *(vertex\_it))].push\_back(
+      it.getFractureId());
+00263         \textcolor{keywordflow}{else}
+00264             nodes\_fracture\_map[\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7c7beee55763889ef7a4d0bc48392084}{Fracture\_Juncture}(*(vertex\_it), *(vertex\_it2))].push\_back(
+      it.getFractureId());
+00265     \}
+00266 
+00267     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a7c7beee55763889ef7a4d0bc48392084}{Fracture\_Juncture} m\_junct;
+00268 
+00269     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : M\_fractureFacets)
+00270     \{
+00271         \textcolor{keyword}{auto} vertex\_it  = it.getFacet().getVerticesIds().begin();
+00272         \textcolor{keyword}{auto} vertex\_it2 = vertex\_it;
+00273         ++vertex\_it2;
+00274 
+00275         \textcolor{keywordflow}{for}( ; vertex\_it2!=it.getFacet().getVerticesIds().end(); ++vertex\_it, ++vertex\_it2)
+00276         \{
+00277             \textcolor{keywordflow}{if} ( *vertex\_it < *vertex\_it2 )
+00278                 m\_junct = std::make\_pair(*(vertex\_it), *(vertex\_it2));
+00279             \textcolor{keywordflow}{else}
+00280                 m\_junct = std::make\_pair(*(vertex\_it2), *(vertex\_it));
+00281             \textcolor{keywordflow}{if} (nodes\_fracture\_map.at(m\_junct).size() > 1)
+00282             \{
+00283                 it.M\_fractureNeighbors[m\_junct] = nodes\_fracture\_map.at(m\_junct);
+00284                 \textcolor{keyword}{auto} find\_it = std::find(it.M\_fractureNeighbors[m\_junct].begin(), it.M\_fractureNeighbors[
+      m\_junct].end(), it.getFractureId());
+00285                 it.M\_fractureNeighbors[m\_junct].erase(find\_it);
+00286             \}
+00287             \textcolor{keywordflow}{else}
+00288                 it.M\_fractureTips.insert(static\_cast<Fracture\_Tip>(m\_junct));
+00289         \}
+00290 
+00291         vertex\_it2 = it.getFacet().getVerticesIds().begin();
+00292 
+00293         \textcolor{comment}{//The if state is necessary in order to order the vertexes!!}
+00294         \textcolor{keywordflow}{if} (*(vertex\_it) < *(vertex\_it2))
+00295             m\_junct = std::make\_pair(*(vertex\_it), *(vertex\_it2));
+00296         \textcolor{keywordflow}{else}
+00297             m\_junct = std::make\_pair(*(vertex\_it2), *(vertex\_it));
+00298 
+00299         \textcolor{keywordflow}{if} (nodes\_fracture\_map.at(m\_junct).size() > 1)
+00300         \{
+00301             it.M\_fractureNeighbors[m\_junct] = nodes\_fracture\_map.at(m\_junct);
+00302             \textcolor{keyword}{auto} find\_it = std::find(it.M\_fractureNeighbors[m\_junct].begin(), it.M\_fractureNeighbors[
+      m\_junct].end(), it.getFractureId());
+00303             it.M\_fractureNeighbors[m\_junct].erase(find\_it);
+00304         \}
+00305         \textcolor{keywordflow}{else}
+00306             it.M\_fractureTips.insert(static\_cast<Fracture\_Tip>(m\_junct));
+00307     \}
+00308 \}
+00309 
+\hypertarget{RigidMesh_8cpp_source.tex_l00310}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a24c847643d9dc98dc3e7b2435e22cdf6}{00310} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a24c847643d9dc98dc3e7b2435e22cdf6}{Rigid\_Mesh::adjustCellFacets}(\textcolor{keyword}{const} std::map<UInt, UInt> & 
+      oldToNewMapFacets)
+00311 \{
+00312     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells})
+00313         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& Facets\_it : it.M\_facetsIds)
+00314             Facets\_it = oldToNewMapFacets.at(Facets\_it);
+00315 \}
+00316 
+\hypertarget{RigidMesh_8cpp_source.tex_l00317}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_aaceb00b0d75dee23a330033d46f592c7}{00317} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_aaceb00b0d75dee23a330033d46f592c7}{Rigid\_Mesh::edgesBuilder}()
+00318 \{
+00319     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edgeId = 0;
+00320     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nFracFacets;
+00321 
+00322     \textcolor{comment}{// edge as pair -> separated facets}
+00323     std::map<Edge3D, std::vector<UInt> > edgesMap;
+00324 
+00325     \textcolor{comment}{// loop only over the facets}
+00326     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets})
+00327     \{
+00328         \textcolor{keyword}{auto} vertex\_it  = it.getVerticesIds().begin();
+00329         \textcolor{keyword}{auto} vertex\_it2 = vertex\_it;
+00330         ++vertex\_it2;
+00331 
+00332         \textcolor{keywordflow}{for}( ; vertex\_it2 != it.getVerticesIds().end(); ++vertex\_it, ++vertex\_it2)
+00333         \{
+00334             \textcolor{keywordflow}{if} (*(vertex\_it) < *(vertex\_it2))
+00335             \{
+00336                 edgesMap.insert(std::pair<\hyperlink{classFVCode3D_1_1Rigid__Mesh_a396039ac2943822c4652967ce1849c9f}{Edge3D}, std::vector<UInt> >(std::make\_pair(*vertex\_it, *
+      vertex\_it2), std::vector<UInt>()) );
+00337                 edgesMap[std::make\_pair(*vertex\_it, *vertex\_it2)].push\_back(it.getId());
+00338             \}
+00339             \textcolor{keywordflow}{else}
+00340             \{
+00341                 edgesMap.insert(std::pair<\hyperlink{classFVCode3D_1_1Rigid__Mesh_a396039ac2943822c4652967ce1849c9f}{Edge3D}, std::vector<UInt> >(std::make\_pair(*vertex\_it2, *
+      vertex\_it), std::vector<UInt>()) );
+00342                 edgesMap[std::make\_pair(*vertex\_it2, *vertex\_it)].push\_back(it.getId());
+00343             \}
+00344         \}
+00345 
+00346         vertex\_it2 = it.getVerticesIds().begin();
+00347 
+00348         \textcolor{keywordflow}{if} (*(vertex\_it) < *(vertex\_it2))
+00349         \{
+00350             edgesMap.insert(std::pair<\hyperlink{classFVCode3D_1_1Rigid__Mesh_a396039ac2943822c4652967ce1849c9f}{Edge3D}, std::vector<UInt> >(std::make\_pair(*vertex\_it, *
+      vertex\_it2), std::vector<UInt>()) );
+00351             edgesMap[std::make\_pair(*vertex\_it, *vertex\_it2)].push\_back(it.getId());
+00352         \}
+00353         \textcolor{keywordflow}{else}
+00354         \{
+00355             edgesMap.insert(std::pair<\hyperlink{classFVCode3D_1_1Rigid__Mesh_a396039ac2943822c4652967ce1849c9f}{Edge3D}, std::vector<UInt> >(std::make\_pair(*vertex\_it2, *
+      vertex\_it), std::vector<UInt>()) );
+00356             edgesMap[std::make\_pair(*vertex\_it2, *vertex\_it)].push\_back(it.getId());
+00357         \}
+00358     \}
+00359 
+00360     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges}.reserve(edgesMap.size());
+00361     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3b689233b2590d76d663195b89d380fb}{M\_internalEdges}.reserve(edgesMap.size());
+00362     \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.reserve(edgesMap.size());
+00363     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a72e5bc2acebdc3bca417fa55dfd4c8c0}{M\_pureBorderEdges}.reserve(edgesMap.size());
+00364     \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.reserve(edgesMap.size());
+00365     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a01850de43f4d5d1dcf617d7697bcf3e8}{M\_junctureEdges}.reserve(edgesMap.size());
+00366     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.reserve(edgesMap.size());
+00367     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.reserve(edgesMap.size());
+00368     \hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.reserve(edgesMap.size());
+00369 
+00370     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& map\_it : edgesMap)
+00371     \{
+00372         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges}.emplace\_back(map\_it.first, \textcolor{keyword}{this}, edgeId); \textcolor{comment}{// Edge}
+00373         \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges}.rbegin()->M\_separatedFacetsIds = map\_it.second;
+00374         edgeId++;
+00375     \}
+00376 
+00377     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge\_it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges})
+00378     \{
+00379         nFracFacets = 0;
+00380         edgeId = edge\_it.getId();
+00381 
+00382         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : M\_edges[edgeId].M\_separatedFacetsIds)
+00383         \{
+00384             \textcolor{keywordflow}{if} (M\_facets[it].M\_isFracture)
+00385             \{
+00386                 edge\_it.M\_isFracture = \textcolor{keyword}{true};
+00387                 nFracFacets++;
+00388             \}
+00389             edge\_it.M\_isBorderEdge |= M\_facets[it].isBorderFacet();
+00390         \}
+00391 
+00392         edge\_it.M\_isTip = (nFracFacets == 1) ? \textcolor{keyword}{true} : \textcolor{keyword}{false};
+00393     \}
+00394 \}
+00395 
+\hypertarget{RigidMesh_8cpp_source.tex_l00396}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a68a8a1bcfe66af2379baa44772026fd3}{00396} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a68a8a1bcfe66af2379baa44772026fd3}{Rigid\_Mesh::edgesIdBuilder}()
+00397 \{
+00398     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge\_it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges})
+00399     \{
+00400         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edgeId = edge\_it.getId();
+00401 
+00402         \textcolor{keywordflow}{if}(!edge\_it.M\_isFracture && !edge\_it.M\_isBorderEdge)
+00403             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3b689233b2590d76d663195b89d380fb}{M\_internalEdges}.emplace\_back(edgeId,\textcolor{keyword}{this}); \textcolor{comment}{// Regular\_Edge}
+00404         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(!edge\_it.M\_isFracture && edge\_it.M\_isBorderEdge)
+00405         \{
+00406             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a72e5bc2acebdc3bca417fa55dfd4c8c0}{M\_pureBorderEdges}.emplace\_back(edgeId,\textcolor{keyword}{this}); \textcolor{comment}{// Pure\_Border\_Edge}
+00407             \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a72e5bc2acebdc3bca417fa55dfd4c8c0}{M\_pureBorderEdges}.rbegin()));
+00408         \}
+00409         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(edge\_it.M\_isFracture && !edge\_it.M\_isTip)
+00410         \{
+00411             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a01850de43f4d5d1dcf617d7697bcf3e8}{M\_junctureEdges}.emplace\_back(edgeId,\textcolor{keyword}{this}); \textcolor{comment}{// Juncture\_Edge}
+00412             \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a01850de43f4d5d1dcf617d7697bcf3e8}{M\_junctureEdges}.rbegin()));
+00413         \}
+00414         \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(edge\_it.M\_isFracture && edge\_it.M\_isTip && !edge\_it.M\_isBorderEdge)
+00415         \{
+00416             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.emplace\_back(edgeId,\textcolor{keyword}{this}); \textcolor{comment}{// Internal\_Tip\_Edge}
+00417             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.rbegin()));
+00418             \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.rbegin()));
+00419         \}
+00420         \textcolor{keywordflow}{else}
+00421         \{
+00422             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.emplace\_back(edgeId,\textcolor{keyword}{this}); \textcolor{comment}{// Border\_Tip\_Edge}
+00423             \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.rbegin()));
+00424             \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.rbegin()));
+00425             \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.push\_back(&(*\hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.rbegin()));
+00426         \}
+00427     \}
+00428     \textcolor{comment}{// TODO shrink to fit or not shrink to fit?}
+00429 \}
+00430 
+\hypertarget{RigidMesh_8cpp_source.tex_l00431}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a816fca58143872612c89b46cb3bd01b3}{00431} \textcolor{keywordtype}{bool} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a816fca58143872612c89b46cb3bd01b3}{Rigid\_Mesh::hasNeighborsThroughFacet}(\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} & facet\_Id, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} & idNeighbor)\textcolor{keyword}{ const}
+00432 \textcolor{keyword}{}\{
+00433     \textcolor{keywordflow}{if}( \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}[facet\_Id].getSeparatedCellsIds()[0] == idNeighbor ||
+00434        (\hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}[facet\_Id].getSeparatedCellsIds().size() > 1 && \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}[facet\_Id].
+      getSeparatedCellsIds()[1] == idNeighbor) )
+00435     \{
+00436         \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+00437     \}
+00438     \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+00439 \}
+00440 
+\hypertarget{RigidMesh_8cpp_source.tex_l00441}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3bbdb25ce1eddaf66316487bfc05e089}{00441} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3bbdb25ce1eddaf66316487bfc05e089}{Rigid\_Mesh::showPoint}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & generic\_point, std::ostream & out)\textcolor{keyword}{
+       const}
+00442 \textcolor{keyword}{}\{
+00443     out << generic\_point.\hyperlink{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{x}() << \textcolor{stringliteral}{" "} << generic\_point.\hyperlink{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{y}() << \textcolor{stringliteral}{" "} << generic\_point.
+      \hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z}() << std::endl;
+00444 \}
+00445 
+00446 \textcolor{comment}{// ==================================================}
+00447 \textcolor{comment}{// Methods}
+00448 \textcolor{comment}{// ==================================================}
+00449 
+\hypertarget{RigidMesh_8cpp_source.tex_l00450}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a41b79ff22b6d03329967d1ffbe463679}{00450} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a41b79ff22b6d03329967d1ffbe463679}{Rigid\_Mesh::showMe} ( std::ostream & out )\textcolor{keyword}{ const}
+00451 \textcolor{keyword}{}\{
+00452     out << \textcolor{stringliteral}{"Type = Mesh :"}<< std::endl;
+00453     out << \textcolor{stringliteral}{"code = "} << \textcolor{keyword}{this} << std::endl;
+00454     out << \textcolor{stringliteral}{"Number of Nodes: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a400c29e5aa35a8dbdbcdca33c104a4b9}{M\_nodes}.size() <<std::endl;
+00455     out << \textcolor{stringliteral}{"Number of Cells: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_ad19dc70b4efddafb6e8d8d4980bd23d6}{M\_cells}.size() <<std::endl;
+00456     out << \textcolor{stringliteral}{"Number of Facets: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a62757eb1d9c54b4421880b3c271b4c3b}{M\_facets}.size() <<std::endl;
+00457     out << \textcolor{stringliteral}{"Number of Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a4c6287c9256a92c13486048c372fe487}{M\_edges}.size() <<std::endl;
+00458     out << \textcolor{stringliteral}{"Number of Border-Facets: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a21700f8c7b816da944a829ee9d3ab7fb}{M\_borderFacets}.size() <<std::endl;
+00459     out << \textcolor{stringliteral}{"Number of Fracture-Facets: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_acaff9da1f03f04f7012cf372f8f27cd6}{M\_fractureFacets}.size() <<std::endl;
+00460     out << \textcolor{stringliteral}{"Number of Standard-Facets: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a8ede7966973fec708327b95fc379a4e1}{M\_internalFacets}.size() <<std::endl;
+00461     out << \textcolor{stringliteral}{"Number of Internal-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a3b689233b2590d76d663195b89d380fb}{M\_internalEdges}.size() <<std::endl;
+00462     out << \textcolor{stringliteral}{"Number of Border-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_af9ba7882baec8f8e5e7693a38f3cbc9b}{M\_borderEdges}.size() <<std::endl;
+00463     out << \textcolor{stringliteral}{"Number of Pure-Border-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a72e5bc2acebdc3bca417fa55dfd4c8c0}{M\_pureBorderEdges}.size() <<std::endl;
+00464     out << \textcolor{stringliteral}{"Number of Fracture-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_af4626d6b92116a3f6e925847f413da2b}{M\_fractureEdges}.size() <<std::endl;
+00465     out << \textcolor{stringliteral}{"Number of Juncture-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a01850de43f4d5d1dcf617d7697bcf3e8}{M\_junctureEdges}.size() <<std::endl;
+00466     out << \textcolor{stringliteral}{"Number of Tip-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a973940e6cd68e9980afec97fe94a70f4}{M\_tipEdges}.size() <<std::endl;
+00467     out << \textcolor{stringliteral}{"Number of Internal-Tip-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a15cb042bfb5d94c4ce34f20d1e92ebb5}{M\_internalTipEdges}.size() <<std::endl;
+00468     out << \textcolor{stringliteral}{"Number of Border-Tip-Edges: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_a712ea50f5237025e92af21799c5ec31b}{M\_borderTipEdges}.size() <<std::endl;
+00469 \}
+00470 
+\hypertarget{RigidMesh_8cpp_source.tex_l00471}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_a38343c767d9f33e3b8affcfb9b17663d}{00471} \textcolor{keyword}{const} std::vector<Point3D> \hyperlink{classFVCode3D_1_1Rigid__Mesh_a38343c767d9f33e3b8affcfb9b17663d}{Rigid\_Mesh::idsToPoints}(\textcolor{keyword}{const} std::vector<UInt> & 
+      pointsIds)\textcolor{keyword}{ const}
+00472 \textcolor{keyword}{}\{
+00473     std::vector<Point3D> points;
+00474     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} iter : pointsIds)
+00475         points.push\_back(\hyperlink{classFVCode3D_1_1Rigid__Mesh_a400c29e5aa35a8dbdbcdca33c104a4b9}{M\_nodes}[iter]);
+00476     \textcolor{keywordflow}{return} points;
+00477 \}
+00478 
+00479 \textcolor{comment}{// --------------------   Class Edge   --------------------}
+00480 
+00481 \textcolor{comment}{// ==================================================}
+00482 \textcolor{comment}{// Constructors & Destructor}
+00483 \textcolor{comment}{// ==================================================}
+00484 
+\hypertarget{RigidMesh_8cpp_source.tex_l00485}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a8ee1d53f2c0aeaeef71111a92fb926fa}{00485} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a9bfc76d25f28a0ba7e6468cbe361e104}{Rigid\_Mesh::Edge::Edge} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_a396039ac2943822c4652967ce1849c9f}{Edge3D} & generic\_edge, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \textcolor{keywordtype}{id}):
+00486     M\_edge(generic\_edge), M\_mesh(mesh), M\_id(id), M\_isBorderEdge(false), M\_isFracture(false), M\_isTip(false
+      )\{\}
+00487 
+\hypertarget{RigidMesh_8cpp_source.tex_l00488}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a40c981d4fc36030d7dd3cbb0eacf631f}{00488} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a9bfc76d25f28a0ba7e6468cbe361e104}{Rigid\_Mesh::Edge::Edge} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Edge} & edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00489     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a6445206fd8abc44ad7c64625e4349831}{getEdge}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}(mesh), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a534f18f2319df147a43ee837d41dddfe}{M\_id}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_ad8afcd874fc84c9debbb96d40ebcb5cf}{getId}()),
+00490     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a4fd7d85c6c2a87a784ac65618785faf5}{M\_separatedFacetsIds}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_aaf3e4807dd9dc28f6db0af6de69f6114}{getSeparatedFacetsIds}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af97600008d97c4db6f57fba531d8cd5c}{M\_isBorderEdge}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af31d5110c9b8ee8e4e0b2d34d28aa63c}{isBorderEdge}()),
+00491     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_ae0356f38073c9139078e3caa7a87c587}{M\_isFracture}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a337257089bfb042595dd0249be42f917}{isFracture}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a077a64a08f7be9e35735561a8e93a9ac}{M\_isTip}(edge.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_abf23b70a32f904fdd5fe8c525d16ca4f}{isTip}())\{\}
+00492 
+\hypertarget{RigidMesh_8cpp_source.tex_l00493}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a7bda114bf36119f6a3b961bdca1decfa}{00493} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a9bfc76d25f28a0ba7e6468cbe361e104}{Rigid\_Mesh::Edge::Edge} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Edge} & edge):
+00494     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a6445206fd8abc44ad7c64625e4349831}{getEdge}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_aea697e13e141eb408f408dabcf23c4aa}{getMesh}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a534f18f2319df147a43ee837d41dddfe}{M\_id}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_ad8afcd874fc84c9debbb96d40ebcb5cf}{getId}()),
+00495     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a4fd7d85c6c2a87a784ac65618785faf5}{M\_separatedFacetsIds}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_aaf3e4807dd9dc28f6db0af6de69f6114}{getSeparatedFacetsIds}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af97600008d97c4db6f57fba531d8cd5c}{M\_isBorderEdge}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af31d5110c9b8ee8e4e0b2d34d28aa63c}{isBorderEdge}()),
+00496     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_ae0356f38073c9139078e3caa7a87c587}{M\_isFracture}(edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a337257089bfb042595dd0249be42f917}{isFracture}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a077a64a08f7be9e35735561a8e93a9ac}{M\_isTip}(edge.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_abf23b70a32f904fdd5fe8c525d16ca4f}{isTip}())\{\}
+00497 
+\hypertarget{RigidMesh_8cpp_source.tex_l00498}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a53b678074c79d7d3115096da7c47e68e}{00498} \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a53b678074c79d7d3115096da7c47e68e}{Rigid\_Mesh::Edge::getCentroid} ()\textcolor{keyword}{ const}
+00499 \textcolor{keyword}{}\{
+00500     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} first (\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}.first]);
+00501     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} second (\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}.second]);
+00502     \textcolor{keywordflow}{return} (first+second) / 2.;
+00503 \}
+00504 
+\hypertarget{RigidMesh_8cpp_source.tex_l00505}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a3ef3549d709a4b537437f9e3e7f3e67b}{00505} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a3ef3549d709a4b537437f9e3e7f3e67b}{Rigid\_Mesh::Edge::length}()\textcolor{keyword}{ const}
+00506 \textcolor{keyword}{}\{
+00507     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & first (\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}.first]);
+00508     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & second (\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}.second]);
+00509     \textcolor{keywordflow}{return} (second-first).\hyperlink{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01}{norm}();
+00510 \}
+00511 
+\hypertarget{RigidMesh_8cpp_source.tex_l00512}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_aedaf9a2d04ce829ee8bea9cf7eb0b6dd}{00512} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_aedaf9a2d04ce829ee8bea9cf7eb0b6dd}{Rigid\_Mesh::Edge::showMe} (std::ostream & out)\textcolor{keyword}{ const}
+00513 \textcolor{keyword}{}\{
+00514     out << \textcolor{stringliteral}{"Type = Edge: "} << std::endl;
+00515     out << \textcolor{stringliteral}{"ID: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a534f18f2319df147a43ee837d41dddfe}{M\_id} << std::endl;
+00516     out << \textcolor{stringliteral}{"M\_mesh = "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh} << std::endl;
+00517     out << \textcolor{stringliteral}{"Edge: ("} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}.first << \textcolor{stringliteral}{","} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af8573366715c188a54326703bbf90e72}{M\_edge}.second << \textcolor{stringliteral}{")"} << std::endl;
+00518     out << \textcolor{stringliteral}{"Size: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a3ef3549d709a4b537437f9e3e7f3e67b}{length}() << std::endl;
+00519     out << \textcolor{stringliteral}{"Center: "};
+00520     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3bbdb25ce1eddaf66316487bfc05e089}{showPoint}(\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a53b678074c79d7d3115096da7c47e68e}{getCentroid}(), out);
+00521     out << \textcolor{stringliteral}{"Is border? "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af97600008d97c4db6f57fba531d8cd5c}{M\_isBorderEdge} << std::endl;
+00522     out << \textcolor{stringliteral}{"Is fracture? "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_ae0356f38073c9139078e3caa7a87c587}{M\_isFracture} << std::endl;
+00523     out << \textcolor{stringliteral}{"Is tip? "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a077a64a08f7be9e35735561a8e93a9ac}{M\_isTip} << std::endl;
+00524     out << \textcolor{stringliteral}{"M\_separatedFacets : size = "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a4fd7d85c6c2a87a784ac65618785faf5}{M\_separatedFacetsIds}.size();
+00525     out << \textcolor{stringliteral}{"    [ "};
+00526     \textcolor{keywordflow}{if}( !\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a4fd7d85c6c2a87a784ac65618785faf5}{M\_separatedFacetsIds}.empty() )
+00527         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a4fd7d85c6c2a87a784ac65618785faf5}{M\_separatedFacetsIds})
+00528             out << it << \textcolor{stringliteral}{" "};
+00529     out << \textcolor{stringliteral}{"] "} << std::endl;
+00530 \}
+00531 
+00532 \textcolor{comment}{// --------------------   Class Facet   --------------------}
+00533 
+00534 \textcolor{comment}{// ==================================================}
+00535 \textcolor{comment}{// Constructors & Destructor}
+00536 \textcolor{comment}{// ==================================================}
+00537 
+\hypertarget{RigidMesh_8cpp_source.tex_l00538}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a789226114be7f356e43c9abfc6bcb88e}{00538} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a8f4a989d7d4512571ef9ddb01a965001}{Rigid\_Mesh::Facet::Facet}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} & generic\_facet, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh,
+00539                          \textcolor{keyword}{const} std::map<UInt,UInt> & oldToNewMapCells, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} m\_id):
+00540     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a64bb5c3aa3654d3234f555da2414f3b5}{M\_mesh}(mesh), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a534f18f2319df147a43ee837d41dddfe}{M\_id}(m\_id), M\_verticesIds(generic\_facet.getVerticesVector()), M\_area(
+      generic\_facet.getArea()),
+00541     M\_centroid(generic\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a53b678074c79d7d3115096da7c47e68e}{getCentroid}()), M\_unsignedNormal(generic\_facet.getUnsignedNormal())
+      ,
+00542     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_ae0356f38073c9139078e3caa7a87c587}{M\_isFracture}(generic\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a337257089bfb042595dd0249be42f917}{isFracture}()), M\_fractureFacetId(0), M\_borderId(
+      generic\_facet.getBorderId()),
+00543     M\_representedFractureIds(generic\_facet.getRepresentedFractureIds()), M\_zone(generic\_facet.getZoneCode()
+      )
+00544 \{
+00545     \textcolor{keywordflow}{if}(!\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af220d353a3aad7de9b1fa293ac594893}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3d9468c34407de926f494d4aa47af64f}{M\_renumber})
+00546         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : generic\_facet.\hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D_aa3daf4c15034afd5f92d977fc82f415b}{getSeparatedCells}())
+00547             \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds}.push\_back(it);
+00548     \textcolor{keywordflow}{else}
+00549         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : generic\_facet.\hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D_aa3daf4c15034afd5f92d977fc82f415b}{getSeparatedCells}())
+00550             \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds}.push\_back(oldToNewMapCells.at(it));
+00551 \}
+00552 
+\hypertarget{RigidMesh_8cpp_source.tex_l00553}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae2371e7d4d6fc5bd8b5424270920f7f3}{00553} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a8f4a989d7d4512571ef9ddb01a965001}{Rigid\_Mesh::Facet::Facet}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} & facet):
+00554     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af220d353a3aad7de9b1fa293ac594893}{M\_mesh}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a4397809e51ea9a304165f11f8340b6e8}{getMesh}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a00456afaee76a9be2a9beb4180a76d15}{M\_id}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ac499aad62ec6d2d750a6a27d17d3814a}{getId}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a4db7298b2b4607ec53de41887df9a025}{M\_verticesIds}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af92ad0b6b79c69f6c04584301b8998a7}{getVerticesIds}()),
+00555     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_abd6ae01e794c32505ada890dedf427da}{getSeparatedCellsIds}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a084cfcf931748437c2d551a43fdbd47d}{M\_area}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a19b2922eb0458019c8f34b40f0517789}{area}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a59362b500ff0b33abe8b2bc2ea678916}{M\_centroid}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a0d4bcc392ef3da56ccdb40c22b6319e3}{getCentroid}()),
+00556     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a2a6a16d188a038509d285dd778c82f81}{M\_unsignedNormal}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae8d74e38b74075a3ced8b1a229860120}{getUnsignedNormal}()),
+00557     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aa73335dc182e64f956d5628a1c00db83}{M\_isFracture}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae787539c2e6ca9cd957fc1049eae764f}{M\_fractureFacetId}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a9e19b99a99bab61888ff73cac17de747}{M\_borderId}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()),
+00558     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a95681de925b4e9f6bfbcb239712aede2}{M\_representedFractureIds}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a7155ca3065101f3fb37c539af05dc860}{getRepresentedFractureIds}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a7178163032acb89539c28bc154f1a613}{M\_zone}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a051d02ca6fb8096021de8519cd6a90ed}{getZoneCode}())\{\}
+00559 
+\hypertarget{RigidMesh_8cpp_source.tex_l00560}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_abca46dcd5f1b5384e338189811806bbd}{00560} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a8f4a989d7d4512571ef9ddb01a965001}{Rigid\_Mesh::Facet::Facet}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} & facet, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00561     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af220d353a3aad7de9b1fa293ac594893}{M\_mesh}(mesh), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a00456afaee76a9be2a9beb4180a76d15}{M\_id}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ac499aad62ec6d2d750a6a27d17d3814a}{getId}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a4db7298b2b4607ec53de41887df9a025}{M\_verticesIds}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af92ad0b6b79c69f6c04584301b8998a7}{getVerticesIds}()),
+00562     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_abd6ae01e794c32505ada890dedf427da}{getSeparatedCellsIds}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a084cfcf931748437c2d551a43fdbd47d}{M\_area}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a19b2922eb0458019c8f34b40f0517789}{area}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a59362b500ff0b33abe8b2bc2ea678916}{M\_centroid}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a0d4bcc392ef3da56ccdb40c22b6319e3}{getCentroid}()),
+00563     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a2a6a16d188a038509d285dd778c82f81}{M\_unsignedNormal}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae8d74e38b74075a3ced8b1a229860120}{getUnsignedNormal}()),
+00564     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aa73335dc182e64f956d5628a1c00db83}{M\_isFracture}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae787539c2e6ca9cd957fc1049eae764f}{M\_fractureFacetId}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a9e19b99a99bab61888ff73cac17de747}{M\_borderId}(facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()),
+00565     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a95681de925b4e9f6bfbcb239712aede2}{M\_representedFractureIds}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a7155ca3065101f3fb37c539af05dc860}{getRepresentedFractureIds}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a7178163032acb89539c28bc154f1a613}{M\_zone}(facet.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a051d02ca6fb8096021de8519cd6a90ed}{getZoneCode}())\{\}
+00566 
+00567 \textcolor{comment}{// ==================================================}
+00568 \textcolor{comment}{// Methods}
+00569 \textcolor{comment}{// ==================================================}
+00570 
+\hypertarget{RigidMesh_8cpp_source.tex_l00571}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af415677935a5c7a37f12f04fe10abf0d}{00571} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af415677935a5c7a37f12f04fe10abf0d}{Rigid\_Mesh::Facet::showMe}(std::ostream & out)\textcolor{keyword}{ const}
+00572 \textcolor{keyword}{}\{
+00573     out << \textcolor{stringliteral}{"Type = Facet: "} << std::endl;
+00574     out << \textcolor{stringliteral}{"ID: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a00456afaee76a9be2a9beb4180a76d15}{M\_id} << std::endl;
+00575     out << \textcolor{stringliteral}{"M\_mesh = "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af220d353a3aad7de9b1fa293ac594893}{M\_mesh} << std::endl;
+00576     out << \textcolor{stringliteral}{"Number of Nodes: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a4db7298b2b4607ec53de41887df9a025}{M\_verticesIds}.size()<<\textcolor{stringliteral}{" : "}<<std::endl;
+00577     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} counter=1;
+00578     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} j : \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a4db7298b2b4607ec53de41887df9a025}{M\_verticesIds})
+00579     \{
+00580         out << \textcolor{stringliteral}{"M\_idP"}<<counter<<\textcolor{stringliteral}{" = "} <<j<<\textcolor{stringliteral}{"\(\backslash\)t"};
+00581         ++counter;
+00582     \}
+00583     out << std::endl;
+00584     out << \textcolor{stringliteral}{"Size: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a084cfcf931748437c2d551a43fdbd47d}{M\_area} << std::endl;
+00585     out << \textcolor{stringliteral}{"Center: "};
+00586     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af220d353a3aad7de9b1fa293ac594893}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3bbdb25ce1eddaf66316487bfc05e089}{showPoint}(\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a59362b500ff0b33abe8b2bc2ea678916}{M\_centroid}, out);
+00587     out << \textcolor{stringliteral}{"M\_separatedCells : size = "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds}.size();
+00588     out << \textcolor{stringliteral}{"    [ "};
+00589     \textcolor{keywordflow}{if}( !\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds}.empty() )
+00590         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ab6e36f3b09142a9cf4955c4be825cf11}{M\_separatedCellsIds})
+00591             out << it << \textcolor{stringliteral}{" "};
+00592     out << \textcolor{stringliteral}{"] "} << std::endl;
+00593 \}
+00594 
+00595 \textcolor{comment}{// --------------------   Class Cell   --------------------}
+00596 
+00597 \textcolor{comment}{// ==================================================}
+00598 \textcolor{comment}{// Constructors & Destructor}
+00599 \textcolor{comment}{// ==================================================}
+00600 
+\hypertarget{RigidMesh_8cpp_source.tex_l00601}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad8a3fb94b11638f328a9f647c5a73c4c}{00601} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aaa5efd433c30628772159010d1858d16}{Rigid\_Mesh::Cell::Cell}( \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D} & generic\_cell, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} m\_id):
+00602     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af220d353a3aad7de9b1fa293ac594893}{M\_mesh}(mesh), M\_Id(m\_id), M\_zoneCode(generic\_cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a051d02ca6fb8096021de8519cd6a90ed}{getZoneCode}()),
+00603     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a4db7298b2b4607ec53de41887df9a025}{M\_verticesIds}(generic\_cell.getVerticesVector()),
+00604     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a59362b500ff0b33abe8b2bc2ea678916}{M\_centroid}(generic\_cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a0d4bcc392ef3da56ccdb40c22b6319e3}{getCentroid}()),
+00605     M\_volume(generic\_cell.volume())
+00606 \{
+00607     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : generic\_cell.\hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D_ab39f9e4bf268566da035b41ce6a409be}{getFacetsSet}())
+00608         \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a9484ef98b77a1e7588b29baac5cf27db}{M\_facetsIds}.push\_back(it);
+00609     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : generic\_cell.\hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D_a87f2464749df5772205e0dd76afe46e6}{getNeighborsSet}())
+00610         \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a660774a8bb678b874639c9c1ea713bc6}{M\_neighborsIds}.push\_back(it);
+00611 \}
+00612 
+\hypertarget{RigidMesh_8cpp_source.tex_l00613}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a0b2887ea5ac27020284c71606c92de05}{00613} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aaa5efd433c30628772159010d1858d16}{Rigid\_Mesh::Cell::Cell}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Cell} & cell, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00614     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad4a1033c8e506b29487f2be4c4d69c0d}{M\_mesh}(mesh), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a69cd2ee5b40a1ccc5cb62c529c7abfb2}{M\_Id}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a2d86bd17fac84a6e521c8606cc8aeaaf}{getId}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aa0db94ef04ad17d564ba7fe53f7979ab}{M\_zoneCode}(cell.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a0a3b017d1297cca8e4a5d5708b82ce40}{getZoneCode}()),
+00615     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a24b548a39f78eec19b66d6fe702409e4}{M\_verticesIds}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a30320991841567377cfbc1248c844d85}{getVerticesIds}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a9484ef98b77a1e7588b29baac5cf27db}{M\_facetsIds}(cell.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_adbfb39c41f1d6c6d96c77578eecbf766}{getFacetsIds}()),
+00616     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a660774a8bb678b874639c9c1ea713bc6}{M\_neighborsIds}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aee3bbfbbbb058448aeb3bb6d1a0dafda}{getNeighborsIds}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a5c7626d4a6faec9e43429166dcad110b}{M\_centroid}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aede70ac8a525e2704476e9fd166420f3}{getCentroid}()),
+00617     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aeda1d5ff8f04d9e93919f454e3f44021}{M\_volume}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a60b0f29d67c90d2f8718b15a76885894}{getVolume}())\{\}
+00618 
+\hypertarget{RigidMesh_8cpp_source.tex_l00619}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a1e7438ebc1453aca2217103c9af60c9d}{00619} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aaa5efd433c30628772159010d1858d16}{Rigid\_Mesh::Cell::Cell}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Cell} & cell):
+00620     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad4a1033c8e506b29487f2be4c4d69c0d}{M\_mesh}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad7bee6050d6fc3a42493e84bf59c389f}{getMesh}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a69cd2ee5b40a1ccc5cb62c529c7abfb2}{M\_Id}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a2d86bd17fac84a6e521c8606cc8aeaaf}{getId}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aa0db94ef04ad17d564ba7fe53f7979ab}{M\_zoneCode}(cell.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a0a3b017d1297cca8e4a5d5708b82ce40}{getZoneCode}()),
+00621     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a24b548a39f78eec19b66d6fe702409e4}{M\_verticesIds}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a30320991841567377cfbc1248c844d85}{getVerticesIds}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a9484ef98b77a1e7588b29baac5cf27db}{M\_facetsIds}(cell.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_adbfb39c41f1d6c6d96c77578eecbf766}{getFacetsIds}()),
+00622     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a660774a8bb678b874639c9c1ea713bc6}{M\_neighborsIds}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aee3bbfbbbb058448aeb3bb6d1a0dafda}{getNeighborsIds}()), 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a5c7626d4a6faec9e43429166dcad110b}{M\_centroid}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aede70ac8a525e2704476e9fd166420f3}{getCentroid}()),
+00623     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aeda1d5ff8f04d9e93919f454e3f44021}{M\_volume}(cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a60b0f29d67c90d2f8718b15a76885894}{getVolume}())\{\}
+00624     
+\hypertarget{RigidMesh_8cpp_source.tex_l00625}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a7ded24addbc6c535d7e3da6617e23c7c}{00625} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a7ded24addbc6c535d7e3da6617e23c7c}{Rigid\_Mesh::Cell::orientationFacet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} & fac) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00626 \{
+00627     \textcolor{keywordtype}{bool} found(\textcolor{keyword}{false});
+00628     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facetId = fac.getId();
+00629 
+00630     \textcolor{comment}{// control that facetId is a facet of this cell}
+00631     \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator it = \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a9484ef98b77a1e7588b29baac5cf27db}{M\_facetsIds}.begin(); it != 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a9484ef98b77a1e7588b29baac5cf27db}{M\_facetsIds}.end(); ++it )
+00632     \{
+00633         \textcolor{keywordflow}{if}( *it == facetId )
+00634             found = \textcolor{keyword}{true};
+00635     \}
+00636 
+00637     \textcolor{comment}{// check if the facet exists in this cell}
+00638     \textcolor{keywordflow}{if}( !found )
+00639     \{
+00640         std::stringstream error;
+00641         error << \textcolor{stringliteral}{"Error: the facet "} << facetId << \textcolor{stringliteral}{" is not in the cell."};
+00642         \textcolor{keywordflow}{throw} std::runtime\_error(error.str());
+00643     \}
+00644 
+00645     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} facetNormal = fac.getUnsignedNormal();
+00646     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} g           = fac.getCentroid() - 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a5c7626d4a6faec9e43429166dcad110b}{Rigid\_Mesh::Cell::M\_centroid};
+00647     
+00648         \textcolor{keywordflow}{return} ( (\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(g,facetNormal)>=0.) ? 1.0 : -1.0 );      
+00649 \}
+00650 
+00651 \textcolor{comment}{// ==================================================}
+00652 \textcolor{comment}{// Methods}
+00653 \textcolor{comment}{// ==================================================}
+00654 
+\hypertarget{RigidMesh_8cpp_source.tex_l00655}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a0f485e24d514792089e16dd8855e9247}{00655} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a0f485e24d514792089e16dd8855e9247}{Rigid\_Mesh::Cell::showMe}(std::ostream  & out)\textcolor{keyword}{ const}
+00656 \textcolor{keyword}{}\{
+00657     out << \textcolor{stringliteral}{"Type = Cell :"} << std::endl;
+00658     out << \textcolor{stringliteral}{"ID: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a69cd2ee5b40a1ccc5cb62c529c7abfb2}{M\_Id} << std::endl;
+00659     out << \textcolor{stringliteral}{"M\_mesh = "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad4a1033c8e506b29487f2be4c4d69c0d}{M\_mesh} << std::endl;
+00660     out << \textcolor{stringliteral}{"Number of Nodes: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a24b548a39f78eec19b66d6fe702409e4}{M\_verticesIds}.size()<<\textcolor{stringliteral}{" : "}<<std::endl;
+00661     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} counter=1;
+00662     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} j : \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a24b548a39f78eec19b66d6fe702409e4}{M\_verticesIds})
+00663     \{
+00664         out << \textcolor{stringliteral}{"M\_idP"}<<counter<<\textcolor{stringliteral}{" = "} <<j<<\textcolor{stringliteral}{"\(\backslash\)t"};
+00665         ++counter;
+00666     \}
+00667     out << std::endl;
+00668     out << \textcolor{stringliteral}{"Volume: "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aeda1d5ff8f04d9e93919f454e3f44021}{M\_volume} << std::endl;
+00669     out << \textcolor{stringliteral}{"Centroid: "};
+00670     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad4a1033c8e506b29487f2be4c4d69c0d}{M\_mesh}->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a3bbdb25ce1eddaf66316487bfc05e089}{showPoint}(\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a5c7626d4a6faec9e43429166dcad110b}{M\_centroid}, out);
+00671     out << \textcolor{stringliteral}{"M\_Neighbors\_Ids : size = "} << \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a660774a8bb678b874639c9c1ea713bc6}{M\_neighborsIds}.size();
+00672     out << \textcolor{stringliteral}{"    [ "};
+00673     \textcolor{keywordflow}{if}( !\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a660774a8bb678b874639c9c1ea713bc6}{M\_neighborsIds}.empty() )
+00674         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a660774a8bb678b874639c9c1ea713bc6}{M\_neighborsIds})
+00675             out << it << \textcolor{stringliteral}{" "};
+00676     out << \textcolor{stringliteral}{"] "} << std::endl;
+00677 \}
+00678 
+00679 \textcolor{comment}{// --------------------   Class Edge\_ID   --------------------}
+00680 
+00681 \textcolor{comment}{// ==================================================}
+00682 \textcolor{comment}{// Constructors & Destructor}
+00683 \textcolor{comment}{// ==================================================}
+00684 
+\hypertarget{RigidMesh_8cpp_source.tex_l00685}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_ab69b89922aaeaceb6c393b99edf7abcb}{00685} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a74231c305881b2ad4788af7245af2f6b}{Rigid\_Mesh::Edge\_ID::Edge\_ID}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_id, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00686     M\_id(edge\_id), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_ad4a1033c8e506b29487f2be4c4d69c0d}{M\_mesh}(mesh)\{\}
+00687 
+00688 \textcolor{comment}{// --------------------   Class Regular\_Edge   --------------------}
+00689 
+\hypertarget{RigidMesh_8cpp_source.tex_l00690}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge_a92a9212ce948a5151320a4a29be3218d}{00690} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge_a92a9212ce948a5151320a4a29be3218d}{Rigid\_Mesh::Regular\_Edge::Regular\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00691     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh) \{\}
+00692 
+\hypertarget{RigidMesh_8cpp_source.tex_l00693}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge_a2b0ad2082f68fbfa1bc9c65cc0b41d30}{00693} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge_a92a9212ce948a5151320a4a29be3218d}{Rigid\_Mesh::Regular\_Edge::Regular\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge}{Regular\_Edge} & regular\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00694     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(regular\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh) \{\}
+00695 
+\hypertarget{RigidMesh_8cpp_source.tex_l00696}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge_a95bc768eb796d743762452c898337f5f}{00696} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge_a92a9212ce948a5151320a4a29be3218d}{Rigid\_Mesh::Regular\_Edge::Regular\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge}{Regular\_Edge} & e):
+00697     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()) \{\}
+00698 
+00699 \textcolor{comment}{// --------------------   Class Border\_Edge   --------------------}
+00700 
+00701 \textcolor{comment}{// ==================================================}
+00702 \textcolor{comment}{// Constructors & Destructor}
+00703 \textcolor{comment}{// ==================================================}
+00704 
+\hypertarget{RigidMesh_8cpp_source.tex_l00705}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}{00705} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}{Rigid\_Mesh::Border\_Edge::Border\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00706     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh)
+00707 \{
+00708     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} facet\_it : mesh->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a807a6932cb5b80eb73bf86c3dae06a80}{getEdgesVector}()[edge\_Id].getSeparatedFacetsIds())
+00709     \{
+00710         \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}{M\_borderIds}.insert(mesh->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facet\_it].getBorderId());
+00711     \}
+00712     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}{M\_borderIds}.erase(0);
+00713 \}
+00714 
+\hypertarget{RigidMesh_8cpp_source.tex_l00715}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a4c84ed48d5ade111d258cad7e6a32d79}{00715} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}{Rigid\_Mesh::Border\_Edge::Border\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge} & border\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00716     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(border\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}{M\_borderIds}(border\_edge.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_ae0c4fec80ff33ad9eb08dc5aee5213b1}{getBorderIds}())\{\}
+00717 
+\hypertarget{RigidMesh_8cpp_source.tex_l00718}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a109336ed2689561dc49808d0e102b5ec}{00718} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}{Rigid\_Mesh::Border\_Edge::Border\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge} & e):
+00719     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}{M\_borderIds}(e.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_ae0c4fec80ff33ad9eb08dc5aee5213b1}{getBorderIds}())\{\}
+00720 
+00721 \textcolor{comment}{// --------------------   Class Pure\_Border\_Edge   --------------------}
+00722 
+00723 \textcolor{comment}{// ==================================================}
+00724 \textcolor{comment}{// Constructors & Destructor}
+00725 \textcolor{comment}{// ==================================================}
+00726 
+\hypertarget{RigidMesh_8cpp_source.tex_l00727}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge_a2fb097d2d34f9f6291001e9b7f300e37}{00727} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge_a2fb097d2d34f9f6291001e9b7f300e37}{Rigid\_Mesh::Pure\_Border\_Edge::Pure\_Border\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00728     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh),
+00729     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge}(edge\_Id, mesh)\{\}
+00730 
+\hypertarget{RigidMesh_8cpp_source.tex_l00731}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge_a1c6e43be820f240b386b0e45420a1a37}{00731} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge_a2fb097d2d34f9f6291001e9b7f300e37}{Rigid\_Mesh::Pure\_Border\_Edge::Pure\_Border\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge}{Pure\_Border\_Edge} & pure\_border\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00732     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(pure\_border\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00733     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge}(pure\_border\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh)\{\}
+00734 
+\hypertarget{RigidMesh_8cpp_source.tex_l00735}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge_aae95df1938a302a415ba7a0bbd7e83f4}{00735} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge_a2fb097d2d34f9f6291001e9b7f300e37}{Rigid\_Mesh::Pure\_Border\_Edge::Pure\_Border\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge}{Pure\_Border\_Edge} & e):
+00736     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00737     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}())\{\}
+00738 
+00739 \textcolor{comment}{// --------------------   Class Fracture\_Edge   --------------------}
+00740 
+00741 \textcolor{comment}{// ==================================================}
+00742 \textcolor{comment}{// Constructors & Destructor}
+00743 \textcolor{comment}{// ==================================================}
+00744 
+\hypertarget{RigidMesh_8cpp_source.tex_l00745}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a9b7b4e922c35eb8e83bc3209b4a668f2}{00745} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a9b7b4e922c35eb8e83bc3209b4a668f2}{Rigid\_Mesh::Fracture\_Edge::Fracture\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00746     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh)
+00747 \{
+00748     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} facet\_it : mesh->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a807a6932cb5b80eb73bf86c3dae06a80}{getEdgesVector}()[edge\_Id].getSeparatedFacetsIds())
+00749     \{
+00750         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} fracture\_it : mesh->\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facet\_it].getRepresentedFractureIds()
+      )
+00751             \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a1a498306a94e881c238467af5c99cb57}{M\_fractureIds}.insert(fracture\_it);
+00752     \}
+00753 \}
+00754 
+\hypertarget{RigidMesh_8cpp_source.tex_l00755}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a011ab1f44d95fae370f49ab2e561f0c6}{00755} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a9b7b4e922c35eb8e83bc3209b4a668f2}{Rigid\_Mesh::Fracture\_Edge::Fracture\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge} & fracture\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00756     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(fracture\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a1a498306a94e881c238467af5c99cb57}{M\_fractureIds}(fracture\_edge.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_af9ba908f4ca3fe7c68a3892252ea51b8}{getFractureIds}())\{\}
+00757 
+\hypertarget{RigidMesh_8cpp_source.tex_l00758}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a9e674edb76a432728a81061ac946825b}{00758} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a9b7b4e922c35eb8e83bc3209b4a668f2}{Rigid\_Mesh::Fracture\_Edge::Fracture\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge} & e):
+00759     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_a1a498306a94e881c238467af5c99cb57}{M\_fractureIds}(e.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge_af9ba908f4ca3fe7c68a3892252ea51b8}{getFractureIds}())\{\}
+00760 
+00761 \textcolor{comment}{// --------------------   Class Juncture\_Edge   --------------------}
+00762 
+00763 \textcolor{comment}{// ==================================================}
+00764 \textcolor{comment}{// Constructors & Destructor}
+00765 \textcolor{comment}{// ==================================================}
+00766 
+\hypertarget{RigidMesh_8cpp_source.tex_l00767}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge_a112ccdf65501c4f65a842acaa42ee3dc}{00767} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge_a112ccdf65501c4f65a842acaa42ee3dc}{Rigid\_Mesh::Juncture\_Edge::Juncture\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00768     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh),
+00769     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(edge\_Id, mesh)\{\}
+00770 
+\hypertarget{RigidMesh_8cpp_source.tex_l00771}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge_a75ded09afc11f444ed462eb156d6e664}{00771} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge_a112ccdf65501c4f65a842acaa42ee3dc}{Rigid\_Mesh::Juncture\_Edge::Juncture\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge}{Juncture\_Edge} & juncture\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00772     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(juncture\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00773     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(juncture\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh)\{\}
+00774 
+\hypertarget{RigidMesh_8cpp_source.tex_l00775}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge_a9bed6942bb3820a672c79e4618b4ac0d}{00775} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge_a112ccdf65501c4f65a842acaa42ee3dc}{Rigid\_Mesh::Juncture\_Edge::Juncture\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge}{Juncture\_Edge} & e):
+00776     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00777     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}())\{\}
+00778 
+00779 \textcolor{comment}{// --------------------   Class Tip\_Edge   --------------------}
+00780 
+00781 \textcolor{comment}{// ==================================================}
+00782 \textcolor{comment}{// Constructors & Destructor}
+00783 \textcolor{comment}{// ==================================================}
+00784 
+\hypertarget{RigidMesh_8cpp_source.tex_l00785}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge_a23920018412184dcf82796ad6f192c9c}{00785} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge_a23920018412184dcf82796ad6f192c9c}{Rigid\_Mesh::Tip\_Edge::Tip\_Edge} (\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00786     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh),
+00787     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(edge\_Id, mesh)\{\}
+00788 
+\hypertarget{RigidMesh_8cpp_source.tex_l00789}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge_a8417ce9c51f2674970b1fd9939654d11}{00789} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge_a23920018412184dcf82796ad6f192c9c}{Rigid\_Mesh::Tip\_Edge::Tip\_Edge} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge} & tip\_edge, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00790     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00791     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh)\{\}
+00792 
+\hypertarget{RigidMesh_8cpp_source.tex_l00793}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge_ac4f63ce3e8a54683d44f3d338a1fabcc}{00793} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge_a23920018412184dcf82796ad6f192c9c}{Rigid\_Mesh::Tip\_Edge::Tip\_Edge} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge} & e):
+00794     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00795     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}())\{\}
+00796 
+00797 \textcolor{comment}{// --------------------   Class Interior\_Tip\_Edge   --------------------}
+00798 
+00799 \textcolor{comment}{// ==================================================}
+00800 \textcolor{comment}{// Constructors & Destructor}
+00801 \textcolor{comment}{// ==================================================}
+00802 
+\hypertarget{RigidMesh_8cpp_source.tex_l00803}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}{00803} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}{Rigid\_Mesh::Internal\_Tip\_Edge::Internal\_Tip\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00804     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh),
+00805     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(edge\_Id, mesh),
+00806     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge}(edge\_Id, mesh)\{\}
+00807 
+\hypertarget{RigidMesh_8cpp_source.tex_l00808}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_abfeee084644b2e286cae2b1f54dd5725}{00808} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}{Rigid\_Mesh::Internal\_Tip\_Edge::Internal\_Tip\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\_Tip\_Edge} & internal\_tip\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00809     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(internal\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00810     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(internal\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00811     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge}(internal\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh)\{\}
+00812 
+\hypertarget{RigidMesh_8cpp_source.tex_l00813}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a7c363edbfdc751972e6666389f44d861}{00813} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}{Rigid\_Mesh::Internal\_Tip\_Edge::Internal\_Tip\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\_Tip\_Edge} & e):
+00814     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00815     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00816     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}())\{\}
+00817 
+00818 \textcolor{comment}{// --------------------   Class Border\_Tip\_Edge   --------------------}
+00819 
+00820 \textcolor{comment}{// ==================================================}
+00821 \textcolor{comment}{// Constructors & Destructor}
+00822 \textcolor{comment}{// ==================================================}
+00823 
+\hypertarget{RigidMesh_8cpp_source.tex_l00824}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge_ab533abba01ed6878748be717d830df17}{00824} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge_ab533abba01ed6878748be717d830df17}{Rigid\_Mesh::Border\_Tip\_Edge::Border\_Tip\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edge\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00825     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(edge\_Id, mesh),
+00826     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(edge\_Id, mesh),
+00827     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge}(edge\_Id, mesh),
+00828     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge}(edge\_Id, mesh)\{\}
+00829 
+\hypertarget{RigidMesh_8cpp_source.tex_l00830}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge_a69d258bd9bd9c92de2d024cbb4905d32}{00830} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge_ab533abba01ed6878748be717d830df17}{Rigid\_Mesh::Border\_Tip\_Edge::Border\_Tip\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge}{Border\_Tip\_Edge} & border\_tip\_edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00831     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(border\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00832     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(border\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00833     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge}(border\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh),
+00834     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge}(border\_tip\_edge.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), mesh)\{\}
+00835 
+\hypertarget{RigidMesh_8cpp_source.tex_l00836}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge_a204a7c45f87f16fb4fa940032e2589f0}{00836} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge_ab533abba01ed6878748be717d830df17}{Rigid\_Mesh::Border\_Tip\_Edge::Border\_Tip\_Edge} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge}{Border\_Tip\_Edge} & e):
+00837     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00838     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{Fracture\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00839     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}()),
+00840     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\_Edge}(e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_af17ee26739dd0bb462a21a90c2c1e633}{getId}(), e.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a197a8049cfb5e26c077f668ffb49e6eb}{getMesh}())\{\}
+00841 
+00842 \textcolor{comment}{// --------------------   Class Facet\_ID   --------------------}
+00843 
+00844 \textcolor{comment}{// ==================================================}
+00845 \textcolor{comment}{// Constructors & Destructor}
+00846 \textcolor{comment}{// ==================================================}
+00847 
+\hypertarget{RigidMesh_8cpp_source.tex_l00848}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_aa5ddf57f99a7e9f42327e8dfcd15b2bf}{00848} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a308cbae2f61ee7ef4507f2ceec063ee9}{Rigid\_Mesh::Facet\_ID::Facet\_ID}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facet\_Id, 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00849     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_ad2b90debdaec4de3ba2258ed1ab04f6e}{M\_id}(facet\_Id), \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_ae24b58fc7aaf0faa1164935de641d753}{M\_mesh}(mesh)\{\}
+00850 
+00851 \textcolor{comment}{// --------------------   Class Regular\_Facet   --------------------}
+00852 
+00853 \textcolor{comment}{// ==================================================}
+00854 \textcolor{comment}{// Constructors & Destructor}
+00855 \textcolor{comment}{// ==================================================}
+00856 
+\hypertarget{RigidMesh_8cpp_source.tex_l00857}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}{00857} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}{Rigid\_Mesh::Regular\_Facet::Regular\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facet\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00858     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(facet\_Id, mesh)\{\}
+00859 
+\hypertarget{RigidMesh_8cpp_source.tex_l00860}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a68564026197f005cbd8a451f079df741}{00860} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}{Rigid\_Mesh::Regular\_Facet::Regular\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\_Facet} & regular\_facet):
+00861     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(regular\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{getId}(), regular\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a7c8237fc0d6d1706deef2dcd872b4480}{getMesh}()) \{\}
+00862 
+\hypertarget{RigidMesh_8cpp_source.tex_l00863}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab7fc5ceae08d734865a45b95832f0eb7}{00863} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}{Rigid\_Mesh::Regular\_Facet::Regular\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\_Facet} & regular\_facet, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00864     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(regular\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{getId}(), mesh) \{\}
+00865 
+00866 \textcolor{comment}{// --------------------   Class Border\_Facet   --------------------}
+00867 
+00868 \textcolor{comment}{// ==================================================}
+00869 \textcolor{comment}{// Constructors & Destructor}
+00870 \textcolor{comment}{// ==================================================}
+00871 
+\hypertarget{RigidMesh_8cpp_source.tex_l00872}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet_a0743c20fab3de8ce77c2143b14c3bfae}{00872} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet_a0743c20fab3de8ce77c2143b14c3bfae}{Rigid\_Mesh::Border\_Facet::Border\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facet\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00873     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(facet\_Id, mesh)\{\}
+00874 
+\hypertarget{RigidMesh_8cpp_source.tex_l00875}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet_ab50bc3e2dc770cb7490c85e548662996}{00875} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet_a0743c20fab3de8ce77c2143b14c3bfae}{Rigid\_Mesh::Border\_Facet::Border\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet}{Border\_Facet} & border\_facet, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00876     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(border\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{getId}(), mesh)\{\}
+00877 
+\hypertarget{RigidMesh_8cpp_source.tex_l00878}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet_a55edda2483a7ba68ab73c1b920c0b553}{00878} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet_a0743c20fab3de8ce77c2143b14c3bfae}{Rigid\_Mesh::Border\_Facet::Border\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet}{Border\_Facet} & border\_facet):
+00879     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(border\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{getId}(), border\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a7c8237fc0d6d1706deef2dcd872b4480}{getMesh}()) \{\}
+00880 
+00881 \textcolor{comment}{// --------------------   Class Fracture\_Facet   --------------------}
+00882 
+00883 \textcolor{comment}{// ==================================================}
+00884 \textcolor{comment}{// Constructors & Destructor}
+00885 \textcolor{comment}{// ==================================================}
+00886 
+\hypertarget{RigidMesh_8cpp_source.tex_l00887}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a206a35c6464cbc525ff3c76c7051c226}{00887} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a206a35c6464cbc525ff3c76c7051c226}{Rigid\_Mesh::Fracture\_Facet::Fracture\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facet\_Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00888     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(facet\_Id, mesh) \{\}
+00889 
+\hypertarget{RigidMesh_8cpp_source.tex_l00890}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_abe98490b887bd620c0704f000e4f113b}{00890} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a206a35c6464cbc525ff3c76c7051c226}{Rigid\_Mesh::Fracture\_Facet::Fracture\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet}{Fracture\_Facet} & fracture\_facet, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} * \textcolor{keyword}{const} mesh):
+00891     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{getId}(), mesh),
+00892     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_ac1812d6492dbf2b3a270cc8db789471f}{M\_fractureNeighbors}(fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a8938590c97aba07cb21bb9ba8d64cecd}{getFractureNeighbors}()),
+00893     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a7bd9c81fb6dca96265060615307b14ad}{M\_fractureTips}(fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_ac505cd03d98e3ff67c9bf8fdc8b42689}{getFractureTips}()) \{\}
+00894 
+\hypertarget{RigidMesh_8cpp_source.tex_l00895}{}\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a9a51c22a69010cfc99cba80ac1bffa58}{00895} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a206a35c6464cbc525ff3c76c7051c226}{Rigid\_Mesh::Fracture\_Facet::Fracture\_Facet}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet}{Fracture\_Facet} & fracture\_facet):
+00896     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\_ID}(fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{getId}(), fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a7c8237fc0d6d1706deef2dcd872b4480}{getMesh}()),
+00897     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_ac1812d6492dbf2b3a270cc8db789471f}{M\_fractureNeighbors}(fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a8938590c97aba07cb21bb9ba8d64cecd}{getFractureNeighbors}()),
+00898     \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_a7bd9c81fb6dca96265060615307b14ad}{M\_fractureTips}(fracture\_facet.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet_ac505cd03d98e3ff67c9bf8fdc8b42689}{getFractureTips}()) \{\}
+00899 
+00900 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

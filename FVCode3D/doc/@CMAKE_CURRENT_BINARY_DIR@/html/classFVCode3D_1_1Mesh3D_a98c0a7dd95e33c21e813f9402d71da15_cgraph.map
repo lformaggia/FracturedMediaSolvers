@@ -1,0 +1,4 @@
+<map id="FVCode3D::Mesh3D::exportFractureNetworkVTK" name="FVCode3D::Mesh3D::exportFractureNetworkVTK">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1FractureNetwork3D.html#ab4a7dea9b15402cb2c82cf501c7e2356" title="Export in a single vtk file all the segments representing each fracture in the network. " alt="" coords="241,5,440,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1FractureNetwork3D.html#afaabbabf1e76071af9b0808f8dc6c413" title="Export in different vtk file the segments representing each fracture in the network. " alt="" coords="488,5,687,47"/>
+</map>

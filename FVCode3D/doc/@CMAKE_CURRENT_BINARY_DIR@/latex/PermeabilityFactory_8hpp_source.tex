@@ -1,0 +1,97 @@
+\hypertarget{PermeabilityFactory_8hpp_source}{}\section{Permeability\+Factory.\+hpp}
+\label{PermeabilityFactory_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\+Permeability\+Factory.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\+Permeability\+Factory.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef PERMEABILITYFACTORY\_HPP\_}
+00007 \textcolor{preprocessor}{#define PERMEABILITYFACTORY\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{Permeability_8hpp}{FVCode3D/property/Permeability.hpp}>}
+00011 
+00012 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00013 \{
+00014 
+00016 
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00020}{}\hyperlink{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{00020} \textcolor{keyword}{typedef} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} (* \hyperlink{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{PermeabilityBuilder})();
+00021 
+00023 
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00027}{}\hyperlink{classFVCode3D_1_1PermeabilityFactory}{00027} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory}
+00028 \{
+00029 \textcolor{keyword}{public}:
+00030 
+00032 
+00035     \textcolor{keyword}{static} \hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory} & \hyperlink{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e}{Instance}();
+00036 
+00038 
+00042     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1PermeabilityFactory_a3a160511216d3258029df8b84a7c322d}{addProduct}(\textcolor{keyword}{const} std::string productName, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{PermeabilityBuilder} & builder);
+00043 
+00045 
+00049     \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} \hyperlink{classFVCode3D_1_1PermeabilityFactory_a1cba6a88ecaaf1c152877ab632381010}{getProduct}(\textcolor{keyword}{const} std::string productName) \textcolor{keyword}{const};
+00050 
+00052     \hyperlink{classFVCode3D_1_1PermeabilityFactory_a6cb7bab1a4ce9d2711e68222b6471ab4}{~PermeabilityFactory}() = \textcolor{keywordflow}{default};
+00053 
+00054 \textcolor{keyword}{private}:
+00055 
+00057     \hyperlink{classFVCode3D_1_1PermeabilityFactory_a4d493147f170220c876247c000ea57a7}{PermeabilityFactory}() = \textcolor{keywordflow}{default};
+00058 
+00060     \hyperlink{classFVCode3D_1_1PermeabilityFactory_a4d493147f170220c876247c000ea57a7}{PermeabilityFactory}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory} &) = \textcolor{keyword}{delete};
+00061 
+00063     \hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory} & \hyperlink{classFVCode3D_1_1PermeabilityFactory_a0f37ae69832f386ad197f95f81825eb3}{operator=}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory} &) = \textcolor{keyword}{delete};
+00064 
+00066 
+00069     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1PermeabilityFactory_a6aad35b4bccce3c7aea9ed49c1739e5d}{registration}();
+00070 
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00072}{}\hyperlink{classFVCode3D_1_1PermeabilityFactory_a929e4768d02b4d006e8b2ace9dcc2354}{00072}     std::map<std::string,PermeabilityBuilder> \hyperlink{classFVCode3D_1_1PermeabilityFactory_a929e4768d02b4d006e8b2ace9dcc2354}{M\_productList};
+00073 
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00075}{}\hyperlink{classFVCode3D_1_1PermeabilityFactory_af47631ea4362556dd4240314e5e056b7}{00075}     \textcolor{keyword}{static} \hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory} * \hyperlink{classFVCode3D_1_1PermeabilityFactory_af47631ea4362556dd4240314e5e056b7}{theOnlyPermeabilityFactory};
+00076 \};
+00077 
+00078 
+00080 
+00084 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00085}{}\hyperlink{classFVCode3D_1_1PermeabilityProxy}{00085} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy}
+00086 \{
+00087 \textcolor{keyword}{public}:
+00088 
+00090 
+00093     \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy}(\textcolor{keyword}{const} std::string & proxyName);
+00094 
+00096     ~\hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy}() = \textcolor{keywordflow}{default};
+00097 
+00099 
+00102     \textcolor{keyword}{static} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} Build();
+00103 
+00104 \textcolor{keyword}{private}:
+00105 
+00107     \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy}() = \textcolor{keyword}{delete};
+00108 
+00110     \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy} &) = \textcolor{keyword}{delete};
+00111 
+00113     \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy} & \hyperlink{classFVCode3D_1_1PermeabilityFactory_a0f37ae69832f386ad197f95f81825eb3}{operator=}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy} &) = \textcolor{keyword}{delete};
+00114 \};
+00115 
+00116 
+00121 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00122}{}\hyperlink{classFVCode3D_1_1PermeabilityProxy_ad32fd95d4858deec225f041a7e4cbfc1}{00122} \hyperlink{classFVCode3D_1_1PermeabilityProxy_aa69972af9cb50c927f4238edd41b0ba5}{PermeabilityProxy<T>::PermeabilityProxy}(\textcolor{keyword}{const} std::string & 
+      proxyName)
+00123 \{
+00124     \hyperlink{classFVCode3D_1_1PermeabilityFactory}{PermeabilityFactory} & theFactory(
+      \hyperlink{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e}{PermeabilityFactory::Instance}());
+00125     theFactory.\hyperlink{classFVCode3D_1_1PermeabilityFactory_a3a160511216d3258029df8b84a7c322d}{addProduct}(std::string(proxyName),
+      \hyperlink{classFVCode3D_1_1PermeabilityProxy}{PermeabilityProxy<T>::Build});
+00126 \}
+00127 
+00128 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>
+\hypertarget{PermeabilityFactory_8hpp_source.tex_l00129}{}\hyperlink{classFVCode3D_1_1PermeabilityProxy_aa5d0847371daa4a99c080e7ba317d965}{00129} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} \hyperlink{classFVCode3D_1_1PermeabilityProxy_aa5d0847371daa4a99c080e7ba317d965}{PermeabilityProxy<T>::Build}()
+00130 \{
+00131     \textcolor{keywordflow}{return} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type}(\textcolor{keyword}{new} T);
+00132 \}
+00133 
+00134 \} \textcolor{comment}{// namespace FVCode3D}
+00135 
+00136 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* PERMEABILITYFACTORY\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

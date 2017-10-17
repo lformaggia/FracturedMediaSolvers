@@ -1,0 +1,412 @@
+\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{}\section{F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Facet\+\_\+\+ID Class Reference}
+\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+
+
+Class that handles the several types of facets.  
+
+
+
+
+{\ttfamily \#include $<$Rigid\+Mesh.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Facet\+\_\+\+ID\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Facet\+\_\+\+ID\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_aa5ddf57f99a7e9f42327e8dfcd15b2bf}{Facet\+\_\+\+ID} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} facet\+\_\+id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\+\_\+\+ID}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a308cbae2f61ee7ef4507f2ceec063ee9}{Facet\+\_\+\+ID} ()=delete
+\begin{DoxyCompactList}\small\item\em No empty constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6429f6226371828b41b5e947868e26e6}{$\sim$\+Facet\+\_\+\+ID} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$ \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a7c8237fc0d6d1706deef2dcd872b4480}{get\+Mesh} () const 
+\begin{DoxyCompactList}\small\item\em Get mesh (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{get\+Id} () const 
+\begin{DoxyCompactList}\small\item\em Get \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} id (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a8d919b6e5346d36ca71604f0c37cd277}{get\+Zone\+Code} () const 
+\begin{DoxyCompactList}\small\item\em Zone Code (const) \end{DoxyCompactList}\item 
+const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\+\_\+\+Mesh\+::\+Facet} \& \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a555b0572de3f638b2537de9a790bbc38}{get\+Facet} () const 
+\begin{DoxyCompactList}\small\item\em Get \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} (const) \end{DoxyCompactList}\item 
+const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a20ee7f532091bf919c6bad0797221336}{get\+Unsigned\+Normal} () const 
+\begin{DoxyCompactList}\small\item\em Get unsigned normal (const) \end{DoxyCompactList}\item 
+const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_afd11bc5dcc915bbe6a9c39f333e336ff}{get\+Centroid} () const 
+\begin{DoxyCompactList}\small\item\em Get center (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6fb6374e6750efc29b8ca9fa4d329d7b}{get\+Size} () const 
+\begin{DoxyCompactList}\small\item\em Get size (const) \end{DoxyCompactList}\item 
+const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \& \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a87b05e8b8c516f2be5067b881e368d6b}{get\+Separated\+Cells\+Ids} () const 
+\begin{DoxyCompactList}\small\item\em Get separated cells (const) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_ab8d2dc7ef7f4f606b92a76280b7ac946}{M\+\_\+id}
+\begin{DoxyCompactList}\small\item\em The Id of the referred \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$ \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acd3810a3b4989320c21f7574354e7915}{M\+\_\+mesh}
+\begin{DoxyCompactList}\small\item\em The pointer to the \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} containing the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that handles the several types of facets. 
+
+This class is a container of a Facet-\/\+Id. This class is a base class. 
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00977}{977} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!Facet\+\_\+\+ID@{Facet\+\_\+\+ID}}
+\index{Facet\+\_\+\+ID@{Facet\+\_\+\+ID}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{Facet\+\_\+\+I\+D(const U\+Int facet\+\_\+id, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Facet_ID(const UInt facet_id, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::\+Facet\+\_\+\+ID (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{facet\+\_\+id, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_aa5ddf57f99a7e9f42327e8dfcd15b2bf}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_aa5ddf57f99a7e9f42327e8dfcd15b2bf}
+
+
+Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\+\_\+\+ID}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em facet\+\_\+id} & is the id of a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. \\
+\hline
+{\em mesh} & is a constant pointer to the mesh to which the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00848}{848} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!Facet\+\_\+\+ID@{Facet\+\_\+\+ID}}
+\index{Facet\+\_\+\+ID@{Facet\+\_\+\+ID}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{Facet\+\_\+\+I\+D()=delete}{Facet_ID()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::\+Facet\+\_\+\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a308cbae2f61ee7ef4507f2ceec063ee9}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a308cbae2f61ee7ef4507f2ceec063ee9}
+
+
+No empty constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!````~Facet\+\_\+\+ID@{$\sim$\+Facet\+\_\+\+ID}}
+\index{````~Facet\+\_\+\+ID@{$\sim$\+Facet\+\_\+\+ID}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{$\sim$\+Facet\+\_\+\+I\+D()=default}{~Facet_ID()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::$\sim$\+Facet\+\_\+\+ID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6429f6226371828b41b5e947868e26e6}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6429f6226371828b41b5e947868e26e6}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Centroid@{get\+Centroid}}
+\index{get\+Centroid@{get\+Centroid}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Centroid() const }{getCentroid() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Point3D} F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Centroid (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_afd11bc5dcc915bbe6a9c39f333e336ff}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_afd11bc5dcc915bbe6a9c39f333e336ff}
+
+
+Get center (const) 
+
+\begin{DoxyReturn}{Returns}
+the centroid of the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} whose id is contained in the class 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01045}{1045} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_afd11bc5dcc915bbe6a9c39f333e336ff_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_afd11bc5dcc915bbe6a9c39f333e336ff_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Facet@{get\+Facet}}
+\index{get\+Facet@{get\+Facet}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Facet() const }{getFacet() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Rigid\+\_\+\+Mesh\+::\+Facet}\& F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Facet (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a555b0572de3f638b2537de9a790bbc38}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a555b0572de3f638b2537de9a790bbc38}
+
+
+Get \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} (const) 
+
+\begin{DoxyReturn}{Returns}
+a reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} whose id is contained in the class 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01031}{1031} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a555b0572de3f638b2537de9a790bbc38_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Id@{get\+Id}}
+\index{get\+Id@{get\+Id}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Id() const }{getId() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Id (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acf00cdd98ae92a84d82754d0d9878b64}
+
+
+Get \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} id (const) 
+
+\begin{DoxyReturn}{Returns}
+the facet id contained in the class 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01017}{1017} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Mesh@{get\+Mesh}}
+\index{get\+Mesh@{get\+Mesh}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Mesh() const }{getMesh() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Rigid\+\_\+\+Mesh}$\ast$ F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Mesh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a7c8237fc0d6d1706deef2dcd872b4480}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a7c8237fc0d6d1706deef2dcd872b4480}
+
+
+Get mesh (const) 
+
+\begin{DoxyReturn}{Returns}
+A const pointer to the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01010}{1010} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Separated\+Cells\+Ids@{get\+Separated\+Cells\+Ids}}
+\index{get\+Separated\+Cells\+Ids@{get\+Separated\+Cells\+Ids}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Separated\+Cells\+Ids() const }{getSeparatedCellsIds() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::vector$<${\bf U\+Int}$>$\& F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Separated\+Cells\+Ids (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a87b05e8b8c516f2be5067b881e368d6b}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a87b05e8b8c516f2be5067b881e368d6b}
+
+
+Get separated cells (const) 
+
+\begin{DoxyReturn}{Returns}
+the id of the separated cell from \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} whose id is contained in the class 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01059}{1059} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a87b05e8b8c516f2be5067b881e368d6b_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Size@{get\+Size}}
+\index{get\+Size@{get\+Size}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Size() const }{getSize() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6fb6374e6750efc29b8ca9fa4d329d7b}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6fb6374e6750efc29b8ca9fa4d329d7b}
+
+
+Get size (const) 
+
+\begin{DoxyReturn}{Returns}
+the size of the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} whose id is contained in the class 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01052}{1052} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6fb6374e6750efc29b8ca9fa4d329d7b_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a6fb6374e6750efc29b8ca9fa4d329d7b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Unsigned\+Normal@{get\+Unsigned\+Normal}}
+\index{get\+Unsigned\+Normal@{get\+Unsigned\+Normal}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Unsigned\+Normal() const }{getUnsignedNormal() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Point3D} F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Unsigned\+Normal (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a20ee7f532091bf919c6bad0797221336}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a20ee7f532091bf919c6bad0797221336}
+
+
+Get unsigned normal (const) 
+
+\begin{DoxyReturn}{Returns}
+the unsigned normal vector to the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} whose id is contained in the class 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01038}{1038} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a20ee7f532091bf919c6bad0797221336_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a20ee7f532091bf919c6bad0797221336_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!get\+Zone\+Code@{get\+Zone\+Code}}
+\index{get\+Zone\+Code@{get\+Zone\+Code}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{get\+Zone\+Code() const }{getZoneCode() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::get\+Zone\+Code (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a8d919b6e5346d36ca71604f0c37cd277}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a8d919b6e5346d36ca71604f0c37cd277}
+
+
+Zone Code (const) 
+
+\begin{DoxyReturn}{Returns}
+the zone code of the represented fractures 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01024}{1024} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_a8d919b6e5346d36ca71604f0c37cd277_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!M\+\_\+id@{M\+\_\+id}}
+\index{M\+\_\+id@{M\+\_\+id}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{M\+\_\+id}{M_id}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::\+M\+\_\+id\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_ab8d2dc7ef7f4f606b92a76280b7ac946}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_ab8d2dc7ef7f4f606b92a76280b7ac946}
+
+
+The Id of the referred \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet}. 
+
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00981}{981} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}!M\+\_\+mesh@{M\+\_\+mesh}}
+\index{M\+\_\+mesh@{M\+\_\+mesh}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh}{M_mesh}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Rigid\+\_\+\+Mesh}$\ast$ F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+I\+D\+::\+M\+\_\+mesh\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acd3810a3b4989320c21f7574354e7915}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID_acd3810a3b4989320c21f7574354e7915}
+
+
+The pointer to the \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} containing the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet}. 
+
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00983}{983} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8hpp}{Rigid\+Mesh.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8cpp}{Rigid\+Mesh.\+cpp}\end{DoxyCompactItemize}

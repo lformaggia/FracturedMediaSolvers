@@ -1,0 +1,321 @@
+\hypertarget{classFVCode3D_1_1CouplingConditions}{}\section{F\+V\+Code3D\+:\+:Coupling\+Conditions Class Reference}
+\label{classFVCode3D_1_1CouplingConditions}\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+
+
+Class for assembling a coupling conditions matrix.  
+
+
+
+
+{\ttfamily \#include $<$global\+\_\+operator.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Coupling\+Conditions\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{classFVCode3D_1_1CouplingConditions__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Coupling\+Conditions\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{classFVCode3D_1_1CouplingConditions__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1CouplingConditions_a03fd1f93d1449a7d7c833778507ed2a3}{Coupling\+Conditions} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&r\+Mesh, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Prow, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Pcol, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} row\+Size, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} col\+Size, \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \&I\+P\+\_\+matrix)
+\begin{DoxyCompactList}\small\item\em Construct a coupling conditions matrix. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1CouplingConditions_aa8f7d9a15e18bad4da1b0422fc67caea}{Coupling\+Conditions} (const \hyperlink{classFVCode3D_1_1CouplingConditions}{Coupling\+Conditions} \&)=delete
+\begin{DoxyCompactList}\small\item\em No Copy-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1CouplingConditions_afeffefabac4dc4d2652102c55a9f2e66}{Coupling\+Conditions} ()=delete
+\begin{DoxyCompactList}\small\item\em No Empty-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1CouplingConditions_a6d7366d3bcaa109cf1371465bb0a20e7}{$\sim$\+Coupling\+Conditions} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \hyperlink{classFVCode3D_1_1CouplingConditions_a1b13165b7ce7a8908427690a0d1e47ee}{get\+Transpose} () const 
+\begin{DoxyCompactList}\small\item\em Get transpose method. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1CouplingConditions_ac7c68a7baf111eb385ed4028245074a8}{get\+\_\+xsi} () const 
+\begin{DoxyCompactList}\small\item\em Get xsi parameter. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1CouplingConditions_aae796c113f61442f57f7844cd2174b9c}{Set\+\_\+xsi} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&xsi\+To\+Set)
+\begin{DoxyCompactList}\small\item\em Set xsi parameter. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d}{reserve\+\_\+space} ()
+\begin{DoxyCompactList}\small\item\em Reserve method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c}{assemble} ()
+\begin{DoxyCompactList}\small\item\em Assemble method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1CouplingConditions_a6aff06f6efb2dbd28fe17bc6c1c03ce9}{M}
+\begin{DoxyCompactList}\small\item\em A constant reference to the inner product matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1CouplingConditions_a03825be63a95a269b19a80d079d58f12}{xsi}
+\begin{DoxyCompactList}\small\item\em The parameter defining the coupling confition, it must be less or equal 1 and greater then 0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1CouplingConditions_a65e0fbd0172c5322cfedd1d01d12e8a6}{Default\+\_\+xsi} = 1.
+\begin{DoxyCompactList}\small\item\em The default parameter defining the coupling confition, it must be less or equal 1 and greater then 0. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for assembling a coupling conditions matrix. 
+
+This is the classe to assemble the coupling conditions matrix. To build it a fractures loop is performed. In the loop also the inner product matrix is modified. 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00297}{297} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!Coupling\+Conditions@{Coupling\+Conditions}}
+\index{Coupling\+Conditions@{Coupling\+Conditions}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{Coupling\+Conditions(const Rigid\+\_\+\+Mesh \&r\+Mesh, d\+Type Prow, d\+Type Pcol, U\+Int row\+Size, U\+Int col\+Size, Sp\+Mat \&\+I\+P\+\_\+matrix)}{CouplingConditions(const Rigid_Mesh &rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, SpMat &IP_matrix)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::\+Coupling\+Conditions (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{r\+Mesh, }
+\item[{{\bf d\+Type}}]{Prow, }
+\item[{{\bf d\+Type}}]{Pcol, }
+\item[{{\bf U\+Int}}]{row\+Size, }
+\item[{{\bf U\+Int}}]{col\+Size, }
+\item[{{\bf Sp\+Mat} \&}]{I\+P\+\_\+matrix}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1CouplingConditions_a03fd1f93d1449a7d7c833778507ed2a3}{}\label{classFVCode3D_1_1CouplingConditions_a03fd1f93d1449a7d7c833778507ed2a3}
+
+
+Construct a coupling conditions matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+Mesh} & The rigid mesh of the problem \\
+\hline
+{\em Prow} & The row dimension type \\
+\hline
+{\em Pcol} & The col dimension type \\
+\hline
+{\em row\+Size} & The number of row \\
+\hline
+{\em col\+Size} & The number of col \\
+\hline
+{\em I\+P\+\_\+matrix} & A constant reference to the inner product matrix \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00311}{311} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!Coupling\+Conditions@{Coupling\+Conditions}}
+\index{Coupling\+Conditions@{Coupling\+Conditions}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{Coupling\+Conditions(const Coupling\+Conditions \&)=delete}{CouplingConditions(const CouplingConditions &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::\+Coupling\+Conditions (
+\begin{DoxyParamCaption}
+\item[{const {\bf Coupling\+Conditions} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1CouplingConditions_aa8f7d9a15e18bad4da1b0422fc67caea}{}\label{classFVCode3D_1_1CouplingConditions_aa8f7d9a15e18bad4da1b0422fc67caea}
+
+
+No Copy-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!Coupling\+Conditions@{Coupling\+Conditions}}
+\index{Coupling\+Conditions@{Coupling\+Conditions}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{Coupling\+Conditions()=delete}{CouplingConditions()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::\+Coupling\+Conditions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1CouplingConditions_afeffefabac4dc4d2652102c55a9f2e66}{}\label{classFVCode3D_1_1CouplingConditions_afeffefabac4dc4d2652102c55a9f2e66}
+
+
+No Empty-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!````~Coupling\+Conditions@{$\sim$\+Coupling\+Conditions}}
+\index{````~Coupling\+Conditions@{$\sim$\+Coupling\+Conditions}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{$\sim$\+Coupling\+Conditions()=default}{~CouplingConditions()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::$\sim$\+Coupling\+Conditions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1CouplingConditions_a6d7366d3bcaa109cf1371465bb0a20e7}{}\label{classFVCode3D_1_1CouplingConditions_a6d7366d3bcaa109cf1371465bb0a20e7}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{assemble()}{assemble()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c}{}\label{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c}
+
+
+Assemble method. 
+
+Assemble the coupling conditions matrix 
+
+Implements \hyperlink{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3}{F\+V\+Code3\+D\+::global\+\_\+\+Operator}.
+
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00254}{254} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!get\+\_\+xsi@{get\+\_\+xsi}}
+\index{get\+\_\+xsi@{get\+\_\+xsi}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{get\+\_\+xsi() const }{get_xsi() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Real}\& F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::get\+\_\+xsi (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1CouplingConditions_ac7c68a7baf111eb385ed4028245074a8}{}\label{classFVCode3D_1_1CouplingConditions_ac7c68a7baf111eb385ed4028245074a8}
+
+
+Get xsi parameter. 
+
+\begin{DoxyReturn}{Returns}
+the xsi parameter of the coupling conditions 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00334}{334} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!get\+Transpose@{get\+Transpose}}
+\index{get\+Transpose@{get\+Transpose}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{get\+Transpose() const }{getTranspose() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat} F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::get\+Transpose (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1CouplingConditions_a1b13165b7ce7a8908427690a0d1e47ee}{}\label{classFVCode3D_1_1CouplingConditions_a1b13165b7ce7a8908427690a0d1e47ee}
+
+
+Get transpose method. 
+
+\begin{DoxyReturn}{Returns}
+the tranpose of the coupling conditions matrix C 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00327}{327} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!reserve\+\_\+space@{reserve\+\_\+space}}
+\index{reserve\+\_\+space@{reserve\+\_\+space}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{reserve\+\_\+space()}{reserve_space()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::reserve\+\_\+space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d}{}\label{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d}
+
+
+Reserve method. 
+
+Reserve the proper space for the coupling conditions matrix C 
+
+Implements \hyperlink{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16}{F\+V\+Code3\+D\+::global\+\_\+\+Operator}.
+
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00234}{234} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!Set\+\_\+xsi@{Set\+\_\+xsi}}
+\index{Set\+\_\+xsi@{Set\+\_\+xsi}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{Set\+\_\+xsi(const Real \&xsi\+To\+Set)}{Set_xsi(const Real &xsiToSet)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::\+Set\+\_\+xsi (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real} \&}]{xsi\+To\+Set}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1CouplingConditions_aae796c113f61442f57f7844cd2174b9c}{}\label{classFVCode3D_1_1CouplingConditions_aae796c113f61442f57f7844cd2174b9c}
+
+
+Set xsi parameter. 
+
+Set the xsi parameter of the coupling conditions 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00341}{341} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1CouplingConditions_aae796c113f61442f57f7844cd2174b9c_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!Default\+\_\+xsi@{Default\+\_\+xsi}}
+\index{Default\+\_\+xsi@{Default\+\_\+xsi}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{Default\+\_\+xsi}{Default_xsi}}]{\setlength{\rightskip}{0pt plus 5cm}constexpr {\bf Real} F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::\+Default\+\_\+xsi = 1.\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\hypertarget{classFVCode3D_1_1CouplingConditions_a65e0fbd0172c5322cfedd1d01d12e8a6}{}\label{classFVCode3D_1_1CouplingConditions_a65e0fbd0172c5322cfedd1d01d12e8a6}
+
+
+The default parameter defining the coupling confition, it must be less or equal 1 and greater then 0. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00363}{363} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!M@{M}}
+\index{M@{M}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{M}{M}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat}\& F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::M\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1CouplingConditions_a6aff06f6efb2dbd28fe17bc6c1c03ce9}{}\label{classFVCode3D_1_1CouplingConditions_a6aff06f6efb2dbd28fe17bc6c1c03ce9}
+
+
+A constant reference to the inner product matrix. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00359}{359} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}!xsi@{xsi}}
+\index{xsi@{xsi}!F\+V\+Code3\+D\+::\+Coupling\+Conditions@{F\+V\+Code3\+D\+::\+Coupling\+Conditions}}
+\subsubsection[{\texorpdfstring{xsi}{xsi}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Coupling\+Conditions\+::xsi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1CouplingConditions_a03825be63a95a269b19a80d079d58f12}{}\label{classFVCode3D_1_1CouplingConditions_a03825be63a95a269b19a80d079d58f12}
+
+
+The parameter defining the coupling confition, it must be less or equal 1 and greater then 0. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00361}{361} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8hpp}{global\+\_\+operator.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8cpp}{global\+\_\+operator.\+cpp}\end{DoxyCompactItemize}

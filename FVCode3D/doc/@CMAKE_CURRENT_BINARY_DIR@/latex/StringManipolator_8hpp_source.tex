@@ -1,0 +1,69 @@
+\hypertarget{StringManipolator_8hpp_source}{}\section{String\+Manipolator.\+hpp}
+\label{StringManipolator_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+String\+Manipolator.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+String\+Manipolator.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef STRINGMANIPOLATOR\_HPP\_}
+00007 \textcolor{preprocessor}{#define STRINGMANIPOLATOR\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <sstream>}
+00010 \textcolor{preprocessor}{#include <string>}
+00011 \textcolor{preprocessor}{#include <vector>}
+00012 
+00013 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00014 \{
+00015 
+00017 
+00020 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>
+\hypertarget{StringManipolator_8hpp_source.tex_l00021}{}\hyperlink{namespaceFVCode3D_a7d8605df83383ec5cf62f7efe480a68a}{00021} T \hyperlink{namespaceFVCode3D_a7d8605df83383ec5cf62f7efe480a68a}{lexical\_cast}( \textcolor{keyword}{const} std::string& str )
+00022 \{
+00023     T var;
+00024     std::istringstream iss;
+00025     iss.str(str);
+00026     iss >> var;
+00027     \textcolor{keywordflow}{return} var;
+00028 \} \textcolor{comment}{// lexical\_cast}
+00029 
+\hypertarget{StringManipolator_8hpp_source.tex_l00031}{}\hyperlink{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59}{00031} \textcolor{keyword}{inline} std::string \hyperlink{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59}{toUpper} ( \textcolor{keyword}{const} std::string& \_string )
+00032 \{
+00033     std::string out( \_string );
+00034     std::transform( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( out ), \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}( out ), 
+      \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( out ), ::toupper );
+00035     \textcolor{keywordflow}{return} out;
+00036 \} \textcolor{comment}{// toUpper}
+00037 
+00039 
+\hypertarget{StringManipolator_8hpp_source.tex_l00045}{}\hyperlink{namespaceFVCode3D_a7bd098182831904c8fcd227b9d0f4562}{00045} \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a7bd098182831904c8fcd227b9d0f4562}{tokenize}(\textcolor{keyword}{const} std::string &s, std::vector<std::string> &tokens, \textcolor{keywordtype}{char} delim = \textcolor{charliteral}{' '})
+00046 \{
+00047     std::stringstream ss(s);
+00048     std::string token;
+00049     \textcolor{keywordflow}{while} (std::getline(ss, token, delim))
+00050     \{
+00051         \textcolor{keywordflow}{if} (!token.empty())
+00052         \{
+00053             tokens.push\_back(token);
+00054         \}
+00055     \} \textcolor{comment}{// while}
+00056 \} \textcolor{comment}{// tokenize}
+00057 
+\hypertarget{StringManipolator_8hpp_source.tex_l00058}{}\hyperlink{structFVCode3D_1_1MyDelimiters}{00058} \textcolor{keyword}{struct }\hyperlink{structFVCode3D_1_1MyDelimiters}{MyDelimiters} : std::ctype<char>
+00059 \{
+\hypertarget{StringManipolator_8hpp_source.tex_l00060}{}\hyperlink{structFVCode3D_1_1MyDelimiters_adb7e5521ba8b5e71c6a3761bfcf772dc}{00060}     \hyperlink{structFVCode3D_1_1MyDelimiters_adb7e5521ba8b5e71c6a3761bfcf772dc}{MyDelimiters}():
+00061         \hyperlink{namespacestd}{std}::ctype<char>(\hyperlink{structFVCode3D_1_1MyDelimiters_a9fe12c8425c905cecf5c5c4b6e80c630}{get\_table}()) \{\}
+00062 
+\hypertarget{StringManipolator_8hpp_source.tex_l00063}{}\hyperlink{structFVCode3D_1_1MyDelimiters_a9fe12c8425c905cecf5c5c4b6e80c630}{00063}     \textcolor{keyword}{static} mask \textcolor{keyword}{const}* \hyperlink{structFVCode3D_1_1MyDelimiters_a9fe12c8425c905cecf5c5c4b6e80c630}{get\_table}()
+00064     \{
+00065         \textcolor{keyword}{static} mask rc[table\_size];
+00066         rc[\textcolor{charliteral}{'('}] = std::ctype\_base::space;
+00067         rc[\textcolor{charliteral}{')'}] = std::ctype\_base::space;
+00068         rc[\textcolor{charliteral}{' '}] = std::ctype\_base::space;
+00069         rc[\textcolor{charliteral}{';'}] = std::ctype\_base::space;
+00070         rc[\textcolor{charliteral}{'\(\backslash\)n'}] = std::ctype\_base::space;
+00071         \textcolor{keywordflow}{return} &rc[0];
+00072     \}
+00073 \}; \textcolor{comment}{// MyDelimiters}
+00074 
+00075 \} \textcolor{comment}{// namespace FVCode3D}
+00076 
+00077 \textcolor{preprocessor}{#endif // STRINGMANIPOLATOR\_HPP\_}
+\end{DoxyCode}

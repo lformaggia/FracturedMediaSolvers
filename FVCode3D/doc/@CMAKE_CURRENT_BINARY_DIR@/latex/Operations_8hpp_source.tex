@@ -1,0 +1,67 @@
+\hypertarget{Operations_8hpp_source}{}\section{Operations.\+hpp}
+\label{Operations_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\+Operations.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\+Operations.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef OPERATIONS\_HPP\_}
+00007 \textcolor{preprocessor}{#define OPERATIONS\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+00014 \textcolor{keyword}{class }Point3D;
+00015 
+00017 
+00023 Point3D \hyperlink{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc}{computeNormal}(\textcolor{keyword}{const} Point3D & A, \textcolor{keyword}{const} Point3D & B, \textcolor{keyword}{const} Point3D & C);
+00024 
+00026 
+00031 Point3D \hyperlink{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da}{rotateOf}(\textcolor{keyword}{const} Point3D & p, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} angleDeg);
+00032 
+00034 
+00040 \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9}{triangleArea}(\textcolor{keyword}{const} Point3D & A, \textcolor{keyword}{const} Point3D & B, \textcolor{keyword}{const} Point3D & C);
+00041 
+00043 
+00049 Point3D \hyperlink{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad}{triangleCentroid}(\textcolor{keyword}{const} Point3D & A, \textcolor{keyword}{const} Point3D & B, \textcolor{keyword}{const} Point3D & C);
+00050 
+00052 
+00056 \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221}{tetrahedronVolume}(\textcolor{keyword}{const} std::vector<Point3D> & nodes);
+00057 
+00059 
+00064 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b}{computeBoundingBox}(\textcolor{keyword}{const} std::vector<Point3D> & nodes, Point3D & pMin, Point3D & 
+      pMax);
+00065 
+00067 
+00070 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>
+\hypertarget{Operations_8hpp_source.tex_l00071}{}\hyperlink{structFVCode3D_1_1less}{00071} \textcolor{keyword}{struct }\hyperlink{structFVCode3D_1_1less}{less}
+00072 \{
+\hypertarget{Operations_8hpp_source.tex_l00073}{}\hyperlink{structFVCode3D_1_1less_ab84f15efe248c8504788d3b627df7330}{00073}     \textcolor{keywordtype}{bool} \hyperlink{structFVCode3D_1_1less_ab84f15efe248c8504788d3b627df7330}{operator() }(\textcolor{keyword}{const} T & x, \textcolor{keyword}{const} T & y)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} x < y; \}
+00074 \};
+00075 
+00077 
+00080 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>
+\hypertarget{Operations_8hpp_source.tex_l00081}{}\hyperlink{structFVCode3D_1_1less_3_01std_1_1pair_3_01T_00_01T_01_4_01_4}{00081} \textcolor{keyword}{struct }\hyperlink{structFVCode3D_1_1less}{less}< \hyperlink{namespacestd}{std}::pair<T,T> >
+00082 \{
+\hypertarget{Operations_8hpp_source.tex_l00083}{}\hyperlink{structFVCode3D_1_1less_3_01std_1_1pair_3_01T_00_01T_01_4_01_4_ad4272c44f7983a96b87dd01f12379dde}{00083}     \textcolor{keywordtype}{bool} \hyperlink{structFVCode3D_1_1less_ab84f15efe248c8504788d3b627df7330}{operator() }(\textcolor{keyword}{const} std::pair<T,T> & x, \textcolor{keyword}{const} std::pair<T,T> & y)\textcolor{keyword}{ const}
+00084 \textcolor{keyword}{    }\{
+00085         \textcolor{keywordflow}{if}( x.first < y.first )
+00086             \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+00087         \textcolor{keywordflow}{if}( x.first == y.first )
+00088         \{
+00089             \textcolor{keywordflow}{if}( x.second < y.second )
+00090                 \textcolor{keywordflow}{return} \textcolor{keyword}{true};
+00091             \textcolor{keywordflow}{else}
+00092                 \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+00093         \}
+00094         \textcolor{keywordflow}{else}
+00095             \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+00096     \}
+00097 \};
+00098 
+00099 \}\textcolor{comment}{// namespace FVCode3D}
+00100 
+00101 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* OPERATIONS\_HPP\_ */}\textcolor{preprocessor}{}
+00102 
+00103 
+\end{DoxyCode}

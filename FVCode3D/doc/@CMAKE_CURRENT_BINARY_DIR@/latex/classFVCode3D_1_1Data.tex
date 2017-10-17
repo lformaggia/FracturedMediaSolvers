@@ -1,0 +1,3018 @@
+\hypertarget{classFVCode3D_1_1Data}{}\section{F\+V\+Code3D\+:\+:Data Class Reference}
+\label{classFVCode3D_1_1Data}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+
+
+Class that handles the information needed for the solver.  
+
+
+
+
+{\ttfamily \#include $<$Data.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}{Numerical\+Method\+Type} \{ \hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cfae6a9edcfa5768dd3908108c297b413f7}{FV} = 0, 
+\hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cfacf4497fa0025d2f6ea6a9b682e384ff3}{M\+FD} = 1
+ \}\begin{DoxyCompactList}\small\item\em Define the numerical method type. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23}{Problem\+Type} \{ \hyperlink{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23aa01656a6cd37ca152de831adad5d2841}{steady} = 0, 
+\hyperlink{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23adf310b8b79bf5a11843828488cb3b46f}{pseudo\+Steady} = 1
+ \}\begin{DoxyCompactList}\small\item\em Define the problem type. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6}{Mesh\+Format\+Type} \{ \\*
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a41e16e40b05a40c861dae13e7d056daf}{T\+P\+FA} = 0, 
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6aa97c4d4a0aa98b96be77e4d0a5e1e8fb}{for\+Solver} = 1, 
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a5122019b85fafb0f64f79baf96593d52}{Medit} = 2, 
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a801f19d5251b0e21edfed0b05fb1ac99}{Tet\+Gen} = 3, 
+\\*
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a568f155439735c175038b49a538cd6ce}{Open\+F\+O\+AM} = 4
+ \}\begin{DoxyCompactList}\small\item\em Define the format of the input mesh. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552}{Noise\+On} \{ \hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552af53df0293e169f562bc1d9a20e1d2589}{Noise\+On\+::\+Matrix} = 0, 
+\hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552aaa3a14735ecc914d217c516ad93fb640}{Noise\+On\+::\+Fractures} = 1, 
+\hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552ab1c94ca2fbc3e78fc30069c8d0f01680}{Noise\+On\+::\+All} = 2
+ \}\begin{DoxyCompactList}\small\item\em Define where the noise is applied. \end{DoxyCompactList}
+\item 
+enum \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3}{Source\+Sink\+On} \{ \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3af53df0293e169f562bc1d9a20e1d2589}{Source\+Sink\+On\+::\+Matrix} = 0, 
+\hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3aaa3a14735ecc914d217c516ad93fb640}{Source\+Sink\+On\+::\+Fractures} = 1, 
+\hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a130c5b3473c57faa76e2a1c54e26f88e}{Source\+Sink\+On\+::\+Both} = 2, 
+\hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a6adf97f83acf6453d4a6a4b1070f3754}{Source\+Sink\+On\+::\+None} = 3
+ \}\begin{DoxyCompactList}\small\item\em Define where to apply the source/sink term. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1Data_ad7d2ea783d794828e141bd57250c1120}{show\+Me} (std\+::ostream \&output=std\+::cout) const 
+\begin{DoxyCompactList}\small\item\em Show a summary of the data. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_ae5d0b57cc7ae6215e62c661e81034803}{$\sim$\+Data} ()
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructors}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Data_a2ab9e8e8f490af55c7d78163dfdb000c}{Data} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_ae898de2278e74386b4dbab3a8be89ca9}{Data} (const std\+::string data\+File\+Name)  throw ()
+\begin{DoxyCompactList}\small\item\em Constructor from file. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_afe15e512e8571c67615456efded56c7a}{Data} (const \hyperlink{classFVCode3D_1_1Data}{Data} \&data)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_a0b2af9e0ccfdb43c90078a475c5adfea}{get\+Mesh\+Dir} () const 
+\begin{DoxyCompactList}\small\item\em Get the directory of the mesh. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_a4647d475e08623c9802b61871640c1f7}{get\+Mesh\+File} () const 
+\begin{DoxyCompactList}\small\item\em Get the file of the mesh. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_ab688ed7327553bca040e93d36e14e401}{get\+Mesh\+Extension} () const 
+\begin{DoxyCompactList}\small\item\em Get the extension of the mesh format type. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6}{Mesh\+Format\+Type} \hyperlink{classFVCode3D_1_1Data_a25dced9c98efcb446cc262b09e7eba80}{get\+Mesh\+Type} () const 
+\begin{DoxyCompactList}\small\item\em Get the format type of the mesh. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_a598ba33b37f0b64b4bc598ad19660a3d}{get\+Output\+Dir} () const 
+\begin{DoxyCompactList}\small\item\em Get the output directory. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_aa4dab1fc14e725f953177b391094222d}{get\+Output\+File} () const 
+\begin{DoxyCompactList}\small\item\em Get the output file name. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a5e6e9fd93fa4aa0c43bca2d4d4615e9b}{get\+Lx} () const 
+\begin{DoxyCompactList}\small\item\em Get the domain dimension along x-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a48fce5455a3dc879fd55594e265c1bd9}{get\+Ly} () const 
+\begin{DoxyCompactList}\small\item\em Get the domain dimension along y-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_acca823b861efb66f390da61dbf64b605}{get\+Lz} () const 
+\begin{DoxyCompactList}\small\item\em Get the domain dimension along z-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a1ede11ae84d5bd5328b0b35be6cb9cff}{get\+Nx} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of cells along x-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a021b187d234779a0e48e319ce301b78e}{get\+Ny} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of cells along y-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a1bf81146c1ecd38f18e23e2d8946ffde}{get\+Nz} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of cells along z-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aaf38dca37bfbdcf9316f98d51ebf9a0a}{get\+Sx} () const 
+\begin{DoxyCompactList}\small\item\em Get the shift domain along x-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a3e88f00500723ed940032b623c2692b5}{get\+Sy} () const 
+\begin{DoxyCompactList}\small\item\em Get the shift domain along y-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a602548727f2e41ee9d2351ce80cff5ba}{get\+Sz} () const 
+\begin{DoxyCompactList}\small\item\em Get the shift domain z-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aea35270ca37a956c72ba5f1d6fe9214f}{get\+Rz} () const 
+\begin{DoxyCompactList}\small\item\em Get the rotation domain z-\/axis. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_ad19041278d7cb67b1d68665a3470fded}{noise\+On} () const 
+\begin{DoxyCompactList}\small\item\em Test if the noise is added to the points. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552}{Noise\+On} \hyperlink{classFVCode3D_1_1Data_a6119d80c2fb6b2c332f9e041a908d83f}{get\+Noise\+On} () const 
+\begin{DoxyCompactList}\small\item\em Get where the noise is applied. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a0fa514fe74511259474538d028549bb0}{get\+Mean\+Normal\+Distribution} () const 
+\begin{DoxyCompactList}\small\item\em Get the mean of the normal distribution. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a63dcf3d2a71d71a1f25418311297ae06}{get\+St\+Dev\+Normal\+Distribution} () const 
+\begin{DoxyCompactList}\small\item\em Get the standard deviation of the normal distribution. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}{Numerical\+Method\+Type} \hyperlink{classFVCode3D_1_1Data_a1210f9a0ed0551f974b8ff05625d9863}{get\+Numerical\+Method\+Type} () const 
+\begin{DoxyCompactList}\small\item\em Get the numerical method used to solve the problem. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a8630fc70df08884669e43f21a5975cf6}{get\+Lumped\+Mimetic} () const 
+\begin{DoxyCompactList}\small\item\em Get if the stiffness matrix in the mimetic method is lumped. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23}{Problem\+Type} \hyperlink{classFVCode3D_1_1Data_aa23de9b3d8c9e07241b658e0f62ee851}{get\+Problem\+Type} () const 
+\begin{DoxyCompactList}\small\item\em Get the problem type. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a941e81f94c9cac5f8b53736768d8b841}{fracture\+On} () const 
+\begin{DoxyCompactList}\small\item\em Test if fractures are enabled. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3}{Source\+Sink\+On} \hyperlink{classFVCode3D_1_1Data_a50d977227499b2a9d8e877583718c783}{get\+Source\+Sink\+On} () const 
+\begin{DoxyCompactList}\small\item\em Get where the source/sink term is applied. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a4e2f0001c574c8d50359a231ef079fcc}{pressures\+In\+Fractures} () const 
+\begin{DoxyCompactList}\small\item\em Test if the pressure value inside the fractures is fixed or not. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_af0b0d3361ceac8257e7342f2b2f6996b}{get\+Pressures\+In\+Fractures} () const 
+\begin{DoxyCompactList}\small\item\em Get the pressure inside the fracture. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_aa0fa184cedbc5779359fdfa59f4c9757}{M\+S\+R\+On} () const 
+\begin{DoxyCompactList}\small\item\em Test if the multiple sub-\/regions method is activated or not. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_a7303f11650f8096d87fa70e43d529ccc}{nb\+Sub\+Regions} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of sub-\/regions. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_abecf75fa7beb77100d6817ca40acb87f}{nb\+Time\+Step\+Steady\+State} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of time step to check for the steady state. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a4b8976c57267fbea1cdbc2461996610f}{tol\+Steady\+State} () const 
+\begin{DoxyCompactList}\small\item\em Get the tolerance to consider a time step at the steady state. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_a8407b7350ccbb4deb24ace9affa47497}{get\+Permeability\+Type} () const 
+\begin{DoxyCompactList}\small\item\em Get the type of the permeability. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aa0dcd9ab98c62ff03f4f757360a6e45c}{get\+Matrix\+Permeability} () const 
+\begin{DoxyCompactList}\small\item\em Get the permeability in the porous medium. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_abd5d55762c5909d5e8acd5632ea2a4a1}{get\+Matrix\+Porosity} () const 
+\begin{DoxyCompactList}\small\item\em Get the porosity in the porous medium. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a4bc74949417d0582540b5644bc237bdc}{get\+Fracture\+Permeability} () const 
+\begin{DoxyCompactList}\small\item\em Get the permeability in the fracture. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a0993d43ae0cd2a16e9adf69fb2368645}{get\+Fracture\+Porosity} () const 
+\begin{DoxyCompactList}\small\item\em Get the porosity in the fracture. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_af7b6391c187f2c9ad1fef56c74dac5ed}{get\+Fracture\+Aperture} () const 
+\begin{DoxyCompactList}\small\item\em Get the aperture in the fracture. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a4e424bc75d28ee591be0c0a930b6f871}{get\+Initial\+Time} () const 
+\begin{DoxyCompactList}\small\item\em Get the initial time. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a2685bdd2501d7545fc8660bd9525d8fa}{get\+End\+Time} () const 
+\begin{DoxyCompactList}\small\item\em Get the end time. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a39afb5e8b836e7e15597850e8740632a}{get\+Time\+Step} () const 
+\begin{DoxyCompactList}\small\item\em Get the time step. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a21aced5c69ae4ee8f3c22624dd6a3e53}{get\+Mobility} () const 
+\begin{DoxyCompactList}\small\item\em Get mobility of the fluid. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a067af6c1a191c83a574a4aba1fd6e2fa}{get\+Compressibility} () const 
+\begin{DoxyCompactList}\small\item\em Get compressibility. \end{DoxyCompactList}\item 
+const std\+::string \hyperlink{classFVCode3D_1_1Data_a7416ec2cb2d71001ae3a336ac75030d7}{get\+Solver\+Type} () const 
+\begin{DoxyCompactList}\small\item\em Get solver type. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_af1dc6d715f4b6efcbbc46e372b967858}{get\+Iterative\+Solver\+Max\+Iter} () const 
+\begin{DoxyCompactList}\small\item\em Get maximum iterations of the iterative solver. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ac5b0bb067586018f05c03979dab7dac2}{get\+Iterative\+Solver\+Tolerance} () const 
+\begin{DoxyCompactList}\small\item\em Get tolerance of the iterative solver. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a3ad43ce405db08e465804cb2494423a1}{get\+Theta} () const 
+\begin{DoxyCompactList}\small\item\em Get theta angle. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a3f6758048749a9525d2879552b975536}{verbose} () const 
+\begin{DoxyCompactList}\small\item\em Verbose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Set methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1Data_a9d1e654e780ff8196720b947689dd9f8}{set\+Mesh\+Dir} (const std\+::string dir)
+\begin{DoxyCompactList}\small\item\em Set the directory of the mesh. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a78ef784e9755b8e1285d597eddb9d1de}{set\+Mesh\+File} (const std\+::string file)
+\begin{DoxyCompactList}\small\item\em Set the file of the mesh. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a1f2a77ec9eb6e10ae5f5e7150343bc81}{set\+Mesh\+Extension} (const std\+::string ext)
+\begin{DoxyCompactList}\small\item\em Set the extension of the mesh format type. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_aa99fa6c201237aeda46ad434c71caadc}{set\+Mesh\+Type} (const \hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6}{Mesh\+Format\+Type} type)  throw ()
+\begin{DoxyCompactList}\small\item\em Set the format type of the mesh. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a5dd692c7bb0d0cc1ea440845c637d778}{set\+Output\+Dir} (const std\+::string dir)
+\begin{DoxyCompactList}\small\item\em Set the output directory. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a3da09b88d987571c7be1fdad165d5195}{set\+Output\+File} (const std\+::string file)
+\begin{DoxyCompactList}\small\item\em Set the output file name. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a407ef57c3db6434524e47d6c88ad8048}{set\+Lx} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Lx)
+\begin{DoxyCompactList}\small\item\em Set the domain dimension along x-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a7b6aec70d4fd53ecb0829c1ec700e6f1}{set\+Ly} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Ly)
+\begin{DoxyCompactList}\small\item\em Set the domain dimension along y-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_ae7485872faf9c0d277e240a6a1f43dcf}{set\+Lz} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Lz)
+\begin{DoxyCompactList}\small\item\em Set the domain dimension along z-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a2cf14ed455819e6161b7d32ce9e6eba6}{set\+Nx} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Nx)
+\begin{DoxyCompactList}\small\item\em Set the number of cells along x-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a768fd7e5bcb3d590aca98dafddb4b982}{set\+Ny} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Ny)
+\begin{DoxyCompactList}\small\item\em Set the number of cells along y-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a3d164db50b46d7b0488a00db529fa3b6}{set\+Nz} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Nz)
+\begin{DoxyCompactList}\small\item\em Set the number of cells along z-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a5b561f1dd14069d1ba7fa79ba5b09d47}{set\+Sx} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Sx)
+\begin{DoxyCompactList}\small\item\em Set the shift domain along x-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a9791ad153e96354aa59eaebc7baf89b2}{set\+Sy} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Sy)
+\begin{DoxyCompactList}\small\item\em Set the shift domain along y-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a0d11954cc9b2bf33bbc18e03b53731fe}{set\+Sz} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Sz)
+\begin{DoxyCompactList}\small\item\em Set the shift domain along z-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a09cc3e8cd5a26b9334e47c188d037b84}{set\+Rz} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Rz)
+\begin{DoxyCompactList}\small\item\em Set the rotation domain along z-\/axis. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a1ce9836addc2cb90909a9cc2506c8a49}{noise\+On} (const bool noise)
+\begin{DoxyCompactList}\small\item\em Enable or disable the noise to the points. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_abc479bbfd38ce92c3d6a1e15c5b51a5f}{get\+Noise\+On} (const \hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552}{Noise\+On} \hyperlink{classFVCode3D_1_1Data_ad19041278d7cb67b1d68665a3470fded}{noise\+On})
+\begin{DoxyCompactList}\small\item\em Set where the noise is applied. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_ab244bb60161eed3678d3ce7f88071cf5}{set\+Mean\+Normal\+Distribution} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean)
+\begin{DoxyCompactList}\small\item\em Set the mean of the normal distribution. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a11439eec2eec0b358cdbcaad6f91f04e}{set\+St\+Dev\+Normal\+Distribution} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} st\+Dev)
+\begin{DoxyCompactList}\small\item\em set the standard deviation of the normal distribution \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a5660a92abcdfa1c8209b5710dcbd945e}{set\+Numerical\+Method\+Type} (const \hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}{Numerical\+Method\+Type} type)
+\begin{DoxyCompactList}\small\item\em Set the numerical method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a8c3b6e8e0771f35ff9a270deb3cc1f5a}{set\+Lumped\+Mimetic} (const bool lumped)
+\begin{DoxyCompactList}\small\item\em Set if the stiffness matrix in the mimetic method is lumped. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_ae88275973ad5105bab7f3203a1b3061c}{set\+Problem\+Type} (const \hyperlink{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23}{Problem\+Type} type)
+\begin{DoxyCompactList}\small\item\em Set the problem type. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_ac1215f12b129587d2fc17b476f7ab8e5}{fracture\+On} (const bool fracture)
+\begin{DoxyCompactList}\small\item\em Enable or disable the fractures. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a1b246eed39252523266efc6d63b7575b}{set\+Source\+Sink\+On} (const \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3}{Source\+Sink\+On} ss\+On)
+\begin{DoxyCompactList}\small\item\em Set where the source/sink term is applied. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a8f293daea9f1b800a9ff64d5ab320763}{pressures\+In\+Fractures} (const bool frac\+Press)
+\begin{DoxyCompactList}\small\item\em Enable or disable the pressure value inside the fractures. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a07f79ab8c27c169116e58c3d1e0573cd}{set\+Pressures\+In\+Fractures} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} press)
+\begin{DoxyCompactList}\small\item\em Set the pressure inside the fracture. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a97e72b7484570156f74ab608eb984b00}{M\+S\+R\+On} (const bool msr)
+\begin{DoxyCompactList}\small\item\em Enable or disable the the multiple sub-\/regions method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a1fc5c4ab0b1abe6aaefb450a00fa27ea}{set\+Nb\+Sub\+Regions} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} n\+Sub\+Reg)
+\begin{DoxyCompactList}\small\item\em Set the number of sub-\/regions. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a368df5d936a00f3841ac81070ffa748f}{set\+Nb\+Time\+Step\+Steady\+State} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} n\+Time\+Step)
+\begin{DoxyCompactList}\small\item\em Set the number of time step to check for the steady state. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_add1c3c9a2c35ffcd495778613a1624bb}{tol\+Steady\+State} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} tol)
+\begin{DoxyCompactList}\small\item\em Set the tolerance to consider a time step at the steady state. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a72079afa3a831af937b1665b4ef3e048}{set\+Permeability\+Type} (const std\+::string type)
+\begin{DoxyCompactList}\small\item\em Set the type of the permeability. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a5e0006a4cb8cb2fbb0f6bf3d55ea97f6}{set\+Matrix\+Permeability} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} perm)
+\begin{DoxyCompactList}\small\item\em Set the permeability in the porous medium. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_ac69940093fb72d43599771f4ffd2a3d8}{set\+Matrix\+Porosity} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} poro)
+\begin{DoxyCompactList}\small\item\em Set the porosity in the porous medium. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_ae30cd878d556d3167cbfd298e550cdd0}{set\+Fracture\+Permeability} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} perm)
+\begin{DoxyCompactList}\small\item\em Set the permeability in the fracture. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a8ebf93476e0386bc114fbcdb68d4a824}{set\+Fracture\+Porosity} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} poro)
+\begin{DoxyCompactList}\small\item\em Set the porosity in the fracture. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a1967ff12ee9142fd118f952a0f9cb7a3}{set\+Fracture\+Aperture} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aper)
+\begin{DoxyCompactList}\small\item\em Set the aperture in the fracture. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a07b180c02fcd985f9f75b662e00ad54e}{set\+Initial\+Time} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} time)
+\begin{DoxyCompactList}\small\item\em Set the initial time. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a551add51bd5facc5afa37956eb3e8187}{set\+End\+Time} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} time)
+\begin{DoxyCompactList}\small\item\em Set the final time. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a57ad8c8edd71c60b60a0ad9296171c4a}{set\+Time\+Step} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} time)
+\begin{DoxyCompactList}\small\item\em Set the time step. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a5fb85e6447083d24572761d79f1c4f72}{set\+Mobility} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mobility)
+\begin{DoxyCompactList}\small\item\em Set mobility of the fluid. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a51500d24b2200a3e60e53f0d55750fbb}{set\+Compressibility} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} compressibility)
+\begin{DoxyCompactList}\small\item\em Set compressibility. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_adbc56dcf8d9718df3d918565ddea304b}{get\+Solver\+Type} (const std\+::string solver)
+\begin{DoxyCompactList}\small\item\em Set solver type. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_aa88334bcae4148d0108e0f37b3b21730}{set\+Iterative\+Solver\+Max\+Iter} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} max\+It)
+\begin{DoxyCompactList}\small\item\em Set maximum iterations of the iterative solver. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a805e2438f64b5effdbfd2d06058f5a0c}{set\+Iterative\+Solver\+Tolerance} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} tol)
+\begin{DoxyCompactList}\small\item\em Set tolerance of the iterative solver. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a456bd98d3d97e0be1807861db3e6e48d}{set\+Theta} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} theta)
+\begin{DoxyCompactList}\small\item\em Set theta angle. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Data_a3bbbfecd1d18c9c81c151f65c2647020}{verbose} (const bool verbose)
+\begin{DoxyCompactList}\small\item\em Enable or disable verbosity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_ac3c807842fa923bda89a90635b51daea}{M\+\_\+mesh\+Dir}
+\begin{DoxyCompactList}\small\item\em Mesh directory. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_ab939b8425e4b01d2c000adfb0ea2d35a}{M\+\_\+mesh\+File}
+\begin{DoxyCompactList}\small\item\em Mesh file. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_a6808fd51d3a0b46b77ddd500c836abb9}{M\+\_\+mesh\+Ext}
+\begin{DoxyCompactList}\small\item\em Mesh file. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6}{Mesh\+Format\+Type} \hyperlink{classFVCode3D_1_1Data_a3829da70dbf5688d6188ec0108bae59d}{M\+\_\+mesh\+Type}
+\begin{DoxyCompactList}\small\item\em Format Type. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_af5685db93f1e6c697fa63241351d1bcd}{M\+\_\+output\+Dir}
+\begin{DoxyCompactList}\small\item\em Output directory. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_a34713b7f3fd7176b0745f902713722dd}{M\+\_\+output\+File}
+\begin{DoxyCompactList}\small\item\em Output file. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ae5452237bcd372f1f58b338eb81c03c9}{M\+\_\+\+Lx}
+\begin{DoxyCompactList}\small\item\em Domain dimension along x-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ab1c235ca1a351fc10315c8b28f84549c}{M\+\_\+\+Ly}
+\begin{DoxyCompactList}\small\item\em Domain dimension along y-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aec68be07c237ed1170bdbb876b01ec95}{M\+\_\+\+Lz}
+\begin{DoxyCompactList}\small\item\em Domain dimension along z-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_ae8b5472d8bc05b2b312380fe0bcfc8f9}{M\+\_\+\+Nx}
+\begin{DoxyCompactList}\small\item\em Number of cells along x-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_a90a08fe8c4566c7afcdf62772ee4712b}{M\+\_\+\+Ny}
+\begin{DoxyCompactList}\small\item\em Number of cells along y-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_a7f877632f0740bbedf5ce5e05d6d1add}{M\+\_\+\+Nz}
+\begin{DoxyCompactList}\small\item\em Number of cells along z-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aabcbf0097b9af53baa21fe6c2e340aff}{M\+\_\+\+Sx}
+\begin{DoxyCompactList}\small\item\em Shift domain along x-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a4020737adfbc21dc3e5b682ac60692da}{M\+\_\+\+Sy}
+\begin{DoxyCompactList}\small\item\em Shift Domain along y-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_af6d969081d817b510c19401baa80593f}{M\+\_\+\+Sz}
+\begin{DoxyCompactList}\small\item\em Shift Domain along z-\/axis. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a1268778a4b4532d5760a4bfe5eb97e6f}{M\+\_\+\+Rz}
+\begin{DoxyCompactList}\small\item\em Rotation Domain along z-\/axis. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a06f828cdc7dc1c3b4ea60b40f390333e}{M\+\_\+noise}
+\begin{DoxyCompactList}\small\item\em If true noise is added to the points. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552}{Noise\+On} \hyperlink{classFVCode3D_1_1Data_a82362848d9cced52dc04f50aeb0c9323}{M\+\_\+noise\+On}
+\begin{DoxyCompactList}\small\item\em Where the noise is applied. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aa9b032547f332b068770fa4eebe44462}{M\+\_\+mean\+N\+Dist}
+\begin{DoxyCompactList}\small\item\em Mean of the normal distribution. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a03ec8d7e05410e0966e4380c84a4dc6a}{M\+\_\+st\+Dev\+N\+Dist}
+\begin{DoxyCompactList}\small\item\em Standard deviation of the normal distribution. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}{Numerical\+Method\+Type} \hyperlink{classFVCode3D_1_1Data_acabd10057aa8ce14f50ee7fbd354ac64}{M\+\_\+numet}
+\begin{DoxyCompactList}\small\item\em Type of the numerical method. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a1eafd426e867afe23097e38c3d28fa2d}{M\+\_\+lumped\+Mim}
+\begin{DoxyCompactList}\small\item\em If true the stiffness matrix for the mimetic method is lumped. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23}{Problem\+Type} \hyperlink{classFVCode3D_1_1Data_a7d31023f4e0ca0377503c0a74797c5b3}{M\+\_\+problem\+Type}
+\begin{DoxyCompactList}\small\item\em Type of the problem. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_ab0b504d3e6e8ab604d4567eceb178aa7}{M\+\_\+fractures\+On}
+\begin{DoxyCompactList}\small\item\em Enable or disable fractures. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3}{Source\+Sink\+On} \hyperlink{classFVCode3D_1_1Data_af778c7ca663600660d71e09b2722ef57}{M\+\_\+ss\+On}
+\begin{DoxyCompactList}\small\item\em Where the source/sink term is applied. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a50bb4aa8e225203af91e6221e6017549}{M\+\_\+set\+Fractures\+Pressure}
+\begin{DoxyCompactList}\small\item\em If true fix the pressure inside the fractures. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_af04c830d4b03507186fbd36ad0ffcb2c}{M\+\_\+fractures\+Pressure}
+\begin{DoxyCompactList}\small\item\em Pressure value inside the fractures. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_a79a937025567c594d491124fdd7371d1}{M\+\_\+\+M\+SR}
+\begin{DoxyCompactList}\small\item\em Multiple sub-\/regions on? \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_a939f25d917c0fc4cc307727f0161818d}{M\+\_\+nb\+Sub\+Regions}
+\begin{DoxyCompactList}\small\item\em Number of sub-\/regions. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_a89795eb2a12c28f1f919c3148c44556e}{M\+\_\+nb\+Time\+Step\+Steady\+State}
+\begin{DoxyCompactList}\small\item\em Number of time step to check for the steady state. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a985779d5af3b0a0cdee095d599f4edc5}{M\+\_\+tol\+Steady\+State}
+\begin{DoxyCompactList}\small\item\em Tolerance to consider a time step at the steady state. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_a313a43a63768026ac108106fa90113c9}{M\+\_\+permeability\+Type}
+\begin{DoxyCompactList}\small\item\em Type of the permeability. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_aa91f66274ed34a57c63f5c106b371109}{M\+\_\+perm\+Matrix}
+\begin{DoxyCompactList}\small\item\em Permeability in the porous medium. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ab4e2bcf1ebf986f6e5329b695707a73e}{M\+\_\+poro\+Matrix}
+\begin{DoxyCompactList}\small\item\em Porosity in the porous medium. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a68f9fa864f076c053ae8ac8a3f86f7ea}{M\+\_\+perm\+Frac}
+\begin{DoxyCompactList}\small\item\em Permeability in the fractures. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_af95b239d77dd531aaa59e3ac891dbd71}{M\+\_\+poro\+Frac}
+\begin{DoxyCompactList}\small\item\em Porosity in the fractures. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_abf85bba32b4b3bdc3a392f193d4a145d}{M\+\_\+aper\+Frac}
+\begin{DoxyCompactList}\small\item\em Aperture in the fractures. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ab4a94e00bef44eb2195783ffa4682cf0}{M\+\_\+init\+Time}
+\begin{DoxyCompactList}\small\item\em Initial time, used for time-\/dependent problem. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ad0db1011dedc7485e6b4393c872506c0}{M\+\_\+end\+Time}
+\begin{DoxyCompactList}\small\item\em Final time, used for time-\/dependent problem. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a10e4abb864d8f95f89fd468a2a328d45}{M\+\_\+time\+Step}
+\begin{DoxyCompactList}\small\item\em Time step, used for time-\/dependent problem. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_ace221dee0530a79694fbc1d2beca96ac}{M\+\_\+mobility}
+\begin{DoxyCompactList}\small\item\em Mobility of the fluid. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a8fc9be504e0a36500d75f1991d95caaa}{M\+\_\+compressibility}
+\begin{DoxyCompactList}\small\item\em Compressibility. \end{DoxyCompactList}\item 
+std\+::string \hyperlink{classFVCode3D_1_1Data_a38b6dc5c0b7c6f4734be7b60b231e56b}{M\+\_\+solver\+Type}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classFVCode3D_1_1Solver}{Solver} used. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Data_a2691a1563c9a9d1f9fa991acac368c6a}{M\+\_\+max\+It}
+\begin{DoxyCompactList}\small\item\em Maximum iterations of the iterative solver. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a00dd1282e39bfdf77368f3c79382c5c4}{M\+\_\+tol}
+\begin{DoxyCompactList}\small\item\em Tolerance of the iterative solver. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Data_a984e97d7d25e882ba1b089b3d82f78c3}{M\+\_\+theta}
+\begin{DoxyCompactList}\small\item\em Angle used to rotate along z-\/axis the domain. It is used only to compute the normal for detecting B\+C! \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Data_abce1861779ec036fc587fb69a7fe8c6c}{M\+\_\+verbose}
+\begin{DoxyCompactList}\small\item\em Verbose. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that handles the information needed for the solver. 
+
+This class takes care of the information needed for the solver, as boundary conditions and the source/sink term. It also handles the name of the input/output directory and the name of the input/output file, the shared library name and miscellaneous options. 
+
+Definition at line \hyperlink{Data_8hpp_source_l00022}{22} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+\subsection{Member Enumeration Documentation}
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Mesh\+Format\+Type@{Mesh\+Format\+Type}}
+\index{Mesh\+Format\+Type@{Mesh\+Format\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Mesh\+Format\+Type}{MeshFormatType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Data\+::\+Mesh\+Format\+Type}}\hypertarget{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6}{}\label{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6}
+
+
+Define the format of the input mesh. 
+
+This enumerator allows to select the format type of the mesh\+: T\+P\+FA(.grid), for\+Solver(.fvg), Medit(.mesh) or Tet\+Gen(.node, .face, .ele) \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{T\+P\+FA@{T\+P\+FA}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!T\+P\+FA@{T\+P\+FA}}\item[{\em 
+T\+P\+FA\hypertarget{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a41e16e40b05a40c861dae13e7d056daf}{}\label{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a41e16e40b05a40c861dae13e7d056daf}
+}]\index{for\+Solver@{for\+Solver}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!for\+Solver@{for\+Solver}}\item[{\em 
+for\+Solver\hypertarget{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6aa97c4d4a0aa98b96be77e4d0a5e1e8fb}{}\label{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6aa97c4d4a0aa98b96be77e4d0a5e1e8fb}
+}]\index{Medit@{Medit}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Medit@{Medit}}\item[{\em 
+Medit\hypertarget{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a5122019b85fafb0f64f79baf96593d52}{}\label{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a5122019b85fafb0f64f79baf96593d52}
+}]\index{Tet\+Gen@{Tet\+Gen}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Tet\+Gen@{Tet\+Gen}}\item[{\em 
+Tet\+Gen\hypertarget{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a801f19d5251b0e21edfed0b05fb1ac99}{}\label{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a801f19d5251b0e21edfed0b05fb1ac99}
+}]\index{Open\+F\+O\+AM@{Open\+F\+O\+AM}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Open\+F\+O\+AM@{Open\+F\+O\+AM}}\item[{\em 
+Open\+F\+O\+AM\hypertarget{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a568f155439735c175038b49a538cd6ce}{}\label{classFVCode3D_1_1Data_a6a9aa6abc2ca3c85be8578d82a61a9c6a568f155439735c175038b49a538cd6ce}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00053}{53} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Noise\+On@{Noise\+On}}
+\index{Noise\+On@{Noise\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Noise\+On}{NoiseOn}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Data\+::\+Noise\+On}\hspace{0.3cm}{\ttfamily [strong]}}\hypertarget{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552}{}\label{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552}
+
+
+Define where the noise is applied. 
+
+This enumerator allows to select where the noise is applied\+: only on matrix nodes, only on fracture nodes, on all nodes. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Matrix@{Matrix}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Matrix@{Matrix}}\item[{\em 
+Matrix\hypertarget{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552af53df0293e169f562bc1d9a20e1d2589}{}\label{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552af53df0293e169f562bc1d9a20e1d2589}
+}]\index{Fractures@{Fractures}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Fractures@{Fractures}}\item[{\em 
+Fractures\hypertarget{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552aaa3a14735ecc914d217c516ad93fb640}{}\label{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552aaa3a14735ecc914d217c516ad93fb640}
+}]\index{All@{All}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!All@{All}}\item[{\em 
+All\hypertarget{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552ab1c94ca2fbc3e78fc30069c8d0f01680}{}\label{classFVCode3D_1_1Data_a983fdc14aa355a7c9fd614b9655a3552ab1c94ca2fbc3e78fc30069c8d0f01680}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00068}{68} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Numerical\+Method\+Type@{Numerical\+Method\+Type}}
+\index{Numerical\+Method\+Type@{Numerical\+Method\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Numerical\+Method\+Type}{NumericalMethodType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Data\+::\+Numerical\+Method\+Type}}\hypertarget{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}{}\label{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}
+
+
+Define the numerical method type. 
+
+This enumerator allows to select the numerical method\+: Finite Volume or Mimetic Finite Difference \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{FV@{FV}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!FV@{FV}}\item[{\em 
+FV\hypertarget{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cfae6a9edcfa5768dd3908108c297b413f7}{}\label{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cfae6a9edcfa5768dd3908108c297b413f7}
+}]\index{M\+FD@{M\+FD}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+FD@{M\+FD}}\item[{\em 
+M\+FD\hypertarget{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cfacf4497fa0025d2f6ea6a9b682e384ff3}{}\label{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cfacf4497fa0025d2f6ea6a9b682e384ff3}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00030}{30} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Problem\+Type@{Problem\+Type}}
+\index{Problem\+Type@{Problem\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Problem\+Type}{ProblemType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Data\+::\+Problem\+Type}}\hypertarget{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23}{}\label{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23}
+
+
+Define the problem type. 
+
+This enumerator allows to select the problem type\+: steady or pseudo-\/steady state \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{steady@{steady}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!steady@{steady}}\item[{\em 
+steady\hypertarget{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23aa01656a6cd37ca152de831adad5d2841}{}\label{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23aa01656a6cd37ca152de831adad5d2841}
+}]\index{pseudo\+Steady@{pseudo\+Steady}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!pseudo\+Steady@{pseudo\+Steady}}\item[{\em 
+pseudo\+Steady\hypertarget{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23adf310b8b79bf5a11843828488cb3b46f}{}\label{classFVCode3D_1_1Data_af17933074f5acdb699179763e6f43f23adf310b8b79bf5a11843828488cb3b46f}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00041}{41} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Source\+Sink\+On@{Source\+Sink\+On}}
+\index{Source\+Sink\+On@{Source\+Sink\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Source\+Sink\+On}{SourceSinkOn}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Data\+::\+Source\+Sink\+On}\hspace{0.3cm}{\ttfamily [strong]}}\hypertarget{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3}{}\label{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3}
+
+
+Define where to apply the source/sink term. 
+
+This enumerator allows to select where to apply the source/sink term\+: only on matrix, only on fractures, both or none. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Matrix@{Matrix}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Matrix@{Matrix}}\item[{\em 
+Matrix\hypertarget{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3af53df0293e169f562bc1d9a20e1d2589}{}\label{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3af53df0293e169f562bc1d9a20e1d2589}
+}]\index{Fractures@{Fractures}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Fractures@{Fractures}}\item[{\em 
+Fractures\hypertarget{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3aaa3a14735ecc914d217c516ad93fb640}{}\label{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3aaa3a14735ecc914d217c516ad93fb640}
+}]\index{Both@{Both}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Both@{Both}}\item[{\em 
+Both\hypertarget{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a130c5b3473c57faa76e2a1c54e26f88e}{}\label{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a130c5b3473c57faa76e2a1c54e26f88e}
+}]\index{None@{None}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!None@{None}}\item[{\em 
+None\hypertarget{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a6adf97f83acf6453d4a6a4b1070f3754}{}\label{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a6adf97f83acf6453d4a6a4b1070f3754}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00080}{80} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Data@{Data}}
+\index{Data@{Data}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Data()}{Data()}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Data\+::\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Data_a2ab9e8e8f490af55c7d78163dfdb000c}{}\label{classFVCode3D_1_1Data_a2ab9e8e8f490af55c7d78163dfdb000c}
+
+
+Default constructor. 
+
+Initialize the data 
+
+Definition at line \hyperlink{Data_8cpp_source_l00012}{12} of file \hyperlink{Data_8cpp_source}{Data.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Data@{Data}}
+\index{Data@{Data}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Data(const std\+::string data\+File\+Name)}{Data(const std::string dataFileName)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Data\+::\+Data (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{data\+File\+Name}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Data_ae898de2278e74386b4dbab3a8be89ca9}{}\label{classFVCode3D_1_1Data_ae898de2278e74386b4dbab3a8be89ca9}
+
+
+Constructor from file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+File\+Name} & name of the data file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8cpp_source_l00035}{35} of file \hyperlink{Data_8cpp_source}{Data.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_ae898de2278e74386b4dbab3a8be89ca9_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!Data@{Data}}
+\index{Data@{Data}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{Data(const Data \&data)}{Data(const Data &data)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Data\+::\+Data (
+\begin{DoxyParamCaption}
+\item[{const {\bf Data} \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Data_afe15e512e8571c67615456efded56c7a}{}\label{classFVCode3D_1_1Data_afe15e512e8571c67615456efded56c7a}
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & reference of a \hyperlink{classFVCode3D_1_1Data}{Data} \\
+\hline
+\end{DoxyParams}
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!````~Data@{$\sim$\+Data}}
+\index{````~Data@{$\sim$\+Data}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{$\sim$\+Data()}{~Data()}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Data\+::$\sim$\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ae5d0b57cc7ae6215e62c661e81034803}{}\label{classFVCode3D_1_1Data_ae5d0b57cc7ae6215e62c661e81034803}
+
+
+Destructor. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00694}{694} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!fracture\+On@{fracture\+On}}
+\index{fracture\+On@{fracture\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{fracture\+On() const }{fractureOn() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::fracture\+On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a941e81f94c9cac5f8b53736768d8b841}{}\label{classFVCode3D_1_1Data_a941e81f94c9cac5f8b53736768d8b841}
+
+
+Test if fractures are enabled. 
+
+\begin{DoxyReturn}{Returns}
+true if the fractures are enabled 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00256}{256} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!fracture\+On@{fracture\+On}}
+\index{fracture\+On@{fracture\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{fracture\+On(const bool fracture)}{fractureOn(const bool fracture)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::fracture\+On (
+\begin{DoxyParamCaption}
+\item[{const bool}]{fracture}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ac1215f12b129587d2fc17b476f7ab8e5}{}\label{classFVCode3D_1_1Data_ac1215f12b129587d2fc17b476f7ab8e5}
+
+
+Enable or disable the fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em fracture} & true to enable the fractures \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00545}{545} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Compressibility@{get\+Compressibility}}
+\index{get\+Compressibility@{get\+Compressibility}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Compressibility() const }{getCompressibility() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Compressibility (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a067af6c1a191c83a574a4aba1fd6e2fa}{}\label{classFVCode3D_1_1Data_a067af6c1a191c83a574a4aba1fd6e2fa}
+
+
+Get compressibility. 
+
+\begin{DoxyReturn}{Returns}
+the compressibility 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00364}{364} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+End\+Time@{get\+End\+Time}}
+\index{get\+End\+Time@{get\+End\+Time}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+End\+Time() const }{getEndTime() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+End\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a2685bdd2501d7545fc8660bd9525d8fa}{}\label{classFVCode3D_1_1Data_a2685bdd2501d7545fc8660bd9525d8fa}
+
+
+Get the end time. 
+
+\begin{DoxyReturn}{Returns}
+the end time 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00346}{346} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Fracture\+Aperture@{get\+Fracture\+Aperture}}
+\index{get\+Fracture\+Aperture@{get\+Fracture\+Aperture}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Fracture\+Aperture() const }{getFractureAperture() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Fracture\+Aperture (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_af7b6391c187f2c9ad1fef56c74dac5ed}{}\label{classFVCode3D_1_1Data_af7b6391c187f2c9ad1fef56c74dac5ed}
+
+
+Get the aperture in the fracture. 
+
+\begin{DoxyReturn}{Returns}
+the aperture in the fracture 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00334}{334} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Fracture\+Permeability@{get\+Fracture\+Permeability}}
+\index{get\+Fracture\+Permeability@{get\+Fracture\+Permeability}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Fracture\+Permeability() const }{getFracturePermeability() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Fracture\+Permeability (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a4bc74949417d0582540b5644bc237bdc}{}\label{classFVCode3D_1_1Data_a4bc74949417d0582540b5644bc237bdc}
+
+
+Get the permeability in the fracture. 
+
+\begin{DoxyReturn}{Returns}
+the permeability in the fracture 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00322}{322} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Fracture\+Porosity@{get\+Fracture\+Porosity}}
+\index{get\+Fracture\+Porosity@{get\+Fracture\+Porosity}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Fracture\+Porosity() const }{getFracturePorosity() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Fracture\+Porosity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a0993d43ae0cd2a16e9adf69fb2368645}{}\label{classFVCode3D_1_1Data_a0993d43ae0cd2a16e9adf69fb2368645}
+
+
+Get the porosity in the fracture. 
+
+\begin{DoxyReturn}{Returns}
+the porosity in the fracture 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00328}{328} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Initial\+Time@{get\+Initial\+Time}}
+\index{get\+Initial\+Time@{get\+Initial\+Time}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Initial\+Time() const }{getInitialTime() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Initial\+Time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a4e424bc75d28ee591be0c0a930b6f871}{}\label{classFVCode3D_1_1Data_a4e424bc75d28ee591be0c0a930b6f871}
+
+
+Get the initial time. 
+
+\begin{DoxyReturn}{Returns}
+the initial time 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00340}{340} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Iterative\+Solver\+Max\+Iter@{get\+Iterative\+Solver\+Max\+Iter}}
+\index{get\+Iterative\+Solver\+Max\+Iter@{get\+Iterative\+Solver\+Max\+Iter}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Iterative\+Solver\+Max\+Iter() const }{getIterativeSolverMaxIter() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::get\+Iterative\+Solver\+Max\+Iter (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_af1dc6d715f4b6efcbbc46e372b967858}{}\label{classFVCode3D_1_1Data_af1dc6d715f4b6efcbbc46e372b967858}
+
+
+Get maximum iterations of the iterative solver. 
+
+\begin{DoxyReturn}{Returns}
+maximum iterations of the iterative solver 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00376}{376} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Iterative\+Solver\+Tolerance@{get\+Iterative\+Solver\+Tolerance}}
+\index{get\+Iterative\+Solver\+Tolerance@{get\+Iterative\+Solver\+Tolerance}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Iterative\+Solver\+Tolerance() const }{getIterativeSolverTolerance() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Iterative\+Solver\+Tolerance (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ac5b0bb067586018f05c03979dab7dac2}{}\label{classFVCode3D_1_1Data_ac5b0bb067586018f05c03979dab7dac2}
+
+
+Get tolerance of the iterative solver. 
+
+\begin{DoxyReturn}{Returns}
+tolerance of the iterative solver 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00382}{382} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Lumped\+Mimetic@{get\+Lumped\+Mimetic}}
+\index{get\+Lumped\+Mimetic@{get\+Lumped\+Mimetic}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Lumped\+Mimetic() const }{getLumpedMimetic() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::get\+Lumped\+Mimetic (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a8630fc70df08884669e43f21a5975cf6}{}\label{classFVCode3D_1_1Data_a8630fc70df08884669e43f21a5975cf6}
+
+
+Get if the stiffness matrix in the mimetic method is lumped. 
+
+\begin{DoxyReturn}{Returns}
+lumped true if the stiffness matrix is lumped 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00244}{244} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Lx@{get\+Lx}}
+\index{get\+Lx@{get\+Lx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Lx() const }{getLx() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Lx (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a5e6e9fd93fa4aa0c43bca2d4d4615e9b}{}\label{classFVCode3D_1_1Data_a5e6e9fd93fa4aa0c43bca2d4d4615e9b}
+
+
+Get the domain dimension along x-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the domain dimension along x-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00154}{154} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Ly@{get\+Ly}}
+\index{get\+Ly@{get\+Ly}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Ly() const }{getLy() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Ly (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a48fce5455a3dc879fd55594e265c1bd9}{}\label{classFVCode3D_1_1Data_a48fce5455a3dc879fd55594e265c1bd9}
+
+
+Get the domain dimension along y-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the domain dimension along y-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00160}{160} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Lz@{get\+Lz}}
+\index{get\+Lz@{get\+Lz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Lz() const }{getLz() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Lz (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_acca823b861efb66f390da61dbf64b605}{}\label{classFVCode3D_1_1Data_acca823b861efb66f390da61dbf64b605}
+
+
+Get the domain dimension along z-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the domain dimension along z-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00166}{166} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Matrix\+Permeability@{get\+Matrix\+Permeability}}
+\index{get\+Matrix\+Permeability@{get\+Matrix\+Permeability}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Matrix\+Permeability() const }{getMatrixPermeability() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Matrix\+Permeability (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aa0dcd9ab98c62ff03f4f757360a6e45c}{}\label{classFVCode3D_1_1Data_aa0dcd9ab98c62ff03f4f757360a6e45c}
+
+
+Get the permeability in the porous medium. 
+
+\begin{DoxyReturn}{Returns}
+the permeability in the porous medium 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00310}{310} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Matrix\+Porosity@{get\+Matrix\+Porosity}}
+\index{get\+Matrix\+Porosity@{get\+Matrix\+Porosity}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Matrix\+Porosity() const }{getMatrixPorosity() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Matrix\+Porosity (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_abd5d55762c5909d5e8acd5632ea2a4a1}{}\label{classFVCode3D_1_1Data_abd5d55762c5909d5e8acd5632ea2a4a1}
+
+
+Get the porosity in the porous medium. 
+
+\begin{DoxyReturn}{Returns}
+the porosity in the porous medium 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00316}{316} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Mean\+Normal\+Distribution@{get\+Mean\+Normal\+Distribution}}
+\index{get\+Mean\+Normal\+Distribution@{get\+Mean\+Normal\+Distribution}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Mean\+Normal\+Distribution() const }{getMeanNormalDistribution() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Mean\+Normal\+Distribution (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a0fa514fe74511259474538d028549bb0}{}\label{classFVCode3D_1_1Data_a0fa514fe74511259474538d028549bb0}
+
+
+Get the mean of the normal distribution. 
+
+\begin{DoxyReturn}{Returns}
+the mean of the normal distribution 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00226}{226} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Mesh\+Dir@{get\+Mesh\+Dir}}
+\index{get\+Mesh\+Dir@{get\+Mesh\+Dir}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Mesh\+Dir() const }{getMeshDir() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Mesh\+Dir (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a0b2af9e0ccfdb43c90078a475c5adfea}{}\label{classFVCode3D_1_1Data_a0b2af9e0ccfdb43c90078a475c5adfea}
+
+
+Get the directory of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+the string that contains the directory of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00118}{118} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Mesh\+Extension@{get\+Mesh\+Extension}}
+\index{get\+Mesh\+Extension@{get\+Mesh\+Extension}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Mesh\+Extension() const }{getMeshExtension() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Mesh\+Extension (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ab688ed7327553bca040e93d36e14e401}{}\label{classFVCode3D_1_1Data_ab688ed7327553bca040e93d36e14e401}
+
+
+Get the extension of the mesh format type. 
+
+\begin{DoxyReturn}{Returns}
+the extension of the format type of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00130}{130} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Mesh\+File@{get\+Mesh\+File}}
+\index{get\+Mesh\+File@{get\+Mesh\+File}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Mesh\+File() const }{getMeshFile() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Mesh\+File (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a4647d475e08623c9802b61871640c1f7}{}\label{classFVCode3D_1_1Data_a4647d475e08623c9802b61871640c1f7}
+
+
+Get the file of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+the string that contains the file of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00124}{124} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Mesh\+Type@{get\+Mesh\+Type}}
+\index{get\+Mesh\+Type@{get\+Mesh\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Mesh\+Type() const }{getMeshType() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh\+Format\+Type} F\+V\+Code3\+D\+::\+Data\+::get\+Mesh\+Type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a25dced9c98efcb446cc262b09e7eba80}{}\label{classFVCode3D_1_1Data_a25dced9c98efcb446cc262b09e7eba80}
+
+
+Get the format type of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+the format type of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00136}{136} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Mobility@{get\+Mobility}}
+\index{get\+Mobility@{get\+Mobility}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Mobility() const }{getMobility() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Mobility (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a21aced5c69ae4ee8f3c22624dd6a3e53}{}\label{classFVCode3D_1_1Data_a21aced5c69ae4ee8f3c22624dd6a3e53}
+
+
+Get mobility of the fluid. 
+
+\begin{DoxyReturn}{Returns}
+the mobility of the fluid 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00358}{358} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Noise\+On@{get\+Noise\+On}}
+\index{get\+Noise\+On@{get\+Noise\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Noise\+On() const }{getNoiseOn() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Noise\+On} F\+V\+Code3\+D\+::\+Data\+::get\+Noise\+On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a6119d80c2fb6b2c332f9e041a908d83f}{}\label{classFVCode3D_1_1Data_a6119d80c2fb6b2c332f9e041a908d83f}
+
+
+Get where the noise is applied. 
+
+\begin{DoxyReturn}{Returns}
+where the noise is applied 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00220}{220} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Noise\+On@{get\+Noise\+On}}
+\index{get\+Noise\+On@{get\+Noise\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Noise\+On(const Noise\+On noise\+On)}{getNoiseOn(const NoiseOn noiseOn)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::get\+Noise\+On (
+\begin{DoxyParamCaption}
+\item[{const {\bf Noise\+On}}]{noise\+On}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_abc479bbfd38ce92c3d6a1e15c5b51a5f}{}\label{classFVCode3D_1_1Data_abc479bbfd38ce92c3d6a1e15c5b51a5f}
+
+
+Set where the noise is applied. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em noise\+On} & where the noise is applied \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00509}{509} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_abc479bbfd38ce92c3d6a1e15c5b51a5f_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Numerical\+Method\+Type@{get\+Numerical\+Method\+Type}}
+\index{get\+Numerical\+Method\+Type@{get\+Numerical\+Method\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Numerical\+Method\+Type() const }{getNumericalMethodType() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Numerical\+Method\+Type} F\+V\+Code3\+D\+::\+Data\+::get\+Numerical\+Method\+Type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1210f9a0ed0551f974b8ff05625d9863}{}\label{classFVCode3D_1_1Data_a1210f9a0ed0551f974b8ff05625d9863}
+
+
+Get the numerical method used to solve the problem. 
+
+\begin{DoxyReturn}{Returns}
+the numerical method used to solve the problem 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00238}{238} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Nx@{get\+Nx}}
+\index{get\+Nx@{get\+Nx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Nx() const }{getNx() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Nx (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1ede11ae84d5bd5328b0b35be6cb9cff}{}\label{classFVCode3D_1_1Data_a1ede11ae84d5bd5328b0b35be6cb9cff}
+
+
+Get the number of cells along x-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the number of cells along x-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00172}{172} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Ny@{get\+Ny}}
+\index{get\+Ny@{get\+Ny}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Ny() const }{getNy() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Ny (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a021b187d234779a0e48e319ce301b78e}{}\label{classFVCode3D_1_1Data_a021b187d234779a0e48e319ce301b78e}
+
+
+Get the number of cells along y-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the number of cells along y-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00178}{178} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Nz@{get\+Nz}}
+\index{get\+Nz@{get\+Nz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Nz() const }{getNz() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Nz (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1bf81146c1ecd38f18e23e2d8946ffde}{}\label{classFVCode3D_1_1Data_a1bf81146c1ecd38f18e23e2d8946ffde}
+
+
+Get the number of cells along z-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the number of cells along z-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00184}{184} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Output\+Dir@{get\+Output\+Dir}}
+\index{get\+Output\+Dir@{get\+Output\+Dir}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Output\+Dir() const }{getOutputDir() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Output\+Dir (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a598ba33b37f0b64b4bc598ad19660a3d}{}\label{classFVCode3D_1_1Data_a598ba33b37f0b64b4bc598ad19660a3d}
+
+
+Get the output directory. 
+
+\begin{DoxyReturn}{Returns}
+the string that contains the output directory 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00142}{142} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Output\+File@{get\+Output\+File}}
+\index{get\+Output\+File@{get\+Output\+File}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Output\+File() const }{getOutputFile() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Output\+File (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aa4dab1fc14e725f953177b391094222d}{}\label{classFVCode3D_1_1Data_aa4dab1fc14e725f953177b391094222d}
+
+
+Get the output file name. 
+
+\begin{DoxyReturn}{Returns}
+the string that contains the output file name 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00148}{148} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Permeability\+Type@{get\+Permeability\+Type}}
+\index{get\+Permeability\+Type@{get\+Permeability\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Permeability\+Type() const }{getPermeabilityType() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Permeability\+Type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a8407b7350ccbb4deb24ace9affa47497}{}\label{classFVCode3D_1_1Data_a8407b7350ccbb4deb24ace9affa47497}
+
+
+Get the type of the permeability. 
+
+\begin{DoxyReturn}{Returns}
+the type of the permeability 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00304}{304} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Pressures\+In\+Fractures@{get\+Pressures\+In\+Fractures}}
+\index{get\+Pressures\+In\+Fractures@{get\+Pressures\+In\+Fractures}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Pressures\+In\+Fractures() const }{getPressuresInFractures() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Pressures\+In\+Fractures (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_af0b0d3361ceac8257e7342f2b2f6996b}{}\label{classFVCode3D_1_1Data_af0b0d3361ceac8257e7342f2b2f6996b}
+
+
+Get the pressure inside the fracture. 
+
+\begin{DoxyReturn}{Returns}
+the pressure inside the fracture 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00274}{274} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Problem\+Type@{get\+Problem\+Type}}
+\index{get\+Problem\+Type@{get\+Problem\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Problem\+Type() const }{getProblemType() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Problem\+Type} F\+V\+Code3\+D\+::\+Data\+::get\+Problem\+Type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aa23de9b3d8c9e07241b658e0f62ee851}{}\label{classFVCode3D_1_1Data_aa23de9b3d8c9e07241b658e0f62ee851}
+
+
+Get the problem type. 
+
+\begin{DoxyReturn}{Returns}
+the type of the problem 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00250}{250} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Rz@{get\+Rz}}
+\index{get\+Rz@{get\+Rz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Rz() const }{getRz() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Rz (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aea35270ca37a956c72ba5f1d6fe9214f}{}\label{classFVCode3D_1_1Data_aea35270ca37a956c72ba5f1d6fe9214f}
+
+
+Get the rotation domain z-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the rotation domain along z-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00208}{208} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Solver\+Type@{get\+Solver\+Type}}
+\index{get\+Solver\+Type@{get\+Solver\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Solver\+Type() const }{getSolverType() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string F\+V\+Code3\+D\+::\+Data\+::get\+Solver\+Type (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a7416ec2cb2d71001ae3a336ac75030d7}{}\label{classFVCode3D_1_1Data_a7416ec2cb2d71001ae3a336ac75030d7}
+
+
+Get solver type. 
+
+\begin{DoxyReturn}{Returns}
+the solver type 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00370}{370} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Solver\+Type@{get\+Solver\+Type}}
+\index{get\+Solver\+Type@{get\+Solver\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Solver\+Type(const std\+::string solver)}{getSolverType(const std::string solver)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::get\+Solver\+Type (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{solver}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_adbc56dcf8d9718df3d918565ddea304b}{}\label{classFVCode3D_1_1Data_adbc56dcf8d9718df3d918565ddea304b}
+
+
+Set solver type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & solver type \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00659}{659} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Source\+Sink\+On@{get\+Source\+Sink\+On}}
+\index{get\+Source\+Sink\+On@{get\+Source\+Sink\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Source\+Sink\+On() const }{getSourceSinkOn() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Source\+Sink\+On} F\+V\+Code3\+D\+::\+Data\+::get\+Source\+Sink\+On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a50d977227499b2a9d8e877583718c783}{}\label{classFVCode3D_1_1Data_a50d977227499b2a9d8e877583718c783}
+
+
+Get where the source/sink term is applied. 
+
+\begin{DoxyReturn}{Returns}
+where the source/sink term is applied 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00262}{262} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+St\+Dev\+Normal\+Distribution@{get\+St\+Dev\+Normal\+Distribution}}
+\index{get\+St\+Dev\+Normal\+Distribution@{get\+St\+Dev\+Normal\+Distribution}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+St\+Dev\+Normal\+Distribution() const }{getStDevNormalDistribution() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+St\+Dev\+Normal\+Distribution (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a63dcf3d2a71d71a1f25418311297ae06}{}\label{classFVCode3D_1_1Data_a63dcf3d2a71d71a1f25418311297ae06}
+
+
+Get the standard deviation of the normal distribution. 
+
+\begin{DoxyReturn}{Returns}
+the standard deviation of the normal distribution 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00232}{232} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Sx@{get\+Sx}}
+\index{get\+Sx@{get\+Sx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Sx() const }{getSx() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Sx (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aaf38dca37bfbdcf9316f98d51ebf9a0a}{}\label{classFVCode3D_1_1Data_aaf38dca37bfbdcf9316f98d51ebf9a0a}
+
+
+Get the shift domain along x-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the shift domain along x-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00190}{190} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Sy@{get\+Sy}}
+\index{get\+Sy@{get\+Sy}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Sy() const }{getSy() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Sy (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a3e88f00500723ed940032b623c2692b5}{}\label{classFVCode3D_1_1Data_a3e88f00500723ed940032b623c2692b5}
+
+
+Get the shift domain along y-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the shift domain along y-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00196}{196} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Sz@{get\+Sz}}
+\index{get\+Sz@{get\+Sz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Sz() const }{getSz() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Sz (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a602548727f2e41ee9d2351ce80cff5ba}{}\label{classFVCode3D_1_1Data_a602548727f2e41ee9d2351ce80cff5ba}
+
+
+Get the shift domain z-\/axis. 
+
+\begin{DoxyReturn}{Returns}
+the shift domain along z-\/axis 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00202}{202} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Theta@{get\+Theta}}
+\index{get\+Theta@{get\+Theta}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Theta() const }{getTheta() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Theta (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a3ad43ce405db08e465804cb2494423a1}{}\label{classFVCode3D_1_1Data_a3ad43ce405db08e465804cb2494423a1}
+
+
+Get theta angle. 
+
+\begin{DoxyReturn}{Returns}
+the angle theta used to identify the BC ids 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00388}{388} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!get\+Time\+Step@{get\+Time\+Step}}
+\index{get\+Time\+Step@{get\+Time\+Step}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{get\+Time\+Step() const }{getTimeStep() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::get\+Time\+Step (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a39afb5e8b836e7e15597850e8740632a}{}\label{classFVCode3D_1_1Data_a39afb5e8b836e7e15597850e8740632a}
+
+
+Get the time step. 
+
+\begin{DoxyReturn}{Returns}
+the time step 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00352}{352} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+S\+R\+On@{M\+S\+R\+On}}
+\index{M\+S\+R\+On@{M\+S\+R\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+S\+R\+On() const }{MSROn() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+S\+R\+On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aa0fa184cedbc5779359fdfa59f4c9757}{}\label{classFVCode3D_1_1Data_aa0fa184cedbc5779359fdfa59f4c9757}
+
+
+Test if the multiple sub-\/regions method is activated or not. 
+
+\begin{DoxyReturn}{Returns}
+if true the multiple sub-\/regions method is activated 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00280}{280} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+S\+R\+On@{M\+S\+R\+On}}
+\index{M\+S\+R\+On@{M\+S\+R\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+S\+R\+On(const bool msr)}{MSROn(const bool msr)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::\+M\+S\+R\+On (
+\begin{DoxyParamCaption}
+\item[{const bool}]{msr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a97e72b7484570156f74ab608eb984b00}{}\label{classFVCode3D_1_1Data_a97e72b7484570156f74ab608eb984b00}
+
+
+Enable or disable the the multiple sub-\/regions method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em msr} & if true the multiple sub-\/regions method is activated \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00569}{569} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!nb\+Sub\+Regions@{nb\+Sub\+Regions}}
+\index{nb\+Sub\+Regions@{nb\+Sub\+Regions}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{nb\+Sub\+Regions() const }{nbSubRegions() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::nb\+Sub\+Regions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a7303f11650f8096d87fa70e43d529ccc}{}\label{classFVCode3D_1_1Data_a7303f11650f8096d87fa70e43d529ccc}
+
+
+Get the number of sub-\/regions. 
+
+\begin{DoxyReturn}{Returns}
+the number of sub-\/regions 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00286}{286} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!nb\+Time\+Step\+Steady\+State@{nb\+Time\+Step\+Steady\+State}}
+\index{nb\+Time\+Step\+Steady\+State@{nb\+Time\+Step\+Steady\+State}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{nb\+Time\+Step\+Steady\+State() const }{nbTimeStepSteadyState() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::nb\+Time\+Step\+Steady\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_abecf75fa7beb77100d6817ca40acb87f}{}\label{classFVCode3D_1_1Data_abecf75fa7beb77100d6817ca40acb87f}
+
+
+Get the number of time step to check for the steady state. 
+
+\begin{DoxyReturn}{Returns}
+the number of time step to check for the steady state 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00292}{292} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!noise\+On@{noise\+On}}
+\index{noise\+On@{noise\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{noise\+On() const }{noiseOn() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::noise\+On (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ad19041278d7cb67b1d68665a3470fded}{}\label{classFVCode3D_1_1Data_ad19041278d7cb67b1d68665a3470fded}
+
+
+Test if the noise is added to the points. 
+
+\begin{DoxyReturn}{Returns}
+true if the noise is added to the points 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00214}{214} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_ad19041278d7cb67b1d68665a3470fded_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!noise\+On@{noise\+On}}
+\index{noise\+On@{noise\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{noise\+On(const bool noise)}{noiseOn(const bool noise)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::noise\+On (
+\begin{DoxyParamCaption}
+\item[{const bool}]{noise}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1ce9836addc2cb90909a9cc2506c8a49}{}\label{classFVCode3D_1_1Data_a1ce9836addc2cb90909a9cc2506c8a49}
+
+
+Enable or disable the noise to the points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em noise} & true to enable the noise to the points \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00503}{503} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!pressures\+In\+Fractures@{pressures\+In\+Fractures}}
+\index{pressures\+In\+Fractures@{pressures\+In\+Fractures}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{pressures\+In\+Fractures() const }{pressuresInFractures() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::pressures\+In\+Fractures (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a4e2f0001c574c8d50359a231ef079fcc}{}\label{classFVCode3D_1_1Data_a4e2f0001c574c8d50359a231ef079fcc}
+
+
+Test if the pressure value inside the fractures is fixed or not. 
+
+\begin{DoxyReturn}{Returns}
+if true fix a pressure value inside the fractures 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00268}{268} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!pressures\+In\+Fractures@{pressures\+In\+Fractures}}
+\index{pressures\+In\+Fractures@{pressures\+In\+Fractures}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{pressures\+In\+Fractures(const bool frac\+Press)}{pressuresInFractures(const bool fracPress)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::pressures\+In\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const bool}]{frac\+Press}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a8f293daea9f1b800a9ff64d5ab320763}{}\label{classFVCode3D_1_1Data_a8f293daea9f1b800a9ff64d5ab320763}
+
+
+Enable or disable the pressure value inside the fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em frac\+Press} & if true fix a pressure value inside the fractures \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00557}{557} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Compressibility@{set\+Compressibility}}
+\index{set\+Compressibility@{set\+Compressibility}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Compressibility(const Real compressibility)}{setCompressibility(const Real compressibility)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Compressibility (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{compressibility}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a51500d24b2200a3e60e53f0d55750fbb}{}\label{classFVCode3D_1_1Data_a51500d24b2200a3e60e53f0d55750fbb}
+
+
+Set compressibility. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em compressibility} & the compressibility \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00653}{653} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+End\+Time@{set\+End\+Time}}
+\index{set\+End\+Time@{set\+End\+Time}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+End\+Time(const Real time)}{setEndTime(const Real time)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+End\+Time (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a551add51bd5facc5afa37956eb3e8187}{}\label{classFVCode3D_1_1Data_a551add51bd5facc5afa37956eb3e8187}
+
+
+Set the final time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & the final time \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00635}{635} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Fracture\+Aperture@{set\+Fracture\+Aperture}}
+\index{set\+Fracture\+Aperture@{set\+Fracture\+Aperture}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Fracture\+Aperture(const Real aper)}{setFractureAperture(const Real aper)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Fracture\+Aperture (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{aper}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1967ff12ee9142fd118f952a0f9cb7a3}{}\label{classFVCode3D_1_1Data_a1967ff12ee9142fd118f952a0f9cb7a3}
+
+
+Set the aperture in the fracture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aper} & the aperture in the fracture \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00623}{623} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Fracture\+Permeability@{set\+Fracture\+Permeability}}
+\index{set\+Fracture\+Permeability@{set\+Fracture\+Permeability}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Fracture\+Permeability(const Real perm)}{setFracturePermeability(const Real perm)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Fracture\+Permeability (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{perm}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ae30cd878d556d3167cbfd298e550cdd0}{}\label{classFVCode3D_1_1Data_ae30cd878d556d3167cbfd298e550cdd0}
+
+
+Set the permeability in the fracture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & the permeability in the fracture \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00611}{611} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Fracture\+Porosity@{set\+Fracture\+Porosity}}
+\index{set\+Fracture\+Porosity@{set\+Fracture\+Porosity}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Fracture\+Porosity(const Real poro)}{setFracturePorosity(const Real poro)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Fracture\+Porosity (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{poro}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a8ebf93476e0386bc114fbcdb68d4a824}{}\label{classFVCode3D_1_1Data_a8ebf93476e0386bc114fbcdb68d4a824}
+
+
+Set the porosity in the fracture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em poro} & the porosity in the fracture \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00617}{617} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Initial\+Time@{set\+Initial\+Time}}
+\index{set\+Initial\+Time@{set\+Initial\+Time}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Initial\+Time(const Real time)}{setInitialTime(const Real time)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Initial\+Time (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a07b180c02fcd985f9f75b662e00ad54e}{}\label{classFVCode3D_1_1Data_a07b180c02fcd985f9f75b662e00ad54e}
+
+
+Set the initial time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & the initial time \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00629}{629} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Iterative\+Solver\+Max\+Iter@{set\+Iterative\+Solver\+Max\+Iter}}
+\index{set\+Iterative\+Solver\+Max\+Iter@{set\+Iterative\+Solver\+Max\+Iter}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Iterative\+Solver\+Max\+Iter(const U\+Int max\+It)}{setIterativeSolverMaxIter(const UInt maxIt)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Iterative\+Solver\+Max\+Iter (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{max\+It}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_aa88334bcae4148d0108e0f37b3b21730}{}\label{classFVCode3D_1_1Data_aa88334bcae4148d0108e0f37b3b21730}
+
+
+Set maximum iterations of the iterative solver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+It} & maximum iterations of the iterative solver \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00665}{665} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Iterative\+Solver\+Tolerance@{set\+Iterative\+Solver\+Tolerance}}
+\index{set\+Iterative\+Solver\+Tolerance@{set\+Iterative\+Solver\+Tolerance}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Iterative\+Solver\+Tolerance(const Real tol)}{setIterativeSolverTolerance(const Real tol)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Iterative\+Solver\+Tolerance (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{tol}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a805e2438f64b5effdbfd2d06058f5a0c}{}\label{classFVCode3D_1_1Data_a805e2438f64b5effdbfd2d06058f5a0c}
+
+
+Set tolerance of the iterative solver. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tol} & tolerance of the iterative solver \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00671}{671} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Lumped\+Mimetic@{set\+Lumped\+Mimetic}}
+\index{set\+Lumped\+Mimetic@{set\+Lumped\+Mimetic}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Lumped\+Mimetic(const bool lumped)}{setLumpedMimetic(const bool lumped)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Lumped\+Mimetic (
+\begin{DoxyParamCaption}
+\item[{const bool}]{lumped}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a8c3b6e8e0771f35ff9a270deb3cc1f5a}{}\label{classFVCode3D_1_1Data_a8c3b6e8e0771f35ff9a270deb3cc1f5a}
+
+
+Set if the stiffness matrix in the mimetic method is lumped. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lumped} & true if the stiffness matrix is lumped \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00533}{533} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Lx@{set\+Lx}}
+\index{set\+Lx@{set\+Lx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Lx(const Real Lx)}{setLx(const Real Lx)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Lx (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Lx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a407ef57c3db6434524e47d6c88ad8048}{}\label{classFVCode3D_1_1Data_a407ef57c3db6434524e47d6c88ad8048}
+
+
+Set the domain dimension along x-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & domain dimension along x-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00443}{443} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Ly@{set\+Ly}}
+\index{set\+Ly@{set\+Ly}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Ly(const Real Ly)}{setLy(const Real Ly)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Ly (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Ly}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a7b6aec70d4fd53ecb0829c1ec700e6f1}{}\label{classFVCode3D_1_1Data_a7b6aec70d4fd53ecb0829c1ec700e6f1}
+
+
+Set the domain dimension along y-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & domain dimension along y-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00449}{449} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Lz@{set\+Lz}}
+\index{set\+Lz@{set\+Lz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Lz(const Real Lz)}{setLz(const Real Lz)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Lz (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Lz}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ae7485872faf9c0d277e240a6a1f43dcf}{}\label{classFVCode3D_1_1Data_ae7485872faf9c0d277e240a6a1f43dcf}
+
+
+Set the domain dimension along z-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & domain dimension along z-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00455}{455} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Matrix\+Permeability@{set\+Matrix\+Permeability}}
+\index{set\+Matrix\+Permeability@{set\+Matrix\+Permeability}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Matrix\+Permeability(const Real perm)}{setMatrixPermeability(const Real perm)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Matrix\+Permeability (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{perm}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a5e0006a4cb8cb2fbb0f6bf3d55ea97f6}{}\label{classFVCode3D_1_1Data_a5e0006a4cb8cb2fbb0f6bf3d55ea97f6}
+
+
+Set the permeability in the porous medium. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & the permeability in the porous medium \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00599}{599} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Matrix\+Porosity@{set\+Matrix\+Porosity}}
+\index{set\+Matrix\+Porosity@{set\+Matrix\+Porosity}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Matrix\+Porosity(const Real poro)}{setMatrixPorosity(const Real poro)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Matrix\+Porosity (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{poro}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ac69940093fb72d43599771f4ffd2a3d8}{}\label{classFVCode3D_1_1Data_ac69940093fb72d43599771f4ffd2a3d8}
+
+
+Set the porosity in the porous medium. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em poro} & the porosity in the porous medium \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00605}{605} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Mean\+Normal\+Distribution@{set\+Mean\+Normal\+Distribution}}
+\index{set\+Mean\+Normal\+Distribution@{set\+Mean\+Normal\+Distribution}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Mean\+Normal\+Distribution(const Real mean)}{setMeanNormalDistribution(const Real mean)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Mean\+Normal\+Distribution (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{mean}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ab244bb60161eed3678d3ce7f88071cf5}{}\label{classFVCode3D_1_1Data_ab244bb60161eed3678d3ce7f88071cf5}
+
+
+Set the mean of the normal distribution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mean} & the mean of the normal distribution \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00515}{515} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Mesh\+Dir@{set\+Mesh\+Dir}}
+\index{set\+Mesh\+Dir@{set\+Mesh\+Dir}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Mesh\+Dir(const std\+::string dir)}{setMeshDir(const std::string dir)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Mesh\+Dir (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{dir}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a9d1e654e780ff8196720b947689dd9f8}{}\label{classFVCode3D_1_1Data_a9d1e654e780ff8196720b947689dd9f8}
+
+
+Set the directory of the mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir} & the string that contains the directory of the mesh \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00405}{405} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Mesh\+Extension@{set\+Mesh\+Extension}}
+\index{set\+Mesh\+Extension@{set\+Mesh\+Extension}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Mesh\+Extension(const std\+::string ext)}{setMeshExtension(const std::string ext)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Mesh\+Extension (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{ext}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Data_a1f2a77ec9eb6e10ae5f5e7150343bc81}{}\label{classFVCode3D_1_1Data_a1f2a77ec9eb6e10ae5f5e7150343bc81}
+
+
+Set the extension of the mesh format type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ext} & the extension of the format type of the mesh \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+modifies the mesh type 
+\end{DoxyPostcond}
+
+
+Definition at line \hyperlink{Data_8cpp_source_l00117}{117} of file \hyperlink{Data_8cpp_source}{Data.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_a1f2a77ec9eb6e10ae5f5e7150343bc81_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_a1f2a77ec9eb6e10ae5f5e7150343bc81_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Mesh\+File@{set\+Mesh\+File}}
+\index{set\+Mesh\+File@{set\+Mesh\+File}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Mesh\+File(const std\+::string file)}{setMeshFile(const std::string file)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Mesh\+File (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{file}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a78ef784e9755b8e1285d597eddb9d1de}{}\label{classFVCode3D_1_1Data_a78ef784e9755b8e1285d597eddb9d1de}
+
+
+Set the file of the mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & the string that contains the file of the mesh \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00411}{411} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_a78ef784e9755b8e1285d597eddb9d1de_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Mesh\+Type@{set\+Mesh\+Type}}
+\index{set\+Mesh\+Type@{set\+Mesh\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Mesh\+Type(const Mesh\+Format\+Type type)}{setMeshType(const MeshFormatType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Mesh\+Type (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh\+Format\+Type}}]{type}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Data_aa99fa6c201237aeda46ad434c71caadc}{}\label{classFVCode3D_1_1Data_aa99fa6c201237aeda46ad434c71caadc}
+
+
+Set the format type of the mesh. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the format type of the mesh \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+modifies the mesh extension 
+\end{DoxyPostcond}
+
+
+Definition at line \hyperlink{Data_8cpp_source_l00124}{124} of file \hyperlink{Data_8cpp_source}{Data.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_aa99fa6c201237aeda46ad434c71caadc_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Mobility@{set\+Mobility}}
+\index{set\+Mobility@{set\+Mobility}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Mobility(const Real mobility)}{setMobility(const Real mobility)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Mobility (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{mobility}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a5fb85e6447083d24572761d79f1c4f72}{}\label{classFVCode3D_1_1Data_a5fb85e6447083d24572761d79f1c4f72}
+
+
+Set mobility of the fluid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mobility} & the mobility of the fluid \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00647}{647} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Nb\+Sub\+Regions@{set\+Nb\+Sub\+Regions}}
+\index{set\+Nb\+Sub\+Regions@{set\+Nb\+Sub\+Regions}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Nb\+Sub\+Regions(const U\+Int n\+Sub\+Reg)}{setNbSubRegions(const UInt nSubReg)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Nb\+Sub\+Regions (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{n\+Sub\+Reg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1fc5c4ab0b1abe6aaefb450a00fa27ea}{}\label{classFVCode3D_1_1Data_a1fc5c4ab0b1abe6aaefb450a00fa27ea}
+
+
+Set the number of sub-\/regions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+Sub\+Reg} & the number of sub-\/regions \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00575}{575} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Nb\+Time\+Step\+Steady\+State@{set\+Nb\+Time\+Step\+Steady\+State}}
+\index{set\+Nb\+Time\+Step\+Steady\+State@{set\+Nb\+Time\+Step\+Steady\+State}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Nb\+Time\+Step\+Steady\+State(const U\+Int n\+Time\+Step)}{setNbTimeStepSteadyState(const UInt nTimeStep)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Nb\+Time\+Step\+Steady\+State (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{n\+Time\+Step}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a368df5d936a00f3841ac81070ffa748f}{}\label{classFVCode3D_1_1Data_a368df5d936a00f3841ac81070ffa748f}
+
+
+Set the number of time step to check for the steady state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+Time\+Step} & the number of time step to check for the steady state \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00581}{581} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Numerical\+Method\+Type@{set\+Numerical\+Method\+Type}}
+\index{set\+Numerical\+Method\+Type@{set\+Numerical\+Method\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Numerical\+Method\+Type(const Numerical\+Method\+Type type)}{setNumericalMethodType(const NumericalMethodType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Numerical\+Method\+Type (
+\begin{DoxyParamCaption}
+\item[{const {\bf Numerical\+Method\+Type}}]{type}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a5660a92abcdfa1c8209b5710dcbd945e}{}\label{classFVCode3D_1_1Data_a5660a92abcdfa1c8209b5710dcbd945e}
+
+
+Set the numerical method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the type of the numerical method \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00527}{527} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Nx@{set\+Nx}}
+\index{set\+Nx@{set\+Nx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Nx(const Real Nx)}{setNx(const Real Nx)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Nx (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Nx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a2cf14ed455819e6161b7d32ce9e6eba6}{}\label{classFVCode3D_1_1Data_a2cf14ed455819e6161b7d32ce9e6eba6}
+
+
+Set the number of cells along x-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & number of cells along x-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00461}{461} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Ny@{set\+Ny}}
+\index{set\+Ny@{set\+Ny}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Ny(const Real Ny)}{setNy(const Real Ny)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Ny (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Ny}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a768fd7e5bcb3d590aca98dafddb4b982}{}\label{classFVCode3D_1_1Data_a768fd7e5bcb3d590aca98dafddb4b982}
+
+
+Set the number of cells along y-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & number of cells along y-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00467}{467} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Nz@{set\+Nz}}
+\index{set\+Nz@{set\+Nz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Nz(const Real Nz)}{setNz(const Real Nz)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Nz (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Nz}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a3d164db50b46d7b0488a00db529fa3b6}{}\label{classFVCode3D_1_1Data_a3d164db50b46d7b0488a00db529fa3b6}
+
+
+Set the number of cells along z-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & number of cells along z-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00473}{473} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Output\+Dir@{set\+Output\+Dir}}
+\index{set\+Output\+Dir@{set\+Output\+Dir}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Output\+Dir(const std\+::string dir)}{setOutputDir(const std::string dir)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Output\+Dir (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{dir}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a5dd692c7bb0d0cc1ea440845c637d778}{}\label{classFVCode3D_1_1Data_a5dd692c7bb0d0cc1ea440845c637d778}
+
+
+Set the output directory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir} & the string that contains the output directory \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00431}{431} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Output\+File@{set\+Output\+File}}
+\index{set\+Output\+File@{set\+Output\+File}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Output\+File(const std\+::string file)}{setOutputFile(const std::string file)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Output\+File (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{file}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a3da09b88d987571c7be1fdad165d5195}{}\label{classFVCode3D_1_1Data_a3da09b88d987571c7be1fdad165d5195}
+
+
+Set the output file name. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & the string that contains the output file name \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00437}{437} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Permeability\+Type@{set\+Permeability\+Type}}
+\index{set\+Permeability\+Type@{set\+Permeability\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Permeability\+Type(const std\+::string type)}{setPermeabilityType(const std::string type)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Permeability\+Type (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{type}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a72079afa3a831af937b1665b4ef3e048}{}\label{classFVCode3D_1_1Data_a72079afa3a831af937b1665b4ef3e048}
+
+
+Set the type of the permeability. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the type of the permeability \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00593}{593} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Pressures\+In\+Fractures@{set\+Pressures\+In\+Fractures}}
+\index{set\+Pressures\+In\+Fractures@{set\+Pressures\+In\+Fractures}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Pressures\+In\+Fractures(const Real press)}{setPressuresInFractures(const Real press)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Pressures\+In\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{press}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a07f79ab8c27c169116e58c3d1e0573cd}{}\label{classFVCode3D_1_1Data_a07f79ab8c27c169116e58c3d1e0573cd}
+
+
+Set the pressure inside the fracture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em press} & the pressure inside the fracture \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00563}{563} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Problem\+Type@{set\+Problem\+Type}}
+\index{set\+Problem\+Type@{set\+Problem\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Problem\+Type(const Problem\+Type type)}{setProblemType(const ProblemType type)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Problem\+Type (
+\begin{DoxyParamCaption}
+\item[{const {\bf Problem\+Type}}]{type}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_ae88275973ad5105bab7f3203a1b3061c}{}\label{classFVCode3D_1_1Data_ae88275973ad5105bab7f3203a1b3061c}
+
+
+Set the problem type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the type of the problem \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00539}{539} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Rz@{set\+Rz}}
+\index{set\+Rz@{set\+Rz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Rz(const Real Rz)}{setRz(const Real Rz)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Rz (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Rz}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a09cc3e8cd5a26b9334e47c188d037b84}{}\label{classFVCode3D_1_1Data_a09cc3e8cd5a26b9334e47c188d037b84}
+
+
+Set the rotation domain along z-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & rotation domain along z-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00497}{497} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Source\+Sink\+On@{set\+Source\+Sink\+On}}
+\index{set\+Source\+Sink\+On@{set\+Source\+Sink\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Source\+Sink\+On(const Source\+Sink\+On ss\+On)}{setSourceSinkOn(const SourceSinkOn ssOn)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Source\+Sink\+On (
+\begin{DoxyParamCaption}
+\item[{const {\bf Source\+Sink\+On}}]{ss\+On}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a1b246eed39252523266efc6d63b7575b}{}\label{classFVCode3D_1_1Data_a1b246eed39252523266efc6d63b7575b}
+
+
+Set where the source/sink term is applied. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ss\+On} & where the source/sink term is applied \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00551}{551} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+St\+Dev\+Normal\+Distribution@{set\+St\+Dev\+Normal\+Distribution}}
+\index{set\+St\+Dev\+Normal\+Distribution@{set\+St\+Dev\+Normal\+Distribution}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+St\+Dev\+Normal\+Distribution(const Real st\+Dev)}{setStDevNormalDistribution(const Real stDev)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+St\+Dev\+Normal\+Distribution (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{st\+Dev}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a11439eec2eec0b358cdbcaad6f91f04e}{}\label{classFVCode3D_1_1Data_a11439eec2eec0b358cdbcaad6f91f04e}
+
+
+set the standard deviation of the normal distribution 
+
+
+\begin{DoxyParams}{Parameters}
+{\em st\+Dev} & the standard deviation of the normal distribution \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00521}{521} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Sx@{set\+Sx}}
+\index{set\+Sx@{set\+Sx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Sx(const Real Sx)}{setSx(const Real Sx)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Sx (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Sx}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a5b561f1dd14069d1ba7fa79ba5b09d47}{}\label{classFVCode3D_1_1Data_a5b561f1dd14069d1ba7fa79ba5b09d47}
+
+
+Set the shift domain along x-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & shift domain along x-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00479}{479} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Sy@{set\+Sy}}
+\index{set\+Sy@{set\+Sy}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Sy(const Real Sy)}{setSy(const Real Sy)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Sy (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Sy}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a9791ad153e96354aa59eaebc7baf89b2}{}\label{classFVCode3D_1_1Data_a9791ad153e96354aa59eaebc7baf89b2}
+
+
+Set the shift domain along y-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & shift domain along y-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00485}{485} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Sz@{set\+Sz}}
+\index{set\+Sz@{set\+Sz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Sz(const Real Sz)}{setSz(const Real Sz)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Sz (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{Sz}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a0d11954cc9b2bf33bbc18e03b53731fe}{}\label{classFVCode3D_1_1Data_a0d11954cc9b2bf33bbc18e03b53731fe}
+
+
+Set the shift domain along z-\/axis. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & shift domain along z-\/axis \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00491}{491} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Theta@{set\+Theta}}
+\index{set\+Theta@{set\+Theta}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Theta(const Real theta)}{setTheta(const Real theta)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Theta (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{theta}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a456bd98d3d97e0be1807861db3e6e48d}{}\label{classFVCode3D_1_1Data_a456bd98d3d97e0be1807861db3e6e48d}
+
+
+Set theta angle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em theta} & the angle theta used to identify the BC ids \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00677}{677} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!set\+Time\+Step@{set\+Time\+Step}}
+\index{set\+Time\+Step@{set\+Time\+Step}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{set\+Time\+Step(const Real time)}{setTimeStep(const Real time)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::set\+Time\+Step (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a57ad8c8edd71c60b60a0ad9296171c4a}{}\label{classFVCode3D_1_1Data_a57ad8c8edd71c60b60a0ad9296171c4a}
+
+
+Set the time step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em time} & the time step \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00641}{641} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!show\+Me@{show\+Me}}
+\index{show\+Me@{show\+Me}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{show\+Me(std\+::ostream \&output=std\+::cout) const }{showMe(std::ostream &output=std::cout) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::show\+Me (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{output = {\ttfamily std\+:\+:cout}}
+\end{DoxyParamCaption}
+) const}\hypertarget{classFVCode3D_1_1Data_ad7d2ea783d794828e141bd57250c1120}{}\label{classFVCode3D_1_1Data_ad7d2ea783d794828e141bd57250c1120}
+
+
+Show a summary of the data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em output} & output stream. Default = std\+::cout \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8cpp_source_l00151}{151} of file \hyperlink{Data_8cpp_source}{Data.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_ad7d2ea783d794828e141bd57250c1120_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_ad7d2ea783d794828e141bd57250c1120_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!tol\+Steady\+State@{tol\+Steady\+State}}
+\index{tol\+Steady\+State@{tol\+Steady\+State}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{tol\+Steady\+State() const }{tolSteadyState() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::tol\+Steady\+State (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a4b8976c57267fbea1cdbc2461996610f}{}\label{classFVCode3D_1_1Data_a4b8976c57267fbea1cdbc2461996610f}
+
+
+Get the tolerance to consider a time step at the steady state. 
+
+\begin{DoxyReturn}{Returns}
+the tolerance to consider a time step at the steady state 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00298}{298} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!tol\+Steady\+State@{tol\+Steady\+State}}
+\index{tol\+Steady\+State@{tol\+Steady\+State}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{tol\+Steady\+State(const Real tol)}{tolSteadyState(const Real tol)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::tol\+Steady\+State (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{tol}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_add1c3c9a2c35ffcd495778613a1624bb}{}\label{classFVCode3D_1_1Data_add1c3c9a2c35ffcd495778613a1624bb}
+
+
+Set the tolerance to consider a time step at the steady state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tol} & the tolerance to consider a time step at the steady state \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00587}{587} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!verbose@{verbose}}
+\index{verbose@{verbose}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{verbose() const }{verbose() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::verbose (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a3f6758048749a9525d2879552b975536}{}\label{classFVCode3D_1_1Data_a3f6758048749a9525d2879552b975536}
+
+
+Verbose. 
+
+\begin{DoxyReturn}{Returns}
+true if verbose 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00394}{394} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!verbose@{verbose}}
+\index{verbose@{verbose}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{verbose(const bool verbose)}{verbose(const bool verbose)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Data\+::verbose (
+\begin{DoxyParamCaption}
+\item[{const bool}]{verbose}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Data_a3bbbfecd1d18c9c81c151f65c2647020}{}\label{classFVCode3D_1_1Data_a3bbbfecd1d18c9c81c151f65c2647020}
+
+
+Enable or disable verbosity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em verbose} & true to enable verbosity \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00683}{683} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Data_a3bbbfecd1d18c9c81c151f65c2647020_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{classFVCode3D_1_1Data_a3bbbfecd1d18c9c81c151f65c2647020_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+aper\+Frac@{M\+\_\+aper\+Frac}}
+\index{M\+\_\+aper\+Frac@{M\+\_\+aper\+Frac}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+aper\+Frac}{M_aperFrac}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+aper\+Frac\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_abf85bba32b4b3bdc3a392f193d4a145d}{}\label{classFVCode3D_1_1Data_abf85bba32b4b3bdc3a392f193d4a145d}
+
+
+Aperture in the fractures. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00771}{771} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+compressibility@{M\+\_\+compressibility}}
+\index{M\+\_\+compressibility@{M\+\_\+compressibility}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+compressibility}{M_compressibility}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+compressibility\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a8fc9be504e0a36500d75f1991d95caaa}{}\label{classFVCode3D_1_1Data_a8fc9be504e0a36500d75f1991d95caaa}
+
+
+Compressibility. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00781}{781} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+end\+Time@{M\+\_\+end\+Time}}
+\index{M\+\_\+end\+Time@{M\+\_\+end\+Time}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+end\+Time}{M_endTime}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+end\+Time\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ad0db1011dedc7485e6b4393c872506c0}{}\label{classFVCode3D_1_1Data_ad0db1011dedc7485e6b4393c872506c0}
+
+
+Final time, used for time-\/dependent problem. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00775}{775} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+fractures\+On@{M\+\_\+fractures\+On}}
+\index{M\+\_\+fractures\+On@{M\+\_\+fractures\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+fractures\+On}{M_fracturesOn}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+fractures\+On\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ab0b504d3e6e8ab604d4567eceb178aa7}{}\label{classFVCode3D_1_1Data_ab0b504d3e6e8ab604d4567eceb178aa7}
+
+
+Enable or disable fractures. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00745}{745} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+fractures\+Pressure@{M\+\_\+fractures\+Pressure}}
+\index{M\+\_\+fractures\+Pressure@{M\+\_\+fractures\+Pressure}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+fractures\+Pressure}{M_fracturesPressure}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+fractures\+Pressure\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_af04c830d4b03507186fbd36ad0ffcb2c}{}\label{classFVCode3D_1_1Data_af04c830d4b03507186fbd36ad0ffcb2c}
+
+
+Pressure value inside the fractures. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00751}{751} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+init\+Time@{M\+\_\+init\+Time}}
+\index{M\+\_\+init\+Time@{M\+\_\+init\+Time}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+init\+Time}{M_initTime}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+init\+Time\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ab4a94e00bef44eb2195783ffa4682cf0}{}\label{classFVCode3D_1_1Data_ab4a94e00bef44eb2195783ffa4682cf0}
+
+
+Initial time, used for time-\/dependent problem. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00773}{773} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+lumped\+Mim@{M\+\_\+lumped\+Mim}}
+\index{M\+\_\+lumped\+Mim@{M\+\_\+lumped\+Mim}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+lumped\+Mim}{M_lumpedMim}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+lumped\+Mim\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a1eafd426e867afe23097e38c3d28fa2d}{}\label{classFVCode3D_1_1Data_a1eafd426e867afe23097e38c3d28fa2d}
+
+
+If true the stiffness matrix for the mimetic method is lumped. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00741}{741} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Lx@{M\+\_\+\+Lx}}
+\index{M\+\_\+\+Lx@{M\+\_\+\+Lx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Lx}{M_Lx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Lx\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ae5452237bcd372f1f58b338eb81c03c9}{}\label{classFVCode3D_1_1Data_ae5452237bcd372f1f58b338eb81c03c9}
+
+
+Domain dimension along x-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00711}{711} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Ly@{M\+\_\+\+Ly}}
+\index{M\+\_\+\+Ly@{M\+\_\+\+Ly}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Ly}{M_Ly}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Ly\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ab1c235ca1a351fc10315c8b28f84549c}{}\label{classFVCode3D_1_1Data_ab1c235ca1a351fc10315c8b28f84549c}
+
+
+Domain dimension along y-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00713}{713} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Lz@{M\+\_\+\+Lz}}
+\index{M\+\_\+\+Lz@{M\+\_\+\+Lz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Lz}{M_Lz}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Lz\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_aec68be07c237ed1170bdbb876b01ec95}{}\label{classFVCode3D_1_1Data_aec68be07c237ed1170bdbb876b01ec95}
+
+
+Domain dimension along z-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00715}{715} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+max\+It@{M\+\_\+max\+It}}
+\index{M\+\_\+max\+It@{M\+\_\+max\+It}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+max\+It}{M_maxIt}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+max\+It\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a2691a1563c9a9d1f9fa991acac368c6a}{}\label{classFVCode3D_1_1Data_a2691a1563c9a9d1f9fa991acac368c6a}
+
+
+Maximum iterations of the iterative solver. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00786}{786} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+mean\+N\+Dist@{M\+\_\+mean\+N\+Dist}}
+\index{M\+\_\+mean\+N\+Dist@{M\+\_\+mean\+N\+Dist}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+mean\+N\+Dist}{M_meanNDist}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+mean\+N\+Dist\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_aa9b032547f332b068770fa4eebe44462}{}\label{classFVCode3D_1_1Data_aa9b032547f332b068770fa4eebe44462}
+
+
+Mean of the normal distribution. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00735}{735} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+mesh\+Dir@{M\+\_\+mesh\+Dir}}
+\index{M\+\_\+mesh\+Dir@{M\+\_\+mesh\+Dir}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh\+Dir}{M_meshDir}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+mesh\+Dir\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ac3c807842fa923bda89a90635b51daea}{}\label{classFVCode3D_1_1Data_ac3c807842fa923bda89a90635b51daea}
+
+
+Mesh directory. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00699}{699} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+mesh\+Ext@{M\+\_\+mesh\+Ext}}
+\index{M\+\_\+mesh\+Ext@{M\+\_\+mesh\+Ext}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh\+Ext}{M_meshExt}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+mesh\+Ext\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a6808fd51d3a0b46b77ddd500c836abb9}{}\label{classFVCode3D_1_1Data_a6808fd51d3a0b46b77ddd500c836abb9}
+
+
+Mesh file. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00703}{703} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+mesh\+File@{M\+\_\+mesh\+File}}
+\index{M\+\_\+mesh\+File@{M\+\_\+mesh\+File}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh\+File}{M_meshFile}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+mesh\+File\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ab939b8425e4b01d2c000adfb0ea2d35a}{}\label{classFVCode3D_1_1Data_ab939b8425e4b01d2c000adfb0ea2d35a}
+
+
+Mesh file. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00701}{701} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+mesh\+Type@{M\+\_\+mesh\+Type}}
+\index{M\+\_\+mesh\+Type@{M\+\_\+mesh\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh\+Type}{M_meshType}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Mesh\+Format\+Type} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+mesh\+Type\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a3829da70dbf5688d6188ec0108bae59d}{}\label{classFVCode3D_1_1Data_a3829da70dbf5688d6188ec0108bae59d}
+
+
+Format Type. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00705}{705} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+mobility@{M\+\_\+mobility}}
+\index{M\+\_\+mobility@{M\+\_\+mobility}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+mobility}{M_mobility}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+mobility\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ace221dee0530a79694fbc1d2beca96ac}{}\label{classFVCode3D_1_1Data_ace221dee0530a79694fbc1d2beca96ac}
+
+
+Mobility of the fluid. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00779}{779} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+M\+SR@{M\+\_\+\+M\+SR}}
+\index{M\+\_\+\+M\+SR@{M\+\_\+\+M\+SR}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+M\+SR}{M_MSR}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+M\+SR\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a79a937025567c594d491124fdd7371d1}{}\label{classFVCode3D_1_1Data_a79a937025567c594d491124fdd7371d1}
+
+
+Multiple sub-\/regions on? 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00753}{753} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+nb\+Sub\+Regions@{M\+\_\+nb\+Sub\+Regions}}
+\index{M\+\_\+nb\+Sub\+Regions@{M\+\_\+nb\+Sub\+Regions}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+nb\+Sub\+Regions}{M_nbSubRegions}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+nb\+Sub\+Regions\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a939f25d917c0fc4cc307727f0161818d}{}\label{classFVCode3D_1_1Data_a939f25d917c0fc4cc307727f0161818d}
+
+
+Number of sub-\/regions. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00755}{755} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+nb\+Time\+Step\+Steady\+State@{M\+\_\+nb\+Time\+Step\+Steady\+State}}
+\index{M\+\_\+nb\+Time\+Step\+Steady\+State@{M\+\_\+nb\+Time\+Step\+Steady\+State}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+nb\+Time\+Step\+Steady\+State}{M_nbTimeStepSteadyState}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+nb\+Time\+Step\+Steady\+State\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a89795eb2a12c28f1f919c3148c44556e}{}\label{classFVCode3D_1_1Data_a89795eb2a12c28f1f919c3148c44556e}
+
+
+Number of time step to check for the steady state. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00757}{757} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+noise@{M\+\_\+noise}}
+\index{M\+\_\+noise@{M\+\_\+noise}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+noise}{M_noise}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+noise\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a06f828cdc7dc1c3b4ea60b40f390333e}{}\label{classFVCode3D_1_1Data_a06f828cdc7dc1c3b4ea60b40f390333e}
+
+
+If true noise is added to the points. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00731}{731} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+noise\+On@{M\+\_\+noise\+On}}
+\index{M\+\_\+noise\+On@{M\+\_\+noise\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+noise\+On}{M_noiseOn}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Noise\+On} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+noise\+On\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a82362848d9cced52dc04f50aeb0c9323}{}\label{classFVCode3D_1_1Data_a82362848d9cced52dc04f50aeb0c9323}
+
+
+Where the noise is applied. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00733}{733} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+numet@{M\+\_\+numet}}
+\index{M\+\_\+numet@{M\+\_\+numet}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+numet}{M_numet}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Numerical\+Method\+Type} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+numet\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_acabd10057aa8ce14f50ee7fbd354ac64}{}\label{classFVCode3D_1_1Data_acabd10057aa8ce14f50ee7fbd354ac64}
+
+
+Type of the numerical method. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00739}{739} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Nx@{M\+\_\+\+Nx}}
+\index{M\+\_\+\+Nx@{M\+\_\+\+Nx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Nx}{M_Nx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Nx\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ae8b5472d8bc05b2b312380fe0bcfc8f9}{}\label{classFVCode3D_1_1Data_ae8b5472d8bc05b2b312380fe0bcfc8f9}
+
+
+Number of cells along x-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00717}{717} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Ny@{M\+\_\+\+Ny}}
+\index{M\+\_\+\+Ny@{M\+\_\+\+Ny}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Ny}{M_Ny}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Ny\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a90a08fe8c4566c7afcdf62772ee4712b}{}\label{classFVCode3D_1_1Data_a90a08fe8c4566c7afcdf62772ee4712b}
+
+
+Number of cells along y-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00719}{719} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Nz@{M\+\_\+\+Nz}}
+\index{M\+\_\+\+Nz@{M\+\_\+\+Nz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Nz}{M_Nz}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Nz\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a7f877632f0740bbedf5ce5e05d6d1add}{}\label{classFVCode3D_1_1Data_a7f877632f0740bbedf5ce5e05d6d1add}
+
+
+Number of cells along z-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00721}{721} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+output\+Dir@{M\+\_\+output\+Dir}}
+\index{M\+\_\+output\+Dir@{M\+\_\+output\+Dir}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+output\+Dir}{M_outputDir}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+output\+Dir\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_af5685db93f1e6c697fa63241351d1bcd}{}\label{classFVCode3D_1_1Data_af5685db93f1e6c697fa63241351d1bcd}
+
+
+Output directory. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00707}{707} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+output\+File@{M\+\_\+output\+File}}
+\index{M\+\_\+output\+File@{M\+\_\+output\+File}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+output\+File}{M_outputFile}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+output\+File\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a34713b7f3fd7176b0745f902713722dd}{}\label{classFVCode3D_1_1Data_a34713b7f3fd7176b0745f902713722dd}
+
+
+Output file. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00709}{709} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+permeability\+Type@{M\+\_\+permeability\+Type}}
+\index{M\+\_\+permeability\+Type@{M\+\_\+permeability\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+permeability\+Type}{M_permeabilityType}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+permeability\+Type\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a313a43a63768026ac108106fa90113c9}{}\label{classFVCode3D_1_1Data_a313a43a63768026ac108106fa90113c9}
+
+
+Type of the permeability. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00761}{761} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+perm\+Frac@{M\+\_\+perm\+Frac}}
+\index{M\+\_\+perm\+Frac@{M\+\_\+perm\+Frac}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+perm\+Frac}{M_permFrac}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+perm\+Frac\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a68f9fa864f076c053ae8ac8a3f86f7ea}{}\label{classFVCode3D_1_1Data_a68f9fa864f076c053ae8ac8a3f86f7ea}
+
+
+Permeability in the fractures. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00767}{767} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+perm\+Matrix@{M\+\_\+perm\+Matrix}}
+\index{M\+\_\+perm\+Matrix@{M\+\_\+perm\+Matrix}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+perm\+Matrix}{M_permMatrix}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+perm\+Matrix\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_aa91f66274ed34a57c63f5c106b371109}{}\label{classFVCode3D_1_1Data_aa91f66274ed34a57c63f5c106b371109}
+
+
+Permeability in the porous medium. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00763}{763} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+poro\+Frac@{M\+\_\+poro\+Frac}}
+\index{M\+\_\+poro\+Frac@{M\+\_\+poro\+Frac}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+poro\+Frac}{M_poroFrac}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+poro\+Frac\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_af95b239d77dd531aaa59e3ac891dbd71}{}\label{classFVCode3D_1_1Data_af95b239d77dd531aaa59e3ac891dbd71}
+
+
+Porosity in the fractures. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00769}{769} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+poro\+Matrix@{M\+\_\+poro\+Matrix}}
+\index{M\+\_\+poro\+Matrix@{M\+\_\+poro\+Matrix}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+poro\+Matrix}{M_poroMatrix}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+poro\+Matrix\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_ab4e2bcf1ebf986f6e5329b695707a73e}{}\label{classFVCode3D_1_1Data_ab4e2bcf1ebf986f6e5329b695707a73e}
+
+
+Porosity in the porous medium. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00765}{765} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+problem\+Type@{M\+\_\+problem\+Type}}
+\index{M\+\_\+problem\+Type@{M\+\_\+problem\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+problem\+Type}{M_problemType}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Problem\+Type} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+problem\+Type\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a7d31023f4e0ca0377503c0a74797c5b3}{}\label{classFVCode3D_1_1Data_a7d31023f4e0ca0377503c0a74797c5b3}
+
+
+Type of the problem. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00743}{743} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Rz@{M\+\_\+\+Rz}}
+\index{M\+\_\+\+Rz@{M\+\_\+\+Rz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Rz}{M_Rz}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Rz\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a1268778a4b4532d5760a4bfe5eb97e6f}{}\label{classFVCode3D_1_1Data_a1268778a4b4532d5760a4bfe5eb97e6f}
+
+
+Rotation Domain along z-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00729}{729} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+set\+Fractures\+Pressure@{M\+\_\+set\+Fractures\+Pressure}}
+\index{M\+\_\+set\+Fractures\+Pressure@{M\+\_\+set\+Fractures\+Pressure}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+set\+Fractures\+Pressure}{M_setFracturesPressure}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+set\+Fractures\+Pressure\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a50bb4aa8e225203af91e6221e6017549}{}\label{classFVCode3D_1_1Data_a50bb4aa8e225203af91e6221e6017549}
+
+
+If true fix the pressure inside the fractures. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00749}{749} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+solver\+Type@{M\+\_\+solver\+Type}}
+\index{M\+\_\+solver\+Type@{M\+\_\+solver\+Type}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+solver\+Type}{M_solverType}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+solver\+Type\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a38b6dc5c0b7c6f4734be7b60b231e56b}{}\label{classFVCode3D_1_1Data_a38b6dc5c0b7c6f4734be7b60b231e56b}
+
+
+\hyperlink{classFVCode3D_1_1Solver}{Solver} used. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00784}{784} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+ss\+On@{M\+\_\+ss\+On}}
+\index{M\+\_\+ss\+On@{M\+\_\+ss\+On}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+ss\+On}{M_ssOn}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Source\+Sink\+On} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+ss\+On\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_af778c7ca663600660d71e09b2722ef57}{}\label{classFVCode3D_1_1Data_af778c7ca663600660d71e09b2722ef57}
+
+
+Where the source/sink term is applied. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00747}{747} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+st\+Dev\+N\+Dist@{M\+\_\+st\+Dev\+N\+Dist}}
+\index{M\+\_\+st\+Dev\+N\+Dist@{M\+\_\+st\+Dev\+N\+Dist}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+st\+Dev\+N\+Dist}{M_stDevNDist}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+st\+Dev\+N\+Dist\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a03ec8d7e05410e0966e4380c84a4dc6a}{}\label{classFVCode3D_1_1Data_a03ec8d7e05410e0966e4380c84a4dc6a}
+
+
+Standard deviation of the normal distribution. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00737}{737} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Sx@{M\+\_\+\+Sx}}
+\index{M\+\_\+\+Sx@{M\+\_\+\+Sx}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Sx}{M_Sx}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Sx\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_aabcbf0097b9af53baa21fe6c2e340aff}{}\label{classFVCode3D_1_1Data_aabcbf0097b9af53baa21fe6c2e340aff}
+
+
+Shift domain along x-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00723}{723} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Sy@{M\+\_\+\+Sy}}
+\index{M\+\_\+\+Sy@{M\+\_\+\+Sy}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Sy}{M_Sy}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Sy\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a4020737adfbc21dc3e5b682ac60692da}{}\label{classFVCode3D_1_1Data_a4020737adfbc21dc3e5b682ac60692da}
+
+
+Shift Domain along y-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00725}{725} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+\+Sz@{M\+\_\+\+Sz}}
+\index{M\+\_\+\+Sz@{M\+\_\+\+Sz}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+\+Sz}{M_Sz}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+\+Sz\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_af6d969081d817b510c19401baa80593f}{}\label{classFVCode3D_1_1Data_af6d969081d817b510c19401baa80593f}
+
+
+Shift Domain along z-\/axis. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00727}{727} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+theta@{M\+\_\+theta}}
+\index{M\+\_\+theta@{M\+\_\+theta}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+theta}{M_theta}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+theta\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a984e97d7d25e882ba1b089b3d82f78c3}{}\label{classFVCode3D_1_1Data_a984e97d7d25e882ba1b089b3d82f78c3}
+
+
+Angle used to rotate along z-\/axis the domain. It is used only to compute the normal for detecting B\+C! 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00791}{791} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+time\+Step@{M\+\_\+time\+Step}}
+\index{M\+\_\+time\+Step@{M\+\_\+time\+Step}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+time\+Step}{M_timeStep}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+time\+Step\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a10e4abb864d8f95f89fd468a2a328d45}{}\label{classFVCode3D_1_1Data_a10e4abb864d8f95f89fd468a2a328d45}
+
+
+Time step, used for time-\/dependent problem. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00777}{777} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+tol@{M\+\_\+tol}}
+\index{M\+\_\+tol@{M\+\_\+tol}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+tol}{M_tol}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+tol\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a00dd1282e39bfdf77368f3c79382c5c4}{}\label{classFVCode3D_1_1Data_a00dd1282e39bfdf77368f3c79382c5c4}
+
+
+Tolerance of the iterative solver. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00788}{788} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+tol\+Steady\+State@{M\+\_\+tol\+Steady\+State}}
+\index{M\+\_\+tol\+Steady\+State@{M\+\_\+tol\+Steady\+State}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+tol\+Steady\+State}{M_tolSteadyState}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+tol\+Steady\+State\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_a985779d5af3b0a0cdee095d599f4edc5}{}\label{classFVCode3D_1_1Data_a985779d5af3b0a0cdee095d599f4edc5}
+
+
+Tolerance to consider a time step at the steady state. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00759}{759} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}!M\+\_\+verbose@{M\+\_\+verbose}}
+\index{M\+\_\+verbose@{M\+\_\+verbose}!F\+V\+Code3\+D\+::\+Data@{F\+V\+Code3\+D\+::\+Data}}
+\subsubsection[{\texorpdfstring{M\+\_\+verbose}{M_verbose}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Data\+::\+M\+\_\+verbose\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Data_abce1861779ec036fc587fb69a7fe8c6c}{}\label{classFVCode3D_1_1Data_abce1861779ec036fc587fb69a7fe8c6c}
+
+
+Verbose. 
+
+
+
+Definition at line \hyperlink{Data_8hpp_source_l00793}{793} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\hyperlink{Data_8hpp}{Data.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\hyperlink{Data_8cpp}{Data.\+cpp}\end{DoxyCompactItemize}

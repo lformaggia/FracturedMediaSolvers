@@ -1,0 +1,717 @@
+\hypertarget{classFVCode3D_1_1PermeabilityBase}{}\section{F\+V\+Code3D\+:\+:Permeability\+Base Class Reference}
+\label{classFVCode3D_1_1PermeabilityBase}\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+
+
+\hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base}.  
+
+
+
+
+{\ttfamily \#include $<$Permeability.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Permeability\+Base\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1PermeabilityBase_af5fec5e9b68e5aca193f845a81226f6c}{Permeability\+Base} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1PermeabilityBase_a5e4bd70177de114e9165f9b81852862c}{size}=1)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PermeabilityBase_abd0550c6acbe86723c9ddfee18cb9da5}{operator()} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} j) const =0
+\begin{DoxyCompactList}\small\item\em Get the permeability at position (i,j) of the 3x3 tensor. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PermeabilityBase_a4cc07f9b2cb882f1328b11451bd98f8d}{operator()} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i) const =0
+\begin{DoxyCompactList}\small\item\em Get the permeability at position (i) of the vector associated with the tensor, reading by row. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PermeabilityBase_a43e9232aeb8a7f647601091bd8af3410}{operator\mbox{[}$\,$\mbox{]}} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i) const 
+\begin{DoxyCompactList}\small\item\em Get the permeability at position \mbox{[}i\mbox{]} of the vector. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1PermeabilityBase_a6ac9a7c1b7ed948194429891dc839706}{set\+Permeability} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} perm, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} j)=0
+\begin{DoxyCompactList}\small\item\em Set the permeability at position (i,j) of the 3x3 tensor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1PermeabilityBase_a9c4837715f248789eac990148df9ad40}{set\+Permeability} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} perm, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i)=0
+\begin{DoxyCompactList}\small\item\em Get the permeability at position (i) of the vector associated with the tensor, reading by row. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1PermeabilityBase_a01d49e30e1f7cd6856a9eab6195beed1}{operator\mbox{[}$\,$\mbox{]}} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i)
+\begin{DoxyCompactList}\small\item\em Get the permeability at position \mbox{[}i\mbox{]} of the vector. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PermeabilityBase_aec31bb1bd0086825bbf2924cce6fc463}{norm} () const 
+\begin{DoxyCompactList}\small\item\em Compute the norm of the permeability tensor. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1PermeabilityBase_a5e4bd70177de114e9165f9b81852862c}{size} ()
+\begin{DoxyCompactList}\small\item\em Size of the permeability. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilityBase_aa60c227795b5b7dd6413ef90b211875e}{vector\+Tensor\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector) const =0
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilityBase_a1c77d0168dd4ee2e3a1ce922e0c1725c}{tensor\+Vector\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector) const =0
+\begin{DoxyCompactList}\small\item\em Tensor-\/vector product. \end{DoxyCompactList}\item 
+virtual std\+::ostream \& \hyperlink{classFVCode3D_1_1PermeabilityBase_a4f06952af19c0100b6b6043fa1f8f97a}{show\+Me} (std\+::ostream \&os=std\+::cout) const =0
+\begin{DoxyCompactList}\small\item\em Show the permeability tensor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1PermeabilityBase_ae22dcf323e59c47090460a981ac9e84b}{$\sim$\+Permeability\+Base} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \hyperlink{classFVCode3D_1_1PermeabilityBase_aef595aa25abfeaf51e8d242e5de2055d}{M\+\_\+permeability}
+\begin{DoxyCompactList}\small\item\em Vector that represents the permeability tensor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1PermeabilityBase_ad0a13982b4a12932556083d1c05e50f2}{Permeability\+Base} ()=delete
+\begin{DoxyCompactList}\small\item\em No default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PermeabilityBase_a8d36d27dd831ce3b1f39edb0a570bf8c}{Permeability\+Base} (const \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \&)=delete
+\begin{DoxyCompactList}\small\item\em No copy-\/constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \& \hyperlink{classFVCode3D_1_1PermeabilityBase_abc8abcfca62e9520d74dd09dd324bd9c}{operator=} (const \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \&)=delete
+\begin{DoxyCompactList}\small\item\em No assignment operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1PermeabilityBase_a5914ac070cdad89b5b6f0133a0ee3ba5}{M\+\_\+size} = 0
+\begin{DoxyCompactList}\small\item\em Size of the permeability. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilityBase_a04284b595d50559389f6098e76611b76}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \&tensor)
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilityBase_a72ee0b7351f22e26194b2407a041b3e0}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\begin{DoxyCompactList}\small\item\em Tensor-\/vector product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilityBase_ae9bcef7644b0548a473db5bdf1d85b5d}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&tensor)
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilityBase_a83c27da33ea299dde90e6e790165dbb7}{operator$\ast$} (const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\begin{DoxyCompactList}\small\item\em Tensor-\/vector product. \end{DoxyCompactList}\item 
+std\+::ostream \& \hyperlink{classFVCode3D_1_1PermeabilityBase_ab1aeb67feab1c176759477ad8e881f2b}{operator$<$$<$} (std\+::ostream \&os, const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&tensor)
+\begin{DoxyCompactList}\small\item\em Show the permeability tensor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base}. 
+
+This is an abstract class that allows to handle the permeability property. Its derived classes define the permeability as a scalar, diagonal tensor, symmetric tensor and full tensor. 
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00029}{29} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!Permeability\+Base@{Permeability\+Base}}
+\index{Permeability\+Base@{Permeability\+Base}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{Permeability\+Base(const U\+Int size=1)}{PermeabilityBase(const UInt size=1)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Base\+::\+Permeability\+Base (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{size = {\ttfamily 1}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_af5fec5e9b68e5aca193f845a81226f6c}{}\label{classFVCode3D_1_1PermeabilityBase_af5fec5e9b68e5aca193f845a81226f6c}
+
+
+Constructor. 
+
+Create the permeability as a scalar(=1), diagonal tensor(3), symmetric tensor(6) or full tensor(9) 
+\begin{DoxyParams}{Parameters}
+{\em size} & this parameter allows to select the type of the permeability. Default 1. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00038}{38} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_af5fec5e9b68e5aca193f845a81226f6c_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!````~Permeability\+Base@{$\sim$\+Permeability\+Base}}
+\index{````~Permeability\+Base@{$\sim$\+Permeability\+Base}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{$\sim$\+Permeability\+Base()=default}{~PermeabilityBase()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Permeability\+Base\+::$\sim$\+Permeability\+Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_ae22dcf323e59c47090460a981ac9e84b}{}\label{classFVCode3D_1_1PermeabilityBase_ae22dcf323e59c47090460a981ac9e84b}
+
+
+Destructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_ae22dcf323e59c47090460a981ac9e84b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!Permeability\+Base@{Permeability\+Base}}
+\index{Permeability\+Base@{Permeability\+Base}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{Permeability\+Base()=delete}{PermeabilityBase()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Base\+::\+Permeability\+Base (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_ad0a13982b4a12932556083d1c05e50f2}{}\label{classFVCode3D_1_1PermeabilityBase_ad0a13982b4a12932556083d1c05e50f2}
+
+
+No default constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!Permeability\+Base@{Permeability\+Base}}
+\index{Permeability\+Base@{Permeability\+Base}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{Permeability\+Base(const Permeability\+Base \&)=delete}{PermeabilityBase(const PermeabilityBase &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Base\+::\+Permeability\+Base (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Base} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a8d36d27dd831ce3b1f39edb0a570bf8c}{}\label{classFVCode3D_1_1PermeabilityBase_a8d36d27dd831ce3b1f39edb0a570bf8c}
+
+
+No copy-\/constructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!norm@{norm}}
+\index{norm@{norm}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{norm() const }{norm() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Permeability\+Base\+::norm (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_aec31bb1bd0086825bbf2924cce6fc463}{}\label{classFVCode3D_1_1PermeabilityBase_aec31bb1bd0086825bbf2924cce6fc463}
+
+
+Compute the norm of the permeability tensor. 
+
+\begin{DoxyReturn}{Returns}
+the norm of the tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00011}{11} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{classFVCode3D_1_1PermeabilityBase_aec31bb1bd0086825bbf2924cce6fc463_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_aec31bb1bd0086825bbf2924cce6fc463_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator()@{operator()}}
+\index{operator()@{operator()}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator()(const U\+Int i, const U\+Int j) const =0}{operator()(const UInt i, const UInt j) const =0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Real} F\+V\+Code3\+D\+::\+Permeability\+Base\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i, }
+\item[{const {\bf U\+Int}}]{j}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_abd0550c6acbe86723c9ddfee18cb9da5}{}\label{classFVCode3D_1_1PermeabilityBase_abd0550c6acbe86723c9ddfee18cb9da5}
+
+
+Get the permeability at position (i,j) of the 3x3 tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & row \\
+\hline
+{\em j} & column \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the permeability at (i,j) 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_a2fb43c29985b36e4804bd69826d9ab58}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_ae8b671c423d58279ff87c67d9bf617ef}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_a234aeeebedf1665b8d42193bfe383f2f}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_aba4750f0a15a68057a0d7ef0f1cf5b2e}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_abd0550c6acbe86723c9ddfee18cb9da5_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator()@{operator()}}
+\index{operator()@{operator()}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator()(const U\+Int i) const =0}{operator()(const UInt i) const =0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Real} F\+V\+Code3\+D\+::\+Permeability\+Base\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a4cc07f9b2cb882f1328b11451bd98f8d}{}\label{classFVCode3D_1_1PermeabilityBase_a4cc07f9b2cb882f1328b11451bd98f8d}
+
+
+Get the permeability at position (i) of the vector associated with the tensor, reading by row. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & position of the permeability into the vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the permeability at i 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_a0966668aa41720f65aa7b998b0969cf3}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_af536697b5e88e9d05f3886ac5e7dd3e1}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_a039ec55ed880e5ce1290b413dead4284}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_a04c9403d35845b8589c9ee6eac5b3452}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator=@{operator=}}
+\index{operator=@{operator=}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator=(const Permeability\+Base \&)=delete}{operator=(const PermeabilityBase &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Permeability\+Base}\& F\+V\+Code3\+D\+::\+Permeability\+Base\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Base} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_abc8abcfca62e9520d74dd09dd324bd9c}{}\label{classFVCode3D_1_1PermeabilityBase_abc8abcfca62e9520d74dd09dd324bd9c}
+
+
+No assignment operator. 
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator[](const U\+Int i) const }{operator[](const UInt i) const }}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Real} F\+V\+Code3\+D\+::\+Permeability\+Base\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a43e9232aeb8a7f647601091bd8af3410}{}\label{classFVCode3D_1_1PermeabilityBase_a43e9232aeb8a7f647601091bd8af3410}
+
+
+Get the permeability at position \mbox{[}i\mbox{]} of the vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & position of the permeability into the vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the permeability at i 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00060}{60} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_a43e9232aeb8a7f647601091bd8af3410_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator[](const U\+Int i)}{operator[](const UInt i)}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Real}\& F\+V\+Code3\+D\+::\+Permeability\+Base\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a01d49e30e1f7cd6856a9eab6195beed1}{}\label{classFVCode3D_1_1PermeabilityBase_a01d49e30e1f7cd6856a9eab6195beed1}
+
+
+Get the permeability at position \mbox{[}i\mbox{]} of the vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & permeability at i \\
+\hline
+{\em i} & position of the permeability into the vector \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00083}{83} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_a01d49e30e1f7cd6856a9eab6195beed1_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!set\+Permeability@{set\+Permeability}}
+\index{set\+Permeability@{set\+Permeability}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{set\+Permeability(const Real perm, const U\+Int i, const U\+Int j)=0}{setPermeability(const Real perm, const UInt i, const UInt j)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void F\+V\+Code3\+D\+::\+Permeability\+Base\+::set\+Permeability (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{perm, }
+\item[{const {\bf U\+Int}}]{i, }
+\item[{const {\bf U\+Int}}]{j}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a6ac9a7c1b7ed948194429891dc839706}{}\label{classFVCode3D_1_1PermeabilityBase_a6ac9a7c1b7ed948194429891dc839706}
+
+
+Set the permeability at position (i,j) of the 3x3 tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & permeability at (i,j) \\
+\hline
+{\em i} & row \\
+\hline
+{\em j} & column \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_a0a76c41f195c37b6218fa97338863d19}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a82f66a215fa06295c3094f7452152167}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_a7303c6758e5ddf4ef12f53fd4f74acca}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_a41b228192c099a80f5d01b5bdc73e48d}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_a6ac9a7c1b7ed948194429891dc839706_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!set\+Permeability@{set\+Permeability}}
+\index{set\+Permeability@{set\+Permeability}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{set\+Permeability(const Real perm, const U\+Int i)=0}{setPermeability(const Real perm, const UInt i)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void F\+V\+Code3\+D\+::\+Permeability\+Base\+::set\+Permeability (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{perm, }
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a9c4837715f248789eac990148df9ad40}{}\label{classFVCode3D_1_1PermeabilityBase_a9c4837715f248789eac990148df9ad40}
+
+
+Get the permeability at position (i) of the vector associated with the tensor, reading by row. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & permeability at i \\
+\hline
+{\em i} & position of the permeability into the vector \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_a2919e222048216392a62891a526732d8}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a4f8605ba43b6ffccfa69e4db9b6f929a}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_af853d4e06b6601c725b6f16e919d3f3f}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_abd56a7a6313deb1399c1f323f415862f}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!show\+Me@{show\+Me}}
+\index{show\+Me@{show\+Me}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{show\+Me(std\+::ostream \&os=std\+::cout) const =0}{showMe(std::ostream &os=std::cout) const =0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\+::ostream\& F\+V\+Code3\+D\+::\+Permeability\+Base\+::show\+Me (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os = {\ttfamily std\+:\+:cout}}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a4f06952af19c0100b6b6043fa1f8f97a}{}\label{classFVCode3D_1_1PermeabilityBase_a4f06952af19c0100b6b6043fa1f8f97a}
+
+
+Show the permeability tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_aa6e8ce4765e44c4acca4ebd5974436dd}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a72332071c0bd6bb2ccdde36ca0b493a2}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_a5f0d1d524dfb3240601a5fed2272ff42}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_a9cb41282bbadb37a93a6a45a7120c04e}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_a4f06952af19c0100b6b6043fa1f8f97a_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!size@{size}}
+\index{size@{size}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{size()}{size()}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf U\+Int} F\+V\+Code3\+D\+::\+Permeability\+Base\+::size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a5e4bd70177de114e9165f9b81852862c}{}\label{classFVCode3D_1_1PermeabilityBase_a5e4bd70177de114e9165f9b81852862c}
+
+
+Size of the permeability. 
+
+\begin{DoxyReturn}{Returns}
+the size of the permeability\+: 1,3,6,9 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00096}{96} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_a5e4bd70177de114e9165f9b81852862c_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!tensor\+Vector\+Product@{tensor\+Vector\+Product}}
+\index{tensor\+Vector\+Product@{tensor\+Vector\+Product}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{tensor\+Vector\+Product(const Point3\+D \&vector) const =0}{tensorVectorProduct(const Point3D &vector) const =0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Point3D} F\+V\+Code3\+D\+::\+Permeability\+Base\+::tensor\+Vector\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a1c77d0168dd4ee2e3a1ce922e0c1725c}{}\label{classFVCode3D_1_1PermeabilityBase_a1c77d0168dd4ee2e3a1ce922e0c1725c}
+
+
+Tensor-\/vector product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between the permeability tensor and vector 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_aeb8c9cc6c4f91e826ecec60333aaba6b}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a8b147bf9e57927899dd92dff4980d1e8}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_ab73038761c1d6c3de0c7b7d5395af2cd}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_a44a3c074a9485b6830470f50da3bedc2}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_a1c77d0168dd4ee2e3a1ce922e0c1725c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!vector\+Tensor\+Product@{vector\+Tensor\+Product}}
+\index{vector\+Tensor\+Product@{vector\+Tensor\+Product}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{vector\+Tensor\+Product(const Point3\+D \&vector) const =0}{vectorTensorProduct(const Point3D &vector) const =0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Point3D} F\+V\+Code3\+D\+::\+Permeability\+Base\+::vector\+Tensor\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_aa60c227795b5b7dd6413ef90b211875e}{}\label{classFVCode3D_1_1PermeabilityBase_aa60c227795b5b7dd6413ef90b211875e}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and the permeability tensor 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classFVCode3D_1_1PermeabilityFullTensor_ac33ae20597f68533e0c7291fb8c49058}{F\+V\+Code3\+D\+::\+Permeability\+Full\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a98f843b5517b262ce5dc224a53607862}{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}, \hyperlink{classFVCode3D_1_1PermeabilityDiagonal_a281067ac8a3ea3058ae886f036eadb01}{F\+V\+Code3\+D\+::\+Permeability\+Diagonal}, and \hyperlink{classFVCode3D_1_1PermeabilityScalar_a43773753c437729c9b32a215449e1504}{F\+V\+Code3\+D\+::\+Permeability\+Scalar}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityBase_aa60c227795b5b7dd6413ef90b211875e_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Friends And Related Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Base} \&}]{tensor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a04284b595d50559389f6098e76611b76}{}\label{classFVCode3D_1_1PermeabilityBase_a04284b595d50559389f6098e76611b76}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00024}{24} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Base} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a72ee0b7351f22e26194b2407a041b3e0}{}\label{classFVCode3D_1_1PermeabilityBase_a72ee0b7351f22e26194b2407a041b3e0}
+
+
+Tensor-\/vector product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00029}{29} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{tensor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_ae9bcef7644b0548a473db5bdf1d85b5d}{}\label{classFVCode3D_1_1PermeabilityBase_ae9bcef7644b0548a473db5bdf1d85b5d}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00034}{34} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a83c27da33ea299dde90e6e790165dbb7}{}\label{classFVCode3D_1_1PermeabilityBase_a83c27da33ea299dde90e6e790165dbb7}
+
+
+Tensor-\/vector product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00039}{39} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{tensor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_ab1aeb67feab1c176759477ad8e881f2b}{}\label{classFVCode3D_1_1PermeabilityBase_ab1aeb67feab1c176759477ad8e881f2b}
+
+
+Show the permeability tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00044}{44} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!M\+\_\+permeability@{M\+\_\+permeability}}
+\index{M\+\_\+permeability@{M\+\_\+permeability}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{M\+\_\+permeability}{M_permeability}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<${\bf Real}$>$ F\+V\+Code3\+D\+::\+Permeability\+Base\+::\+M\+\_\+permeability\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_aef595aa25abfeaf51e8d242e5de2055d}{}\label{classFVCode3D_1_1PermeabilityBase_aef595aa25abfeaf51e8d242e5de2055d}
+
+
+Vector that represents the permeability tensor. 
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00166}{166} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}!M\+\_\+size@{M\+\_\+size}}
+\index{M\+\_\+size@{M\+\_\+size}!F\+V\+Code3\+D\+::\+Permeability\+Base@{F\+V\+Code3\+D\+::\+Permeability\+Base}}
+\subsubsection[{\texorpdfstring{M\+\_\+size}{M_size}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf U\+Int} F\+V\+Code3\+D\+::\+Permeability\+Base\+::\+M\+\_\+size = 0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PermeabilityBase_a5914ac070cdad89b5b6f0133a0ee3ba5}{}\label{classFVCode3D_1_1PermeabilityBase_a5914ac070cdad89b5b6f0133a0ee3ba5}
+
+
+Size of the permeability. 
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00170}{170} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{Permeability_8hpp}{Permeability.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{Permeability_8cpp}{Permeability.\+cpp}\end{DoxyCompactItemize}

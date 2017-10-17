@@ -1,0 +1,1016 @@
+\hypertarget{global__operator_8cpp_source}{}\section{global\+\_\+operator.\+cpp}
+\label{global__operator_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/global\+\_\+operator.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/global\+\_\+operator.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <vector>}
+00007 \textcolor{preprocessor}{#include <cmath>}
+00008 \textcolor{preprocessor}{#include <\hyperlink{global__operator_8hpp}{FVCode3D/assembler/global\_operator.hpp}>}
+00009 \textcolor{preprocessor}{#include <\hyperlink{local__operator_8hpp}{FVCode3D/assembler/local\_operator.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{BC_8hpp}{FVCode3D/boundaryCondition/BC.hpp}>}
+00011 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00012 \textcolor{preprocessor}{#include <\hyperlink{Permeability_8hpp}{FVCode3D/property/Permeability.hpp}>}
+00013 \textcolor{preprocessor}{#include <Eigen/LU>}
+00014 \textcolor{preprocessor}{#include <unsupported/Eigen/SparseExtra>}
+00015 
+00016 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00017 \{
+00018         
+\hypertarget{global__operator_8cpp_source.tex_l00019}{}\hyperlink{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4}{00019} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4}{global\_InnerProduct::reserve\_space}()      
+00020 \{
+00021         \textcolor{keyword}{auto} & M = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00022         std::vector<UInt> Matrix\_elements(\hyperlink{classFVCode3D_1_1global__Operator_a10945c9c802a23ee22d993424aef1ecb}{Ncol},0);
+00023         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00024         \{
+00025         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00026         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets = cellFacetsId.size();
+00027 
+00028         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
+00029     \{           
+00030                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00031                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[globalFacetId];
+00032                         
+00033                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00034                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00035                         globalFacetId = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00036 
+00037                 Matrix\_elements[globalFacetId] += numCellFacets;        
+00038         \}
+00039     \}
+00040     M.reserve(Matrix\_elements);         
+00041 \}
+00042 
+\hypertarget{global__operator_8cpp_source.tex_l00043}{}\hyperlink{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059}{00043} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059}{global\_InnerProduct::assemble}()   
+00044 \{
+00045         \textcolor{keyword}{auto} & M                = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00046         \textcolor{keyword}{auto} & facetVectorRef   = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00047         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacets    = facetVectorRef.size();
+00048         
+00049         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00050         \{               
+00051                 \textcolor{comment}{// Definisco prodotto interno locale}
+00052                 \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}   localIP(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh},cell);
+00053                 \textcolor{comment}{// Assemblo prodotto interno locale}
+00054                 localIP.\hyperlink{classFVCode3D_1_1local__InnerProduct_a5e5ade44aeb3e5982cdbc20e7721e07a}{assemble}();
+00055                 \textcolor{keyword}{auto} & Mp = localIP.\hyperlink{classFVCode3D_1_1local__InnerProduct_a16d585bf2b6ed9f84bab4eff1027b671}{getMp}();
+00056                 
+00057                 \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00058                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00059                 
+00060                 \textcolor{comment}{// Assemblo matrice locale in matrice globale}
+00061                 \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} iloc=0; iloc<numCellFacets; ++iloc)\{
+00062                         
+00063             \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = cellFacetsId[iloc];                                 \textcolor{comment}{//global Id}
+00064             \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[i];     
+00065             
+00066             \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00067                         \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00068                                         i = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00069 
+00070             \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Mcoeff = Mp(iloc,iloc);
+00071 
+00072             \textcolor{keywordflow}{if}( Mcoeff != 0. )
+00073                 M.coeffRef(i,i) += Mcoeff;
+00074 
+00075             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} jloc=iloc+1; jloc<numCellFacets; ++jloc)\{
+00076 
+00077                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} j = cellFacetsId[jloc];
+00078                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[j];
+00079                 Mcoeff = Mp(iloc,jloc);
+00080                 
+00081                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00082                                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00083                                         j = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00084 
+00085                 \textcolor{keywordflow}{if} (Mcoeff != 0.)\{
+00086                     M.coeffRef(i,j) += Mcoeff;
+00087                     M.coeffRef(j,i) += Mcoeff;
+00088                 \} 
+00089             \}
+00090         \}
+00091         \}
+00092 \}
+00093 
+\hypertarget{global__operator_8cpp_source.tex_l00094}{}\hyperlink{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed}{00094} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed}{global\_InnerProduct::ImposeBC}(\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{SpMat} & S, 
+      \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & rhs)      
+00095 \{
+00096         std::cout << \textcolor{stringliteral}{"Zero the Neumann row of S and impose BC on the rhs"} << std::endl;
+00097         
+00098         \textcolor{keywordflow}{for}( \textcolor{keyword}{auto} facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa72b7fad937f0d1586fc10b176ef5d3e}{getBorderFacetsIdsVector}() )
+00099         \{       
+00100                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} borderId = facet\_it.getBorderId();
+00101                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facetId  = facet\_it.getId();
+00102                         
+00103                 \textcolor{keywordflow}{if}( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} )
+00104                 \{
+00105                         \textcolor{comment}{// Impose Neumann BC on the matrix of the system}
+00106                         S.prune( [facetId]( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt}, \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} )\{ \textcolor{keywordflow}{return} ( i!= facetId ); \});
+00107                         S.coeffRef(facetId,facetId) = 1;
+00108                         \textcolor{comment}{// Impose Neumann BC on the rhs}
+00109                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} vel\_N = \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC
+      ()(facet\_it.getCentroid());
+00110             rhs[facetId] = vel\_N;
+00111                 \}
+00112                         
+00113                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet})
+00114                 \{
+00115                         \textcolor{comment}{// Impose Dirichlet BC on the rhs}
+00116                         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} pD = \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC()(
+      facet\_it.getCentroid());
+00117                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure = facet\_it.getSize();
+00118                         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & cell = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}()[ facet\_it.getSeparatedCellsIds()[0] ];
+00119                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha = cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a7ded24addbc6c535d7e3da6617e23c7c}{orientationFacet}( 
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[ facetId ] ); 
+00120                         rhs[facetId] = - alpha * facetMeasure * pD;
+00121                 \}
+00122         \}
+00123 \}
+00124 
+\hypertarget{global__operator_8cpp_source.tex_l00125}{}\hyperlink{classFVCode3D_1_1global__InnerProduct_ad5a02ae913446383b521c1b15a9fb11a}{00125} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed}{global\_InnerProduct::ImposeBC}(\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & rhs)      
+00126 \{
+00127         std::cout << \textcolor{stringliteral}{"Zero the Neumann row of M and impose BC on the rhs"} << std::endl;
+00128         \textcolor{keyword}{auto} & M = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00129         
+00130         \textcolor{keywordflow}{for}( \textcolor{keyword}{auto} facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aa72b7fad937f0d1586fc10b176ef5d3e}{getBorderFacetsIdsVector}() )
+00131         \{       
+00132                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} borderId = facet\_it.getBorderId();
+00133                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} facetId  = facet\_it.getId();
+00134                         
+00135                 \textcolor{keywordflow}{if}( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} )
+00136                 \{
+00137                         \textcolor{comment}{// Impose Neumann BC on the matrix of the system}
+00138                         M.prune( [facetId]( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt}, \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} )\{ \textcolor{keywordflow}{return} ( i!= facetId ); \});
+00139                         M.coeffRef(facetId,facetId) = 1;
+00140                         \textcolor{comment}{// Impose Neumann BC on the rhs}
+00141                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} vel\_N = \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC
+      ()(facet\_it.getCentroid());
+00142             rhs[facetId] = vel\_N;
+00143                 \}
+00144                         
+00145                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet})
+00146                 \{
+00147                         \textcolor{comment}{// Impose Dirichlet BC on the rhs}
+00148                         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} pD = \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC()(
+      facet\_it.getCentroid());
+00149                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure = facet\_it.getSize();
+00150                         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & cell = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}()[ facet\_it.getSeparatedCellsIds()[0] ];
+00151                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha = cell.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a7ded24addbc6c535d7e3da6617e23c7c}{orientationFacet}( 
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[ facetId ] ); 
+00152                         rhs[facetId] = - alpha * facetMeasure * pD;
+00153                 \}
+00154         \}
+00155 \}
+00156 
+00157 
+\hypertarget{global__operator_8cpp_source.tex_l00158}{}\hyperlink{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744}{00158} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744}{global\_Div::reserve\_space}()      
+00159 \{
+00160         \textcolor{keyword}{auto} & B   = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00161         \textcolor{keyword}{auto} & Dt  = *Dt\_matrix;
+00162         std::vector<UInt> Matrix\_elements(\hyperlink{classFVCode3D_1_1global__Operator_a10945c9c802a23ee22d993424aef1ecb}{Ncol},0);
+00163         std::vector<UInt> DtMatrix\_elements(\hyperlink{classFVCode3D_1_1global__Operator_a56146ab59419c1276673ab57d95bbf1c}{Nrow},0);
+00164         
+00165         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00166         \{
+00167         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00168         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} cellId = cell.getId();
+00169 
+00170         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<cellFacetsId.size(); ++localFacetId)
+00171     \{           
+00172                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00173                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[globalFacetId];
+00174                         
+00175                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00176                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00177                         globalFacetId = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00178 
+00179                 Matrix\_elements[globalFacetId] += 1;           \textcolor{comment}{// space for B element}
+00180                 
+00181                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af84dc398fca7867ff763bfca119ddc16}{isBorderFacet}() &&
+00182                 ( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()).getBCType() ==
+       \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} ) )
+00183                         \textcolor{keywordflow}{continue};
+00184                 DtMatrix\_elements[cellId] += 1;                \textcolor{comment}{// space for Dt element}
+00185                 
+00186         \}
+00187     \}
+00188     B.reserve(Matrix\_elements); 
+00189     Dt.reserve(DtMatrix\_elements);      
+00190 \}
+00191 
+\hypertarget{global__operator_8cpp_source.tex_l00192}{}\hyperlink{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68}{00192} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68}{global\_Div::assemble}()   
+00193 \{
+00194         \textcolor{keyword}{auto} & B                = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00195         \textcolor{keyword}{auto} & Dt               = *Dt\_matrix;
+00196         \textcolor{keyword}{auto} & facetVectorRef   = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00197         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacets    = facetVectorRef.size();
+00198         
+00199         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00200         \{               
+00201                 \textcolor{comment}{// Definisco divergenza locale}
+00202                 \hyperlink{classFVCode3D_1_1local__Div}{local\_Div}   localDIV(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh},cell);
+00203                 \textcolor{comment}{// Assemblo divergenza locale}
+00204                 localDIV.\hyperlink{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86}{assemble}();
+00205                 \textcolor{keyword}{auto} & Bp = localDIV.\hyperlink{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{getBp}();
+00206                 
+00207                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} cellId = cell.getId();
+00208                 \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00209                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00210                 
+00211                 \textcolor{comment}{// Assemblo matrice locale in matrice globale}
+00212                 \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} iloc=0; iloc<numCellFacets; ++iloc)\{
+00213                         
+00214             \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = cellFacetsId[iloc];                                 \textcolor{comment}{//global Id}
+00215             \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[i]; 
+00216             \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Bcoeff = Bp[iloc];    
+00217             
+00218             \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00219                         \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00220                                         i = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00221 
+00222             \textcolor{keywordflow}{if}( Bcoeff != 0. )\{
+00223                                 B.insert(cellId, i) = Bcoeff;
+00224                                 
+00225                                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af84dc398fca7867ff763bfca119ddc16}{isBorderFacet}() &&
+00226                                 ( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()).getBCType() == \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} ) )
+00227                                         \textcolor{keywordflow}{continue};
+00228                                 Dt.insert(i, cellId) = Bcoeff;
+00229                         \}
+00230         \}
+00231         \}
+00232 \}
+00233 
+\hypertarget{global__operator_8cpp_source.tex_l00234}{}\hyperlink{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d}{00234} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d}{CouplingConditions::reserve\_space}()
+00235 \{
+00236         \textcolor{keyword}{auto} & C = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00237         std::vector<UInt> CMatrix\_elements( M.cols(), 0 );
+00238         std::vector<UInt> MMatrix\_elements( M.cols(), 0 );
+00239         
+00240         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())\{
+00241                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_plus   = facet\_it.getId();
+00242                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_minus  = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + facet\_it.
+      getFractureId();
+00243                 \textcolor{comment}{// This is for C}
+00244                 CMatrix\_elements[ Id\_plus ]   = 1;
+00245                 CMatrix\_elements[ Id\_minus ]  = 1;
+00246                 \textcolor{comment}{// This is for M}
+00247                 MMatrix\_elements[ Id\_plus ]   = 1;
+00248                 MMatrix\_elements[ Id\_minus ]  = 1;
+00249         \}
+00250         C.reserve(CMatrix\_elements);
+00251         M.reserve(MMatrix\_elements);
+00252 \}
+00253 
+\hypertarget{global__operator_8cpp_source.tex_l00254}{}\hyperlink{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c}{00254} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c}{CouplingConditions::assemble}()
+00255 \{
+00256         \textcolor{keyword}{auto} & C = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00257     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00258         \{               
+00259         \textcolor{keyword}{auto}& F\_permeability = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_permeability;
+00260         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Kfn = F\_permeability->operator()(0,0);
+00261         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} F\_aperture = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_aperture;
+00262         
+00263                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} eta          = F\_aperture / Kfn;
+00264                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} xsi0     =  (2. * xsi - 1.) / 4.;
+00265                 
+00266                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_plus         = facet\_it.getId();
+00267                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_F            = facet\_it.getFractureId();
+00268                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_minus        = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + 
+      Id\_F;
+00269                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure    = facet\_it.getSize();
+00270                 
+00271                 \textcolor{comment}{// Coupling terms on M}
+00272                 M.coeffRef(Id\_plus,Id\_plus)    +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
+00273                 M.insert(Id\_plus,Id\_minus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
+00274                 M.coeffRef(Id\_minus,Id\_minus)  +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
+00275                 M.insert(Id\_minus,Id\_plus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
+00276                 
+00277                 \textcolor{comment}{// Coupling matrix C}
+00278                 C.insert(Id\_F, Id\_plus)     =  facetMeasure;
+00279                 C.insert(Id\_F, Id\_minus)    = -facetMeasure;
+00280         \}
+00281 \}
+00282 
+00283 
+\hypertarget{global__operator_8cpp_source.tex_l00284}{}\hyperlink{classFVCode3D_1_1FluxOperator_a9283ea5110f59751e1a8ea2c0b5da134}{00284} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1FluxOperator_a9283ea5110f59751e1a8ea2c0b5da134}{FluxOperator::getBorderCenter}(
+      \hyperlink{classFVCode3D_1_1FluxOperator_ab9fef691b58bb04de5814d21fb59ef44}{Fracture\_Juncture} fj)\textcolor{keyword}{ const}
+00285 \textcolor{keyword}{}\{
+00286     \textcolor{keywordflow}{return} (\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.first] +
+00287                 (\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.second] -
+00288                  \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.first]
+00289                 )/2.
+00290            );
+00291 \}
+00292 
+\hypertarget{global__operator_8cpp_source.tex_l00293}{}\hyperlink{classFVCode3D_1_1FluxOperator_a0cdfdaea15026cbb79d82ffe9dfb95e2}{00293} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1FluxOperator_a0cdfdaea15026cbb79d82ffe9dfb95e2}{FluxOperator::findFracturesAlpha} (\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1FluxOperator_ab9fef691b58bb04de5814d21fb59ef44}{Fracture\_Juncture} fj, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} n\_Id)\textcolor{keyword}{ const}
+00294 \textcolor{keyword}{}\{
+00295     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} borderCenter = getBorderCenter(fj);
+00296     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} cellCenter = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}()[
+      n\_Id].getCentroid();
+00297 
+00298     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} A = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}()[n\_Id].
+      getZoneCode()).M\_aperture *
+00299                   (\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.second]-\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.first]).norm();
+00300 
+00301     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & k =
+00302             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}()[n\_Id].getZoneCode()).M\_permeability;
+00303 
+00304     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} f = borderCenter - cellCenter;
+00305     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} D = sqrt(\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(f, f));
+00306     assert( D != 0 );
+00307 
+00308     f /= D;
+00309 
+00310     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} normal = \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(f, \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.second]-\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.first]); \textcolor{comment}{// k = f
+       x l}
+00311     normal = \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.second]-
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[fj.first], normal); \textcolor{comment}{// n = l x k}
+00312     normal.\hyperlink{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}{normalize}();
+00313 
+00314     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} KnDotF = fabs(\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(k * normal, f)); \textcolor{comment}{// K n * f}
+00315 
+00316     \textcolor{keywordflow}{return} A * KnDotF / D;
+00317 \}
+00318 
+\hypertarget{global__operator_8cpp_source.tex_l00319}{}\hyperlink{classFVCode3D_1_1FluxOperator_adea5929ec3492d9274095f1af5c33d05}{00319} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1FluxOperator_adea5929ec3492d9274095f1af5c33d05}{FluxOperator::findAlpha} (\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} & facetId, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID} * edge)\textcolor{keyword}{ const}
+00320 \textcolor{keyword}{}\{
+00321     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} edgeCenter = edge->\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_ab6f4cafa57b3e7116b815ee96aaf701c}{getCentroid}();
+00322     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} facetCenter = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facetId].getCentroid()
+      ;
+00323 
+00324     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} A = edge->\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a3834b95f5044df3e95afb2bf657693f6}{getSize}() *
+00325                    \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facetId].getZoneCode()).M\_aperture;
+00326 
+00327     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & k =
+00328             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facetId].getZoneCode()).M\_permeability;
+00329 
+00330     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} f = edgeCenter - facetCenter;
+00331     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} D = sqrt(\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(f, f));
+00332     assert( D != 0 );
+00333 
+00334     f /= D;
+00335 
+00336     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} normal = \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(  f,
+00337                             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[0]] -
+00338                             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[1]] ); \textcolor{comment}{// k = f x l}
+00339     normal = \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(  \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[0]] -
+00340                             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[1]],
+00341                             normal); \textcolor{comment}{// n = l x k}
+00342     normal.\hyperlink{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}{normalize}();
+00343 
+00344     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} KnDotF = fabs(\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(k * normal, f)); \textcolor{comment}{// K n * f}
+00345 
+00346     \textcolor{keywordflow}{return} A * KnDotF / D;
+00347 \}
+00348 
+\hypertarget{global__operator_8cpp_source.tex_l00349}{}\hyperlink{classFVCode3D_1_1FluxOperator_a0fe812b8a650b83ef5815f4dee25e0cf}{00349} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1FluxOperator_a0fe812b8a650b83ef5815f4dee25e0cf}{FluxOperator::findDirichletAlpha} (\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} & facetId, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\_ID} * edge)\textcolor{keyword}{ const}
+00350 \textcolor{keyword}{}\{
+00351     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} borderCenter = edge->\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_ab6f4cafa57b3e7116b815ee96aaf701c}{getCentroid}();
+00352     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} facetCenter = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facetId].getCentroid()
+      ;
+00353 
+00354     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} A = edge->\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a3834b95f5044df3e95afb2bf657693f6}{getSize}() *
+00355                    \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facetId].getZoneCode()).M\_aperture;
+00356 
+00357     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & k =
+00358             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facetId].getZoneCode()).M\_permeability;
+00359 
+00360     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} f = borderCenter - facetCenter;
+00361     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} D = sqrt(\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(f, f));
+00362     assert( D != 0 );
+00363 
+00364     f /= D;
+00365 
+00366     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} normal = \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(  f,
+00367                             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[0]] -
+00368                             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[1]] ); \textcolor{comment}{// k = f x l}
+00369     normal = \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(  \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[0]] -
+00370                             \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a7acee1523c8da4596273627acc652609}{getNodesVector}()[edge->
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID_a389e2ca5b81b7256dfadb2150eefcd2e}{getEdge}().\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a24050b2332146cdfa44b8833a72bf6a6}{getVerticesIds}()[1]],
+00371                             normal); \textcolor{comment}{// n = l x k}
+00372     normal.\hyperlink{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}{normalize}();
+00373 
+00374     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} KnDotF = fabs(\hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(k * normal, f)); \textcolor{comment}{// K n * f}
+00375 
+00376     \textcolor{keywordflow}{return} A * KnDotF / D;
+00377 \}
+00378 
+\hypertarget{global__operator_8cpp_source.tex_l00379}{}\hyperlink{classFVCode3D_1_1FluxOperator_a9fe4f2f355610d1cbb921382253c3853}{00379} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FluxOperator_a9fe4f2f355610d1cbb921382253c3853}{FluxOperator::reserve\_space}()
+00380 \{
+00381         \textcolor{keyword}{auto} & T = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00382         std::vector<UInt> Matrix\_elements( T.cols(), 0 );
+00383     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00384     \{   
+00385                 \textcolor{keyword}{auto} f\_neighbors = facet\_it.getFractureNeighbors();
+00386                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N\_neighbors = 0;
+00387         \textcolor{keyword}{auto} sum\_maker = [&N\_neighbors](std::pair< Fracture\_Juncture, std::vector<UInt> > p)\{N\_neighbors +=
+       p.second.size() ;\};
+00388         std::for\_each(f\_neighbors.begin(), f\_neighbors.end(), sum\_maker);
+00389                 Matrix\_elements[ facet\_it.getFractureId() ] = N\_neighbors + 1;
+00390         \}       
+00391         T.reserve(Matrix\_elements);
+00392 \}
+00393 
+\hypertarget{global__operator_8cpp_source.tex_l00394}{}\hyperlink{classFVCode3D_1_1FluxOperator_a4f96ac53cafc68eccb01d8ff29eecc87}{00394} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FluxOperator_a4f96ac53cafc68eccb01d8ff29eecc87}{FluxOperator::assemble}()
+00395 \{
+00396         \textcolor{keyword}{auto} & T = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00397     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00398     \{   
+00399                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_F = facet\_it.getFractureId(); 
+00400                 \textcolor{comment}{// Assemble -T matrix taking into account fractures intersections with the "star-delta"
+       transformation}
+00401         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} juncture\_it : facet\_it.getFractureNeighbors())
+00402         \{       
+00403             std::vector<Real> alphas;
+00404             \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alphaF = findFracturesAlpha (juncture\_it.first, facet\_it.getFractureId());
+00405 
+00406             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} neighbors\_it : juncture\_it.second)
+00407                 alphas.emplace\_back(findFracturesAlpha (juncture\_it.first, neighbors\_it));
+00408 
+00409             \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} a\_sum = alphaF;
+00410             \textcolor{keyword}{auto} sum\_maker = [&a\_sum](\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} item)\{a\_sum += item;\};
+00411             std::for\_each(alphas.begin(), alphas.end(), sum\_maker);
+00412 
+00413             \textcolor{keywordflow}{for} (\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} counter = 0; counter < alphas.size(); ++counter)
+00414             \{
+00415                                 
+00416                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} QFf = alphaF * alphas[counter] * \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{getMobility}() / a\_sum;
+00417                 
+00418                 T.coeffRef(Id\_F, Id\_F) -= QFf;
+00419                 
+00420                 T.insert(Id\_F,juncture\_it.second[counter]) = QFf; 
+00421                         \}
+00422                 \}
+00423     \}
+00424 \}
+00425 
+\hypertarget{global__operator_8cpp_source.tex_l00426}{}\hyperlink{classFVCode3D_1_1FluxOperator_aeb808234dae8f8d0a188f8c2efcda0ae}{00426} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FluxOperator_aeb808234dae8f8d0a188f8c2efcda0ae}{FluxOperator::ImposeBConFractures}(\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{SpMat} & S, 
+      \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & rhs)
+00427 \{
+00428         \textcolor{keyword}{auto} & facetVectorRef = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00429         \textcolor{comment}{// assemble BC on fractures}
+00430     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& edge\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}())
+00431     \{   
+00432         \textcolor{keywordtype}{bool} isD = \textcolor{keyword}{false};
+00433         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} borderId = 0;
+00434         
+00435         \textcolor{comment}{// select which BC to apply}
+00436         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} border\_it : edge\_it.getBorderIds())
+00437         \{
+00438             \textcolor{comment}{// BC = D > N && the one with greatest id}
+00439             \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(border\_it).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet})
+00440             \{   
+00441                 \textcolor{keywordflow}{if}(!isD)
+00442                 \{
+00443                     isD = \textcolor{keyword}{true};
+00444                     borderId = border\_it;
+00445                 \}
+00446                 \textcolor{keywordflow}{else}
+00447                     borderId = (border\_it > borderId) ? border\_it : borderId;
+00448             \}
+00449             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(!isD && \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(border\_it).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann})
+00450             \{   
+00451                 borderId = (border\_it > borderId) ? border\_it : borderId;
+00452                         \}
+00453         \}
+00454                 
+00455                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + 
+      \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00456                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCells     = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00457                 
+00458         \textcolor{comment}{// loop over the fracture facets to impose BC on fractures}
+00459         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} facet\_it : edge\_it.getSeparatedFacetsIds())
+00460         \{        
+00461             \textcolor{keywordflow}{if}(facetVectorRef[facet\_it].isFracture())
+00462             \{   
+00463                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} neighborId = facetVectorRef[facet\_it].getFractureFacetId();
+00464                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aperture = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}( facetVectorRef[facet\_it].getZoneCode() ).M\_aperture;
+00465 
+00466                 \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann})
+00467                 \{       
+00468                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Q1o = \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC()(
+      edge\_it.getCentroid()) * edge\_it.getSize() * aperture;
+00469                     rhs[ numFacetsTot+numCells + neighborId ] += Q1o;
+00470                 \} \textcolor{comment}{// if}
+00471                 
+00472                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet})
+00473                 \{       
+00474                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha1 = findAlpha (facet\_it, &edge\_it);
+00475                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha2 = findDirichletAlpha (facet\_it, &edge\_it);
+00476 
+00477                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
+00478                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Q12 = T12 * \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{getMobility}();
+00479                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Q1o = Q12 * \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC
+      ()(edge\_it.getCentroid());
+00480 
+00481                     S.coeffRef( numFacetsTot+numCells + neighborId, numFacetsTot+numCells + neighborId) -= 
+      Q12; 
+00482                     rhs[ numFacetsTot+numCells + neighborId ] -= Q1o;
+00483                 \} \textcolor{comment}{// else if}
+00484             \} \textcolor{comment}{// if}
+00485         \}\textcolor{comment}{// for}
+00486     \} \textcolor{comment}{// for}
+00487 \}
+00488 
+\hypertarget{global__operator_8cpp_source.tex_l00489}{}\hyperlink{classFVCode3D_1_1FluxOperator_addee183d3fd26f83be07ed70f551e404}{00489} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FluxOperator_aeb808234dae8f8d0a188f8c2efcda0ae}{FluxOperator::ImposeBConFractures}(\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & rhs)
+00490 \{
+00491         \textcolor{keyword}{auto} & T = *\hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\_matrix};
+00492         \textcolor{keyword}{auto} & facetVectorRef = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00493         \textcolor{comment}{// assemble BC on fractures}
+00494     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& edge\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a12c92b683cfb3d9ac2645f038a8c6220}{getBorderTipEdgesIdsVector}())
+00495     \{   
+00496         \textcolor{keywordtype}{bool} isD = \textcolor{keyword}{false};
+00497         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} borderId = 0;
+00498         
+00499         \textcolor{comment}{// select which BC to apply}
+00500         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} border\_it : edge\_it.getBorderIds())
+00501         \{
+00502             \textcolor{comment}{// BC = D > N && the one with greatest id}
+00503             \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(border\_it).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet})
+00504             \{   
+00505                 \textcolor{keywordflow}{if}(!isD)
+00506                 \{
+00507                     isD = \textcolor{keyword}{true};
+00508                     borderId = border\_it;
+00509                 \}
+00510                 \textcolor{keywordflow}{else}
+00511                     borderId = (border\_it > borderId) ? border\_it : borderId;
+00512             \}
+00513             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(!isD && \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(border\_it).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann})
+00514             \{   
+00515                 borderId = (border\_it > borderId) ? border\_it : borderId;
+00516                         \}
+00517         \}
+00518                 
+00519                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCells     = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00520                 
+00521         \textcolor{comment}{// loop over the fracture facets to impose BC on fractures}
+00522         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} facet\_it : edge\_it.getSeparatedFacetsIds())
+00523         \{        
+00524             \textcolor{keywordflow}{if}(facetVectorRef[facet\_it].isFracture())
+00525             \{   
+00526                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} neighborId = facetVectorRef[facet\_it].getFractureFacetId();
+00527                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aperture = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}( facetVectorRef[facet\_it].getZoneCode() ).M\_aperture;
+00528 
+00529                 \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann})
+00530                 \{       
+00531                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Q1o = \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC()(
+      edge\_it.getCentroid()) * edge\_it.getSize() * aperture;
+00532                     rhs[ numCells + neighborId ] += Q1o;
+00533                 \} \textcolor{comment}{// if}
+00534                 
+00535                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBCType() == 
+      \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet})
+00536                 \{       
+00537                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha1 = findAlpha (facet\_it, &edge\_it);
+00538                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha2 = findDirichletAlpha (facet\_it, &edge\_it);
+00539 
+00540                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
+00541                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Q12 = T12 * \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{getMobility}();
+00542                     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Q1o = Q12 * \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(borderId).getBC
+      ()(edge\_it.getCentroid());
+00543 
+00544                     T.coeffRef( neighborId, neighborId) -= Q12; 
+00545                     rhs[ numCells + neighborId ] -= Q1o;
+00546                 \} \textcolor{comment}{// else if}
+00547             \} \textcolor{comment}{// if}
+00548         \}\textcolor{comment}{// for}
+00549     \} \textcolor{comment}{// for}
+00550 \}
+00551 
+00552 
+\hypertarget{global__operator_8cpp_source.tex_l00553}{}\hyperlink{classFVCode3D_1_1global__BulkBuilder_a4f1cfa8e5e8dff81e56993a7ecf9485d}{00553} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__BulkBuilder_a4f1cfa8e5e8dff81e56993a7ecf9485d}{global\_BulkBuilder::reserve\_space\_Monolithic}() 
+00554 \{
+00555         std::vector<UInt> Matrix\_elements(S.cols(),0);
+00556         \textcolor{keyword}{auto} & facetVectorRef   = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00557         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = M.cols();
+00558         
+00559         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00560         \{
+00561         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00562         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} cellId = cell.getId();
+00563         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets = cellFacetsId.size();
+00564 
+00565         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
+00566     \{           
+00567                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00568                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[globalFacetId];
+00569                         
+00570                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00571                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00572                         globalFacetId = facetVectorRef.size() + fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00573 
+00574                 Matrix\_elements[globalFacetId] += numCellFacets + 1;            \textcolor{comment}{// space for the M and B
+       elements}
+00575                 
+00576                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af84dc398fca7867ff763bfca119ddc16}{isBorderFacet}() &&
+00577                 ( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()).getBCType() ==
+       \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} ) )
+00578                         \textcolor{keywordflow}{continue};
+00579                 Matrix\_elements[ numFacetsTot+cellId ] += 1;                    \textcolor{comment}{// space fot the Dt element}
+00580                 
+00581         \}
+00582     \}
+00583     S.reserve(Matrix\_elements); 
+00584 \}
+00585 
+\hypertarget{global__operator_8cpp_source.tex_l00586}{}\hyperlink{classFVCode3D_1_1global__BulkBuilder_a39e4c88b8703afc8a9f058301a9cb61a}{00586} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__BulkBuilder_a39e4c88b8703afc8a9f058301a9cb61a}{global\_BulkBuilder::reserve\_space}() 
+00587 \{
+00588         std::vector<UInt> MMatrix\_elements(M.cols(),0);
+00589         std::vector<UInt> BMatrix\_elements(B.cols(),0);
+00590         std::vector<UInt> DtMatrix\_elements(Dt.cols(),0);
+00591         
+00592         \textcolor{keyword}{auto} & facetVectorRef   = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00593         
+00594         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00595         \{
+00596         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00597         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} cellId = cell.getId();
+00598         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets = cellFacetsId.size();
+00599 
+00600         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
+00601     \{           
+00602                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00603                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[globalFacetId];
+00604                         
+00605                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00606                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00607                         globalFacetId = facetVectorRef.size() + fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00608 
+00609                 MMatrix\_elements[globalFacetId] += numCellFacets;            \textcolor{comment}{// space for the M element}
+00610                 BMatrix\_elements[globalFacetId] += 1;                        \textcolor{comment}{// space for the B element}
+00611                 
+00612                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af84dc398fca7867ff763bfca119ddc16}{isBorderFacet}() &&
+00613                 ( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()).getBCType() ==
+       \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} ) )
+00614                         \textcolor{keywordflow}{continue};
+00615                 DtMatrix\_elements[cellId] += 1;    
+00616                 
+00617         \}
+00618     \}
+00619     M.reserve(MMatrix\_elements);
+00620     B.reserve(BMatrix\_elements);
+00621     Dt.reserve(DtMatrix\_elements);      
+00622 \}
+00623 
+\hypertarget{global__operator_8cpp_source.tex_l00624}{}\hyperlink{classFVCode3D_1_1global__BulkBuilder_ae68449982a79f46851040949df45306c}{00624} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__BulkBuilder_ae68449982a79f46851040949df45306c}{global\_BulkBuilder::assemble\_Monolithic}()   
+00625 \{
+00626         \textcolor{keyword}{auto} & facetVectorRef   = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00627         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacets    = facetVectorRef.size();
+00628         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = S.cols();
+00629         
+00630         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00631         \{               
+00632                 \textcolor{comment}{// Definisco prodotto interno locale}
+00633                 \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}   localIP(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh},cell);
+00634                 \textcolor{comment}{// Definisco divergenza locale}
+00635                 \hyperlink{classFVCode3D_1_1local__Div}{local\_Div}            localDIV(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh},cell);
+00636                 \textcolor{comment}{// Definisco builder locale}
+00637                 \hyperlink{classFVCode3D_1_1local__builder}{local\_builder}        localBUILDER(localIP,localDIV,cell);
+00638                 \textcolor{comment}{// Assemblo matrici locali}
+00639                 localBUILDER.\hyperlink{classFVCode3D_1_1local__builder_a4f57be493ef2a52f37a898855c3e4d66}{build}();
+00640                 
+00641                 \textcolor{keyword}{auto} & Mp = localIP.\hyperlink{classFVCode3D_1_1local__InnerProduct_a16d585bf2b6ed9f84bab4eff1027b671}{getMp}();
+00642                 \textcolor{keyword}{auto} & Bp = localDIV.\hyperlink{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{getBp}();
+00643                 
+00644                 \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00645                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00646                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} cellId         = cell.getId();
+00647                 
+00648                 \textcolor{comment}{// Assemblo matrice locale in matrice globale}
+00649                 \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} iloc=0; iloc<numCellFacets; ++iloc)
+00650                 \{
+00651             \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = cellFacetsId[iloc];                                 \textcolor{comment}{//global Id}
+00652             \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[i];     
+00653             
+00654             \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00655                         \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00656                                         i = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00657 
+00658                 \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Bcoeff = Bp[iloc];
+00659             \textcolor{keywordflow}{if}( Bcoeff != 0. )
+00660                                 S.insert(numFacetsTot + cellId, i) = Bcoeff;
+00661 
+00662             \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Mcoeff = Mp(iloc,iloc);
+00663             \textcolor{keywordflow}{if}( Mcoeff != 0. )
+00664                 S.coeffRef(i,i) += Mcoeff;
+00665 
+00666             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} jloc=iloc+1; jloc<numCellFacets; ++jloc)
+00667             \{
+00668                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} j = cellFacetsId[jloc];
+00669                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[j];
+00670                 Mcoeff = Mp(iloc,jloc);
+00671                 
+00672                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00673                                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00674                                         j = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00675 
+00676                 \textcolor{keywordflow}{if} (Mcoeff != 0.)\{
+00677                     S.coeffRef(i,j) += Mcoeff;
+00678                     S.coeffRef(j,i) += Mcoeff;
+00679                 \} 
+00680             \}
+00681             
+00682                         \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af84dc398fca7867ff763bfca119ddc16}{isBorderFacet}() &&
+00683                                 ( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()).getBCType() == \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} ) )
+00684                                 \textcolor{keywordflow}{continue};
+00685                         S.insert(i, numFacetsTot + cellId) = Bcoeff;
+00686                         
+00687         \}
+00688         \}
+00689 \}
+00690 
+\hypertarget{global__operator_8cpp_source.tex_l00691}{}\hyperlink{classFVCode3D_1_1global__BulkBuilder_acf5c2ccba1be5c8ba2165587503c83b9}{00691} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1global__BulkBuilder_acf5c2ccba1be5c8ba2165587503c83b9}{global\_BulkBuilder::assemble}()   
+00692 \{
+00693         \textcolor{keyword}{auto} & facetVectorRef   = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}();
+00694         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacets    = facetVectorRef.size();
+00695         
+00696         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00697         \{               
+00698                 \textcolor{comment}{// Definisco prodotto interno locale}
+00699                 \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}   localIP(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh},cell);
+00700                 \textcolor{comment}{// Definisco divergenza locale}
+00701                 \hyperlink{classFVCode3D_1_1local__Div}{local\_Div}            localDIV(\hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh},cell);
+00702                 \textcolor{comment}{// Definisco builder locale}
+00703                 \hyperlink{classFVCode3D_1_1local__builder}{local\_builder}        localBUILDER(localIP,localDIV,cell);
+00704                 \textcolor{comment}{// Assemblo matrici locali}
+00705                 localBUILDER.\hyperlink{classFVCode3D_1_1local__builder_a4f57be493ef2a52f37a898855c3e4d66}{build}();
+00706                 
+00707                 \textcolor{keyword}{auto} & Mp = localIP.\hyperlink{classFVCode3D_1_1local__InnerProduct_a16d585bf2b6ed9f84bab4eff1027b671}{getMp}();
+00708                 \textcolor{keyword}{auto} & Bp = localDIV.\hyperlink{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{getBp}();
+00709                 
+00710                 \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
+00711                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00712                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} cellId         = cell.getId();
+00713                 
+00714                 \textcolor{comment}{// Assemblo matrice locale in matrice globale}
+00715                 \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} iloc=0; iloc<numCellFacets; ++iloc)
+00716                 \{       
+00717             \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = cellFacetsId[iloc];                                 \textcolor{comment}{//global Id}
+00718             \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[i];     
+00719             
+00720             \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00721                         \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00722                                         i = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00723 
+00724                 \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Bcoeff = Bp[iloc];
+00725             \textcolor{keywordflow}{if}( Bcoeff != 0. )
+00726                                 B.insert(cellId, i) = Bcoeff;
+00727 
+00728             \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Mcoeff = Mp(iloc,iloc);
+00729             \textcolor{keywordflow}{if}( Mcoeff != 0. )
+00730                 M.coeffRef(i,i) += Mcoeff;
+00731 
+00732             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} jloc=iloc+1; jloc<numCellFacets; ++jloc)\{
+00733 
+00734                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} j = cellFacetsId[jloc];
+00735                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = facetVectorRef[j];
+00736                 Mcoeff = Mp(iloc,jloc);
+00737                 
+00738                 \textcolor{comment}{// This is to take into account the decoupling of fractures facets}
+00739                                 \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_aed3f579d52847e839501f647e90c35ab}{isFracture}() && (cell.orientationFacet(fac)<0) )
+00740                                         j = numFacets + fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a08dc369eccd02b29133187cede7511eb}{getFractureFacetId}();
+00741 
+00742                 \textcolor{keywordflow}{if} (Mcoeff != 0.)\{
+00743                     M.coeffRef(i,j) += Mcoeff;
+00744                     M.coeffRef(j,i) += Mcoeff;
+00745                 \} 
+00746             \}
+00747             
+00748                         \textcolor{keywordflow}{if}( fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af84dc398fca7867ff763bfca119ddc16}{isBorderFacet}() &&
+00749                                 ( \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\_bc}.\hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{getBordersBCMap}().at(fac.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a528828e73f43ae6fa5c858ecc5ab5a65}{getBorderId}()).getBCType() == \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann} ) )
+00750                                 \textcolor{keywordflow}{continue};
+00751                         Dt.insert(i, cellId) = Bcoeff;
+00752                                 
+00753                 \}
+00754         \}
+00755 \}
+00756 
+\hypertarget{global__operator_8cpp_source.tex_l00757}{}\hyperlink{classFVCode3D_1_1FractureBuilder_af3f7ade53f75d44dbb523b697bced516}{00757} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FractureBuilder_af3f7ade53f75d44dbb523b697bced516}{FractureBuilder::reserve\_space\_Monolithic}()
+00758 \{
+00759         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = M.cols();
+00760         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCells     = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size(); 
+00761         std::vector<UInt> Matrix\_elements(S.cols(),0);
+00762     std::fill( Matrix\_elements.begin() + numFacetsTot+numCells, Matrix\_elements.end(), 2);
+00763     
+00764     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00765     \{   
+00766                 \textcolor{comment}{//This is for -T}
+00767                 \textcolor{keyword}{auto} f\_neighbors = facet\_it.getFractureNeighbors();
+00768                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N\_neighbors = 0;
+00769         \textcolor{keyword}{auto} sum\_maker = [&N\_neighbors](std::pair< Fracture\_Juncture, std::vector<UInt> > p)\{N\_neighbors +=
+       p.second.size() ;\};
+00770         std::for\_each(f\_neighbors.begin(), f\_neighbors.end(), sum\_maker);
+00771                 Matrix\_elements[ numFacetsTot+numCells + facet\_it.getFractureId() ] += N\_neighbors + 1;
+00772                 
+00773                 \textcolor{comment}{// This is for C and coupling terms on M}
+00774                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_plus   = facet\_it.getId();
+00775                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_minus  = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + facet\_it.
+      getFractureId();
+00776                 Matrix\_elements[ Id\_plus ]   += 2;
+00777                 Matrix\_elements[ Id\_minus ]  += 2;      
+00778         \}
+00779     S.reserve(Matrix\_elements);
+00780 \}
+00781 
+\hypertarget{global__operator_8cpp_source.tex_l00782}{}\hyperlink{classFVCode3D_1_1FractureBuilder_a27a2975168100bcf35373b4715d8b1dc}{00782} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FractureBuilder_a27a2975168100bcf35373b4715d8b1dc}{FractureBuilder::reserve\_space}()
+00783 \{
+00784         \textcolor{keyword}{auto} & T = FO.getMatrix();
+00785         std::vector<UInt> CMatrix\_elements( C.cols(), 0 );
+00786         std::vector<UInt> TMatrix\_elements( T.cols(), 0 );
+00787         std::vector<UInt> MMatrix\_elements( M.cols(), 0 );
+00788     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00789     \{   
+00790                 \textcolor{comment}{//This is for -T}
+00791                 \textcolor{keyword}{auto} f\_neighbors = facet\_it.getFractureNeighbors();
+00792                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N\_neighbors = 0;
+00793         \textcolor{keyword}{auto} sum\_maker = [&N\_neighbors](std::pair< Fracture\_Juncture, std::vector<UInt> > p)\{N\_neighbors +=
+       p.second.size() ;\};
+00794         std::for\_each(f\_neighbors.begin(), f\_neighbors.end(), sum\_maker);
+00795                 TMatrix\_elements[ facet\_it.getFractureId() ] = N\_neighbors + 1;
+00796                 
+00797                 \textcolor{comment}{// This is for C and coupling terms on M}
+00798                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_plus   = facet\_it.getId();
+00799                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_minus  = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + facet\_it.
+      getFractureId();
+00800                 CMatrix\_elements[ Id\_plus ]   = 1;
+00801                 CMatrix\_elements[ Id\_minus ]  = 1;
+00802                 MMatrix\_elements[ Id\_plus ]   = 1;
+00803                 MMatrix\_elements[ Id\_minus ]  = 1;
+00804         \}       
+00805         C.reserve(CMatrix\_elements);
+00806         T.reserve(TMatrix\_elements);
+00807         M.reserve(MMatrix\_elements);
+00808 \}
+00809 
+\hypertarget{global__operator_8cpp_source.tex_l00810}{}\hyperlink{classFVCode3D_1_1FractureBuilder_a8aa6db02f37b5fdd9d9a86b2ca6b1fcf}{00810} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FractureBuilder_a8aa6db02f37b5fdd9d9a86b2ca6b1fcf}{FractureBuilder::assemble\_Monolithic}()
+00811 \{
+00812     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00813     \{   
+00814         \textcolor{keyword}{auto}& F\_permeability = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_permeability;
+00815         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Kfn = F\_permeability->operator()(0,0);
+00816         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} F\_aperture = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_aperture;
+00817                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} eta = F\_aperture / Kfn;
+00818                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} xsi0     =  (2. * xsi - 1.) / 4.;
+00819                 
+00820                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = M.cols();
+00821                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCells     = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00822                 
+00823                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_plus         = facet\_it.getId();
+00824                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_F            = facet\_it.getFractureId();
+00825                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_minus        = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + 
+      Id\_F;
+00826                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure    = facet\_it.getSize();
+00827                 
+00828                 \textcolor{comment}{// Coupling terms on M}
+00829                 S.coeffRef(Id\_plus,Id\_plus)    +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
+00830                 S.insert(Id\_plus,Id\_minus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
+00831                 S.coeffRef(Id\_minus,Id\_minus)  +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
+00832                 S.insert(Id\_minus,Id\_plus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
+00833                 
+00834                 \textcolor{comment}{// Coupling matrix Ct and C}
+00835                 S.insert(Id\_plus, numFacetsTot+numCells + Id\_F)     =  facetMeasure;
+00836                 S.insert(Id\_minus, numFacetsTot+numCells + Id\_F)    = -facetMeasure;
+00837                 S.insert(numFacetsTot+numCells + Id\_F, Id\_plus)     =  facetMeasure;
+00838                 S.insert(numFacetsTot+numCells + Id\_F, Id\_minus)    = -facetMeasure;
+00839         
+00840                 \textcolor{comment}{// Assemble -T matrix taking into account fractures intersections with the "star-delta"
+       transformation}
+00841         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} juncture\_it : facet\_it.getFractureNeighbors())
+00842         \{       
+00843             std::vector<Real> alphas;
+00844             \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alphaF = FO.findFracturesAlpha (juncture\_it.first, facet\_it.getFractureId());
+00845 
+00846             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} neighbors\_it : juncture\_it.second)
+00847                 alphas.emplace\_back(FO.findFracturesAlpha (juncture\_it.first, neighbors\_it));
+00848 
+00849             \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} a\_sum = alphaF;
+00850             \textcolor{keyword}{auto} sum\_maker = [&a\_sum](\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} item)\{a\_sum += item;\};
+00851             std::for\_each(alphas.begin(), alphas.end(), sum\_maker);
+00852 
+00853             \textcolor{keywordflow}{for} (\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} counter = 0; counter < alphas.size(); ++counter)
+00854             \{   
+00855                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} QFf = alphaF * alphas[counter] * \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{getMobility}() / a\_sum;
+00856                 
+00857                 S.coeffRef( numFacetsTot+numCells + Id\_F, numFacetsTot+numCells + Id\_F ) -= QFf;
+00858                 
+00859                 S.insert( numFacetsTot+numCells + Id\_F, numFacetsTot+numCells + juncture\_it.second[counter]
+      ) = QFf; 
+00860                 
+00861             \}
+00862         \}
+00863     \}
+00864 \}
+00865 
+\hypertarget{global__operator_8cpp_source.tex_l00866}{}\hyperlink{classFVCode3D_1_1FractureBuilder_ab24549851fa577aa8d6cba68fd970d75}{00866} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1FractureBuilder_ab24549851fa577aa8d6cba68fd970d75}{FractureBuilder::assemble}()
+00867 \{
+00868         \textcolor{keyword}{auto} & T = FO.getMatrix();
+00869     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00870     \{   
+00871         \textcolor{keyword}{auto}& F\_permeability = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_permeability;
+00872         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} Kfn = F\_permeability->operator()(0,0);
+00873         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} F\_aperture = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().
+      \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_aperture;
+00874                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} eta = F\_aperture / Kfn;
+00875                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} xsi0     =  (2. * xsi - 1.) / 4.;
+00876                 
+00877                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = M.cols();
+00878                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCells     = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00879                 
+00880                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_plus         = facet\_it.getId();
+00881                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_F            = facet\_it.getFractureId();
+00882                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Id\_minus        = \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + 
+      Id\_F;
+00883                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure    = facet\_it.getSize();
+00884                 
+00885                 \textcolor{comment}{// Coupling terms on M}
+00886                 M.coeffRef(Id\_plus,Id\_plus)    +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
+00887                 M.insert(Id\_plus,Id\_minus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
+00888                 M.coeffRef(Id\_minus,Id\_minus)  +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
+00889                 M.insert(Id\_minus,Id\_plus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
+00890                 
+00891                 \textcolor{comment}{// Coupling matrix Ct and C}
+00892                 C.insert(Id\_F, Id\_plus)     =  facetMeasure;
+00893                 C.insert(Id\_F, Id\_minus)    = -facetMeasure;
+00894         
+00895                 \textcolor{comment}{// Assemble -T matrix taking into account fractures intersections with the "star-delta"
+       transformation}
+00896         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} juncture\_it : facet\_it.getFractureNeighbors())
+00897         \{       
+00898             std::vector<Real> alphas;
+00899             \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alphaF = FO.findFracturesAlpha (juncture\_it.first, facet\_it.getFractureId());
+00900 
+00901             \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} neighbors\_it : juncture\_it.second)
+00902                 alphas.emplace\_back(FO.findFracturesAlpha (juncture\_it.first, neighbors\_it));
+00903 
+00904             \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} a\_sum = alphaF;
+00905             \textcolor{keyword}{auto} sum\_maker = [&a\_sum](\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} item)\{a\_sum += item;\};
+00906             std::for\_each(alphas.begin(), alphas.end(), sum\_maker);
+00907 
+00908             \textcolor{keywordflow}{for} (\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} counter = 0; counter < alphas.size(); ++counter)
+00909             \{   
+00910                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} QFf = alphaF * alphas[counter] * \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{getMobility}() / a\_sum;
+00911                 
+00912                 T.coeffRef( Id\_F, Id\_F ) -= QFf;
+00913                 
+00914                 T.insert( Id\_F, juncture\_it.second[counter] ) = QFf; 
+00915                 
+00916             \}
+00917         \}
+00918     \}
+00919 \}
+00920 
+00921 \}  \textcolor{comment}{//FVCode3d}
+00922 
+\end{DoxyCode}

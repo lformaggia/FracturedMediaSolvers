@@ -1,0 +1,6 @@
+<map id="FVCode3D::ExporterVTU::exportSolutionOnFacets" name="FVCode3D::ExporterVTU::exportSolutionOnFacets">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1ExporterVTU.html#a8e6ee7a5a2bede11d9671d37e78651a4" title="Export the solution on cells and fracture facets in a single file. " alt="" coords="224,39,395,80"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1ExporterVTU.html#a1bca940b11053faa1a928bf3b19709af" title="Export the solution on fracture facets. " alt="" coords="443,39,613,80"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet.html#af92ad0b6b79c69f6c04584301b8998a7" title="Get vertices Ids (const) " alt="" coords="661,5,825,47"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet.html#a5d18db39a0eeb85e6a4afc2b09813201" title="Get vertices number (const) " alt="" coords="661,71,825,112"/>
+</map>

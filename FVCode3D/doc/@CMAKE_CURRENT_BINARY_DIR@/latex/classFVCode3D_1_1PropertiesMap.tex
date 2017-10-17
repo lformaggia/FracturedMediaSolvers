@@ -1,0 +1,483 @@
+\hypertarget{classFVCode3D_1_1PropertiesMap}{}\section{F\+V\+Code3D\+:\+:Properties\+Map Class Reference}
+\label{classFVCode3D_1_1PropertiesMap}\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+
+
+Class that handles the properties for all the reservoir.  
+
+
+
+
+{\ttfamily \#include $<$Properties.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1PropertiesMap_a8cf38425cb5139944861f9dd739990c6}{Properties\+Map} ()
+\begin{DoxyCompactList}\small\item\em Empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PropertiesMap_a9867cdd12c945b69b55327a850339754}{Properties\+Map} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mobility, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} compressibility=0.)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1PropertiesMap_a69ce6f83b7fcd50b27aea1a2e3e87ba1}{get\+Number\+Of\+Zone} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of zones. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{get\+Mobility} () const 
+\begin{DoxyCompactList}\small\item\em Get the mobility of the fluid. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f}{get\+Compressibility} () const 
+\begin{DoxyCompactList}\small\item\em Get the compressbility. \end{DoxyCompactList}\item 
+const std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Properties}{Properties} $>$ \& \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{get\+Properties} () const 
+\begin{DoxyCompactList}\small\item\em Get the map of properties (const) \end{DoxyCompactList}\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Properties}{Properties} $>$ \& \hyperlink{classFVCode3D_1_1PropertiesMap_ac6aa90932a7ea39d68401d31f9655f2d}{get\+Properties} ()
+\begin{DoxyCompactList}\small\item\em Get the map of properties. \end{DoxyCompactList}\item 
+const \hyperlink{classFVCode3D_1_1Properties}{Properties} \& \hyperlink{classFVCode3D_1_1PropertiesMap_ab06f08f098ebe4cac0dfb78ca1a3fd7f}{get\+Properties} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} zone) const 
+\begin{DoxyCompactList}\small\item\em Get the properties of a selected zone (const) \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Properties}{Properties} \& \hyperlink{classFVCode3D_1_1PropertiesMap_a85d23b6c8da4de58e30bab6ad643c084}{get\+Properties} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} zone)
+\begin{DoxyCompactList}\small\item\em Get the properties of a selected zone. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1PropertiesMap_ad5f9cccc9355b9af66025f6c433b8997}{set\+Properties\+On\+Matrix} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&permeability)
+\begin{DoxyCompactList}\small\item\em Set the same property on all the porous medium. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1PropertiesMap_a3289bc66bb640670a35cd79a7577488d}{set\+Properties\+On\+Fractures} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aperture, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&permeability)
+\begin{DoxyCompactList}\small\item\em Set the same property on all the fractures. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1PropertiesMap_ac303adadd1101e7bee62ecad0e8ea6ac}{set\+Zone} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} zone, const \hyperlink{classFVCode3D_1_1Properties}{Properties} \&prop)
+\begin{DoxyCompactList}\small\item\em Set the properties of a selected zone. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1PropertiesMap_a130615880aea53aecc331634de3a2d16}{set\+Mobility} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mobility)
+\begin{DoxyCompactList}\small\item\em Set the mobility of the fluid. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1PropertiesMap_abe59b6519ad1e67b62f2c7136b064a2d}{set\+Compressibility} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} compressibility)
+\begin{DoxyCompactList}\small\item\em Set the compressibility. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PropertiesMap_a2ebf1ac700a0b90d9ac5a27c26eafd8c}{$\sim$\+Properties\+Map} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Properties}{Properties} $>$ \hyperlink{classFVCode3D_1_1PropertiesMap_afdef5e8ebad216c3799c6ab0eb3a2ab5}{M\+\_\+properties}
+\begin{DoxyCompactList}\small\item\em Map that link each zone code with the property. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_ad8c21900ff4a979050d999058595d65c}{M\+\_\+mobility}
+\begin{DoxyCompactList}\small\item\em Mobility of the fluid. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_a3c5225602e1555d998c454eb4e585022}{M\+\_\+compressibility}
+\begin{DoxyCompactList}\small\item\em Compressibility. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that handles the properties for all the reservoir. 
+
+This class implements a map that contains the properties of all zones 
+
+Definition at line \hyperlink{Properties_8hpp_source_l00066}{66} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!Properties\+Map@{Properties\+Map}}
+\index{Properties\+Map@{Properties\+Map}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{Properties\+Map()}{PropertiesMap()}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Properties\+Map\+::\+Properties\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a8cf38425cb5139944861f9dd739990c6}{}\label{classFVCode3D_1_1PropertiesMap_a8cf38425cb5139944861f9dd739990c6}
+
+
+Empty constructor. 
+
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00071}{71} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!Properties\+Map@{Properties\+Map}}
+\index{Properties\+Map@{Properties\+Map}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{Properties\+Map(const Real mobility, const Real compressibility=0.)}{PropertiesMap(const Real mobility, const Real compressibility=0.)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Properties\+Map\+::\+Properties\+Map (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{mobility, }
+\item[{const {\bf Real}}]{compressibility = {\ttfamily 0.}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a9867cdd12c945b69b55327a850339754}{}\label{classFVCode3D_1_1PropertiesMap_a9867cdd12c945b69b55327a850339754}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mobility} & mobility of the fluid \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00077}{77} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!````~Properties\+Map@{$\sim$\+Properties\+Map}}
+\index{````~Properties\+Map@{$\sim$\+Properties\+Map}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{$\sim$\+Properties\+Map()=default}{~PropertiesMap()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Properties\+Map\+::$\sim$\+Properties\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a2ebf1ac700a0b90d9ac5a27c26eafd8c}{}\label{classFVCode3D_1_1PropertiesMap_a2ebf1ac700a0b90d9ac5a27c26eafd8c}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Compressibility@{get\+Compressibility}}
+\index{get\+Compressibility@{get\+Compressibility}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Compressibility() const }{getCompressibility() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Compressibility (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f}{}\label{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f}
+
+
+Get the compressbility. 
+
+\begin{DoxyReturn}{Returns}
+the compressibility 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00098}{98} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Mobility@{get\+Mobility}}
+\index{get\+Mobility@{get\+Mobility}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Mobility() const }{getMobility() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Mobility (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{}\label{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}
+
+
+Get the mobility of the fluid. 
+
+\begin{DoxyReturn}{Returns}
+the mobility of the fluid 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00091}{91} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Number\+Of\+Zone@{get\+Number\+Of\+Zone}}
+\index{get\+Number\+Of\+Zone@{get\+Number\+Of\+Zone}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Number\+Of\+Zone() const }{getNumberOfZone() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Number\+Of\+Zone (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a69ce6f83b7fcd50b27aea1a2e3e87ba1}{}\label{classFVCode3D_1_1PropertiesMap_a69ce6f83b7fcd50b27aea1a2e3e87ba1}
+
+
+Get the number of zones. 
+
+\begin{DoxyReturn}{Returns}
+the number of zones 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00084}{84} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Properties@{get\+Properties}}
+\index{get\+Properties@{get\+Properties}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Properties() const }{getProperties() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::map$<${\bf U\+Int}, {\bf Properties}$>$\& F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Properties (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{}\label{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}
+
+
+Get the map of properties (const) 
+
+\begin{DoxyReturn}{Returns}
+the map of the properties. First -\/$>$ zone code; Second -\/$>$ \hyperlink{classFVCode3D_1_1Properties}{Properties} 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00105}{105} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Properties@{get\+Properties}}
+\index{get\+Properties@{get\+Properties}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Properties()}{getProperties()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int}, {\bf Properties}$>$\& F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Properties (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_ac6aa90932a7ea39d68401d31f9655f2d}{}\label{classFVCode3D_1_1PropertiesMap_ac6aa90932a7ea39d68401d31f9655f2d}
+
+
+Get the map of properties. 
+
+\begin{DoxyReturn}{Returns}
+the map of the properties. First -\/$>$ zone code; Second -\/$>$ \hyperlink{classFVCode3D_1_1Properties}{Properties} 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00112}{112} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Properties@{get\+Properties}}
+\index{get\+Properties@{get\+Properties}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Properties(const U\+Int zone) const }{getProperties(const UInt zone) const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Properties}\& F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Properties (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{zone}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_ab06f08f098ebe4cac0dfb78ca1a3fd7f}{}\label{classFVCode3D_1_1PropertiesMap_ab06f08f098ebe4cac0dfb78ca1a3fd7f}
+
+
+Get the properties of a selected zone (const) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em zone} & the id of the zone code \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference of the related \hyperlink{classFVCode3D_1_1Properties}{Properties} 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00120}{120} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!get\+Properties@{get\+Properties}}
+\index{get\+Properties@{get\+Properties}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{get\+Properties(const U\+Int zone)}{getProperties(const UInt zone)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Properties}\& F\+V\+Code3\+D\+::\+Properties\+Map\+::get\+Properties (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{zone}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a85d23b6c8da4de58e30bab6ad643c084}{}\label{classFVCode3D_1_1PropertiesMap_a85d23b6c8da4de58e30bab6ad643c084}
+
+
+Get the properties of a selected zone. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em zone} & the id of the zone code \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a reference of the related \hyperlink{classFVCode3D_1_1Properties}{Properties} 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00128}{128} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!set\+Compressibility@{set\+Compressibility}}
+\index{set\+Compressibility@{set\+Compressibility}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{set\+Compressibility(const Real compressibility)}{setCompressibility(const Real compressibility)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Properties\+Map\+::set\+Compressibility (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{compressibility}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_abe59b6519ad1e67b62f2c7136b064a2d}{}\label{classFVCode3D_1_1PropertiesMap_abe59b6519ad1e67b62f2c7136b064a2d}
+
+
+Set the compressibility. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & compressibility \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00167}{167} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!set\+Mobility@{set\+Mobility}}
+\index{set\+Mobility@{set\+Mobility}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{set\+Mobility(const Real mobility)}{setMobility(const Real mobility)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Properties\+Map\+::set\+Mobility (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{mobility}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a130615880aea53aecc331634de3a2d16}{}\label{classFVCode3D_1_1PropertiesMap_a130615880aea53aecc331634de3a2d16}
+
+
+Set the mobility of the fluid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em the} & mobility of the fluid \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00160}{160} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!set\+Properties\+On\+Fractures@{set\+Properties\+On\+Fractures}}
+\index{set\+Properties\+On\+Fractures@{set\+Properties\+On\+Fractures}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{set\+Properties\+On\+Fractures(const Mesh3\+D \&mesh, const Real aperture, const Real porosity, const Perm\+Ptr\+\_\+\+Type \&permeability)}{setPropertiesOnFractures(const Mesh3D &mesh, const Real aperture, const Real porosity, const PermPtr_Type &permeability)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Properties\+Map\+::set\+Properties\+On\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const {\bf Real}}]{aperture, }
+\item[{const {\bf Real}}]{porosity, }
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{permeability}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1PropertiesMap_a3289bc66bb640670a35cd79a7577488d}{}\label{classFVCode3D_1_1PropertiesMap_a3289bc66bb640670a35cd79a7577488d}
+
+
+Set the same property on all the fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em aperture} & Aperture of the fractures \\
+\hline
+{\em porosity} & Porosity of the fractures \\
+\hline
+{\em permeability} & Permeability of the fractures \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Properties_8cpp_source_l00028}{28} of file \hyperlink{Properties_8cpp_source}{Properties.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PropertiesMap_a3289bc66bb640670a35cd79a7577488d_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!set\+Properties\+On\+Matrix@{set\+Properties\+On\+Matrix}}
+\index{set\+Properties\+On\+Matrix@{set\+Properties\+On\+Matrix}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{set\+Properties\+On\+Matrix(const Mesh3\+D \&mesh, const Real porosity, const Perm\+Ptr\+\_\+\+Type \&permeability)}{setPropertiesOnMatrix(const Mesh3D &mesh, const Real porosity, const PermPtr_Type &permeability)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Properties\+Map\+::set\+Properties\+On\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const {\bf Real}}]{porosity, }
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{permeability}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1PropertiesMap_ad5f9cccc9355b9af66025f6c433b8997}{}\label{classFVCode3D_1_1PropertiesMap_ad5f9cccc9355b9af66025f6c433b8997}
+
+
+Set the same property on all the porous medium. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em porosity} & Porosity of the matrix. \\
+\hline
+{\em permeability} & Permeability of the matrix \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Properties_8cpp_source_l00013}{13} of file \hyperlink{Properties_8cpp_source}{Properties.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PropertiesMap_ad5f9cccc9355b9af66025f6c433b8997_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!set\+Zone@{set\+Zone}}
+\index{set\+Zone@{set\+Zone}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{set\+Zone(const U\+Int zone, const Properties \&prop)}{setZone(const UInt zone, const Properties &prop)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Properties\+Map\+::set\+Zone (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{zone, }
+\item[{const {\bf Properties} \&}]{prop}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PropertiesMap_ac303adadd1101e7bee62ecad0e8ea6ac}{}\label{classFVCode3D_1_1PropertiesMap_ac303adadd1101e7bee62ecad0e8ea6ac}
+
+
+Set the properties of a selected zone. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em zone} & the id of the zone code \\
+\hline
+{\em prop} & a reference to a \hyperlink{classFVCode3D_1_1Properties}{Properties} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00153}{153} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PropertiesMap_ac303adadd1101e7bee62ecad0e8ea6ac_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!M\+\_\+compressibility@{M\+\_\+compressibility}}
+\index{M\+\_\+compressibility@{M\+\_\+compressibility}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{M\+\_\+compressibility}{M_compressibility}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Properties\+Map\+::\+M\+\_\+compressibility\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PropertiesMap_a3c5225602e1555d998c454eb4e585022}{}\label{classFVCode3D_1_1PropertiesMap_a3c5225602e1555d998c454eb4e585022}
+
+
+Compressibility. 
+
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00182}{182} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!M\+\_\+mobility@{M\+\_\+mobility}}
+\index{M\+\_\+mobility@{M\+\_\+mobility}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{M\+\_\+mobility}{M_mobility}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Properties\+Map\+::\+M\+\_\+mobility\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PropertiesMap_ad8c21900ff4a979050d999058595d65c}{}\label{classFVCode3D_1_1PropertiesMap_ad8c21900ff4a979050d999058595d65c}
+
+
+Mobility of the fluid. 
+
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00179}{179} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}!M\+\_\+properties@{M\+\_\+properties}}
+\index{M\+\_\+properties@{M\+\_\+properties}!F\+V\+Code3\+D\+::\+Properties\+Map@{F\+V\+Code3\+D\+::\+Properties\+Map}}
+\subsubsection[{\texorpdfstring{M\+\_\+properties}{M_properties}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int}, {\bf Properties}$>$ F\+V\+Code3\+D\+::\+Properties\+Map\+::\+M\+\_\+properties\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PropertiesMap_afdef5e8ebad216c3799c6ab0eb3a2ab5}{}\label{classFVCode3D_1_1PropertiesMap_afdef5e8ebad216c3799c6ab0eb3a2ab5}
+
+
+Map that link each zone code with the property. 
+
+
+
+Definition at line \hyperlink{Properties_8hpp_source_l00176}{176} of file \hyperlink{Properties_8hpp_source}{Properties.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{Properties_8hpp}{Properties.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{Properties_8cpp}{Properties.\+cpp}\end{DoxyCompactItemize}

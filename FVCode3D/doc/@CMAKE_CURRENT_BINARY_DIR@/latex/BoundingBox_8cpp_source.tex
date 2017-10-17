@@ -1,0 +1,126 @@
+\hypertarget{BoundingBox_8cpp_source}{}\section{Bounding\+Box.\+cpp}
+\label{BoundingBox_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\+Bounding\+Box.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\+Bounding\+Box.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{BoundingBox_8hpp}{FVCode3D/geometry/BoundingBox.hpp}>}
+00007 
+00008 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00009 \{
+00010 
+\hypertarget{BoundingBox_8cpp_source.tex_l00011}{}\hyperlink{classFVCode3D_1_1BoundingBox_abebee23628c54bdb47d8f340941062a5}{00011} \hyperlink{classFVCode3D_1_1BoundingBox_abebee23628c54bdb47d8f340941062a5}{BoundingBox::BoundingBox}():
+00012     M\_xMin(0.), M\_xMax(0.), M\_yMin(0.), M\_yMax(0.), M\_zMin(0.), M\_zMax(0.), M\_L(0.),
+00013     M\_mx(1.), M\_my(1.), M\_mz(1.), M\_qx(0.), M\_qy(0.), M\_qz(0.)
+00014 \{\}
+00015 
+\hypertarget{BoundingBox_8cpp_source.tex_l00016}{}\hyperlink{classFVCode3D_1_1BoundingBox_a7ac4368d37f0e9528edb161b43a20383}{00016} \hyperlink{classFVCode3D_1_1BoundingBox_abebee23628c54bdb47d8f340941062a5}{BoundingBox::BoundingBox}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1BoundingBox_a8406e82493459d67f7c6e01c41401b01}{xMin}, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1BoundingBox_a0ba4fbfa989d212c7f9df6b5ee440ef2}{xMax}, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1BoundingBox_a8d241063de29672a73e478ccef500fcd}{yMin}, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1BoundingBox_abcec6a60efb3a0bd3333bba6cb8c5eb4}{yMax}, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} 
+      \hyperlink{classFVCode3D_1_1BoundingBox_a332192fde3727b7de1c9864e98659ac1}{zMin}, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1BoundingBox_a9b1fee0fe7324865743f4029dd06e1a3}{zMax}):
+00017     \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin}(xMin), \hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax}(xMax), \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin}(yMin), \hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax}(yMax), 
+      \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin}(zMin), \hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax}(zMax)
+00018 \{
+00019     \hyperlink{classFVCode3D_1_1BoundingBox_a9975a2a4ae9e3991d5f5ab1d3f1544ff}{computeScalingParameters}();
+00020     \hyperlink{classFVCode3D_1_1BoundingBox_a24191e6688c9db0070714f28fc70eb8e}{computeDiagonal}();
+00021 \}
+00022 
+\hypertarget{BoundingBox_8cpp_source.tex_l00023}{}\hyperlink{classFVCode3D_1_1BoundingBox_a4db0e650594edc517a2eca651452cee3}{00023} \hyperlink{classFVCode3D_1_1BoundingBox_abebee23628c54bdb47d8f340941062a5}{BoundingBox::BoundingBox}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & pMin, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & pMax):
+00024     \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin}(pMin.x()), \hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax}(pMax.x()),
+00025     \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin}(pMin.y()), \hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax}(pMax.y()),
+00026     \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin}(pMin.z()), \hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax}(pMax.z())
+00027 \{
+00028     \hyperlink{classFVCode3D_1_1BoundingBox_a9975a2a4ae9e3991d5f5ab1d3f1544ff}{computeScalingParameters}();
+00029     \hyperlink{classFVCode3D_1_1BoundingBox_a24191e6688c9db0070714f28fc70eb8e}{computeDiagonal}();
+00030 \}
+00031 
+\hypertarget{BoundingBox_8cpp_source.tex_l00032}{}\hyperlink{classFVCode3D_1_1BoundingBox_a4c67393b3e2e2ca4c9b1e8313e20a879}{00032} \hyperlink{classFVCode3D_1_1BoundingBox_abebee23628c54bdb47d8f340941062a5}{BoundingBox::BoundingBox}(\textcolor{keyword}{const} std::vector<Point3D> & nodes)
+00033 \{
+00034     \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin} = \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin} = \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin} = std::numeric\_limits<Real>::max();
+00035     \hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax} = \hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax} = \hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax} = std::numeric\_limits<Real>::lowest();
+00036 
+00037     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& p : nodes)
+00038     \{
+00039         \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin} = std::min( \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin} , p.x() );
+00040         \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin} = std::min( M\_yMin , p.y() );
+00041         \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin} = std::min( M\_zMin , p.z() );
+00042 
+00043         \hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax} = std::max( M\_xMax , p.x() );
+00044         \hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax} = std::max( M\_yMax , p.y() );
+00045         \hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax} = std::max( M\_zMax , p.z() );
+00046     \}
+00047 
+00048     \hyperlink{classFVCode3D_1_1BoundingBox_a9975a2a4ae9e3991d5f5ab1d3f1544ff}{computeScalingParameters}();
+00049     \hyperlink{classFVCode3D_1_1BoundingBox_a24191e6688c9db0070714f28fc70eb8e}{computeDiagonal}();
+00050 \}
+00051 
+\hypertarget{BoundingBox_8cpp_source.tex_l00052}{}\hyperlink{classFVCode3D_1_1BoundingBox_a8a1df0623c373b7a2c887e24d1fe298a}{00052} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_a8a1df0623c373b7a2c887e24d1fe298a}{BoundingBox::setExtremes}( \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} xmin, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} xmax,
+00053                                \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} ymin, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} ymax,
+00054                                \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} zmin, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} zmax )
+00055 \{
+00056     \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin} = xmin;
+00057     \hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax} = xmax;
+00058     \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin} = ymin;
+00059     \hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax} = ymax;
+00060     \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin} = zmin;
+00061     \hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax} = zmax;
+00062     \hyperlink{classFVCode3D_1_1BoundingBox_a9975a2a4ae9e3991d5f5ab1d3f1544ff}{computeScalingParameters}();
+00063     \hyperlink{classFVCode3D_1_1BoundingBox_a24191e6688c9db0070714f28fc70eb8e}{computeDiagonal}();
+00064 \}
+00065 
+\hypertarget{BoundingBox_8cpp_source.tex_l00066}{}\hyperlink{classFVCode3D_1_1BoundingBox_a24191e6688c9db0070714f28fc70eb8e}{00066} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_a24191e6688c9db0070714f28fc70eb8e}{BoundingBox::computeDiagonal}()
+00067 \{
+00068     \hyperlink{classFVCode3D_1_1BoundingBox_aef9375a678fb29448efebda9ca744980}{M\_L} =   sqrt(
+00069                 (\hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax}-\hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin}) * (\hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax}-\hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin}) +
+00070                 (\hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax}-\hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin}) * (\hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax}-\hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin}) +
+00071                 (\hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax}-\hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin}) * (\hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax}-\hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin})
+00072                 );
+00073 \}
+00074 
+\hypertarget{BoundingBox_8cpp_source.tex_l00075}{}\hyperlink{classFVCode3D_1_1BoundingBox_a9975a2a4ae9e3991d5f5ab1d3f1544ff}{00075} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_a9975a2a4ae9e3991d5f5ab1d3f1544ff}{BoundingBox::computeScalingParameters}()
+00076 \{
+00077     \hyperlink{classFVCode3D_1_1BoundingBox_a3df507cc3ea395afe58e271683a03882}{M\_qx} = - \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin};
+00078     \hyperlink{classFVCode3D_1_1BoundingBox_a113d0fbdda96cd1f9673ee1bf8c82c32}{M\_qy} = - \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin};
+00079     \hyperlink{classFVCode3D_1_1BoundingBox_a1019b2f83e6feda1395654f930950d02}{M\_qz} = - \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin};
+00080 
+00081     \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} = 1. / ( \hyperlink{classFVCode3D_1_1BoundingBox_aedd7247a7b456cc191d2eba4c451c12e}{M\_xMax} - \hyperlink{classFVCode3D_1_1BoundingBox_adaf1d61e3b5db5c44a17b7e54a79b92d}{M\_xMin} );
+00082     \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} = 1. / ( \hyperlink{classFVCode3D_1_1BoundingBox_a1d51c7eed74a62ad8eba252ce3fe641b}{M\_yMax} - \hyperlink{classFVCode3D_1_1BoundingBox_a8fe56e0abd1c21bb0b5c3b47095fa420}{M\_yMin} );
+00083     \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} = 1. / ( \hyperlink{classFVCode3D_1_1BoundingBox_a68c1f74f3548473ed713714b75b028f3}{M\_zMax} - \hyperlink{classFVCode3D_1_1BoundingBox_a1b16d23c4712a4c214ccc4f9a39fdc90}{M\_zMin} );
+00084 
+00085 \textcolor{comment}{//    M\_m = mx;}
+00086 \textcolor{comment}{//    if(my<M\_m) M\_m=my;}
+00087 \textcolor{comment}{//    if(mz<M\_m) M\_m=mz;}
+00088 \}
+00089 
+\hypertarget{BoundingBox_8cpp_source.tex_l00090}{}\hyperlink{classFVCode3D_1_1BoundingBox_a20d4281f025fd6a4ee51ec8cbc47874c}{00090} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_a20d4281f025fd6a4ee51ec8cbc47874c}{BoundingBox::scaleNodesToUnit}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D} & node)\textcolor{keyword}{ const}
+00091 \textcolor{keyword}{}\{
+00092     node.\hyperlink{classFVCode3D_1_1Point3D_a2044e0fdef7e870557c89ad0edb0b0d4}{linearTransform}( \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} , \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} , \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} , \hyperlink{classFVCode3D_1_1BoundingBox_a3df507cc3ea395afe58e271683a03882}{M\_qx} * 
+      \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} , \hyperlink{classFVCode3D_1_1BoundingBox_a113d0fbdda96cd1f9673ee1bf8c82c32}{M\_qy} * \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} , \hyperlink{classFVCode3D_1_1BoundingBox_a1019b2f83e6feda1395654f930950d02}{M\_qz} * \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} );
+00093 \}
+00094 
+\hypertarget{BoundingBox_8cpp_source.tex_l00095}{}\hyperlink{classFVCode3D_1_1BoundingBox_ac0db84eacec9c17ccb911bf1390c30ac}{00095} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_a20d4281f025fd6a4ee51ec8cbc47874c}{BoundingBox::scaleNodesToUnit}(std::vector<Point3D> & nodes)\textcolor{keyword}{ const}
+00096 \textcolor{keyword}{}\{
+00097     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& p : nodes)
+00098     \{
+00099         p.linearTransform( \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} , \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} , \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} , \hyperlink{classFVCode3D_1_1BoundingBox_a3df507cc3ea395afe58e271683a03882}{M\_qx} * \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} , 
+      \hyperlink{classFVCode3D_1_1BoundingBox_a113d0fbdda96cd1f9673ee1bf8c82c32}{M\_qy} * \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} , \hyperlink{classFVCode3D_1_1BoundingBox_a1019b2f83e6feda1395654f930950d02}{M\_qz} * \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} );
+00100     \}
+00101 \}
+00102 
+\hypertarget{BoundingBox_8cpp_source.tex_l00103}{}\hyperlink{classFVCode3D_1_1BoundingBox_ae45df69b786a19e4413691e1c64059d0}{00103} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_ae45df69b786a19e4413691e1c64059d0}{BoundingBox::scaleNodesToPhysical}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D} & node)\textcolor{keyword}{ const}
+00104 \textcolor{keyword}{}\{
+00105     node.\hyperlink{classFVCode3D_1_1Point3D_a2044e0fdef7e870557c89ad0edb0b0d4}{linearTransform}( 1. / \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} , 1. / \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} , 1. / 
+      \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} , - \hyperlink{classFVCode3D_1_1BoundingBox_a3df507cc3ea395afe58e271683a03882}{M\_qx}, - \hyperlink{classFVCode3D_1_1BoundingBox_a113d0fbdda96cd1f9673ee1bf8c82c32}{M\_qy}, - \hyperlink{classFVCode3D_1_1BoundingBox_a1019b2f83e6feda1395654f930950d02}{M\_qz} );
+00106 \}
+00107 
+\hypertarget{BoundingBox_8cpp_source.tex_l00108}{}\hyperlink{classFVCode3D_1_1BoundingBox_ab8cca9deb60b016cae9020873f626973}{00108} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1BoundingBox_ae45df69b786a19e4413691e1c64059d0}{BoundingBox::scaleNodesToPhysical}(std::vector<Point3D> & nodes)\textcolor{keyword}{ const}
+00109 \textcolor{keyword}{}\{
+00110     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& p : nodes)
+00111     \{
+00112         p.linearTransform( 1. / \hyperlink{classFVCode3D_1_1BoundingBox_af04126840f535e71790de13610143e99}{M\_mx} , 1. / \hyperlink{classFVCode3D_1_1BoundingBox_a03fcb585dc23713587dabbda552d1300}{M\_my} , 1. / \hyperlink{classFVCode3D_1_1BoundingBox_afb2a862118bf93c3a1ed3f023b02f578}{M\_mz} , - 
+      \hyperlink{classFVCode3D_1_1BoundingBox_a3df507cc3ea395afe58e271683a03882}{M\_qx}, - \hyperlink{classFVCode3D_1_1BoundingBox_a113d0fbdda96cd1f9673ee1bf8c82c32}{M\_qy}, - \hyperlink{classFVCode3D_1_1BoundingBox_a1019b2f83e6feda1395654f930950d02}{M\_qz} );
+00113     \}
+00114 \}
+00115 
+00116 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

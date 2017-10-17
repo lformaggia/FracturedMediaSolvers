@@ -1,0 +1,410 @@
+\hypertarget{tetgen_8h}{}\section{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/tetgen.h File Reference}
+\label{tetgen_8h}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/tetgen.\+h@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/tetgen.\+h}}
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$assert.\+h$>$}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+Include dependency graph for tetgen.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{tetgen_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{tetgen_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classtetgenio}{tetgenio}
+\item 
+struct \hyperlink{structtetgenio_1_1polygon}{tetgenio\+::polygon}
+\item 
+struct \hyperlink{structtetgenio_1_1facet}{tetgenio\+::facet}
+\item 
+struct \hyperlink{structtetgenio_1_1voroedge}{tetgenio\+::voroedge}
+\item 
+struct \hyperlink{structtetgenio_1_1vorofacet}{tetgenio\+::vorofacet}
+\item 
+struct \hyperlink{structtetgenio_1_1pointparam}{tetgenio\+::pointparam}
+\item 
+class \hyperlink{classtetgenbehavior}{tetgenbehavior}
+\item 
+class \hyperlink{classtetgenmesh}{tetgenmesh}
+\item 
+class \hyperlink{classtetgenmesh_1_1triface}{tetgenmesh\+::triface}
+\item 
+class \hyperlink{classtetgenmesh_1_1face}{tetgenmesh\+::face}
+\item 
+class \hyperlink{classtetgenmesh_1_1arraypool}{tetgenmesh\+::arraypool}
+\item 
+class \hyperlink{classtetgenmesh_1_1memorypool}{tetgenmesh\+::memorypool}
+\item 
+class \hyperlink{classtetgenmesh_1_1badface}{tetgenmesh\+::badface}
+\item 
+class \hyperlink{classtetgenmesh_1_1insertvertexflags}{tetgenmesh\+::insertvertexflags}
+\item 
+class \hyperlink{classtetgenmesh_1_1flipconstraints}{tetgenmesh\+::flipconstraints}
+\item 
+class \hyperlink{classtetgenmesh_1_1optparameters}{tetgenmesh\+::optparameters}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL}~double
+\item 
+\#define \hyperlink{tetgen_8h_a373ac5e350a5f9d149a7ff93a6188a47}{F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE}~1024
+\item 
+\#define \hyperlink{tetgen_8h_a402e023bf75621df7eb202c28a8b59c5}{I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE}~2048
+\item 
+\#define \hyperlink{tetgen_8h_a0ab265eb249e3d750e491647d17a0f4c}{fastlookup}(pool,  index)
+\item 
+\#define \hyperlink{tetgen_8h_a6ec2cfc4413ab4e2ed9745c56c0e0b0d}{fsymself}(t)
+\item 
+\#define \hyperlink{tetgen_8h_aecf9b678827ba96d563452faf64cf55c}{fnextself}(t)
+\item 
+\#define \hyperlink{tetgen_8h_aaa7c126ee1315f996ae05f9546a56f24}{setvertices}(t,  torg,  tdest,  tapex,  toppo)
+\item 
+\#define \hyperlink{tetgen_8h_a23943f33839e667b8d2f66b6f96301c8}{setshvertices}(s,  pa,  pb,  pc)
+\item 
+\#define \hyperlink{tetgen_8h_add6d2aab58ba8af94512c31fe9674581}{issubface}(t)~((t).tet\mbox{[}9\mbox{]} \&\& ((t).tet\mbox{[}9\mbox{]})\mbox{[}(t).ver \& 3\mbox{]})
+\item 
+\#define \hyperlink{tetgen_8h_a304c7d859a7cedbc8de2b18e944ec53d}{isshtet}(s)~((s).sh\mbox{[}9 + ((s).shver \& 1)\mbox{]})
+\item 
+\#define \hyperlink{tetgen_8h_aa956b122335bab5fedfb08e1bd80a4db}{isshsubseg}(s)~((s).sh\mbox{[}6 + ((s).shver $>$$>$ 1)\mbox{]})
+\item 
+\#define \hyperlink{tetgen_8h_a268b4547b42d0e4147ddf75966c7b002}{issubseg}(t)~((t).tet\mbox{[}8\mbox{]} \&\& ((t).tet\mbox{[}8\mbox{]})\mbox{[}ver2edge\mbox{[}(t).ver\mbox{]}\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{tetgen_8h_a2b6db2f06270137f70bf55f2a00d2877}{exactinit} (int, int, int, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL}, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL}, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL})
+\item 
+\hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} \hyperlink{tetgen_8h_a701f35178b28c7bbb94644665c0b058a}{orient3d} (\hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pa, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pb, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pc, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pd)
+\item 
+\hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} \hyperlink{tetgen_8h_a6856d0058088615e8f10f983a6bdef08}{insphere} (\hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pa, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pb, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pc, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pd, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pe)
+\item 
+\hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} \hyperlink{tetgen_8h_a9fa32855af81145584c04fe06d6e37e4}{orient4d} (\hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pa, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pb, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pc, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pd, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} $\ast$pe, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} ah, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} bh, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} ch, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} dh, \hyperlink{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{R\+E\+AL} eh)
+\item 
+void \hyperlink{tetgen_8h_ad3637eb4ffe7fda90667e67b7771d964}{tetrahedralize} (\hyperlink{classtetgenbehavior}{tetgenbehavior} $\ast$b, \hyperlink{classtetgenio}{tetgenio} $\ast$in, \hyperlink{classtetgenio}{tetgenio} $\ast$out, \hyperlink{classtetgenio}{tetgenio} $\ast$addin=N\+U\+LL, \hyperlink{classtetgenio}{tetgenio} $\ast$bgmin=N\+U\+LL)
+\item 
+void \hyperlink{tetgen_8h_a4012bf160c63ec4ff007f6645b993ca5}{terminatetetgen} (\hyperlink{classtetgenmesh}{tetgenmesh} $\ast$m, int x)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{tetgen.\+h@{tetgen.\+h}!fastlookup@{fastlookup}}
+\index{fastlookup@{fastlookup}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{fastlookup}{fastlookup}}]{\setlength{\rightskip}{0pt plus 5cm}\#define fastlookup(
+\begin{DoxyParamCaption}
+\item[{}]{pool, }
+\item[{}]{index}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a0ab265eb249e3d750e491647d17a0f4c}{}\label{tetgen_8h_a0ab265eb249e3d750e491647d17a0f4c}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+(\textcolor{keywordtype}{void} *) ((pool)->toparray[(index) >> (pool)->log2objectsperblock] + \(\backslash\)
+            ((index) & (pool)->objectsperblockmark) * (pool)->objectbytes)
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01007}{1007} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE@{F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE}}
+\index{F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE@{F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE}{FILENAMESIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\+I\+L\+E\+N\+A\+M\+E\+S\+I\+ZE~1024}\hypertarget{tetgen_8h_a373ac5e350a5f9d149a7ff93a6188a47}{}\label{tetgen_8h_a373ac5e350a5f9d149a7ff93a6188a47}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l00039}{39} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!fnextself@{fnextself}}
+\index{fnextself@{fnextself}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{fnextself}{fnextself}}]{\setlength{\rightskip}{0pt plus 5cm}\#define fnextself(
+\begin{DoxyParamCaption}
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_aecf9b678827ba96d563452faf64cf55c}{}\label{tetgen_8h_aecf9b678827ba96d563452faf64cf55c}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+t1ver = (t).ver; \(\backslash\)
+  decode((t).tet[facepivot1[(t).ver]], (t)); \(\backslash\)
+  (t).ver = facepivot2[t1ver][(t).ver]
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02430}{2430} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!fsymself@{fsymself}}
+\index{fsymself@{fsymself}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{fsymself}{fsymself}}]{\setlength{\rightskip}{0pt plus 5cm}\#define fsymself(
+\begin{DoxyParamCaption}
+\item[{}]{t}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a6ec2cfc4413ab4e2ed9745c56c0e0b0d}{}\label{tetgen_8h_a6ec2cfc4413ab4e2ed9745c56c0e0b0d}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+t1ver = (t).ver; \(\backslash\)
+  decode((t).tet[(t).ver & 3], (t));\(\backslash\)
+  (t).ver = fsymtbl[t1ver][(t).ver]
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02415}{2415} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE@{I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE}}
+\index{I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE@{I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE}{INPUTLINESIZE}}]{\setlength{\rightskip}{0pt plus 5cm}\#define I\+N\+P\+U\+T\+L\+I\+N\+E\+S\+I\+ZE~2048}\hypertarget{tetgen_8h_a402e023bf75621df7eb202c28a8b59c5}{}\label{tetgen_8h_a402e023bf75621df7eb202c28a8b59c5}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l00043}{43} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!isshsubseg@{isshsubseg}}
+\index{isshsubseg@{isshsubseg}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{isshsubseg}{isshsubseg}}]{\setlength{\rightskip}{0pt plus 5cm}\#define isshsubseg(
+\begin{DoxyParamCaption}
+\item[{}]{s}
+\end{DoxyParamCaption}
+)~((s).sh\mbox{[}6 + ((s).shver $>$$>$ 1)\mbox{]})}\hypertarget{tetgen_8h_aa956b122335bab5fedfb08e1bd80a4db}{}\label{tetgen_8h_aa956b122335bab5fedfb08e1bd80a4db}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l03028}{3028} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!isshtet@{isshtet}}
+\index{isshtet@{isshtet}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{isshtet}{isshtet}}]{\setlength{\rightskip}{0pt plus 5cm}\#define isshtet(
+\begin{DoxyParamCaption}
+\item[{}]{s}
+\end{DoxyParamCaption}
+)~((s).sh\mbox{[}9 + ((s).shver \& 1)\mbox{]})}\hypertarget{tetgen_8h_a304c7d859a7cedbc8de2b18e944ec53d}{}\label{tetgen_8h_a304c7d859a7cedbc8de2b18e944ec53d}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02972}{2972} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!issubface@{issubface}}
+\index{issubface@{issubface}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{issubface}{issubface}}]{\setlength{\rightskip}{0pt plus 5cm}\#define issubface(
+\begin{DoxyParamCaption}
+\item[{}]{t}
+\end{DoxyParamCaption}
+)~((t).tet\mbox{[}9\mbox{]} \&\& ((t).tet\mbox{[}9\mbox{]})\mbox{[}(t).ver \& 3\mbox{]})}\hypertarget{tetgen_8h_add6d2aab58ba8af94512c31fe9674581}{}\label{tetgen_8h_add6d2aab58ba8af94512c31fe9674581}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02954}{2954} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!issubseg@{issubseg}}
+\index{issubseg@{issubseg}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{issubseg}{issubseg}}]{\setlength{\rightskip}{0pt plus 5cm}\#define issubseg(
+\begin{DoxyParamCaption}
+\item[{}]{t}
+\end{DoxyParamCaption}
+)~((t).tet\mbox{[}8\mbox{]} \&\& ((t).tet\mbox{[}8\mbox{]})\mbox{[}ver2edge\mbox{[}(t).ver\mbox{]}\mbox{]})}\hypertarget{tetgen_8h_a268b4547b42d0e4147ddf75966c7b002}{}\label{tetgen_8h_a268b4547b42d0e4147ddf75966c7b002}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l03078}{3078} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!R\+E\+AL@{R\+E\+AL}}
+\index{R\+E\+AL@{R\+E\+AL}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{R\+E\+AL}{REAL}}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\+E\+AL~double}\hypertarget{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}{}\label{tetgen_8h_a4b654506f18b8bfd61ad2a29a7e38c25}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l00035}{35} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!setshvertices@{setshvertices}}
+\index{setshvertices@{setshvertices}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{setshvertices}{setshvertices}}]{\setlength{\rightskip}{0pt plus 5cm}\#define setshvertices(
+\begin{DoxyParamCaption}
+\item[{}]{s, }
+\item[{}]{pa, }
+\item[{}]{pb, }
+\item[{}]{pc}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a23943f33839e667b8d2f66b6f96301c8}{}\label{tetgen_8h_a23943f33839e667b8d2f66b6f96301c8}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+setsorg(s, pa);\(\backslash\)
+  setsdest(s, pb);\(\backslash\)
+  setsapex(s, pc)
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02741}{2741} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgen.\+h@{tetgen.\+h}!setvertices@{setvertices}}
+\index{setvertices@{setvertices}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{setvertices}{setvertices}}]{\setlength{\rightskip}{0pt plus 5cm}\#define setvertices(
+\begin{DoxyParamCaption}
+\item[{}]{t, }
+\item[{}]{torg, }
+\item[{}]{tdest, }
+\item[{}]{tapex, }
+\item[{}]{toppo}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_aaa7c126ee1315f996ae05f9546a56f24}{}\label{tetgen_8h_aaa7c126ee1315f996ae05f9546a56f24}
+{\bfseries Value\+:}
+\begin{DoxyCode}
+(t).tet[orgpivot[(t).ver]] = (tetrahedron) (torg);\(\backslash\)
+  (t).tet[destpivot[(t).ver]] = (tetrahedron) (tdest); \(\backslash\)
+  (t).tet[apexpivot[(t).ver]] = (tetrahedron) (tapex); \(\backslash\)
+  (t).tet[oppopivot[(t).ver]] = (tetrahedron) (toppo)
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02471}{2471} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+
+
+\subsection{Function Documentation}
+\index{tetgen.\+h@{tetgen.\+h}!exactinit@{exactinit}}
+\index{exactinit@{exactinit}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{exactinit(int, int, int, R\+E\+A\+L, R\+E\+A\+L, R\+E\+A\+L)}{exactinit(int, int, int, REAL, REAL, REAL)}}]{\setlength{\rightskip}{0pt plus 5cm}void exactinit (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{{\bf R\+E\+AL}}]{, }
+\item[{{\bf R\+E\+AL}}]{, }
+\item[{{\bf R\+E\+AL}}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a2b6db2f06270137f70bf55f2a00d2877}{}\label{tetgen_8h_a2b6db2f06270137f70bf55f2a00d2877}
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=319pt]{tetgen_8h_a2b6db2f06270137f70bf55f2a00d2877_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{tetgen.\+h@{tetgen.\+h}!insphere@{insphere}}
+\index{insphere@{insphere}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{insphere(\+R\+E\+A\+L $\ast$pa, R\+E\+A\+L $\ast$pb, R\+E\+A\+L $\ast$pc, R\+E\+A\+L $\ast$pd, R\+E\+A\+L $\ast$pe)}{insphere(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf R\+E\+AL} insphere (
+\begin{DoxyParamCaption}
+\item[{{\bf R\+E\+AL} $\ast$}]{pa, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pb, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pc, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pd, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pe}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a6856d0058088615e8f10f983a6bdef08}{}\label{tetgen_8h_a6856d0058088615e8f10f983a6bdef08}
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=319pt]{tetgen_8h_a6856d0058088615e8f10f983a6bdef08_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{tetgen.\+h@{tetgen.\+h}!orient3d@{orient3d}}
+\index{orient3d@{orient3d}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{orient3d(\+R\+E\+A\+L $\ast$pa, R\+E\+A\+L $\ast$pb, R\+E\+A\+L $\ast$pc, R\+E\+A\+L $\ast$pd)}{orient3d(REAL *pa, REAL *pb, REAL *pc, REAL *pd)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf R\+E\+AL} orient3d (
+\begin{DoxyParamCaption}
+\item[{{\bf R\+E\+AL} $\ast$}]{pa, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pb, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pc, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pd}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a701f35178b28c7bbb94644665c0b058a}{}\label{tetgen_8h_a701f35178b28c7bbb94644665c0b058a}
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=317pt]{tetgen_8h_a701f35178b28c7bbb94644665c0b058a_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{tetgen.\+h@{tetgen.\+h}!orient4d@{orient4d}}
+\index{orient4d@{orient4d}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{orient4d(\+R\+E\+A\+L $\ast$pa, R\+E\+A\+L $\ast$pb, R\+E\+A\+L $\ast$pc, R\+E\+A\+L $\ast$pd, R\+E\+A\+L $\ast$pe, R\+E\+A\+L ah, R\+E\+A\+L bh, R\+E\+A\+L ch, R\+E\+A\+L dh, R\+E\+A\+L eh)}{orient4d(REAL *pa, REAL *pb, REAL *pc, REAL *pd, REAL *pe, REAL ah, REAL bh, REAL ch, REAL dh, REAL eh)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf R\+E\+AL} orient4d (
+\begin{DoxyParamCaption}
+\item[{{\bf R\+E\+AL} $\ast$}]{pa, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pb, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pc, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pd, }
+\item[{{\bf R\+E\+AL} $\ast$}]{pe, }
+\item[{{\bf R\+E\+AL}}]{ah, }
+\item[{{\bf R\+E\+AL}}]{bh, }
+\item[{{\bf R\+E\+AL}}]{ch, }
+\item[{{\bf R\+E\+AL}}]{dh, }
+\item[{{\bf R\+E\+AL}}]{eh}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_a9fa32855af81145584c04fe06d6e37e4}{}\label{tetgen_8h_a9fa32855af81145584c04fe06d6e37e4}
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=317pt]{tetgen_8h_a9fa32855af81145584c04fe06d6e37e4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{tetgen.\+h@{tetgen.\+h}!terminatetetgen@{terminatetetgen}}
+\index{terminatetetgen@{terminatetetgen}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{terminatetetgen(tetgenmesh $\ast$m, int x)}{terminatetetgen(tetgenmesh *m, int x)}}]{\setlength{\rightskip}{0pt plus 5cm}void terminatetetgen (
+\begin{DoxyParamCaption}
+\item[{{\bf tetgenmesh} $\ast$}]{m, }
+\item[{int}]{x}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{tetgen_8h_a4012bf160c63ec4ff007f6645b993ca5}{}\label{tetgen_8h_a4012bf160c63ec4ff007f6645b993ca5}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l02247}{2247} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{tetgen_8h_a4012bf160c63ec4ff007f6645b993ca5_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{tetgen.\+h@{tetgen.\+h}!tetrahedralize@{tetrahedralize}}
+\index{tetrahedralize@{tetrahedralize}!tetgen.\+h@{tetgen.\+h}}
+\subsubsection[{\texorpdfstring{tetrahedralize(tetgenbehavior $\ast$b, tetgenio $\ast$in, tetgenio $\ast$out, tetgenio $\ast$addin=\+N\+U\+L\+L, tetgenio $\ast$bgmin=\+N\+U\+L\+L)}{tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out, tetgenio *addin=NULL, tetgenio *bgmin=NULL)}}]{\setlength{\rightskip}{0pt plus 5cm}void tetrahedralize (
+\begin{DoxyParamCaption}
+\item[{{\bf tetgenbehavior} $\ast$}]{b, }
+\item[{{\bf tetgenio} $\ast$}]{in, }
+\item[{{\bf tetgenio} $\ast$}]{out, }
+\item[{{\bf tetgenio} $\ast$}]{addin = {\ttfamily NULL}, }
+\item[{{\bf tetgenio} $\ast$}]{bgmin = {\ttfamily NULL}}
+\end{DoxyParamCaption}
+)}\hypertarget{tetgen_8h_ad3637eb4ffe7fda90667e67b7771d964}{}\label{tetgen_8h_ad3637eb4ffe7fda90667e67b7771d964}
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=331pt]{tetgen_8h_ad3637eb4ffe7fda90667e67b7771d964_icgraph}
+\end{center}
+\end{figure}
+
+

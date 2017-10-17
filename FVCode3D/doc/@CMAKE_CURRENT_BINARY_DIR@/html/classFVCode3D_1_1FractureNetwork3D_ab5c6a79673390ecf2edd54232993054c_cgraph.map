@@ -1,0 +1,5 @@
+<map id="FVCode3D::FractureNetwork3D::size" name="FVCode3D::FractureNetwork3D::size">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1FractureNetwork3D.html#afaabbabf1e76071af9b0808f8dc6c413" title="Export in different vtk file the segments representing each fracture in the network. " alt="" coords="499,5,697,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1FractureNetwork3D.html#ab4a7dea9b15402cb2c82cf501c7e2356" title="Export in a single vtk file all the segments representing each fracture in the network. " alt="" coords="252,35,451,76"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1FractureNetwork3D.html#a58a3657b35b35f3e189d29015566052b" title="Display general information about the content of the class. " alt="" coords="252,100,451,141"/>
+</map>

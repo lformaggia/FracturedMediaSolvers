@@ -1,0 +1,305 @@
+\hypertarget{classFVCode3D_1_1global__Div}{}\section{F\+V\+Code3D\+:\+:global\+\_\+\+Div Class Reference}
+\label{classFVCode3D_1_1global__Div}\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+
+
+Class for assembling a global divergence matrix.  
+
+
+
+
+{\ttfamily \#include $<$global\+\_\+operator.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:global\+\_\+\+Div\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classFVCode3D_1_1global__Div__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:global\+\_\+\+Div\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Div__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1global__Div_a3738a7971c5cbf8cc9d77e0dc99a3969}{global\+\_\+\+Div} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&r\+Mesh, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Prow, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Pcol, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} row\+Size, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} col\+Size, const \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} \&B\+Cmap)
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classFVCode3D_1_1global__Div}{global\+\_\+\+Div} operator. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Div_a7c5dd1e2ede1b3433484c98a9bac66c7}{global\+\_\+\+Div} (const \hyperlink{classFVCode3D_1_1global__Div}{global\+\_\+\+Div} \&)=delete
+\begin{DoxyCompactList}\small\item\em No Copy-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Div_af77b97e03c89839d5e35e7393cd7fa8f}{global\+\_\+\+Div} ()=delete
+\begin{DoxyCompactList}\small\item\em No Empty-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Div_af311bcd86abcb10511ee6516ff654411}{$\sim$global\+\_\+\+Div} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1global__Div_a8f3304e07af4e5e31321a6f07812f9f6}{get\+Dt\+Matrix\+\_\+read\+Only} () const 
+\begin{DoxyCompactList}\small\item\em Get the Dt matrix (read only version) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1global__Div_a9666f55d6fc6ea814844e16a3150fda9}{get\+Dt\+Matrix} ()
+\begin{DoxyCompactList}\small\item\em Get the operator matrix (writable version) \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744}{reserve\+\_\+space} ()
+\begin{DoxyCompactList}\small\item\em Reserve method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68}{assemble} ()
+\begin{DoxyCompactList}\small\item\em Assemble method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1global__Div_a44a6174614373e40dab816d9748b8bd9}{Compress\+Dt\+Matrix} ()
+\begin{DoxyCompactList}\small\item\em Compress method for the Dt matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} \& \hyperlink{classFVCode3D_1_1global__Div_acdcdafa941eca3b26582f33b71ff3ff3}{M\+\_\+bc}
+\begin{DoxyCompactList}\small\item\em Constant reference to the boundary conditions. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} $>$ \hyperlink{classFVCode3D_1_1global__Div_ad3f5341b930c36bcf243075f7f3e7414}{Dt\+\_\+matrix}
+\begin{DoxyCompactList}\small\item\em The sparse matrix representing modified trasnposed matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for assembling a global divergence matrix. 
+
+This is the classe to assemble the global divergence matrix. The strategy used is an assemblation cell by cell building a local divergence matrix and then assembling local contributions in the global matrix. The class assemble also the matrix Dt that is the divergence matrix transposed and modified to take into account the Neumann bc. 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00223}{223} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!global\+\_\+\+Div@{global\+\_\+\+Div}}
+\index{global\+\_\+\+Div@{global\+\_\+\+Div}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Div(const Rigid\+\_\+\+Mesh \&r\+Mesh, d\+Type Prow, d\+Type Pcol, U\+Int row\+Size, U\+Int col\+Size, const Boundary\+Conditions \&\+B\+Cmap)}{global_Div(const Rigid_Mesh &rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, const BoundaryConditions &BCmap)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Div\+::global\+\_\+\+Div (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{r\+Mesh, }
+\item[{{\bf d\+Type}}]{Prow, }
+\item[{{\bf d\+Type}}]{Pcol, }
+\item[{{\bf U\+Int}}]{row\+Size, }
+\item[{{\bf U\+Int}}]{col\+Size, }
+\item[{const {\bf Boundary\+Conditions} \&}]{B\+Cmap}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Div_a3738a7971c5cbf8cc9d77e0dc99a3969}{}\label{classFVCode3D_1_1global__Div_a3738a7971c5cbf8cc9d77e0dc99a3969}
+
+
+Construct a \hyperlink{classFVCode3D_1_1global__Div}{global\+\_\+\+Div} operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+Mesh} & The rigid mesh of the problem \\
+\hline
+{\em Prow} & The row dimension type \\
+\hline
+{\em Pcol} & The col dimension type \\
+\hline
+{\em row\+Size} & The number of row \\
+\hline
+{\em col\+Size} & The number of col \\
+\hline
+{\em B\+Cmap} & The boundary conditions \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00237}{237} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!global\+\_\+\+Div@{global\+\_\+\+Div}}
+\index{global\+\_\+\+Div@{global\+\_\+\+Div}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Div(const global\+\_\+\+Div \&)=delete}{global_Div(const global_Div &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Div\+::global\+\_\+\+Div (
+\begin{DoxyParamCaption}
+\item[{const {\bf global\+\_\+\+Div} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1global__Div_a7c5dd1e2ede1b3433484c98a9bac66c7}{}\label{classFVCode3D_1_1global__Div_a7c5dd1e2ede1b3433484c98a9bac66c7}
+
+
+No Copy-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!global\+\_\+\+Div@{global\+\_\+\+Div}}
+\index{global\+\_\+\+Div@{global\+\_\+\+Div}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Div()=delete}{global_Div()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Div\+::global\+\_\+\+Div (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1global__Div_af77b97e03c89839d5e35e7393cd7fa8f}{}\label{classFVCode3D_1_1global__Div_af77b97e03c89839d5e35e7393cd7fa8f}
+
+
+No Empty-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!````~global\+\_\+\+Div@{$\sim$global\+\_\+\+Div}}
+\index{````~global\+\_\+\+Div@{$\sim$global\+\_\+\+Div}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{$\sim$global\+\_\+\+Div()=default}{~global_Div()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Div\+::$\sim$global\+\_\+\+Div (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1global__Div_af311bcd86abcb10511ee6516ff654411}{}\label{classFVCode3D_1_1global__Div_af311bcd86abcb10511ee6516ff654411}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{assemble()}{assemble()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Div\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68}{}\label{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68}
+
+
+Assemble method. 
+
+Assemble the global inner div matrix 
+
+Implements \hyperlink{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3}{F\+V\+Code3\+D\+::global\+\_\+\+Operator}.
+
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00192}{192} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!Compress\+Dt\+Matrix@{Compress\+Dt\+Matrix}}
+\index{Compress\+Dt\+Matrix@{Compress\+Dt\+Matrix}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{Compress\+Dt\+Matrix()}{CompressDtMatrix()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Div\+::\+Compress\+Dt\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Div_a44a6174614373e40dab816d9748b8bd9}{}\label{classFVCode3D_1_1global__Div_a44a6174614373e40dab816d9748b8bd9}
+
+
+Compress method for the Dt matrix. 
+
+Convert the matrix Dt in compressed format 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00279}{279} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!get\+Dt\+Matrix@{get\+Dt\+Matrix}}
+\index{get\+Dt\+Matrix@{get\+Dt\+Matrix}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{get\+Dt\+Matrix()}{getDtMatrix()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat}\& F\+V\+Code3\+D\+::global\+\_\+\+Div\+::get\+Dt\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Div_a9666f55d6fc6ea814844e16a3150fda9}{}\label{classFVCode3D_1_1global__Div_a9666f55d6fc6ea814844e16a3150fda9}
+
+
+Get the operator matrix (writable version) 
+
+\begin{DoxyReturn}{Returns}
+A reference to the operator matrix 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00260}{260} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Div_a9666f55d6fc6ea814844e16a3150fda9_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!get\+Dt\+Matrix\+\_\+read\+Only@{get\+Dt\+Matrix\+\_\+read\+Only}}
+\index{get\+Dt\+Matrix\+\_\+read\+Only@{get\+Dt\+Matrix\+\_\+read\+Only}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{get\+Dt\+Matrix\+\_\+read\+Only() const }{getDtMatrix_readOnly() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Sp\+Mat}\& F\+V\+Code3\+D\+::global\+\_\+\+Div\+::get\+Dt\+Matrix\+\_\+read\+Only (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Div_a8f3304e07af4e5e31321a6f07812f9f6}{}\label{classFVCode3D_1_1global__Div_a8f3304e07af4e5e31321a6f07812f9f6}
+
+
+Get the Dt matrix (read only version) 
+
+\begin{DoxyReturn}{Returns}
+A const reference to the operator matrix 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00253}{253} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!reserve\+\_\+space@{reserve\+\_\+space}}
+\index{reserve\+\_\+space@{reserve\+\_\+space}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{reserve\+\_\+space()}{reserve_space()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Div\+::reserve\+\_\+space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744}{}\label{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744}
+
+
+Reserve method. 
+
+Reserve the proper space for the div matrix 
+
+Implements \hyperlink{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16}{F\+V\+Code3\+D\+::global\+\_\+\+Operator}.
+
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00158}{158} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!Dt\+\_\+matrix@{Dt\+\_\+matrix}}
+\index{Dt\+\_\+matrix@{Dt\+\_\+matrix}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{Dt\+\_\+matrix}{Dt_matrix}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::unique\+\_\+ptr$<${\bf Sp\+Mat}$>$ F\+V\+Code3\+D\+::global\+\_\+\+Div\+::\+Dt\+\_\+matrix\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1global__Div_ad3f5341b930c36bcf243075f7f3e7414}{}\label{classFVCode3D_1_1global__Div_ad3f5341b930c36bcf243075f7f3e7414}
+
+
+The sparse matrix representing modified trasnposed matrix. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00287}{287} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}!M\+\_\+bc@{M\+\_\+bc}}
+\index{M\+\_\+bc@{M\+\_\+bc}!F\+V\+Code3\+D\+::global\+\_\+\+Div@{F\+V\+Code3\+D\+::global\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{M\+\_\+bc}{M_bc}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Boundary\+Conditions}\& F\+V\+Code3\+D\+::global\+\_\+\+Div\+::\+M\+\_\+bc\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1global__Div_acdcdafa941eca3b26582f33b71ff3ff3}{}\label{classFVCode3D_1_1global__Div_acdcdafa941eca3b26582f33b71ff3ff3}
+
+
+Constant reference to the boundary conditions. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00280}{280} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8hpp}{global\+\_\+operator.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8cpp}{global\+\_\+operator.\+cpp}\end{DoxyCompactItemize}

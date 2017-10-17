@@ -1,0 +1,87 @@
+\hypertarget{BasicType_8hpp}{}\section{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\+Basic\+Type.hpp File Reference}
+\label{BasicType_8hpp}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\+Basic\+Type.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\+Basic\+Type.\+hpp}}
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include $<$memory$>$}\\*
+{\ttfamily \#include $<$iomanip$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+{\ttfamily \#include $<$functional$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$tuple$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$exception$>$}\\*
+{\ttfamily \#include $<$Eigen/\+Sparse$>$}\\*
+Include dependency graph for Basic\+Type.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{BasicType_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{BasicType_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFVCode3D}{F\+V\+Code3D}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{BasicType_8hpp_a496de83e4324634a1cd0b2ea3f29bafc}{F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef double \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{F\+V\+Code3\+D\+::\+Real}
+\begin{DoxyCompactList}\small\item\em Type for real numbers. \end{DoxyCompactList}\item 
+typedef uint8\+\_\+t \hyperlink{namespaceFVCode3D_a0319e74922d1d700fbc06e470e0cfc07}{F\+V\+Code3\+D\+::\+S\+U\+Int}
+\begin{DoxyCompactList}\small\item\em Type for unsigned short int. \end{DoxyCompactList}\item 
+typedef uint64\+\_\+t \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{F\+V\+Code3\+D\+::\+U\+Int}
+\begin{DoxyCompactList}\small\item\em Type for integer numbers. \end{DoxyCompactList}\item 
+typedef int64\+\_\+t \hyperlink{namespaceFVCode3D_a2263c42382b217732a2d4e1f7348120a}{F\+V\+Code3\+D\+::\+Int}
+\begin{DoxyCompactList}\small\item\em Generic integer data. \end{DoxyCompactList}\item 
+typedef uint8\+\_\+t \hyperlink{namespaceFVCode3D_a4eac36ed1d93d886ecdcf46c6386b415}{F\+V\+Code3\+D\+::\+Flag8bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 8 different flags \end{DoxyCompactList}\item 
+typedef uint16\+\_\+t \hyperlink{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{F\+V\+Code3\+D\+::\+Flag16bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 16 different flags \end{DoxyCompactList}\item 
+typedef uint32\+\_\+t \hyperlink{namespaceFVCode3D_a74d2aa7527dcbbec13101b55a3cb149d}{F\+V\+Code3\+D\+::\+Flag32bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 32 different flags \end{DoxyCompactList}\item 
+typedef uint64\+\_\+t \hyperlink{namespaceFVCode3D_ab5f86a12f707861f59c32d022209bfb1}{F\+V\+Code3\+D\+::\+Flag64bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 64 different flags \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Sparse\+Matrix$<$ Real $>$ \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{F\+V\+Code3\+D\+::\+Sp\+Mat}
+\begin{DoxyCompactList}\small\item\em Type for eigen column-\/major sparse matrix of Real. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Sparse\+Matrix$<$ Real, Eigen\+::\+Row\+Major $>$ \hyperlink{namespaceFVCode3D_a43d700a82a0a7ea1a4ad9768c59dc536}{F\+V\+Code3\+D\+::\+Sp\+Mat\+RM}
+\begin{DoxyCompactList}\small\item\em Type for eigen row-\/major sparse matrix of Real. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Vector\+Xd \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{F\+V\+Code3\+D\+::\+Vector}
+\begin{DoxyCompactList}\small\item\em Type for eigen vectors. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Matrix$<$ U\+Int, Eigen\+::\+Dynamic, 1 $>$ \hyperlink{namespaceFVCode3D_a9c3dcef0872c1dbd4aaf770d08421fd7}{F\+V\+Code3\+D\+::\+U\+Int\+Vector}
+\begin{DoxyCompactList}\small\item\em Type for eigen U\+Int vectors. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Triplet$<$ Real $>$ \hyperlink{namespaceFVCode3D_a1d6853f6847ee83d6e823a500a8232fd}{F\+V\+Code3\+D\+::\+Triplet}
+\begin{DoxyCompactList}\small\item\em Type for eigen triplets. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const Real \hyperlink{namespaceFVCode3D_a10917df7e49a48239ce5f00ec9bbfe0a}{F\+V\+Code3\+D\+::\+\_\+\+P\+I\+\_\+} = std\+::atan(1)$\ast$4
+\begin{DoxyCompactList}\small\item\em PI. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{Basic\+Type.\+hpp@{Basic\+Type.\+hpp}!F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK@{F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK}}
+\index{F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK@{F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK}!Basic\+Type.\+hpp@{Basic\+Type.\+hpp}}
+\subsubsection[{\texorpdfstring{F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK}{FVCODE3D_HAS_UMFPACK}}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\+V\+C\+O\+D\+E3\+D\+\_\+\+H\+A\+S\+\_\+\+U\+M\+F\+P\+A\+CK}\hypertarget{BasicType_8hpp_a496de83e4324634a1cd0b2ea3f29bafc}{}\label{BasicType_8hpp_a496de83e4324634a1cd0b2ea3f29bafc}
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00026}{26} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+

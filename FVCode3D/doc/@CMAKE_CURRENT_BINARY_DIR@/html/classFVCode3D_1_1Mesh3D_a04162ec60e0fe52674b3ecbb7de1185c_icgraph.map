@@ -1,0 +1,32 @@
+<map id="FVCode3D::Mesh3D::getNodesVector" name="FVCode3D::Mesh3D::getNodesVector">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Fracture3D.html#a1043c8fc93b79a1cea8d67d8adb2a418" title="Export in vtk format the facets representing the fracture (as VTK_POLYGON) " alt="" coords="309,79,469,120"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1CartesianGrid.html#ad331317a639d3441d6fa7707b78dfc67" title="Add the fractures network. " alt="" coords="1073,137,1248,179"/>
+<area shape="rect" id="node14" href="$classFVCode3D_1_1ImporterMedit.html#a588447299960ebaf2f7583fe2ddecdcc" title="Import from a .mesh file. " alt="" coords="301,297,476,339"/>
+<area shape="rect" id="node15" href="$classFVCode3D_1_1ImporterTetGen.html#a37d0191b42bbb7af28f5c42acb1185b7" title="Import from .node, .face, .ele files. " alt="" coords="295,363,482,404"/>
+<area shape="rect" id="node16" href="$classFVCode3D_1_1ImporterTPFA.html#adafe208596baeaca51051ea9692fa757" title="Import from a standard grid file. " alt="" coords="300,428,477,469"/>
+<area shape="rect" id="node17" href="$classFVCode3D_1_1ImporterOpenFOAM.html#ac8d43d9c6d007f5637e5878cef77df5e" title="Import from the OpenFOAM files. " alt="" coords="283,493,495,535"/>
+<area shape="rect" id="node18" href="$classFVCode3D_1_1ImporterForSolver.html#a4ad5aee92b6abe9b6ed5150c707a83ad" title="Import from a file with boundary conditions and fracture network. " alt="" coords="289,559,488,600"/>
+<area shape="rect" id="node19" href="$classFVCode3D_1_1CartesianGrid.html#afdc4d12f34f9bf46db17ec8765e6875f" title="Generate a Cartesian mesh with a prescribed surface. " alt="" coords="573,247,747,288"/>
+<area shape="rect" id="node21" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#af4fe5bce97fc48c94fdcf667941c21b8" title="Compute normal, centroid and area. " alt="" coords="261,624,516,665"/>
+<area shape="rect" id="node24" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#ace915c86bf9d191e9df37c1ff77c998e" title="Compute the normal of the facet. " alt="" coords="293,689,485,731"/>
+<area shape="rect" id="node25" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#add443b097967551ad360f30fc7810f43" title="Compute the area of the facet. " alt="" coords="293,755,485,796"/>
+<area shape="rect" id="node26" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#a67899ed8ad959cf2788f011b9e87dc15" title="Compute the facet centroid and stores it in the M_centroid variable. " alt="" coords="293,820,485,861"/>
+<area shape="rect" id="node27" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ae4ba3b75f888448f83672fcef7d24f2c" title="Computes the volume and the centroid of the cell. " alt="" coords="291,885,487,927"/>
+<area shape="rect" id="node29" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#a1f6291c27f9cbcb0cbaf276e5c9e5e3c" title="Get the i&#45;th vertex (const) " alt="" coords="293,951,485,992"/>
+<area shape="rect" id="node30" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#a85547789dc675c1d74ca6353394c85d4" title="Get the vertex vector(const) " alt="" coords="293,1016,485,1057"/>
+<area shape="rect" id="node31" href="$namespaceFVCode3D.html#a9f604a7093f7f7323727e7ba28d8ce75" title="Add noise to all points. " alt="" coords="291,195,486,222"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Fracture3D.html#a8511764a838f561a17bff2013892a24c" title="Insert the id of a fracture facet. " alt="" coords="580,13,740,55"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1Mesh3D.html#a076fb54969f3922a67bf26e7bf0fd8be" title="Export in a vtk file the facets representing a fracture in the network. " alt="" coords="566,79,754,120"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1Mesh3D.html#a269c01796091da2f599e66b6b91b39dd" title="Add the fracture network. " alt="" coords="804,79,1025,120"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1Importer.html#ac3c29fd7bbccef4ae39ce8d0b63b789f" title="Add the fractures network. " alt="" coords="1089,71,1232,112"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1Importer.html#ac21d82671c21b2e4069511ef0585d7f6" title="Add the lacking data. " alt="" coords="1309,71,1457,112"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1Importer.html#a8d7a3f864c668155ffd4f29baafb6d05" title="Constructor. " alt="" coords="1547,5,1689,47"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1ImporterForSolver.html#aafb9ee01c07359f0cb1421729ca2fa86" title="Hidden. " alt="" coords="1519,71,1717,112"/>
+<area shape="rect" id="node10" href="$main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title="main" alt="" coords="1593,137,1643,163"/>
+<area shape="rect" id="node12" href="$classFVCode3D_1_1CartesianGrid.html#ac8dc7df2cf0ff329b495db228c58002b" title="Add the lacking data. " alt="" coords="1296,188,1471,229"/>
+<area shape="rect" id="node13" href="$classFVCode3D_1_1CartesianGrid.html#ab78b5759c0b421c8a3ab350eb79637ac" title="Generate a Cartesian mesh. " alt="" coords="1531,188,1705,229"/>
+<area shape="rect" id="node20" href="$classFVCode3D_1_1CartesianGrid.html#a0b6893665344152a46600ecfb4681b31" title="Constructor. " alt="" coords="827,305,1002,347"/>
+<area shape="rect" id="node22" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#aff7e597dcc26f5733b0e954a2e73afab" title="Constructor for the facet of a specified mesh moving from the vertices. " alt="" coords="564,624,756,665"/>
+<area shape="rect" id="node23" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#a85a5f6331b71abd97a35b33518c3cbb4" title="Test if the facet is a border facet. " alt="" coords="564,723,756,764"/>
+<area shape="rect" id="node28" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ac02c0684ef4259520ed1a312ce402bb5" title="Constructor for a cell in a specified mesh given the facets. " alt="" coords="564,885,756,927"/>
+</map>

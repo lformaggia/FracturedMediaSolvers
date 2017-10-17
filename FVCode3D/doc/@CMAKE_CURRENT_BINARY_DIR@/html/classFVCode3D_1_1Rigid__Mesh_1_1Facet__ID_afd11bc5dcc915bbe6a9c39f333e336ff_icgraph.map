@@ -1,0 +1,14 @@
+<map id="FVCode3D::Rigid_Mesh::Facet_ID::getCentroid" name="FVCode3D::Rigid_Mesh::Facet_ID::getCentroid">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1StiffMatrix.html#a2365673b4791819e78c4c593e2f63b28" title="It is called by the method assemble() and it computes the coefficient alpha. " alt="" coords="217,123,372,164"/>
+<area shape="rect" id="node13" href="$classFVCode3D_1_1StiffMatrix.html#aec36126e4870fc3f94a2d36b831c739e" title="It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet ..." alt="" coords="217,188,372,229"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1StiffMatrix.html#a94c6757030321f8f557a6625e1bc2706" title="Assemble the porous medium block. " alt="" coords="430,5,593,47"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1StiffMatrix.html#a21f75de574e807c965eedb52f626527e" title="Set offsets. " alt="" coords="651,185,805,227"/>
+<area shape="rect" id="node10" href="$classFVCode3D_1_1StiffMatrix.html#aee24f1b77e66c0bb7be4efbf43671c44" title="Assemble the BCs for the porous medium. " alt="" coords="420,123,603,164"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1StiffMatrix.html#af7e80d2641fc41174eb4cb56e2f119d4" title="Assemble the BCs for the fractures. " alt="" coords="434,188,589,229"/>
+<area shape="rect" id="node12" href="$classFVCode3D_1_1StiffMatrix.html#ac3eb491563c1742f4adba021e397719b" title="Assemble method with MFD. " alt="" coords="651,251,805,292"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1StiffMatrix.html#af63e81815a2ba8bd62a2156a80adce55" title="Assemble method. " alt="" coords="651,120,805,161"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1StiffMatrix.html#a6cb858d3e2c0196e1884deddde864343" title="Get BC vector (const) " alt="" coords="853,183,1008,224"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1DarcySteady.html#af48f96919f23df0f0708c8692da14bbd" title="Assemble matrix method. " alt="" coords="1056,183,1227,224"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1DarcySteady.html#a2709d24b9841b8f227b5b7c1417505df" title="Get the stiffness matrix. " alt="" coords="1275,149,1445,191"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1DarcySteady.html#aaa82aad9d7006a5c1e96e103f602082b" title="Solve method. " alt="" coords="1275,215,1445,256"/>
+</map>

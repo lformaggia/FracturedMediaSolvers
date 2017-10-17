@@ -1,0 +1,127 @@
+\hypertarget{DarcySteady_8hpp_source}{}\section{Darcy\+Steady.\+hpp}
+\label{DarcySteady_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/problem/\+Darcy\+Steady.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/problem/\+Darcy\+Steady.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef DARCYSTEADY\_HPP\_}
+00007 \textcolor{preprocessor}{#define DARCYSTEADY\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{Data_8hpp}{FVCode3D/core/Data.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{Problem_8hpp}{FVCode3D/problem/Problem.hpp}>}
+00011 \textcolor{preprocessor}{#include <\hyperlink{Quadrature_8hpp}{FVCode3D/quadrature/Quadrature.hpp}>}
+00012 \textcolor{preprocessor}{#include <\hyperlink{Stiffness_8hpp}{FVCode3D/assembler/Stiffness.hpp}>}
+00013 \textcolor{preprocessor}{#include <unsupported/Eigen/SparseExtra>}
+00014 
+00015 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00016 \{
+00017 
+00019 
+00025 \textcolor{keyword}{template} <\textcolor{keyword}{class} QRMatrix, \textcolor{keyword}{class} QRFracture, \textcolor{keyword}{typename} MatrixType = SpMat>
+\hypertarget{DarcySteady_8hpp_source.tex_l00026}{}\hyperlink{classFVCode3D_1_1DarcySteady}{00026} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1DarcySteady}{DarcySteady} : \textcolor{keyword}{public} \hyperlink{classFVCode3D_1_1Problem}{Problem}<QRMatrix, QRFracture, MatrixType>
+00027 \{
+00028 \textcolor{keyword}{public}:
+00029 
+00031 
+\hypertarget{DarcySteady_8hpp_source.tex_l00034}{}\hyperlink{classFVCode3D_1_1DarcySteady_aa06573b2c5767486a09fb33c4b0cb480}{00034}     \textcolor{keyword}{typedef} MatrixType \hyperlink{classFVCode3D_1_1DarcySteady_aa06573b2c5767486a09fb33c4b0cb480}{Matrix\_Type};
+00035 
+00037     \hyperlink{classFVCode3D_1_1DarcySteady_ac483d4725a121bc6c6b48d159358d7bc}{DarcySteady}() = \textcolor{keyword}{delete};
+00038 
+00040     \hyperlink{classFVCode3D_1_1DarcySteady_ac483d4725a121bc6c6b48d159358d7bc}{DarcySteady}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1DarcySteady}{DarcySteady} &) = \textcolor{keyword}{delete};
+00041 
+00043 
+\hypertarget{DarcySteady_8hpp_source.tex_l00050}{}\hyperlink{classFVCode3D_1_1DarcySteady_ad62eb3f00ffd84247f1efabc4bc44c54}{00050}     \hyperlink{classFVCode3D_1_1DarcySteady_ad62eb3f00ffd84247f1efabc4bc44c54}{DarcySteady}(\textcolor{keyword}{const} std::string solver, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1BoundaryConditions}{BoundaryConditions} & bc,
+00051                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} & func, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}{DataPtr\_Type} & data):
+00052         \hyperlink{classFVCode3D_1_1Problem}{Problem}<QRMatrix, QRFracture, MatrixType>(solver, mesh, bc, func, data) \{\};
+00053 
+00055 
+\hypertarget{DarcySteady_8hpp_source.tex_l00058}{}\hyperlink{classFVCode3D_1_1DarcySteady_a2709d24b9841b8f227b5b7c1417505df}{00058}     \textcolor{keyword}{virtual} Matrix\_Type & \hyperlink{classFVCode3D_1_1DarcySteady_a2709d24b9841b8f227b5b7c1417505df}{getStiffnessMatrix}() \{ \textcolor{keywordflow}{return} this->
+      \hyperlink{classFVCode3D_1_1Problem_ac105e74d7992025d275c2fae5a77bc12}{M\_A}; \}
+00059 
+00061 
+00064     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1DarcySteady_af48f96919f23df0f0708c8692da14bbd}{assembleMatrix}();
+00065 
+00067 
+00070     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1DarcySteady_a811dc61fdc4bc731bc1790461e0538cb}{assembleVector}();
+00071 
+00073 
+\hypertarget{DarcySteady_8hpp_source.tex_l00077}{}\hyperlink{classFVCode3D_1_1DarcySteady_aaa82aad9d7006a5c1e96e103f602082b}{00077}     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1DarcySteady_aaa82aad9d7006a5c1e96e103f602082b}{solve}() \{ this->\hyperlink{classFVCode3D_1_1Problem_a0dca07f85c16083308d98f518685e3e9}{M\_solver}->solve();
+00078         Eigen::saveMarket( this->\hyperlink{classFVCode3D_1_1Problem_ac105e74d7992025d275c2fae5a77bc12}{M\_A}, \textcolor{stringliteral}{"./mMatrix/A.m"} );
+00079         Eigen::saveMarket( this->\hyperlink{classFVCode3D_1_1Problem_a65a00ab96a21f389f50f273614f977d4}{M\_b}, \textcolor{stringliteral}{"./mMatrix/b.m"} );
+00080         Eigen::saveMarket( this->\hyperlink{classFVCode3D_1_1Problem_a0dca07f85c16083308d98f518685e3e9}{M\_solver}->getSolution(), \textcolor{stringliteral}{"./mMatrix/sol.m"} ); \}
+00081 
+00083     \textcolor{keyword}{virtual} \hyperlink{classFVCode3D_1_1DarcySteady_a8f93f039f8607d9899391cdcaa3600b0}{~DarcySteady}() = \textcolor{keywordflow}{default};
+00084 \};
+00085 
+00086 \textcolor{keyword}{template} <\textcolor{keyword}{class} QRMatrix, \textcolor{keyword}{class} QRFracture, \textcolor{keyword}{typename} MatrixType>
+00087 \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1DarcySteady_af48f96919f23df0f0708c8692da14bbd}{DarcySteady<QRMatrix, QRFracture, MatrixType >::}
+\hypertarget{DarcySteady_8hpp_source.tex_l00088}{}\hyperlink{classFVCode3D_1_1DarcySteady_af48f96919f23df0f0708c8692da14bbd}{00088} \hyperlink{classFVCode3D_1_1DarcySteady_af48f96919f23df0f0708c8692da14bbd}{assembleMatrix}()
+00089 \{
+00090     this->\hyperlink{classFVCode3D_1_1Problem_ace5ff91974a55df1e4cbc6ef879f790f}{M\_quadrature}.reset( \textcolor{keyword}{new} \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}(this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}, QRMatrix(), 
+      QRFracture()) );
+00091 
+00092         \hyperlink{classFVCode3D_1_1StiffMatrix}{StiffMatrix} S(this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}, this->\hyperlink{classFVCode3D_1_1Problem_a6cfbed984a9986876230b643d6c28cee}{M\_bc}, this->
+      \hyperlink{classFVCode3D_1_1Problem_a2ed1b05f24ab6100c6a389e22df7e098}{M\_numet});
+00093 
+00094     \textcolor{keywordflow}{if}(this->\hyperlink{classFVCode3D_1_1Problem_a2ed1b05f24ab6100c6a389e22df7e098}{M\_numet} == Data::NumericalMethodType::FV)
+00095     \{
+00096         S.\hyperlink{classFVCode3D_1_1StiffMatrix_af63e81815a2ba8bd62a2156a80adce55}{assemble}();
+00097         S.\hyperlink{classFVCode3D_1_1MatrixHandler_ac18ada27beb5b7b4e9b0b2a8d7c72671}{closeMatrix}();
+00098     \}
+00099     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(this->\hyperlink{classFVCode3D_1_1Problem_a2ed1b05f24ab6100c6a389e22df7e098}{M\_numet} == Data::NumericalMethodType::MFD)
+00100     \{
+00101         S.\hyperlink{classFVCode3D_1_1StiffMatrix_ac3eb491563c1742f4adba021e397719b}{assembleMFD}();
+00102     \}
+00103 
+00104     this->\hyperlink{classFVCode3D_1_1Problem_ac105e74d7992025d275c2fae5a77bc12}{M\_A} = S.\hyperlink{classFVCode3D_1_1MatrixHandler_a149f6a64d6829c56b8f7ac3f2189e42c}{getMatrix}();
+00105     this->\hyperlink{classFVCode3D_1_1Problem_a65a00ab96a21f389f50f273614f977d4}{M\_b} = S.\hyperlink{classFVCode3D_1_1StiffMatrix_a6cb858d3e2c0196e1884deddde864343}{getBCVector}();
+00106 \} \textcolor{comment}{// DarcySteady::assembleMatrix}
+00107 
+00108 \textcolor{keyword}{template} <\textcolor{keyword}{class} QRMatrix, \textcolor{keyword}{class} QRFracture, \textcolor{keyword}{typename} MatrixType>
+00109 \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1DarcySteady_a811dc61fdc4bc731bc1790461e0538cb}{DarcySteady<QRMatrix, QRFracture, MatrixType >::}
+\hypertarget{DarcySteady_8hpp_source.tex_l00110}{}\hyperlink{classFVCode3D_1_1DarcySteady_a811dc61fdc4bc731bc1790461e0538cb}{00110} \hyperlink{classFVCode3D_1_1DarcySteady_a811dc61fdc4bc731bc1790461e0538cb}{assembleVector}()
+00111 \{
+00112     this->\hyperlink{classFVCode3D_1_1Problem_ace5ff91974a55df1e4cbc6ef879f790f}{M\_quadrature}.reset( \textcolor{keyword}{new} \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}(this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}, QRMatrix(), 
+      QRFracture()) );
+00113                 
+00114                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellsTot = this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + this->
+      \hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00115                 \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} f( Vector::Constant( numCellsTot, 0.) );   
+00116                 
+00117     \textcolor{keywordflow}{if} ( this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() != 0
+00118             &&
+00119             ( this->\hyperlink{classFVCode3D_1_1Problem_ab6c92913d3fda97fa741eb2ebfa01fe6}{M\_ssOn} == \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a130c5b3473c57faa76e2a1c54e26f88e}{Data::SourceSinkOn::Both}
+00120                 ||
+00121               this->\hyperlink{classFVCode3D_1_1Problem_ab6c92913d3fda97fa741eb2ebfa01fe6}{M\_ssOn} == \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3af53df0293e169f562bc1d9a20e1d2589}{Data::SourceSinkOn::Matrix}) )
+00122     \{
+00123         f = this->\hyperlink{classFVCode3D_1_1Problem_ace5ff91974a55df1e4cbc6ef879f790f}{M\_quadrature}->cellIntegrateMatrix(this->\hyperlink{classFVCode3D_1_1Problem_a8d2a09d302c312ce0fadb00b8ac7ecf7}{M\_func});
+00124     \} \textcolor{comment}{// if}
+00125 
+00126     \textcolor{keywordflow}{if} ( this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size() != 0
+00127             &&
+00128             ( this->\hyperlink{classFVCode3D_1_1Problem_ab6c92913d3fda97fa741eb2ebfa01fe6}{M\_ssOn} == \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3a130c5b3473c57faa76e2a1c54e26f88e}{Data::SourceSinkOn::Both}
+00129                 ||
+00130               this->\hyperlink{classFVCode3D_1_1Problem_ab6c92913d3fda97fa741eb2ebfa01fe6}{M\_ssOn} == \hyperlink{classFVCode3D_1_1Data_a4d66e2e205b350cb240820540339e1a3aaa3a14735ecc914d217c516ad93fb640}{Data::SourceSinkOn::Fractures} ) )
+00131     \{
+00132         f += this->\hyperlink{classFVCode3D_1_1Problem_ace5ff91974a55df1e4cbc6ef879f790f}{M\_quadrature}->cellIntegrateFractures(this->\hyperlink{classFVCode3D_1_1Problem_a8d2a09d302c312ce0fadb00b8ac7ecf7}{M\_func});
+00133     \} \textcolor{comment}{// if}
+00134 
+00135     \textcolor{keywordflow}{if} ( this->\hyperlink{classFVCode3D_1_1Problem_a65a00ab96a21f389f50f273614f977d4}{M\_b}.size() == 0 )
+00136     \{
+00137         this->\hyperlink{classFVCode3D_1_1Problem_a65a00ab96a21f389f50f273614f977d4}{M\_b} = f;
+00138     \} \textcolor{comment}{// if}
+00139     \textcolor{keywordflow}{if}(this->\hyperlink{classFVCode3D_1_1Problem_a2ed1b05f24ab6100c6a389e22df7e098}{M\_numet} == Data::NumericalMethodType::FV)
+00140     \{
+00141                 this->\hyperlink{classFVCode3D_1_1Problem_a65a00ab96a21f389f50f273614f977d4}{M\_b} += f;
+00142                 \}
+00143     \textcolor{keywordflow}{if}(this->\hyperlink{classFVCode3D_1_1Problem_a2ed1b05f24ab6100c6a389e22df7e098}{M\_numet} == Data::NumericalMethodType::MFD)
+00144     \{
+00145                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numFacetsTot = this->\hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}().size() + this->
+      \hyperlink{classFVCode3D_1_1Problem_aa3c9a2cf8ccd899314cf22d907a0041f}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00146         this->\hyperlink{classFVCode3D_1_1Problem_a65a00ab96a21f389f50f273614f977d4}{M\_b}.segment(numFacetsTot,numCellsTot) -= f;
+00147     \} 
+00148 \} \textcolor{comment}{// DarcySteady::assembleVector}
+00149 
+00150 \} \textcolor{comment}{// namespace FVCode3D}
+00151 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* DARCYSTEADY\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

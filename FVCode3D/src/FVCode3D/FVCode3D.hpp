@@ -28,6 +28,8 @@
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/assembler/Mass.hpp>
 #include <FVCode3D/assembler/MatrixHandler.hpp>
+#include <FVCode3D/assembler/local_operator.hpp>
+#include <FVCode3D/assembler/global_operator.hpp>
 #include <FVCode3D/geometry/CoordinateSystem.hpp>
 #include <FVCode3D/geometry/Operations.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>

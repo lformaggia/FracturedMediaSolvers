@@ -1,0 +1,497 @@
+\hypertarget{classFVCode3D_1_1global__Operator}{}\section{F\+V\+Code3D\+:\+:global\+\_\+\+Operator Class Reference}
+\label{classFVCode3D_1_1global__Operator}\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+
+
+Base class for assembling a global operator of the problem.  
+
+
+
+
+{\ttfamily \#include $<$global\+\_\+operator.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:global\+\_\+\+Operator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:global\+\_\+\+Operator\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classFVCode3D_1_1global__Operator__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} \{ \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3ac4a3707f1b50e0abf3fbdfe8f23eb068}{d\+Cell}, 
+\hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3a4c110a3a325840fa8bfc6cb08af2e88b}{d\+Facet}, 
+\hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3a14e401f5c090fd510d93556facde9afb}{d\+Fracture}
+ \}\begin{DoxyCompactList}\small\item\em Define the type of discretization. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1global__Operator_a34d96be91b91e05cec5a53ce6364964f}{global\+\_\+\+Operator} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&r\+Mesh, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Prow, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Pcol, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} row\+Size, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} col\+Size)
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classFVCode3D_1_1global__Operator}{global\+\_\+\+Operator}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Operator_a4bea1189138f11fb6a5ddf0f696bd11a}{global\+\_\+\+Operator} (const \hyperlink{classFVCode3D_1_1global__Operator}{global\+\_\+\+Operator} \&)=delete
+\begin{DoxyCompactList}\small\item\em No Copy-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Operator_ab9b0c182cdf6026e3e4e2e5e832b861a}{global\+\_\+\+Operator} ()=delete
+\begin{DoxyCompactList}\small\item\em No Empty-\/\+Constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1global__Operator_af08e8ff43fa00eb9a25f28231e419a6e}{$\sim$global\+\_\+\+Operator} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} \hyperlink{classFVCode3D_1_1global__Operator_a8a5c0eb783ea26ca68347df9abff1382}{get\+\_\+d\+Type\+Row} () const 
+\begin{DoxyCompactList}\small\item\em Get the row dimension type. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} \hyperlink{classFVCode3D_1_1global__Operator_aee57675a48c5d7cf2466b5eac2cc70de}{get\+\_\+d\+Type\+Col} () const 
+\begin{DoxyCompactList}\small\item\em Get the column dimension type. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1global__Operator_afbd8b1757f3210ca8891df24c0d37403}{get\+\_\+\+Nrow} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of rows. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1global__Operator_a76a78df7b59729b7a9b24ba4ddb04d72}{get\+\_\+\+Ncol} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of columns. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1global__Operator_a99fea342f26142e11b629a97389eb758}{get\+Matrix\+\_\+read\+Only} () const 
+\begin{DoxyCompactList}\small\item\em Get the operator matrix (read only version) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1global__Operator_a2a7964a054efe6cea557fcd92ba34d6c}{get\+Matrix} ()
+\begin{DoxyCompactList}\small\item\em Get the operator matrix (writable version) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1global__Operator_a75a401822402ed577b92da12d7fc64bf}{Compress\+Matrix} ()
+\begin{DoxyCompactList}\small\item\em Compress method. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16}{reserve\+\_\+space} ()=0
+\begin{DoxyCompactList}\small\item\em Reserve method. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3}{assemble} ()=0
+\begin{DoxyCompactList}\small\item\em Assemble method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \& \hyperlink{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{M\+\_\+mesh}
+\begin{DoxyCompactList}\small\item\em Constant reference to the rigid mesh. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} \hyperlink{classFVCode3D_1_1global__Operator_a744e41dcb69dc9d482c4810f15cdd76e}{row\+\_\+policy}
+\begin{DoxyCompactList}\small\item\em The row policy. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} \hyperlink{classFVCode3D_1_1global__Operator_a98d57128fb49513da10f3ba6fcbfa839}{col\+\_\+policy}
+\begin{DoxyCompactList}\small\item\em The col policy. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1global__Operator_a56146ab59419c1276673ab57d95bbf1c}{Nrow}
+\begin{DoxyCompactList}\small\item\em The number of rows. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1global__Operator_a10945c9c802a23ee22d993424aef1ecb}{Ncol}
+\begin{DoxyCompactList}\small\item\em The number of columns. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} $>$ \hyperlink{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{M\+\_\+matrix}
+\begin{DoxyCompactList}\small\item\em The sparse matrix representing the operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class for assembling a global operator of the problem. 
+
+This is the base class to build one of the operators of the problem (the operator can be a mimetic one associated to the bulk problem or a fracture operator such as the coupling conditions or the finite volume trasmissibility matrix). It\textquotesingle{}s an abstract class. 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00028}{28} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Member Enumeration Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!d\+Type@{d\+Type}}
+\index{d\+Type@{d\+Type}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{d\+Type}{dType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::d\+Type}}\hypertarget{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{}\label{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}
+
+
+Define the type of discretization. 
+
+This enumerator is used to show the type of discretization of row/column of the operators. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{d\+Cell@{d\+Cell}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!d\+Cell@{d\+Cell}}\item[{\em 
+d\+Cell\hypertarget{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3ac4a3707f1b50e0abf3fbdfe8f23eb068}{}\label{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3ac4a3707f1b50e0abf3fbdfe8f23eb068}
+}]\index{d\+Facet@{d\+Facet}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!d\+Facet@{d\+Facet}}\item[{\em 
+d\+Facet\hypertarget{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3a4c110a3a325840fa8bfc6cb08af2e88b}{}\label{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3a4c110a3a325840fa8bfc6cb08af2e88b}
+}]\index{d\+Fracture@{d\+Fracture}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!d\+Fracture@{d\+Fracture}}\item[{\em 
+d\+Fracture\hypertarget{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3a14e401f5c090fd510d93556facde9afb}{}\label{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3a14e401f5c090fd510d93556facde9afb}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00037}{37} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!global\+\_\+\+Operator@{global\+\_\+\+Operator}}
+\index{global\+\_\+\+Operator@{global\+\_\+\+Operator}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Operator(const Rigid\+\_\+\+Mesh \&r\+Mesh, d\+Type Prow, d\+Type Pcol, U\+Int row\+Size, U\+Int col\+Size)}{global_Operator(const Rigid_Mesh &rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::global\+\_\+\+Operator (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{r\+Mesh, }
+\item[{{\bf d\+Type}}]{Prow, }
+\item[{{\bf d\+Type}}]{Pcol, }
+\item[{{\bf U\+Int}}]{row\+Size, }
+\item[{{\bf U\+Int}}]{col\+Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_a34d96be91b91e05cec5a53ce6364964f}{}\label{classFVCode3D_1_1global__Operator_a34d96be91b91e05cec5a53ce6364964f}
+
+
+Construct a \hyperlink{classFVCode3D_1_1global__Operator}{global\+\_\+\+Operator}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+Mesh} & The rigid mesh of the problem \\
+\hline
+{\em Prow} & The row dimension type \\
+\hline
+{\em Pcol} & The col dimension type \\
+\hline
+{\em row\+Size} & The number of row \\
+\hline
+{\em col\+Size} & The number of col \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00049}{49} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator_a34d96be91b91e05cec5a53ce6364964f_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!global\+\_\+\+Operator@{global\+\_\+\+Operator}}
+\index{global\+\_\+\+Operator@{global\+\_\+\+Operator}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Operator(const global\+\_\+\+Operator \&)=delete}{global_Operator(const global_Operator &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::global\+\_\+\+Operator (
+\begin{DoxyParamCaption}
+\item[{const {\bf global\+\_\+\+Operator} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1global__Operator_a4bea1189138f11fb6a5ddf0f696bd11a}{}\label{classFVCode3D_1_1global__Operator_a4bea1189138f11fb6a5ddf0f696bd11a}
+
+
+No Copy-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!global\+\_\+\+Operator@{global\+\_\+\+Operator}}
+\index{global\+\_\+\+Operator@{global\+\_\+\+Operator}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Operator()=delete}{global_Operator()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::global\+\_\+\+Operator (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1global__Operator_ab9b0c182cdf6026e3e4e2e5e832b861a}{}\label{classFVCode3D_1_1global__Operator_ab9b0c182cdf6026e3e4e2e5e832b861a}
+
+
+No Empty-\/\+Constructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator_ab9b0c182cdf6026e3e4e2e5e832b861a_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!````~global\+\_\+\+Operator@{$\sim$global\+\_\+\+Operator}}
+\index{````~global\+\_\+\+Operator@{$\sim$global\+\_\+\+Operator}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{$\sim$global\+\_\+\+Operator()=default}{~global_Operator()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::$\sim$global\+\_\+\+Operator (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1global__Operator_af08e8ff43fa00eb9a25f28231e419a6e}{}\label{classFVCode3D_1_1global__Operator_af08e8ff43fa00eb9a25f28231e419a6e}
+
+
+Destructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator_af08e8ff43fa00eb9a25f28231e419a6e_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{assemble()=0}{assemble()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3}{}\label{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3}
+
+
+Assemble method. 
+
+Assemble the global operator matrix 
+
+Implemented in \hyperlink{classFVCode3D_1_1FluxOperator_a4f96ac53cafc68eccb01d8ff29eecc87}{F\+V\+Code3\+D\+::\+Flux\+Operator}, \hyperlink{classFVCode3D_1_1CouplingConditions_abc5162d3d50fd44aac557f0a21aa4d3c}{F\+V\+Code3\+D\+::\+Coupling\+Conditions}, \hyperlink{classFVCode3D_1_1global__Div_a57a22172d3cf6f1e45d00de946befc68}{F\+V\+Code3\+D\+::global\+\_\+\+Div}, and \hyperlink{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059}{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!Compress\+Matrix@{Compress\+Matrix}}
+\index{Compress\+Matrix@{Compress\+Matrix}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{Compress\+Matrix()}{CompressMatrix()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::\+Compress\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_a75a401822402ed577b92da12d7fc64bf}{}\label{classFVCode3D_1_1global__Operator_a75a401822402ed577b92da12d7fc64bf}
+
+
+Compress method. 
+
+Convert the matrix in compressed format 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00111}{111} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator_a75a401822402ed577b92da12d7fc64bf_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!get\+\_\+d\+Type\+Col@{get\+\_\+d\+Type\+Col}}
+\index{get\+\_\+d\+Type\+Col@{get\+\_\+d\+Type\+Col}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{get\+\_\+d\+Type\+Col() const }{get_dTypeCol() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf d\+Type} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::get\+\_\+d\+Type\+Col (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_aee57675a48c5d7cf2466b5eac2cc70de}{}\label{classFVCode3D_1_1global__Operator_aee57675a48c5d7cf2466b5eac2cc70de}
+
+
+Get the column dimension type. 
+
+\begin{DoxyReturn}{Returns}
+the column dimension type 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00073}{73} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!get\+\_\+d\+Type\+Row@{get\+\_\+d\+Type\+Row}}
+\index{get\+\_\+d\+Type\+Row@{get\+\_\+d\+Type\+Row}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{get\+\_\+d\+Type\+Row() const }{get_dTypeRow() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf d\+Type} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::get\+\_\+d\+Type\+Row (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_a8a5c0eb783ea26ca68347df9abff1382}{}\label{classFVCode3D_1_1global__Operator_a8a5c0eb783ea26ca68347df9abff1382}
+
+
+Get the row dimension type. 
+
+\begin{DoxyReturn}{Returns}
+the row dimension type 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00066}{66} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!get\+\_\+\+Ncol@{get\+\_\+\+Ncol}}
+\index{get\+\_\+\+Ncol@{get\+\_\+\+Ncol}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{get\+\_\+\+Ncol() const }{get_Ncol() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::get\+\_\+\+Ncol (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_a76a78df7b59729b7a9b24ba4ddb04d72}{}\label{classFVCode3D_1_1global__Operator_a76a78df7b59729b7a9b24ba4ddb04d72}
+
+
+Get the number of columns. 
+
+\begin{DoxyReturn}{Returns}
+the number columns 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00087}{87} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!get\+\_\+\+Nrow@{get\+\_\+\+Nrow}}
+\index{get\+\_\+\+Nrow@{get\+\_\+\+Nrow}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{get\+\_\+\+Nrow() const }{get_Nrow() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::get\+\_\+\+Nrow (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_afbd8b1757f3210ca8891df24c0d37403}{}\label{classFVCode3D_1_1global__Operator_afbd8b1757f3210ca8891df24c0d37403}
+
+
+Get the number of rows. 
+
+\begin{DoxyReturn}{Returns}
+the number rows 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00080}{80} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!get\+Matrix@{get\+Matrix}}
+\index{get\+Matrix@{get\+Matrix}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{get\+Matrix()}{getMatrix()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat}\& F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::get\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_a2a7964a054efe6cea557fcd92ba34d6c}{}\label{classFVCode3D_1_1global__Operator_a2a7964a054efe6cea557fcd92ba34d6c}
+
+
+Get the operator matrix (writable version) 
+
+\begin{DoxyReturn}{Returns}
+A reference to the operator matrix 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00101}{101} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!get\+Matrix\+\_\+read\+Only@{get\+Matrix\+\_\+read\+Only}}
+\index{get\+Matrix\+\_\+read\+Only@{get\+Matrix\+\_\+read\+Only}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{get\+Matrix\+\_\+read\+Only() const }{getMatrix_readOnly() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Sp\+Mat}\& F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::get\+Matrix\+\_\+read\+Only (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__Operator_a99fea342f26142e11b629a97389eb758}{}\label{classFVCode3D_1_1global__Operator_a99fea342f26142e11b629a97389eb758}
+
+
+Get the operator matrix (read only version) 
+
+\begin{DoxyReturn}{Returns}
+A const reference to the operator matrix 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00094}{94} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!reserve\+\_\+space@{reserve\+\_\+space}}
+\index{reserve\+\_\+space@{reserve\+\_\+space}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{reserve\+\_\+space()=0}{reserve_space()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::reserve\+\_\+space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16}{}\label{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16}
+
+
+Reserve method. 
+
+Reserve the proper space for the operator matrix 
+
+Implemented in \hyperlink{classFVCode3D_1_1FluxOperator_a9fe4f2f355610d1cbb921382253c3853}{F\+V\+Code3\+D\+::\+Flux\+Operator}, \hyperlink{classFVCode3D_1_1CouplingConditions_ae32eaf7920f8c314a010993d4a7c821d}{F\+V\+Code3\+D\+::\+Coupling\+Conditions}, \hyperlink{classFVCode3D_1_1global__Div_ac64b9c015a41c89a8358c48626a37744}{F\+V\+Code3\+D\+::global\+\_\+\+Div}, and \hyperlink{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4}{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!col\+\_\+policy@{col\+\_\+policy}}
+\index{col\+\_\+policy@{col\+\_\+policy}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{col\+\_\+policy}{col_policy}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf d\+Type} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::col\+\_\+policy\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1global__Operator_a98d57128fb49513da10f3ba6fcbfa839}{}\label{classFVCode3D_1_1global__Operator_a98d57128fb49513da10f3ba6fcbfa839}
+
+
+The col policy. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00133}{133} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!M\+\_\+matrix@{M\+\_\+matrix}}
+\index{M\+\_\+matrix@{M\+\_\+matrix}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{M\+\_\+matrix}{M_matrix}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::unique\+\_\+ptr$<${\bf Sp\+Mat}$>$ F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::\+M\+\_\+matrix\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}{}\label{classFVCode3D_1_1global__Operator_ab45426efec09f5245e9107794eb7bbd9}
+
+
+The sparse matrix representing the operator. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00139}{139} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!M\+\_\+mesh@{M\+\_\+mesh}}
+\index{M\+\_\+mesh@{M\+\_\+mesh}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh}{M_mesh}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Rigid\+\_\+\+Mesh}\& F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::\+M\+\_\+mesh\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}{}\label{classFVCode3D_1_1global__Operator_a027911d0f801f6f19a3006329ec30a7f}
+
+
+Constant reference to the rigid mesh. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00129}{129} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!Ncol@{Ncol}}
+\index{Ncol@{Ncol}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{Ncol}{Ncol}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::\+Ncol\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1global__Operator_a10945c9c802a23ee22d993424aef1ecb}{}\label{classFVCode3D_1_1global__Operator_a10945c9c802a23ee22d993424aef1ecb}
+
+
+The number of columns. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00137}{137} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!Nrow@{Nrow}}
+\index{Nrow@{Nrow}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{Nrow}{Nrow}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::\+Nrow\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1global__Operator_a56146ab59419c1276673ab57d95bbf1c}{}\label{classFVCode3D_1_1global__Operator_a56146ab59419c1276673ab57d95bbf1c}
+
+
+The number of rows. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00135}{135} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}!row\+\_\+policy@{row\+\_\+policy}}
+\index{row\+\_\+policy@{row\+\_\+policy}!F\+V\+Code3\+D\+::global\+\_\+\+Operator@{F\+V\+Code3\+D\+::global\+\_\+\+Operator}}
+\subsubsection[{\texorpdfstring{row\+\_\+policy}{row_policy}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf d\+Type} F\+V\+Code3\+D\+::global\+\_\+\+Operator\+::row\+\_\+policy\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1global__Operator_a744e41dcb69dc9d482c4810f15cdd76e}{}\label{classFVCode3D_1_1global__Operator_a744e41dcb69dc9d482c4810f15cdd76e}
+
+
+The row policy. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00131}{131} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8hpp}{global\+\_\+operator.\+hpp}\end{DoxyCompactItemize}

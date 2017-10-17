@@ -1,0 +1,4 @@
+<map id="FVCode3D::MSR::computeTransmissibility" name="FVCode3D::MSR::computeTransmissibility">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1MSR.html#a6425feaf241a89b4be13bab2e83c8b2e" title="Compute the average pressure in each sub region. " alt="" coords="328,5,559,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1MSR.html#ae29570a0d0d6767454ebf70f97e22f47" title="Compute the flux between each sub region. " alt="" coords="339,71,547,98"/>
+</map>

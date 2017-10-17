@@ -1,0 +1,99 @@
+\hypertarget{MatrixHandler_8hpp_source}{}\section{Matrix\+Handler.\+hpp}
+\label{MatrixHandler_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\+Matrix\+Handler.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\+Matrix\+Handler.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef \_\_MATRIXHANDLER\_HPP\_\_}
+00007 \textcolor{preprocessor}{#define \_\_MATRIXHANDLER\_HPP\_\_}
+00008 
+00009 \textcolor{preprocessor}{#include <vector>}
+00010 \textcolor{preprocessor}{#include <cmath>}
+00011 \textcolor{preprocessor}{#include <functional>}
+00012 \textcolor{preprocessor}{#include <algorithm>}
+00013 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00014 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00015 \textcolor{preprocessor}{#include <\hyperlink{Data_8hpp}{FVCode3D/core/Data.hpp}>}
+00016 
+00017 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00018 \{
+00019 
+00021 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00027}{}\hyperlink{classFVCode3D_1_1MatrixHandler}{00027} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1MatrixHandler}{MatrixHandler}
+00028 \{
+00029 \textcolor{keyword}{public}:
+00030 
+00031 \textcolor{keyword}{public}:
+00033 
+00034 
+00036 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00041}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a74e467c61446d6172111f2ecff45af99}{00041}     \hyperlink{classFVCode3D_1_1MatrixHandler_a74e467c61446d6172111f2ecff45af99}{MatrixHandler}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rigid\_mesh, 
+      \hyperlink{classFVCode3D_1_1Data_a5222e1901276af4586befd821445c6cf}{Data::NumericalMethodType} M\_numet = Data::NumericalMethodType::FV):
+00042         \hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh} (rigid\_mesh), \hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{M\_properties}(\hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh}.getPropertiesMap()),
+00043         \hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size} (M\_numet*(rigid\_mesh.getFacetsVector().size()+rigid\_mesh.getCellsVector().size()+2*
+      rigid\_mesh.getFractureFacetsIdsVector().size())+
+00044         (1-M\_numet)*(rigid\_mesh.getCellsVector().size()+rigid\_mesh.getFractureFacetsIdsVector().size())),
+00045         \hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow}(0), \hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{M\_offsetCol}(0),
+00046         \hyperlink{classFVCode3D_1_1MatrixHandler_ae266bd543d9369501ed9317d9ba6a07b}{M\_Matrix}(new \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{SpMat}(this->\hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size}, this->\hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size}))\{\}
+00047                         
+00049     \hyperlink{classFVCode3D_1_1MatrixHandler_a6d5d562bf3903da7f0338f7371336253}{MatrixHandler}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1MatrixHandler}{MatrixHandler} &) = \textcolor{keyword}{delete};
+00051     \hyperlink{classFVCode3D_1_1MatrixHandler_a6d5d562bf3903da7f0338f7371336253}{MatrixHandler}() = \textcolor{keyword}{delete};
+00053     \textcolor{keyword}{virtual} \hyperlink{classFVCode3D_1_1MatrixHandler_a2dc118d2c2352c69d2a45e1b84d063c5}{~MatrixHandler}() = \textcolor{keywordflow}{default};
+00055 
+00057 
+00058 
+00060 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00063}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a149f6a64d6829c56b8f7ac3f2189e42c}{00063}     \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{SpMat} & \hyperlink{classFVCode3D_1_1MatrixHandler_a149f6a64d6829c56b8f7ac3f2189e42c}{getMatrix}()\textcolor{keyword}{ const}
+00064 \textcolor{keyword}{        }\{\textcolor{keywordflow}{return} *\hyperlink{classFVCode3D_1_1MatrixHandler_ae266bd543d9369501ed9317d9ba6a07b}{M\_Matrix};\}
+00065 
+00067 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00070}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a770aed167dcbd639a242a309659a3457}{00070}     \textcolor{keyword}{const} std::vector<Triplet> & \hyperlink{classFVCode3D_1_1MatrixHandler_a770aed167dcbd639a242a309659a3457}{getTriplets}()\textcolor{keyword}{ const}
+00071 \textcolor{keyword}{        }\{\textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements};\}
+00072 
+00074 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00077}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a6e193ae089f9bdf258bfb581cf0dc753}{00077}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1MatrixHandler_a6e193ae089f9bdf258bfb581cf0dc753}{getSize}()\textcolor{keyword}{ const}
+00078 \textcolor{keyword}{        }\{\textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size} + \hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow};\}
+00080 
+00082 
+00083 
+00085 
+00088     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1MatrixHandler_a46891c99311b8657e14484a6f1f6b8ce}{assemble}()=0;
+00089 
+00091 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00094}{}\hyperlink{classFVCode3D_1_1MatrixHandler_ac18ada27beb5b7b4e9b0b2a8d7c72671}{00094}     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1MatrixHandler_ac18ada27beb5b7b4e9b0b2a8d7c72671}{closeMatrix}()
+00095     \{
+00096         \hyperlink{classFVCode3D_1_1MatrixHandler_ae266bd543d9369501ed9317d9ba6a07b}{M\_Matrix}->setFromTriplets( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( 
+      \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements} ), \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}( \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements} ) );
+00097         \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements}.clear();
+00098     \}
+00099 
+00101 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00104}{}\hyperlink{classFVCode3D_1_1MatrixHandler_abb040341a6410657044ef016d1f0b1d4}{00104}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1MatrixHandler_abb040341a6410657044ef016d1f0b1d4}{clearTriplets}()
+00105     \{
+00106         \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements}.clear();
+00107     \}
+00108 
+00110 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00115}{}\hyperlink{classFVCode3D_1_1MatrixHandler_aa0943b024c7af8f53b95addb42b75e96}{00115}     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1MatrixHandler_aa0943b024c7af8f53b95addb42b75e96}{setOffsets}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} row, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} col)
+00116     \{
+00117         \hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow} = row;
+00118         \hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{M\_offsetCol} = col;
+00119         \hyperlink{classFVCode3D_1_1MatrixHandler_ae266bd543d9369501ed9317d9ba6a07b}{M\_Matrix}.reset(\textcolor{keyword}{new} \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{SpMat}(\hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size} + \hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow}, 
+      \hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size} + \hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{M\_offsetCol}));
+00120     \}
+00122 
+00123 \textcolor{keyword}{protected}:
+\hypertarget{MatrixHandler_8hpp_source.tex_l00125}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{00125}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & \hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh};
+\hypertarget{MatrixHandler_8hpp_source.tex_l00127}{}\hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{00127}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap} & \hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{M\_properties};
+\hypertarget{MatrixHandler_8hpp_source.tex_l00129}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{00129}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1MatrixHandler_a0162a412f52cf9a540ea359e6a5c9a6f}{M\_size};
+00130 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00132}{}\hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{00132}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow};
+\hypertarget{MatrixHandler_8hpp_source.tex_l00134}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{00134}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{M\_offsetCol};
+00135 
+\hypertarget{MatrixHandler_8hpp_source.tex_l00137}{}\hyperlink{classFVCode3D_1_1MatrixHandler_ae266bd543d9369501ed9317d9ba6a07b}{00137}     std::unique\_ptr<SpMat> \hyperlink{classFVCode3D_1_1MatrixHandler_ae266bd543d9369501ed9317d9ba6a07b}{M\_Matrix};
+\hypertarget{MatrixHandler_8hpp_source.tex_l00139}{}\hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{00139}     std::vector<Triplet> \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements};
+00140 \};
+00141 
+00142 \} \textcolor{comment}{// namespace FVCode3D}
+00143 
+00144 \textcolor{preprocessor}{#endif // \_\_MATRIXHANDLER\_HPP\_\_}
+\end{DoxyCode}

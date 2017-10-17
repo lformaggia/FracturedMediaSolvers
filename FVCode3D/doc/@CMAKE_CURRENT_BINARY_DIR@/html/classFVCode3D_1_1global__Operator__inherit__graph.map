@@ -1,0 +1,6 @@
+<map id="FVCode3D::global_Operator" name="FVCode3D::global_Operator">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1CouplingConditions.html" title="Class for assembling a coupling conditions matrix. " alt="" coords="241,5,449,32"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1FluxOperator.html" title="Class for assembling a coupling conditions matrix. " alt="" coords="260,56,431,83"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1global__Div.html" title="Class for assembling a global divergence matrix. " alt="" coords="267,107,423,133"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1global__InnerProduct.html" title="Class for assembling a global inner product matrix. " alt="" coords="240,157,451,184"/>
+</map>

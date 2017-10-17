@@ -35,7 +35,7 @@ public:
     //! Construct a MatrixHandler, given a Rigid_Mesh.
     /*!
         @param rigid_mesh A Rigid_Mesh used to build the matrix
-        @param dtype It is the policy adopted for the discretization: per Cell or per Nodes (default Cell)
+        @param M_numet It is the numerical method used for the discretization
     */
     
     MatrixHandler(const Rigid_Mesh & rigid_mesh, Data::NumericalMethodType M_numet = Data::NumericalMethodType::FV):

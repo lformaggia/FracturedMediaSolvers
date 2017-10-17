@@ -1,0 +1,69 @@
+\hypertarget{QuadratureRules_8hpp_source}{}\section{Quadrature\+Rules.\+hpp}
+\label{QuadratureRules_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/quadrature/\+Quadrature\+Rules.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/quadrature/\+Quadrature\+Rules.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef \_\_DARCYQUADRATURERULE\_HPP\_\_}
+00007 \textcolor{preprocessor}{#define \_\_DARCYQUADRATURERULE\_HPP\_\_}
+00008 
+00009 \textcolor{preprocessor}{#include <vector>}
+00010 \textcolor{preprocessor}{#include <cmath>}
+00011 \textcolor{preprocessor}{#include <functional>}
+00012 \textcolor{preprocessor}{#include <algorithm>}
+00013 
+00014 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00015 
+00016 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00017 \{
+00018 
+00019 \textcolor{keyword}{class }Rigid\_Mesh;
+00020 
+00022 
+\hypertarget{QuadratureRules_8hpp_source.tex_l00026}{}\hyperlink{classFVCode3D_1_1QuadratureRule}{00026} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule}
+00027 \{
+00028 \textcolor{keyword}{public}:
+00029 
+\hypertarget{QuadratureRules_8hpp_source.tex_l00030}{}\hyperlink{classFVCode3D_1_1QuadratureRule_af2f37bb8e8b8c3fd7554eaacaf4e5f3c}{00030}     \textcolor{keyword}{typedef} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} \hyperlink{classFVCode3D_1_1QuadratureRule_af2f37bb8e8b8c3fd7554eaacaf4e5f3c}{Cell};
+\hypertarget{QuadratureRules_8hpp_source.tex_l00031}{}\hyperlink{classFVCode3D_1_1QuadratureRule_af6e825c3626d437e50e5da733cd0ca1b}{00031}     \textcolor{keyword}{typedef} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} \hyperlink{classFVCode3D_1_1QuadratureRule_af6e825c3626d437e50e5da733cd0ca1b}{Facet};
+\hypertarget{QuadratureRules_8hpp_source.tex_l00032}{}\hyperlink{classFVCode3D_1_1QuadratureRule_aa112834316b236e0a9072b09fd94d9cc}{00032}     \textcolor{keyword}{typedef} std::unique\_ptr<QuadratureRule> \hyperlink{classFVCode3D_1_1QuadratureRule_aa112834316b236e0a9072b09fd94d9cc}{QuadratureRuleHandler};
+00033 
+00035     \hyperlink{classFVCode3D_1_1QuadratureRule_a3eeb28f09a0f1bd920790698bf309192}{QuadratureRule}() = \textcolor{keywordflow}{default};
+00036 
+00038 
+00041     \textcolor{keyword}{virtual} std::unique\_ptr<QuadratureRule> \hyperlink{classFVCode3D_1_1QuadratureRule_a15713ebb7a5e7fb1a976a53fd0993415}{clone}() \textcolor{keyword}{const} = 0;
+00042 
+00044 
+00049     \textcolor{keyword}{virtual} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1QuadratureRule_ab4dc6fefb61b96da71e47426985aa29b}{apply}(\textcolor{keyword}{const} Cell & cell, \textcolor{keyword}{const} std::function<\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & integrand) \textcolor{keyword}{const} = 0;
+00050 
+00052 
+00058     \textcolor{keyword}{virtual} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1QuadratureRule_ab4dc6fefb61b96da71e47426985aa29b}{apply}(\textcolor{keyword}{const} Facet & facet, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} volume, \textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & integrand) \textcolor{keyword}{const} = 0;
+00059 
+00061     \textcolor{keyword}{virtual} \hyperlink{classFVCode3D_1_1QuadratureRule_a01d4ee373abeb8f05c37626aee4a4b50}{~QuadratureRule}() = \textcolor{keywordflow}{default};
+00062 \};
+00063 
+00065 
+\hypertarget{QuadratureRules_8hpp_source.tex_l00069}{}\hyperlink{classFVCode3D_1_1CentroidQuadrature}{00069} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1CentroidQuadrature}{CentroidQuadrature} : \textcolor{keyword}{public} \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule}
+00070 \{
+00071 \textcolor{keyword}{public}:
+00072 
+00074     \hyperlink{classFVCode3D_1_1CentroidQuadrature}{CentroidQuadrature}() = \textcolor{keywordflow}{default};
+00075 
+00077 
+00080     std::unique\_ptr<QuadratureRule> \hyperlink{classFVCode3D_1_1QuadratureRule_a15713ebb7a5e7fb1a976a53fd0993415}{clone}() \textcolor{keyword}{const};
+00081 
+00083 
+00088     \textcolor{keyword}{virtual} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1QuadratureRule_ab4dc6fefb61b96da71e47426985aa29b}{apply}(\textcolor{keyword}{const} Cell & cell, \textcolor{keyword}{const} std::function<\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & integrand) \textcolor{keyword}{const};
+00089 
+00091 
+00097     \textcolor{keyword}{virtual} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1QuadratureRule_ab4dc6fefb61b96da71e47426985aa29b}{apply}(\textcolor{keyword}{const} Facet & facet, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} volume, \textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & integrand) \textcolor{keyword}{const};
+00098 
+00100     \textcolor{keyword}{virtual} ~\hyperlink{classFVCode3D_1_1CentroidQuadrature}{CentroidQuadrature}() = \textcolor{keywordflow}{default};
+00101 \};
+00102 
+00103 \} \textcolor{comment}{// namespace FVCode3D}
+00104 \textcolor{preprocessor}{#endif}
+\end{DoxyCode}

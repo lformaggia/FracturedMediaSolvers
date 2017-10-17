@@ -1,0 +1,119 @@
+\hypertarget{Properties_8hpp_source}{}\section{Properties.\+hpp}
+\label{Properties_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\+Properties.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\+Properties.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef PROPERTIES\_HPP\_}
+00007 \textcolor{preprocessor}{#define PROPERTIES\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{PermeabilityFactory_8hpp}{FVCode3D/property/PermeabilityFactory.hpp}>}
+00011 \textcolor{preprocessor}{#include <\hyperlink{Permeability_8hpp}{FVCode3D/property/Permeability.hpp}>}
+00012 
+00013 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00014 \{
+00015 
+00016 \textcolor{keyword}{class }PermeabilityBase;
+00017 \textcolor{keyword}{class }Mesh3D;
+00018 
+00020 
+\hypertarget{Properties_8hpp_source.tex_l00024}{}\hyperlink{classFVCode3D_1_1Properties}{00024} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1Properties}{Properties}
+00025 \{
+00026 \textcolor{keyword}{public}:
+00027 
+\hypertarget{Properties_8hpp_source.tex_l00029}{}\hyperlink{classFVCode3D_1_1Properties_a6973ad7404c3bcb871fa9b9d5ea0fdfe}{00029}     \hyperlink{classFVCode3D_1_1Properties_a6973ad7404c3bcb871fa9b9d5ea0fdfe}{Properties}():
+00030         \hyperlink{classFVCode3D_1_1Properties_ace95facc126d88b414622cdb0e4fc835}{M\_aperture}(0.), \hyperlink{classFVCode3D_1_1Properties_a22632d3f1cb4769e409c6d3bc84893d8}{M\_porosity}(0.),
+00031         \hyperlink{classFVCode3D_1_1Properties_a0689b2e6e4e5cb23ba4553ac78abe2bd}{M\_permeability}(\hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type}(new 
+      \hyperlink{classFVCode3D_1_1PermeabilityScalar}{PermeabilityScalar})) \{\}
+00032 
+00034 
+\hypertarget{Properties_8hpp_source.tex_l00039}{}\hyperlink{classFVCode3D_1_1Properties_a36e262d7a5f3d3b891fd5b3b2d6ecd42}{00039}     \hyperlink{classFVCode3D_1_1Properties_a36e262d7a5f3d3b891fd5b3b2d6ecd42}{Properties}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aperture, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & permeability):
+00040         \hyperlink{classFVCode3D_1_1Properties_ace95facc126d88b414622cdb0e4fc835}{M\_aperture}(aperture), \hyperlink{classFVCode3D_1_1Properties_a22632d3f1cb4769e409c6d3bc84893d8}{M\_porosity}(porosity), 
+      \hyperlink{classFVCode3D_1_1Properties_a0689b2e6e4e5cb23ba4553ac78abe2bd}{M\_permeability}(permeability) \{\}
+00041 
+00043 
+\hypertarget{Properties_8hpp_source.tex_l00049}{}\hyperlink{classFVCode3D_1_1Properties_a0ddb477254cfacdb96a440ddedc2548c}{00049}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Properties_a0ddb477254cfacdb96a440ddedc2548c}{setProperties}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aperture, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & permeability)
+00050         \{ \hyperlink{classFVCode3D_1_1Properties_ace95facc126d88b414622cdb0e4fc835}{M\_aperture} = aperture; \hyperlink{classFVCode3D_1_1Properties_a22632d3f1cb4769e409c6d3bc84893d8}{M\_porosity} = porosity;
+\hypertarget{Properties_8hpp_source.tex_l00051}{}\hyperlink{classFVCode3D_1_1Properties_ace95facc126d88b414622cdb0e4fc835}{00051}           \hyperlink{classFVCode3D_1_1Properties_a0689b2e6e4e5cb23ba4553ac78abe2bd}{M\_permeability} = permeability; \};
+00052 
+00054     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Properties_ace95facc126d88b414622cdb0e4fc835}{M\_aperture};
+\hypertarget{Properties_8hpp_source.tex_l00056}{}\hyperlink{classFVCode3D_1_1Properties_a22632d3f1cb4769e409c6d3bc84893d8}{00056}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Properties_a22632d3f1cb4769e409c6d3bc84893d8}{M\_porosity};
+\hypertarget{Properties_8hpp_source.tex_l00058}{}\hyperlink{classFVCode3D_1_1Properties_a0689b2e6e4e5cb23ba4553ac78abe2bd}{00058}     \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} \hyperlink{classFVCode3D_1_1Properties_a0689b2e6e4e5cb23ba4553ac78abe2bd}{M\_permeability};
+00059 \};
+00060 
+00062 
+\hypertarget{Properties_8hpp_source.tex_l00066}{}\hyperlink{classFVCode3D_1_1PropertiesMap}{00066} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap}
+00067 \{
+00068 \textcolor{keyword}{public}:
+00069 
+\hypertarget{Properties_8hpp_source.tex_l00071}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a8cf38425cb5139944861f9dd739990c6}{00071}     \hyperlink{classFVCode3D_1_1PropertiesMap_a8cf38425cb5139944861f9dd739990c6}{PropertiesMap}():M\_mobility(0.), M\_compressibility(0.) \{\};
+00072 
+00074 
+\hypertarget{Properties_8hpp_source.tex_l00077}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a9867cdd12c945b69b55327a850339754}{00077}     \hyperlink{classFVCode3D_1_1PropertiesMap_a9867cdd12c945b69b55327a850339754}{PropertiesMap}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mobility, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} compressibility = 0.):
+00078         M\_mobility(mobility), M\_compressibility(compressibility) \{\};
+00079 
+00081 
+\hypertarget{Properties_8hpp_source.tex_l00084}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a69ce6f83b7fcd50b27aea1a2e3e87ba1}{00084}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1PropertiesMap_a69ce6f83b7fcd50b27aea1a2e3e87ba1}{getNumberOfZone}()\textcolor{keyword}{ const}
+00085 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} M\_properties.size(); \};
+00086 
+00088 
+\hypertarget{Properties_8hpp_source.tex_l00091}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{00091}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_a810ea62ca881e4db57acd601bcea23cf}{getMobility}()\textcolor{keyword}{ const}
+00092 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} M\_mobility; \};
+00093 
+00095 
+\hypertarget{Properties_8hpp_source.tex_l00098}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f}{00098}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f}{getCompressibility}()\textcolor{keyword}{ const}
+00099 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} M\_compressibility; \};
+00100 
+00102 
+\hypertarget{Properties_8hpp_source.tex_l00105}{}\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{00105}     \textcolor{keyword}{const} std::map<UInt, Properties> & \hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}()\textcolor{keyword}{ const}
+00106 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} M\_properties; \};
+00107 
+00109 
+\hypertarget{Properties_8hpp_source.tex_l00112}{}\hyperlink{classFVCode3D_1_1PropertiesMap_ac6aa90932a7ea39d68401d31f9655f2d}{00112}     std::map<UInt, Properties> & \hyperlink{classFVCode3D_1_1PropertiesMap_ac6aa90932a7ea39d68401d31f9655f2d}{getProperties}()
+00113         \{ \textcolor{keywordflow}{return} M\_properties; \};
+00114 
+00116 
+\hypertarget{Properties_8hpp_source.tex_l00120}{}\hyperlink{classFVCode3D_1_1PropertiesMap_ab06f08f098ebe4cac0dfb78ca1a3fd7f}{00120}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Properties}{Properties} & \hyperlink{classFVCode3D_1_1PropertiesMap_ab06f08f098ebe4cac0dfb78ca1a3fd7f}{getProperties}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} zone)\textcolor{keyword}{ const}
+00121 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} M\_properties.at(zone); \};
+00122 
+00124 
+\hypertarget{Properties_8hpp_source.tex_l00128}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a85d23b6c8da4de58e30bab6ad643c084}{00128}     \hyperlink{classFVCode3D_1_1Properties}{Properties} & \hyperlink{classFVCode3D_1_1PropertiesMap_a85d23b6c8da4de58e30bab6ad643c084}{getProperties}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} zone)
+00129         \{ \textcolor{keywordflow}{return} M\_properties[zone]; \};
+00130 
+00132 
+00137     \textcolor{keywordtype}{void} setPropertiesOnMatrix(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & permeability);
+00138 
+00140 
+00146     \textcolor{keywordtype}{void} setPropertiesOnFractures(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} aperture, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{PermPtr\_Type} & permeability);
+00147 
+00149 
+\hypertarget{Properties_8hpp_source.tex_l00153}{}\hyperlink{classFVCode3D_1_1PropertiesMap_ac303adadd1101e7bee62ecad0e8ea6ac}{00153}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1PropertiesMap_ac303adadd1101e7bee62ecad0e8ea6ac}{setZone}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} zone, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Properties}{Properties} & prop)
+00154         \{ M\_properties[zone] = prop; \};
+00155 
+00157 
+\hypertarget{Properties_8hpp_source.tex_l00160}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a130615880aea53aecc331634de3a2d16}{00160}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1PropertiesMap_a130615880aea53aecc331634de3a2d16}{setMobility}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mobility)
+00161         \{ M\_mobility = mobility; \};
+00162 
+00164 
+\hypertarget{Properties_8hpp_source.tex_l00167}{}\hyperlink{classFVCode3D_1_1PropertiesMap_abe59b6519ad1e67b62f2c7136b064a2d}{00167}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1PropertiesMap_abe59b6519ad1e67b62f2c7136b064a2d}{setCompressibility}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} compressibility)
+00168         \{ M\_compressibility = compressibility; \};
+00169 
+00171     ~\hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap}() = \textcolor{keywordflow}{default};
+00172 
+00173 \textcolor{keyword}{private}:
+00174 
+\hypertarget{Properties_8hpp_source.tex_l00176}{}\hyperlink{classFVCode3D_1_1PropertiesMap_afdef5e8ebad216c3799c6ab0eb3a2ab5}{00176}     std::map<UInt, Properties> \hyperlink{classFVCode3D_1_1PropertiesMap_afdef5e8ebad216c3799c6ab0eb3a2ab5}{M\_properties};
+00177 
+\hypertarget{Properties_8hpp_source.tex_l00179}{}\hyperlink{classFVCode3D_1_1PropertiesMap_ad8c21900ff4a979050d999058595d65c}{00179}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_ad8c21900ff4a979050d999058595d65c}{M\_mobility};
+00180 
+\hypertarget{Properties_8hpp_source.tex_l00182}{}\hyperlink{classFVCode3D_1_1PropertiesMap_a3c5225602e1555d998c454eb4e585022}{00182}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PropertiesMap_a3c5225602e1555d998c454eb4e585022}{M\_compressibility};
+00183 \};
+00184 
+00185 \} \textcolor{comment}{// namespace FVCode3D}
+00186 
+00187 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* PROPERTIES\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

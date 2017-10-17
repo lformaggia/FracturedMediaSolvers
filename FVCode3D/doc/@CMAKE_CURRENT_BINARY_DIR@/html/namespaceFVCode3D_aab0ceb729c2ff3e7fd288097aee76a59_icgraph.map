@@ -1,0 +1,9 @@
+<map id="FVCode3D::toUpper" name="FVCode3D::toUpper">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1EnumParser.html#a8d2b6c876bec705fcc4e063760e186dd" title="FVCode3D::EnumParser\l::EnumParser" alt="" coords="200,5,367,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1EnumParser.html#a47ae536aad82ef52509472c0c7f1022e" title="Parse method. " alt="" coords="200,71,367,112"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1SolverHandler.html#a4ad5c3dd8fa9a29281a802a1fa520f29" title="Register the products. " alt="" coords="195,136,372,177"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1SolverHandler.html#a15e31d74d5411d2e3eb3ba00140dbeed" title="Get a product. " alt="" coords="195,201,372,243"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1Data.html#ae898de2278e74386b4dbab3a8be89ca9" title="Constructor from file. " alt="" coords="460,53,619,79"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1Data.html#a1f2a77ec9eb6e10ae5f5e7150343bc81" title="Set the extension of the mesh format type. " alt="" coords="420,103,659,130"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1Data.html#a78ef784e9755b8e1285d597eddb9d1de" title="Set the file of the mesh. " alt="" coords="707,103,909,130"/>
+</map>

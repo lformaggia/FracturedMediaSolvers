@@ -1,0 +1,253 @@
+\hypertarget{classFVCode3D_1_1local__Div}{}\section{F\+V\+Code3D\+:\+:local\+\_\+\+Div Class Reference}
+\label{classFVCode3D_1_1local__Div}\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+
+
+Class for assembling a local div matrix.  
+
+
+
+
+{\ttfamily \#include $<$local\+\_\+operator.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:local\+\_\+\+Div\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classFVCode3D_1_1local__Div__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:local\+\_\+\+Div\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{classFVCode3D_1_1local__Div__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1local__Div_ac694c9494b555a05f76ad7a8f1054ef0}{local\+\_\+\+Div} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&r\+Mesh, const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\+\_\+\+Mesh\+::\+Cell} \&cell)
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classFVCode3D_1_1local__Div}{local\+\_\+\+Div}, given a cell. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1local__Div_a8b60cd4ce5c57666dcd789f88bf4c878}{local\+\_\+\+Div} (const \hyperlink{classFVCode3D_1_1local__Div}{local\+\_\+\+Div} \&)=delete
+\begin{DoxyCompactList}\small\item\em No Copy-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1local__Div_a2055fe43c88bfae8cec9fc23d164d8de}{local\+\_\+\+Div} ()=delete
+\begin{DoxyCompactList}\small\item\em No Empty-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1local__Div_afa9074811abe8144670c22a8ac6cb1bd}{$\sim$local\+\_\+\+Div} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \& \hyperlink{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{get\+Bp} () const 
+\begin{DoxyCompactList}\small\item\em Get the Bp matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86}{assemble} ()
+\begin{DoxyCompactList}\small\item\em Assemble method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \hyperlink{classFVCode3D_1_1local__Div_a43a4652e156243c0f8c82af161ab0b8f}{Bp}
+\begin{DoxyCompactList}\small\item\em Vector of signed factes of the cell. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFVCode3D_1_1local__Div_abcd35ed5f4c4c65e5aee0132d25150ff}{local\+\_\+builder}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for assembling a local div matrix. 
+
+This class constructs the local div matrix given a cell. The adopted scheme is very simple and computes for every face of the mesh its signed facet and builds up a cell vector that the local div matrix. 
+
+Definition at line \hyperlink{local__operator_8hpp_source_l00181}{181} of file \hyperlink{local__operator_8hpp_source}{local\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!local\+\_\+\+Div@{local\+\_\+\+Div}}
+\index{local\+\_\+\+Div@{local\+\_\+\+Div}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{local\+\_\+\+Div(const Rigid\+\_\+\+Mesh \&r\+Mesh, const Rigid\+\_\+\+Mesh\+::\+Cell \&cell)}{local_Div(const Rigid_Mesh &rMesh, const Rigid_Mesh::Cell &cell)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::local\+\_\+\+Div\+::local\+\_\+\+Div (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{r\+Mesh, }
+\item[{const {\bf Rigid\+\_\+\+Mesh\+::\+Cell} \&}]{cell}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1local__Div_ac694c9494b555a05f76ad7a8f1054ef0}{}\label{classFVCode3D_1_1local__Div_ac694c9494b555a05f76ad7a8f1054ef0}
+
+
+Construct a \hyperlink{classFVCode3D_1_1local__Div}{local\+\_\+\+Div}, given a cell. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+Mesh} & The rigid mesh of the problem \\
+\hline
+{\em cell} & The cell of the local\+Div \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{local__operator_8hpp_source_l00192}{192} of file \hyperlink{local__operator_8hpp_source}{local\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!local\+\_\+\+Div@{local\+\_\+\+Div}}
+\index{local\+\_\+\+Div@{local\+\_\+\+Div}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{local\+\_\+\+Div(const local\+\_\+\+Div \&)=delete}{local_Div(const local_Div &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::local\+\_\+\+Div\+::local\+\_\+\+Div (
+\begin{DoxyParamCaption}
+\item[{const {\bf local\+\_\+\+Div} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1local__Div_a8b60cd4ce5c57666dcd789f88bf4c878}{}\label{classFVCode3D_1_1local__Div_a8b60cd4ce5c57666dcd789f88bf4c878}
+
+
+No Copy-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!local\+\_\+\+Div@{local\+\_\+\+Div}}
+\index{local\+\_\+\+Div@{local\+\_\+\+Div}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{local\+\_\+\+Div()=delete}{local_Div()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::local\+\_\+\+Div\+::local\+\_\+\+Div (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1local__Div_a2055fe43c88bfae8cec9fc23d164d8de}{}\label{classFVCode3D_1_1local__Div_a2055fe43c88bfae8cec9fc23d164d8de}
+
+
+No Empty-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!````~local\+\_\+\+Div@{$\sim$local\+\_\+\+Div}}
+\index{````~local\+\_\+\+Div@{$\sim$local\+\_\+\+Div}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{$\sim$local\+\_\+\+Div()=default}{~local_Div()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::local\+\_\+\+Div\+::$\sim$local\+\_\+\+Div (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1local__Div_afa9074811abe8144670c22a8ac6cb1bd}{}\label{classFVCode3D_1_1local__Div_afa9074811abe8144670c22a8ac6cb1bd}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{assemble()}{assemble()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::local\+\_\+\+Div\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86}{}\label{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86}
+
+
+Assemble method. 
+
+Assemble the \hyperlink{classFVCode3D_1_1local__Div}{local\+\_\+\+Div} 
+
+Implements \hyperlink{classFVCode3D_1_1local__MimeticOperator_a3ba6c8741558f4be2be8fcd73e10311d}{F\+V\+Code3\+D\+::local\+\_\+\+Mimetic\+Operator}.
+
+
+
+Definition at line \hyperlink{local__operator_8cpp_source_l00095}{95} of file \hyperlink{local__operator_8cpp_source}{local\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!get\+Bp@{get\+Bp}}
+\index{get\+Bp@{get\+Bp}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{get\+Bp() const }{getBp() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::vector$<${\bf Real}$>$\& F\+V\+Code3\+D\+::local\+\_\+\+Div\+::get\+Bp (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{}\label{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}
+
+
+Get the Bp matrix. 
+
+\begin{DoxyReturn}{Returns}
+a reference to the Bp matrix 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{local__operator_8hpp_source_l00208}{208} of file \hyperlink{local__operator_8hpp_source}{local\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Friends And Related Function Documentation}
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!local\+\_\+builder@{local\+\_\+builder}}
+\index{local\+\_\+builder@{local\+\_\+builder}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{local\+\_\+builder}{local_builder}}]{\setlength{\rightskip}{0pt plus 5cm}friend class {\bf local\+\_\+builder}\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1local__Div_abcd35ed5f4c4c65e5aee0132d25150ff}{}\label{classFVCode3D_1_1local__Div_abcd35ed5f4c4c65e5aee0132d25150ff}
+
+
+Definition at line \hyperlink{local__operator_8hpp_source_l00221}{221} of file \hyperlink{local__operator_8hpp_source}{local\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}!Bp@{Bp}}
+\index{Bp@{Bp}!F\+V\+Code3\+D\+::local\+\_\+\+Div@{F\+V\+Code3\+D\+::local\+\_\+\+Div}}
+\subsubsection[{\texorpdfstring{Bp}{Bp}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<${\bf Real}$>$ F\+V\+Code3\+D\+::local\+\_\+\+Div\+::\+Bp\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1local__Div_a43a4652e156243c0f8c82af161ab0b8f}{}\label{classFVCode3D_1_1local__Div_a43a4652e156243c0f8c82af161ab0b8f}
+
+
+Vector of signed factes of the cell. 
+
+
+
+Definition at line \hyperlink{local__operator_8hpp_source_l00225}{225} of file \hyperlink{local__operator_8hpp_source}{local\+\_\+operator.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{local__operator_8hpp}{local\+\_\+operator.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{local__operator_8cpp}{local\+\_\+operator.\+cpp}\end{DoxyCompactItemize}

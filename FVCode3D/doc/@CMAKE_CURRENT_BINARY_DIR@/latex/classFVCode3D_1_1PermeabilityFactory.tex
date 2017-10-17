@@ -1,0 +1,285 @@
+\hypertarget{classFVCode3D_1_1PermeabilityFactory}{}\section{F\+V\+Code3D\+:\+:Permeability\+Factory Class Reference}
+\label{classFVCode3D_1_1PermeabilityFactory}\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+
+
+Factory that produces Permeability classes.  
+
+
+
+
+{\ttfamily \#include $<$Permeability\+Factory.\+hpp$>$}
+
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Permeability\+Factory\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityFactory__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1PermeabilityFactory_a3a160511216d3258029df8b84a7c322d}{add\+Product} (const std\+::string product\+Name, const \hyperlink{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{Permeability\+Builder} \&builder)
+\begin{DoxyCompactList}\small\item\em Add a product to the factory. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \hyperlink{classFVCode3D_1_1PermeabilityFactory_a1cba6a88ecaaf1c152877ab632381010}{get\+Product} (const std\+::string product\+Name) const 
+\begin{DoxyCompactList}\small\item\em Get a product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PermeabilityFactory_a6cb7bab1a4ce9d2711e68222b6471ab4}{$\sim$\+Permeability\+Factory} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory} \& \hyperlink{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e}{Instance} ()
+\begin{DoxyCompactList}\small\item\em Static method that return an instance of this class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1PermeabilityFactory_a4d493147f170220c876247c000ea57a7}{Permeability\+Factory} ()=default
+\begin{DoxyCompactList}\small\item\em No default constrcutor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PermeabilityFactory_aa6cf697c0fe79de326e42a3e1f6ed392}{Permeability\+Factory} (const \hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory} \&)=delete
+\begin{DoxyCompactList}\small\item\em No copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory} \& \hyperlink{classFVCode3D_1_1PermeabilityFactory_a0f37ae69832f386ad197f95f81825eb3}{operator=} (const \hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory} \&)=delete
+\begin{DoxyCompactList}\small\item\em No assignment operator. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1PermeabilityFactory_a6aad35b4bccce3c7aea9ed49c1739e5d}{registration} ()
+\begin{DoxyCompactList}\small\item\em Register the products. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ std\+::string, \hyperlink{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{Permeability\+Builder} $>$ \hyperlink{classFVCode3D_1_1PermeabilityFactory_a929e4768d02b4d006e8b2ace9dcc2354}{M\+\_\+product\+List}
+\begin{DoxyCompactList}\small\item\em Map that contains the products. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory} $\ast$ \hyperlink{classFVCode3D_1_1PermeabilityFactory_af47631ea4362556dd4240314e5e056b7}{the\+Only\+Permeability\+Factory} = 0
+\begin{DoxyCompactList}\small\item\em Pointer to the singleton instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Factory that produces Permeability classes. 
+
+This class implements a Factory that produces Permeability classes. 
+
+Definition at line \hyperlink{PermeabilityFactory_8hpp_source_l00027}{27} of file \hyperlink{PermeabilityFactory_8hpp_source}{Permeability\+Factory.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!````~Permeability\+Factory@{$\sim$\+Permeability\+Factory}}
+\index{````~Permeability\+Factory@{$\sim$\+Permeability\+Factory}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{$\sim$\+Permeability\+Factory()=default}{~PermeabilityFactory()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Factory\+::$\sim$\+Permeability\+Factory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a6cb7bab1a4ce9d2711e68222b6471ab4}{}\label{classFVCode3D_1_1PermeabilityFactory_a6cb7bab1a4ce9d2711e68222b6471ab4}
+
+
+Destructor. 
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!Permeability\+Factory@{Permeability\+Factory}}
+\index{Permeability\+Factory@{Permeability\+Factory}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{Permeability\+Factory()=default}{PermeabilityFactory()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Factory\+::\+Permeability\+Factory (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a4d493147f170220c876247c000ea57a7}{}\label{classFVCode3D_1_1PermeabilityFactory_a4d493147f170220c876247c000ea57a7}
+
+
+No default constrcutor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityFactory_a4d493147f170220c876247c000ea57a7_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!Permeability\+Factory@{Permeability\+Factory}}
+\index{Permeability\+Factory@{Permeability\+Factory}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{Permeability\+Factory(const Permeability\+Factory \&)=delete}{PermeabilityFactory(const PermeabilityFactory &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Factory\+::\+Permeability\+Factory (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Factory} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_aa6cf697c0fe79de326e42a3e1f6ed392}{}\label{classFVCode3D_1_1PermeabilityFactory_aa6cf697c0fe79de326e42a3e1f6ed392}
+
+
+No copy constructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!add\+Product@{add\+Product}}
+\index{add\+Product@{add\+Product}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{add\+Product(const std\+::string product\+Name, const Permeability\+Builder \&builder)}{addProduct(const std::string productName, const PermeabilityBuilder &builder)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Permeability\+Factory\+::add\+Product (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{product\+Name, }
+\item[{const {\bf Permeability\+Builder} \&}]{builder}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a3a160511216d3258029df8b84a7c322d}{}\label{classFVCode3D_1_1PermeabilityFactory_a3a160511216d3258029df8b84a7c322d}
+
+
+Add a product to the factory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em product\+Name} & name of the product \\
+\hline
+{\em builder} & builder function \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{PermeabilityFactory_8cpp_source_l00033}{33} of file \hyperlink{PermeabilityFactory_8cpp_source}{Permeability\+Factory.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityFactory_a3a160511216d3258029df8b84a7c322d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!get\+Product@{get\+Product}}
+\index{get\+Product@{get\+Product}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{get\+Product(const std\+::string product\+Name) const }{getProduct(const std::string productName) const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Perm\+Ptr\+\_\+\+Type} F\+V\+Code3\+D\+::\+Permeability\+Factory\+::get\+Product (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{product\+Name}
+\end{DoxyParamCaption}
+) const}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a1cba6a88ecaaf1c152877ab632381010}{}\label{classFVCode3D_1_1PermeabilityFactory_a1cba6a88ecaaf1c152877ab632381010}
+
+
+Get a product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em product\+Name} & product name to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the Pemeability\+Base class of the product 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{PermeabilityFactory_8cpp_source_l00038}{38} of file \hyperlink{PermeabilityFactory_8cpp_source}{Permeability\+Factory.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!Instance@{Instance}}
+\index{Instance@{Instance}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{Instance()}{Instance()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Permeability\+Factory} \& F\+V\+Code3\+D\+::\+Permeability\+Factory\+::\+Instance (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e}{}\label{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e}
+
+
+Static method that return an instance of this class. 
+
+\begin{DoxyReturn}{Returns}
+\hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory} instance 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{PermeabilityFactory_8cpp_source_l00014}{14} of file \hyperlink{PermeabilityFactory_8cpp_source}{Permeability\+Factory.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityFactory_a4bf654c1bec870030dbfe0a8dfbc721e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!operator=@{operator=}}
+\index{operator=@{operator=}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{operator=(const Permeability\+Factory \&)=delete}{operator=(const PermeabilityFactory &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Permeability\+Factory}\& F\+V\+Code3\+D\+::\+Permeability\+Factory\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Factory} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a0f37ae69832f386ad197f95f81825eb3}{}\label{classFVCode3D_1_1PermeabilityFactory_a0f37ae69832f386ad197f95f81825eb3}
+
+
+No assignment operator. 
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!registration@{registration}}
+\index{registration@{registration}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{registration()}{registration()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Permeability\+Factory\+::registration (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a6aad35b4bccce3c7aea9ed49c1739e5d}{}\label{classFVCode3D_1_1PermeabilityFactory_a6aad35b4bccce3c7aea9ed49c1739e5d}
+
+
+Register the products. 
+
+Fill the map with the products 
+
+Definition at line \hyperlink{PermeabilityFactory_8cpp_source_l00025}{25} of file \hyperlink{PermeabilityFactory_8cpp_source}{Permeability\+Factory.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilityFactory_a6aad35b4bccce3c7aea9ed49c1739e5d_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!M\+\_\+product\+List@{M\+\_\+product\+List}}
+\index{M\+\_\+product\+List@{M\+\_\+product\+List}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{M\+\_\+product\+List}{M_productList}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$std\+::string,{\bf Permeability\+Builder}$>$ F\+V\+Code3\+D\+::\+Permeability\+Factory\+::\+M\+\_\+product\+List\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_a929e4768d02b4d006e8b2ace9dcc2354}{}\label{classFVCode3D_1_1PermeabilityFactory_a929e4768d02b4d006e8b2ace9dcc2354}
+
+
+Map that contains the products. 
+
+
+
+Definition at line \hyperlink{PermeabilityFactory_8hpp_source_l00072}{72} of file \hyperlink{PermeabilityFactory_8hpp_source}{Permeability\+Factory.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}!the\+Only\+Permeability\+Factory@{the\+Only\+Permeability\+Factory}}
+\index{the\+Only\+Permeability\+Factory@{the\+Only\+Permeability\+Factory}!F\+V\+Code3\+D\+::\+Permeability\+Factory@{F\+V\+Code3\+D\+::\+Permeability\+Factory}}
+\subsubsection[{\texorpdfstring{the\+Only\+Permeability\+Factory}{theOnlyPermeabilityFactory}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Permeability\+Factory} $\ast$ F\+V\+Code3\+D\+::\+Permeability\+Factory\+::the\+Only\+Permeability\+Factory = 0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PermeabilityFactory_af47631ea4362556dd4240314e5e056b7}{}\label{classFVCode3D_1_1PermeabilityFactory_af47631ea4362556dd4240314e5e056b7}
+
+
+Pointer to the singleton instance. 
+
+Initializes the static pointer to singleton. 
+
+Definition at line \hyperlink{PermeabilityFactory_8hpp_source_l00075}{75} of file \hyperlink{PermeabilityFactory_8hpp_source}{Permeability\+Factory.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{PermeabilityFactory_8hpp}{Permeability\+Factory.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{PermeabilityFactory_8cpp}{Permeability\+Factory.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,24 @@
+\hypertarget{MultipleSubRegions_8cpp_source}{}\section{Multiple\+Sub\+Regions.\+cpp}
+\label{MultipleSubRegions_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/multiple\+Sub\+Regions/\+Multiple\+Sub\+Regions.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/multiple\+Sub\+Regions/\+Multiple\+Sub\+Regions.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{MultipleSubRegions_8hpp}{FVCode3D/multipleSubRegions/MultipleSubRegions.hpp}
+      >}
+00007 
+00008 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00009 \{
+00010 
+\hypertarget{MultipleSubRegions_8cpp_source.tex_l00011}{}\hyperlink{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285}{00011} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285}{linearRegionSelection} ( \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}& \_cellSolution, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt}& \_nbRegions,
+00012                              \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}& \_minSolution, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}& \_maxSolution )
+00013 \{
+00014     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} tol = 10. * std::numeric\_limits<Real>::epsilon();
+00015     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} newMinSolution = \_minSolution * ( 1. + tol * ( (\_minSolution > 0.) ? -1. :  1. ) );
+00016     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} newMaxSolution = \_maxSolution * ( 1. + tol * ( (\_maxSolution > 0.) ?  1. : -1. ) );
+00017     \textcolor{keywordflow}{return} ceil ( \_nbRegions * std::fabs( \_cellSolution - newMinSolution  ) / ( std::fabs( newMaxSolution -
+       newMinSolution ) ) );
+00018 \} \textcolor{comment}{// linearRegionSelection}
+00019 
+00020 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

@@ -1,0 +1,182 @@
+\hypertarget{ExportCP_8cpp_source}{}\section{Export\+C\+P.\+cpp}
+\label{ExportCP_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/export/\+Export\+C\+P.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/export/\+Export\+C\+P.\+cpp}}
+
+\begin{DoxyCode}
+00001 \textcolor{comment}{/*}
+00002 \textcolor{comment}{ * @file ExportCP.cpp}
+00003 \textcolor{comment}{ * @brief Classes for saving files in the CP format (GRDECL) (definitions).}
+00004 \textcolor{comment}{ */}
+00005 
+00006 \textcolor{preprocessor}{#include <algorithm>}
+00007 \textcolor{preprocessor}{#include <functional>}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{ExportCP_8hpp}{FVCode3D/export/ExportCP.hpp}>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+\hypertarget{ExportCP_8cpp_source.tex_l00014}{}\hyperlink{classFVCode3D_1_1ExporterCP_a710defb3e6ef55d69fea4833920b755b}{00014} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterCP_a710defb3e6ef55d69fea4833920b755b}{ExporterCP::exportMesh}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{
+      const} \textcolor{keywordflow}{throw}()
+00015 \{
+00016 
+00017     std::ostringstream specGridSS, coordSS, zCornSS, actnumSS;
+00018 
+00019     \textcolor{keyword}{const} std::vector<Point3D> & pointsRef = mesh.getNodesVector();
+00020 
+00021     \textcolor{keyword}{typedef} std::pair<Real, Real> basePillar;
+00022     \textcolor{keyword}{typedef} std::pair<Real, Real> baseIJPillar;
+00023     \textcolor{keyword}{typedef} std::function<bool(basePillar, basePillar)> compPillarFct;
+00024 
+00025     compPillarFct compPillar = [](basePillar b1, basePillar b2)
+00026     \{
+00027         \textcolor{keywordflow}{if}(b1.second == b2.second)
+00028             \textcolor{keywordflow}{return} b1.first < b2.first;
+00029         \textcolor{keywordflow}{else}
+00030             \textcolor{keywordflow}{return} b1.second < b2.second;
+00031     \};
+00032 
+00033     std::map< basePillar, std::vector<Real>, compPillarFct > coordPillar( compPillar);
+00034     std::map< baseIJPillar, basePillar, compPillarFct > ijPillar( compPillar );
+00035 
+00036     std::set<basePillar, compPillarFct > pillarSet(compPillar);
+00037 
+00038     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : pointsRef)
+00039     \{
+00040         basePillar pairPillar\{ it.x(), it.y() \};
+00041         pillarSet.insert( pairPillar );
+00042 
+00043         \textcolor{keyword}{auto} cIt = coordPillar.find( pairPillar );
+00044         \textcolor{keywordflow}{if} ( cIt == \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}( coordPillar ) )
+00045         \{
+00046             std::vector<Real> value ( 1, it.z() );
+00047             coordPillar.insert( std::make\_pair( pairPillar, value ) );
+00048         \} \textcolor{comment}{// if}
+00049         \textcolor{keywordflow}{else}
+00050         \{
+00051             cIt->second.push\_back( it.z() );
+00052         \} \textcolor{comment}{// else}
+00053     \} \textcolor{comment}{// for}
+00054 
+00055     \textcolor{keywordflow}{for}( \textcolor{keyword}{auto} it: coordPillar )
+00056     \{
+00057         std::sort( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( it.second ), \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}( it.second ) );
+00058     \} \textcolor{comment}{// for}
+00059 
+00060     coordSS << \textcolor{stringliteral}{"COORD"} << std::endl;
+00061     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} Nx = 0, Ny = 0, Nz = 0;
+00062     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} prevY = \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( coordPillar )->first.second;
+00063 
+00064     coordSS.precision(15);
+00065 
+00066     \hyperlink{namespaceFVCode3D_a2263c42382b217732a2d4e1f7348120a}{Int} iPillar(-1), jPillar(0);
+00067     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} it : coordPillar )
+00068     \{
+00069         \textcolor{keywordflow}{if}(prevY == it.first.second)
+00070         \{
+00071             \textcolor{keywordflow}{if}(Ny == 0) Nx++;
+00072             iPillar++;
+00073         \}
+00074         \textcolor{keywordflow}{else}
+00075         \{
+00076             Ny++;
+00077             jPillar++;
+00078             iPillar = 0;
+00079         \}
+00080 
+00081         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} x = it.first.first;
+00082         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} y = it.first.second;
+00083 
+00084         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} zmin = *std::min\_element( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( it.second ),
+00085                                              \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}( it.second ) );
+00086 
+00087         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} zmax = *std::max\_element( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( it.second ),
+00088                                              \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}( it.second ) );
+00089 
+00090 \textcolor{comment}{//        const Real Rz = 45. / 180. * \_PI\_;}
+00091 \textcolor{comment}{//        constexpr Real Sx = 9597160.25;}
+00092 \textcolor{comment}{//        constexpr Real Sy = 5143433.37;}
+00093 \textcolor{comment}{//}
+00094 \textcolor{comment}{//        coordSS << (x*cos(Rz) - y*sin(Rz) + Sx) << " " << (x*sin(Rz) + y*cos(Rz) + Sy) << " " << zmin <<
+       " "}
+00095 \textcolor{comment}{//                << (x*cos(Rz) - y*sin(Rz) + Sx) << " " << (x*sin(Rz) + y*cos(Rz) + Sy) << " " << zmax}
+00096 \textcolor{comment}{//                << std::endl;}
+00097 
+00098         coordSS << x << \textcolor{stringliteral}{" "} << y << \textcolor{stringliteral}{" "} << zmin << \textcolor{stringliteral}{" "}
+00099                 << x << \textcolor{stringliteral}{" "} << y << \textcolor{stringliteral}{" "} << zmax
+00100                 << std::endl;
+00101 
+00102         baseIJPillar ij\{ iPillar, jPillar \};
+00103         ijPillar.insert( std::make\_pair( ij, it.first ) );
+00104 
+00105         prevY = it.first.second;
+00106     \} \textcolor{comment}{// for}
+00107     coordSS << \textcolor{stringliteral}{"/"} << std::endl << std::endl;
+00108 
+00109     Nx--;
+00110     Nz = \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( coordPillar )->second.size() - 1;
+00111 
+00112     zCornSS.precision(15);
+00113     zCornSS << \textcolor{stringliteral}{"ZCORN"} << std::endl;
+00114 
+00115     \textcolor{keywordflow}{for} ( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} k = 0; k < Nz + 1; ++k )
+00116     \{
+00117         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numJ(1);
+00118         \textcolor{keywordflow}{if}( k != 0 && k != Nz ) numJ = 2;
+00119 
+00120         \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} jk = 0; jk < numJ; ++jk )
+00121         \{
+00122             \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} j = 0; j < Ny + 1; ++j )
+00123             \{
+00124                 \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numI(1);
+00125                 \textcolor{keywordflow}{if}( j != 0 && j != Ny ) numI = 2;
+00126 
+00127                 \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} ij = 0; ij < numI; ++ij )
+00128                 \{
+00129                     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = 0; i < Nx; ++i )
+00130                     \{
+00131                         \textcolor{keyword}{auto} first = ijPillar.find( \{ i, j \} )->second;
+00132                         \textcolor{keyword}{auto} second = ijPillar.find( \{ i + 1, j \} )->second;
+00133 
+00134                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} z1 = coordPillar.find( first )->second[ k ];
+00135                         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} z2 = coordPillar.find( second )->second[ k ];
+00136 
+00137                         zCornSS << z1 << \textcolor{stringliteral}{" "} << z2 << std::endl;
+00138                     \} \textcolor{comment}{// for}
+00139                 \} \textcolor{comment}{// for}
+00140             \} \textcolor{comment}{// for}
+00141         \} \textcolor{comment}{// for}
+00142     \} \textcolor{comment}{// for}
+00143 
+00144     zCornSS << std::endl << \textcolor{stringliteral}{"/"} << std::endl << std::endl;
+00145 
+00146     actnumSS << \textcolor{stringliteral}{"ACTNUM"} << std::endl
+00147              << Nx*Ny*Nz << \textcolor{stringliteral}{"*1 "} << std::endl << \textcolor{stringliteral}{"/"} << std::endl;
+00148 
+00149     std::fstream cpFile;
+00150 
+00151     cpFile.open (filename.c\_str(), std::ios\_base::out);
+00152 
+00153     cpFile.precision(15);
+00154 
+00155     \textcolor{keywordflow}{if} (cpFile.is\_open())
+00156     \{
+00157         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00158     \}
+00159     \textcolor{keywordflow}{else}
+00160     \{
+00161         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00162     \}
+00163 
+00164     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Mesh in GRDECL format... "} << std::endl;
+00165 
+00166     specGridSS << \textcolor{stringliteral}{"SPECGRID"} << std::endl;
+00167     specGridSS << Nx << \textcolor{stringliteral}{" "} << Ny << \textcolor{stringliteral}{" "} << Nz << \textcolor{stringliteral}{" /"} << std::endl << std::endl;
+00168 
+00169     cpFile << specGridSS.str() << coordSS.str() << zCornSS.str() << actnumSS.str();
+00170 
+00171     cpFile.close();
+00172 
+00173 \} \textcolor{comment}{// exportMesh}
+00174 
+00175 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

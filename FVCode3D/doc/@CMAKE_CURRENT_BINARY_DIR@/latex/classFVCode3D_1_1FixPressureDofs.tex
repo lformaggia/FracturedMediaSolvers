@@ -1,0 +1,182 @@
+\hypertarget{classFVCode3D_1_1FixPressureDofs}{}\section{F\+V\+Code3D\+:\+:Fix\+Pressure\+Dofs$<$ Problem\+Type $>$ Class Template Reference}
+\label{classFVCode3D_1_1FixPressureDofs}\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs$<$ Problem\+Type $>$@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs$<$ Problem\+Type $>$}}
+
+
+Class for fixing a pressure value inside the fractures.  
+
+
+
+
+{\ttfamily \#include $<$Fix\+Pressure\+Dofs.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1FixPressureDofs_a04fe8d95e2ef14366032a712a5015fdb}{Fix\+Pressure\+Dofs} ()=delete
+\begin{DoxyCompactList}\small\item\em No empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FixPressureDofs_a2718e4b7ee481b3fac51c39dc900e036}{Fix\+Pressure\+Dofs} (Problem\+Type $\ast$problem)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+Problem\+Type \& \hyperlink{classFVCode3D_1_1FixPressureDofs_a45678898ff37d7a189233bda0d4d6773}{get\+Problem} ()
+\begin{DoxyCompactList}\small\item\em Get problem. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1FixPressureDofs_a3393776b99ad339672ba99cfc5c200e2}{apply} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} pressure)
+\begin{DoxyCompactList}\small\item\em Set the pressure dofs. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FixPressureDofs_af39545b363f6eb33c5cbffc2fe1d98c9}{$\sim$\+Fix\+Pressure\+Dofs} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Problem\+Type $\ast$ \hyperlink{classFVCode3D_1_1FixPressureDofs_ab62654a9bac382fc13e5e3da2a77532b}{M\+\_\+problem}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classFVCode3D_1_1Problem}{Problem}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Problem\+Type$>$\\*
+class F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs$<$ Problem\+Type $>$}
+
+Class for fixing a pressure value inside the fractures. 
+
+This class replaces each row of the algebraic matrix associated with the fractures with a row of zeros, but on the diagonal, where a constant value {\ttfamily is} applied. The same dofs on the right and side are replaced by {\ttfamily multiplied} by the pressure imposed on the fractures. 
+
+Definition at line \hyperlink{FixPressureDofs_8hpp_source_l00022}{22} of file \hyperlink{FixPressureDofs_8hpp_source}{Fix\+Pressure\+Dofs.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}!Fix\+Pressure\+Dofs@{Fix\+Pressure\+Dofs}}
+\index{Fix\+Pressure\+Dofs@{Fix\+Pressure\+Dofs}!F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}}
+\subsubsection[{\texorpdfstring{Fix\+Pressure\+Dofs()=delete}{FixPressureDofs()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}$<$ Problem\+Type $>$\+::{\bf Fix\+Pressure\+Dofs} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1FixPressureDofs_a04fe8d95e2ef14366032a712a5015fdb}{}\label{classFVCode3D_1_1FixPressureDofs_a04fe8d95e2ef14366032a712a5015fdb}
+
+
+No empty constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}!Fix\+Pressure\+Dofs@{Fix\+Pressure\+Dofs}}
+\index{Fix\+Pressure\+Dofs@{Fix\+Pressure\+Dofs}!F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}}
+\subsubsection[{\texorpdfstring{Fix\+Pressure\+Dofs(\+Problem\+Type $\ast$problem)}{FixPressureDofs(ProblemType *problem)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}$<$ Problem\+Type $>$\+::{\bf Fix\+Pressure\+Dofs} (
+\begin{DoxyParamCaption}
+\item[{Problem\+Type $\ast$}]{problem}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1FixPressureDofs_a2718e4b7ee481b3fac51c39dc900e036}{}\label{classFVCode3D_1_1FixPressureDofs_a2718e4b7ee481b3fac51c39dc900e036}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em problem} & problem to modify \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{FixPressureDofs_8hpp_source_l00033}{33} of file \hyperlink{FixPressureDofs_8hpp_source}{Fix\+Pressure\+Dofs.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}!````~Fix\+Pressure\+Dofs@{$\sim$\+Fix\+Pressure\+Dofs}}
+\index{````~Fix\+Pressure\+Dofs@{$\sim$\+Fix\+Pressure\+Dofs}!F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}}
+\subsubsection[{\texorpdfstring{$\sim$\+Fix\+Pressure\+Dofs()=default}{~FixPressureDofs()=default}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}$<$ Problem\+Type $>$\+::$\sim${\bf Fix\+Pressure\+Dofs} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1FixPressureDofs_af39545b363f6eb33c5cbffc2fe1d98c9}{}\label{classFVCode3D_1_1FixPressureDofs_af39545b363f6eb33c5cbffc2fe1d98c9}
+
+
+Default destructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FixPressureDofs_af39545b363f6eb33c5cbffc2fe1d98c9_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}!apply@{apply}}
+\index{apply@{apply}!F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}}
+\subsubsection[{\texorpdfstring{apply(const Real pressure)}{apply(const Real pressure)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}$<$ Problem\+Type $>$\+::apply (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{pressure}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1FixPressureDofs_a3393776b99ad339672ba99cfc5c200e2}{}\label{classFVCode3D_1_1FixPressureDofs_a3393776b99ad339672ba99cfc5c200e2}
+
+
+Set the pressure dofs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pressure} & pressure value to set inside the fractures \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{FixPressureDofs_8hpp_source_l00060}{60} of file \hyperlink{FixPressureDofs_8hpp_source}{Fix\+Pressure\+Dofs.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FixPressureDofs_a3393776b99ad339672ba99cfc5c200e2_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}!get\+Problem@{get\+Problem}}
+\index{get\+Problem@{get\+Problem}!F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}}
+\subsubsection[{\texorpdfstring{get\+Problem()}{getProblem()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ Problem\+Type\& {\bf F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}$<$ Problem\+Type $>$\+::get\+Problem (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1FixPressureDofs_a45678898ff37d7a189233bda0d4d6773}{}\label{classFVCode3D_1_1FixPressureDofs_a45678898ff37d7a189233bda0d4d6773}
+
+
+Get problem. 
+
+\begin{DoxyReturn}{Returns}
+the problem 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{FixPressureDofs_8hpp_source_l00040}{40} of file \hyperlink{FixPressureDofs_8hpp_source}{Fix\+Pressure\+Dofs.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FixPressureDofs_a45678898ff37d7a189233bda0d4d6773_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}!M\+\_\+problem@{M\+\_\+problem}}
+\index{M\+\_\+problem@{M\+\_\+problem}!F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs@{F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}}
+\subsubsection[{\texorpdfstring{M\+\_\+problem}{M_problem}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ Problem\+Type$\ast$ {\bf F\+V\+Code3\+D\+::\+Fix\+Pressure\+Dofs}$<$ Problem\+Type $>$\+::M\+\_\+problem\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FixPressureDofs_ab62654a9bac382fc13e5e3da2a77532b}{}\label{classFVCode3D_1_1FixPressureDofs_ab62654a9bac382fc13e5e3da2a77532b}
+
+
+\hyperlink{classFVCode3D_1_1Problem}{Problem}. 
+
+
+
+Definition at line \hyperlink{FixPressureDofs_8hpp_source_l00055}{55} of file \hyperlink{FixPressureDofs_8hpp_source}{Fix\+Pressure\+Dofs.\+hpp}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{FixPressureDofs_8hpp}{Fix\+Pressure\+Dofs.\+hpp}\end{DoxyCompactItemize}

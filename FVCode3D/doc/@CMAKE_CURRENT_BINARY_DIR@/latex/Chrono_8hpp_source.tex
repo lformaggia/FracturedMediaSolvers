@@ -1,0 +1,49 @@
+\hypertarget{Chrono_8hpp_source}{}\section{Chrono.\+hpp}
+\label{Chrono_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\+Chrono.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\+Chrono.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef CHRONO\_HPP\_}
+00007 \textcolor{preprocessor}{#define CHRONO\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <chrono>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+00015 
+\hypertarget{Chrono_8hpp_source.tex_l00019}{}\hyperlink{classFVCode3D_1_1Chrono}{00019} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1Chrono}{Chrono}\{
+00020 \textcolor{keyword}{public}:
+00021 
+00023     \hyperlink{classFVCode3D_1_1Chrono_aa2308dc48aa2934b609c2f66dddb7cba}{Chrono}() = \textcolor{keywordflow}{default};
+00024 
+00026     \hyperlink{classFVCode3D_1_1Chrono_aa2308dc48aa2934b609c2f66dddb7cba}{Chrono}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Chrono}{Chrono} &) = \textcolor{keywordflow}{default};
+00027 
+00029     \hyperlink{classFVCode3D_1_1Chrono_a6afbd7ea104fe781b6e9e209172dbb5c}{~Chrono}() = \textcolor{keywordflow}{default};
+00030 
+\hypertarget{Chrono_8hpp_source.tex_l00032}{}\hyperlink{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}{00032}     \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}{start}() \{ \hyperlink{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{M\_start} = Clock::now(); \};
+00033 
+\hypertarget{Chrono_8hpp_source.tex_l00035}{}\hyperlink{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e}{00035}     \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e}{stop}() \{ \hyperlink{classFVCode3D_1_1Chrono_a4ba4c5c8b4393d2484a169c631977e40}{M\_end} = Clock::now(); \};
+00036 
+00038 
+\hypertarget{Chrono_8hpp_source.tex_l00042}{}\hyperlink{classFVCode3D_1_1Chrono_a245a0c47da85e80de56e85d3689b925b}{00042}     \textcolor{keyword}{inline} \textcolor{keywordtype}{double} \hyperlink{classFVCode3D_1_1Chrono_a245a0c47da85e80de56e85d3689b925b}{partial}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} std::chrono::duration\_cast<
+      \hyperlink{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}{chrono\_milli}>(Clock::now() - \hyperlink{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{M\_start}).count() / 1000.; \}
+00043 
+00045 
+\hypertarget{Chrono_8hpp_source.tex_l00050}{}\hyperlink{classFVCode3D_1_1Chrono_a4cb287080efc462d06b1af5594c1f976}{00050}     \textcolor{keyword}{inline} \textcolor{keywordtype}{double} \hyperlink{classFVCode3D_1_1Chrono_a4cb287080efc462d06b1af5594c1f976}{time}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} std::chrono::duration\_cast<
+      \hyperlink{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}{chrono\_milli}>(\hyperlink{classFVCode3D_1_1Chrono_a4ba4c5c8b4393d2484a169c631977e40}{M\_end} - \hyperlink{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{M\_start}).count() / 1000.; \}
+00051 
+00052 \textcolor{keyword}{private}:
+\hypertarget{Chrono_8hpp_source.tex_l00054}{}\hyperlink{classFVCode3D_1_1Chrono_a28b4a3f6072e73d2a4bc6308ba88a6bb}{00054}     \textcolor{keyword}{typedef} std::chrono::high\_resolution\_clock \hyperlink{classFVCode3D_1_1Chrono_a28b4a3f6072e73d2a4bc6308ba88a6bb}{Clock};
+00055 
+\hypertarget{Chrono_8hpp_source.tex_l00057}{}\hyperlink{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}{00057}     \textcolor{keyword}{typedef} std::chrono::milliseconds \hyperlink{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}{chrono\_milli};
+00058 
+\hypertarget{Chrono_8hpp_source.tex_l00060}{}\hyperlink{classFVCode3D_1_1Chrono_a282eb6bb9bc31cca9094ecd4c7c1939f}{00060}     \textcolor{keyword}{typedef} std::chrono::seconds \hyperlink{classFVCode3D_1_1Chrono_a282eb6bb9bc31cca9094ecd4c7c1939f}{chrono\_sec};
+00061 
+\hypertarget{Chrono_8hpp_source.tex_l00063}{}\hyperlink{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{00063}     Clock::time\_point \hyperlink{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{M\_start}, \hyperlink{classFVCode3D_1_1Chrono_a4ba4c5c8b4393d2484a169c631977e40}{M\_end};
+00064 \};
+00065 
+00066 \} \textcolor{comment}{// namespace FVCode3D}
+00067 
+00068 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* CHRONO\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

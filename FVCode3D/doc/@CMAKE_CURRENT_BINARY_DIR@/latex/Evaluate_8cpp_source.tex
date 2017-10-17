@@ -1,0 +1,60 @@
+\hypertarget{Evaluate_8cpp_source}{}\section{Evaluate.\+cpp}
+\label{Evaluate_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Evaluate.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Evaluate.\+cpp}}
+
+\begin{DoxyCode}
+00001 \textcolor{preprocessor}{#include <\hyperlink{Evaluate_8hpp}{FVCode3D/utility/Evaluate.hpp}>}
+00002 
+00003 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00004 \{
+00005 
+\hypertarget{Evaluate_8cpp_source.tex_l00006}{}\hyperlink{namespaceFVCode3D_a3d3cdaa3f99983f1aa2d079caded2585}{00006} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{namespaceFVCode3D_a3d3cdaa3f99983f1aa2d079caded2585}{evaluateMatrix}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & func)
+00007 \{
+00008     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00009     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result( Vector::Zero(N) );
+00010 
+00011     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00012     \{
+00013         result(cell\_it.getId()) = func(cell\_it.getCentroid());
+00014     \}
+00015 
+00016     \textcolor{keywordflow}{return} result;
+00017 \} \textcolor{comment}{// evaluateMatrix}
+00018 
+\hypertarget{Evaluate_8cpp_source.tex_l00019}{}\hyperlink{namespaceFVCode3D_a9d3700c347e26f9a442a95785abceac6}{00019} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{namespaceFVCode3D_a9d3700c347e26f9a442a95785abceac6}{evaluateFracture}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & func)
+00020 \{
+00021     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00022     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} M = mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00023     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result( Vector::Zero(N) );
+00024 
+00025     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00026     \{
+00027         result(facet\_it.getIdAsCell() - M) = func(facet\_it.getCentroid());
+00028     \}
+00029 
+00030     \textcolor{keywordflow}{return} result;
+00031 \} \textcolor{comment}{// evaluateFracture}
+00032 
+\hypertarget{Evaluate_8cpp_source.tex_l00033}{}\hyperlink{namespaceFVCode3D_a113366cb939ded701e04649337315295}{00033} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{namespaceFVCode3D_a113366cb939ded701e04649337315295}{evaluate}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & func)
+00034 \{
+00035     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + mesh.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00036     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result( Vector::Zero(N) );
+00037 
+00038     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00039     \{
+00040         result(cell\_it.getId()) = func(cell\_it.getCentroid());
+00041     \}
+00042 
+00043     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : mesh.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00044     \{
+00045         result(facet\_it.getIdAsCell()) = func(facet\_it.getCentroid());
+00046     \}
+00047 
+00048     \textcolor{keywordflow}{return} result;
+00049 \} \textcolor{comment}{// evaluate}
+00050 
+00051 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

@@ -1,0 +1,140 @@
+\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{}\section{F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Regular\+\_\+\+Facet Class Reference}
+\label{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}}
+
+
+Class that represents an interior facet (no fracture facet)  
+
+
+
+
+{\ttfamily \#include $<$Rigid\+Mesh.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Regular\+\_\+\+Facet\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Regular\+\_\+\+Facet\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}{Regular\+\_\+\+Facet} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} facet\+\_\+\+Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} given an id. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab7fc5ceae08d734865a45b95832f0eb7}{Regular\+\_\+\+Facet} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} \&regular\+\_\+facet, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} given a regular\+\_\+facet of another \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a68564026197f005cbd8a451f079df741}{Regular\+\_\+\+Facet} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} \&f)
+\begin{DoxyCompactList}\small\item\em Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} given a regular\+\_\+facet. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a78bbfe7cb8579a396b59af2289be37ce}{$\sim$\+Regular\+\_\+\+Facet} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class that represents an interior facet (no fracture facet) 
+
+This class is derived from the class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{Facet\+\_\+\+ID}. This class contains the id of a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} which is neither a border facet nor a fracture facet. 
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l01070}{1070} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}!Regular\+\_\+\+Facet@{Regular\+\_\+\+Facet}}
+\index{Regular\+\_\+\+Facet@{Regular\+\_\+\+Facet}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}}
+\subsubsection[{\texorpdfstring{Regular\+\_\+\+Facet(const U\+Int facet\+\_\+\+Id, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Regular_Facet(const UInt facet_Id, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet\+::\+Regular\+\_\+\+Facet (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{facet\+\_\+\+Id, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab1f9fb9622908af6bb40bf7381817ff4}
+
+
+Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} given an id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em facet\+\_\+id} & is the id of a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em mesh} & is a pointer to the mesh to which the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00857}{857} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}!Regular\+\_\+\+Facet@{Regular\+\_\+\+Facet}}
+\index{Regular\+\_\+\+Facet@{Regular\+\_\+\+Facet}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}}
+\subsubsection[{\texorpdfstring{Regular\+\_\+\+Facet(const Regular\+\_\+\+Facet \&regular\+\_\+facet, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Regular_Facet(const Regular_Facet &regular_facet, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet\+::\+Regular\+\_\+\+Facet (
+\begin{DoxyParamCaption}
+\item[{const {\bf Regular\+\_\+\+Facet} \&}]{regular\+\_\+facet, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab7fc5ceae08d734865a45b95832f0eb7}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_ab7fc5ceae08d734865a45b95832f0eb7}
+
+
+Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} given a regular\+\_\+facet of another \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em regular\+\_\+facet} & is a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} of a different \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em mesh} & is a pointer to the mesh to which the \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00863}{863} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}!Regular\+\_\+\+Facet@{Regular\+\_\+\+Facet}}
+\index{Regular\+\_\+\+Facet@{Regular\+\_\+\+Facet}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}}
+\subsubsection[{\texorpdfstring{Regular\+\_\+\+Facet(const Regular\+\_\+\+Facet \&f)}{Regular_Facet(const Regular_Facet &f)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet\+::\+Regular\+\_\+\+Facet (
+\begin{DoxyParamCaption}
+\item[{const {\bf Regular\+\_\+\+Facet} \&}]{f}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a68564026197f005cbd8a451f079df741}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a68564026197f005cbd8a451f079df741}
+
+
+Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} given a regular\+\_\+facet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{Regular\+\_\+\+Facet} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00860}{860} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}!````~Regular\+\_\+\+Facet@{$\sim$\+Regular\+\_\+\+Facet}}
+\index{````~Regular\+\_\+\+Facet@{$\sim$\+Regular\+\_\+\+Facet}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}}
+\subsubsection[{\texorpdfstring{$\sim$\+Regular\+\_\+\+Facet()=default}{~Regular_Facet()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet\+::$\sim$\+Regular\+\_\+\+Facet (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a78bbfe7cb8579a396b59af2289be37ce}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet_a78bbfe7cb8579a396b59af2289be37ce}
+
+
+Destructor. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8hpp}{Rigid\+Mesh.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8cpp}{Rigid\+Mesh.\+cpp}\end{DoxyCompactItemize}

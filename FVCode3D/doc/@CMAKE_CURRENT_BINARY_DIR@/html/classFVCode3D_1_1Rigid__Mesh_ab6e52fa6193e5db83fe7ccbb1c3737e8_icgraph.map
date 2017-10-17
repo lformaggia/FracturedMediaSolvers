@@ -1,0 +1,12 @@
+<map id="FVCode3D::Rigid_Mesh::getPropertiesMap" name="FVCode3D::Rigid_Mesh::getPropertiesMap">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1CouplingConditions.html#abc5162d3d50fd44aac557f0a21aa4d3c" title="Assemble method. " alt="" coords="217,5,425,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1FluxOperator.html#a0cdfdaea15026cbb79d82ffe9dfb95e2" title="It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture..." alt="" coords="236,71,407,112"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1FluxOperator.html#adea5929ec3492d9274095f1af5c33d05" title="It is called by the method assemble() and it computes the coefficient alpha. " alt="" coords="236,136,407,177"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1FluxOperator.html#a0fe812b8a650b83ef5815f4dee25e0cf" title="It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet ..." alt="" coords="236,201,407,243"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1FluxOperator.html#a4f96ac53cafc68eccb01d8ff29eecc87" title="Assemble method. " alt="" coords="236,267,407,308"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1FluxOperator.html#aeb808234dae8f8d0a188f8c2efcda0ae" title="Impose fractures BC method. " alt="" coords="236,332,407,373"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1FractureBuilder.html#a8aa6db02f37b5fdd9d9a86b2ca6b1fcf" title="Assemble method for the monolithic matrix. " alt="" coords="230,397,413,439"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1FractureBuilder.html#ab24549851fa577aa8d6cba68fd970d75" title="Assemble method for the bulk matrices. " alt="" coords="230,463,413,504"/>
+<area shape="rect" id="node10" href="$classFVCode3D_1_1local__InnerProduct.html#a5e5ade44aeb3e5982cdbc20e7721e07a" title="Assemble method. " alt="" coords="220,528,423,569"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1global__InnerProduct.html#acc444616cd8702b28bf2337c6dc7b059" title="Assemble method. " alt="" coords="473,528,684,569"/>
+</map>

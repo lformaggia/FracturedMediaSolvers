@@ -1,0 +1,2831 @@
+\hypertarget{namespaceFVCode3D}{}\section{F\+V\+Code3D Namespace Reference}
+\label{namespaceFVCode3D}\index{F\+V\+Code3D@{F\+V\+Code3D}}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions}
+\begin{DoxyCompactList}\small\item\em Class for implementing the B\+Cs. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1BoundingBox}{Bounding\+Box}
+\begin{DoxyCompactList}\small\item\em Bounding Box that contains the data. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1CartesianGrid}{Cartesian\+Grid}
+\begin{DoxyCompactList}\small\item\em Class used to generate hexahedaral structured meshes. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1CentroidQuadrature}{Centroid\+Quadrature}
+\begin{DoxyCompactList}\small\item\em Mid\+Point \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature} rule for a generic polyhedron/polygon. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Chrono}{Chrono}
+\begin{DoxyCompactList}\small\item\em Class that implements a chronometer. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1CoordinateSystem3D}{Coordinate\+System3D}
+\begin{DoxyCompactList}\small\item\em Class that implements a Cartesian Coordinate System. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1CouplingConditions}{Coupling\+Conditions}
+\begin{DoxyCompactList}\small\item\em Class for assembling a coupling conditions matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1DarcyPseudoSteady}{Darcy\+Pseudo\+Steady}
+\begin{DoxyCompactList}\small\item\em Class that defines the pseudo-\/steady-\/state Darcy problem. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01BDF2_01_4}{Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, B\+D\+F2 $>$}
+\begin{DoxyCompactList}\small\item\em Specialization class that defines the pseudo-\/steady-\/state Darcy problem for the B\+D\+F2 time scheme. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4}{Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}
+\begin{DoxyCompactList}\small\item\em Specialization class that defines the pseudo-\/steady-\/state Darcy problem for the implicit time scheme. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1DarcySteady}{Darcy\+Steady}
+\begin{DoxyCompactList}\small\item\em Class that defines the steady-\/state Darcy problem. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Data}{Data}
+\begin{DoxyCompactList}\small\item\em Class that handles the information needed for the solver. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1EigenBiCGSTAB}{Eigen\+Bi\+C\+G\+S\+T\+AB}
+\begin{DoxyCompactList}\small\item\em Class \hyperlink{classFVCode3D_1_1EigenBiCGSTAB}{Eigen\+Bi\+C\+G\+S\+T\+AB}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1EigenCG}{Eigen\+CG}
+\begin{DoxyCompactList}\small\item\em Class \hyperlink{classFVCode3D_1_1EigenCG}{Eigen\+CG}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1EigenCholesky}{Eigen\+Cholesky}
+\begin{DoxyCompactList}\small\item\em Class \hyperlink{classFVCode3D_1_1EigenCholesky}{Eigen\+Cholesky}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1EigenLU}{Eigen\+LU}
+\begin{DoxyCompactList}\small\item\em Class \hyperlink{classFVCode3D_1_1EigenLU}{Eigen\+LU}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1EnumParser}{Enum\+Parser}
+\begin{DoxyCompactList}\small\item\em Class that implements a parser for a generic enumerator. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Exporter}{Exporter}
+\begin{DoxyCompactList}\small\item\em Class to export mesh, fractures, solution and properties. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ExporterCP}{Exporter\+CP}
+\begin{DoxyCompactList}\small\item\em Class to export mesh in G\+R\+D\+E\+CL format type. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ExporterVTU}{Exporter\+V\+TU}
+\begin{DoxyCompactList}\small\item\em Class to export mesh, fractures, solution and properties in V\+TU format type. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1FixPressureDofs}{Fix\+Pressure\+Dofs}
+\begin{DoxyCompactList}\small\item\em Class for fixing a pressure value inside the fractures. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1FluxOperator}{Flux\+Operator}
+\begin{DoxyCompactList}\small\item\em Class for assembling a coupling conditions matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Fracture3D}{Fracture3D}
+\begin{DoxyCompactList}\small\item\em Class that implements a fracture. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1FractureBuilder}{Fracture\+Builder}
+\begin{DoxyCompactList}\small\item\em Class for assembling a global bulk builder. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1FractureNetwork3D}{Fracture\+Network3D}
+\begin{DoxyCompactList}\small\item\em Class that handles the fracture network. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1global__BulkBuilder}{global\+\_\+\+Bulk\+Builder}
+\begin{DoxyCompactList}\small\item\em Class for assembling a global bulk builder. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1global__Div}{global\+\_\+\+Div}
+\begin{DoxyCompactList}\small\item\em Class for assembling a global divergence matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1global__InnerProduct}{global\+\_\+\+Inner\+Product}
+\begin{DoxyCompactList}\small\item\em Class for assembling a global inner product matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1global__Operator}{global\+\_\+\+Operator}
+\begin{DoxyCompactList}\small\item\em Base class for assembling a global operator of the problem. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Importer}{Importer}
+\begin{DoxyCompactList}\small\item\em Class used to read files. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ImporterForSolver}{Importer\+For\+Solver}
+\begin{DoxyCompactList}\small\item\em Class used to read files optimized for the solver (.fvg). \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ImporterMedit}{Importer\+Medit}
+\begin{DoxyCompactList}\small\item\em Class used to read a Medit format file (.mesh). \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ImporterOpenFOAM}{Importer\+Open\+F\+O\+AM}
+\begin{DoxyCompactList}\small\item\em Class used to read the Open\+F\+O\+AM format file. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ImporterTetGen}{Importer\+Tet\+Gen}
+\begin{DoxyCompactList}\small\item\em Class used to read Tet\+Gen format files (.node, .face, .ele). \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ImporterTPFA}{Importer\+T\+P\+FA}
+\begin{DoxyCompactList}\small\item\em Class used to read a standard T\+P\+FA format file (.grid). \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1IterativeSolver}{Iterative\+Solver}
+\begin{DoxyCompactList}\small\item\em Class \hyperlink{classFVCode3D_1_1IterativeSolver}{Iterative\+Solver}. \end{DoxyCompactList}\item 
+struct \hyperlink{structFVCode3D_1_1less}{less}
+\begin{DoxyCompactList}\small\item\em Functor for computing the minimum between two types. \end{DoxyCompactList}\item 
+struct \hyperlink{structFVCode3D_1_1less_3_01std_1_1pair_3_01T_00_01T_01_4_01_4}{less$<$ std\+::pair$<$ T, T $>$ $>$}
+\begin{DoxyCompactList}\small\item\em Functor for computing the minimum between two generic std\+::pair. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1lessOnMatrixIndices}{less\+On\+Matrix\+Indices}
+\begin{DoxyCompactList}\small\item\em Class that implements the less operator for two matrix indices. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1local__builder}{local\+\_\+builder}
+\begin{DoxyCompactList}\small\item\em Class for construct a local builder. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1local__Div}{local\+\_\+\+Div}
+\begin{DoxyCompactList}\small\item\em Class for assembling a local div matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\+\_\+\+Inner\+Product}
+\begin{DoxyCompactList}\small\item\em Class for assembling a local inner product matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\+\_\+\+Mimetic\+Operator}
+\begin{DoxyCompactList}\small\item\em Base class for assembling a local mimetic operator. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1MassMatrix}{Mass\+Matrix}
+\begin{DoxyCompactList}\small\item\em Class for assembling a mass matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1MatrixHandler}{Matrix\+Handler}
+\begin{DoxyCompactList}\small\item\em Base class for assembling a matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D}
+\begin{DoxyCompactList}\small\item\em Class that implements a 3D mesh. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1MSR}{M\+SR}
+\begin{DoxyCompactList}\small\item\em Class that implements the multiple sub regions method. \end{DoxyCompactList}\item 
+struct \hyperlink{structFVCode3D_1_1MyDelimiters}{My\+Delimiters}
+\item 
+class \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PermeabilityDiagonal}{Permeability\+Diagonal}
+\begin{DoxyCompactList}\small\item\em Diagonal tensor Permeability. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory}
+\begin{DoxyCompactList}\small\item\em Factory that produces Permeability classes. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PermeabilityFullTensor}{Permeability\+Full\+Tensor}
+\begin{DoxyCompactList}\small\item\em Full tensor Permeability. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PermeabilityProxy}{Permeability\+Proxy}
+\begin{DoxyCompactList}\small\item\em Proxy for \hyperlink{classFVCode3D_1_1PermeabilityFactory}{Permeability\+Factory}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PermeabilityScalar}{Permeability\+Scalar}
+\begin{DoxyCompactList}\small\item\em Scalar Permeability. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor}
+\begin{DoxyCompactList}\small\item\em Symmetric tensor Permeability. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Point3D}{Point3D}
+\begin{DoxyCompactList}\small\item\em Class that defines a 3D Point and some operations. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Problem}{Problem}
+\begin{DoxyCompactList}\small\item\em Class that defines a generic problem. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Properties}{Properties}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classFVCode3D_1_1Properties}{Properties} (aperture, porosity, permeability) of a single fracture/matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map}
+\begin{DoxyCompactList}\small\item\em Class that handles the properties for all the reservoir. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ProxyBorderEdge}{Proxy\+Border\+Edge}
+\begin{DoxyCompactList}\small\item\em Class the allows to edit a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge} object. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ProxyEdge}{Proxy\+Edge}
+\begin{DoxyCompactList}\small\item\em Class the allows to edit a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge} object. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1ProxyRigidMesh}{Proxy\+Rigid\+Mesh}
+\begin{DoxyCompactList}\small\item\em Class the allows to edit a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} object. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}
+\begin{DoxyCompactList}\small\item\em Class that implements method to integrate function over the mesh. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}
+\begin{DoxyCompactList}\small\item\em Class that implements a quadrature rule. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}
+\begin{DoxyCompactList}\small\item\em Class that allows to handle a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} for a differential problem. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Solver}{Solver}
+\begin{DoxyCompactList}\small\item\em Class \hyperlink{classFVCode3D_1_1Solver}{Solver}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1SolverHandler}{Solver\+Handler}
+\begin{DoxyCompactList}\small\item\em Factory that produces \hyperlink{classFVCode3D_1_1Solver}{Solver} classes. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1SolverProxy}{Solver\+Proxy}
+\begin{DoxyCompactList}\small\item\em Proxy for \hyperlink{classFVCode3D_1_1SolverHandler}{Solver\+Handler}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1SparseMatrix}{Sparse\+Matrix}
+\begin{DoxyCompactList}\small\item\em Class that handles a sparse matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1StiffMatrix}{Stiff\+Matrix}
+\begin{DoxyCompactList}\small\item\em Class for assembling a stiffness matrix. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1TetGenWrapper}{Tet\+Gen\+Wrapper}
+\begin{DoxyCompactList}\small\item\em Class that tetrahedralizes a polyhedron and computes its volume. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef double \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}
+\begin{DoxyCompactList}\small\item\em Type for real numbers. \end{DoxyCompactList}\item 
+typedef uint8\+\_\+t \hyperlink{namespaceFVCode3D_a0319e74922d1d700fbc06e470e0cfc07}{S\+U\+Int}
+\begin{DoxyCompactList}\small\item\em Type for unsigned short int. \end{DoxyCompactList}\item 
+typedef uint64\+\_\+t \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}
+\begin{DoxyCompactList}\small\item\em Type for integer numbers. \end{DoxyCompactList}\item 
+typedef int64\+\_\+t \hyperlink{namespaceFVCode3D_a2263c42382b217732a2d4e1f7348120a}{Int}
+\begin{DoxyCompactList}\small\item\em Generic integer data. \end{DoxyCompactList}\item 
+typedef uint8\+\_\+t \hyperlink{namespaceFVCode3D_a4eac36ed1d93d886ecdcf46c6386b415}{Flag8bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 8 different flags \end{DoxyCompactList}\item 
+typedef uint16\+\_\+t \hyperlink{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{Flag16bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 16 different flags \end{DoxyCompactList}\item 
+typedef uint32\+\_\+t \hyperlink{namespaceFVCode3D_a74d2aa7527dcbbec13101b55a3cb149d}{Flag32bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 32 different flags \end{DoxyCompactList}\item 
+typedef uint64\+\_\+t \hyperlink{namespaceFVCode3D_ab5f86a12f707861f59c32d022209bfb1}{Flag64bit}
+\begin{DoxyCompactList}\small\item\em bit-\/flag with up to 64 different flags \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Sparse\+Matrix$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat}
+\begin{DoxyCompactList}\small\item\em Type for eigen column-\/major sparse matrix of Real. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Sparse\+Matrix$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}, Eigen\+::\+Row\+Major $>$ \hyperlink{namespaceFVCode3D_a43d700a82a0a7ea1a4ad9768c59dc536}{Sp\+Mat\+RM}
+\begin{DoxyCompactList}\small\item\em Type for eigen row-\/major sparse matrix of Real. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Vector\+Xd \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector}
+\begin{DoxyCompactList}\small\item\em Type for eigen vectors. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Matrix$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, Eigen\+::\+Dynamic, 1 $>$ \hyperlink{namespaceFVCode3D_a9c3dcef0872c1dbd4aaf770d08421fd7}{U\+Int\+Vector}
+\begin{DoxyCompactList}\small\item\em Type for eigen U\+Int vectors. \end{DoxyCompactList}\item 
+typedef Eigen\+::\+Triplet$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \hyperlink{namespaceFVCode3D_a1d6853f6847ee83d6e823a500a8232fd}{Triplet}
+\begin{DoxyCompactList}\small\item\em Type for eigen triplets. \end{DoxyCompactList}\item 
+typedef std\+::unique\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1Data}{Data} $>$ \hyperlink{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}{Data\+Ptr\+\_\+\+Type}
+\begin{DoxyCompactList}\small\item\em Typedef for std\+::unique\+\_\+ptr$<$\+Data$>$ \end{DoxyCompactList}\item 
+typedef std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func}
+\begin{DoxyCompactList}\small\item\em Type for a std\+::function$<$\+Real(\+Point3\+D)$>$ \end{DoxyCompactList}\item 
+typedef std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} $>$ \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type}
+\begin{DoxyCompactList}\small\item\em Typedef for Perm\+Ptr\+\_\+\+Type. \end{DoxyCompactList}\item 
+typedef \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type}($\ast$ \hyperlink{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{Permeability\+Builder}) ()
+\begin{DoxyCompactList}\small\item\em Typedef for Permeability\+Builder function. \end{DoxyCompactList}\item 
+typedef std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1Solver}{Solver} $>$ \hyperlink{namespaceFVCode3D_a0b32227a4e5847c2fb27215fb81d9363}{Solver\+Ptr\+\_\+\+Type}
+\begin{DoxyCompactList}\small\item\em Typedef for Solver\+Ptr\+\_\+\+Type. \end{DoxyCompactList}\item 
+typedef \hyperlink{namespaceFVCode3D_a0b32227a4e5847c2fb27215fb81d9363}{Solver\+Ptr\+\_\+\+Type}($\ast$ \hyperlink{namespaceFVCode3D_ae1d65e23bd2373e382d1f397337de344}{Solver\+Builder}) ()
+\begin{DoxyCompactList}\small\item\em Typedef for Solver\+Builder function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5}{B\+C\+Type} \{ \hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{Dirichlet}, 
+\hyperlink{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{Neumann}
+ \}\begin{DoxyCompactList}\small\item\em Select the type of the BC. \end{DoxyCompactList}
+\item 
+enum \hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822}{Border\+Label} \+: U\+Int \{ \\*
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a7d38403d00598d4bb163911f9aa48294}{Internal} = 0, 
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a7fd633652b3723bb7716b9db0314a61e}{Left} = 1, 
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a27ec5db52b31c4eba9e240374723f76e}{Right} = 2, 
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a2b5e7fb79a56dd77e3c62bccd52238e4}{Front} = 3, 
+\\*
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a10461eade3dd091368236f82c6f7f498}{Back} = 4, 
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822aba9e7af6197fd20512d8f2562e913711}{Bottom} = 5, 
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a52ff9b0d3195e16d3d8aed882b7e19dd}{Top} = 6, 
+\hyperlink{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a72636637126378d1cd731f1382a736c9}{Fracture\+Tip} = std\+:\+:numeric\+\_\+limits$<$U\+Int$>$\+:\+:max()
+ \}
+\item 
+enum \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41}{Properties\+To\+Export} \{ \\*
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a98a639655750204022119fd2d64ecdf0}{Zone\+Code} = 0x001, 
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ad2b21a53311e3478541b39809a3877b9}{Is\+Frac} = 0x002, 
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a7bea6d441c4661b396fc86912312c47e}{Aperture} = 0x004, 
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a8bb92532e203b2a2b45c4b2ce0354a90}{Porosity} = 0x008, 
+\\*
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a23fa3ea40f896b28978ffc259e5281cf}{Permeability} = 0x010, 
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ae672dc66b11cd1f93a00d52d617a1866}{Border\+ID} = 0x020, 
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a864b9d45a578bf09e82a32916c9c3c03}{Element\+ID} = 0x040, 
+\hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ab8c2eb493dc98b25b8fc2e3e176d4892}{Other} = 0x080
+ \}\begin{DoxyCompactList}\small\item\em Flag for exporter. \end{DoxyCompactList}
+\item 
+enum \hyperlink{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009a}{Time\+Scheme} \{ \hyperlink{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009aa349f3bb73703f75dbaa1ba38998671d1}{Implicit} = 0, 
+\hyperlink{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009aa3cbb28a9274dccd4cacd41ad5d823bed}{B\+D\+F2} = 1
+ \}\begin{DoxyCompactList}\small\item\em Select the time scheme. \end{DoxyCompactList}
+\item 
+enum \hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48}{Matrix\+Options} \{ \hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48aa66707b15fb7654854e39760f95fe1bf}{Store} = 0x01, 
+\hyperlink{namespaceFVCode3D_a626a4d79a767db88306feab431240f48a404305166bee1d9f70fd4121aa96efe7}{Save\+On\+File} = 0x02
+ \}\begin{DoxyCompactList}\small\item\em Enumerator used to select how to store the matrix. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \hyperlink{namespaceFVCode3D_a50584b1c52af8d3b79fe5b0bcc18b2e1}{sparse\+Block} (\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \+\_\+matrix, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+ibegin, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+jbegin, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+icount, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+jcount)
+\begin{DoxyCompactList}\small\item\em Extract a block from a Sp\+Mat. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \hyperlink{namespaceFVCode3D_a13bcca787028985b3fdbca71334eb63f}{sparse\+Top\+Left\+Block} (\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \+\_\+matrix, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+icount, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+jcount)
+\begin{DoxyCompactList}\small\item\em Extract the top left block of a Sparse Matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \hyperlink{namespaceFVCode3D_a4e9be96975d446ebb5e3acd53150bbbb}{sparse\+Top\+Right\+Block} (\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \+\_\+matrix, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+icount, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+jcount)
+\begin{DoxyCompactList}\small\item\em Extract the top right block of a Sparse Matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \hyperlink{namespaceFVCode3D_a2b06bf4215f4ce6cbd1a940fbd2ef6e6}{sparse\+Bottom\+Left\+Block} (\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \+\_\+matrix, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+icount, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+jcount)
+\begin{DoxyCompactList}\small\item\em Extract the bottom left block of a Sparse Matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \hyperlink{namespaceFVCode3D_a2468aefbc3231765755c7316f146bc3d}{sparse\+Bottom\+Right\+Block} (\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \+\_\+matrix, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+icount, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \+\_\+jcount)
+\begin{DoxyCompactList}\small\item\em Extract the bottom right block of a Sparse Matrix. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc}{compute\+Normal} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&A, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&B, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&C)
+\begin{DoxyCompactList}\small\item\em Compute the normal moving from three points that lie on a plane (use the right-\/hand rule) \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da}{rotate\+Of} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} angle\+Deg)
+\begin{DoxyCompactList}\small\item\em Rotate a point of an angle. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9}{triangle\+Area} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&A, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&B, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&C)
+\begin{DoxyCompactList}\small\item\em Compute the area of a triangle. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad}{triangle\+Centroid} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&A, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&B, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&C)
+\begin{DoxyCompactList}\small\item\em Compute the centroid of a triangle. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221}{tetrahedron\+Volume} (const std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \&nodes)
+\begin{DoxyCompactList}\small\item\em Compute the volume of a tetrahedron. \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b}{compute\+Bounding\+Box} (const std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \&nodes, \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p\+Min, \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p\+Max)
+\begin{DoxyCompactList}\small\item\em Compute the bounding-\/box of a set of points. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a78d1c1bb596d0ef685c16686fa4a71f9}{operator+} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a57085532e6351dd3b8c54eb16b5f2917}{operator-\/} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_adc46213e3b69826283d7c31363ec6e98}{operator-\/} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a34e9f6209d7ce6f615394fb60963d450}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_ac5c448428b01ffde71c0a70f80edb264}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} r)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a3d65ba1de4aa9fa136a484cc1a331f62}{operator$\ast$} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} r, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a7e00e4f7126ac965092b3e79d66396d1}{operator/} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} r)
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dot\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_acbd112899b9e007bec3fe01223140c45}{inner\+Angle\+Rad} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_ae33e5908d62b0ae8dbfdf089ab9bc138}{inner\+Angle\+Deg} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a705717c0673e24ca607c7a65054de4f7}{distance} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{cross\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+std\+::ostream \& \hyperlink{namespaceFVCode3D_a8884bc6475f7b278d2926ce82950a597}{operator$<$$<$} (std\+::ostream \&os, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\item 
+bool \hyperlink{namespaceFVCode3D_a4d68dd4dc8a2720cd431013bc580e9d6}{operator$<$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\begin{DoxyCompactList}\small\item\em Operator less between points. \end{DoxyCompactList}\item 
+bool \hyperlink{namespaceFVCode3D_a66dad0ddea6ea9e534d2c3f3bb5d9958}{operator$<$} (const \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Mesh3\+D\+::\+Facet3D} \&f1, const \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Mesh3\+D\+::\+Facet3D} \&f2)
+\begin{DoxyCompactList}\small\item\em Overloading of operator$<$ between two Facet3D objects (needed by the set M\+\_\+facets) \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{add\+Noise\+To\+Point} (\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean=0., const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} st\+Dev=1.)
+\begin{DoxyCompactList}\small\item\em Add noise to all points. \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_a83503dfaf8e3d2594eda363a28c5425a}{add\+Noise\+To\+Point} (\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::vector$<$ bool $>$ \&nodes\+With\+Noise, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean=0., const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} st\+Dev=1.)
+\begin{DoxyCompactList}\small\item\em Add noise to a set of points. \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_a2e19a6aeb189d2ca5370234dd84caa73}{add\+Noise\+To\+Point} (\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::vector$<$ bool $>$ \&nodes\+With\+Noise, const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \&coords, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean=0., const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} st\+Dev=1.)
+\begin{DoxyCompactList}\small\item\em Add noise to a set of points. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285}{linear\+Region\+Selection} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&\+\_\+cell\+Solution, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \&\+\_\+nb\+Regions, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&\+\_\+min\+Solution=0, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&\+\_\+max\+Solution=0)
+\begin{DoxyCompactList}\small\item\em Given a cell solution, this function linearly divides the solution range and returns in which sub-\/region the cell belongs. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_af2319dd0d3c654e7509d9b94d14a12ca}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a3ec4a02287df57f0a18c692eb037438a}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_affee75e028879b6669f318166c054d71}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a1c83364114566de0a24e730333cf4ba6}{operator$\ast$} (const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+std\+::ostream \& \hyperlink{namespaceFVCode3D_a2350a6eec9008d3b691e5ee6e4290914}{operator$<$$<$} (std\+::ostream \&os, const \hyperlink{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{Perm\+Ptr\+\_\+\+Type} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a9ce5cab99db49bc50167ff3705fac221}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilityScalar}{Permeability\+Scalar} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a5c756733d1283495ba727f5b8a0e4ab9}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilityScalar}{Permeability\+Scalar} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a9e5a2a2718342bee157a1c6e2c78fa6e}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityScalar}{Permeability\+Scalar} $>$ \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a6e6874314b749e7b94c1e0f7b2e25ddc}{operator$\ast$} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityScalar}{Permeability\+Scalar} $>$ \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+std\+::ostream \& \hyperlink{namespaceFVCode3D_afcbf0ace1266ac69b82a7154d94459a1}{operator$<$$<$} (std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityScalar}{Permeability\+Scalar} $>$ \&perm)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_ab694abb1eb8ba46250bf127f3032d0bd}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilityDiagonal}{Permeability\+Diagonal} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a20d5c43bac77b6978cb71155386aaf9e}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilityDiagonal}{Permeability\+Diagonal} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a84db6637fe253b4e6acd9bd16d887562}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityDiagonal}{Permeability\+Diagonal} $>$ \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_ac318aebf33fb93f512357d07452b7d2e}{operator$\ast$} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityDiagonal}{Permeability\+Diagonal} $>$ \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+std\+::ostream \& \hyperlink{namespaceFVCode3D_aa140a41198afe73b0908519f8900cc84}{operator$<$$<$} (std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityDiagonal}{Permeability\+Diagonal} $>$ \&perm)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a3dfa2f38d2f7f0218cab1d9ec22b18b6}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a5ac5e83475a87f9f243d5bf10090c28e}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_aeeedc276df199179c196980e5b3e5647}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} $>$ \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_ac463524bf8214736ff565b8eb89f5dfa}{operator$\ast$} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} $>$ \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+std\+::ostream \& \hyperlink{namespaceFVCode3D_aee190d20e7d59a358f6e3c5738473728}{operator$<$$<$} (std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} $>$ \&perm)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a8da6a56bd95d604552fb78bdab29b491}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilityFullTensor}{Permeability\+Full\+Tensor} \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a81f9e4df393532a4db4ca57703ff5e21}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilityFullTensor}{Permeability\+Full\+Tensor} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a573813c3c7cd4e9ffc94ae79a84d63f7}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityFullTensor}{Permeability\+Full\+Tensor} $>$ \&tensor)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a2c61d86d4a5f699b41833ccfa98b4412}{operator$\ast$} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityFullTensor}{Permeability\+Full\+Tensor} $>$ \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\item 
+std\+::ostream \& \hyperlink{namespaceFVCode3D_a453d7ae598d14867fe6f43774e38f8e0}{operator$<$$<$} (std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilityFullTensor}{Permeability\+Full\+Tensor} $>$ \&perm)
+\item 
+void \hyperlink{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb}{save\+As\+Solver\+Format} (const std\+::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \&properties)  throw ()
+\begin{DoxyCompactList}\small\item\em Save a file in solver format (.fvg) \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_a309feff3c4ef28a971e23350d895579c}{save\+As\+Medit\+Format} (const std\+::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh)  throw ()
+\begin{DoxyCompactList}\small\item\em Save a file in Medit format (.mesh) \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126}{save\+As\+Open\+F\+O\+A\+M\+Format} (const std\+::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh)  throw ()
+\begin{DoxyCompactList}\small\item\em Save a file in Open\+F\+O\+AM format (poly\+Mesh) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{namespaceFVCode3D_a3d3cdaa3f99983f1aa2d079caded2585}{evaluate\+Matrix} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&func)
+\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{namespaceFVCode3D_a9d3700c347e26f9a442a95785abceac6}{evaluate\+Fracture} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&func)
+\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{namespaceFVCode3D_a113366cb939ded701e04649337315295}{evaluate} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&func)
+\item 
+{\footnotesize template$<$typename T $>$ }\\T \hyperlink{namespaceFVCode3D_a7d8605df83383ec5cf62f7efe480a68a}{lexical\+\_\+cast} (const std\+::string \&str)
+\begin{DoxyCompactList}\small\item\em Convert a string to the desired type (using a stringstream) \end{DoxyCompactList}\item 
+std\+::string \hyperlink{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59}{to\+Upper} (const std\+::string \&\+\_\+string)
+\begin{DoxyCompactList}\small\item\em Convert a string to its upper case version. \end{DoxyCompactList}\item 
+void \hyperlink{namespaceFVCode3D_a7bd098182831904c8fcd227b9d0f4562}{tokenize} (const std\+::string \&s, std\+::vector$<$ std\+::string $>$ \&tokens, char delim= \textquotesingle{} \textquotesingle{})
+\begin{DoxyCompactList}\small\item\em Splits a string into tokes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a10917df7e49a48239ce5f00ec9bbfe0a}{\+\_\+\+P\+I\+\_\+} = std\+::atan(1)$\ast$4
+\begin{DoxyCompactList}\small\item\em PI. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_ae98a1f1ab0fce8db57176a4a9f91b2d0}{Source\+Domain}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a2e72cc81c6f214d6e057af7a02599501}{f\+Zero} = \mbox{[}$\,$\mbox{]}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})\{ return 0.; \}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a1a9ede09c77441d292a079fbab60fb82}{f\+One} = \mbox{[}$\,$\mbox{]}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})\{ return 1.; \}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_aafe19d9d844e6d7ec5cc316a921b91ea}{f\+Minus\+Two} = \mbox{[}$\,$\mbox{]}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})\{ return -\/2.; \}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a2ce53aebcf9d64490c1d10fff4860a75}{f\+Minus\+One} = \mbox{[}$\,$\mbox{]}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})\{ return -\/1.; \}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a05f5ace5c7eed4784717659f36b087fe}{f\+One\+Zero} = \mbox{[}$\,$\mbox{]}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D} p)\{ return (2. -\/ p.\+x()) / 2.; \}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_ab998dd309f7a549b31ae669513c2039d}{f\+Ten} = \mbox{[}$\,$\mbox{]}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})\{ return 10.; \}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a271b4cbc8ec56bd2a3cb950b307aef18}{Source\+Grid2}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a312f262aefa197b219228571b49620be}{Sink\+Grid2}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a4072861e3dbbfcd9e80417b32c6991be}{S\+S\+Grid2}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_ae622d8dcaded68fd7f8d650f0a8d9f71}{Source\+P\+Grid3}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a8e5a12e6a9e22baa4378e82fdfcc7613}{Sink\+P\+Grid3}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_ac7d83a03f6c58a7410364b917cf7ebc5}{Source\+O\+Grid3}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a1d325cbbfbdf5832333e0a07e6095053}{Sink\+O\+Grid3}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_ad684cb0cef80af1bba8db353619ab1cf}{S\+S\+O\+Grid3}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a57e80824f085310d70ceed215314b9eb}{S\+S\+E\+D\+FM}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_a84fa11f60a0d07f58d20dcd63837a333}{S\+S\+E\+D\+F\+M\+BC}
+\item 
+\hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \hyperlink{namespaceFVCode3D_ae8b0f97f0774db9f0881cfc5f31d93f4}{SS} = \hyperlink{namespaceFVCode3D_a57e80824f085310d70ceed215314b9eb}{S\+S\+E\+D\+FM}
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Data\+Ptr\+\_\+\+Type@{Data\+Ptr\+\_\+\+Type}}
+\index{Data\+Ptr\+\_\+\+Type@{Data\+Ptr\+\_\+\+Type}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Data\+Ptr\+\_\+\+Type}{DataPtr_Type}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\+V\+Code3\+D\+::\+Data\+Ptr\+\_\+\+Type}}\hypertarget{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}{}\label{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}
+
+
+Typedef for std\+::unique\+\_\+ptr$<$\+Data$>$ 
+
+This type definition permits to handle a std\+::unique\+\_\+ptr$<$\+Data$>$ as a Data\+Ptr\+\_\+\+Type. 
+
+Definition at line \hyperlink{Data_8hpp_source_l00859}{859} of file \hyperlink{Data_8hpp_source}{Data.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Flag16bit@{Flag16bit}}
+\index{Flag16bit@{Flag16bit}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Flag16bit}{Flag16bit}}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint16\+\_\+t {\bf F\+V\+Code3\+D\+::\+Flag16bit}}\hypertarget{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{}\label{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}
+
+
+bit-\/flag with up to 16 different flags 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00048}{48} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Flag32bit@{Flag32bit}}
+\index{Flag32bit@{Flag32bit}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Flag32bit}{Flag32bit}}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint32\+\_\+t {\bf F\+V\+Code3\+D\+::\+Flag32bit}}\hypertarget{namespaceFVCode3D_a74d2aa7527dcbbec13101b55a3cb149d}{}\label{namespaceFVCode3D_a74d2aa7527dcbbec13101b55a3cb149d}
+
+
+bit-\/flag with up to 32 different flags 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00051}{51} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Flag64bit@{Flag64bit}}
+\index{Flag64bit@{Flag64bit}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Flag64bit}{Flag64bit}}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf F\+V\+Code3\+D\+::\+Flag64bit}}\hypertarget{namespaceFVCode3D_ab5f86a12f707861f59c32d022209bfb1}{}\label{namespaceFVCode3D_ab5f86a12f707861f59c32d022209bfb1}
+
+
+bit-\/flag with up to 64 different flags 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00054}{54} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Flag8bit@{Flag8bit}}
+\index{Flag8bit@{Flag8bit}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Flag8bit}{Flag8bit}}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint8\+\_\+t {\bf F\+V\+Code3\+D\+::\+Flag8bit}}\hypertarget{namespaceFVCode3D_a4eac36ed1d93d886ecdcf46c6386b415}{}\label{namespaceFVCode3D_a4eac36ed1d93d886ecdcf46c6386b415}
+
+
+bit-\/flag with up to 8 different flags 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00045}{45} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Func@{Func}}
+\index{Func@{Func}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Func}{Func}}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::function$<${\bf Real}({\bf Point3D})$>$ {\bf F\+V\+Code3\+D\+::\+Func}}\hypertarget{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{}\label{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}
+
+
+Type for a std\+::function$<$\+Real(\+Point3\+D)$>$ 
+
+
+
+Definition at line \hyperlink{TypeDefinition_8hpp_source_l00018}{18} of file \hyperlink{TypeDefinition_8hpp_source}{Type\+Definition.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Int@{Int}}
+\index{Int@{Int}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Int}{Int}}]{\setlength{\rightskip}{0pt plus 5cm}typedef int64\+\_\+t {\bf F\+V\+Code3\+D\+::\+Int}}\hypertarget{namespaceFVCode3D_a2263c42382b217732a2d4e1f7348120a}{}\label{namespaceFVCode3D_a2263c42382b217732a2d4e1f7348120a}
+
+
+Generic integer data. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00042}{42} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Permeability\+Builder@{Permeability\+Builder}}
+\index{Permeability\+Builder@{Permeability\+Builder}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Permeability\+Builder}{PermeabilityBuilder}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Builder}\hypertarget{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}{}\label{namespaceFVCode3D_ad92e05ac4c0491bab1c45e5457d2518c}
+
+
+Typedef for Permeability\+Builder function. 
+
+It is the Builder\+: takes nothing, returns a Perm\+Ptr\+\_\+\+Type 
+
+Definition at line \hyperlink{PermeabilityFactory_8hpp_source_l00020}{20} of file \hyperlink{PermeabilityFactory_8hpp_source}{Permeability\+Factory.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Perm\+Ptr\+\_\+\+Type@{Perm\+Ptr\+\_\+\+Type}}
+\index{Perm\+Ptr\+\_\+\+Type@{Perm\+Ptr\+\_\+\+Type}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Perm\+Ptr\+\_\+\+Type}{PermPtr_Type}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\+V\+Code3\+D\+::\+Perm\+Ptr\+\_\+\+Type}}\hypertarget{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}{}\label{namespaceFVCode3D_aee5ae48a57366603109f90f526a645b1}
+
+
+Typedef for Perm\+Ptr\+\_\+\+Type. 
+
+This type definition permits to handle a std\+::shared\+\_\+ptr$<$\+Permeability\+Base$>$ as a Perm\+Ptr\+\_\+\+Type. 
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00021}{21} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Real@{Real}}
+\index{Real@{Real}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Real}{Real}}]{\setlength{\rightskip}{0pt plus 5cm}typedef double {\bf F\+V\+Code3\+D\+::\+Real}}\hypertarget{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{}\label{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}
+
+
+Type for real numbers. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00033}{33} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Solver\+Builder@{Solver\+Builder}}
+\index{Solver\+Builder@{Solver\+Builder}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Solver\+Builder}{SolverBuilder}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Solver\+Builder}\hypertarget{namespaceFVCode3D_ae1d65e23bd2373e382d1f397337de344}{}\label{namespaceFVCode3D_ae1d65e23bd2373e382d1f397337de344}
+
+
+Typedef for Solver\+Builder function. 
+
+It is the Builder\+: takes nothing, returns a Solver\+Ptr\+\_\+\+Type 
+
+Definition at line \hyperlink{SolverHandler_8hpp_source_l00020}{20} of file \hyperlink{SolverHandler_8hpp_source}{Solver\+Handler.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Solver\+Ptr\+\_\+\+Type@{Solver\+Ptr\+\_\+\+Type}}
+\index{Solver\+Ptr\+\_\+\+Type@{Solver\+Ptr\+\_\+\+Type}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Solver\+Ptr\+\_\+\+Type}{SolverPtr_Type}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\+V\+Code3\+D\+::\+Solver\+Ptr\+\_\+\+Type}}\hypertarget{namespaceFVCode3D_a0b32227a4e5847c2fb27215fb81d9363}{}\label{namespaceFVCode3D_a0b32227a4e5847c2fb27215fb81d9363}
+
+
+Typedef for Solver\+Ptr\+\_\+\+Type. 
+
+This type definition permits to handle a Solver\+Ptr\+\_\+\+Type as a Solver\+Ptr\+\_\+\+Type. 
+
+Definition at line \hyperlink{Solver_8hpp_source_l00021}{21} of file \hyperlink{Solver_8hpp_source}{Solver.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Sp\+Mat@{Sp\+Mat}}
+\index{Sp\+Mat@{Sp\+Mat}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Sp\+Mat}{SpMat}}]{\setlength{\rightskip}{0pt plus 5cm}typedef Eigen\+::\+Sparse\+Matrix$<${\bf Real}$>$ {\bf F\+V\+Code3\+D\+::\+Sp\+Mat}}\hypertarget{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{}\label{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}
+
+
+Type for eigen column-\/major sparse matrix of Real. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00060}{60} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Sp\+Mat\+RM@{Sp\+Mat\+RM}}
+\index{Sp\+Mat\+RM@{Sp\+Mat\+RM}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Sp\+Mat\+RM}{SpMatRM}}]{\setlength{\rightskip}{0pt plus 5cm}typedef Eigen\+::\+Sparse\+Matrix$<${\bf Real}, Eigen\+::\+Row\+Major$>$ {\bf F\+V\+Code3\+D\+::\+Sp\+Mat\+RM}}\hypertarget{namespaceFVCode3D_a43d700a82a0a7ea1a4ad9768c59dc536}{}\label{namespaceFVCode3D_a43d700a82a0a7ea1a4ad9768c59dc536}
+
+
+Type for eigen row-\/major sparse matrix of Real. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00063}{63} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!S\+U\+Int@{S\+U\+Int}}
+\index{S\+U\+Int@{S\+U\+Int}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{S\+U\+Int}{SUInt}}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint8\+\_\+t {\bf F\+V\+Code3\+D\+::\+S\+U\+Int}}\hypertarget{namespaceFVCode3D_a0319e74922d1d700fbc06e470e0cfc07}{}\label{namespaceFVCode3D_a0319e74922d1d700fbc06e470e0cfc07}
+
+
+Type for unsigned short int. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00036}{36} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Triplet@{Triplet}}
+\index{Triplet@{Triplet}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Triplet}{Triplet}}]{\setlength{\rightskip}{0pt plus 5cm}typedef Eigen\+::\+Triplet$<${\bf Real}$>$ {\bf F\+V\+Code3\+D\+::\+Triplet}}\hypertarget{namespaceFVCode3D_a1d6853f6847ee83d6e823a500a8232fd}{}\label{namespaceFVCode3D_a1d6853f6847ee83d6e823a500a8232fd}
+
+
+Type for eigen triplets. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00072}{72} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!U\+Int@{U\+Int}}
+\index{U\+Int@{U\+Int}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{U\+Int}{UInt}}]{\setlength{\rightskip}{0pt plus 5cm}typedef uint64\+\_\+t {\bf F\+V\+Code3\+D\+::\+U\+Int}}\hypertarget{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{}\label{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}
+
+
+Type for integer numbers. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00039}{39} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!U\+Int\+Vector@{U\+Int\+Vector}}
+\index{U\+Int\+Vector@{U\+Int\+Vector}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{U\+Int\+Vector}{UIntVector}}]{\setlength{\rightskip}{0pt plus 5cm}typedef Eigen\+::\+Matrix$<${\bf U\+Int}, Eigen\+::\+Dynamic, 1$>$ {\bf F\+V\+Code3\+D\+::\+U\+Int\+Vector}}\hypertarget{namespaceFVCode3D_a9c3dcef0872c1dbd4aaf770d08421fd7}{}\label{namespaceFVCode3D_a9c3dcef0872c1dbd4aaf770d08421fd7}
+
+
+Type for eigen U\+Int vectors. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00069}{69} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Vector@{Vector}}
+\index{Vector@{Vector}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Vector}{Vector}}]{\setlength{\rightskip}{0pt plus 5cm}typedef Eigen\+::\+Vector\+Xd {\bf F\+V\+Code3\+D\+::\+Vector}}\hypertarget{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{}\label{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}
+
+
+Type for eigen vectors. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00066}{66} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+
+
+\subsection{Enumeration Type Documentation}
+\index{F\+V\+Code3D@{F\+V\+Code3D}!B\+C\+Type@{B\+C\+Type}}
+\index{B\+C\+Type@{B\+C\+Type}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{B\+C\+Type}{BCType}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+B\+C\+Type}}\hypertarget{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5}{}\label{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5}
+
+
+Select the type of the BC. 
+
+It is possible to choose the type of the boundary conditions\+: \char`\"{}\+Dirichlet\char`\"{} type or \char`\"{}\+Neumann\char`\"{} type. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Dirichlet@{Dirichlet}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Dirichlet@{Dirichlet}}\item[{\em 
+Dirichlet\hypertarget{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}{}\label{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a192024697bdaa4fbbb39b8961b747bce}
+}]\index{Neumann@{Neumann}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Neumann@{Neumann}}\item[{\em 
+Neumann\hypertarget{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}{}\label{namespaceFVCode3D_a73660061f11f1671164ce171a053f8c5a30212425b27314b01b40f4984dbf850a}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{BC_8hpp_source_l00027}{27} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Border\+Label@{Border\+Label}}
+\index{Border\+Label@{Border\+Label}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Border\+Label}{BorderLabel}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Border\+Label} \+: {\bf U\+Int}}\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822}
+\begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Internal@{Internal}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Internal@{Internal}}\item[{\em 
+Internal\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a7d38403d00598d4bb163911f9aa48294}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a7d38403d00598d4bb163911f9aa48294}
+}]\index{Left@{Left}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Left@{Left}}\item[{\em 
+Left\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a7fd633652b3723bb7716b9db0314a61e}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a7fd633652b3723bb7716b9db0314a61e}
+}]\index{Right@{Right}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Right@{Right}}\item[{\em 
+Right\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a27ec5db52b31c4eba9e240374723f76e}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a27ec5db52b31c4eba9e240374723f76e}
+}]\index{Front@{Front}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Front@{Front}}\item[{\em 
+Front\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a2b5e7fb79a56dd77e3c62bccd52238e4}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a2b5e7fb79a56dd77e3c62bccd52238e4}
+}]\index{Back@{Back}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Back@{Back}}\item[{\em 
+Back\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a10461eade3dd091368236f82c6f7f498}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a10461eade3dd091368236f82c6f7f498}
+}]\index{Bottom@{Bottom}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Bottom@{Bottom}}\item[{\em 
+Bottom\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822aba9e7af6197fd20512d8f2562e913711}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822aba9e7af6197fd20512d8f2562e913711}
+}]\index{Top@{Top}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Top@{Top}}\item[{\em 
+Top\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a52ff9b0d3195e16d3d8aed882b7e19dd}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a52ff9b0d3195e16d3d8aed882b7e19dd}
+}]\index{Fracture\+Tip@{Fracture\+Tip}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Fracture\+Tip@{Fracture\+Tip}}\item[{\em 
+Fracture\+Tip\hypertarget{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a72636637126378d1cd731f1382a736c9}{}\label{namespaceFVCode3D_a604c2047b7f400e68b30a8132178c822a72636637126378d1cd731f1382a736c9}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{BC_8hpp_source_l00033}{33} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Matrix\+Options@{Matrix\+Options}}
+\index{Matrix\+Options@{Matrix\+Options}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Matrix\+Options}{MatrixOptions}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Matrix\+Options}}\hypertarget{namespaceFVCode3D_a626a4d79a767db88306feab431240f48}{}\label{namespaceFVCode3D_a626a4d79a767db88306feab431240f48}
+
+
+Enumerator used to select how to store the matrix. 
+
+This enumerator permits to decide how to store a matrix. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Store@{Store}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Store@{Store}}\item[{\em 
+Store\hypertarget{namespaceFVCode3D_a626a4d79a767db88306feab431240f48aa66707b15fb7654854e39760f95fe1bf}{}\label{namespaceFVCode3D_a626a4d79a767db88306feab431240f48aa66707b15fb7654854e39760f95fe1bf}
+}]\index{Save\+On\+File@{Save\+On\+File}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Save\+On\+File@{Save\+On\+File}}\item[{\em 
+Save\+On\+File\hypertarget{namespaceFVCode3D_a626a4d79a767db88306feab431240f48a404305166bee1d9f70fd4121aa96efe7}{}\label{namespaceFVCode3D_a626a4d79a767db88306feab431240f48a404305166bee1d9f70fd4121aa96efe7}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Matrix_8hpp_source_l00019}{19} of file \hyperlink{Matrix_8hpp_source}{Matrix.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Properties\+To\+Export@{Properties\+To\+Export}}
+\index{Properties\+To\+Export@{Properties\+To\+Export}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Properties\+To\+Export}{PropertiesToExport}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Properties\+To\+Export}}\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41}
+
+
+Flag for exporter. 
+
+This enum permits to select which properties to export. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Zone\+Code@{Zone\+Code}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Zone\+Code@{Zone\+Code}}\item[{\em 
+Zone\+Code\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a98a639655750204022119fd2d64ecdf0}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a98a639655750204022119fd2d64ecdf0}
+}]\index{Is\+Frac@{Is\+Frac}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Is\+Frac@{Is\+Frac}}\item[{\em 
+Is\+Frac\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ad2b21a53311e3478541b39809a3877b9}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ad2b21a53311e3478541b39809a3877b9}
+}]\index{Aperture@{Aperture}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Aperture@{Aperture}}\item[{\em 
+Aperture\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a7bea6d441c4661b396fc86912312c47e}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a7bea6d441c4661b396fc86912312c47e}
+}]\index{Porosity@{Porosity}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Porosity@{Porosity}}\item[{\em 
+Porosity\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a8bb92532e203b2a2b45c4b2ce0354a90}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a8bb92532e203b2a2b45c4b2ce0354a90}
+}]\index{Permeability@{Permeability}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Permeability@{Permeability}}\item[{\em 
+Permeability\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a23fa3ea40f896b28978ffc259e5281cf}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a23fa3ea40f896b28978ffc259e5281cf}
+}]\index{Border\+ID@{Border\+ID}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Border\+ID@{Border\+ID}}\item[{\em 
+Border\+ID\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ae672dc66b11cd1f93a00d52d617a1866}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ae672dc66b11cd1f93a00d52d617a1866}
+}]\index{Element\+ID@{Element\+ID}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Element\+ID@{Element\+ID}}\item[{\em 
+Element\+ID\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a864b9d45a578bf09e82a32916c9c3c03}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a864b9d45a578bf09e82a32916c9c3c03}
+}]\index{Other@{Other}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Other@{Other}}\item[{\em 
+Other\hypertarget{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ab8c2eb493dc98b25b8fc2e3e176d4892}{}\label{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ab8c2eb493dc98b25b8fc2e3e176d4892}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{Export_8hpp_source_l00024}{24} of file \hyperlink{Export_8hpp_source}{Export.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Time\+Scheme@{Time\+Scheme}}
+\index{Time\+Scheme@{Time\+Scheme}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Time\+Scheme}{TimeScheme}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf F\+V\+Code3\+D\+::\+Time\+Scheme}}\hypertarget{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009a}{}\label{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009a}
+
+
+Select the time scheme. 
+
+It is possible to choose the time scheme\+: \char`\"{}\+Implicit\char`\"{} type or \char`\"{}\+B\+D\+F2\char`\"{} type. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Implicit@{Implicit}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!Implicit@{Implicit}}\item[{\em 
+Implicit\hypertarget{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009aa349f3bb73703f75dbaa1ba38998671d1}{}\label{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009aa349f3bb73703f75dbaa1ba38998671d1}
+}]\index{B\+D\+F2@{B\+D\+F2}!F\+V\+Code3D@{F\+V\+Code3D}}\index{F\+V\+Code3D@{F\+V\+Code3D}!B\+D\+F2@{B\+D\+F2}}\item[{\em 
+B\+D\+F2\hypertarget{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009aa3cbb28a9274dccd4cacd41ad5d823bed}{}\label{namespaceFVCode3D_ad641b84e1a5460b6a35354f61f27009aa3cbb28a9274dccd4cacd41ad5d823bed}
+}]\end{description}
+\end{Desc}
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00023}{23} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+
+
+\subsection{Function Documentation}
+\index{F\+V\+Code3D@{F\+V\+Code3D}!add\+Noise\+To\+Point@{add\+Noise\+To\+Point}}
+\index{add\+Noise\+To\+Point@{add\+Noise\+To\+Point}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{add\+Noise\+To\+Point(\+Mesh3\+D \&mesh, const Real mean=0., const Real st\+Dev=1.)}{addNoiseToPoint(Mesh3D &mesh, const Real mean=0., const Real stDev=1.)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::add\+Noise\+To\+Point (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh3D} \&}]{mesh, }
+\item[{const {\bf Real}}]{mean = {\ttfamily 0.}, }
+\item[{const {\bf Real}}]{st\+Dev = {\ttfamily 1.}}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{}\label{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}
+
+
+Add noise to all points. 
+
+Add noise to the points following a normal distribution with mean {\itshape mean} and standard deviation {\itshape st\+Dev} 
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em mean} & mean. Default = 0. \\
+\hline
+{\em st\+Dev} & standard deviation. Default = 1. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MeshUtility_8cpp_source_l00014}{14} of file \hyperlink{MeshUtility_8cpp_source}{Mesh\+Utility.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!add\+Noise\+To\+Point@{add\+Noise\+To\+Point}}
+\index{add\+Noise\+To\+Point@{add\+Noise\+To\+Point}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{add\+Noise\+To\+Point(\+Mesh3\+D \&mesh, const std\+::vector$<$ bool $>$ \&nodes\+With\+Noise, const Real mean=0., const Real st\+Dev=1.)}{addNoiseToPoint(Mesh3D &mesh, const std::vector< bool > &nodesWithNoise, const Real mean=0., const Real stDev=1.)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::add\+Noise\+To\+Point (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::vector$<$ bool $>$ \&}]{nodes\+With\+Noise, }
+\item[{const {\bf Real}}]{mean = {\ttfamily 0.}, }
+\item[{const {\bf Real}}]{st\+Dev = {\ttfamily 1.}}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a83503dfaf8e3d2594eda363a28c5425a}{}\label{namespaceFVCode3D_a83503dfaf8e3d2594eda363a28c5425a}
+
+
+Add noise to a set of points. 
+
+Add noise to the points following a normal distribution with mean {\itshape mean} and standard deviation {\itshape st\+Dev} 
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em nodes\+With\+Noise} & vector that indicates on which nodes the noise is applied \\
+\hline
+{\em mean} & mean. Default = 0. \\
+\hline
+{\em st\+Dev} & standard deviation. Default = 1. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MeshUtility_8cpp_source_l00027}{27} of file \hyperlink{MeshUtility_8cpp_source}{Mesh\+Utility.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a83503dfaf8e3d2594eda363a28c5425a_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!add\+Noise\+To\+Point@{add\+Noise\+To\+Point}}
+\index{add\+Noise\+To\+Point@{add\+Noise\+To\+Point}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{add\+Noise\+To\+Point(\+Mesh3\+D \&mesh, const std\+::vector$<$ bool $>$ \&nodes\+With\+Noise, const std\+::vector$<$ U\+Int $>$ \&coords, const Real mean=0., const Real st\+Dev=1.)}{addNoiseToPoint(Mesh3D &mesh, const std::vector< bool > &nodesWithNoise, const std::vector< UInt > &coords, const Real mean=0., const Real stDev=1.)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::add\+Noise\+To\+Point (
+\begin{DoxyParamCaption}
+\item[{{\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::vector$<$ bool $>$ \&}]{nodes\+With\+Noise, }
+\item[{const std\+::vector$<$ {\bf U\+Int} $>$ \&}]{coords, }
+\item[{const {\bf Real}}]{mean = {\ttfamily 0.}, }
+\item[{const {\bf Real}}]{st\+Dev = {\ttfamily 1.}}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a2e19a6aeb189d2ca5370234dd84caa73}{}\label{namespaceFVCode3D_a2e19a6aeb189d2ca5370234dd84caa73}
+
+
+Add noise to a set of points. 
+
+Add noise to the points following a normal distribution with mean {\itshape mean} and standard deviation {\itshape st\+Dev} 
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em nodes\+With\+Noise} & vector that indicates on which nodes the noise is applied \\
+\hline
+{\em coords} & coordinates on which the noise is applied \\
+\hline
+{\em mean} & mean. Default = 0. \\
+\hline
+{\em st\+Dev} & standard deviation. Default = 1. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MeshUtility_8cpp_source_l00046}{46} of file \hyperlink{MeshUtility_8cpp_source}{Mesh\+Utility.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a2e19a6aeb189d2ca5370234dd84caa73_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!compute\+Bounding\+Box@{compute\+Bounding\+Box}}
+\index{compute\+Bounding\+Box@{compute\+Bounding\+Box}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{compute\+Bounding\+Box(const std\+::vector$<$ Point3\+D $>$ \&nodes, Point3\+D \&p\+Min, Point3\+D \&p\+Max)}{computeBoundingBox(const std::vector< Point3D > &nodes, Point3D &pMin, Point3D &pMax)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::compute\+Bounding\+Box (
+\begin{DoxyParamCaption}
+\item[{const std\+::vector$<$ {\bf Point3D} $>$ \&}]{nodes, }
+\item[{{\bf Point3D} \&}]{p\+Min, }
+\item[{{\bf Point3D} \&}]{p\+Max}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b}{}\label{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b}
+
+
+Compute the bounding-\/box of a set of points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nodes} & vector of points \\
+\hline
+{\em p\+Min} & first point that defines the BB \\
+\hline
+{\em p\+Max} & second point that defines the BB \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Operations_8cpp_source_l00047}{47} of file \hyperlink{Operations_8cpp_source}{Operations.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!compute\+Normal@{compute\+Normal}}
+\index{compute\+Normal@{compute\+Normal}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{compute\+Normal(const Point3\+D \&\+A, const Point3\+D \&\+B, const Point3\+D \&\+C)}{computeNormal(const Point3D &A, const Point3D &B, const Point3D &C)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::compute\+Normal (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{A, }
+\item[{const {\bf Point3D} \&}]{B, }
+\item[{const {\bf Point3D} \&}]{C}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc}{}\label{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc}
+
+
+Compute the normal moving from three points that lie on a plane (use the right-\/hand rule) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & first point \\
+\hline
+{\em B} & second point \\
+\hline
+{\em C} & third point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+signed normal 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Operations_8cpp_source_l00012}{12} of file \hyperlink{Operations_8cpp_source}{Operations.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!cross\+Product@{cross\+Product}}
+\index{cross\+Product@{cross\+Product}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{cross\+Product(const Point3\+D \&p1, const Point3\+D \&p2)}{crossProduct(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::cross\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{}\label{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00211}{211} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!distance@{distance}}
+\index{distance@{distance}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{distance(const Point3\+D \&p1, const Point3\+D \&p2)}{distance(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::distance (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a705717c0673e24ca607c7a65054de4f7}{}\label{namespaceFVCode3D_a705717c0673e24ca607c7a65054de4f7}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00206}{206} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a705717c0673e24ca607c7a65054de4f7_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!dot\+Product@{dot\+Product}}
+\index{dot\+Product@{dot\+Product}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{dot\+Product(const Point3\+D \&p1, const Point3\+D \&p2)}{dotProduct(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::dot\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{}\label{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00186}{186} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{evaluate(const Rigid\+\_\+\+Mesh \&mesh, const std\+::function$<$ Real(\+Point3\+D)$>$ \&func)}{evaluate(const Rigid_Mesh &mesh, const std::function< Real(Point3D)> &func)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector} F\+V\+Code3\+D\+::evaluate (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{func}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a113366cb939ded701e04649337315295}{}\label{namespaceFVCode3D_a113366cb939ded701e04649337315295}
+
+
+Definition at line \hyperlink{Evaluate_8cpp_source_l00033}{33} of file \hyperlink{Evaluate_8cpp_source}{Evaluate.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a113366cb939ded701e04649337315295_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!evaluate\+Fracture@{evaluate\+Fracture}}
+\index{evaluate\+Fracture@{evaluate\+Fracture}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{evaluate\+Fracture(const Rigid\+\_\+\+Mesh \&mesh, const std\+::function$<$ Real(\+Point3\+D)$>$ \&func)}{evaluateFracture(const Rigid_Mesh &mesh, const std::function< Real(Point3D)> &func)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector} F\+V\+Code3\+D\+::evaluate\+Fracture (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{func}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a9d3700c347e26f9a442a95785abceac6}{}\label{namespaceFVCode3D_a9d3700c347e26f9a442a95785abceac6}
+
+
+Definition at line \hyperlink{Evaluate_8cpp_source_l00019}{19} of file \hyperlink{Evaluate_8cpp_source}{Evaluate.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a9d3700c347e26f9a442a95785abceac6_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!evaluate\+Matrix@{evaluate\+Matrix}}
+\index{evaluate\+Matrix@{evaluate\+Matrix}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{evaluate\+Matrix(const Rigid\+\_\+\+Mesh \&mesh, const std\+::function$<$ Real(\+Point3\+D)$>$ \&func)}{evaluateMatrix(const Rigid_Mesh &mesh, const std::function< Real(Point3D)> &func)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector} F\+V\+Code3\+D\+::evaluate\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{func}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a3d3cdaa3f99983f1aa2d079caded2585}{}\label{namespaceFVCode3D_a3d3cdaa3f99983f1aa2d079caded2585}
+
+
+Definition at line \hyperlink{Evaluate_8cpp_source_l00006}{6} of file \hyperlink{Evaluate_8cpp_source}{Evaluate.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a3d3cdaa3f99983f1aa2d079caded2585_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!inner\+Angle\+Deg@{inner\+Angle\+Deg}}
+\index{inner\+Angle\+Deg@{inner\+Angle\+Deg}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{inner\+Angle\+Deg(const Point3\+D \&p1, const Point3\+D \&p2)}{innerAngleDeg(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::inner\+Angle\+Deg (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ae33e5908d62b0ae8dbfdf089ab9bc138}{}\label{namespaceFVCode3D_ae33e5908d62b0ae8dbfdf089ab9bc138}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00199}{199} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_ae33e5908d62b0ae8dbfdf089ab9bc138_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!inner\+Angle\+Rad@{inner\+Angle\+Rad}}
+\index{inner\+Angle\+Rad@{inner\+Angle\+Rad}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{inner\+Angle\+Rad(const Point3\+D \&p1, const Point3\+D \&p2)}{innerAngleRad(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::inner\+Angle\+Rad (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_acbd112899b9e007bec3fe01223140c45}{}\label{namespaceFVCode3D_acbd112899b9e007bec3fe01223140c45}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00192}{192} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_acbd112899b9e007bec3fe01223140c45_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!lexical\+\_\+cast@{lexical\+\_\+cast}}
+\index{lexical\+\_\+cast@{lexical\+\_\+cast}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{lexical\+\_\+cast(const std\+::string \&str)}{lexical_cast(const std::string &str)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T $>$ T F\+V\+Code3\+D\+::lexical\+\_\+cast (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{str}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a7d8605df83383ec5cf62f7efe480a68a}{}\label{namespaceFVCode3D_a7d8605df83383ec5cf62f7efe480a68a}
+
+
+Convert a string to the desired type (using a stringstream) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & string to convert \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{StringManipolator_8hpp_source_l00021}{21} of file \hyperlink{StringManipolator_8hpp_source}{String\+Manipolator.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a7d8605df83383ec5cf62f7efe480a68a_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!linear\+Region\+Selection@{linear\+Region\+Selection}}
+\index{linear\+Region\+Selection@{linear\+Region\+Selection}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{linear\+Region\+Selection(const Real \&\+\_\+cell\+Solution, const U\+Int \&\+\_\+nb\+Regions, const Real \&\+\_\+min\+Solution=0, const Real \&\+\_\+max\+Solution=0)}{linearRegionSelection(const Real &_cellSolution, const UInt &_nbRegions, const Real &_minSolution=0, const Real &_maxSolution=0)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::linear\+Region\+Selection (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real} \&}]{\+\_\+cell\+Solution, }
+\item[{const {\bf U\+Int} \&}]{\+\_\+nb\+Regions, }
+\item[{const {\bf Real} \&}]{\+\_\+min\+Solution = {\ttfamily 0}, }
+\item[{const {\bf Real} \&}]{\+\_\+max\+Solution = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285}{}\label{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285}
+
+
+Given a cell solution, this function linearly divides the solution range and returns in which sub-\/region the cell belongs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+cell\+Solution} & solution in a given cell \\
+\hline
+{\em \+\_\+nb\+Regions} & number of sub regions \\
+\hline
+{\em \+\_\+min\+Solution} & the minimum value assumed by the solution \\
+\hline
+{\em \+\_\+max\+Solution} & the maximum value assumed by the solution \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the sub-\/region id that cell belongs 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8cpp_source_l00011}{11} of file \hyperlink{MultipleSubRegions_8cpp_source}{Multiple\+Sub\+Regions.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const Permeability\+Base \&tensor)}{operator*(const Point3D &vector, const PermeabilityBase &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Base} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_af2319dd0d3c654e7509d9b94d14a12ca}{}\label{namespaceFVCode3D_af2319dd0d3c654e7509d9b94d14a12ca}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00024}{24} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_af2319dd0d3c654e7509d9b94d14a12ca_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Permeability\+Base \&tensor, const Point3\+D \&vector)}{operator*(const PermeabilityBase &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Base} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a3ec4a02287df57f0a18c692eb037438a}{}\label{namespaceFVCode3D_a3ec4a02287df57f0a18c692eb037438a}
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00029}{29} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a3ec4a02287df57f0a18c692eb037438a_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const Perm\+Ptr\+\_\+\+Type \&tensor)}{operator*(const Point3D &vector, const PermPtr_Type &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_affee75e028879b6669f318166c054d71}{}\label{namespaceFVCode3D_affee75e028879b6669f318166c054d71}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00034}{34} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Perm\+Ptr\+\_\+\+Type \&tensor, const Point3\+D \&vector)}{operator*(const PermPtr_Type &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a1c83364114566de0a24e730333cf4ba6}{}\label{namespaceFVCode3D_a1c83364114566de0a24e730333cf4ba6}
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00039}{39} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const Permeability\+Scalar \&tensor)}{operator*(const Point3D &vector, const PermeabilityScalar &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Scalar} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a9ce5cab99db49bc50167ff3705fac221}{}\label{namespaceFVCode3D_a9ce5cab99db49bc50167ff3705fac221}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00060}{60} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Permeability\+Scalar \&tensor, const Point3\+D \&vector)}{operator*(const PermeabilityScalar &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Scalar} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a5c756733d1283495ba727f5b8a0e4ab9}{}\label{namespaceFVCode3D_a5c756733d1283495ba727f5b8a0e4ab9}
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00065}{65} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const std\+::shared\+\_\+ptr$<$ Permeability\+Scalar $>$ \&tensor)}{operator*(const Point3D &vector, const std::shared_ptr< PermeabilityScalar > &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Scalar} $>$ \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a9e5a2a2718342bee157a1c6e2c78fa6e}{}\label{namespaceFVCode3D_a9e5a2a2718342bee157a1c6e2c78fa6e}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00070}{70} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const std\+::shared\+\_\+ptr$<$ Permeability\+Scalar $>$ \&tensor, const Point3\+D \&vector)}{operator*(const std::shared_ptr< PermeabilityScalar > &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Scalar} $>$ \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a6e6874314b749e7b94c1e0f7b2e25ddc}{}\label{namespaceFVCode3D_a6e6874314b749e7b94c1e0f7b2e25ddc}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00075}{75} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const Permeability\+Diagonal \&tensor)}{operator*(const Point3D &vector, const PermeabilityDiagonal &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Diagonal} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ab694abb1eb8ba46250bf127f3032d0bd}{}\label{namespaceFVCode3D_ab694abb1eb8ba46250bf127f3032d0bd}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00112}{112} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceFVCode3D_ab694abb1eb8ba46250bf127f3032d0bd_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Permeability\+Diagonal \&tensor, const Point3\+D \&vector)}{operator*(const PermeabilityDiagonal &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Diagonal} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a20d5c43bac77b6978cb71155386aaf9e}{}\label{namespaceFVCode3D_a20d5c43bac77b6978cb71155386aaf9e}
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00119}{119} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceFVCode3D_a20d5c43bac77b6978cb71155386aaf9e_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const std\+::shared\+\_\+ptr$<$ Permeability\+Diagonal $>$ \&tensor)}{operator*(const Point3D &vector, const std::shared_ptr< PermeabilityDiagonal > &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Diagonal} $>$ \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a84db6637fe253b4e6acd9bd16d887562}{}\label{namespaceFVCode3D_a84db6637fe253b4e6acd9bd16d887562}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00126}{126} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const std\+::shared\+\_\+ptr$<$ Permeability\+Diagonal $>$ \&tensor, const Point3\+D \&vector)}{operator*(const std::shared_ptr< PermeabilityDiagonal > &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Diagonal} $>$ \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ac318aebf33fb93f512357d07452b7d2e}{}\label{namespaceFVCode3D_ac318aebf33fb93f512357d07452b7d2e}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00131}{131} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&p1, const Point3\+D \&p2)}{operator*(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a34e9f6209d7ce6f615394fb60963d450}{}\label{namespaceFVCode3D_a34e9f6209d7ce6f615394fb60963d450}
+
+\begin{DoxyItemize}
+\item operator between points (dot product) 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00162}{162} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&p, const Real r)}{operator*(const Point3D &p, const Real r)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p, }
+\item[{const {\bf Real}}]{r}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ac5c448428b01ffde71c0a70f80edb264}{}\label{namespaceFVCode3D_ac5c448428b01ffde71c0a70f80edb264}
+
+\begin{DoxyItemize}
+\item operator between point and scalar 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00167}{167} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Real r, const Point3\+D \&p)}{operator*(const Real r, const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{r, }
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a3d65ba1de4aa9fa136a484cc1a331f62}{}\label{namespaceFVCode3D_a3d65ba1de4aa9fa136a484cc1a331f62}
+
+\begin{DoxyItemize}
+\item operator between scalar and point 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00174}{174} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const Permeability\+Sym\+Tensor \&tensor)}{operator*(const Point3D &vector, const PermeabilitySymTensor &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Sym\+Tensor} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a3dfa2f38d2f7f0218cab1d9ec22b18b6}{}\label{namespaceFVCode3D_a3dfa2f38d2f7f0218cab1d9ec22b18b6}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00188}{188} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceFVCode3D_a3dfa2f38d2f7f0218cab1d9ec22b18b6_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Permeability\+Sym\+Tensor \&tensor, const Point3\+D \&vector)}{operator*(const PermeabilitySymTensor &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Sym\+Tensor} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a5ac5e83475a87f9f243d5bf10090c28e}{}\label{namespaceFVCode3D_a5ac5e83475a87f9f243d5bf10090c28e}
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00205}{205} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceFVCode3D_a5ac5e83475a87f9f243d5bf10090c28e_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const std\+::shared\+\_\+ptr$<$ Permeability\+Sym\+Tensor $>$ \&tensor)}{operator*(const Point3D &vector, const std::shared_ptr< PermeabilitySymTensor > &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Sym\+Tensor} $>$ \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_aeeedc276df199179c196980e5b3e5647}{}\label{namespaceFVCode3D_aeeedc276df199179c196980e5b3e5647}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00222}{222} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const std\+::shared\+\_\+ptr$<$ Permeability\+Sym\+Tensor $>$ \&tensor, const Point3\+D \&vector)}{operator*(const std::shared_ptr< PermeabilitySymTensor > &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Sym\+Tensor} $>$ \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_ac463524bf8214736ff565b8eb89f5dfa}{}\label{namespaceFVCode3D_ac463524bf8214736ff565b8eb89f5dfa}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00227}{227} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const Permeability\+Full\+Tensor \&tensor)}{operator*(const Point3D &vector, const PermeabilityFullTensor &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Full\+Tensor} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a8da6a56bd95d604552fb78bdab29b491}{}\label{namespaceFVCode3D_a8da6a56bd95d604552fb78bdab29b491}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00284}{284} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceFVCode3D_a8da6a56bd95d604552fb78bdab29b491_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Permeability\+Full\+Tensor \&tensor, const Point3\+D \&vector)}{operator*(const PermeabilityFullTensor &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Full\+Tensor} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a81f9e4df393532a4db4ca57703ff5e21}{}\label{namespaceFVCode3D_a81f9e4df393532a4db4ca57703ff5e21}
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00301}{301} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{namespaceFVCode3D_a81f9e4df393532a4db4ca57703ff5e21_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const Point3\+D \&vector, const std\+::shared\+\_\+ptr$<$ Permeability\+Full\+Tensor $>$ \&tensor)}{operator*(const Point3D &vector, const std::shared_ptr< PermeabilityFullTensor > &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Full\+Tensor} $>$ \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a573813c3c7cd4e9ffc94ae79a84d63f7}{}\label{namespaceFVCode3D_a573813c3c7cd4e9ffc94ae79a84d63f7}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00318}{318} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$(const std\+::shared\+\_\+ptr$<$ Permeability\+Full\+Tensor $>$ \&tensor, const Point3\+D \&vector)}{operator*(const std::shared_ptr< PermeabilityFullTensor > &tensor, const Point3D &vector)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Full\+Tensor} $>$ \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a2c61d86d4a5f699b41833ccfa98b4412}{}\label{namespaceFVCode3D_a2c61d86d4a5f699b41833ccfa98b4412}
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00323}{323} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator+@{operator+}}
+\index{operator+@{operator+}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator+(const Point3\+D \&p1, const Point3\+D \&p2)}{operator+(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a78d1c1bb596d0ef685c16686fa4a71f9}{}\label{namespaceFVCode3D_a78d1c1bb596d0ef685c16686fa4a71f9}
+
+\begin{DoxyItemize}
+\item operator 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00143}{143} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator-\/(const Point3\+D \&p1, const Point3\+D \&p2)}{operator-(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a57085532e6351dd3b8c54eb16b5f2917}{}\label{namespaceFVCode3D_a57085532e6351dd3b8c54eb16b5f2917}
+
+\begin{DoxyItemize}
+\item operator 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00150}{150} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator-\/(const Point3\+D \&p)}{operator-(const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_adc46213e3b69826283d7c31363ec6e98}{}\label{namespaceFVCode3D_adc46213e3b69826283d7c31363ec6e98}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00157}{157} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator/@{operator/}}
+\index{operator/@{operator/}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator/(const Point3\+D \&p, const Real r)}{operator/(const Point3D &p, const Real r)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::operator/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p, }
+\item[{const {\bf Real}}]{r}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a7e00e4f7126ac965092b3e79d66396d1}{}\label{namespaceFVCode3D_a7e00e4f7126ac965092b3e79d66396d1}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00179}{179} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$(const Point3\+D \&p1, const Point3\+D \&p2)}{operator<(const Point3D &p1, const Point3D &p2)}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a4d68dd4dc8a2720cd431013bc580e9d6}{}\label{namespaceFVCode3D_a4d68dd4dc8a2720cd431013bc580e9d6}
+
+
+Operator less between points. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00225}{225} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{namespaceFVCode3D_a4d68dd4dc8a2720cd431013bc580e9d6_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$(const Mesh3\+D\+::\+Facet3\+D \&f1, const Mesh3\+D\+::\+Facet3\+D \&f2)}{operator<(const Mesh3D::Facet3D &f1, const Mesh3D::Facet3D &f2)}}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::operator$<$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3\+D\+::\+Facet3D} \&}]{f1, }
+\item[{const {\bf Mesh3\+D\+::\+Facet3D} \&}]{f2}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a66dad0ddea6ea9e534d2c3f3bb5d9958}{}\label{namespaceFVCode3D_a66dad0ddea6ea9e534d2c3f3bb5d9958}
+
+
+Overloading of operator$<$ between two Facet3D objects (needed by the set M\+\_\+facets) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f1} & The first facet to be tested \\
+\hline
+{\em f2} & The second facet to be tested \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE -\/$>$ f1 $<$ f2 F\+A\+L\+SE -\/$>$ f1 $>$= f2 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l01242}{1242} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a66dad0ddea6ea9e534d2c3f3bb5d9958_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$(std\+::ostream \&os, const Perm\+Ptr\+\_\+\+Type \&tensor)}{operator<<(std::ostream &os, const PermPtr_Type &tensor)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& F\+V\+Code3\+D\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const {\bf Perm\+Ptr\+\_\+\+Type} \&}]{tensor}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a2350a6eec9008d3b691e5ee6e4290914}{}\label{namespaceFVCode3D_a2350a6eec9008d3b691e5ee6e4290914}
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00044}{44} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$(std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ Permeability\+Scalar $>$ \&perm)}{operator<<(std::ostream &os, const std::shared_ptr< PermeabilityScalar > &perm)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& F\+V\+Code3\+D\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Scalar} $>$ \&}]{perm}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_afcbf0ace1266ac69b82a7154d94459a1}{}\label{namespaceFVCode3D_afcbf0ace1266ac69b82a7154d94459a1}
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00088}{88} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$(std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ Permeability\+Diagonal $>$ \&perm)}{operator<<(std::ostream &os, const std::shared_ptr< PermeabilityDiagonal > &perm)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& F\+V\+Code3\+D\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Diagonal} $>$ \&}]{perm}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_aa140a41198afe73b0908519f8900cc84}{}\label{namespaceFVCode3D_aa140a41198afe73b0908519f8900cc84}
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00144}{144} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$(std\+::ostream \&os, const Point3\+D \&p)}{operator<<(std::ostream &os, const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& F\+V\+Code3\+D\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a8884bc6475f7b278d2926ce82950a597}{}\label{namespaceFVCode3D_a8884bc6475f7b278d2926ce82950a597}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00219}{219} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$(std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ Permeability\+Sym\+Tensor $>$ \&perm)}{operator<<(std::ostream &os, const std::shared_ptr< PermeabilitySymTensor > &perm)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& F\+V\+Code3\+D\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Sym\+Tensor} $>$ \&}]{perm}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_aee190d20e7d59a358f6e3c5738473728}{}\label{namespaceFVCode3D_aee190d20e7d59a358f6e3c5738473728}
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00240}{240} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$(std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ Permeability\+Full\+Tensor $>$ \&perm)}{operator<<(std::ostream &os, const std::shared_ptr< PermeabilityFullTensor > &perm)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& F\+V\+Code3\+D\+::operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Full\+Tensor} $>$ \&}]{perm}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a453d7ae598d14867fe6f43774e38f8e0}{}\label{namespaceFVCode3D_a453d7ae598d14867fe6f43774e38f8e0}
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00336}{336} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!rotate\+Of@{rotate\+Of}}
+\index{rotate\+Of@{rotate\+Of}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{rotate\+Of(const Point3\+D \&p, const Real angle\+Deg)}{rotateOf(const Point3D &p, const Real angleDeg)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::rotate\+Of (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p, }
+\item[{const {\bf Real}}]{angle\+Deg}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da}{}\label{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da}
+
+
+Rotate a point of an angle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & point to rotate \\
+\hline
+{\em angle\+Deg} & angle of rotation (in Degrees) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the rotated point 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Operations_8cpp_source_l00019}{19} of file \hyperlink{Operations_8cpp_source}{Operations.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!save\+As\+Medit\+Format@{save\+As\+Medit\+Format}}
+\index{save\+As\+Medit\+Format@{save\+As\+Medit\+Format}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{save\+As\+Medit\+Format(const std\+::string filename, Mesh3\+D \&mesh)}{saveAsMeditFormat(const std::string filename, Mesh3D &mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::save\+As\+Medit\+Format (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename, }
+\item[{{\bf Mesh3D} \&}]{mesh}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{namespaceFVCode3D_a309feff3c4ef28a971e23350d895579c}{}\label{namespaceFVCode3D_a309feff3c4ef28a971e23350d895579c}
+
+
+Save a file in Medit format (.mesh) 
+
+Save mesh and fractures(as a suitable label). 
+\begin{DoxyParams}{Parameters}
+{\em filename} & name of the file \\
+\hline
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+import the file 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Converter_8cpp_source_l00153}{153} of file \hyperlink{Converter_8cpp_source}{Converter.\+cpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!save\+As\+Open\+F\+O\+A\+M\+Format@{save\+As\+Open\+F\+O\+A\+M\+Format}}
+\index{save\+As\+Open\+F\+O\+A\+M\+Format@{save\+As\+Open\+F\+O\+A\+M\+Format}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{save\+As\+Open\+F\+O\+A\+M\+Format(const std\+::string filename, Mesh3\+D \&mesh)}{saveAsOpenFOAMFormat(const std::string filename, Mesh3D &mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::save\+As\+Open\+F\+O\+A\+M\+Format (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename, }
+\item[{{\bf Mesh3D} \&}]{mesh}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126}{}\label{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126}
+
+
+Save a file in Open\+F\+O\+AM format (poly\+Mesh) 
+
+Save mesh and fractures(as a suitable label). 
+\begin{DoxyParams}{Parameters}
+{\em filename} & name of the file \\
+\hline
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+import the file 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Converter_8cpp_source_l00229}{229} of file \hyperlink{Converter_8cpp_source}{Converter.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!save\+As\+Solver\+Format@{save\+As\+Solver\+Format}}
+\index{save\+As\+Solver\+Format@{save\+As\+Solver\+Format}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{save\+As\+Solver\+Format(const std\+::string filename, Mesh3\+D \&mesh, Properties\+Map \&properties)}{saveAsSolverFormat(const std::string filename, Mesh3D &mesh, PropertiesMap &properties)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::save\+As\+Solver\+Format (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename, }
+\item[{{\bf Mesh3D} \&}]{mesh, }
+\item[{{\bf Properties\+Map} \&}]{properties}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb}{}\label{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb}
+
+
+Save a file in solver format (.fvg) 
+
+Save mesh, properties and fractures. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & name of the file \\
+\hline
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em properties} & reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondition}
+import the file 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Converter_8cpp_source_l00014}{14} of file \hyperlink{Converter_8cpp_source}{Converter.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!sparse\+Block@{sparse\+Block}}
+\index{sparse\+Block@{sparse\+Block}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{sparse\+Block(\+Sp\+Mat \+\_\+matrix, U\+Int \+\_\+ibegin, U\+Int \+\_\+jbegin, U\+Int \+\_\+icount, U\+Int \+\_\+jcount)}{sparseBlock(SpMat _matrix, UInt _ibegin, UInt _jbegin, UInt _icount, UInt _jcount)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat} F\+V\+Code3\+D\+::sparse\+Block (
+\begin{DoxyParamCaption}
+\item[{{\bf Sp\+Mat}}]{\+\_\+matrix, }
+\item[{{\bf U\+Int}}]{\+\_\+ibegin, }
+\item[{{\bf U\+Int}}]{\+\_\+jbegin, }
+\item[{{\bf U\+Int}}]{\+\_\+icount, }
+\item[{{\bf U\+Int}}]{\+\_\+jcount}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a50584b1c52af8d3b79fe5b0bcc18b2e1}{}\label{namespaceFVCode3D_a50584b1c52af8d3b79fe5b0bcc18b2e1}
+
+
+Extract a block from a Sp\+Mat. 
+
+Only for Col\+Major Sparse Matrix 
+
+Definition at line \hyperlink{SparseBlock_8cpp_source_l00006}{6} of file \hyperlink{SparseBlock_8cpp_source}{Sparse\+Block.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=300pt]{namespaceFVCode3D_a50584b1c52af8d3b79fe5b0bcc18b2e1_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a50584b1c52af8d3b79fe5b0bcc18b2e1_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!sparse\+Bottom\+Left\+Block@{sparse\+Bottom\+Left\+Block}}
+\index{sparse\+Bottom\+Left\+Block@{sparse\+Bottom\+Left\+Block}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{sparse\+Bottom\+Left\+Block(\+Sp\+Mat \+\_\+matrix, U\+Int \+\_\+icount, U\+Int \+\_\+jcount)}{sparseBottomLeftBlock(SpMat _matrix, UInt _icount, UInt _jcount)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat} F\+V\+Code3\+D\+::sparse\+Bottom\+Left\+Block (
+\begin{DoxyParamCaption}
+\item[{{\bf Sp\+Mat}}]{\+\_\+matrix, }
+\item[{{\bf U\+Int}}]{\+\_\+icount, }
+\item[{{\bf U\+Int}}]{\+\_\+jcount}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a2b06bf4215f4ce6cbd1a940fbd2ef6e6}{}\label{namespaceFVCode3D_a2b06bf4215f4ce6cbd1a940fbd2ef6e6}
+
+
+Extract the bottom left block of a Sparse Matrix. 
+
+
+
+Definition at line \hyperlink{SparseBlock_8cpp_source_l00053}{53} of file \hyperlink{SparseBlock_8cpp_source}{Sparse\+Block.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a2b06bf4215f4ce6cbd1a940fbd2ef6e6_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!sparse\+Bottom\+Right\+Block@{sparse\+Bottom\+Right\+Block}}
+\index{sparse\+Bottom\+Right\+Block@{sparse\+Bottom\+Right\+Block}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{sparse\+Bottom\+Right\+Block(\+Sp\+Mat \+\_\+matrix, U\+Int \+\_\+icount, U\+Int \+\_\+jcount)}{sparseBottomRightBlock(SpMat _matrix, UInt _icount, UInt _jcount)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat} F\+V\+Code3\+D\+::sparse\+Bottom\+Right\+Block (
+\begin{DoxyParamCaption}
+\item[{{\bf Sp\+Mat}}]{\+\_\+matrix, }
+\item[{{\bf U\+Int}}]{\+\_\+icount, }
+\item[{{\bf U\+Int}}]{\+\_\+jcount}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a2468aefbc3231765755c7316f146bc3d}{}\label{namespaceFVCode3D_a2468aefbc3231765755c7316f146bc3d}
+
+
+Extract the bottom right block of a Sparse Matrix. 
+
+
+
+Definition at line \hyperlink{SparseBlock_8cpp_source_l00058}{58} of file \hyperlink{SparseBlock_8cpp_source}{Sparse\+Block.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a2468aefbc3231765755c7316f146bc3d_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!sparse\+Top\+Left\+Block@{sparse\+Top\+Left\+Block}}
+\index{sparse\+Top\+Left\+Block@{sparse\+Top\+Left\+Block}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{sparse\+Top\+Left\+Block(\+Sp\+Mat \+\_\+matrix, U\+Int \+\_\+icount, U\+Int \+\_\+jcount)}{sparseTopLeftBlock(SpMat _matrix, UInt _icount, UInt _jcount)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat} F\+V\+Code3\+D\+::sparse\+Top\+Left\+Block (
+\begin{DoxyParamCaption}
+\item[{{\bf Sp\+Mat}}]{\+\_\+matrix, }
+\item[{{\bf U\+Int}}]{\+\_\+icount, }
+\item[{{\bf U\+Int}}]{\+\_\+jcount}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a13bcca787028985b3fdbca71334eb63f}{}\label{namespaceFVCode3D_a13bcca787028985b3fdbca71334eb63f}
+
+
+Extract the top left block of a Sparse Matrix. 
+
+
+
+Definition at line \hyperlink{SparseBlock_8cpp_source_l00043}{43} of file \hyperlink{SparseBlock_8cpp_source}{Sparse\+Block.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a13bcca787028985b3fdbca71334eb63f_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!sparse\+Top\+Right\+Block@{sparse\+Top\+Right\+Block}}
+\index{sparse\+Top\+Right\+Block@{sparse\+Top\+Right\+Block}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{sparse\+Top\+Right\+Block(\+Sp\+Mat \+\_\+matrix, U\+Int \+\_\+icount, U\+Int \+\_\+jcount)}{sparseTopRightBlock(SpMat _matrix, UInt _icount, UInt _jcount)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat} F\+V\+Code3\+D\+::sparse\+Top\+Right\+Block (
+\begin{DoxyParamCaption}
+\item[{{\bf Sp\+Mat}}]{\+\_\+matrix, }
+\item[{{\bf U\+Int}}]{\+\_\+icount, }
+\item[{{\bf U\+Int}}]{\+\_\+jcount}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a4e9be96975d446ebb5e3acd53150bbbb}{}\label{namespaceFVCode3D_a4e9be96975d446ebb5e3acd53150bbbb}
+
+
+Extract the top right block of a Sparse Matrix. 
+
+
+
+Definition at line \hyperlink{SparseBlock_8cpp_source_l00048}{48} of file \hyperlink{SparseBlock_8cpp_source}{Sparse\+Block.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a4e9be96975d446ebb5e3acd53150bbbb_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!tetrahedron\+Volume@{tetrahedron\+Volume}}
+\index{tetrahedron\+Volume@{tetrahedron\+Volume}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{tetrahedron\+Volume(const std\+::vector$<$ Point3\+D $>$ \&nodes)}{tetrahedronVolume(const std::vector< Point3D > &nodes)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::tetrahedron\+Volume (
+\begin{DoxyParamCaption}
+\item[{const std\+::vector$<$ {\bf Point3D} $>$ \&}]{nodes}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221}{}\label{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221}
+
+
+Compute the volume of a tetrahedron. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nodes} & vector of points that define the tetrahedron \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+unsigned volume of the tetrahedron 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Operations_8cpp_source_l00042}{42} of file \hyperlink{Operations_8cpp_source}{Operations.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!tokenize@{tokenize}}
+\index{tokenize@{tokenize}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{tokenize(const std\+::string \&s, std\+::vector$<$ std\+::string $>$ \&tokens, char delim= \textquotesingle{} \textquotesingle{})}{tokenize(const std::string &s, std::vector< std::string > &tokens, char delim= ' ')}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::tokenize (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{s, }
+\item[{std\+::vector$<$ std\+::string $>$ \&}]{tokens, }
+\item[{char}]{delim = {\ttfamily \textquotesingle{}~\textquotesingle{}}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{namespaceFVCode3D_a7bd098182831904c8fcd227b9d0f4562}{}\label{namespaceFVCode3D_a7bd098182831904c8fcd227b9d0f4562}
+
+
+Splits a string into tokes. 
+
+\begin{DoxyWarning}{Warning}
+empty tokens are skipped 
+\end{DoxyWarning}
+
+\begin{DoxyParams}[1]{Parameters}
+ & {\em s} & input string \\
+\hline
+\mbox{\tt out}  & {\em tokens} & tokens read from the string \\
+\hline
+ & {\em delim} & character separating tokens \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{StringManipolator_8hpp_source_l00045}{45} of file \hyperlink{StringManipolator_8hpp_source}{String\+Manipolator.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!to\+Upper@{to\+Upper}}
+\index{to\+Upper@{to\+Upper}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{to\+Upper(const std\+::string \&\+\_\+string)}{toUpper(const std::string &_string)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string F\+V\+Code3\+D\+::to\+Upper (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{\+\_\+string}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59}{}\label{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59}
+
+
+Convert a string to its upper case version. 
+
+
+
+Definition at line \hyperlink{StringManipolator_8hpp_source_l00031}{31} of file \hyperlink{StringManipolator_8hpp_source}{String\+Manipolator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_aab0ceb729c2ff3e7fd288097aee76a59_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!triangle\+Area@{triangle\+Area}}
+\index{triangle\+Area@{triangle\+Area}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{triangle\+Area(const Point3\+D \&\+A, const Point3\+D \&\+B, const Point3\+D \&\+C)}{triangleArea(const Point3D &A, const Point3D &B, const Point3D &C)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::triangle\+Area (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{A, }
+\item[{const {\bf Point3D} \&}]{B, }
+\item[{const {\bf Point3D} \&}]{C}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9}{}\label{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9}
+
+
+Compute the area of a triangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & first point of the triangle \\
+\hline
+{\em B} & second point of the triangle \\
+\hline
+{\em C} & third point of the triangle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+unsigned area of the triangle 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Operations_8cpp_source_l00032}{32} of file \hyperlink{Operations_8cpp_source}{Operations.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!triangle\+Centroid@{triangle\+Centroid}}
+\index{triangle\+Centroid@{triangle\+Centroid}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{triangle\+Centroid(const Point3\+D \&\+A, const Point3\+D \&\+B, const Point3\+D \&\+C)}{triangleCentroid(const Point3D &A, const Point3D &B, const Point3D &C)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::triangle\+Centroid (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{A, }
+\item[{const {\bf Point3D} \&}]{B, }
+\item[{const {\bf Point3D} \&}]{C}
+\end{DoxyParamCaption}
+)}\hypertarget{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad}{}\label{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad}
+
+
+Compute the centroid of a triangle. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & first point of the triangle \\
+\hline
+{\em B} & second point of the triangle \\
+\hline
+{\em C} & third point of the triangle \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the centroid of the triangle 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Operations_8cpp_source_l00037}{37} of file \hyperlink{Operations_8cpp_source}{Operations.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Variable Documentation}
+\index{F\+V\+Code3D@{F\+V\+Code3D}!\+\_\+\+P\+I\+\_\+@{\+\_\+\+P\+I\+\_\+}}
+\index{\+\_\+\+P\+I\+\_\+@{\+\_\+\+P\+I\+\_\+}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{\+\_\+\+P\+I\+\_\+}{_PI_}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Real} F\+V\+Code3\+D\+::\+\_\+\+P\+I\+\_\+ = std\+::atan(1)$\ast$4}\hypertarget{namespaceFVCode3D_a10917df7e49a48239ce5f00ec9bbfe0a}{}\label{namespaceFVCode3D_a10917df7e49a48239ce5f00ec9bbfe0a}
+
+
+PI. 
+
+
+
+Definition at line \hyperlink{BasicType_8hpp_source_l00057}{57} of file \hyperlink{BasicType_8hpp_source}{Basic\+Type.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!f\+Minus\+One@{f\+Minus\+One}}
+\index{f\+Minus\+One@{f\+Minus\+One}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{f\+Minus\+One}{fMinusOne}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::f\+Minus\+One = \mbox{[}$\,$\mbox{]}({\bf Point3D})\{ return -\/1.; \}}\hypertarget{namespaceFVCode3D_a2ce53aebcf9d64490c1d10fff4860a75}{}\label{namespaceFVCode3D_a2ce53aebcf9d64490c1d10fff4860a75}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00019}{19} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!f\+Minus\+Two@{f\+Minus\+Two}}
+\index{f\+Minus\+Two@{f\+Minus\+Two}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{f\+Minus\+Two}{fMinusTwo}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::f\+Minus\+Two = \mbox{[}$\,$\mbox{]}({\bf Point3D})\{ return -\/2.; \}}\hypertarget{namespaceFVCode3D_aafe19d9d844e6d7ec5cc316a921b91ea}{}\label{namespaceFVCode3D_aafe19d9d844e6d7ec5cc316a921b91ea}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00018}{18} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!f\+One@{f\+One}}
+\index{f\+One@{f\+One}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{f\+One}{fOne}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::f\+One = \mbox{[}$\,$\mbox{]}({\bf Point3D})\{ return 1.; \}}\hypertarget{namespaceFVCode3D_a1a9ede09c77441d292a079fbab60fb82}{}\label{namespaceFVCode3D_a1a9ede09c77441d292a079fbab60fb82}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00017}{17} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!f\+One\+Zero@{f\+One\+Zero}}
+\index{f\+One\+Zero@{f\+One\+Zero}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{f\+One\+Zero}{fOneZero}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::f\+One\+Zero = \mbox{[}$\,$\mbox{]}({\bf Point3D} p)\{ return (2. -\/ p.\+x()) / 2.; \}}\hypertarget{namespaceFVCode3D_a05f5ace5c7eed4784717659f36b087fe}{}\label{namespaceFVCode3D_a05f5ace5c7eed4784717659f36b087fe}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00020}{20} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!f\+Ten@{f\+Ten}}
+\index{f\+Ten@{f\+Ten}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{f\+Ten}{fTen}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::f\+Ten = \mbox{[}$\,$\mbox{]}({\bf Point3D})\{ return 10.; \}}\hypertarget{namespaceFVCode3D_ab998dd309f7a549b31ae669513c2039d}{}\label{namespaceFVCode3D_ab998dd309f7a549b31ae669513c2039d}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00021}{21} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!f\+Zero@{f\+Zero}}
+\index{f\+Zero@{f\+Zero}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{f\+Zero}{fZero}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::f\+Zero = \mbox{[}$\,$\mbox{]}({\bf Point3D})\{ return 0.; \}}\hypertarget{namespaceFVCode3D_a2e72cc81c6f214d6e057af7a02599501}{}\label{namespaceFVCode3D_a2e72cc81c6f214d6e057af7a02599501}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00016}{16} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Sink\+Grid2@{Sink\+Grid2}}
+\index{Sink\+Grid2@{Sink\+Grid2}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Sink\+Grid2}{SinkGrid2}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Sink\+Grid2}\hypertarget{namespaceFVCode3D_a312f262aefa197b219228571b49620be}{}\label{namespaceFVCode3D_a312f262aefa197b219228571b49620be}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} -1*( (
+                     (p.x()-3.15147e+07)*(p.x()-3.15147e+07) +
+                     (p.y()-1.6882e+07 )*(p.y()-1.6882e+07 ) +
+                     (p.z()+13355.1    )*(p.z()+13355.1    )
+                   ) <=1e6
+                 );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00033}{33} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Sink\+O\+Grid3@{Sink\+O\+Grid3}}
+\index{Sink\+O\+Grid3@{Sink\+O\+Grid3}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Sink\+O\+Grid3}{SinkOGrid3}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Sink\+O\+Grid3}\hypertarget{namespaceFVCode3D_a1d325cbbfbdf5832333e0a07e6095053}{}\label{namespaceFVCode3D_a1d325cbbfbdf5832333e0a07e6095053}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} -1*( (
+                     (p.x()-3.15185e7)*(p.x()-3.15185e7) +
+                     (p.y()-1.6874e7 )*(p.y()-1.6874e7 ) +
+                     (p.z()+1.635e4  )*(p.z()+1.635e4  )
+                  ) <=1e6
+                );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00086}{86} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Sink\+P\+Grid3@{Sink\+P\+Grid3}}
+\index{Sink\+P\+Grid3@{Sink\+P\+Grid3}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Sink\+P\+Grid3}{SinkPGrid3}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Sink\+P\+Grid3}\hypertarget{namespaceFVCode3D_a8e5a12e6a9e22baa4378e82fdfcc7613}{}\label{namespaceFVCode3D_a8e5a12e6a9e22baa4378e82fdfcc7613}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} -100*( (
+                     (p.x()-3.14986e+07)*(p.x()-3.14986e+07) +
+                     (p.y()-1.68939e+07)*(p.y()-1.68939e+07) +
+                     (p.z()+14041.5    )*(p.z()+14041.5    )
+                   ) <=5e4
+                 );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00067}{67} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Source\+Domain@{Source\+Domain}}
+\index{Source\+Domain@{Source\+Domain}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Source\+Domain}{SourceDomain}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Source\+Domain}\hypertarget{namespaceFVCode3D_ae98a1f1ab0fce8db57176a4a9f91b2d0}{}\label{namespaceFVCode3D_ae98a1f1ab0fce8db57176a4a9f91b2d0}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)\{\textcolor{keywordflow}{return} ((p.x() - 1.)*(p.x() - 1.) + (p.y() - 0.5)*(p.y() - 0.5) + (p.z() - 0.5)*(p.z()
+- 0.5)) < 1;\}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00012}{12} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Source\+Grid2@{Source\+Grid2}}
+\index{Source\+Grid2@{Source\+Grid2}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Source\+Grid2}{SourceGrid2}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Source\+Grid2}\hypertarget{namespaceFVCode3D_a271b4cbc8ec56bd2a3cb950b307aef18}{}\label{namespaceFVCode3D_a271b4cbc8ec56bd2a3cb950b307aef18}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} 1*( (
+                    (p.x()-3.15146e+07)*(p.x()-3.15146e+07) +
+                    (p.y()-1.68972e+07)*(p.y()-1.68972e+07) +
+                    (p.z()+13355.1    )*(p.z()+13355.1    )
+                  ) <=1e6
+                );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00024}{24} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Source\+O\+Grid3@{Source\+O\+Grid3}}
+\index{Source\+O\+Grid3@{Source\+O\+Grid3}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Source\+O\+Grid3}{SourceOGrid3}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Source\+O\+Grid3}\hypertarget{namespaceFVCode3D_ac7d83a03f6c58a7410364b917cf7ebc5}{}\label{namespaceFVCode3D_ac7d83a03f6c58a7410364b917cf7ebc5}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} 1*( (
+                    (p.x()-3.15185e7)*(p.x()-3.15185e7) +
+                    (p.y()-1.6913e7 )*(p.y()-1.6913e7 ) +
+                    (p.z()+1.80e4   )*(p.z()+1.80e4   )
+                 ) <=1e6
+               );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00077}{77} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!Source\+P\+Grid3@{Source\+P\+Grid3}}
+\index{Source\+P\+Grid3@{Source\+P\+Grid3}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{Source\+P\+Grid3}{SourcePGrid3}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+Source\+P\+Grid3}\hypertarget{namespaceFVCode3D_ae622d8dcaded68fd7f8d650f0a8d9f71}{}\label{namespaceFVCode3D_ae622d8dcaded68fd7f8d650f0a8d9f71}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} 100*( (
+                    (p.x()-3.15389e+07)*(p.x()-3.15389e+07) +
+                    (p.y()-1.68937e+07)*(p.y()-1.68937e+07) +
+                    (p.z()+14048.1    )*(p.z()+14048.1    )
+                  ) <=5e4
+                );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00058}{58} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!SS@{SS}}
+\index{SS@{SS}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{SS}{SS}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+SS = {\bf S\+S\+E\+D\+FM}}\hypertarget{namespaceFVCode3D_ae8b0f97f0774db9f0881cfc5f31d93f4}{}\label{namespaceFVCode3D_ae8b0f97f0774db9f0881cfc5f31d93f4}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00117}{117} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!S\+S\+E\+D\+FM@{S\+S\+E\+D\+FM}}
+\index{S\+S\+E\+D\+FM@{S\+S\+E\+D\+FM}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{S\+S\+E\+D\+FM}{SSEDFM}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+S\+S\+E\+D\+FM}\hypertarget{namespaceFVCode3D_a57e80824f085310d70ceed215314b9eb}{}\label{namespaceFVCode3D_a57e80824f085310d70ceed215314b9eb}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{ \textcolor{keywordflow}{return} 10. * ( p.x() <= 0.4 ); \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00111}{111} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!S\+S\+E\+D\+F\+M\+BC@{S\+S\+E\+D\+F\+M\+BC}}
+\index{S\+S\+E\+D\+F\+M\+BC@{S\+S\+E\+D\+F\+M\+BC}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{S\+S\+E\+D\+F\+M\+BC}{SSEDFMBC}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+S\+S\+E\+D\+F\+M\+BC}\hypertarget{namespaceFVCode3D_a84fa11f60a0d07f58d20dcd63837a333}{}\label{namespaceFVCode3D_a84fa11f60a0d07f58d20dcd63837a333}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{ \textcolor{keywordflow}{return} 2. * ( (p.x() >= 0.8) && (p.x() <= 1.2 ) ); \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00114}{114} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!S\+S\+Grid2@{S\+S\+Grid2}}
+\index{S\+S\+Grid2@{S\+S\+Grid2}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{S\+S\+Grid2}{SSGrid2}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+S\+S\+Grid2}\hypertarget{namespaceFVCode3D_a4072861e3dbbfcd9e80417b32c6991be}{}\label{namespaceFVCode3D_a4072861e3dbbfcd9e80417b32c6991be}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return}  1*( (
+                   (p.x()-3.15146e+07)*(p.x()-3.15146e+07) +
+                   (p.y()-1.68972e+07)*(p.y()-1.68972e+07) +
+                   (p.z()+13355.1    )*(p.z()+13355.1    )
+                 ) <=1e6
+               )
+            -1*( (
+                   (p.x()-3.15147e+07)*(p.x()-3.15147e+07) +
+                   (p.y()-1.6882e+07 )*(p.y()-1.6882e+07 ) +
+                   (p.z()+13355.1    )*(p.z()+13355.1    )
+                 ) <=1e6
+               );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00042}{42} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+
+\index{F\+V\+Code3D@{F\+V\+Code3D}!S\+S\+O\+Grid3@{S\+S\+O\+Grid3}}
+\index{S\+S\+O\+Grid3@{S\+S\+O\+Grid3}!F\+V\+Code3D@{F\+V\+Code3D}}
+\subsubsection[{\texorpdfstring{S\+S\+O\+Grid3}{SSOGrid3}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Func} F\+V\+Code3\+D\+::\+S\+S\+O\+Grid3}\hypertarget{namespaceFVCode3D_ad684cb0cef80af1bba8db353619ab1cf}{}\label{namespaceFVCode3D_ad684cb0cef80af1bba8db353619ab1cf}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [](Point3D p)
+    \{\textcolor{keywordflow}{return} 1*( (
+                    (p.x()-3.15185e7)*(p.x()-3.15185e7) +
+                    (p.y()-1.6913e7 )*(p.y()-1.6913e7 ) +
+                    (p.z()+1.80e4   )*(p.z()+1.80e4   )
+                 ) <=1e6
+               )
+            -1*( (
+                    (p.x()-3.15185e7)*(p.x()-3.15185e7) +
+                    (p.y()-1.6874e7 )*(p.y()-1.6874e7 ) +
+                    (p.z()+1.635e4  )*(p.z()+1.635e4  )
+                 ) <=1e6
+               );
+    \}
+\end{DoxyCode}
+
+
+Definition at line \hyperlink{functions_8hpp_source_l00095}{95} of file \hyperlink{functions_8hpp_source}{functions.\+hpp}.
+

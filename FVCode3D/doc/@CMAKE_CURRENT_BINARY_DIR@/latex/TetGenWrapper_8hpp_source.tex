@@ -1,0 +1,58 @@
+\hypertarget{TetGenWrapper_8hpp_source}{}\section{Tet\+Gen\+Wrapper.\+hpp}
+\label{TetGenWrapper_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Tet\+Gen\+Wrapper.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Tet\+Gen\+Wrapper.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef TETGENWRAPPER\_HPP\_}
+00007 \textcolor{preprocessor}{#define TETGENWRAPPER\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+00015 
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00020}{}\hyperlink{classFVCode3D_1_1TetGenWrapper}{00020} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1TetGenWrapper}{TetGenWrapper}
+00021 \{
+00022 \textcolor{keyword}{public}:
+00023 
+00025 
+00029     \hyperlink{classFVCode3D_1_1TetGenWrapper_ac89da37a0ce92c84ab8c74829031192e}{TetGenWrapper}(std::vector<Point3D> nodes, std::vector< std::vector<UInt> > faces);
+00030 
+00032     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97}{generateMesh}();
+00033 
+00035 
+00039     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1TetGenWrapper_a519cb27415baac338386403c46af7b08}{computeVolume}();
+00040 
+00042 
+00047     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1TetGenWrapper_ad3574fde5de1292dc9064d717a3ee353}{computeCenterOfMass}();
+00048 
+00050 
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00054}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_a5ac70d60ce38892615e0561b161c8401}{00054}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1TetGenWrapper_a5ac70d60ce38892615e0561b161c8401}{getVolume}()\textcolor{keyword}{ const}
+00055 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1TetGenWrapper_a820391e6d290e49db68b107fd5ab0e75}{M\_volume}; \}
+00056 
+00058 
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00062}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_a7e6a7df9467ab825a92f7cafae7934f4}{00062}     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1TetGenWrapper_a7e6a7df9467ab825a92f7cafae7934f4}{getCenterOfMass}()\textcolor{keyword}{ const}
+00063 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1TetGenWrapper_a4c2e389ea6cc0cec7c83b7e241976807}{M\_centerOfMass}; \}
+00064 
+00066 
+00070     \textcolor{keyword}{const} std::vector<Point3D> \hyperlink{classFVCode3D_1_1TetGenWrapper_aa078ba35c38e79cae708b7fd632ceac4}{getElement}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i) \textcolor{keyword}{const};
+00071 
+00073     \hyperlink{classFVCode3D_1_1TetGenWrapper_a899fb8723246a4c6684ad447a1e0608d}{~TetGenWrapper}() = \textcolor{keywordflow}{default};
+00074 
+00075 \textcolor{keyword}{private}:
+00076 
+00078     \hyperlink{classFVCode3D_1_1TetGenWrapper_ac89da37a0ce92c84ab8c74829031192e}{TetGenWrapper}() = \textcolor{keyword}{delete};
+00079 
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00081}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_ae0637911dffc55fc74b5414fc6e8e417}{00081}     std::vector<Point3D> \hyperlink{classFVCode3D_1_1TetGenWrapper_ae0637911dffc55fc74b5414fc6e8e417}{M\_inNodes};
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00083}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_ae883359645d72961078fe02a886df3be}{00083}     std::vector< std::vector<UInt> > \hyperlink{classFVCode3D_1_1TetGenWrapper_ae883359645d72961078fe02a886df3be}{M\_faces};
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00085}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_a04672b7a2b60730190e0e82af43ed38b}{00085}     std::vector<Point3D> \hyperlink{classFVCode3D_1_1TetGenWrapper_a04672b7a2b60730190e0e82af43ed38b}{M\_outNodes};
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00087}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_a016da330a68cb7cd44881dc26efed5b5}{00087}     std::vector< std::vector<UInt> > \hyperlink{classFVCode3D_1_1TetGenWrapper_a016da330a68cb7cd44881dc26efed5b5}{M\_elements};
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00089}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_a820391e6d290e49db68b107fd5ab0e75}{00089}     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1TetGenWrapper_a820391e6d290e49db68b107fd5ab0e75}{M\_volume};
+\hypertarget{TetGenWrapper_8hpp_source.tex_l00091}{}\hyperlink{classFVCode3D_1_1TetGenWrapper_a4c2e389ea6cc0cec7c83b7e241976807}{00091}     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1TetGenWrapper_a4c2e389ea6cc0cec7c83b7e241976807}{M\_centerOfMass};
+00092 \};
+00093 
+00094 \} \textcolor{comment}{// namespace FVCode3D}
+00095 
+00096 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* TETGENWRAPPER\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

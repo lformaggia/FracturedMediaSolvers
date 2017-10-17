@@ -1,0 +1,205 @@
+\hypertarget{local__operator_8cpp_source}{}\section{local\+\_\+operator.\+cpp}
+\label{local__operator_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/local\+\_\+operator.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/local\+\_\+operator.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <vector>}
+00007 \textcolor{preprocessor}{#include <cmath>}
+00008 \textcolor{preprocessor}{#include <\hyperlink{local__operator_8hpp}{FVCode3D/assembler/local\_operator.hpp}>}
+00009 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00010 \textcolor{preprocessor}{#include <Eigen/LU>}
+00011 \textcolor{preprocessor}{#include <unsupported/Eigen/SparseExtra>}
+00012 
+00013 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00014 \{
+00015         
+00016 constexpr \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1local__InnerProduct_af7c3e141a73231635abf5fdb7fe65fae}{local\_InnerProduct::gamma};
+00017 
+\hypertarget{local__operator_8cpp_source.tex_l00018}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a5e5ade44aeb3e5982cdbc20e7721e07a}{00018} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1local__InnerProduct_a5e5ade44aeb3e5982cdbc20e7721e07a}{local\_InnerProduct::assemble}()      
+00019 \{       
+00020         Eigen::Matrix<Real,Dynamic,3> Sp;                                   \textcolor{comment}{// I will take Np as the column
+       base of Sp}
+00021         Eigen::Matrix<Real,3,3> Kp;                                         \textcolor{comment}{// permability tensor}
+00022         
+00023         \textcolor{keyword}{auto} & K = \hyperlink{classFVCode3D_1_1local__MimeticOperator_aaedb6f563c6c3c28afadc1d3725b3f71}{pMesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_ab6e52fa6193e5db83fe7ccbb1c3737e8}{getPropertiesMap}().\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(
+      \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a0a3b017d1297cca8e4a5d5708b82ce40}{getZoneCode}()).M\_permeability;
+00024         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_adbfb39c41f1d6c6d96c77578eecbf766}{getFacetsIds}() );
+00025         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00026     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} cellMeasure    = \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a60b0f29d67c90d2f8718b15a76885894}{getVolume}();
+00027 
+00028         \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a2d86bd17fac84a6e521c8606cc8aeaaf}{getId}() % 500 == 0)
+00029                 std::cout<<\textcolor{stringliteral}{"Done "}<< \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a2d86bd17fac84a6e521c8606cc8aeaaf}{getId}() <<\textcolor{stringliteral}{" Cells"}<<std::endl;
+00030 
+00031     \textcolor{comment}{// Resize local matrices}
+00032     \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np}.resize(numCellFacets,Eigen::NoChange);
+00033         \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np}.setZero();
+00034     \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp}.resize(numCellFacets,Eigen::NoChange);
+00035         \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp}.setZero();
+00036         
+00037         Kp(0,0) = K->operator()(0,0);
+00038         Kp(0,1) = K->operator()(0,1);
+00039         Kp(0,2) = K->operator()(0,2);
+00040         Kp(1,0) = K->operator()(1,0);
+00041         Kp(1,1) = K->operator()(1,1);
+00042         Kp(1,2) = K->operator()(1,2);
+00043     Kp(2,0) = K->operator()(2,0);
+00044     Kp(2,1) = K->operator()(2,1);
+00045     Kp(2,2) = K->operator()(2,2);
+00046 
+00047         \textcolor{comment}{// Loop on facets to build Rp, Np}
+00048         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
+00049     \{
+00050                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00051         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = \hyperlink{classFVCode3D_1_1local__MimeticOperator_aaedb6f563c6c3c28afadc1d3725b3f71}{pMesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[globalFacetId];
+00052 
+00053                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} facetNormal     = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae8d74e38b74075a3ced8b1a229860120}{getUnsignedNormal}();
+00054         \hyperlink{classFVCode3D_1_1Point3D}{Point3D} g                     = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a0d4bcc392ef3da56ccdb40c22b6319e3}{getCentroid}() - 
+      \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_aede70ac8a525e2704476e9fd166420f3}{getCentroid}();
+00055                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure       = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a19b2922eb0458019c8f34b40f0517789}{area}();
+00056                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha              = \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a7ded24addbc6c535d7e3da6617e23c7c}{orientationFacet}(fac);
+00057             
+00058                 \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np}(localFacetId,0) = facetNormal[0];
+00059                 \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np}(localFacetId,1) = facetNormal[1];
+00060                 \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np}(localFacetId,2) = facetNormal[2];
+00061                 \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np} *= Kp;
+00062 
+00063                 g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0];          \textcolor{comment}{// set relative eps}
+00064                 g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1];          \textcolor{comment}{// set relative eps}
+00065                 g[2] = std::fabs(g[2]) < 1e-15 ? 0 : g[2];          \textcolor{comment}{// set relative eps}
+00066 
+00067                 \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp}(localFacetId,0) = alpha * g[0] * facetMeasure;
+00068                 \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp}(localFacetId,1) = alpha * g[1] * facetMeasure;
+00069                 \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp}(localFacetId,2) = alpha * g[2] * facetMeasure;
+00070         \}
+00071 
+00072         \textcolor{comment}{// Building the Mp matrix}
+00073         Sp = \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np}.fullPivLu().image(\hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np});   \textcolor{comment}{// Because otherwise NtN could be singular in the unlucky case
+       of 2 parallelel faces}
+00074 
+00075         Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
+00076         Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
+00077 
+00078         \hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{Mp0}.resize(numCellFacets,numCellFacets);
+00079         \hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{Mp0}.setZero();
+00080         \hyperlink{classFVCode3D_1_1local__InnerProduct_a6aa515dc796d733d582fc1a3c260bb4c}{Mp1}.resize(numCellFacets,numCellFacets);
+00081         \hyperlink{classFVCode3D_1_1local__InnerProduct_a6aa515dc796d733d582fc1a3c260bb4c}{Mp1}.setZero();
+00082         \hyperlink{classFVCode3D_1_1local__InnerProduct_a6d4624fe743827c6fa08d7977eafcb28}{Mp}.resize(numCellFacets,numCellFacets);
+00083         \hyperlink{classFVCode3D_1_1local__InnerProduct_a6d4624fe743827c6fa08d7977eafcb28}{Mp}.setZero();
+00084 
+00085         \hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{Mp0} = ( 1. / cellMeasure ) *
+00086                 ( \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp} * Kp.inverse() * \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp}.transpose() );
+00087         \hyperlink{classFVCode3D_1_1local__InnerProduct_a6aa515dc796d733d582fc1a3c260bb4c}{Mp1} = \hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{Mp0}.trace() * \hyperlink{classFVCode3D_1_1local__InnerProduct_af7c3e141a73231635abf5fdb7fe65fae}{gamma} / numCellFacets *
+00088                 ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
+00089                         NNtNiNt );
+00090 
+00091         \hyperlink{classFVCode3D_1_1local__InnerProduct_a6d4624fe743827c6fa08d7977eafcb28}{Mp}  = \hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{Mp0} + \hyperlink{classFVCode3D_1_1local__InnerProduct_a6aa515dc796d733d582fc1a3c260bb4c}{Mp1};
+00092 \}       
+00093 
+00094 
+\hypertarget{local__operator_8cpp_source.tex_l00095}{}\hyperlink{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86}{00095} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1local__Div_a36cda0a641aa6c4de76a3e5852436d86}{local\_Div::assemble}()
+00096 \{       
+00097         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_adbfb39c41f1d6c6d96c77578eecbf766}{getFacetsIds}() );
+00098         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00099 
+00100         \textcolor{keywordflow}{if}(\hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a2d86bd17fac84a6e521c8606cc8aeaaf}{getId}() % 500 == 0)
+00101                 std::cout<<\textcolor{stringliteral}{"Done "}<< \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a2d86bd17fac84a6e521c8606cc8aeaaf}{getId}() <<\textcolor{stringliteral}{" Cells"}<<std::endl;
+00102 
+00103         \textcolor{comment}{// Loop on facets to build Rp, Np}
+00104         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
+00105     \{
+00106                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00107         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = \hyperlink{classFVCode3D_1_1local__MimeticOperator_aaedb6f563c6c3c28afadc1d3725b3f71}{pMesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[globalFacetId];
+00108                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha              = \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_a7ded24addbc6c535d7e3da6617e23c7c}{orientationFacet}(fac);
+00109                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure       = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a19b2922eb0458019c8f34b40f0517789}{area}();
+00110 
+00111                 Bp.push\_back( - alpha * facetMeasure );    \textcolor{comment}{// The minus because I have changed the sign to
+       the conservation equation}
+00112         \}
+00113 \}
+00114 
+00115 
+\hypertarget{local__operator_8cpp_source.tex_l00116}{}\hyperlink{classFVCode3D_1_1local__builder_a4f57be493ef2a52f37a898855c3e4d66}{00116} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1local__builder_a4f57be493ef2a52f37a898855c3e4d66}{local\_builder::build}()
+00117 \{       
+00118         Eigen::Matrix<Real,Dynamic,Dynamic> Sp;                             \textcolor{comment}{// I will take Np as the column
+       base of Sp}
+00119         Eigen::Matrix<Real,3,3> Kp;                                         \textcolor{comment}{// permability tensor}
+00120         
+00121         \textcolor{keyword}{auto} & K = IP.pMesh.getPropertiesMap().getProperties( cel.getZoneCode() ).M\_permeability;
+00122         \textcolor{keyword}{const} std::vector<UInt> & cellFacetsId( cel.getFacetsIds() );
+00123         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} numCellFacets  = cellFacetsId.size();
+00124     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} cellMeasure    = cel.getVolume();
+00125 
+00126         \textcolor{keywordflow}{if}(cel.getId() % 500 == 0)
+00127                 std::cout<<\textcolor{stringliteral}{"Done "}<< cel.getId() <<\textcolor{stringliteral}{" Cells"}<<std::endl;
+00128 
+00129     \textcolor{comment}{// Resize local matrices}
+00130     IP.Np.resize(numCellFacets,Eigen::NoChange);
+00131         IP.Np.setZero();
+00132     IP.Rp.resize(numCellFacets,Eigen::NoChange);
+00133         IP.Rp.setZero();
+00134         
+00135         Kp(0,0) = K->operator()(0,0);
+00136         Kp(0,1) = K->operator()(0,1);
+00137         Kp(0,2) = K->operator()(0,2);
+00138         Kp(1,0) = K->operator()(1,0);
+00139         Kp(1,1) = K->operator()(1,1);
+00140         Kp(1,2) = K->operator()(1,2);
+00141     Kp(2,0) = K->operator()(2,0);
+00142     Kp(2,1) = K->operator()(2,1);
+00143     Kp(2,2) = K->operator()(2,2);
+00144 
+00145         \textcolor{comment}{// Loop on facets to build Rp, Np}
+00146         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
+00147     \{
+00148                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} globalFacetId = cellFacetsId[localFacetId];
+00149         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Rigid\_Mesh::Facet} & fac = IP.pMesh.getFacetsVector()[globalFacetId];
+00150 
+00151                 \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} facetNormal     = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_ae8d74e38b74075a3ced8b1a229860120}{getUnsignedNormal}();
+00152         \hyperlink{classFVCode3D_1_1Point3D}{Point3D} g                     = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a0d4bcc392ef3da56ccdb40c22b6319e3}{getCentroid}() - cel.getCentroid();
+00153                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} facetMeasure       = fac.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a19b2922eb0458019c8f34b40f0517789}{area}();
+00154                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} alpha              = cel.orientationFacet(fac);
+00155             
+00156                 IP.Np(localFacetId,0) = facetNormal[0];
+00157                 IP.Np(localFacetId,1) = facetNormal[1];
+00158                 IP.Np(localFacetId,2) = facetNormal[2];
+00159                 IP.Np *= Kp;
+00160 
+00161                 g[0] = std::fabs(g[0]) < 1e-15 ? 0 : g[0];          \textcolor{comment}{// set relative eps}
+00162                 g[1] = std::fabs(g[1]) < 1e-15 ? 0 : g[1];          \textcolor{comment}{// set relative eps}
+00163                 g[2] = std::fabs(g[2]) < 1e-15 ? 0 : g[2];          \textcolor{comment}{// set relative eps}
+00164 
+00165                 IP.Rp(localFacetId,0) = alpha * g[0] * facetMeasure;
+00166                 IP.Rp(localFacetId,1) = alpha * g[1] * facetMeasure;
+00167                 IP.Rp(localFacetId,2) = alpha * g[2] * facetMeasure;
+00168                 
+00169                 Div.Bp.push\_back( - alpha * facetMeasure );    \textcolor{comment}{// The minus because I have changed the sign
+       to the conservation equation}
+00170         \}
+00171 
+00172         \textcolor{comment}{// Building the Mp matrix}
+00173         Sp = IP.Np.fullPivLu().image(IP.Np);    \textcolor{comment}{// Because otherwise NtN could be singular in the unlucky
+       case of 2 parallelel faces}
+00174 
+00175         Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
+00176         Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
+00177 
+00178         IP.Mp0.resize(numCellFacets,numCellFacets);
+00179         IP.Mp0.setZero();
+00180         IP.Mp1.resize(numCellFacets,numCellFacets);
+00181         IP.Mp1.setZero();
+00182         IP.Mp.resize(numCellFacets,numCellFacets);
+00183         IP.Mp.setZero();
+00184         
+00185         IP.Mp0 = ( 1. / cellMeasure ) *
+00186                 ( IP.Rp * Kp.inverse() * IP.Rp.transpose() );
+00187         IP.Mp1 = IP.Mp0.trace() * IP.gamma / numCellFacets *
+00188                 ( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) -
+00189                         NNtNiNt );
+00190 
+00191         IP.Mp  = IP.Mp0 + IP.Mp1;
+00192 \}       
+00193 
+00194 \}
+\end{DoxyCode}

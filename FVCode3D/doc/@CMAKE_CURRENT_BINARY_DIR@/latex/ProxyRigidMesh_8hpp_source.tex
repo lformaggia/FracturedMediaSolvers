@@ -1,0 +1,116 @@
+\hypertarget{ProxyRigidMesh_8hpp_source}{}\section{Proxy\+Rigid\+Mesh.\+hpp}
+\label{ProxyRigidMesh_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Proxy\+Rigid\+Mesh.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Proxy\+Rigid\+Mesh.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef PROXY\_RIGID\_MESH\_HPP\_}
+00007 \textcolor{preprocessor}{#define PROXY\_RIGID\_MESH\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00011 
+00012 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00013 \{
+00014 
+00016 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00020}{}\hyperlink{classFVCode3D_1_1ProxyEdge}{00020} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1ProxyEdge}{ProxyEdge}
+00021 \{
+00022 \textcolor{keyword}{public}:
+00023 
+00025 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00029}{}\hyperlink{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}{00029}     \textcolor{keyword}{typedef} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\_Mesh::Edge} \hyperlink{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}{Edge};
+00030 
+00032     \hyperlink{classFVCode3D_1_1ProxyEdge_a217a71b435bee1599be7277a60c4ccfa}{ProxyEdge}() = \textcolor{keyword}{delete};
+00033 
+00035 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00038}{}\hyperlink{classFVCode3D_1_1ProxyEdge_ac176495583628bccf02fce0ac26a504d}{00038}     \hyperlink{classFVCode3D_1_1ProxyEdge_ac176495583628bccf02fce0ac26a504d}{ProxyEdge}(Edge & edge): \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\_edge}(edge) \{\}
+00039 
+00041     \hyperlink{classFVCode3D_1_1ProxyEdge_a2f14e6817570123336b38859b074f000}{~ProxyEdge}() = \textcolor{keywordflow}{default};
+00042 
+00044 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00047}{}\hyperlink{classFVCode3D_1_1ProxyEdge_a3a9c2a3242118e9aeddb179ba69e6c7d}{00047}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ProxyEdge_a3a9c2a3242118e9aeddb179ba69e6c7d}{setBorderEdge}(\textcolor{keywordtype}{bool} isBorder)
+00048         \{ \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\_edge}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_af97600008d97c4db6f57fba531d8cd5c}{M\_isBorderEdge} = isBorder; \}
+00049 
+00051 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00054}{}\hyperlink{classFVCode3D_1_1ProxyEdge_a54da497385654537b5e809d18df274cc}{00054}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ProxyEdge_a54da497385654537b5e809d18df274cc}{setTip}(\textcolor{keywordtype}{bool} isTip)
+00055         \{ \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\_edge}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge_a077a64a08f7be9e35735561a8e93a9ac}{M\_isTip} = isTip; \}
+00056 
+00057 \textcolor{keyword}{private}:
+00058 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00060}{}\hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{00060}     Edge & \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\_edge};
+00061 \};
+00062 
+00064 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00068}{}\hyperlink{classFVCode3D_1_1ProxyBorderEdge}{00068} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1ProxyBorderEdge}{ProxyBorderEdge}
+00069 \{
+00070 \textcolor{keyword}{public}:
+00071 
+00073 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00077}{}\hyperlink{classFVCode3D_1_1ProxyBorderEdge_a176560e18e23c914702256b4921d9c9c}{00077}     \textcolor{keyword}{typedef} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Rigid\_Mesh::Border\_Edge} \hyperlink{classFVCode3D_1_1ProxyBorderEdge_a176560e18e23c914702256b4921d9c9c}{Border\_Edge};
+00078 
+00080     \hyperlink{classFVCode3D_1_1ProxyBorderEdge}{ProxyBorderEdge}() = \textcolor{keyword}{delete};
+00081 
+00083 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00086}{}\hyperlink{classFVCode3D_1_1ProxyBorderEdge_a5bf60218b1fc235e91b9d806a6ed57c0}{00086}     \hyperlink{classFVCode3D_1_1ProxyBorderEdge_a5bf60218b1fc235e91b9d806a6ed57c0}{ProxyBorderEdge}(Border\_Edge & edge): \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\_edge}(edge) \{\}
+00087 
+00089     ~\hyperlink{classFVCode3D_1_1ProxyBorderEdge}{ProxyBorderEdge}() = \textcolor{keywordflow}{default};
+00090 
+00092 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00095}{}\hyperlink{classFVCode3D_1_1ProxyBorderEdge_a420dab713ecfee4145b45a08d2ad6a11}{00095}     std::set<UInt> & \hyperlink{classFVCode3D_1_1ProxyBorderEdge_a420dab713ecfee4145b45a08d2ad6a11}{getBorderIds}()
+00096         \{\textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\_edge}.M\_borderIds;\}
+00097 
+00098 \textcolor{keyword}{private}:
+00099 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00101}{}\hyperlink{classFVCode3D_1_1ProxyBorderEdge_ad4337ca6acca8e9535e61f899f2fe3f6}{00101}     Border\_Edge & \hyperlink{classFVCode3D_1_1ProxyBorderEdge_ad4337ca6acca8e9535e61f899f2fe3f6}{M\_edge};
+00102 \};
+00103 
+00105 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00109}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh}{00109} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1ProxyRigidMesh}{ProxyRigidMesh}
+00110 \{
+00111 \textcolor{keyword}{public}:
+00112 
+00114 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00118}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_a15817669a6e426610648e6b5c9df3773}{00118}     \textcolor{keyword}{typedef} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\_Mesh::Edge} \hyperlink{classFVCode3D_1_1ProxyRigidMesh_a15817669a6e426610648e6b5c9df3773}{Edge};
+00119 
+00121 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00125}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_ac258bca2012a705cb98f8b5038df0ced}{00125}     \textcolor{keyword}{typedef} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge}{Rigid\_Mesh::Border\_Tip\_Edge} 
+      \hyperlink{classFVCode3D_1_1ProxyRigidMesh_ac258bca2012a705cb98f8b5038df0ced}{Border\_Tip\_Edge};
+00126 
+00128 
+00129 
+00131     \hyperlink{classFVCode3D_1_1ProxyRigidMesh}{ProxyRigidMesh}() = \textcolor{keyword}{delete};
+00132 
+00134 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00137}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_a5140e02265f8ea4873979ebf93cd6f42}{00137}     \hyperlink{classFVCode3D_1_1ProxyRigidMesh_a5140e02265f8ea4873979ebf93cd6f42}{ProxyRigidMesh}(\hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh):M\_mesh(mesh)\{\}
+00138 
+00140     ~\hyperlink{classFVCode3D_1_1ProxyRigidMesh}{ProxyRigidMesh}() = \textcolor{keywordflow}{default};
+00141 
+00143 
+00145 
+00146 
+00148 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00151}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_aa4fb51128e9fad15a93814247dbd6e63}{00151}     std::vector<Edge> & \hyperlink{classFVCode3D_1_1ProxyRigidMesh_aa4fb51128e9fad15a93814247dbd6e63}{getEdgesVector} ()
+00152         \{ \textcolor{keywordflow}{return} M\_mesh.M\_edges; \}
+00153 
+00155 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00158}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_a8dc75dd40ce83562376bf54b8a7cb45c}{00158}     std::vector<Border\_Tip\_Edge> & \hyperlink{classFVCode3D_1_1ProxyRigidMesh_a8dc75dd40ce83562376bf54b8a7cb45c}{getBorderTipEdgesIdsVector} ()
+00159         \{ \textcolor{keywordflow}{return} M\_mesh.M\_borderTipEdges; \}
+00160 
+00162 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00166}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_a6dca9c84a22434e595a3f0f69346474d}{00166}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ProxyRigidMesh_a6dca9c84a22434e595a3f0f69346474d}{edgesBuilder}()
+00167         \{ M\_mesh.edgesBuilder(); \}
+00168 
+00170 
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00174}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_abe43d7d836af41c1b8cdc18cd07d9068}{00174}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ProxyRigidMesh_abe43d7d836af41c1b8cdc18cd07d9068}{edgesIdBuilder}()
+\hypertarget{ProxyRigidMesh_8hpp_source.tex_l00175}{}\hyperlink{classFVCode3D_1_1ProxyRigidMesh_a4f2b91a915de9b510d4897df2583bfe1}{00175}         \{ M\_mesh.edgesIdBuilder(); \};
+00176 
+00178 
+00179 \textcolor{keyword}{private}:
+00180 
+00182     \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & \hyperlink{classFVCode3D_1_1ProxyRigidMesh_a4f2b91a915de9b510d4897df2583bfe1}{M\_mesh};
+00183 \};
+00184 
+00185 \} \textcolor{comment}{// namespace FVCode3D}
+00186 
+00187 \textcolor{preprocessor}{#endif // PROXY\_RIGID\_MESH\_HPP\_}
+\end{DoxyCode}

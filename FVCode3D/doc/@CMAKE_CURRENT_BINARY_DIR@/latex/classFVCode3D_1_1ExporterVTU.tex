@@ -1,0 +1,911 @@
+\hypertarget{classFVCode3D_1_1ExporterVTU}{}\section{F\+V\+Code3D\+:\+:Exporter\+V\+TU Class Reference}
+\label{classFVCode3D_1_1ExporterVTU}\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+
+
+Class to export mesh, fractures, solution and properties in V\+TU format type.  
+
+
+
+
+{\ttfamily \#include $<$Export\+V\+T\+U.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Exporter\+V\+TU\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFVCode3D_1_1ExporterVTU__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Exporter\+V\+TU\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFVCode3D_1_1ExporterVTU__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ExporterVTU_a0e467b067b3cff3c1b563dda84794818}{Exporter\+V\+TU} ()=default
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a8e5eff8e388cf6de1bf1c1deca863ac7}{export\+Mesh} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the mesh (only cells) \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_ac043bd93a6a079f864bc1b76a21df6a2}{export\+Tetrahedral\+Mesh} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export a tetrahedral mesh (only cells) \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_abdb2e3f36907610720d698d9bfa9428d}{export\+Fractures} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the fracture facets. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a5af587a4d971f4d41caecbef3477211b}{export\+Mesh\+With\+Fractures} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the mesh, cells and fracture facets, in a single file. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a672c00cd380554714d09d5d9b0b56a24}{export\+Wireframe} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the wireframe. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e}{export\+Edges} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the edges. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a15e1d2e6940ac0a37bf3c4d0ee5dc4d5}{export\+Facets} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the facets. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_aef7601095b83f975d009f9cb68563ae4}{export\+Fracture\+Junctures} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the fracture junctures. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a95853064ccbdab9ab24b3aa6f67ff19c}{export\+Fracture\+Tips} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the fracture tips. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Vector\+Type $>$ }\\void \hyperlink{classFVCode3D_1_1ExporterVTU_abc88a5113c02b55942862ef39b30ec80}{export\+Solution\+On\+Fractures} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=\char`\"{}Pressure\char`\"{}) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the solution on cells and fracture facets in a single file. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Vector\+Type $>$ }\\void \hyperlink{classFVCode3D_1_1ExporterVTU_a476a1dd02bcba8c31f0d99c7106d0c21}{export\+Solution} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=\char`\"{}Pressure\char`\"{}) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the solution on cells and fracture facets in a single file. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Vector\+Type $>$ }\\void \hyperlink{classFVCode3D_1_1ExporterVTU_a2ebc29ace371341054f8780eba24d644}{export\+Solution\+On\+Fractures} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=\char`\"{}Pressure\char`\"{}) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the solution on fracture facets. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Vector\+Type $>$ }\\void \hyperlink{classFVCode3D_1_1ExporterVTU_a3dd6650210988750d8c057f68a0f016d}{export\+Solution\+On\+Facets} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=\char`\"{}Transmissibility\char`\"{}) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export a solution on facets. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Vector\+Type $>$ }\\void \hyperlink{classFVCode3D_1_1ExporterVTU_a8e6ee7a5a2bede11d9671d37e78651a4}{export\+Flux} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=\char`\"{}Flux\char`\"{}) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the solution on cells and fracture facets in a single file. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Vector\+Type $>$ }\\void \hyperlink{classFVCode3D_1_1ExporterVTU_a1bca940b11053faa1a928bf3b19709af}{export\+Flux\+On\+Fractures} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=\char`\"{}Flux\char`\"{}) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the solution on fracture facets. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}{export\+With\+Properties} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \&properties, const std\+::string filename, const \hyperlink{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{Flag16bit} properties\+Type, const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ $\ast$property=nullptr) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the a specific property on cells and fracture facets. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a0013b4e717db2c4719b00a5122f7b405}{export\+With\+Properties} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, const \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \&properties, const std\+::string filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export all properties defined on cells and fracture facets. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ExporterVTU_a2500450bb97bf68e5a6a5f035b2b775d}{export\+With\+Properties} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const std\+::string filename, const \hyperlink{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{Flag16bit} properties\+Type, const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ $\ast$property=nullptr) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the solution on fracture facets. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1ExporterVTU_a50483218cd7944d4b421156a1e534c32}{$\sim$\+Exporter\+V\+TU} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class to export mesh, fractures, solution and properties in V\+TU format type. 
+
+This class allows to export mesh, fractures, solution, and properties in V\+TU format. 
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00019}{19} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!Exporter\+V\+TU@{Exporter\+V\+TU}}
+\index{Exporter\+V\+TU@{Exporter\+V\+TU}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{Exporter\+V\+T\+U()=default}{ExporterVTU()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::\+Exporter\+V\+TU (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a0e467b067b3cff3c1b563dda84794818}{}\label{classFVCode3D_1_1ExporterVTU_a0e467b067b3cff3c1b563dda84794818}
+
+
+Constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!````~Exporter\+V\+TU@{$\sim$\+Exporter\+V\+TU}}
+\index{````~Exporter\+V\+TU@{$\sim$\+Exporter\+V\+TU}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{$\sim$\+Exporter\+V\+T\+U()=default}{~ExporterVTU()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::$\sim$\+Exporter\+V\+TU (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a50483218cd7944d4b421156a1e534c32}{}\label{classFVCode3D_1_1ExporterVTU_a50483218cd7944d4b421156a1e534c32}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Edges@{export\+Edges}}
+\index{export\+Edges@{export\+Edges}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Edges(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename) const }{exportEdges(const Rigid_Mesh &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Edges (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e}{}\label{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e}
+
+
+Export the edges. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_ae45f5362d7840934144052a30b364df9}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00638}{638} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Facets@{export\+Facets}}
+\index{export\+Facets@{export\+Facets}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Facets(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename) const }{exportFacets(const Rigid_Mesh &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Facets (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a15e1d2e6940ac0a37bf3c4d0ee5dc4d5}{}\label{classFVCode3D_1_1ExporterVTU_a15e1d2e6940ac0a37bf3c4d0ee5dc4d5}
+
+
+Export the facets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a4dfcb0e6cae851c226cb5aed441bb66c}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00772}{772} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a15e1d2e6940ac0a37bf3c4d0ee5dc4d5_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Flux@{export\+Flux}}
+\index{export\+Flux@{export\+Flux}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Flux(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=""Flux"") const }{exportFlux(const Rigid_Mesh &mesh, const std::string filename, const VectorType &sol, const std::string &fieldName="Flux") const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vector\+Type $>$ void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Flux (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const Vector\+Type \&}]{sol, }
+\item[{const std\+::string \&}]{field\+Name = {\ttfamily \char`\"{}Flux\char`\"{}}}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1ExporterVTU_a8e6ee7a5a2bede11d9671d37e78651a4}{}\label{classFVCode3D_1_1ExporterVTU_a8e6ee7a5a2bede11d9671d37e78651a4}
+
+
+Export the solution on cells and fracture facets in a single file. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Vector\+Type} & vector type (e.\+g., std\+::vector, Eigen\+::\+Vector ...) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & Eigen vector that contain the solution (cells + fracture facets) \\
+\hline
+{\em field\+Name} & name of the field that appears in the file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00640}{640} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a8e6ee7a5a2bede11d9671d37e78651a4_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a8e6ee7a5a2bede11d9671d37e78651a4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Flux\+On\+Fractures@{export\+Flux\+On\+Fractures}}
+\index{export\+Flux\+On\+Fractures@{export\+Flux\+On\+Fractures}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Flux\+On\+Fractures(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=""Flux"") const }{exportFluxOnFractures(const Rigid_Mesh &mesh, const std::string filename, const VectorType &sol, const std::string &fieldName="Flux") const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vector\+Type $>$ void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Flux\+On\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const Vector\+Type \&}]{sol, }
+\item[{const std\+::string \&}]{field\+Name = {\ttfamily \char`\"{}Flux\char`\"{}}}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1ExporterVTU_a1bca940b11053faa1a928bf3b19709af}{}\label{classFVCode3D_1_1ExporterVTU_a1bca940b11053faa1a928bf3b19709af}
+
+
+Export the solution on fracture facets. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Vector\+Type} & vector type (e.\+g., std\+::vector, Eigen\+::\+Vector ...) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & Eigen vector that contain the solution (cells + fracture facets) \\
+\hline
+{\em field\+Name} & name of the field that appears in the file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00763}{763} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a1bca940b11053faa1a928bf3b19709af_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a1bca940b11053faa1a928bf3b19709af_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Fracture\+Junctures@{export\+Fracture\+Junctures}}
+\index{export\+Fracture\+Junctures@{export\+Fracture\+Junctures}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Fracture\+Junctures(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename) const }{exportFractureJunctures(const Rigid_Mesh &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Fracture\+Junctures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_aef7601095b83f975d009f9cb68563ae4}{}\label{classFVCode3D_1_1ExporterVTU_aef7601095b83f975d009f9cb68563ae4}
+
+
+Export the fracture junctures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_ac905e24987d7b9d0b8e6aab739361bef}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00864}{864} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_aef7601095b83f975d009f9cb68563ae4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Fractures@{export\+Fractures}}
+\index{export\+Fractures@{export\+Fractures}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Fractures(const Mesh3\+D \&mesh, const std\+::string filename) const }{exportFractures(const Mesh3D &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_abdb2e3f36907610720d698d9bfa9428d}{}\label{classFVCode3D_1_1ExporterVTU_abdb2e3f36907610720d698d9bfa9428d}
+
+
+Export the fracture facets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a7378cba45e2de9095c262083690c0c50}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00210}{210} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_abdb2e3f36907610720d698d9bfa9428d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Fracture\+Tips@{export\+Fracture\+Tips}}
+\index{export\+Fracture\+Tips@{export\+Fracture\+Tips}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Fracture\+Tips(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename) const }{exportFractureTips(const Rigid_Mesh &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Fracture\+Tips (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a95853064ccbdab9ab24b3aa6f67ff19c}{}\label{classFVCode3D_1_1ExporterVTU_a95853064ccbdab9ab24b3aa6f67ff19c}
+
+
+Export the fracture tips. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a98c3d2800090caa7c7249ce802dd8792}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00955}{955} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a95853064ccbdab9ab24b3aa6f67ff19c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Mesh@{export\+Mesh}}
+\index{export\+Mesh@{export\+Mesh}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Mesh(const Mesh3\+D \&mesh, const std\+::string filename) const }{exportMesh(const Mesh3D &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Mesh (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a8e5eff8e388cf6de1bf1c1deca863ac7}{}\label{classFVCode3D_1_1ExporterVTU_a8e5eff8e388cf6de1bf1c1deca863ac7}
+
+
+Export the mesh (only cells) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_ae5b548e912eefe8cfb3abc5668811c96}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00017}{17} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a8e5eff8e388cf6de1bf1c1deca863ac7_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Mesh\+With\+Fractures@{export\+Mesh\+With\+Fractures}}
+\index{export\+Mesh\+With\+Fractures@{export\+Mesh\+With\+Fractures}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Mesh\+With\+Fractures(const Mesh3\+D \&mesh, const std\+::string filename) const }{exportMeshWithFractures(const Mesh3D &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Mesh\+With\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a5af587a4d971f4d41caecbef3477211b}{}\label{classFVCode3D_1_1ExporterVTU_a5af587a4d971f4d41caecbef3477211b}
+
+
+Export the mesh, cells and fracture facets, in a single file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a8e4f11391f7800efde28631155d8b584}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00311}{311} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=289pt]{classFVCode3D_1_1ExporterVTU_a5af587a4d971f4d41caecbef3477211b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Solution@{export\+Solution}}
+\index{export\+Solution@{export\+Solution}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Solution(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=""Pressure"") const }{exportSolution(const Rigid_Mesh &mesh, const std::string filename, const VectorType &sol, const std::string &fieldName="Pressure") const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vector\+Type $>$ void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Solution (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const Vector\+Type \&}]{sol, }
+\item[{const std\+::string \&}]{field\+Name = {\ttfamily \char`\"{}Pressure\char`\"{}}}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1ExporterVTU_a476a1dd02bcba8c31f0d99c7106d0c21}{}\label{classFVCode3D_1_1ExporterVTU_a476a1dd02bcba8c31f0d99c7106d0c21}
+
+
+Export the solution on cells and fracture facets in a single file. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Vector\+Type} & vector type (e.\+g., std\+::vector, Eigen\+::\+Vector ...) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & Eigen vector that contain the solution (cells + fracture facets) \\
+\hline
+{\em field\+Name} & name of the field that appears in the file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00287}{287} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a476a1dd02bcba8c31f0d99c7106d0c21_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a476a1dd02bcba8c31f0d99c7106d0c21_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Solution\+On\+Facets@{export\+Solution\+On\+Facets}}
+\index{export\+Solution\+On\+Facets@{export\+Solution\+On\+Facets}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Solution\+On\+Facets(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=""Transmissibility"") const }{exportSolutionOnFacets(const Rigid_Mesh &mesh, const std::string filename, const VectorType &sol, const std::string &fieldName="Transmissibility") const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vector\+Type $>$ void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Solution\+On\+Facets (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const Vector\+Type \&}]{sol, }
+\item[{const std\+::string \&}]{field\+Name = {\ttfamily \char`\"{}Transmissibility\char`\"{}}}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1ExporterVTU_a3dd6650210988750d8c057f68a0f016d}{}\label{classFVCode3D_1_1ExporterVTU_a3dd6650210988750d8c057f68a0f016d}
+
+
+Export a solution on facets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & a vector to be exported \\
+\hline
+{\em field\+Name} & name of the field that appears in the file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00537}{537} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a3dd6650210988750d8c057f68a0f016d_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Solution\+On\+Fractures@{export\+Solution\+On\+Fractures}}
+\index{export\+Solution\+On\+Fractures@{export\+Solution\+On\+Fractures}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Solution\+On\+Fractures(const Mesh3\+D \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=""Pressure"") const }{exportSolutionOnFractures(const Mesh3D &mesh, const std::string filename, const VectorType &sol, const std::string &fieldName="Pressure") const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vector\+Type $>$ void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Solution\+On\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const Vector\+Type \&}]{sol, }
+\item[{const std\+::string \&}]{field\+Name = {\ttfamily \char`\"{}Pressure\char`\"{}}}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1ExporterVTU_abc88a5113c02b55942862ef39b30ec80}{}\label{classFVCode3D_1_1ExporterVTU_abc88a5113c02b55942862ef39b30ec80}
+
+
+Export the solution on cells and fracture facets in a single file. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Vector\+Type} & vector type (e.\+g., std\+::vector, Eigen\+::\+Vector ...) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & Eigen vector that contain the solution (cells + fracture facets) \\
+\hline
+{\em field\+Name} & name of the field that appears in the file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00192}{192} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_abc88a5113c02b55942862ef39b30ec80_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Solution\+On\+Fractures@{export\+Solution\+On\+Fractures}}
+\index{export\+Solution\+On\+Fractures@{export\+Solution\+On\+Fractures}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Solution\+On\+Fractures(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename, const Vector\+Type \&sol, const std\+::string \&field\+Name=""Pressure"") const }{exportSolutionOnFractures(const Rigid_Mesh &mesh, const std::string filename, const VectorType &sol, const std::string &fieldName="Pressure") const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Vector\+Type $>$ void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Solution\+On\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const Vector\+Type \&}]{sol, }
+\item[{const std\+::string \&}]{field\+Name = {\ttfamily \char`\"{}Pressure\char`\"{}}}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1ExporterVTU_a2ebc29ace371341054f8780eba24d644}{}\label{classFVCode3D_1_1ExporterVTU_a2ebc29ace371341054f8780eba24d644}
+
+
+Export the solution on fracture facets. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Vector\+Type} & vector type (e.\+g., std\+::vector, Eigen\+::\+Vector ...) \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & Eigen vector that contain the solution (cells + fracture facets) \\
+\hline
+{\em field\+Name} & name of the field that appears in the file \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ExportVTU_8hpp_source_l00427}{427} of file \hyperlink{ExportVTU_8hpp_source}{Export\+V\+T\+U.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a2ebc29ace371341054f8780eba24d644_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Tetrahedral\+Mesh@{export\+Tetrahedral\+Mesh}}
+\index{export\+Tetrahedral\+Mesh@{export\+Tetrahedral\+Mesh}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Tetrahedral\+Mesh(const Mesh3\+D \&mesh, const std\+::string filename) const }{exportTetrahedralMesh(const Mesh3D &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Tetrahedral\+Mesh (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_ac043bd93a6a079f864bc1b76a21df6a2}{}\label{classFVCode3D_1_1ExporterVTU_ac043bd93a6a079f864bc1b76a21df6a2}
+
+
+Export a tetrahedral mesh (only cells) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a1a447304dbc2e9c6e3fd5c927c3b1811}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00127}{127} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_ac043bd93a6a079f864bc1b76a21df6a2_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+Wireframe@{export\+Wireframe}}
+\index{export\+Wireframe@{export\+Wireframe}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+Wireframe(const Mesh3\+D \&mesh, const std\+::string filename) const }{exportWireframe(const Mesh3D &mesh, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+Wireframe (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a672c00cd380554714d09d5d9b0b56a24}{}\label{classFVCode3D_1_1ExporterVTU_a672c00cd380554714d09d5d9b0b56a24}
+
+
+Export the wireframe. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a1ba47d531dc311a084698ac1a57bf929}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l00515}{515} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a672c00cd380554714d09d5d9b0b56a24_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+With\+Properties@{export\+With\+Properties}}
+\index{export\+With\+Properties@{export\+With\+Properties}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+With\+Properties(const Mesh3\+D \&mesh, const Properties\+Map \&properties, const std\+::string filename, const Flag16bit properties\+Type, const std\+::vector$<$ Real $>$ $\ast$property=nullptr) const }{exportWithProperties(const Mesh3D &mesh, const PropertiesMap &properties, const std::string filename, const Flag16bit propertiesType, const std::vector< Real > *property=nullptr) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+With\+Properties (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const {\bf Properties\+Map} \&}]{properties, }
+\item[{const std\+::string}]{filename, }
+\item[{const {\bf Flag16bit}}]{properties\+Type, }
+\item[{const std\+::vector$<$ {\bf Real} $>$ $\ast$}]{property = {\ttfamily nullptr}}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}{}\label{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}
+
+
+Export the a specific property on cells and fracture facets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em properties} & reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em properties\+Type} & flag used to select which properties to export \\
+\hline
+{\em property} & pointer to a generic property \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a8736cac571095709897065eb806f9d42}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l01046}{1046} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+With\+Properties@{export\+With\+Properties}}
+\index{export\+With\+Properties@{export\+With\+Properties}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+With\+Properties(const Mesh3\+D \&mesh, const Properties\+Map \&properties, const std\+::string filename) const }{exportWithProperties(const Mesh3D &mesh, const PropertiesMap &properties, const std::string filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+With\+Properties (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh, }
+\item[{const {\bf Properties\+Map} \&}]{properties, }
+\item[{const std\+::string}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a0013b4e717db2c4719b00a5122f7b405}{}\label{classFVCode3D_1_1ExporterVTU_a0013b4e717db2c4719b00a5122f7b405}
+
+
+Export all properties defined on cells and fracture facets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em properties} & reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a2435b0983607a3dc52ae3c0ad9e929a5}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l01377}{1377} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}!export\+With\+Properties@{export\+With\+Properties}}
+\index{export\+With\+Properties@{export\+With\+Properties}!F\+V\+Code3\+D\+::\+Exporter\+V\+TU@{F\+V\+Code3\+D\+::\+Exporter\+V\+TU}}
+\subsubsection[{\texorpdfstring{export\+With\+Properties(const Rigid\+\_\+\+Mesh \&mesh, const std\+::string filename, const Flag16bit properties\+Type, const std\+::vector$<$ Real $>$ $\ast$property=nullptr) const }{exportWithProperties(const Rigid_Mesh &mesh, const std::string filename, const Flag16bit propertiesType, const std::vector< Real > *property=nullptr) const }}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Exporter\+V\+T\+U\+::export\+With\+Properties (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const std\+::string}]{filename, }
+\item[{const {\bf Flag16bit}}]{properties\+Type, }
+\item[{const std\+::vector$<$ {\bf Real} $>$ $\ast$}]{property = {\ttfamily nullptr}}
+\end{DoxyParamCaption}
+) const throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ExporterVTU_a2500450bb97bf68e5a6a5f035b2b775d}{}\label{classFVCode3D_1_1ExporterVTU_a2500450bb97bf68e5a6a5f035b2b775d}
+
+
+Export the solution on fracture facets. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em filename} & name of the file \\
+\hline
+{\em sol} & Eigen vector that contain the solution (cells + fracture facets) \\
+\hline
+{\em property} & pointer to a generic property \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Exporter_a47ac0dde9bd0234e03116179eff94353}{F\+V\+Code3\+D\+::\+Exporter}.
+
+
+
+Definition at line \hyperlink{ExportVTU_8cpp_source_l01644}{1644} of file \hyperlink{ExportVTU_8cpp_source}{Export\+V\+T\+U.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ExporterVTU_a2500450bb97bf68e5a6a5f035b2b775d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/export/\hyperlink{ExportVTU_8hpp}{Export\+V\+T\+U.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/export/\hyperlink{ExportVTU_8cpp}{Export\+V\+T\+U.\+cpp}\end{DoxyCompactItemize}

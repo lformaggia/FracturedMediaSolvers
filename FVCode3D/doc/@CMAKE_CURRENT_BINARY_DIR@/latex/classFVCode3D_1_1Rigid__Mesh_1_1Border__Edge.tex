@@ -1,0 +1,209 @@
+\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{}\section{F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Border\+\_\+\+Edge Class Reference}
+\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+
+
+Class that represents a border edge.  
+
+
+
+
+{\ttfamily \#include $<$Rigid\+Mesh.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Border\+\_\+\+Edge\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Border\+\_\+\+Edge\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}{Border\+\_\+\+Edge} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} edge\+\_\+\+Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} given an edge id. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a4c84ed48d5ade111d258cad7e6a32d79}{Border\+\_\+\+Edge} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} \&border\+\_\+edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} given a border\+\_\+edge belonging to another \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a109336ed2689561dc49808d0e102b5ec}{Border\+\_\+\+Edge} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} \&e)
+\begin{DoxyCompactList}\small\item\em Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} given a border\+\_\+edge. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a932e4739138fd4e1d53f8ff7ba6d8e02}{$\sim$\+Border\+\_\+\+Edge} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const std\+::set$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \& \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_ae0c4fec80ff33ad9eb08dc5aee5213b1}{get\+Border\+Ids} () const 
+\begin{DoxyCompactList}\small\item\em Get border ids (const) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+friend \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a189ee28caab235105a5112a5d8fc9953}{Proxy\+Border\+Edge}
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::set$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}{M\+\_\+border\+Ids}
+\begin{DoxyCompactList}\small\item\em Ids of the represented borders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that represents a border edge. 
+
+This class is derived from the class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{Edge\+\_\+\+ID}. This class contains the id of an edge which belongs to the border of the domain. 
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00685}{685} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!Border\+\_\+\+Edge@{Border\+\_\+\+Edge}}
+\index{Border\+\_\+\+Edge@{Border\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Border\+\_\+\+Edge(const U\+Int edge\+\_\+\+Id, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Border_Edge(const UInt edge_Id, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::\+Border\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{edge\+\_\+\+Id, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25}
+
+
+Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} given an edge id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em edge\+\_\+id} & is the id of an \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Edge} of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em mesh} & is a pointer to the mesh to which the edge belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00705}{705} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a610aa0369df57087614115aa44bafc25_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!Border\+\_\+\+Edge@{Border\+\_\+\+Edge}}
+\index{Border\+\_\+\+Edge@{Border\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Border\+\_\+\+Edge(const Border\+\_\+\+Edge \&border\+\_\+edge, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Border_Edge(const Border_Edge &border_edge, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::\+Border\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+\item[{const {\bf Border\+\_\+\+Edge} \&}]{border\+\_\+edge, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a4c84ed48d5ade111d258cad7e6a32d79}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a4c84ed48d5ade111d258cad7e6a32d79}
+
+
+Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} given a border\+\_\+edge belonging to another \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em border\+\_\+edge} & reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} \\
+\hline
+{\em mesh} & is a pointer to the mesh to which the edge belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00715}{715} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!Border\+\_\+\+Edge@{Border\+\_\+\+Edge}}
+\index{Border\+\_\+\+Edge@{Border\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Border\+\_\+\+Edge(const Border\+\_\+\+Edge \&e)}{Border_Edge(const Border_Edge &e)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::\+Border\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+\item[{const {\bf Border\+\_\+\+Edge} \&}]{e}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a109336ed2689561dc49808d0e102b5ec}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a109336ed2689561dc49808d0e102b5ec}
+
+
+Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} given a border\+\_\+edge. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Border\+\_\+\+Edge} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00718}{718} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!````~Border\+\_\+\+Edge@{$\sim$\+Border\+\_\+\+Edge}}
+\index{````~Border\+\_\+\+Edge@{$\sim$\+Border\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{$\sim$\+Border\+\_\+\+Edge()=default}{~Border_Edge()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::$\sim$\+Border\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a932e4739138fd4e1d53f8ff7ba6d8e02}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a932e4739138fd4e1d53f8ff7ba6d8e02}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!get\+Border\+Ids@{get\+Border\+Ids}}
+\index{get\+Border\+Ids@{get\+Border\+Ids}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{get\+Border\+Ids() const }{getBorderIds() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::set$<${\bf U\+Int}$>$\& F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::get\+Border\+Ids (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_ae0c4fec80ff33ad9eb08dc5aee5213b1}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_ae0c4fec80ff33ad9eb08dc5aee5213b1}
+
+
+Get border ids (const) 
+
+\begin{DoxyReturn}{Returns}
+the ids of the represented border facets (inherited from the facets) 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00721}{721} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!M\+\_\+border\+Ids@{M\+\_\+border\+Ids}}
+\index{M\+\_\+border\+Ids@{M\+\_\+border\+Ids}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{M\+\_\+border\+Ids}{M_borderIds}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::set$<${\bf U\+Int}$>$ F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::\+M\+\_\+border\+Ids\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a2dae62d2ca3357296618f45f5a58e81e}
+
+
+Ids of the represented borders. 
+
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00729}{729} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}!Proxy\+Border\+Edge@{Proxy\+Border\+Edge}}
+\index{Proxy\+Border\+Edge@{Proxy\+Border\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Proxy\+Border\+Edge}{ProxyBorderEdge}}]{\setlength{\rightskip}{0pt plus 5cm}friend F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge\+::\+Proxy\+Border\+Edge}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a189ee28caab235105a5112a5d8fc9953}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge_a189ee28caab235105a5112a5d8fc9953}
+
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00725}{725} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8hpp}{Rigid\+Mesh.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8cpp}{Rigid\+Mesh.\+cpp}\end{DoxyCompactItemize}

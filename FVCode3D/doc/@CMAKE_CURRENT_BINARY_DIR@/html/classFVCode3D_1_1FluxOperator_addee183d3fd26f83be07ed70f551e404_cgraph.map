@@ -1,0 +1,10 @@
+<map id="FVCode3D::FluxOperator::ImposeBConFractures" name="FVCode3D::FluxOperator::ImposeBConFractures">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#a6d3cdd4ef8a5225599953179d5302636" title="Get facets vector (const) " alt="" coords="248,5,412,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#a12c92b683cfb3d9ac2645f038a8c6220" title="Get border tip edges ids vector (const) " alt="" coords="231,71,429,112"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1BoundaryConditions.html#a5b53a81bdab88709fae14892bfe6a7c9" title="Get BorderBC vector (const) " alt="" coords="224,136,436,177"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1Rigid__Mesh.html#afefb62f2c37317402b495e2369ed495b" title="Get cells vector (const) " alt="" coords="248,201,412,243"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1Rigid__Mesh.html#ab6e52fa6193e5db83fe7ccbb1c3737e8" title="Get the properties map (const) " alt="" coords="248,267,412,308"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1PropertiesMap.html#ace888d15c9a4ab13d5e217a3a565604c" title="Get the map of properties (const) " alt="" coords="241,332,419,373"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1PropertiesMap.html#a810ea62ca881e4db57acd601bcea23cf" title="Get the mobility of the fluid. " alt="" coords="241,397,419,439"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1BoundaryConditions.html#ae368974020ff21456d0fef9ef9d8006d" title="Set boundary condition from a vector of Border BC. " alt="" coords="484,136,696,177"/>
+</map>

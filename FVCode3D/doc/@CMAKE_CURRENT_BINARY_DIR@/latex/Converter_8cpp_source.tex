@@ -1,0 +1,653 @@
+\hypertarget{Converter_8cpp_source}{}\section{Converter.\+cpp}
+\label{Converter_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Converter.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Converter.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{Mesh3D_8hpp}{FVCode3D/mesh/Mesh3D.hpp}>}
+00007 \textcolor{preprocessor}{#include <\hyperlink{Properties_8hpp}{FVCode3D/property/Properties.hpp}>}
+00008 \textcolor{preprocessor}{#include <\hyperlink{Converter_8hpp}{FVCode3D/utility/Converter.hpp}>}
+00009 \textcolor{preprocessor}{#include <\hyperlink{Permeability_8hpp}{FVCode3D/property/Permeability.hpp}>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+\hypertarget{Converter_8cpp_source.tex_l00014}{}\hyperlink{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb}{00014} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb}{saveAsSolverFormat}(\textcolor{keyword}{const} std::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, 
+      \hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap} & properties) \textcolor{keywordflow}{throw}()
+00015 \{
+00016     std::fstream file;
+00017 
+00018     file.open (filename.c\_str(), std::ios\_base::out);
+00019 
+00020     \textcolor{keywordflow}{if} (file.is\_open())
+00021     \{
+00022         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00023     \}
+00024     \textcolor{keywordflow}{else}
+00025     \{
+00026         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00027         \textcolor{keywordflow}{return};
+00028     \}
+00029 
+00030     std::cout << std::endl << \textcolor{stringliteral}{" Save as solver format... "} << std::endl;
+00031 
+00032     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nNodes, nFacets, nCells, nFractures;
+00033     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nodesFacet, facetsCell, facetsFracture;
+00034     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, j;
+00035 
+00036     std::vector<Point3D> & nodesRef = mesh.getNodesVector();
+00037     std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+00038     std::map<UInt, Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+00039     \hyperlink{classFVCode3D_1_1FractureNetwork3D}{FractureNetwork3D} & FN = mesh.getFN();
+00040 
+00041     nNodes = nodesRef.\hyperlink{classFVCode3D_1_1FractureNetwork3D_ab5c6a79673390ecf2edd54232993054c}{size}();
+00042     nFacets = facetsRef.size();
+00043     nCells = cellsRef.size();
+00044     nFractures = FN.\hyperlink{classFVCode3D_1_1FractureNetwork3D_ab5c6a79673390ecf2edd54232993054c}{size}();
+00045 
+00046     file << std::scientific << std::setprecision(0);
+00047 
+00048     \textcolor{comment}{// Save header}
+00049     file << \textcolor{stringliteral}{"# Mesh3D SolverDataFile"} << std::endl << std::endl;
+00050 
+00051     \textcolor{comment}{// Save nodes}
+00052     file << \textcolor{stringliteral}{"POINTS"} << std::endl;
+00053     file << nNodes << std::endl;
+00054     file << std::scientific << std::setprecision(10);
+00055     \textcolor{keywordflow}{for}(i=0; i < nNodes; ++i)
+00056     \{
+00057         file << nodesRef[i].x() << \textcolor{stringliteral}{" "};
+00058         file << nodesRef[i].y() << \textcolor{stringliteral}{" "};
+00059         file << nodesRef[i].z() << std::endl;
+00060     \}
+00061     file << std::endl;
+00062     file << std::scientific << std::setprecision(0);
+00063 
+00064     \textcolor{comment}{// Save facets}
+00065     file << \textcolor{stringliteral}{"FACETS"} << std::endl;
+00066     file << nFacets << std::endl;
+00067     \textcolor{keywordflow}{for}(i=0; i < nFacets; ++i)
+00068     \{
+00069         file << std::scientific << std::setprecision(0);
+00070         nodesFacet = facetsRef[i].getNumberOfVertices();
+00071         file << nodesFacet << \textcolor{stringliteral}{" "};
+00072 
+00073         \textcolor{keywordflow}{for}(j=0; j < nodesFacet; ++j)
+00074             file << facetsRef[i].getVertexId(j) << \textcolor{stringliteral}{" "};
+00075 
+00076         file << facetsRef[i].getSeparatedCells().size() << \textcolor{stringliteral}{" "};
+00077         \textcolor{keywordflow}{for}(std::set<UInt>::const\_iterator it = facetsRef[i].getSeparatedCells().
+      \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{begin}(); it != facetsRef[i].getSeparatedCells().end(); ++it)
+00078             file << *it << \textcolor{stringliteral}{" "};
+00079 
+00080         file << facetsRef[i].getBorderId() << \textcolor{stringliteral}{" "};
+00081         file << facetsRef[i].isFracture() << \textcolor{stringliteral}{" "};
+00082 
+00083         file.unsetf(std::ios\_base::floatfield);
+00084         file << \textcolor{comment}{/*std::scientific <<*/} std::setprecision(10);
+00085         \textcolor{keywordflow}{if}(facetsRef[i].isFracture())
+00086         \{
+00087             file << properties.getProperties(facetsRef[i].getZoneCode()).M\_aperture << \textcolor{stringliteral}{" "};
+00088             file << properties.getProperties(facetsRef[i].getZoneCode()).M\_porosity;
+00089             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} row = 0; row < 3; ++row)
+00090             \{
+00091                 \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} col = 0; col < 3; ++col)
+00092                 \{
+00093                     \textcolor{keywordflow}{if}(col >= row)
+00094                     \{
+00095                         file << \textcolor{stringliteral}{" "}
+00096                              << properties.getProperties(facetsRef[i].getZoneCode()).M\_permeability->
+      operator()(row,col);
+00097                     \}
+00098                 \}
+00099             \}
+00100         \}
+00101         file << std::endl;
+00102     \}
+00103     file << std::endl;
+00104     file << std::scientific << std::setprecision(0);
+00105 
+00106     \textcolor{comment}{// Save cells}
+00107     file << \textcolor{stringliteral}{"CELLS"} << std::endl;
+00108     file << nCells << std::endl;
+00109     \textcolor{keywordflow}{for}(i=0; i < nCells; ++i)
+00110     \{
+00111         file << std::scientific << std::setprecision(0);
+00112         facetsCell = cellsRef[i].facetsNumber();
+00113         file << facetsCell << \textcolor{stringliteral}{" "};
+00114 
+00115         \textcolor{keywordflow}{for}(std::set<UInt>::const\_iterator it = cellsRef[i].getFacetsSet().\hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{begin}(); it != cellsRef[i].
+      getFacetsSet().end(); ++it)
+00116             file << *it << \textcolor{stringliteral}{" "};
+00117 
+00118         file.unsetf(std::ios\_base::floatfield);
+00119         file << \textcolor{comment}{/*std::scientific <<*/} std::setprecision(10);
+00120         file << properties.getProperties(cellsRef[i].getZoneCode()).M\_porosity;
+00121         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} row = 0; row < 3; ++row)
+00122         \{
+00123             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} col = 0; col < 3; ++col)
+00124             \{
+00125                 \textcolor{keywordflow}{if}(col >= row)
+00126                 \{
+00127                     file << \textcolor{stringliteral}{" "}
+00128                          << properties.getProperties(cellsRef[i].getZoneCode()).M\_permeability->operator()(
+      row,col);
+00129                 \}
+00130             \}
+00131         \}
+00132         file << std::endl;
+00133     \}
+00134     file << std::endl;
+00135     file << std::scientific << std::setprecision(0);
+00136 
+00137     \textcolor{comment}{// Save fracture network}
+00138     file << \textcolor{stringliteral}{"FRACTURE\_NETWORK"} << std::endl;
+00139     file << nFractures << std::endl;
+00140     \textcolor{keywordflow}{for}(i=0; i < nFractures; ++i)
+00141     \{
+00142         facetsFracture = FN.\hyperlink{classFVCode3D_1_1FractureNetwork3D_aef2f83259eaeb30eb24c6fdb3f3c0753}{getFracture}(i).\hyperlink{classFVCode3D_1_1Fracture3D_ad4591d70b2481c683707038ab0e870c9}{getNumberOfFractureFacets}();
+00143         file << facetsFracture << \textcolor{stringliteral}{" "};
+00144 
+00145         \textcolor{keywordflow}{for}(j=0; j < facetsFracture-1; ++j)
+00146             file << FN.\hyperlink{classFVCode3D_1_1FractureNetwork3D_aef2f83259eaeb30eb24c6fdb3f3c0753}{getFracture}(i).\hyperlink{classFVCode3D_1_1Fracture3D_af63aa07d454891f7edaa087ade1c2135}{getFractureFacetsId}()[j] << \textcolor{stringliteral}{" "};
+00147         file << FN.\hyperlink{classFVCode3D_1_1FractureNetwork3D_aef2f83259eaeb30eb24c6fdb3f3c0753}{getFracture}(i).\hyperlink{classFVCode3D_1_1Fracture3D_af63aa07d454891f7edaa087ade1c2135}{getFractureFacetsId}()[facetsFracture-1] << 
+      std::endl;
+00148     \}
+00149 
+00150     file.close();
+00151 \}
+00152 
+\hypertarget{Converter_8cpp_source.tex_l00153}{}\hyperlink{namespaceFVCode3D_a309feff3c4ef28a971e23350d895579c}{00153} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a309feff3c4ef28a971e23350d895579c}{saveAsMeditFormat}(\textcolor{keyword}{const} std::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh) \textcolor{keywordflow}{throw}()
+00154 \{
+00155     std::fstream file;
+00156 
+00157     file.open (filename.c\_str(), std::ios\_base::out);
+00158 
+00159     \textcolor{keywordflow}{if} (file.is\_open())
+00160     \{
+00161         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00162     \}
+00163     \textcolor{keywordflow}{else}
+00164     \{
+00165         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00166         \textcolor{keywordflow}{return};
+00167     \}
+00168 
+00169     std::cout << std::endl << \textcolor{stringliteral}{" Save as Medit format... "} << std::endl;
+00170 
+00171     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nNodes, nFacets, nCells;
+00172     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, zone;
+00173 
+00174     std::vector<Point3D> & nodesRef = mesh.getNodesVector();
+00175     std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+00176     std::map<UInt, Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+00177 
+00178     nNodes = nodesRef.size();
+00179     nFacets = facetsRef.size();
+00180     nCells = cellsRef.size();
+00181 
+00182     file << \textcolor{stringliteral}{"MeshVersionFormatted 1"} << std::endl;
+00183     file << std::endl;
+00184     file << \textcolor{stringliteral}{"Dimension"} << std::endl << \textcolor{stringliteral}{"3"} << std::endl;
+00185     file << std::endl;
+00186     file << \textcolor{stringliteral}{"Vertices"} << std::endl;
+00187     file << nNodes << std::endl;
+00188 
+00189     file << std::scientific << std::setprecision(10);
+00190 
+00191     \textcolor{keywordflow}{for}(i=0; i<nNodes; ++i)
+00192     \{
+00193         file << nodesRef[i].x() << \textcolor{stringliteral}{"  "};
+00194         file << nodesRef[i].y() << \textcolor{stringliteral}{"  "};
+00195         file << nodesRef[i].z() << \textcolor{stringliteral}{"  "};
+00196         file << \textcolor{stringliteral}{"0"} << std::endl;
+00197     \}
+00198 
+00199     file << std::scientific << std::setprecision(0);
+00200 
+00201     file << std::endl;
+00202     file << \textcolor{stringliteral}{"Triangles"} << std::endl;
+00203     file << nFacets << std::endl;
+00204     \textcolor{keywordflow}{for}(i=0; i<nFacets; ++i)
+00205     \{
+00206         file << facetsRef.at(i).getVerticesVector()[0] + 1 << \textcolor{stringliteral}{"  "};
+00207         file << facetsRef.at(i).getVerticesVector()[1] + 1 << \textcolor{stringliteral}{"  "};
+00208         file << facetsRef.at(i).getVerticesVector()[2] + 1 << \textcolor{stringliteral}{"  "};
+00209         zone = facetsRef.at(i).isBorderFacet() ? 1 : 0 ;
+00210         zone = facetsRef.at(i).isFracture() ? 1001 : zone ;
+00211         file << zone << std::endl;
+00212     \}
+00213 
+00214     file << std::endl;
+00215     file << \textcolor{stringliteral}{"Tetrahedra"} << std::endl;
+00216     file << nCells << std::endl;
+00217     \textcolor{keywordflow}{for}(i=0; i<nCells; ++i)
+00218     \{
+00219         file << cellsRef.at(i).getVerticesVector()[0] + 1 << \textcolor{stringliteral}{"  "};
+00220         file << cellsRef.at(i).getVerticesVector()[1] + 1 << \textcolor{stringliteral}{"  "};
+00221         file << cellsRef.at(i).getVerticesVector()[2] + 1 << \textcolor{stringliteral}{"  "};
+00222         file << cellsRef.at(i).getVerticesVector()[3] + 1 << \textcolor{stringliteral}{"  "};
+00223         file << \textcolor{stringliteral}{"0"} << std::endl;
+00224     \}
+00225 
+00226     file.close();
+00227 \}
+00228 
+\hypertarget{Converter_8cpp_source.tex_l00229}{}\hyperlink{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126}{00229} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126}{saveAsOpenFOAMFormat}(\textcolor{keyword}{const} std::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh) \textcolor{keywordflow}{throw}()
+00230 \{
+00231     std::fstream file;
+00232 
+00233     file.open ( (filename + \textcolor{stringliteral}{"points"}).c\_str(), std::ios\_base::out);
+00234 
+00235     \textcolor{keywordflow}{if} (file.is\_open())
+00236     \{
+00237         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << (filename + \textcolor{stringliteral}{"points"}) << \textcolor{stringliteral}{", successfully opened"};
+00238     \}
+00239     \textcolor{keywordflow}{else}
+00240     \{
+00241         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{"points"} + \textcolor{stringliteral}{" not opened."});
+00242         \textcolor{keywordflow}{return};
+00243     \}
+00244 
+00245     file.close();
+00246 
+00247     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nNodes, nFacets, nCells;
+00248     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nInternalFacets = 0;
+00249     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPatches = 0;
+00250     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} thresholdId = 0;
+00251     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} maxBorderId = 0;
+00252     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i, j, startPatch;
+00253 
+00254     std::vector<UInt> internalFacets;
+00255     std::vector<UInt> borderFacets;
+00256     std::vector<UInt> fractureFacets;
+00257     std::map< UInt, std::vector<UInt> > patchMap;
+00258     std::map< UInt, std::vector<UInt> >::iterator itP;
+00259     std::map< UInt, UInt > zoneToBorder;
+00260     std::map< UInt, UInt >::iterator itZ;
+00261 
+00262     std::vector<Point3D> & nodesRef = mesh.getNodesVector();
+00263     std::map<UInt, Mesh3D::Facet3D> & facetsRef = mesh.getFacetsMap();
+00264     std::map<UInt, Mesh3D::Cell3D> & cellsRef = mesh.getCellsMap();
+00265 
+00266     nNodes = nodesRef.size();
+00267     nFacets = facetsRef.size();
+00268     nCells = cellsRef.size();
+00269 
+00270     internalFacets.reserve(nFacets);
+00271     borderFacets.reserve(nFacets);
+00272     fractureFacets.reserve(nFacets);
+00273 
+00274     std::cout << std::endl << \textcolor{stringliteral}{" Save as polyMesh format... "} << std::endl;
+00275 
+00276     \textcolor{comment}{// write points}
+00277     file.open ( (filename + \textcolor{stringliteral}{"points"}).c\_str(), std::ios\_base::out);
+00278     file << \textcolor{stringliteral}{"/*--------------------------------*- C++ -*----------------------------------*\(\backslash\)\(\backslash\)"} << std::endl
+      ;
+00279     file << \textcolor{stringliteral}{"| =========                 |                                                 |"} << std::endl;
+00280     file << \textcolor{stringliteral}{"| \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |"} << 
+      std::endl;
+00281     file << \textcolor{stringliteral}{"|  \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)    /   O peration     | Version:  2.3.1                                 |"} << 
+      std::endl;
+00282     file << \textcolor{stringliteral}{"|   \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)  /    A nd           | Web:      www.OpenFOAM.org                      |"} << 
+      std::endl;
+00283     file << \textcolor{stringliteral}{"|    \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)/     M anipulation  |                                                 |"} << 
+      std::endl;
+00284     file << \textcolor{stringliteral}{"\(\backslash\)\(\backslash\)*---------------------------------------------------------------------------*/"} << std::endl
+      ;
+00285     file << \textcolor{stringliteral}{"FoamFile"} << std::endl;
+00286     file << \textcolor{stringliteral}{"\{"} << std::endl;
+00287     file << \textcolor{stringliteral}{"    version     2.0;"} << std::endl;
+00288     file << \textcolor{stringliteral}{"    format      ascii;"} << std::endl;
+00289     file << \textcolor{stringliteral}{"    class       vectorField;"} << std::endl;
+00290     file << \textcolor{stringliteral}{"    location    \(\backslash\)"constant/polyMesh\(\backslash\)";"} << std::endl; \textcolor{comment}{// need to be fixed?}
+00291     file << \textcolor{stringliteral}{"    object      points;"} << std::endl;
+00292     file << \textcolor{stringliteral}{"\}"} << std::endl;
+00293     file << \textcolor{stringliteral}{"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //"} << std::endl;
+00294     file << std::endl;
+00295 
+00296     file << nNodes << \textcolor{stringliteral}{"("} << std::endl;
+00297     file << std::scientific << std::setprecision(10);
+00298     \textcolor{keywordflow}{for}(i=0; i < nNodes; ++i)
+00299     \{
+00300         file << \textcolor{stringliteral}{"( "} << nodesRef[i].x() << \textcolor{stringliteral}{" "} << nodesRef[i].y() << \textcolor{stringliteral}{" "} << nodesRef[i].z() << \textcolor{stringliteral}{" )"} << 
+      std::endl;
+00301     \}
+00302     file << std::scientific << std::setprecision(0);
+00303     file << \textcolor{stringliteral}{")"} << std::endl;
+00304 
+00305     file << std::endl;
+00306     file << \textcolor{stringliteral}{"// ************************************************************************* //"} << std::endl;
+00307 
+00308     file.close();
+00309 
+00310     \textcolor{comment}{// write faces}
+00311     file.open ( (filename + \textcolor{stringliteral}{"faces"}).c\_str(), std::ios\_base::out);
+00312     file << \textcolor{stringliteral}{"/*--------------------------------*- C++ -*----------------------------------*\(\backslash\)\(\backslash\)"} << std::endl
+      ;
+00313     file << \textcolor{stringliteral}{"| =========                 |                                                 |"} << std::endl;
+00314     file << \textcolor{stringliteral}{"| \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |"} << 
+      std::endl;
+00315     file << \textcolor{stringliteral}{"|  \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)    /   O peration     | Version:  2.3.1                                 |"} << 
+      std::endl;
+00316     file << \textcolor{stringliteral}{"|   \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)  /    A nd           | Web:      www.OpenFOAM.org                      |"} << 
+      std::endl;
+00317     file << \textcolor{stringliteral}{"|    \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)/     M anipulation  |                                                 |"} << 
+      std::endl;
+00318     file << \textcolor{stringliteral}{"\(\backslash\)\(\backslash\)*---------------------------------------------------------------------------*/"} << std::endl
+      ;
+00319     file << \textcolor{stringliteral}{"FoamFile"} << std::endl;
+00320     file << \textcolor{stringliteral}{"\{"} << std::endl;
+00321     file << \textcolor{stringliteral}{"    version     2.0;"} << std::endl;
+00322     file << \textcolor{stringliteral}{"    format      ascii;"} << std::endl;
+00323     file << \textcolor{stringliteral}{"    class       faceList;"} << std::endl;
+00324     file << \textcolor{stringliteral}{"    location    \(\backslash\)"constant/polyMesh\(\backslash\)";"} << std::endl; \textcolor{comment}{// need to be fixed?}
+00325     file << \textcolor{stringliteral}{"    object      faces;"} << std::endl;
+00326     file << \textcolor{stringliteral}{"\}"} << std::endl;
+00327     file << \textcolor{stringliteral}{"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //"} << std::endl;
+00328     file << std::endl;
+00329 
+00330     \textcolor{keywordflow}{for}(i=0; i < nFacets; ++i)
+00331     \{
+00332         \textcolor{keyword}{const} \textcolor{keywordtype}{bool} isBorder = facetsRef[i].isBorderFacet();
+00333         \textcolor{keyword}{const} \textcolor{keywordtype}{bool} isFracture = facetsRef[i].isFracture();
+00334         \textcolor{keywordflow}{if} (
+00335              !(isBorder)
+00336                 &&
+00337              !(isFracture)
+00338            )
+00339         \{
+00340             internalFacets.emplace\_back(i);
+00341         \}
+00342         \textcolor{keywordflow}{else}
+00343         \{
+00344             \textcolor{keywordflow}{if}(isBorder)
+00345             \{
+00346                 borderFacets.emplace\_back(i);
+00347             \}
+00348             \textcolor{keywordflow}{else}
+00349             \{
+00350                 fractureFacets.emplace\_back(i);
+00351             \}
+00352         \}
+00353     \}
+00354 
+00355     nInternalFacets = internalFacets.size();
+00356 
+00357     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} i : borderFacets)
+00358     \{
+00359         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} borderId = facetsRef[i].getBorderId();
+00360         itP = patchMap.find(borderId);
+00361         \textcolor{keywordflow}{if} (itP != patchMap.end())
+00362         \{
+00363             itP->second.push\_back(i);
+00364         \}
+00365         \textcolor{keywordflow}{else}
+00366         \{
+00367             patchMap.emplace(std::piecewise\_construct, std::forward\_as\_tuple(borderId),
+00368                              std::forward\_as\_tuple(std::vector<UInt>()) );
+00369             patchMap[borderId].push\_back(i);
+00370             maxBorderId = (borderId > maxBorderId) ? borderId : maxBorderId;
+00371         \}
+00372     \}
+00373 
+00374     thresholdId = maxBorderId;
+00375 
+00376     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} i : fractureFacets)
+00377     \{
+00378         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} zone = facetsRef[i].getZoneCode();
+00379         \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} borderId;
+00380 
+00381         itZ = zoneToBorder.find(zone);
+00382         \textcolor{keywordflow}{if} (itZ != zoneToBorder.end())
+00383         \{
+00384             borderId = itZ->second;
+00385             patchMap[borderId].push\_back(i);
+00386         \}
+00387         \textcolor{keywordflow}{else}
+00388         \{
+00389             zoneToBorder.emplace(std::piecewise\_construct,
+00390                                  std::forward\_as\_tuple(zone),
+00391                                  std::forward\_as\_tuple(++maxBorderId)
+00392                                 );
+00393             borderId = maxBorderId;
+00394             patchMap.emplace(std::piecewise\_construct, std::forward\_as\_tuple(borderId),
+00395                              std::forward\_as\_tuple(std::vector<UInt>()) );
+00396             patchMap[borderId].push\_back(i);
+00397         \}
+00398         nFacets++;
+00399     \}
+00400 
+00401     nPatches = patchMap.size();
+00402 
+00403     file << nFacets << \textcolor{stringliteral}{"("} << std::endl;
+00404     \textcolor{keywordflow}{for}(i=0; i < nInternalFacets; ++i)
+00405     \{
+00406         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} index = internalFacets[i];
+00407         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nodesFacet = facetsRef[index].getNumberOfVertices();
+00408 
+00409         file << nodesFacet << \textcolor{stringliteral}{"( "};
+00410 
+00411         \textcolor{keywordflow}{for}(j=0; j < nodesFacet; ++j)
+00412         \{
+00413             file << facetsRef[index].getVertexId(j) << \textcolor{stringliteral}{" "};
+00414         \}
+00415 
+00416         file << \textcolor{stringliteral}{")"} << std::endl;
+00417     \}
+00418     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} & patch : patchMap)
+00419     \{
+00420         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} patchId = patch.first;
+00421         \textcolor{keyword}{const} std::vector<UInt> & patchFaces = patch.second;
+00422         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPatchFaces = patchFaces.size();
+00423 
+00424         \textcolor{keywordflow}{if} ( patchId <= thresholdId )
+00425         \{
+00426             \textcolor{keywordflow}{for}(i=0; i < nPatchFaces; ++i)
+00427             \{
+00428                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} index = patchFaces[i];
+00429                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nodesFacet = facetsRef[index].getNumberOfVertices();
+00430 
+00431                 file << nodesFacet << \textcolor{stringliteral}{"( "};
+00432 
+00433                 \textcolor{keywordflow}{for}(j=0; j < nodesFacet; ++j)
+00434                 \{
+00435                     file << facetsRef[index].getVertexId(j) << \textcolor{stringliteral}{" "};
+00436                 \}
+00437 
+00438                 file << \textcolor{stringliteral}{")"} << std::endl;
+00439             \}
+00440         \}
+00441         \textcolor{keywordflow}{else}
+00442         \{
+00443             \textcolor{keywordflow}{for}(i=0; i < nPatchFaces; ++i)
+00444             \{
+00445                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} index = patchFaces[i];
+00446                 \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nodesFacet = facetsRef[index].getNumberOfVertices();
+00447 
+00448                 file << nodesFacet << \textcolor{stringliteral}{"( "};
+00449 
+00450                 \textcolor{keywordflow}{for}(j=0; j < nodesFacet; ++j)
+00451                 \{
+00452                     file << facetsRef[index].getVertexId(j) << \textcolor{stringliteral}{" "};
+00453                 \}
+00454 
+00455                 file << \textcolor{stringliteral}{")"} << std::endl;
+00456 
+00457                 file << nodesFacet << \textcolor{stringliteral}{"( "};
+00458 
+00459                 \textcolor{keywordflow}{for}(j=0; j < nodesFacet; ++j)
+00460                 \{
+00461                     file << facetsRef[index].getVertexId(nodesFacet-1-j) << \textcolor{stringliteral}{" "};
+00462                 \}
+00463 
+00464                 file << \textcolor{stringliteral}{")"} << std::endl;
+00465             \}
+00466         \}
+00467     \}
+00468     file << \textcolor{stringliteral}{")"} << std::endl;
+00469 
+00470     file << std::endl;
+00471     file << \textcolor{stringliteral}{"// ************************************************************************* //"} << std::endl;
+00472 
+00473     file.close();
+00474 
+00475     \textcolor{comment}{// write owner}
+00476     file.open ( (filename + \textcolor{stringliteral}{"owner"}).c\_str(), std::ios\_base::out);
+00477     file << \textcolor{stringliteral}{"/*--------------------------------*- C++ -*----------------------------------*\(\backslash\)\(\backslash\)"} << std::endl
+      ;
+00478     file << \textcolor{stringliteral}{"| =========                 |                                                 |"} << std::endl;
+00479     file << \textcolor{stringliteral}{"| \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |"} << 
+      std::endl;
+00480     file << \textcolor{stringliteral}{"|  \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)    /   O peration     | Version:  2.3.1                                 |"} << 
+      std::endl;
+00481     file << \textcolor{stringliteral}{"|   \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)  /    A nd           | Web:      www.OpenFOAM.org                      |"} << 
+      std::endl;
+00482     file << \textcolor{stringliteral}{"|    \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)/     M anipulation  |                                                 |"} << 
+      std::endl;
+00483     file << \textcolor{stringliteral}{"\(\backslash\)\(\backslash\)*---------------------------------------------------------------------------*/"} << std::endl
+      ;
+00484     file << \textcolor{stringliteral}{"FoamFile"} << std::endl;
+00485     file << \textcolor{stringliteral}{"\{"} << std::endl;
+00486     file << \textcolor{stringliteral}{"    version     2.0;"} << std::endl;
+00487     file << \textcolor{stringliteral}{"    format      ascii;"} << std::endl;
+00488     file << \textcolor{stringliteral}{"    class       labelList;"} << std::endl;
+00489     file << \textcolor{stringliteral}{"    note        \(\backslash\)"nPoints: "} << nNodes << \textcolor{stringliteral}{" nCells: "} << nCells
+00490          << \textcolor{stringliteral}{" nFaces: "} << nFacets << \textcolor{stringliteral}{" nInternalFaces: "} << nInternalFacets << \textcolor{stringliteral}{"\(\backslash\)";"} << std::endl;
+00491     file << \textcolor{stringliteral}{"    location    \(\backslash\)"constant/polyMesh\(\backslash\)";"} << std::endl; \textcolor{comment}{// need to be fixed?}
+00492     file << \textcolor{stringliteral}{"    object      owner;"} << std::endl;
+00493     file << \textcolor{stringliteral}{"\}"} << std::endl;
+00494     file << \textcolor{stringliteral}{"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //"} << std::endl;
+00495     file << std::endl;
+00496 
+00497     file << nFacets << \textcolor{stringliteral}{"("} << std::endl;
+00498     \textcolor{keywordflow}{for}(i=0; i < nInternalFacets; ++i)
+00499     \{
+00500         file << *\hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( facetsRef[internalFacets[i]].getSeparatedCells() ) << std::endl;
+00501     \}
+00502     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} & patch : patchMap)
+00503     \{
+00504         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} patchId = patch.first;
+00505         \textcolor{keyword}{const} std::vector<UInt> & patchFaces = patch.second;
+00506         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPatchFaces = patchFaces.size();
+00507 
+00508         \textcolor{keywordflow}{if} ( patchId <= thresholdId )
+00509         \{
+00510             \textcolor{keywordflow}{for}(i=0; i < nPatchFaces; ++i)
+00511             \{
+00512                 file << *\hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( facetsRef[patchFaces[i]].getSeparatedCells() ) << std::endl;
+00513             \}
+00514         \}
+00515         \textcolor{keywordflow}{else}
+00516         \{
+00517             \textcolor{keywordflow}{for}(i=0; i < nPatchFaces; ++i)
+00518             \{
+00519                 file << *\hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}( facetsRef[patchFaces[i]].getSeparatedCells() ) << std::endl;
+00520                 file << *( facetsRef[patchFaces[i]].getSeparatedCells().rbegin() ) << std::endl;
+00521             \}
+00522         \}
+00523     \}
+00524     file << \textcolor{stringliteral}{")"} << std::endl;
+00525 
+00526     file << std::endl;
+00527     file << \textcolor{stringliteral}{"// ************************************************************************* //"} << std::endl;
+00528 
+00529     file.close();
+00530 
+00531     \textcolor{comment}{// write neighbour}
+00532     file.open ( (filename + \textcolor{stringliteral}{"neighbour"}).c\_str(), std::ios\_base::out);
+00533     file << \textcolor{stringliteral}{"/*--------------------------------*- C++ -*----------------------------------*\(\backslash\)\(\backslash\)"} << std::endl
+      ;
+00534     file << \textcolor{stringliteral}{"| =========                 |                                                 |"} << std::endl;
+00535     file << \textcolor{stringliteral}{"| \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |"} << 
+      std::endl;
+00536     file << \textcolor{stringliteral}{"|  \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)    /   O peration     | Version:  2.3.1                                 |"} << 
+      std::endl;
+00537     file << \textcolor{stringliteral}{"|   \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)  /    A nd           | Web:      www.OpenFOAM.org                      |"} << 
+      std::endl;
+00538     file << \textcolor{stringliteral}{"|    \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)/     M anipulation  |                                                 |"} << 
+      std::endl;
+00539     file << \textcolor{stringliteral}{"\(\backslash\)\(\backslash\)*---------------------------------------------------------------------------*/"} << std::endl
+      ;
+00540     file << \textcolor{stringliteral}{"FoamFile"} << std::endl;
+00541     file << \textcolor{stringliteral}{"\{"} << std::endl;
+00542     file << \textcolor{stringliteral}{"    version     2.0;"} << std::endl;
+00543     file << \textcolor{stringliteral}{"    format      ascii;"} << std::endl;
+00544     file << \textcolor{stringliteral}{"    class       labelList;"} << std::endl;
+00545     file << \textcolor{stringliteral}{"    note        \(\backslash\)"nPoints: "} << nNodes << \textcolor{stringliteral}{" nCells: "} << nCells
+00546          << \textcolor{stringliteral}{" nFaces: "} << nFacets << \textcolor{stringliteral}{" nInternalFaces: "} << nInternalFacets << \textcolor{stringliteral}{"\(\backslash\)";"} << std::endl;
+00547     file << \textcolor{stringliteral}{"    location    \(\backslash\)"constant/polyMesh\(\backslash\)";"} << std::endl; \textcolor{comment}{// need to be fixed?}
+00548     file << \textcolor{stringliteral}{"    object      neighbour;"} << std::endl;
+00549     file << \textcolor{stringliteral}{"\}"} << std::endl;
+00550     file << \textcolor{stringliteral}{"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //"} << std::endl;
+00551     file << std::endl;
+00552 
+00553     file << nInternalFacets << \textcolor{stringliteral}{"("} << std::endl;
+00554     \textcolor{keywordflow}{for}(i=0; i < nInternalFacets; ++i)
+00555     \{
+00556         file << *( facetsRef[internalFacets[i]].getSeparatedCells().rbegin() ) << std::endl;
+00557     \}
+00558     file << \textcolor{stringliteral}{")"} << std::endl;
+00559 
+00560     file << std::endl;
+00561     file << \textcolor{stringliteral}{"// ************************************************************************* //"} << std::endl;
+00562 
+00563     file.close();
+00564 
+00565     \textcolor{comment}{// write boundary}
+00566     file.open ( (filename + \textcolor{stringliteral}{"boundary"}).c\_str(), std::ios\_base::out);
+00567     file << \textcolor{stringliteral}{"/*--------------------------------*- C++ -*----------------------------------*\(\backslash\)\(\backslash\)"} << std::endl
+      ;
+00568     file << \textcolor{stringliteral}{"| =========                 |                                                 |"} << std::endl;
+00569     file << \textcolor{stringliteral}{"| \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |"} << 
+      std::endl;
+00570     file << \textcolor{stringliteral}{"|  \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)    /   O peration     | Version:  2.3.1                                 |"} << 
+      std::endl;
+00571     file << \textcolor{stringliteral}{"|   \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)  /    A nd           | Web:      www.OpenFOAM.org                      |"} << 
+      std::endl;
+00572     file << \textcolor{stringliteral}{"|    \(\backslash\)\(\backslash\)\(\backslash\)\(\backslash\)/     M anipulation  |                                                 |"} << 
+      std::endl;
+00573     file << \textcolor{stringliteral}{"\(\backslash\)\(\backslash\)*---------------------------------------------------------------------------*/"} << std::endl
+      ;
+00574     file << \textcolor{stringliteral}{"FoamFile"} << std::endl;
+00575     file << \textcolor{stringliteral}{"\{"} << std::endl;
+00576     file << \textcolor{stringliteral}{"    version     2.0;"} << std::endl;
+00577     file << \textcolor{stringliteral}{"    format      ascii;"} << std::endl;
+00578     file << \textcolor{stringliteral}{"    class       polyBoundaryMesh;"} << std::endl;
+00579     file << \textcolor{stringliteral}{"    location    \(\backslash\)"constant/polyMesh\(\backslash\)";"} << std::endl; \textcolor{comment}{// need to be fixed?}
+00580     file << \textcolor{stringliteral}{"    object      boundary;"} << std::endl;
+00581     file << \textcolor{stringliteral}{"\}"} << std::endl;
+00582     file << \textcolor{stringliteral}{"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //"} << std::endl;
+00583     file << std::endl;
+00584 
+00585     startPatch = nInternalFacets;
+00586 
+00587     file << nPatches << \textcolor{stringliteral}{" ("} << std::endl;
+00588     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} & patch : patchMap)
+00589     \{
+00590         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} patchId = patch.first;
+00591         \textcolor{keywordtype}{bool} doubleF = \textcolor{keyword}{false};
+00592         \textcolor{keywordflow}{if} ( patchId > thresholdId )
+00593         \{
+00594             doubleF = \textcolor{keyword}{true};
+00595         \}
+00596         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} patchSize =( \textcolor{keyword}{static\_cast<}\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt}\textcolor{keyword}{>}(doubleF) * patch.second.size()) +  patch.second.
+      size();
+00597         file << \textcolor{stringliteral}{"    patch"} << patch.first << std::endl;
+00598         file << \textcolor{stringliteral}{"    \{"} << std::endl;
+00599         file << \textcolor{stringliteral}{"        type            patch;"} << std::endl;
+00600         file << \textcolor{stringliteral}{"        physicalType    patch;"} << std::endl;
+00601         file << \textcolor{stringliteral}{"        nFaces          "} << patchSize << \textcolor{stringliteral}{";"} << std::endl;
+00602         file << \textcolor{stringliteral}{"        startFace       "} << startPatch << \textcolor{stringliteral}{";"} << std::endl;
+00603         file << \textcolor{stringliteral}{"    \}"} << std::endl;
+00604         startPatch += patchSize;
+00605     \}
+00606     file << \textcolor{stringliteral}{")"} << std::endl;
+00607 
+00608     file << std::endl;
+00609     file << \textcolor{stringliteral}{"// ************************************************************************* //"} << std::endl;
+00610 
+00611     file.close();
+00612 \}
+00613 
+00614 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

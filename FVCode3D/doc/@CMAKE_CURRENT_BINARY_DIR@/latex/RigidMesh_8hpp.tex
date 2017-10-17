@@ -1,0 +1,84 @@
+\hypertarget{RigidMesh_8hpp}{}\section{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Rigid\+Mesh.hpp File Reference}
+\label{RigidMesh_8hpp}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Rigid\+Mesh.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Rigid\+Mesh.\+hpp}}
+
+
+Class for unstructured mesh.  
+
+
+{\ttfamily \#include $<$F\+V\+Code3\+D/core/\+Type\+Definition.\+hpp$>$}\\*
+{\ttfamily \#include $<$F\+V\+Code3\+D/mesh/\+Mesh3\+D.\+hpp$>$}\\*
+{\ttfamily \#include $<$F\+V\+Code3\+D/property/\+Properties.\+hpp$>$}\\*
+{\ttfamily \#include $<$cmath$>$}\\*
+{\ttfamily \#include $<$set$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$tuple$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$utility$>$}\\*
+Include dependency graph for Rigid\+Mesh.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{RigidMesh_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{RigidMesh_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh}
+\begin{DoxyCompactList}\small\item\em Class that allows to handle a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} for a differential problem. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that implements a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Edge}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet}
+\begin{DoxyCompactList}\small\item\em Class that implements a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Cell}
+\begin{DoxyCompactList}\small\item\em Class that implements a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Cell}. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Edge\+\_\+\+ID}
+\begin{DoxyCompactList}\small\item\em Class that handles the several types of edges. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents an interior edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents a border edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Pure\+\_\+\+Border\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents a border edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Fracture\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents a fracture edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Juncture\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents a juncture edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Tip\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents a tip edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents an interior tip edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Tip\+\_\+\+Edge}
+\begin{DoxyCompactList}\small\item\em Class that represents a border tip edge. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Facet\+\_\+\+ID}
+\begin{DoxyCompactList}\small\item\em Class that handles the several types of facets. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Facet}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Regular\+\_\+\+Facet}
+\begin{DoxyCompactList}\small\item\em Class that represents an interior facet (no fracture facet) \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Facet}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Facet}
+\begin{DoxyCompactList}\small\item\em Class that represents a border facet. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Fracture__Facet}{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Fracture\+\_\+\+Facet}
+\begin{DoxyCompactList}\small\item\em Class that represents a fracture facet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFVCode3D}{F\+V\+Code3D}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for unstructured mesh. 
+
+
+
+Definition in file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+

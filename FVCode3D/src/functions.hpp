@@ -109,9 +109,12 @@ Func SSOGrid3 = [](Point3D p)
 
 /* TEST EDFM */
 Func SSEDFM = [](Point3D p)
-    { return 1*( p.x() <= 0.2 ); };
+    { return 10. * ( p.x() <= 0.4 ); };
+    
+Func SSEDFMBC = [](Point3D p)
+    { return 2. * ( (p.x() >= 0.8) && (p.x() <= 1.2 ) ); };
 
-Func SS = fZero;//SourceDomain; //fZero;//SSGrid2;
+Func SS = SSEDFM;//SourceDomain; //fZero;//SSGrid2;
 
 } // namespace FVCode3D
 #endif /* FUNCTIONS_HPP_ */

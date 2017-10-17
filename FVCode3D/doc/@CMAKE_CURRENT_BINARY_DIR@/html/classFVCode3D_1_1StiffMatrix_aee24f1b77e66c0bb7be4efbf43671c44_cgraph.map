@@ -1,0 +1,15 @@
+<map id="FVCode3D::StiffMatrix::assemblePorousMatrixBC" name="FVCode3D::StiffMatrix::assemblePorousMatrixBC">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#aa72b7fad937f0d1586fc10b176ef5d3e" title="Get border facets ids vector (const) " alt="" coords="251,57,433,99"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1BoundaryConditions.html#a5b53a81bdab88709fae14892bfe6a7c9" title="Get BorderBC vector (const) " alt="" coords="236,123,448,164"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1StiffMatrix.html#a2365673b4791819e78c4c593e2f63b28" title="It is called by the method assemble() and it computes the coefficient alpha. " alt="" coords="265,253,419,295"/>
+<area shape="rect" id="node13" href="$classFVCode3D_1_1StiffMatrix.html#aec36126e4870fc3f94a2d36b831c739e" title="It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet ..." alt="" coords="265,188,419,229"/>
+<area shape="rect" id="node14" href="$classFVCode3D_1_1PropertiesMap.html#a810ea62ca881e4db57acd601bcea23cf" title="Get the mobility of the fluid. " alt="" coords="253,319,431,360"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1BoundaryConditions.html#ae368974020ff21456d0fef9ef9d8006d" title="Set boundary condition from a vector of Border BC. " alt="" coords="496,5,708,47"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID.html#afd11bc5dcc915bbe6a9c39f333e336ff" title="Get center (const) " alt="" coords="520,253,684,295"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1Rigid__Mesh.html#afefb62f2c37317402b495e2369ed495b" title="Get cells vector (const) " alt="" coords="520,71,684,112"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1PropertiesMap.html#ace888d15c9a4ab13d5e217a3a565604c" title="Get the map of properties (const) " alt="" coords="513,136,691,177"/>
+<area shape="rect" id="node10" href="$namespaceFVCode3D.html#ad07be7f9ed843ca65d02d0303dae6cb4" title="FVCode3D::dotProduct" alt="" coords="523,202,681,229"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID.html#a20ee7f532091bf919c6bad0797221336" title="Get unsigned normal (const) " alt="" coords="499,319,705,360"/>
+<area shape="rect" id="node12" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet__ID.html#a6fb6374e6750efc29b8ca9fa4d329d7b" title="Get size (const) " alt="" coords="520,384,684,425"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1Rigid__Mesh.html#a6d3cdd4ef8a5225599953179d5302636" title="Get facets vector (const) " alt="" coords="756,319,920,360"/>
+</map>

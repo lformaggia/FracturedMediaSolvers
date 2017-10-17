@@ -10,21 +10,9 @@
 #include <FVCode3D/export/ExportVTU.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
-// MFD: Lumped version of the stiffness matrix
-//#define DIAGONALZ
-
-// MFD: compute the exact inverse of M
-#define INVERSEM
-// MFD: compute M^-1 C with tensor-vector product: INVERSEM needed!
-#define TVP
 
 // MFD: export some matrices, requires both INVERSEM and APPROXM
 //#define MFD_VERBOSE
-
-// Assure that INVERSEM is defined
-#ifdef TVP
-#define INVERSEM
-#endif // TVP
 
 namespace FVCode3D
 {

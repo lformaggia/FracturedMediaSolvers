@@ -1,0 +1,537 @@
+\hypertarget{classFVCode3D_1_1PermeabilitySymTensor}{}\section{F\+V\+Code3D\+:\+:Permeability\+Sym\+Tensor Class Reference}
+\label{classFVCode3D_1_1PermeabilitySymTensor}\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+
+
+Symmetric tensor Permeability.  
+
+
+
+
+{\ttfamily \#include $<$Permeability.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Permeability\+Sym\+Tensor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classFVCode3D_1_1PermeabilitySymTensor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Permeability\+Sym\+Tensor\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{classFVCode3D_1_1PermeabilitySymTensor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a0d2bf26d1004acb312c4dff7ee4b71f1}{Permeability\+Sym\+Tensor} ()
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_ae8b671c423d58279ff87c67d9bf617ef}{operator()} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} j) const 
+\begin{DoxyCompactList}\small\item\em Get the permeability at position (i,j) of the 3x3 tensor. \end{DoxyCompactList}\item 
+virtual \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_af536697b5e88e9d05f3886ac5e7dd3e1}{operator()} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i) const 
+\begin{DoxyCompactList}\small\item\em Get the permeability at position (i) of the vector associated with the tensor, reading by row. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a82f66a215fa06295c3094f7452152167}{set\+Permeability} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} perm, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} j)
+\begin{DoxyCompactList}\small\item\em Set the permeability at position (i,j) of the 3x3 tensor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a4f8605ba43b6ffccfa69e4db9b6f929a}{set\+Permeability} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} perm, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i)
+\begin{DoxyCompactList}\small\item\em Get the permeability at position (i) of the vector associated with the tensor, reading by row. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a98f843b5517b262ce5dc224a53607862}{vector\+Tensor\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector) const 
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a8b147bf9e57927899dd92dff4980d1e8}{tensor\+Vector\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector) const 
+\begin{DoxyCompactList}\small\item\em Tensor-\/vector product. \end{DoxyCompactList}\item 
+virtual std\+::ostream \& \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a72332071c0bd6bb2ccdde36ca0b493a2}{show\+Me} (std\+::ostream \&os=std\+::cout) const 
+\begin{DoxyCompactList}\small\item\em Show the permeability tensor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a75bb7e9d9439c5ccde7b5eff31648dc6}{$\sim$\+Permeability\+Sym\+Tensor} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1PermeabilitySymTensor_ae8d0ae7cda07b4d75cfcf544a2521de6}{Permeability\+Sym\+Tensor} (const \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \&)=delete
+\begin{DoxyCompactList}\small\item\em No copy-\/constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \& \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_aca220a25e1ddb35991df732c2d0e81e8}{operator=} (const \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \&)=delete
+\begin{DoxyCompactList}\small\item\em No assignment operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a611205289ba216ec4505dd76a284dd9b}{M\+\_\+size} = 6
+\begin{DoxyCompactList}\small\item\em Size of the permeability. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a332d3765e083c2c18f2aa720c56f1115}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \&tensor)
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a939e706536dc232f6be632d5c47cea82}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\begin{DoxyCompactList}\small\item\em Tensor-\/vector product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a11bd7903b69bdb4d558844c080759ca4}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} $>$ \&tensor)
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_a22e8070265d439a13c1e5a8db6cf2ec8}{operator$\ast$} (const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} $>$ \&tensor, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&vector)
+\begin{DoxyCompactList}\small\item\em Vector-\/tensor product. \end{DoxyCompactList}\item 
+std\+::ostream \& \hyperlink{classFVCode3D_1_1PermeabilitySymTensor_aa4a4d5ccabc3de51390b80ad1ca02d43}{operator$<$$<$} (std\+::ostream \&os, const std\+::shared\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1PermeabilitySymTensor}{Permeability\+Sym\+Tensor} $>$ \&perm)
+\begin{DoxyCompactList}\small\item\em Show the permeability tensor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Symmetric tensor Permeability. 
+
+This class defines the permeability property as a symmetric tensor. It\textquotesingle{}s a derived class of \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base}. 
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00433}{433} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!Permeability\+Sym\+Tensor@{Permeability\+Sym\+Tensor}}
+\index{Permeability\+Sym\+Tensor@{Permeability\+Sym\+Tensor}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{Permeability\+Sym\+Tensor()}{PermeabilitySymTensor()}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::\+Permeability\+Sym\+Tensor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a0d2bf26d1004acb312c4dff7ee4b71f1}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a0d2bf26d1004acb312c4dff7ee4b71f1}
+
+
+Default constructor. 
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00438}{438} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!````~Permeability\+Sym\+Tensor@{$\sim$\+Permeability\+Sym\+Tensor}}
+\index{````~Permeability\+Sym\+Tensor@{$\sim$\+Permeability\+Sym\+Tensor}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{$\sim$\+Permeability\+Sym\+Tensor()=default}{~PermeabilitySymTensor()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::$\sim$\+Permeability\+Sym\+Tensor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a75bb7e9d9439c5ccde7b5eff31648dc6}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a75bb7e9d9439c5ccde7b5eff31648dc6}
+
+
+Destructor. 
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!Permeability\+Sym\+Tensor@{Permeability\+Sym\+Tensor}}
+\index{Permeability\+Sym\+Tensor@{Permeability\+Sym\+Tensor}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{Permeability\+Sym\+Tensor(const Permeability\+Sym\+Tensor \&)=delete}{PermeabilitySymTensor(const PermeabilitySymTensor &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::\+Permeability\+Sym\+Tensor (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Sym\+Tensor} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_ae8d0ae7cda07b4d75cfcf544a2521de6}{}\label{classFVCode3D_1_1PermeabilitySymTensor_ae8d0ae7cda07b4d75cfcf544a2521de6}
+
+
+No copy-\/constructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator()@{operator()}}
+\index{operator()@{operator()}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator()(const U\+Int i, const U\+Int j) const }{operator()(const UInt i, const UInt j) const }}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Real} F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i, }
+\item[{const {\bf U\+Int}}]{j}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_ae8b671c423d58279ff87c67d9bf617ef}{}\label{classFVCode3D_1_1PermeabilitySymTensor_ae8b671c423d58279ff87c67d9bf617ef}
+
+
+Get the permeability at position (i,j) of the 3x3 tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & row \\
+\hline
+{\em j} & column \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the permeability at (i,j) 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_abd0550c6acbe86723c9ddfee18cb9da5}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00446}{446} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator()@{operator()}}
+\index{operator()@{operator()}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator()(const U\+Int i) const }{operator()(const UInt i) const }}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf Real} F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_af536697b5e88e9d05f3886ac5e7dd3e1}{}\label{classFVCode3D_1_1PermeabilitySymTensor_af536697b5e88e9d05f3886ac5e7dd3e1}
+
+
+Get the permeability at position (i) of the vector associated with the tensor, reading by row. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & position of the permeability into the vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the permeability at i 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_a4cc07f9b2cb882f1328b11451bd98f8d}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00454}{454} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilitySymTensor_af536697b5e88e9d05f3886ac5e7dd3e1_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator=@{operator=}}
+\index{operator=@{operator=}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator=(const Permeability\+Sym\+Tensor \&)=delete}{operator=(const PermeabilitySymTensor &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Permeability\+Sym\+Tensor}\& F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Sym\+Tensor} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_aca220a25e1ddb35991df732c2d0e81e8}{}\label{classFVCode3D_1_1PermeabilitySymTensor_aca220a25e1ddb35991df732c2d0e81e8}
+
+
+No assignment operator. 
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!set\+Permeability@{set\+Permeability}}
+\index{set\+Permeability@{set\+Permeability}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{set\+Permeability(const Real perm, const U\+Int i, const U\+Int j)}{setPermeability(const Real perm, const UInt i, const UInt j)}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::set\+Permeability (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{perm, }
+\item[{const {\bf U\+Int}}]{i, }
+\item[{const {\bf U\+Int}}]{j}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a82f66a215fa06295c3094f7452152167}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a82f66a215fa06295c3094f7452152167}
+
+
+Set the permeability at position (i,j) of the 3x3 tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & permeability at (i,j) \\
+\hline
+{\em i} & row \\
+\hline
+{\em j} & column \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_a6ac9a7c1b7ed948194429891dc839706}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00463}{463} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!set\+Permeability@{set\+Permeability}}
+\index{set\+Permeability@{set\+Permeability}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{set\+Permeability(const Real perm, const U\+Int i)}{setPermeability(const Real perm, const UInt i)}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::set\+Permeability (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{perm, }
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a4f8605ba43b6ffccfa69e4db9b6f929a}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a4f8605ba43b6ffccfa69e4db9b6f929a}
+
+
+Get the permeability at position (i) of the vector associated with the tensor, reading by row. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em perm} & permeability at i \\
+\hline
+{\em i} & position of the permeability into the vector \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_a9c4837715f248789eac990148df9ad40}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00471}{471} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilitySymTensor_a4f8605ba43b6ffccfa69e4db9b6f929a_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!show\+Me@{show\+Me}}
+\index{show\+Me@{show\+Me}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{show\+Me(std\+::ostream \&os=std\+::cout) const }{showMe(std::ostream &os=std::cout) const }}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream \& F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::show\+Me (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os = {\ttfamily std\+:\+:cout}}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a72332071c0bd6bb2ccdde36ca0b493a2}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a72332071c0bd6bb2ccdde36ca0b493a2}
+
+
+Show the permeability tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_a4f06952af19c0100b6b6043fa1f8f97a}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00232}{232} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!tensor\+Vector\+Product@{tensor\+Vector\+Product}}
+\index{tensor\+Vector\+Product@{tensor\+Vector\+Product}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{tensor\+Vector\+Product(const Point3\+D \&vector) const }{tensorVectorProduct(const Point3D &vector) const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::tensor\+Vector\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a8b147bf9e57927899dd92dff4980d1e8}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a8b147bf9e57927899dd92dff4980d1e8}
+
+
+Tensor-\/vector product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between the permeability tensor and vector 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_a1c77d0168dd4ee2e3a1ce922e0c1725c}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00171}{171} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilitySymTensor_a8b147bf9e57927899dd92dff4980d1e8_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!vector\+Tensor\+Product@{vector\+Tensor\+Product}}
+\index{vector\+Tensor\+Product@{vector\+Tensor\+Product}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{vector\+Tensor\+Product(const Point3\+D \&vector) const }{vectorTensorProduct(const Point3D &vector) const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::vector\+Tensor\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a98f843b5517b262ce5dc224a53607862}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a98f843b5517b262ce5dc224a53607862}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and the permeability tensor 
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classFVCode3D_1_1PermeabilityBase_aa60c227795b5b7dd6413ef90b211875e}{F\+V\+Code3\+D\+::\+Permeability\+Base}.
+
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00154}{154} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1PermeabilitySymTensor_a98f843b5517b262ce5dc224a53607862_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Friends And Related Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const {\bf Permeability\+Sym\+Tensor} \&}]{tensor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a332d3765e083c2c18f2aa720c56f1115}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a332d3765e083c2c18f2aa720c56f1115}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00188}{188} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Permeability\+Sym\+Tensor} \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a939e706536dc232f6be632d5c47cea82}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a939e706536dc232f6be632d5c47cea82}
+
+
+Tensor-\/vector product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tensor} & permeability tensor \\
+\hline
+{\em vector} & vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between tensor and vector 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00205}{205} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{vector, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Sym\+Tensor} $>$ \&}]{tensor}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a11bd7903b69bdb4d558844c080759ca4}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a11bd7903b69bdb4d558844c080759ca4}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00222}{222} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Sym\+Tensor} $>$ \&}]{tensor, }
+\item[{const {\bf Point3D} \&}]{vector}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a22e8070265d439a13c1e5a8db6cf2ec8}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a22e8070265d439a13c1e5a8db6cf2ec8}
+
+
+Vector-\/tensor product. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vector} & vector \\
+\hline
+{\em tensor} & permeability tensor \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the product between vector$^\wedge$T and tensor 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00227}{227} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const std\+::shared\+\_\+ptr$<$ {\bf Permeability\+Sym\+Tensor} $>$ \&}]{perm}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_aa4a4d5ccabc3de51390b80ad1ca02d43}{}\label{classFVCode3D_1_1PermeabilitySymTensor_aa4a4d5ccabc3de51390b80ad1ca02d43}
+
+
+Show the permeability tensor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & output stream \\
+\hline
+{\em perm} & shared pointer to \hyperlink{classFVCode3D_1_1PermeabilityBase}{Permeability\+Base} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+output stream 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Permeability_8cpp_source_l00240}{240} of file \hyperlink{Permeability_8cpp_source}{Permeability.\+cpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}!M\+\_\+size@{M\+\_\+size}}
+\index{M\+\_\+size@{M\+\_\+size}!F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor@{F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor}}
+\subsubsection[{\texorpdfstring{M\+\_\+size}{M_size}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf U\+Int} F\+V\+Code3\+D\+::\+Permeability\+Sym\+Tensor\+::\+M\+\_\+size = 6\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}\hypertarget{classFVCode3D_1_1PermeabilitySymTensor_a611205289ba216ec4505dd76a284dd9b}{}\label{classFVCode3D_1_1PermeabilitySymTensor_a611205289ba216ec4505dd76a284dd9b}
+
+
+Size of the permeability. 
+
+
+
+Definition at line \hyperlink{Permeability_8hpp_source_l00540}{540} of file \hyperlink{Permeability_8hpp_source}{Permeability.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{Permeability_8hpp}{Permeability.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/property/\hyperlink{Permeability_8cpp}{Permeability.\+cpp}\end{DoxyCompactItemize}

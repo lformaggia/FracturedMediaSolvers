@@ -1,0 +1,21 @@
+<map id="/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp" name="/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp">
+<area shape="rect" id="node2" href="$Data_8hpp.html" title="FVCode3D/core/Data.hpp" alt="" coords="85,355,258,382"/>
+<area shape="rect" id="node3" href="$TypeDefinition_8hpp.html" title="Definition of fundamental types. " alt="" coords="1127,437,1357,464"/>
+<area shape="rect" id="node26" href="$RigidMesh_8hpp.html" title="Class for unstructured mesh. " alt="" coords="1023,109,1237,136"/>
+<area shape="rect" id="node37" href="$BC_8hpp.html" title="This class handles the boundary conditions of the Darcy problem. " alt="" coords="2681,601,2880,643"/>
+<area shape="rect" id="node40" href="$SolverHandler_8hpp.html" title="Factory that handles the creation of the Solver classes. " alt="" coords="487,266,725,293"/>
+<area shape="rect" id="node24" href="$StringManipolator_8hpp.html" title="Functions to manipulate strings. " alt="" coords="5,609,257,635"/>
+<area shape="rect" id="node4" href="$BasicType_8hpp.html" title="FVCode3D/core/BasicType.hpp" alt="" coords="2081,609,2288,635"/>
+<area shape="rect" id="node20" href="$Point3D_8hpp.html" title="Class for a 3D Point. " alt="" coords="2037,512,2223,553"/>
+<area shape="rect" id="node21" href="$Chrono_8hpp.html" title="FVCode3D/core/Chrono.hpp" alt="" coords="1057,519,1243,546"/>
+<area shape="rect" id="node27" href="$Mesh3D_8hpp.html" title="Classes that implements polyhedrical unstructured meshes. " alt="" coords="1805,266,2007,293"/>
+<area shape="rect" id="node34" href="$Properties_8hpp.html" title="Classes that handle the properties. " alt="" coords="831,184,1058,211"/>
+<area shape="rect" id="node28" href="$CoordinateSystem_8hpp.html" title="Class for a 3D Cartesian coordinate system. " alt="" coords="2024,348,2236,389"/>
+<area shape="rect" id="node29" href="$Operations_8hpp.html" title="FVCode3D/geometry/Operations.hpp" alt="" coords="1551,355,1789,382"/>
+<area shape="rect" id="node30" href="$Fracture3D_8hpp.html" title="Class that handles the fractures. " alt="" coords="2261,348,2455,389"/>
+<area shape="rect" id="node31" href="$FractureNetwork3D_8hpp.html" title="Class that handles the fracture network. " alt="" coords="1813,348,1999,389"/>
+<area shape="rect" id="node32" href="$TetGenWrapper_8hpp.html" title="Class for tetrahedralizing a polyhedron. " alt="" coords="1232,355,1476,382"/>
+<area shape="rect" id="node35" href="$PermeabilityFactory_8hpp.html" title="Factory that handles the creation of the Permeability classes (definitions). " alt="" coords="803,259,1017,300"/>
+<area shape="rect" id="node36" href="$Permeability_8hpp.html" title="Classes that handle the permeability. " alt="" coords="853,355,1092,382"/>
+<area shape="rect" id="node41" href="$Solver_8hpp.html" title="FVCode3D/solver/Solver.hpp" alt="" coords="485,355,677,382"/>
+</map>

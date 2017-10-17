@@ -1,0 +1,356 @@
+\hypertarget{classFVCode3D_1_1FractureBuilder}{}\section{F\+V\+Code3D\+:\+:Fracture\+Builder Class Reference}
+\label{classFVCode3D_1_1FractureBuilder}\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+
+
+Class for assembling a global bulk builder.  
+
+
+
+
+{\ttfamily \#include $<$global\+\_\+operator.\+hpp$>$}
+
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Fracture\+Builder\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FractureBuilder__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1FractureBuilder_aa97ba17fc7b3502bcab47957c623ecb0}{Fracture\+Builder} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&r\+Mesh, \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \&C\+\_\+matrix, \hyperlink{classFVCode3D_1_1FluxOperator}{Flux\+Operator} \&fo, \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \&M\+\_\+matrix, \hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \&S\+\_\+matrix, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&xsi\+OfC)
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classFVCode3D_1_1FractureBuilder}{Fracture\+Builder} operator. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FractureBuilder_a9d884485790af58c3aabbdf9698d3cdd}{Fracture\+Builder} (const \hyperlink{classFVCode3D_1_1FractureBuilder}{Fracture\+Builder} \&)=delete
+\begin{DoxyCompactList}\small\item\em No Copy-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FractureBuilder_aadd70066f6b2ca44a05e90fa84248838}{Fracture\+Builder} ()=delete
+\begin{DoxyCompactList}\small\item\em No Empty-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FractureBuilder_adc351b64e34bcea6893cac2831466e50}{$\sim$\+Fracture\+Builder} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1FractureBuilder_af3f7ade53f75d44dbb523b697bced516}{reserve\+\_\+space\+\_\+\+Monolithic} ()
+\begin{DoxyCompactList}\small\item\em Reserve method for the monolithic matrix. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1FractureBuilder_a27a2975168100bcf35373b4715d8b1dc}{reserve\+\_\+space} ()
+\begin{DoxyCompactList}\small\item\em Reserve method for the fracture matrices. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1FractureBuilder_a8aa6db02f37b5fdd9d9a86b2ca6b1fcf}{assemble\+\_\+\+Monolithic} ()
+\begin{DoxyCompactList}\small\item\em Assemble method for the monolithic matrix. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1FractureBuilder_ab24549851fa577aa8d6cba68fd970d75}{assemble} ()
+\begin{DoxyCompactList}\small\item\em Assemble method for the bulk matrices. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::pair$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \hyperlink{classFVCode3D_1_1FractureBuilder_a12e64420f8c1478beec1e5900577a915}{Fracture\+\_\+\+Juncture}
+\begin{DoxyCompactList}\small\item\em Typedef for std\+::pair$<$\+U\+Int,\+U\+Int$>$ \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \& \hyperlink{classFVCode3D_1_1FractureBuilder_a1d94459249cc414f162853509755fa3a}{M\+\_\+mesh}
+\begin{DoxyCompactList}\small\item\em Constant reference to the rigid mesh. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1FractureBuilder_a8fd06afa6c18949cfdb034db10775ace}{C}
+\begin{DoxyCompactList}\small\item\em A reference to the coupling conditions matrix. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FluxOperator}{Flux\+Operator} \& \hyperlink{classFVCode3D_1_1FractureBuilder_aa9979563fab859667fc6fc242d6e461c}{FO}
+\begin{DoxyCompactList}\small\item\em A reference to the transmissibility matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1FractureBuilder_a24d025a1ca7ca61edeec47be5b049a52}{M}
+\begin{DoxyCompactList}\small\item\em A reference to the inner product matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \& \hyperlink{classFVCode3D_1_1FractureBuilder_a4863fe7c2507df5d6f30dbdac2a27c31}{S}
+\begin{DoxyCompactList}\small\item\em A reference to the monolithic matrix of the system. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1FractureBuilder_add8696ef08b9dad08e62a0ef85a437b4}{xsi}
+\begin{DoxyCompactList}\small\item\em The xsi parameter of coupling conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for assembling a global bulk builder. 
+
+This is the classe to assemble the fracture builder. It\textquotesingle{}s useful using a builder of this type to assemble efficiently the fracture matrices. With this builder we can assemble T and C matrices and modifying M jointly with only one fractures loop. This builder allow both to build up T and C and modifying M separately or to build up these matrices in the monolithic matrix of the system. 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00569}{569} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!Fracture\+\_\+\+Juncture@{Fracture\+\_\+\+Juncture}}
+\index{Fracture\+\_\+\+Juncture@{Fracture\+\_\+\+Juncture}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{Fracture\+\_\+\+Juncture}{Fracture_Juncture}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\+V\+Code3\+D\+::\+Fracture\+Builder\+::\+Fracture\+\_\+\+Juncture}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_a12e64420f8c1478beec1e5900577a915}{}\label{classFVCode3D_1_1FractureBuilder_a12e64420f8c1478beec1e5900577a915}
+
+
+Typedef for std\+::pair$<$\+U\+Int,\+U\+Int$>$ 
+
+This type definition permits to treat std\+::pair$<$\+U\+Int,\+U\+Int$>$ as a Fracture\+\_\+\+Juncture. 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00577}{577} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!Fracture\+Builder@{Fracture\+Builder}}
+\index{Fracture\+Builder@{Fracture\+Builder}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{Fracture\+Builder(const Rigid\+\_\+\+Mesh \&r\+Mesh, Sp\+Mat \&\+C\+\_\+matrix, Flux\+Operator \&fo, Sp\+Mat \&\+M\+\_\+matrix, Sp\+Mat \&\+S\+\_\+matrix, const Real \&xsi\+Of\+C)}{FractureBuilder(const Rigid_Mesh &rMesh, SpMat &C_matrix, FluxOperator &fo, SpMat &M_matrix, SpMat &S_matrix, const Real &xsiOfC)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Fracture\+Builder\+::\+Fracture\+Builder (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{r\+Mesh, }
+\item[{{\bf Sp\+Mat} \&}]{C\+\_\+matrix, }
+\item[{{\bf Flux\+Operator} \&}]{fo, }
+\item[{{\bf Sp\+Mat} \&}]{M\+\_\+matrix, }
+\item[{{\bf Sp\+Mat} \&}]{S\+\_\+matrix, }
+\item[{const {\bf Real} \&}]{xsi\+OfC}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1FractureBuilder_aa97ba17fc7b3502bcab47957c623ecb0}{}\label{classFVCode3D_1_1FractureBuilder_aa97ba17fc7b3502bcab47957c623ecb0}
+
+
+Construct a \hyperlink{classFVCode3D_1_1FractureBuilder}{Fracture\+Builder} operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+Mesh} & A constant reference to the mesh \\
+\hline
+{\em C\+\_\+matrix} & A reference to the coupling conditions matrix \\
+\hline
+{\em T\+\_\+matrix} & A reference to the transmissibility matrix \\
+\hline
+{\em M\+\_\+matrix} & A reference to the inner product matrix \\
+\hline
+{\em S\+\_\+matrix} & A reference to the monolithic matrix of the system \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00590}{590} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FractureBuilder_aa97ba17fc7b3502bcab47957c623ecb0_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!Fracture\+Builder@{Fracture\+Builder}}
+\index{Fracture\+Builder@{Fracture\+Builder}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{Fracture\+Builder(const Fracture\+Builder \&)=delete}{FractureBuilder(const FractureBuilder &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Fracture\+Builder\+::\+Fracture\+Builder (
+\begin{DoxyParamCaption}
+\item[{const {\bf Fracture\+Builder} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1FractureBuilder_a9d884485790af58c3aabbdf9698d3cdd}{}\label{classFVCode3D_1_1FractureBuilder_a9d884485790af58c3aabbdf9698d3cdd}
+
+
+No Copy-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!Fracture\+Builder@{Fracture\+Builder}}
+\index{Fracture\+Builder@{Fracture\+Builder}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{Fracture\+Builder()=delete}{FractureBuilder()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Fracture\+Builder\+::\+Fracture\+Builder (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1FractureBuilder_aadd70066f6b2ca44a05e90fa84248838}{}\label{classFVCode3D_1_1FractureBuilder_aadd70066f6b2ca44a05e90fa84248838}
+
+
+No Empty-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!````~Fracture\+Builder@{$\sim$\+Fracture\+Builder}}
+\index{````~Fracture\+Builder@{$\sim$\+Fracture\+Builder}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{$\sim$\+Fracture\+Builder()=default}{~FractureBuilder()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Fracture\+Builder\+::$\sim$\+Fracture\+Builder (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1FractureBuilder_adc351b64e34bcea6893cac2831466e50}{}\label{classFVCode3D_1_1FractureBuilder_adc351b64e34bcea6893cac2831466e50}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{assemble()}{assemble()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Fracture\+Builder\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1FractureBuilder_ab24549851fa577aa8d6cba68fd970d75}{}\label{classFVCode3D_1_1FractureBuilder_ab24549851fa577aa8d6cba68fd970d75}
+
+
+Assemble method for the bulk matrices. 
+
+Assemble the C, T and M matrices separately 
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00866}{866} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FractureBuilder_ab24549851fa577aa8d6cba68fd970d75_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!assemble\+\_\+\+Monolithic@{assemble\+\_\+\+Monolithic}}
+\index{assemble\+\_\+\+Monolithic@{assemble\+\_\+\+Monolithic}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{assemble\+\_\+\+Monolithic()}{assemble_Monolithic()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Fracture\+Builder\+::assemble\+\_\+\+Monolithic (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1FractureBuilder_a8aa6db02f37b5fdd9d9a86b2ca6b1fcf}{}\label{classFVCode3D_1_1FractureBuilder_a8aa6db02f37b5fdd9d9a86b2ca6b1fcf}
+
+
+Assemble method for the monolithic matrix. 
+
+Assemble the C, T and M matrices in the monolithic matrix S 
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00810}{810} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FractureBuilder_a8aa6db02f37b5fdd9d9a86b2ca6b1fcf_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!reserve\+\_\+space@{reserve\+\_\+space}}
+\index{reserve\+\_\+space@{reserve\+\_\+space}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{reserve\+\_\+space()}{reserve_space()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Fracture\+Builder\+::reserve\+\_\+space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1FractureBuilder_a27a2975168100bcf35373b4715d8b1dc}{}\label{classFVCode3D_1_1FractureBuilder_a27a2975168100bcf35373b4715d8b1dc}
+
+
+Reserve method for the fracture matrices. 
+
+Reserve the proper space for the C, T and M matrices 
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00782}{782} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FractureBuilder_a27a2975168100bcf35373b4715d8b1dc_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!reserve\+\_\+space\+\_\+\+Monolithic@{reserve\+\_\+space\+\_\+\+Monolithic}}
+\index{reserve\+\_\+space\+\_\+\+Monolithic@{reserve\+\_\+space\+\_\+\+Monolithic}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{reserve\+\_\+space\+\_\+\+Monolithic()}{reserve_space_Monolithic()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Fracture\+Builder\+::reserve\+\_\+space\+\_\+\+Monolithic (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1FractureBuilder_af3f7ade53f75d44dbb523b697bced516}{}\label{classFVCode3D_1_1FractureBuilder_af3f7ade53f75d44dbb523b697bced516}
+
+
+Reserve method for the monolithic matrix. 
+
+Reserve the proper space for the monolithic matrix S 
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00757}{757} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1FractureBuilder_af3f7ade53f75d44dbb523b697bced516_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!C@{C}}
+\index{C@{C}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{C}{C}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat}\& F\+V\+Code3\+D\+::\+Fracture\+Builder\+::C\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_a8fd06afa6c18949cfdb034db10775ace}{}\label{classFVCode3D_1_1FractureBuilder_a8fd06afa6c18949cfdb034db10775ace}
+
+
+A reference to the coupling conditions matrix. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00631}{631} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!FO@{FO}}
+\index{FO@{FO}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{FO}{FO}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Flux\+Operator}\& F\+V\+Code3\+D\+::\+Fracture\+Builder\+::\+FO\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_aa9979563fab859667fc6fc242d6e461c}{}\label{classFVCode3D_1_1FractureBuilder_aa9979563fab859667fc6fc242d6e461c}
+
+
+A reference to the transmissibility matrix. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00633}{633} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!M@{M}}
+\index{M@{M}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{M}{M}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat}\& F\+V\+Code3\+D\+::\+Fracture\+Builder\+::M\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_a24d025a1ca7ca61edeec47be5b049a52}{}\label{classFVCode3D_1_1FractureBuilder_a24d025a1ca7ca61edeec47be5b049a52}
+
+
+A reference to the inner product matrix. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00635}{635} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!M\+\_\+mesh@{M\+\_\+mesh}}
+\index{M\+\_\+mesh@{M\+\_\+mesh}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh}{M_mesh}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Rigid\+\_\+\+Mesh}\& F\+V\+Code3\+D\+::\+Fracture\+Builder\+::\+M\+\_\+mesh\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_a1d94459249cc414f162853509755fa3a}{}\label{classFVCode3D_1_1FractureBuilder_a1d94459249cc414f162853509755fa3a}
+
+
+Constant reference to the rigid mesh. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00629}{629} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!S@{S}}
+\index{S@{S}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{S}{S}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Sp\+Mat}\& F\+V\+Code3\+D\+::\+Fracture\+Builder\+::S\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_a4863fe7c2507df5d6f30dbdac2a27c31}{}\label{classFVCode3D_1_1FractureBuilder_a4863fe7c2507df5d6f30dbdac2a27c31}
+
+
+A reference to the monolithic matrix of the system. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00637}{637} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}!xsi@{xsi}}
+\index{xsi@{xsi}!F\+V\+Code3\+D\+::\+Fracture\+Builder@{F\+V\+Code3\+D\+::\+Fracture\+Builder}}
+\subsubsection[{\texorpdfstring{xsi}{xsi}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Real}\& F\+V\+Code3\+D\+::\+Fracture\+Builder\+::xsi\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1FractureBuilder_add8696ef08b9dad08e62a0ef85a437b4}{}\label{classFVCode3D_1_1FractureBuilder_add8696ef08b9dad08e62a0ef85a437b4}
+
+
+The xsi parameter of coupling conditions. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00639}{639} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8hpp}{global\+\_\+operator.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8cpp}{global\+\_\+operator.\+cpp}\end{DoxyCompactItemize}

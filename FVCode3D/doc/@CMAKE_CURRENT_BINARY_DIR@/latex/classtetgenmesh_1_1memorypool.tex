@@ -1,0 +1,246 @@
+\hypertarget{classtetgenmesh_1_1memorypool}{}\section{tetgenmesh\+:\+:memorypool Class Reference}
+\label{classtetgenmesh_1_1memorypool}\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+
+
+{\ttfamily \#include $<$tetgen.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classtetgenmesh_1_1memorypool_a101ca0a62a9baaa0a636d1ee207a3068}{memorypool} ()
+\item 
+\hyperlink{classtetgenmesh_1_1memorypool_a11c634d40b58e7a23cffb0ca1e9fcbec}{memorypool} (int, int, int, int)
+\item 
+\hyperlink{classtetgenmesh_1_1memorypool_a66f5279cdde550dc9359115765d40dce}{$\sim$memorypool} ()
+\item 
+void \hyperlink{classtetgenmesh_1_1memorypool_af1e55812acd2838a7566ea97f7af85c1}{poolinit} (int, int, int, int)
+\item 
+void \hyperlink{classtetgenmesh_1_1memorypool_a8a34eeaa526e3a27ac9187ff1ead2938}{restart} ()
+\item 
+void $\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a78b8fcc6ab49719d2217dea62f1ba652}{alloc} ()
+\item 
+void \hyperlink{classtetgenmesh_1_1memorypool_a0329d16675985efd7fd1e0a0630cabf7}{dealloc} (void $\ast$)
+\item 
+void \hyperlink{classtetgenmesh_1_1memorypool_a623b101e4e2f249d8b7e5dba65c3f7e2}{traversalinit} ()
+\item 
+void $\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a118a5e098410329d76aabd99eca0d322}{traverse} ()
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$$\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a5a00ffcfb581ef96fb53c995b25838ee}{firstblock}
+\item 
+void $\ast$$\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a63e80bcff81323ea491bfa189c15879b}{nowblock}
+\item 
+void $\ast$ \hyperlink{classtetgenmesh_1_1memorypool_ab0864200773e9371db60d190fb0c3cf7}{nextitem}
+\item 
+void $\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a5979100eaabf64ef2179a259e3adf0b7}{deaditemstack}
+\item 
+void $\ast$$\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a6830e3c672f7a7546c2ea0ed70b2ac38}{pathblock}
+\item 
+void $\ast$ \hyperlink{classtetgenmesh_1_1memorypool_a216794c50c477f54c516ca4fad023df1}{pathitem}
+\item 
+int \hyperlink{classtetgenmesh_1_1memorypool_a83ede6da644205f50ae359dc633a92a5}{alignbytes}
+\item 
+int \hyperlink{classtetgenmesh_1_1memorypool_adadcd6a22bbdd129b29e1a7a3cc4de43}{itembytes}
+\item 
+int \hyperlink{classtetgenmesh_1_1memorypool_a11a5e52e6559d7fcd95de844d69a37a4}{itemwords}
+\item 
+int \hyperlink{classtetgenmesh_1_1memorypool_a06ef9dbd1dec025a8c0475aaac348d3a}{itemsperblock}
+\item 
+long \hyperlink{classtetgenmesh_1_1memorypool_af29a38b2654a8d977dd24eea8dc72729}{items}
+\item 
+long \hyperlink{classtetgenmesh_1_1memorypool_ae9dda5bafe91eed206b26fa7d7020716}{maxitems}
+\item 
+int \hyperlink{classtetgenmesh_1_1memorypool_aa8a5667ab1f55ec7ef852d378871b9ee}{unallocateditems}
+\item 
+int \hyperlink{classtetgenmesh_1_1memorypool_ad83a51d49f6e03ff38151b870a2f51dd}{pathitemsleft}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01032}{1032} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!memorypool@{memorypool}}
+\index{memorypool@{memorypool}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{memorypool()}{memorypool()}}]{\setlength{\rightskip}{0pt plus 5cm}tetgenmesh\+::memorypool\+::memorypool (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a101ca0a62a9baaa0a636d1ee207a3068}{}\label{classtetgenmesh_1_1memorypool_a101ca0a62a9baaa0a636d1ee207a3068}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!memorypool@{memorypool}}
+\index{memorypool@{memorypool}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{memorypool(int, int, int, int)}{memorypool(int, int, int, int)}}]{\setlength{\rightskip}{0pt plus 5cm}tetgenmesh\+::memorypool\+::memorypool (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a11c634d40b58e7a23cffb0ca1e9fcbec}{}\label{classtetgenmesh_1_1memorypool_a11c634d40b58e7a23cffb0ca1e9fcbec}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!````~memorypool@{$\sim$memorypool}}
+\index{````~memorypool@{$\sim$memorypool}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{$\sim$memorypool()}{~memorypool()}}]{\setlength{\rightskip}{0pt plus 5cm}tetgenmesh\+::memorypool\+::$\sim$memorypool (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a66f5279cdde550dc9359115765d40dce}{}\label{classtetgenmesh_1_1memorypool_a66f5279cdde550dc9359115765d40dce}
+
+
+\subsection{Member Function Documentation}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!alloc@{alloc}}
+\index{alloc@{alloc}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{alloc()}{alloc()}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ tetgenmesh\+::memorypool\+::alloc (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a78b8fcc6ab49719d2217dea62f1ba652}{}\label{classtetgenmesh_1_1memorypool_a78b8fcc6ab49719d2217dea62f1ba652}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!dealloc@{dealloc}}
+\index{dealloc@{dealloc}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{dealloc(void $\ast$)}{dealloc(void *)}}]{\setlength{\rightskip}{0pt plus 5cm}void tetgenmesh\+::memorypool\+::dealloc (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a0329d16675985efd7fd1e0a0630cabf7}{}\label{classtetgenmesh_1_1memorypool_a0329d16675985efd7fd1e0a0630cabf7}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!poolinit@{poolinit}}
+\index{poolinit@{poolinit}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{poolinit(int, int, int, int)}{poolinit(int, int, int, int)}}]{\setlength{\rightskip}{0pt plus 5cm}void tetgenmesh\+::memorypool\+::poolinit (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_af1e55812acd2838a7566ea97f7af85c1}{}\label{classtetgenmesh_1_1memorypool_af1e55812acd2838a7566ea97f7af85c1}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!restart@{restart}}
+\index{restart@{restart}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{restart()}{restart()}}]{\setlength{\rightskip}{0pt plus 5cm}void tetgenmesh\+::memorypool\+::restart (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a8a34eeaa526e3a27ac9187ff1ead2938}{}\label{classtetgenmesh_1_1memorypool_a8a34eeaa526e3a27ac9187ff1ead2938}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!traversalinit@{traversalinit}}
+\index{traversalinit@{traversalinit}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{traversalinit()}{traversalinit()}}]{\setlength{\rightskip}{0pt plus 5cm}void tetgenmesh\+::memorypool\+::traversalinit (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a623b101e4e2f249d8b7e5dba65c3f7e2}{}\label{classtetgenmesh_1_1memorypool_a623b101e4e2f249d8b7e5dba65c3f7e2}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!traverse@{traverse}}
+\index{traverse@{traverse}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{traverse()}{traverse()}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ tetgenmesh\+::memorypool\+::traverse (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classtetgenmesh_1_1memorypool_a118a5e098410329d76aabd99eca0d322}{}\label{classtetgenmesh_1_1memorypool_a118a5e098410329d76aabd99eca0d322}
+
+
+\subsection{Field Documentation}
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!alignbytes@{alignbytes}}
+\index{alignbytes@{alignbytes}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{alignbytes}{alignbytes}}]{\setlength{\rightskip}{0pt plus 5cm}int tetgenmesh\+::memorypool\+::alignbytes}\hypertarget{classtetgenmesh_1_1memorypool_a83ede6da644205f50ae359dc633a92a5}{}\label{classtetgenmesh_1_1memorypool_a83ede6da644205f50ae359dc633a92a5}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01041}{1041} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!deaditemstack@{deaditemstack}}
+\index{deaditemstack@{deaditemstack}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{deaditemstack}{deaditemstack}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ tetgenmesh\+::memorypool\+::deaditemstack}\hypertarget{classtetgenmesh_1_1memorypool_a5979100eaabf64ef2179a259e3adf0b7}{}\label{classtetgenmesh_1_1memorypool_a5979100eaabf64ef2179a259e3adf0b7}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01038}{1038} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!firstblock@{firstblock}}
+\index{firstblock@{firstblock}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{firstblock}{firstblock}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$$\ast$ tetgenmesh\+::memorypool\+::firstblock}\hypertarget{classtetgenmesh_1_1memorypool_a5a00ffcfb581ef96fb53c995b25838ee}{}\label{classtetgenmesh_1_1memorypool_a5a00ffcfb581ef96fb53c995b25838ee}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01036}{1036} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!itembytes@{itembytes}}
+\index{itembytes@{itembytes}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{itembytes}{itembytes}}]{\setlength{\rightskip}{0pt plus 5cm}int tetgenmesh\+::memorypool\+::itembytes}\hypertarget{classtetgenmesh_1_1memorypool_adadcd6a22bbdd129b29e1a7a3cc4de43}{}\label{classtetgenmesh_1_1memorypool_adadcd6a22bbdd129b29e1a7a3cc4de43}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01042}{1042} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!items@{items}}
+\index{items@{items}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{items}{items}}]{\setlength{\rightskip}{0pt plus 5cm}long tetgenmesh\+::memorypool\+::items}\hypertarget{classtetgenmesh_1_1memorypool_af29a38b2654a8d977dd24eea8dc72729}{}\label{classtetgenmesh_1_1memorypool_af29a38b2654a8d977dd24eea8dc72729}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01044}{1044} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!itemsperblock@{itemsperblock}}
+\index{itemsperblock@{itemsperblock}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{itemsperblock}{itemsperblock}}]{\setlength{\rightskip}{0pt plus 5cm}int tetgenmesh\+::memorypool\+::itemsperblock}\hypertarget{classtetgenmesh_1_1memorypool_a06ef9dbd1dec025a8c0475aaac348d3a}{}\label{classtetgenmesh_1_1memorypool_a06ef9dbd1dec025a8c0475aaac348d3a}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01043}{1043} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!itemwords@{itemwords}}
+\index{itemwords@{itemwords}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{itemwords}{itemwords}}]{\setlength{\rightskip}{0pt plus 5cm}int tetgenmesh\+::memorypool\+::itemwords}\hypertarget{classtetgenmesh_1_1memorypool_a11a5e52e6559d7fcd95de844d69a37a4}{}\label{classtetgenmesh_1_1memorypool_a11a5e52e6559d7fcd95de844d69a37a4}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01042}{1042} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!maxitems@{maxitems}}
+\index{maxitems@{maxitems}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{maxitems}{maxitems}}]{\setlength{\rightskip}{0pt plus 5cm}long tetgenmesh\+::memorypool\+::maxitems}\hypertarget{classtetgenmesh_1_1memorypool_ae9dda5bafe91eed206b26fa7d7020716}{}\label{classtetgenmesh_1_1memorypool_ae9dda5bafe91eed206b26fa7d7020716}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01044}{1044} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!nextitem@{nextitem}}
+\index{nextitem@{nextitem}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{nextitem}{nextitem}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ tetgenmesh\+::memorypool\+::nextitem}\hypertarget{classtetgenmesh_1_1memorypool_ab0864200773e9371db60d190fb0c3cf7}{}\label{classtetgenmesh_1_1memorypool_ab0864200773e9371db60d190fb0c3cf7}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01037}{1037} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!nowblock@{nowblock}}
+\index{nowblock@{nowblock}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{nowblock}{nowblock}}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$$\ast$ tetgenmesh\+::memorypool\+::nowblock}\hypertarget{classtetgenmesh_1_1memorypool_a63e80bcff81323ea491bfa189c15879b}{}\label{classtetgenmesh_1_1memorypool_a63e80bcff81323ea491bfa189c15879b}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01036}{1036} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!pathblock@{pathblock}}
+\index{pathblock@{pathblock}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{pathblock}{pathblock}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$$\ast$ tetgenmesh\+::memorypool\+::pathblock}\hypertarget{classtetgenmesh_1_1memorypool_a6830e3c672f7a7546c2ea0ed70b2ac38}{}\label{classtetgenmesh_1_1memorypool_a6830e3c672f7a7546c2ea0ed70b2ac38}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01039}{1039} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!pathitem@{pathitem}}
+\index{pathitem@{pathitem}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{pathitem}{pathitem}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ tetgenmesh\+::memorypool\+::pathitem}\hypertarget{classtetgenmesh_1_1memorypool_a216794c50c477f54c516ca4fad023df1}{}\label{classtetgenmesh_1_1memorypool_a216794c50c477f54c516ca4fad023df1}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01040}{1040} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!pathitemsleft@{pathitemsleft}}
+\index{pathitemsleft@{pathitemsleft}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{pathitemsleft}{pathitemsleft}}]{\setlength{\rightskip}{0pt plus 5cm}int tetgenmesh\+::memorypool\+::pathitemsleft}\hypertarget{classtetgenmesh_1_1memorypool_ad83a51d49f6e03ff38151b870a2f51dd}{}\label{classtetgenmesh_1_1memorypool_ad83a51d49f6e03ff38151b870a2f51dd}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01046}{1046} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+\index{tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}!unallocateditems@{unallocateditems}}
+\index{unallocateditems@{unallocateditems}!tetgenmesh\+::memorypool@{tetgenmesh\+::memorypool}}
+\subsubsection[{\texorpdfstring{unallocateditems}{unallocateditems}}]{\setlength{\rightskip}{0pt plus 5cm}int tetgenmesh\+::memorypool\+::unallocateditems}\hypertarget{classtetgenmesh_1_1memorypool_aa8a5667ab1f55ec7ef852d378871b9ee}{}\label{classtetgenmesh_1_1memorypool_aa8a5667ab1f55ec7ef852d378871b9ee}
+
+
+Definition at line \hyperlink{tetgen_8h_source_l01045}{1045} of file \hyperlink{tetgen_8h_source}{tetgen.\+h}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/\hyperlink{tetgen_8h}{tetgen.\+h}\end{DoxyCompactItemize}

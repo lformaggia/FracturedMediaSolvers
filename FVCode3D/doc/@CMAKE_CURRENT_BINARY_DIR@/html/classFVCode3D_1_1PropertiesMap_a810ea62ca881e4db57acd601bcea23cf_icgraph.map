@@ -1,0 +1,17 @@
+<map id="FVCode3D::PropertiesMap::getMobility" name="FVCode3D::PropertiesMap::getMobility">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1FluxOperator.html#a4f96ac53cafc68eccb01d8ff29eecc87" title="Assemble method. " alt="" coords="238,5,409,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1FluxOperator.html#aeb808234dae8f8d0a188f8c2efcda0ae" title="Impose fractures BC method. " alt="" coords="238,71,409,112"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1FractureBuilder.html#a8aa6db02f37b5fdd9d9a86b2ca6b1fcf" title="Assemble method for the monolithic matrix. " alt="" coords="232,136,415,177"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1FractureBuilder.html#ab24549851fa577aa8d6cba68fd970d75" title="Assemble method for the bulk matrices. " alt="" coords="232,201,415,243"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1StiffMatrix.html#a94c6757030321f8f557a6625e1bc2706" title="Assemble the porous medium block. " alt="" coords="242,332,405,373"/>
+<area shape="rect" id="node13" href="$classFVCode3D_1_1StiffMatrix.html#aee24f1b77e66c0bb7be4efbf43671c44" title="Assemble the BCs for the porous medium. " alt="" coords="232,397,415,439"/>
+<area shape="rect" id="node14" href="$classFVCode3D_1_1StiffMatrix.html#a14fa2721385e2cc9c0c179c2cff6e618" title="Assemble the fractures block. " alt="" coords="246,463,401,504"/>
+<area shape="rect" id="node15" href="$classFVCode3D_1_1StiffMatrix.html#af7e80d2641fc41174eb4cb56e2f119d4" title="Assemble the BCs for the fractures. " alt="" coords="246,267,401,308"/>
+<area shape="rect" id="node16" href="$classFVCode3D_1_1StiffMatrix.html#ac3eb491563c1742f4adba021e397719b" title="Assemble method with MFD. " alt="" coords="463,515,617,556"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1StiffMatrix.html#af63e81815a2ba8bd62a2156a80adce55" title="Assemble method. " alt="" coords="463,397,617,439"/>
+<area shape="rect" id="node12" href="$classFVCode3D_1_1StiffMatrix.html#a21f75de574e807c965eedb52f626527e" title="Set offsets. " alt="" coords="463,332,617,373"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1StiffMatrix.html#a6cb858d3e2c0196e1884deddde864343" title="Get BC vector (const) " alt="" coords="665,456,820,497"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1DarcySteady.html#af48f96919f23df0f0708c8692da14bbd" title="Assemble matrix method. " alt="" coords="868,456,1039,497"/>
+<area shape="rect" id="node10" href="$classFVCode3D_1_1DarcySteady.html#a2709d24b9841b8f227b5b7c1417505df" title="Get the stiffness matrix. " alt="" coords="1087,423,1257,464"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1DarcySteady.html#aaa82aad9d7006a5c1e96e103f602082b" title="Solve method. " alt="" coords="1087,488,1257,529"/>
+</map>

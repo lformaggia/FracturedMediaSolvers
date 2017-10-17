@@ -1,0 +1,97 @@
+\hypertarget{Fracture3D_8hpp_source}{}\section{Fracture3\+D.\+hpp}
+\label{Fracture3D_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/fracture/\+Fracture3\+D.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/fracture/\+Fracture3\+D.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef FRACTURE3D\_HPP\_}
+00007 \textcolor{preprocessor}{#define FRACTURE3D\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 \textcolor{preprocessor}{#include <fstream>}
+00011 
+00012 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00013 \{
+00014 
+00015 \textcolor{keyword}{class }Mesh3D;
+00016 
+00018 
+\hypertarget{Fracture3D_8hpp_source.tex_l00022}{}\hyperlink{classFVCode3D_1_1Fracture3D}{00022} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1Fracture3D}{Fracture3D}
+00023 \{
+00024 \textcolor{keyword}{public}:
+00026 
+00027 
+00029 
+00032     \hyperlink{classFVCode3D_1_1Fracture3D_a71eac02a97fa86896ae0a779fa581d03}{Fracture3D}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh);
+00033 
+00035 
+00038     \hyperlink{classFVCode3D_1_1Fracture3D_a71eac02a97fa86896ae0a779fa581d03}{Fracture3D}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Fracture3D}{Fracture3D} & f);
+00039 
+00041 
+00046     \hyperlink{classFVCode3D_1_1Fracture3D_a71eac02a97fa86896ae0a779fa581d03}{Fracture3D}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::vector<UInt> & fractureFacets, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \textcolor{keywordtype}{id});
+00047 
+00049     \hyperlink{classFVCode3D_1_1Fracture3D_ab485e2197b87c25de7f8d42db04a3b95}{~Fracture3D}() = \textcolor{keywordflow}{default};
+00050 
+00052 
+00054 
+00055 
+00057 
+\hypertarget{Fracture3D_8hpp_source.tex_l00061}{}\hyperlink{classFVCode3D_1_1Fracture3D_ab3dae8603c747c67b0483e01b863a89e}{00061}     \hyperlink{classFVCode3D_1_1Fracture3D}{Fracture3D} & \hyperlink{classFVCode3D_1_1Fracture3D_ab3dae8603c747c67b0483e01b863a89e}{operator=}(\hyperlink{classFVCode3D_1_1Fracture3D}{Fracture3D} f)
+00062         \{ \hyperlink{classFVCode3D_1_1Fracture3D_a38b5200e499e51977db8f816a95eccd9}{M\_id} = f.\hyperlink{classFVCode3D_1_1Fracture3D_acf744c39ce0958b84a2ce9c09d314ec4}{getId}(); \hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{M\_fractureFacets} = f.
+      \hyperlink{classFVCode3D_1_1Fracture3D_af63aa07d454891f7edaa087ade1c2135}{getFractureFacetsId}(); \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \};
+00063 
+00065 
+00067 
+00068 
+00070 
+\hypertarget{Fracture3D_8hpp_source.tex_l00073}{}\hyperlink{classFVCode3D_1_1Fracture3D_acf744c39ce0958b84a2ce9c09d314ec4}{00073}     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} & \hyperlink{classFVCode3D_1_1Fracture3D_acf744c39ce0958b84a2ce9c09d314ec4}{getId}()\textcolor{keyword}{ const}
+00074 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_a38b5200e499e51977db8f816a95eccd9}{M\_id}; \}
+00075 
+00077 
+\hypertarget{Fracture3D_8hpp_source.tex_l00080}{}\hyperlink{classFVCode3D_1_1Fracture3D_a1d629570ce5bcc0f325712fac71e244d}{00080}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} & \hyperlink{classFVCode3D_1_1Fracture3D_a1d629570ce5bcc0f325712fac71e244d}{getId}()
+00081         \{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_a38b5200e499e51977db8f816a95eccd9}{M\_id}; \}
+00082 
+00084 
+\hypertarget{Fracture3D_8hpp_source.tex_l00087}{}\hyperlink{classFVCode3D_1_1Fracture3D_af63aa07d454891f7edaa087ade1c2135}{00087}     \textcolor{keyword}{const} std::vector<UInt> & \hyperlink{classFVCode3D_1_1Fracture3D_af63aa07d454891f7edaa087ade1c2135}{getFractureFacetsId}()\textcolor{keyword}{ const}
+00088 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{M\_fractureFacets}; \}
+00089 
+00091 
+\hypertarget{Fracture3D_8hpp_source.tex_l00094}{}\hyperlink{classFVCode3D_1_1Fracture3D_addd7ef9cc420c38bb21d5e13405366db}{00094}     std::vector<UInt> & \hyperlink{classFVCode3D_1_1Fracture3D_addd7ef9cc420c38bb21d5e13405366db}{getFractureFacetsId}()
+00095         \{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{M\_fractureFacets}; \}
+00096 
+00098 
+\hypertarget{Fracture3D_8hpp_source.tex_l00101}{}\hyperlink{classFVCode3D_1_1Fracture3D_ad4591d70b2481c683707038ab0e870c9}{00101}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1Fracture3D_ad4591d70b2481c683707038ab0e870c9}{getNumberOfFractureFacets}()\textcolor{keyword}{ const}
+00102 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{M\_fractureFacets}.size(); \}
+00103 
+00105 
+\hypertarget{Fracture3D_8hpp_source.tex_l00108}{}\hyperlink{classFVCode3D_1_1Fracture3D_abfb272291358decd4671bea92f219d0a}{00108}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & \hyperlink{classFVCode3D_1_1Fracture3D_abfb272291358decd4671bea92f219d0a}{getMesh}()\textcolor{keyword}{ const}
+00109 \textcolor{keyword}{        }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_ab3ceda8a7f2e67ee5d94a08be2ba2977}{M\_mesh}; \}
+00110 
+00112 
+00114 
+00115 
+00117 
+\hypertarget{Fracture3D_8hpp_source.tex_l00120}{}\hyperlink{classFVCode3D_1_1Fracture3D_a8511764a838f561a17bff2013892a24c}{00120}     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Fracture3D_a8511764a838f561a17bff2013892a24c}{push\_back}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} idFacet)
+00121         \{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{M\_fractureFacets}.push\_back(idFacet); \}
+00122 
+00124 
+00126 
+00127 
+00129 
+00135     \textcolor{keywordtype}{bool} \hyperlink{classFVCode3D_1_1Fracture3D_a1043c8fc93b79a1cea8d67d8adb2a418}{exportVTK}(\textcolor{keyword}{const} std::string & filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}();
+00136 
+00138 
+00141     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1Fracture3D_a35cf7c9104e494422e41a87faae74d65}{showMe}(std::ostream & out=std::cout) \textcolor{keyword}{const};
+00142 
+00144 
+00145 \textcolor{keyword}{private}:
+00146 
+\hypertarget{Fracture3D_8hpp_source.tex_l00148}{}\hyperlink{classFVCode3D_1_1Fracture3D_a38b5200e499e51977db8f816a95eccd9}{00148}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1Fracture3D_a38b5200e499e51977db8f816a95eccd9}{M\_id};
+\hypertarget{Fracture3D_8hpp_source.tex_l00150}{}\hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{00150}     std::vector<UInt> \hyperlink{classFVCode3D_1_1Fracture3D_ab2da921dc007666c4f9111b3204f0072}{M\_fractureFacets};
+\hypertarget{Fracture3D_8hpp_source.tex_l00152}{}\hyperlink{classFVCode3D_1_1Fracture3D_ab3ceda8a7f2e67ee5d94a08be2ba2977}{00152}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & \hyperlink{classFVCode3D_1_1Fracture3D_ab3ceda8a7f2e67ee5d94a08be2ba2977}{M\_mesh};
+00153 \};
+00154 
+00155 \} \textcolor{comment}{// namespace FVCode3D}
+00156 
+00157 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* FRACTURE3D\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

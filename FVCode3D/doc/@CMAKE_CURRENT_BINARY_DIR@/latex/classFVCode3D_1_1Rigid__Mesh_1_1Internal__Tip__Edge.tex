@@ -1,0 +1,140 @@
+\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{}\section{F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Internal\+\_\+\+Tip\+\_\+\+Edge Class Reference}
+\label{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}}
+
+
+Class that represents an interior tip edge.  
+
+
+
+
+{\ttfamily \#include $<$Rigid\+Mesh.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Internal\+\_\+\+Tip\+\_\+\+Edge\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Rigid\+\_\+\+Mesh\+:\+:Internal\+\_\+\+Tip\+\_\+\+Edge\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}{Internal\+\_\+\+Tip\+\_\+\+Edge} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} edge\+\_\+\+Id, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} given an edge id. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_abfeee084644b2e286cae2b1f54dd5725}{Internal\+\_\+\+Tip\+\_\+\+Edge} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} \&internal\+\_\+tip\+\_\+edge, \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} $\ast$const mesh)
+\begin{DoxyCompactList}\small\item\em Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} given a interior\+\_\+tip\+\_\+edge belonging to another \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a7c363edbfdc751972e6666389f44d861}{Internal\+\_\+\+Tip\+\_\+\+Edge} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} \&e)
+\begin{DoxyCompactList}\small\item\em Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} given a interior\+\_\+tip\+\_\+edge. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a4334fd925f5aaf122058e5342a442a4c}{$\sim$\+Internal\+\_\+\+Tip\+\_\+\+Edge} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class that represents an interior tip edge. 
+
+This class is derived from the class \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Tip__Edge}{Tip\+\_\+\+Edge}. This class contains the id of an edge which belongs to at least a fracture, it is a boundary edge for at least a fracture and it is an interior edge for the domain. 
+
+Definition at line \hyperlink{RigidMesh_8hpp_source_l00902}{902} of file \hyperlink{RigidMesh_8hpp_source}{Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}!Internal\+\_\+\+Tip\+\_\+\+Edge@{Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\index{Internal\+\_\+\+Tip\+\_\+\+Edge@{Internal\+\_\+\+Tip\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Internal\+\_\+\+Tip\+\_\+\+Edge(const U\+Int edge\+\_\+\+Id, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Internal_Tip_Edge(const UInt edge_Id, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{edge\+\_\+\+Id, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a72df5810047bdf0fa4a90b479a8d1121}
+
+
+Constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} given an edge id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em edge\+\_\+id} & is the id of an \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Edge} of a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \\
+\hline
+{\em mesh} & is a pointer to the mesh to which the edge belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00803}{803} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}!Internal\+\_\+\+Tip\+\_\+\+Edge@{Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\index{Internal\+\_\+\+Tip\+\_\+\+Edge@{Internal\+\_\+\+Tip\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Internal\+\_\+\+Tip\+\_\+\+Edge(const Internal\+\_\+\+Tip\+\_\+\+Edge \&internal\+\_\+tip\+\_\+edge, Rigid\+\_\+\+Mesh $\ast$const mesh)}{Internal_Tip_Edge(const Internal_Tip_Edge &internal_tip_edge, Rigid_Mesh *const mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+\item[{const {\bf Internal\+\_\+\+Tip\+\_\+\+Edge} \&}]{internal\+\_\+tip\+\_\+edge, }
+\item[{{\bf Rigid\+\_\+\+Mesh} $\ast$const}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_abfeee084644b2e286cae2b1f54dd5725}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_abfeee084644b2e286cae2b1f54dd5725}
+
+
+Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} given a interior\+\_\+tip\+\_\+edge belonging to another \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em internal\+\_\+tip\+\_\+edge} & reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} \\
+\hline
+{\em mesh} & is a pointer to the mesh to which the edge belongs \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00808}{808} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}!Internal\+\_\+\+Tip\+\_\+\+Edge@{Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\index{Internal\+\_\+\+Tip\+\_\+\+Edge@{Internal\+\_\+\+Tip\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{Internal\+\_\+\+Tip\+\_\+\+Edge(const Internal\+\_\+\+Tip\+\_\+\+Edge \&e)}{Internal_Tip_Edge(const Internal_Tip_Edge &e)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+\item[{const {\bf Internal\+\_\+\+Tip\+\_\+\+Edge} \&}]{e}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a7c363edbfdc751972e6666389f44d861}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a7c363edbfdc751972e6666389f44d861}
+
+
+Copy constructor for a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} given a interior\+\_\+tip\+\_\+edge. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em e} & reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\+\_\+\+Tip\+\_\+\+Edge} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{RigidMesh_8cpp_source_l00813}{813} of file \hyperlink{RigidMesh_8cpp_source}{Rigid\+Mesh.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}!````~Internal\+\_\+\+Tip\+\_\+\+Edge@{$\sim$\+Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\index{````~Internal\+\_\+\+Tip\+\_\+\+Edge@{$\sim$\+Internal\+\_\+\+Tip\+\_\+\+Edge}!F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge@{F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge}}
+\subsubsection[{\texorpdfstring{$\sim$\+Internal\+\_\+\+Tip\+\_\+\+Edge()=default}{~Internal_Tip_Edge()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Rigid\+\_\+\+Mesh\+::\+Internal\+\_\+\+Tip\+\_\+\+Edge\+::$\sim$\+Internal\+\_\+\+Tip\+\_\+\+Edge (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a4334fd925f5aaf122058e5342a442a4c}{}\label{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge_a4334fd925f5aaf122058e5342a442a4c}
+
+
+Destructor. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8hpp}{Rigid\+Mesh.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{RigidMesh_8cpp}{Rigid\+Mesh.\+cpp}\end{DoxyCompactItemize}

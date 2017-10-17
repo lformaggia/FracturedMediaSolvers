@@ -1,0 +1,4 @@
+<map id="FVCode3D::Mesh3D::Facet3D::computeCentroidAndNormalAndArea" name="FVCode3D::Mesh3D::Facet3D::computeCentroidAndNormalAndArea">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#aff7e597dcc26f5733b0e954a2e73afab" title="Constructor for the facet of a specified mesh moving from the vertices. " alt="" coords="308,5,500,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D_1_1Facet3D.html#a85a5f6331b71abd97a35b33518c3cbb4" title="Test if the facet is a border facet. " alt="" coords="308,71,500,112"/>
+</map>

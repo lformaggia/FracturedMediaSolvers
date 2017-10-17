@@ -1,0 +1,619 @@
+\hypertarget{classFVCode3D_1_1MSR}{}\section{F\+V\+Code3D\+:\+:M\+SR$<$ Problem\+Type $>$ Class Template Reference}
+\label{classFVCode3D_1_1MSR}\index{F\+V\+Code3\+D\+::\+M\+S\+R$<$ Problem\+Type $>$@{F\+V\+Code3\+D\+::\+M\+S\+R$<$ Problem\+Type $>$}}
+
+
+Class that implements the multiple sub regions method.  
+
+
+
+
+{\ttfamily \#include $<$Multiple\+Sub\+Regions.\+hpp$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Problem\+Type \hyperlink{classFVCode3D_1_1MSR_aee0f8176a894e4f695baa08af10d14cf}{problem\+\_\+\+Type}
+\item 
+typedef \hyperlink{classFVCode3D_1_1MSR}{M\+SR}$<$ \hyperlink{classFVCode3D_1_1MSR_aee0f8176a894e4f695baa08af10d14cf}{problem\+\_\+\+Type} $>$ \hyperlink{classFVCode3D_1_1MSR_a88e19436275c5ca4ed6629c2a3bb8480}{class\+\_\+\+Type}
+\item 
+typedef std\+::function$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}(const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \&, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&)$>$ \hyperlink{classFVCode3D_1_1MSR_aebe9d4e9bbcc367d79b0aae7b794c5a6}{region\+Fct\+\_\+\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructors and destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1MSR_afde22943dde9de3aa2f2eec71207201f}{M\+SR} ()=delete
+\begin{DoxyCompactList}\small\item\em No empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1MSR_adf51f6d947efdd20fc55e28e32f03178}{M\+SR} (Problem\+Type $\ast$problem, const \hyperlink{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}{Data\+Ptr\+\_\+\+Type} \&data)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1MSR_ae08f2baa5cdfc35c42b2617b9308b09f}{$\sim$\+M\+SR} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{namespaceFVCode3D_a9c3dcef0872c1dbd4aaf770d08421fd7}{U\+Int\+Vector} \& \hyperlink{classFVCode3D_1_1MSR_a45eca62b8bdf376a08c668b1535ac275}{get\+Colors\+Vector} () const 
+\begin{DoxyCompactList}\small\item\em Get the vector with the id of the sub-\/region for each cell. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \& \hyperlink{classFVCode3D_1_1MSR_a9ec80ddf6aa0e39f5b7ac338cac71904}{get\+Transmissibility} () const 
+\begin{DoxyCompactList}\small\item\em Get the transmissibilities vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1MSR_aea841370ef1133a635c885714670abec}{setup} ()
+\begin{DoxyCompactList}\small\item\em Set dofs and initialize the sub-\/regions vector. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1MSR_af28b461584648e7d01bc515944ff42e8}{create\+Regions} (const \hyperlink{classFVCode3D_1_1MSR_aebe9d4e9bbcc367d79b0aae7b794c5a6}{region\+Fct\+\_\+\+Type} \&\+\_\+region\+Fct=\hyperlink{namespaceFVCode3D_ae0b3b38fc8dff58445ba3d625deae285}{linear\+Region\+Selection})
+\begin{DoxyCompactList}\small\item\em Compute for each cell in which region it belongs. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1MSR_ae05006ec34d2e773279b4a3028e08d21}{is\+Pseudo\+Steady\+State} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&\+\_\+old\+Solution)
+\begin{DoxyCompactList}\small\item\em Check if the solution is at the pseudo steady state. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1MSR_a86a998e349b36dbbef9300b15653afc2}{compute\+Transmissibility} ()
+\begin{DoxyCompactList}\small\item\em Compute the transmissibility between each sub region. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1MSR_afc43a5ff2dc8f0dce321aa3d03b45194}{compute\+Delta\+Pressure} ()
+\begin{DoxyCompactList}\small\item\em Compute the variation of the pressure. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1MSR_a6425feaf241a89b4be13bab2e83c8b2e}{compute\+Average\+Pressure} (std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \&\+\_\+average\+Pressure) const 
+\begin{DoxyCompactList}\small\item\em Compute the average pressure in each sub region. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1MSR_ae29570a0d0d6767454ebf70f97e22f47}{compute\+Flux} (std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \&flux) const 
+\begin{DoxyCompactList}\small\item\em Compute the flux between each sub region. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1MSR_aee0f8176a894e4f695baa08af10d14cf}{problem\+\_\+\+Type} $\ast$ \hyperlink{classFVCode3D_1_1MSR_a531760a5415f63b7be6087ab117031e5}{M\+\_\+problem}
+\begin{DoxyCompactList}\small\item\em Darcy problem. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}{Data\+Ptr\+\_\+\+Type} \& \hyperlink{classFVCode3D_1_1MSR_a03e013e5191655455e66563e815f262b}{M\+\_\+data}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classFVCode3D_1_1Data}{Data} for the problem. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1MSR_a52fc7223f5d641543781b1224e686610}{M\+\_\+dof\+Total}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classFVCode3D_1_1Problem}{Problem} total dofs. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1MSR_ae96e6d741dd194e8be925062759acbc9}{M\+\_\+dof\+Fractures}
+\begin{DoxyCompactList}\small\item\em Fracture dofs. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1MSR_a04c41dbcba341c70158af3db7b69916e}{M\+\_\+dof\+Porous\+Matrix}
+\begin{DoxyCompactList}\small\item\em Porous matrix dofs. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a9c3dcef0872c1dbd4aaf770d08421fd7}{U\+Int\+Vector} \hyperlink{classFVCode3D_1_1MSR_a38cba0138e4ebd055d47b3d9d9d32623}{M\+\_\+multiple\+Sub\+Regions}
+\begin{DoxyCompactList}\small\item\em Vector of colors of the sub-\/regions. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1MSR_a292e038fb48f7f4f39238d375ea6f6e0}{M\+\_\+max\+Solution}
+\begin{DoxyCompactList}\small\item\em Maximum of the solution. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1MSR_a6e8eb6a0513e4b46241950b8ee2b7212}{M\+\_\+min\+Solution}
+\begin{DoxyCompactList}\small\item\em Minimum of the solution. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1MSR_aa4276f60467226b5aae9e12c024701f6}{M\+\_\+is\+Pseudo\+Steady\+State}
+\begin{DoxyCompactList}\small\item\em If the state is a pseudo-\/steady state. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1MSR_a481d90b7ea3b6d1f3f818f811e58a9a3}{M\+\_\+local\+Nb\+Time\+Step\+Steady\+State}
+\begin{DoxyCompactList}\small\item\em Number of the time step that the state is at the pseudo-\/steady state. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1MSR_ae1152dcd118f020c5cd9fefe4eafd5e4}{M\+\_\+constant\+Value}
+\begin{DoxyCompactList}\small\item\em c \+:= \{  p \}\{  t\} \end{DoxyCompactList}\item 
+std\+::vector$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} $>$ \hyperlink{classFVCode3D_1_1MSR_abcb3d099c26d9747b02231cb0d3b7bb3}{M\+\_\+transmissibilities}
+\begin{DoxyCompactList}\small\item\em Transmissibilities vector. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Problem\+Type$>$\\*
+class F\+V\+Code3\+D\+::\+M\+S\+R$<$ Problem\+Type $>$}
+
+Class that implements the multiple sub regions method. 
+
+This class implements the multiple sub regions method. Given the solution and the number of sub regions, it computes for each cell in which sub region the cell belongs. 
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00037}{37} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!class\+\_\+\+Type@{class\+\_\+\+Type}}
+\index{class\+\_\+\+Type@{class\+\_\+\+Type}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{class\+\_\+\+Type}{class_Type}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ typedef {\bf M\+SR}$<${\bf problem\+\_\+\+Type}$>$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::{\bf class\+\_\+\+Type}}\hypertarget{classFVCode3D_1_1MSR_a88e19436275c5ca4ed6629c2a3bb8480}{}\label{classFVCode3D_1_1MSR_a88e19436275c5ca4ed6629c2a3bb8480}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00042}{42} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!problem\+\_\+\+Type@{problem\+\_\+\+Type}}
+\index{problem\+\_\+\+Type@{problem\+\_\+\+Type}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{problem\+\_\+\+Type}{problem_Type}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ typedef Problem\+Type {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::{\bf problem\+\_\+\+Type}}\hypertarget{classFVCode3D_1_1MSR_aee0f8176a894e4f695baa08af10d14cf}{}\label{classFVCode3D_1_1MSR_aee0f8176a894e4f695baa08af10d14cf}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00041}{41} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!region\+Fct\+\_\+\+Type@{region\+Fct\+\_\+\+Type}}
+\index{region\+Fct\+\_\+\+Type@{region\+Fct\+\_\+\+Type}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{region\+Fct\+\_\+\+Type}{regionFct_Type}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ typedef std\+::function$<${\bf U\+Int}(const {\bf Real}\&, const {\bf U\+Int}\&, const {\bf Real}\&, const {\bf Real}\& )$>$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::{\bf region\+Fct\+\_\+\+Type}}\hypertarget{classFVCode3D_1_1MSR_aebe9d4e9bbcc367d79b0aae7b794c5a6}{}\label{classFVCode3D_1_1MSR_aebe9d4e9bbcc367d79b0aae7b794c5a6}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00043}{43} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+SR@{M\+SR}}
+\index{M\+SR@{M\+SR}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+S\+R()=delete}{MSR()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::{\bf M\+SR} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1MSR_afde22943dde9de3aa2f2eec71207201f}{}\label{classFVCode3D_1_1MSR_afde22943dde9de3aa2f2eec71207201f}
+
+
+No empty constructor. 
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+SR@{M\+SR}}
+\index{M\+SR@{M\+SR}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+S\+R(\+Problem\+Type $\ast$problem, const Data\+Ptr\+\_\+\+Type \&data)}{MSR(ProblemType *problem, const DataPtr_Type &data)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::{\bf M\+SR} (
+\begin{DoxyParamCaption}
+\item[{Problem\+Type $\ast$}]{problem, }
+\item[{const {\bf Data\+Ptr\+\_\+\+Type} \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1MSR_adf51f6d947efdd20fc55e28e32f03178}{}\label{classFVCode3D_1_1MSR_adf51f6d947efdd20fc55e28e32f03178}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em problem} & a pointer of a \hyperlink{classFVCode3D_1_1Problem}{Problem} class \\
+\hline
+{\em data} & a constant reference to a \hyperlink{classFVCode3D_1_1Data}{Data} class \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00153}{153} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!````~M\+SR@{$\sim$\+M\+SR}}
+\index{````~M\+SR@{$\sim$\+M\+SR}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{$\sim$\+M\+S\+R()=default}{~MSR()=default}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::$\sim${\bf M\+SR} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1MSR_ae08f2baa5cdfc35c42b2617b9308b09f}{}\label{classFVCode3D_1_1MSR_ae08f2baa5cdfc35c42b2617b9308b09f}
+
+
+Default destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!compute\+Average\+Pressure@{compute\+Average\+Pressure}}
+\index{compute\+Average\+Pressure@{compute\+Average\+Pressure}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{compute\+Average\+Pressure(std\+::vector$<$ Real $>$ \&\+\_\+average\+Pressure) const }{computeAveragePressure(std::vector< Real > &_averagePressure) const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::compute\+Average\+Pressure (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Real} $>$ \&}]{\+\_\+average\+Pressure}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a6425feaf241a89b4be13bab2e83c8b2e}{}\label{classFVCode3D_1_1MSR_a6425feaf241a89b4be13bab2e83c8b2e}
+
+
+Compute the average pressure in each sub region. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+average\+Pressure} & vector that will contain the average pressures The last value contains the boundary pressure \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00233}{233} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_a6425feaf241a89b4be13bab2e83c8b2e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!compute\+Delta\+Pressure@{compute\+Delta\+Pressure}}
+\index{compute\+Delta\+Pressure@{compute\+Delta\+Pressure}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{compute\+Delta\+Pressure()}{computeDeltaPressure()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::compute\+Delta\+Pressure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_afc43a5ff2dc8f0dce321aa3d03b45194}{}\label{classFVCode3D_1_1MSR_afc43a5ff2dc8f0dce321aa3d03b45194}
+
+
+Compute the variation of the pressure. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00192}{192} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classFVCode3D_1_1MSR_afc43a5ff2dc8f0dce321aa3d03b45194_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_afc43a5ff2dc8f0dce321aa3d03b45194_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!compute\+Flux@{compute\+Flux}}
+\index{compute\+Flux@{compute\+Flux}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{compute\+Flux(std\+::vector$<$ Real $>$ \&flux) const }{computeFlux(std::vector< Real > &flux) const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::compute\+Flux (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Real} $>$ \&}]{flux}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_ae29570a0d0d6767454ebf70f97e22f47}{}\label{classFVCode3D_1_1MSR_ae29570a0d0d6767454ebf70f97e22f47}
+
+
+Compute the flux between each sub region. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em flux} & vector that will contain the flux It also compute the transmissibility at the domain boundary \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00274}{274} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_ae29570a0d0d6767454ebf70f97e22f47_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!compute\+Transmissibility@{compute\+Transmissibility}}
+\index{compute\+Transmissibility@{compute\+Transmissibility}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{compute\+Transmissibility()}{computeTransmissibility()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::compute\+Transmissibility (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1MSR_a86a998e349b36dbbef9300b15653afc2}{}\label{classFVCode3D_1_1MSR_a86a998e349b36dbbef9300b15653afc2}
+
+
+Compute the transmissibility between each sub region. 
+
+It also compute the transmissibility at the domain boundary 
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00217}{217} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_a86a998e349b36dbbef9300b15653afc2_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_a86a998e349b36dbbef9300b15653afc2_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!create\+Regions@{create\+Regions}}
+\index{create\+Regions@{create\+Regions}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{create\+Regions(const region\+Fct\+\_\+\+Type \&\+\_\+region\+Fct=linear\+Region\+Selection)}{createRegions(const regionFct_Type &_regionFct=linearRegionSelection)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::create\+Regions (
+\begin{DoxyParamCaption}
+\item[{const {\bf region\+Fct\+\_\+\+Type} \&}]{\+\_\+region\+Fct = {\ttfamily {\bf linear\+Region\+Selection}}}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1MSR_af28b461584648e7d01bc515944ff42e8}{}\label{classFVCode3D_1_1MSR_af28b461584648e7d01bc515944ff42e8}
+
+
+Compute for each cell in which region it belongs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+region\+Fct} & function used to divide the range solution \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00176}{176} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_af28b461584648e7d01bc515944ff42e8_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_af28b461584648e7d01bc515944ff42e8_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!get\+Colors\+Vector@{get\+Colors\+Vector}}
+\index{get\+Colors\+Vector@{get\+Colors\+Vector}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{get\+Colors\+Vector() const }{getColorsVector() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ const {\bf U\+Int\+Vector}\& {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::get\+Colors\+Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1MSR_a45eca62b8bdf376a08c668b1535ac275}{}\label{classFVCode3D_1_1MSR_a45eca62b8bdf376a08c668b1535ac275}
+
+
+Get the vector with the id of the sub-\/region for each cell. 
+
+\begin{DoxyReturn}{Returns}
+the vector with the id of the sub-\/region for each cell 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00070}{70} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{classFVCode3D_1_1MSR_a45eca62b8bdf376a08c668b1535ac275_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!get\+Transmissibility@{get\+Transmissibility}}
+\index{get\+Transmissibility@{get\+Transmissibility}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{get\+Transmissibility() const }{getTransmissibility() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ const std\+::vector$<${\bf Real}$>$\& {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::get\+Transmissibility (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1MSR_a9ec80ddf6aa0e39f5b7ac338cac71904}{}\label{classFVCode3D_1_1MSR_a9ec80ddf6aa0e39f5b7ac338cac71904}
+
+
+Get the transmissibilities vector. 
+
+\begin{DoxyReturn}{Returns}
+the transmissibilities vector\+: fracture-\/matrix and matrix-\/matrix transmissimilities 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00076}{76} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_a9ec80ddf6aa0e39f5b7ac338cac71904_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!is\+Pseudo\+Steady\+State@{is\+Pseudo\+Steady\+State}}
+\index{is\+Pseudo\+Steady\+State@{is\+Pseudo\+Steady\+State}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{is\+Pseudo\+Steady\+State(const Vector \&\+\_\+old\+Solution)}{isPseudoSteadyState(const Vector &_oldSolution)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ bool {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::is\+Pseudo\+Steady\+State (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{\+\_\+old\+Solution}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1MSR_ae05006ec34d2e773279b4a3028e08d21}{}\label{classFVCode3D_1_1MSR_ae05006ec34d2e773279b4a3028e08d21}
+
+
+Check if the solution is at the pseudo steady state. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+old\+Solution} & solution at the previous time step \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00201}{201} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_ae05006ec34d2e773279b4a3028e08d21_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!setup@{setup}}
+\index{setup@{setup}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{setup()}{setup()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::setup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1MSR_aea841370ef1133a635c885714670abec}{}\label{classFVCode3D_1_1MSR_aea841370ef1133a635c885714670abec}
+
+
+Set dofs and initialize the sub-\/regions vector. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00167}{167} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1MSR_aea841370ef1133a635c885714670abec_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+constant\+Value@{M\+\_\+constant\+Value}}
+\index{M\+\_\+constant\+Value@{M\+\_\+constant\+Value}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+constant\+Value}{M_constantValue}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf Real} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+constant\+Value\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_ae1152dcd118f020c5cd9fefe4eafd5e4}{}\label{classFVCode3D_1_1MSR_ae1152dcd118f020c5cd9fefe4eafd5e4}
+
+
+c \+:= \{  p \}\{  t\} 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00147}{147} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+data@{M\+\_\+data}}
+\index{M\+\_\+data@{M\+\_\+data}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+data}{M_data}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ const {\bf Data\+Ptr\+\_\+\+Type}\& {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+data\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a03e013e5191655455e66563e815f262b}{}\label{classFVCode3D_1_1MSR_a03e013e5191655455e66563e815f262b}
+
+
+\hyperlink{classFVCode3D_1_1Data}{Data} for the problem. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00128}{128} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+dof\+Fractures@{M\+\_\+dof\+Fractures}}
+\index{M\+\_\+dof\+Fractures@{M\+\_\+dof\+Fractures}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+dof\+Fractures}{M_dofFractures}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf U\+Int} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+dof\+Fractures\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_ae96e6d741dd194e8be925062759acbc9}{}\label{classFVCode3D_1_1MSR_ae96e6d741dd194e8be925062759acbc9}
+
+
+Fracture dofs. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00133}{133} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+dof\+Porous\+Matrix@{M\+\_\+dof\+Porous\+Matrix}}
+\index{M\+\_\+dof\+Porous\+Matrix@{M\+\_\+dof\+Porous\+Matrix}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+dof\+Porous\+Matrix}{M_dofPorousMatrix}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf U\+Int} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+dof\+Porous\+Matrix\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a04c41dbcba341c70158af3db7b69916e}{}\label{classFVCode3D_1_1MSR_a04c41dbcba341c70158af3db7b69916e}
+
+
+Porous matrix dofs. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00135}{135} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+dof\+Total@{M\+\_\+dof\+Total}}
+\index{M\+\_\+dof\+Total@{M\+\_\+dof\+Total}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+dof\+Total}{M_dofTotal}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf U\+Int} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+dof\+Total\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a52fc7223f5d641543781b1224e686610}{}\label{classFVCode3D_1_1MSR_a52fc7223f5d641543781b1224e686610}
+
+
+\hyperlink{classFVCode3D_1_1Problem}{Problem} total dofs. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00131}{131} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+is\+Pseudo\+Steady\+State@{M\+\_\+is\+Pseudo\+Steady\+State}}
+\index{M\+\_\+is\+Pseudo\+Steady\+State@{M\+\_\+is\+Pseudo\+Steady\+State}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+is\+Pseudo\+Steady\+State}{M_isPseudoSteadyState}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ bool {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+is\+Pseudo\+Steady\+State\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_aa4276f60467226b5aae9e12c024701f6}{}\label{classFVCode3D_1_1MSR_aa4276f60467226b5aae9e12c024701f6}
+
+
+If the state is a pseudo-\/steady state. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00143}{143} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+local\+Nb\+Time\+Step\+Steady\+State@{M\+\_\+local\+Nb\+Time\+Step\+Steady\+State}}
+\index{M\+\_\+local\+Nb\+Time\+Step\+Steady\+State@{M\+\_\+local\+Nb\+Time\+Step\+Steady\+State}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+local\+Nb\+Time\+Step\+Steady\+State}{M_localNbTimeStepSteadyState}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf U\+Int} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+local\+Nb\+Time\+Step\+Steady\+State\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a481d90b7ea3b6d1f3f818f811e58a9a3}{}\label{classFVCode3D_1_1MSR_a481d90b7ea3b6d1f3f818f811e58a9a3}
+
+
+Number of the time step that the state is at the pseudo-\/steady state. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00145}{145} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+max\+Solution@{M\+\_\+max\+Solution}}
+\index{M\+\_\+max\+Solution@{M\+\_\+max\+Solution}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+max\+Solution}{M_maxSolution}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf Real} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+max\+Solution\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a292e038fb48f7f4f39238d375ea6f6e0}{}\label{classFVCode3D_1_1MSR_a292e038fb48f7f4f39238d375ea6f6e0}
+
+
+Maximum of the solution. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00139}{139} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+min\+Solution@{M\+\_\+min\+Solution}}
+\index{M\+\_\+min\+Solution@{M\+\_\+min\+Solution}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+min\+Solution}{M_minSolution}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf Real} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+min\+Solution\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a6e8eb6a0513e4b46241950b8ee2b7212}{}\label{classFVCode3D_1_1MSR_a6e8eb6a0513e4b46241950b8ee2b7212}
+
+
+Minimum of the solution. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00141}{141} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+multiple\+Sub\+Regions@{M\+\_\+multiple\+Sub\+Regions}}
+\index{M\+\_\+multiple\+Sub\+Regions@{M\+\_\+multiple\+Sub\+Regions}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+multiple\+Sub\+Regions}{M_multipleSubRegions}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf U\+Int\+Vector} {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+multiple\+Sub\+Regions\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a38cba0138e4ebd055d47b3d9d9d32623}{}\label{classFVCode3D_1_1MSR_a38cba0138e4ebd055d47b3d9d9d32623}
+
+
+Vector of colors of the sub-\/regions. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00137}{137} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+problem@{M\+\_\+problem}}
+\index{M\+\_\+problem@{M\+\_\+problem}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+problem}{M_problem}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ {\bf problem\+\_\+\+Type}$\ast$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+problem\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_a531760a5415f63b7be6087ab117031e5}{}\label{classFVCode3D_1_1MSR_a531760a5415f63b7be6087ab117031e5}
+
+
+Darcy problem. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00126}{126} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}!M\+\_\+transmissibilities@{M\+\_\+transmissibilities}}
+\index{M\+\_\+transmissibilities@{M\+\_\+transmissibilities}!F\+V\+Code3\+D\+::\+M\+SR@{F\+V\+Code3\+D\+::\+M\+SR}}
+\subsubsection[{\texorpdfstring{M\+\_\+transmissibilities}{M_transmissibilities}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Problem\+Type$>$ std\+::vector$<${\bf Real}$>$ {\bf F\+V\+Code3\+D\+::\+M\+SR}$<$ Problem\+Type $>$\+::M\+\_\+transmissibilities\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1MSR_abcb3d099c26d9747b02231cb0d3b7bb3}{}\label{classFVCode3D_1_1MSR_abcb3d099c26d9747b02231cb0d3b7bb3}
+
+
+Transmissibilities vector. 
+
+
+
+Definition at line \hyperlink{MultipleSubRegions_8hpp_source_l00149}{149} of file \hyperlink{MultipleSubRegions_8hpp_source}{Multiple\+Sub\+Regions.\+hpp}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/multiple\+Sub\+Regions/\hyperlink{MultipleSubRegions_8hpp}{Multiple\+Sub\+Regions.\+hpp}\end{DoxyCompactItemize}

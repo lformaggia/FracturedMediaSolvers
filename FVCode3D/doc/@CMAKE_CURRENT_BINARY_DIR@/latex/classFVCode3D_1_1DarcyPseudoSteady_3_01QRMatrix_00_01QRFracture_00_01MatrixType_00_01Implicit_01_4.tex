@@ -1,0 +1,384 @@
+\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4}{}\section{F\+V\+Code3D\+:\+:Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$ Class Template Reference}
+\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4}\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+
+
+Specialization class that defines the pseudo-\/steady-\/state Darcy problem for the implicit time scheme.  
+
+
+
+
+{\ttfamily \#include $<$Darcy\+Pseudo\+Steady.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Matrix\+Type \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a0c4c09b192d518545409c84da0ba6f16}{Matrix\+\_\+\+Type}
+\begin{DoxyCompactList}\small\item\em Typedef for the matrix type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_aad4e1fea5cdbfbed51dee790b2b23957}{Darcy\+Pseudo\+Steady} ()=delete
+\begin{DoxyCompactList}\small\item\em No default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a1613e3f299d27364488b47806ffc03d1}{Darcy\+Pseudo\+Steady} (const \hyperlink{classFVCode3D_1_1DarcyPseudoSteady}{Darcy\+Pseudo\+Steady} \&)=delete
+\begin{DoxyCompactList}\small\item\em No copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a94b61786396af1ffb9fffdd2e02e5081}{Darcy\+Pseudo\+Steady} (const std\+::string solver, const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&mesh, const \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} \&bc, const \hyperlink{namespaceFVCode3D_a38fa3b2520ad364d2c3d56ea5077826a}{Func} \&f, const \hyperlink{namespaceFVCode3D_a3d19a370a98afe491a9e17a646a9c56f}{Data\+Ptr\+\_\+\+Type} \&data)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \& \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a3b2a09e4850a569c88bd3673aba02c46}{get\+Old\+Solution} () const 
+\begin{DoxyCompactList}\small\item\em Get the previous solution. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a0c4c09b192d518545409c84da0ba6f16}{Matrix\+\_\+\+Type} \& \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a17cfb03a42e7e4fb4166c0f4438bf8fe}{get\+Stiffness\+Matrix} ()
+\begin{DoxyCompactList}\small\item\em Get the stiffness matrix. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a40521b96ed02d9d801a9f09f6bbca6cc}{assemble} ()
+\begin{DoxyCompactList}\small\item\em Assemble the linear system. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a992ed5e76ce902c7ffa07824f0494997}{initialize} ()
+\begin{DoxyCompactList}\small\item\em Initialize the matrices. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7af420a3ce0705987d1e83670f92e050}{assemble\+Matrix} ()
+\begin{DoxyCompactList}\small\item\em Assemble matrix method. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_abbd82a04eb7c2905f8207a80ed21532d}{assemble\+Vector} ()
+\begin{DoxyCompactList}\small\item\em Assemble vector method. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a60bcb1a13f01071aac73f9e5e590f049}{solve} ()
+\begin{DoxyCompactList}\small\item\em Solve method. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_afd5575ca0dc0047e15938af3ddb84910}{$\sim$\+Darcy\+Pseudo\+Steady} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_ab26cff1a6ae988d44f437d290e29ed61}{M\+\_\+t\+Step}
+\begin{DoxyCompactList}\small\item\em Time step. \end{DoxyCompactList}\item 
+const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} $\ast$ \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_ac07a22b0b6f07aec3909b10924602ffc}{M\+\_\+x}
+\begin{DoxyCompactList}\small\item\em Pointer to a constant vector that contains the current solution. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a09160731863ac36c2d6e6650a81a12e2}{M\+\_\+x\+Old}
+\begin{DoxyCompactList}\small\item\em Vector that contains the previous solution. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a703f94eafbdd6687cb111e17d1f88a0c}{M\+\_\+f}
+\begin{DoxyCompactList}\small\item\em Vector that contains the source/sink term. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a298983a6d466bf5906abf47e4199cb79}{M\+\_\+is\+Initialized}
+\begin{DoxyCompactList}\small\item\em True if the system is initialized. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1MassMatrix}{Mass\+Matrix} $>$ \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7105356f402824767287690e83c0977d}{M\+\_\+M}
+\begin{DoxyCompactList}\small\item\em Pointer to the mass matrix. \end{DoxyCompactList}\item 
+std\+::unique\+\_\+ptr$<$ \hyperlink{classFVCode3D_1_1StiffMatrix}{Stiff\+Matrix} $>$ \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a2ec0b47ef1237ba7abfaa11857d656c7}{M\+\_\+S}
+\begin{DoxyCompactList}\small\item\em Pointer to the stiffness matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Q\+R\+Matrix, class Q\+R\+Fracture, typename Matrix\+Type$>$\\*
+class F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}
+
+Specialization class that defines the pseudo-\/steady-\/state Darcy problem for the implicit time scheme. 
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00045}{45} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!Matrix\+\_\+\+Type@{Matrix\+\_\+\+Type}}
+\index{Matrix\+\_\+\+Type@{Matrix\+\_\+\+Type}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{Matrix\+\_\+\+Type}{Matrix_Type}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::{\bf Matrix\+\_\+\+Type}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a0c4c09b192d518545409c84da0ba6f16}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a0c4c09b192d518545409c84da0ba6f16}
+
+
+Typedef for the matrix type. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00054}{54} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!Darcy\+Pseudo\+Steady@{Darcy\+Pseudo\+Steady}}
+\index{Darcy\+Pseudo\+Steady@{Darcy\+Pseudo\+Steady}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{Darcy\+Pseudo\+Steady()=delete}{DarcyPseudoSteady()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::{\bf Darcy\+Pseudo\+Steady} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_aad4e1fea5cdbfbed51dee790b2b23957}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_aad4e1fea5cdbfbed51dee790b2b23957}
+
+
+No default constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!Darcy\+Pseudo\+Steady@{Darcy\+Pseudo\+Steady}}
+\index{Darcy\+Pseudo\+Steady@{Darcy\+Pseudo\+Steady}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{Darcy\+Pseudo\+Steady(const Darcy\+Pseudo\+Steady \&)=delete}{DarcyPseudoSteady(const DarcyPseudoSteady &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::{\bf Darcy\+Pseudo\+Steady} (
+\begin{DoxyParamCaption}
+\item[{const {\bf Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$ \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a1613e3f299d27364488b47806ffc03d1}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a1613e3f299d27364488b47806ffc03d1}
+
+
+No copy constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!Darcy\+Pseudo\+Steady@{Darcy\+Pseudo\+Steady}}
+\index{Darcy\+Pseudo\+Steady@{Darcy\+Pseudo\+Steady}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{Darcy\+Pseudo\+Steady(const std\+::string solver, const Rigid\+\_\+\+Mesh \&mesh, const Boundary\+Conditions \&bc, const Func \&f, const Data\+Ptr\+\_\+\+Type \&data)}{DarcyPseudoSteady(const std::string solver, const Rigid_Mesh &mesh, const BoundaryConditions &bc, const Func &f, const DataPtr_Type &data)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::{\bf Darcy\+Pseudo\+Steady} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{solver, }
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{mesh, }
+\item[{const {\bf Boundary\+Conditions} \&}]{bc, }
+\item[{const {\bf Func} \&}]{f, }
+\item[{const {\bf Data\+Ptr\+\_\+\+Type} \&}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a94b61786396af1ffb9fffdd2e02e5081}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a94b61786396af1ffb9fffdd2e02e5081}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em solver} & string the identify the solver \\
+\hline
+{\em mesh} & reference to a Rigid\+\_\+mesh \\
+\hline
+{\em bc} & reference to a \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} class \\
+\hline
+{\em func} & reference to a Func \\
+\hline
+{\em data} & reference to a \hyperlink{classFVCode3D_1_1Data}{Data} class \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00070}{70} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!````~Darcy\+Pseudo\+Steady@{$\sim$\+Darcy\+Pseudo\+Steady}}
+\index{````~Darcy\+Pseudo\+Steady@{$\sim$\+Darcy\+Pseudo\+Steady}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{$\sim$\+Darcy\+Pseudo\+Steady()=default}{~DarcyPseudoSteady()=default}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ virtual {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::$\sim${\bf Darcy\+Pseudo\+Steady} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_afd5575ca0dc0047e15938af3ddb84910}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_afd5575ca0dc0047e15938af3ddb84910}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{assemble()}{assemble()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a40521b96ed02d9d801a9f09f6bbca6cc}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a40521b96ed02d9d801a9f09f6bbca6cc}
+
+
+Assemble the linear system. 
+
+It calls \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a992ed5e76ce902c7ffa07824f0494997}{initialize()}, \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7af420a3ce0705987d1e83670f92e050}{assemble\+Matrix()} and \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_abbd82a04eb7c2905f8207a80ed21532d}{assemble\+Vector()} 
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00272}{272} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!assemble\+Matrix@{assemble\+Matrix}}
+\index{assemble\+Matrix@{assemble\+Matrix}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{assemble\+Matrix()}{assembleMatrix()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ virtual void {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::assemble\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7af420a3ce0705987d1e83670f92e050}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7af420a3ce0705987d1e83670f92e050}
+
+
+Assemble matrix method. 
+
+Nothing to do 
+
+Implements \hyperlink{classFVCode3D_1_1Problem_aea78fa4b5f2c4231fdc1a19a9eb8e4d4}{F\+V\+Code3\+D\+::\+Problem$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type $>$}.
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00108}{108} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!assemble\+Vector@{assemble\+Vector}}
+\index{assemble\+Vector@{assemble\+Vector}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{assemble\+Vector()}{assembleVector()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::assemble\+Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_abbd82a04eb7c2905f8207a80ed21532d}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_abbd82a04eb7c2905f8207a80ed21532d}
+
+
+Assemble vector method. 
+
+Update the previous solutions and build the right hand side with B\+Cs, source vector. To be called at each time step. 
+
+Implements \hyperlink{classFVCode3D_1_1Problem_a65afac2ca3bf78e5918461d41b972495}{F\+V\+Code3\+D\+::\+Problem$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type $>$}.
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00334}{334} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!get\+Old\+Solution@{get\+Old\+Solution}}
+\index{get\+Old\+Solution@{get\+Old\+Solution}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{get\+Old\+Solution() const }{getOldSolution() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ const {\bf Vector}\& {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::get\+Old\+Solution (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a3b2a09e4850a569c88bd3673aba02c46}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a3b2a09e4850a569c88bd3673aba02c46}
+
+
+Get the previous solution. 
+
+\begin{DoxyReturn}{Returns}
+constant reference vector to the previous solution 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00081}{81} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!get\+Stiffness\+Matrix@{get\+Stiffness\+Matrix}}
+\index{get\+Stiffness\+Matrix@{get\+Stiffness\+Matrix}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{get\+Stiffness\+Matrix()}{getStiffnessMatrix()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ virtual {\bf Matrix\+\_\+\+Type}\& {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::get\+Stiffness\+Matrix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a17cfb03a42e7e4fb4166c0f4438bf8fe}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a17cfb03a42e7e4fb4166c0f4438bf8fe}
+
+
+Get the stiffness matrix. 
+
+\begin{DoxyReturn}{Returns}
+the stiffness matrix 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00087}{87} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!initialize@{initialize}}
+\index{initialize@{initialize}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{initialize()}{initialize()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::initialize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a992ed5e76ce902c7ffa07824f0494997}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a992ed5e76ce902c7ffa07824f0494997}
+
+
+Initialize the matrices. 
+
+Build the matrices and vectors that are not time dependent, i.\+e., the mass matrix, the stiffness matrix, the source vector and the B\+Cs. The B\+Cs and the source are not added to the R\+HS. To be called only once. 
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00284}{284} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!solve@{solve}}
+\index{solve@{solve}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{solve()}{solve()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ void {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::solve (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a60bcb1a13f01071aac73f9e5e590f049}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a60bcb1a13f01071aac73f9e5e590f049}
+
+
+Solve method. 
+
+Solve the system at the current time step. To be called at each time step. \begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a40521b96ed02d9d801a9f09f6bbca6cc}{assemble()}. 
+\end{DoxyPrecond}
+
+
+Implements \hyperlink{classFVCode3D_1_1Problem_a7ee30db5a251dc7a9778c821e49cf376}{F\+V\+Code3\+D\+::\+Problem$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type $>$}.
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00343}{343} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+f@{M\+\_\+f}}
+\index{M\+\_\+f@{M\+\_\+f}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+f}{M_f}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf Vector} {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+f\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a703f94eafbdd6687cb111e17d1f88a0c}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a703f94eafbdd6687cb111e17d1f88a0c}
+
+
+Vector that contains the source/sink term. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00139}{139} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+is\+Initialized@{M\+\_\+is\+Initialized}}
+\index{M\+\_\+is\+Initialized@{M\+\_\+is\+Initialized}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+is\+Initialized}{M_isInitialized}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ bool {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+is\+Initialized\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a298983a6d466bf5906abf47e4199cb79}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a298983a6d466bf5906abf47e4199cb79}
+
+
+True if the system is initialized. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00142}{142} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+M@{M\+\_\+M}}
+\index{M\+\_\+M@{M\+\_\+M}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+M}{M_M}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ std\+::unique\+\_\+ptr$<${\bf Mass\+Matrix}$>$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+M\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7105356f402824767287690e83c0977d}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a7105356f402824767287690e83c0977d}
+
+
+Pointer to the mass matrix. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00145}{145} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+S@{M\+\_\+S}}
+\index{M\+\_\+S@{M\+\_\+S}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+S}{M_S}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ std\+::unique\+\_\+ptr$<${\bf Stiff\+Matrix}$>$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+S\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a2ec0b47ef1237ba7abfaa11857d656c7}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a2ec0b47ef1237ba7abfaa11857d656c7}
+
+
+Pointer to the stiffness matrix. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00147}{147} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+t\+Step@{M\+\_\+t\+Step}}
+\index{M\+\_\+t\+Step@{M\+\_\+t\+Step}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+t\+Step}{M_tStep}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf Real} {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+t\+Step\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_ab26cff1a6ae988d44f437d290e29ed61}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_ab26cff1a6ae988d44f437d290e29ed61}
+
+
+Time step. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00132}{132} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+x@{M\+\_\+x}}
+\index{M\+\_\+x@{M\+\_\+x}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+x}{M_x}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ const {\bf Vector}$\ast$ {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+x\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_ac07a22b0b6f07aec3909b10924602ffc}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_ac07a22b0b6f07aec3909b10924602ffc}
+
+
+Pointer to a constant vector that contains the current solution. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00135}{135} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}!M\+\_\+x\+Old@{M\+\_\+x\+Old}}
+\index{M\+\_\+x\+Old@{M\+\_\+x\+Old}!F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$@{F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, Implicit $>$}}
+\subsubsection[{\texorpdfstring{M\+\_\+x\+Old}{M_xOld}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class Q\+R\+Matrix , class Q\+R\+Fracture , typename Matrix\+Type $>$ {\bf Vector} {\bf F\+V\+Code3\+D\+::\+Darcy\+Pseudo\+Steady}$<$ Q\+R\+Matrix, Q\+R\+Fracture, Matrix\+Type, {\bf Implicit} $>$\+::M\+\_\+x\+Old\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a09160731863ac36c2d6e6650a81a12e2}{}\label{classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4_a09160731863ac36c2d6e6650a81a12e2}
+
+
+Vector that contains the previous solution. 
+
+
+
+Definition at line \hyperlink{DarcyPseudoSteady_8hpp_source_l00137}{137} of file \hyperlink{DarcyPseudoSteady_8hpp_source}{Darcy\+Pseudo\+Steady.\+hpp}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/problem/\hyperlink{DarcyPseudoSteady_8hpp}{Darcy\+Pseudo\+Steady.\+hpp}\end{DoxyCompactItemize}

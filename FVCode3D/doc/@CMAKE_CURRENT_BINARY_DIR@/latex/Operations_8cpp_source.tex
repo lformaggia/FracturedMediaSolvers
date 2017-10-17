@@ -1,0 +1,79 @@
+\hypertarget{Operations_8cpp_source}{}\section{Operations.\+cpp}
+\label{Operations_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\+Operations.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\+Operations.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{Operations_8hpp}{FVCode3D/geometry/Operations.hpp}>}
+00007 \textcolor{preprocessor}{#include <\hyperlink{Point3D_8hpp}{FVCode3D/geometry/Point3D.hpp}>}
+00008 
+00009 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00010 \{
+00011 
+\hypertarget{Operations_8cpp_source.tex_l00012}{}\hyperlink{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc}{00012} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_afdf87b62988c2271186926eb3a3baedc}{computeNormal}( \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & A, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & B, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & C)
+00013 \{
+00014     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} n( \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(A-C,B-C) );
+00015     n.\hyperlink{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}{normalize}();
+00016     \textcolor{keywordflow}{return} n;
+00017 \}
+00018 
+\hypertarget{Operations_8cpp_source.tex_l00019}{}\hyperlink{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da}{00019} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_aefa056e4f7c5d10edd993b812dd670da}{rotateOf}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & p, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} angleDeg)
+00020 \{
+00021     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} angleRad = angleDeg / 180 * \hyperlink{namespaceFVCode3D_a10917df7e49a48239ce5f00ec9bbfe0a}{\_PI\_};
+00022     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} r1(std::cos(angleRad), std::sin(angleRad), 0.);
+00023     \hyperlink{classFVCode3D_1_1Point3D}{Point3D} r2(-std::sin(angleRad), std::cos(angleRad), 0.);
+00024 
+00025     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} x, y;
+00026     x = \hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(r1,p);
+00027     y = \hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}(r2,p);
+00028 
+00029     \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1Point3D}{Point3D}(x,y,p.\hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z}());
+00030 \}
+00031 
+\hypertarget{Operations_8cpp_source.tex_l00032}{}\hyperlink{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9}{00032} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a38b320ef9683fae74a67a2a5a921f0d9}{triangleArea}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & A, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & B, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & C)
+00033 \{
+00034     \textcolor{keywordflow}{return} \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(B-A,C-A).\hyperlink{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01}{norm}() / 2.;
+00035 \}
+00036 
+\hypertarget{Operations_8cpp_source.tex_l00037}{}\hyperlink{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad}{00037} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{namespaceFVCode3D_a5b8d6a9c921fcd809d263ef9c484b1ad}{triangleCentroid}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & A, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & B, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & C)
+00038 \{
+00039     \textcolor{keywordflow}{return} (A + B + C) / 3.;
+00040 \}
+00041 
+\hypertarget{Operations_8cpp_source.tex_l00042}{}\hyperlink{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221}{00042} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{namespaceFVCode3D_a8a6b07162e2801b628c3bd4057b9f221}{tetrahedronVolume}(\textcolor{keyword}{const} std::vector<Point3D> & nodes)
+00043 \{
+00044     \textcolor{keywordflow}{return} std::fabs( \hyperlink{namespaceFVCode3D_ad07be7f9ed843ca65d02d0303dae6cb4}{dotProduct}( nodes[2]-nodes[3] , \hyperlink{namespaceFVCode3D_a1ee7c9a5fcc645574f6a93e5f6f53b4b}{crossProduct}(nodes[0]-nodes[3],
+      nodes[1]-nodes[3]) ) ) / 6.;
+00045 \}
+00046 
+\hypertarget{Operations_8cpp_source.tex_l00047}{}\hyperlink{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b}{00047} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_ae827f8be7749dd9703b52a52d90c9f9b}{computeBoundingBox}(\textcolor{keyword}{const} std::vector<Point3D> & nodes, 
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & pMin, \hyperlink{classFVCode3D_1_1Point3D}{Point3D} & pMax)
+00048 \{
+00049     pMin.\hyperlink{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d}{setValues}(std::numeric\_limits<Real>::max(),std::numeric\_limits<Real>::max(),
+      std::numeric\_limits<Real>::max());
+00050     pMax.\hyperlink{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d}{setValues}(std::numeric\_limits<Real>::lowest(),std::numeric\_limits<Real>::lowest(),
+      std::numeric\_limits<Real>::lowest());
+00051 
+00052     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} & xMin = pMin.\hyperlink{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{x}();
+00053     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} & yMin = pMin.\hyperlink{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{y}();
+00054     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} & zMin = pMin.\hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z}();
+00055     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} & xMax = pMax.\hyperlink{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{x}();
+00056     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} & yMax = pMax.\hyperlink{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{y}();
+00057     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} & zMax = pMax.\hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z}();
+00058 
+00059     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} p : nodes)
+00060     \{
+00061         xMin = std::min( xMin , p.x() );
+00062         yMin = std::min( yMin , p.y() );
+00063         zMin = std::min( zMin , p.z() );
+00064 
+00065         xMax = std::max( xMax , p.x() );
+00066         yMax = std::max( yMax , p.y() );
+00067         zMax = std::max( zMax , p.z() );
+00068     \}
+00069 \}
+00070 
+00071 \}\textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

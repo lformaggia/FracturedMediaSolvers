@@ -1,0 +1,62 @@
+\hypertarget{Mass_8cpp_source}{}\section{Mass.\+cpp}
+\label{Mass_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\+Mass.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\+Mass.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{Mass_8hpp}{FVCode3D/assembler/Mass.hpp}>}
+00007 \textcolor{preprocessor}{#include <\hyperlink{Properties_8hpp}{FVCode3D/property/Properties.hpp}>}
+00008 
+00009 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00010 \{
+00011 
+\hypertarget{Mass_8cpp_source.tex_l00012}{}\hyperlink{classFVCode3D_1_1MassMatrix_ac5f8226ecd4e8d193bfe1bd87c0918e4}{00012} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1MassMatrix_ac5f8226ecd4e8d193bfe1bd87c0918e4}{MassMatrix::assemble}()
+00013 \{
+00014     \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements}.reserve(this->\hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + 3 *
+       this->\hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size());
+00015 
+00016     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} porosity, volume;
+00017     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} compressibility = \hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_a45a68e2cdccdb1ff98878278f7dca42f}{getCompressibility}();
+00018 
+00019     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& cell\_it : this->\hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00020     \{
+00021         porosity = \hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(cell\_it.getZoneCode()).M\_porosity;
+00022         \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements}.emplace\_back(\hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow} + cell\_it.getId(), 
+      \hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{M\_offsetCol} + cell\_it.getId(), compressibility * porosity * cell\_it.getVolume()); \textcolor{comment}{// Triplet}
+00023     \}
+00024 
+00025     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}& facet\_it : this->\hyperlink{classFVCode3D_1_1MatrixHandler_a72f185cb557fc2e8023bd09a074f685c}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00026     \{
+00027         \textcolor{comment}{// set mass term of the fracture}
+00028         volume = \hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_aperture * 
+      facet\_it.getFacet().area();
+00029         porosity = \hyperlink{classFVCode3D_1_1MatrixHandler_ad17a7941b1b8272f50fc6e1c660103fa}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).M\_porosity;
+00030 
+00031         \hyperlink{classFVCode3D_1_1MatrixHandler_a0bbdfb8d779ca20d8ba69b99cac1f4d6}{M\_matrixElements}.emplace\_back(\hyperlink{classFVCode3D_1_1MatrixHandler_ad3faa8b15bca6e0052be8c868b924444}{M\_offsetRow} + facet\_it.getIdAsCell(), 
+      \hyperlink{classFVCode3D_1_1MatrixHandler_a6ec7cf5178c1c25b54abc46ff0affcf2}{M\_offsetCol} + facet\_it.getIdAsCell(), compressibility * porosity * volume); \textcolor{comment}{// Triplet}
+00032     \}
+00033 
+00034 \textcolor{comment}{//    if( this->M\_mesh.getCellsVector().size() > 0 )}
+00035 \textcolor{comment}{//    \{}
+00036 \textcolor{comment}{//        for (auto& facet\_it : this->M\_mesh.getFractureFacetsIdsVector())}
+00037 \textcolor{comment}{//        \{}
+00038 \textcolor{comment}{//            // set mass term of the fracture}
+00039 \textcolor{comment}{//            volume = M\_properties.getProperties(facet\_it.getZoneCode()).M\_aperture *
+       facet\_it.getFacet().area();}
+00040 \textcolor{comment}{//}
+00041 \textcolor{comment}{//            // remove from the first neighbor the portion due to the fracture}
+00042 \textcolor{comment}{//            porosity = M\_properties.getProperties(
+       this->M\_mesh.getCellsVector()[facet\_it.getSeparatedCellsIds()[0]].getZoneCode() ).M\_porosity;}
+00043 \textcolor{comment}{//            M\_matrixElements.emplace\_back(M\_offsetRow + facet\_it.getSeparatedCellsIds()[0], M\_offsetCol +
+       facet\_it.getSeparatedCellsIds()[0], -compressibility * porosity * volume / 2); // Triplet}
+00044 \textcolor{comment}{//}
+00045 \textcolor{comment}{//            // remove from the second neighbor the portion due to the fracture}
+00046 \textcolor{comment}{//            porosity = M\_properties.getProperties(
+       this->M\_mesh.getCellsVector()[facet\_it.getSeparatedCellsIds()[1]].getZoneCode() ).M\_porosity;}
+00047 \textcolor{comment}{//            M\_matrixElements.emplace\_back(M\_offsetRow + facet\_it.getSeparatedCellsIds()[1], M\_offsetCol +
+       facet\_it.getSeparatedCellsIds()[1], -compressibility * porosity * volume / 2); // Triplet}
+00048 \textcolor{comment}{//        \}}
+00049 \textcolor{comment}{//    \}}
+00050 \}
+00051 
+00052 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

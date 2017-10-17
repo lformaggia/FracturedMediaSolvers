@@ -1,0 +1,14 @@
+<map id="FVCode3D::Point3D::convertInLocalCoordinates" name="FVCode3D::Point3D::convertInLocalCoordinates">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1CoordinateSystem3D.html#ae08d47f5bef59209fc0814f9dd7b621c" title="Get x&#45;direction. " alt="" coords="231,96,441,137"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1CoordinateSystem3D.html#a3ae9763795c5dc8ac6cbd14d8328488c" title="Get y&#45;direction. " alt="" coords="231,161,441,203"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1CoordinateSystem3D.html#a88b87127a11f8fb54b9aac8a46145c21" title="Get z&#45;direction. " alt="" coords="231,227,441,268"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1Point3D.html#af250a1c49cf1aeeb52f59a687257451d" title="Set coordinates. " alt="" coords="796,289,947,331"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1CoordinateSystem3D.html#a1e4e37cb99a7f93940ed0fcc3f1c3b85" title="Compute the Coordinate System moving from a normal that represents the z&#45;direction. " alt="" coords="489,195,744,236"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1Point3D.html#a0d1cd3d114b0985ae2b11cd1c52de673" title="Normalize the current point. " alt="" coords="796,5,947,47"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1Point3D.html#a950abcabbf3bb32fc2daf64c28d77416" title="Get y&#45;coordinate (const) " alt="" coords="1009,158,1167,185"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1Point3D.html#ae015d6aa31f8b304f69696bdcbd4da19" title="Get x&#45;coordinate (const) " alt="" coords="1009,270,1167,297"/>
+<area shape="rect" id="node10" href="$classFVCode3D_1_1Point3D.html#a865109e2006cc1de3681ab601081f5aa" title="Get x&#45;coordinate (const) " alt="" coords="1009,325,1167,351"/>
+<area shape="rect" id="node12" href="$classFVCode3D_1_1Point3D.html#a2044e0fdef7e870557c89ad0edb0b0d4" title="Apply a linear transformation to the point. " alt="" coords="796,224,947,265"/>
+<area shape="rect" id="node13" href="$namespaceFVCode3D.html#ad07be7f9ed843ca65d02d0303dae6cb4" title="FVCode3D::dotProduct" alt="" coords="792,173,951,199"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1Point3D.html#ac9e4bf311b24cea10ad3fde1d703be01" title="Compute norm of the current point. " alt="" coords="999,13,1177,39"/>
+</map>

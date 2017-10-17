@@ -1,0 +1,1225 @@
+\hypertarget{classFVCode3D_1_1Point3D}{}\section{F\+V\+Code3D\+:\+:Point3D Class Reference}
+\label{classFVCode3D_1_1Point3D}\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+
+
+Class that defines a 3D Point and some operations.  
+
+
+
+
+{\ttfamily \#include $<$Point3\+D.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Point3D_a56a8ed59079e64f6463c83acfd8f14ae}{Point3D} ()
+\begin{DoxyCompactList}\small\item\em Empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D_a3d130ba4098b4bf0892091e121af6c52}{Point3D} (\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{x}, \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{y}, \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z})
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D_a166b3b826c327fb8033a38e78a382b92}{Point3D} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{x} () const 
+\begin{DoxyCompactList}\small\item\em Get x-\/coordinate (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{y} () const 
+\begin{DoxyCompactList}\small\item\em Get y-\/coordinate (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z} () const 
+\begin{DoxyCompactList}\small\item\em Get x-\/coordinate (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_acfeb3c442958a0e127041daf22418626}{x} ()
+\begin{DoxyCompactList}\small\item\em Get reference to x-\/coordinate. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_ad2bdad9fb491be7b904267315dd9e032}{y} ()
+\begin{DoxyCompactList}\small\item\em Get reference to y-\/coordinate. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_abcea334e05978fd0e91db2283afd1695}{z} ()
+\begin{DoxyCompactList}\small\item\em Get reference to z-\/coordinate. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01}{norm} () const 
+\begin{DoxyCompactList}\small\item\em Compute norm of the current point. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}{normalize} ()
+\begin{DoxyCompactList}\small\item\em Normalize the current point. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_acc1ad771660943c0dc2ae28c73fcf866}{normalized} () const 
+\begin{DoxyCompactList}\small\item\em Return the normalized point. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d}{set\+Values} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{x}, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{y}, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{z})
+\begin{DoxyCompactList}\small\item\em Set coordinates. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Point3D_a2044e0fdef7e870557c89ad0edb0b0d4}{linear\+Transform} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} scaling, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} x\+Shift, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} y\+Shift, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} z\+Shift)
+\begin{DoxyCompactList}\small\item\em Apply a linear transformation to the point. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Point3D_a41c0aeb4de5f0f08a15f0aa9ff22e44b}{linear\+Transform} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} x\+Scaling, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} y\+Scaling, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} z\+Scaling, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} x\+Shift, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} y\+Shift, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} z\+Shift)
+\begin{DoxyCompactList}\small\item\em Apply a linear transformation to the point. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_a7099d16176cfc75deff3b5a6d8bf4c24}{convert\+In\+Local\+Coordinates} (const \hyperlink{classFVCode3D_1_1CoordinateSystem3D}{Coordinate\+System3D} \&coord\+Sys, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&origin) const 
+\begin{DoxyCompactList}\small\item\em Convert the point to a different coordinate system. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \& \hyperlink{classFVCode3D_1_1Point3D_a94bf902b79e445db8f54846d35d59018}{operator=} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\begin{DoxyCompactList}\small\item\em Assignment operator. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \& \hyperlink{classFVCode3D_1_1Point3D_a30dfdd9a0df466233b6d82798a7770a1}{operator+=} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\begin{DoxyCompactList}\small\item\em += operator \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \& \hyperlink{classFVCode3D_1_1Point3D_a22a46a2c737e9a494f3d13b8e2e5f37f}{operator-\/=} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\begin{DoxyCompactList}\small\item\em -\/= operator \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \& \hyperlink{classFVCode3D_1_1Point3D_a3e9b71f50ab0b9e52a3bc5ace577bbb7}{operator$\ast$=} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&r)
+\begin{DoxyCompactList}\small\item\em $\ast$= operator \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \& \hyperlink{classFVCode3D_1_1Point3D_a559b58149768e633607a90b765d86883}{operator/=} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \&r)
+\begin{DoxyCompactList}\small\item\em /= operator \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_aac840a4571707984aab37f689b3d096c}{operator\mbox{[}$\,$\mbox{]}} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} coord) const   throw ()
+\begin{DoxyCompactList}\small\item\em Access to the coord-\/th component of the point (const) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_a66f607a43957db2e6922112d4cc4f286}{operator\mbox{[}$\,$\mbox{]}} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} coord)  throw ()
+\begin{DoxyCompactList}\small\item\em Access to the coord-\/th component of the point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_ada9a4f80fd2549bc60c703d315f11d23}{get\+ToleranceX} ()
+\begin{DoxyCompactList}\small\item\em Get tolerance on x. \end{DoxyCompactList}\item 
+static const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_a1215124223c3c61359e9e41ca4d383d8}{get\+ToleranceY} ()
+\begin{DoxyCompactList}\small\item\em Get tolerance on y. \end{DoxyCompactList}\item 
+static const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \& \hyperlink{classFVCode3D_1_1Point3D_a14cccea4d030ed38a5ae3b7bfc415113}{get\+ToleranceZ} ()
+\begin{DoxyCompactList}\small\item\em Get tolerance on z. \end{DoxyCompactList}\item 
+static void \hyperlink{classFVCode3D_1_1Point3D_ac0a8b34122ec9539270198e638e1bdf8}{set\+ToleranceX} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} tolerance)
+\begin{DoxyCompactList}\small\item\em Set tolerance on x. \end{DoxyCompactList}\item 
+static void \hyperlink{classFVCode3D_1_1Point3D_a95a65422250722b77f60246d469995a1}{set\+ToleranceY} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} tolerance)
+\begin{DoxyCompactList}\small\item\em Set tolerance on y. \end{DoxyCompactList}\item 
+static void \hyperlink{classFVCode3D_1_1Point3D_a4df5eee86f2f40aaf068647f27dfbb6e}{set\+ToleranceZ} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} tolerance)
+\begin{DoxyCompactList}\small\item\em Set tolerance on z. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a970c57d27a188366fb4a30fd08b98b7a}{S\+\_\+toleranceX} = std\+::numeric\+\_\+limits$<$\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}$>$\+::epsilon()
+\begin{DoxyCompactList}\small\item\em Relative x-\/tolerance. \end{DoxyCompactList}\item 
+static \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a1ec72cecf8486e2a9433093ac3b0cc2c}{S\+\_\+toleranceY} = std\+::numeric\+\_\+limits$<$\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}$>$\+::epsilon()
+\begin{DoxyCompactList}\small\item\em Relative y-\/tolerance. \end{DoxyCompactList}\item 
+static \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a180a0f561aae1274ee37b0ce334db956}{S\+\_\+toleranceZ} = std\+::numeric\+\_\+limits$<$\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}$>$\+::epsilon()
+\begin{DoxyCompactList}\small\item\em Relative z-\/tolerance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a3eaeca319f23ac0967891d55446fa1d7}{M\+\_\+x}
+\begin{DoxyCompactList}\small\item\em x-\/coordinate \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a087a884a5ed2eafb804db5f0a2f9aea6}{M\+\_\+y}
+\begin{DoxyCompactList}\small\item\em y-\/coordinate \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_ae335813a9743fd9406322e77e395823d}{M\+\_\+z}
+\begin{DoxyCompactList}\small\item\em z-\/coordinate \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_afa00949f6fabb0d42278788f592081f6}{operator+} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_ac10f2fc19824d0e150edb94b21eb75cd}{operator-\/} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_af0fe4c83e3094e9f73de5c8541a7b800}{operator-\/} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\begin{DoxyCompactList}\small\item\em Change sign operator. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a43789e877280ec157cdf1ee6abe5cdc4}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_ab47540dec82a8221068ed10ffbc19481}{operator$\ast$} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} r)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_a992195935c2d83ef35a975b66a9d3392}{operator$\ast$} (const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} r, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_a901cc35e13a74a226e0bce161dd9e03e}{operator/} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p, const \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} r)
+\begin{DoxyCompactList}\small\item\em / operator between point and scalar \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_abed858bc07c6f152b0307c824486887c}{dot\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\begin{DoxyCompactList}\small\item\em Dot product. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_ae6dfa3be3cb055f156e105091599b5e6}{inner\+Angle\+Rad} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\begin{DoxyCompactList}\small\item\em Compute inner angle between two vector in radians. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_a3fade3157c26f62dd589b7c4b3eba346}{inner\+Angle\+Deg} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\begin{DoxyCompactList}\small\item\em Compute inner angle between two vector in degrees. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Point3D_af7cc7631755aaf9b6ff4bc328be2f20c}{distance} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\begin{DoxyCompactList}\small\item\em Compute distance between points. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1Point3D_a065de1710a2bd7a7b6a33ec14eae4688}{cross\+Product} (const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p1, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p2)
+\begin{DoxyCompactList}\small\item\em Cross product. \end{DoxyCompactList}\item 
+std\+::ostream \& \hyperlink{classFVCode3D_1_1Point3D_a4d6f968755c16f7bd5d6c1a14fde3910}{operator$<$$<$} (std\+::ostream \&os, const \hyperlink{classFVCode3D_1_1Point3D}{Point3D} \&p)
+\begin{DoxyCompactList}\small\item\em Print information about the point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that defines a 3D Point and some operations. 
+
+This class defines a point as three Real coordinates. It also implements some operation between two points or between a point and a scalar value. 
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00022}{22} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!Point3D@{Point3D}}
+\index{Point3D@{Point3D}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{Point3\+D()}{Point3D()}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Point3\+D\+::\+Point3D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_a56a8ed59079e64f6463c83acfd8f14ae}{}\label{classFVCode3D_1_1Point3D_a56a8ed59079e64f6463c83acfd8f14ae}
+
+
+Empty constructor. 
+
+Initialize with null coordinates 
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00030}{30} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_a56a8ed59079e64f6463c83acfd8f14ae_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!Point3D@{Point3D}}
+\index{Point3D@{Point3D}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{Point3\+D(\+Real x, Real y, Real z)}{Point3D(Real x, Real y, Real z)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Point3\+D\+::\+Point3D (
+\begin{DoxyParamCaption}
+\item[{{\bf Real}}]{x, }
+\item[{{\bf Real}}]{y, }
+\item[{{\bf Real}}]{z}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_a3d130ba4098b4bf0892091e121af6c52}{}\label{classFVCode3D_1_1Point3D_a3d130ba4098b4bf0892091e121af6c52}
+
+
+Constructor. 
+
+Initialize with coordinates 
+\begin{DoxyParams}{Parameters}
+{\em x} & x-\/coordinate \\
+\hline
+{\em y} & y-\/coordinate \\
+\hline
+{\em z} & z-\/coordinate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00039}{39} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!Point3D@{Point3D}}
+\index{Point3D@{Point3D}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{Point3\+D(const Point3\+D \&p)}{Point3D(const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Point3\+D\+::\+Point3D (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_a166b3b826c327fb8033a38e78a382b92}{}\label{classFVCode3D_1_1Point3D_a166b3b826c327fb8033a38e78a382b92}
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & point \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00045}{45} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!convert\+In\+Local\+Coordinates@{convert\+In\+Local\+Coordinates}}
+\index{convert\+In\+Local\+Coordinates@{convert\+In\+Local\+Coordinates}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{convert\+In\+Local\+Coordinates(const Coordinate\+System3\+D \&coord\+Sys, const Point3\+D \&origin) const }{convertInLocalCoordinates(const CoordinateSystem3D &coordSys, const Point3D &origin) const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Point3\+D\+::convert\+In\+Local\+Coordinates (
+\begin{DoxyParamCaption}
+\item[{const {\bf Coordinate\+System3D} \&}]{coord\+Sys, }
+\item[{const {\bf Point3D} \&}]{origin}
+\end{DoxyParamCaption}
+) const}\hypertarget{classFVCode3D_1_1Point3D_a7099d16176cfc75deff3b5a6d8bf4c24}{}\label{classFVCode3D_1_1Point3D_a7099d16176cfc75deff3b5a6d8bf4c24}
+
+
+Convert the point to a different coordinate system. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coord\+Sys} & new coordinate system \\
+\hline
+{\em origin} & origin of the coordinate system \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the point in the new coordinate system 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00048}{48} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a7099d16176cfc75deff3b5a6d8bf4c24_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a7099d16176cfc75deff3b5a6d8bf4c24_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!get\+ToleranceX@{get\+ToleranceX}}
+\index{get\+ToleranceX@{get\+ToleranceX}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{get\+Tolerance\+X()}{getToleranceX()}}]{\setlength{\rightskip}{0pt plus 5cm}static const {\bf Real}\& F\+V\+Code3\+D\+::\+Point3\+D\+::get\+ToleranceX (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_ada9a4f80fd2549bc60c703d315f11d23}{}\label{classFVCode3D_1_1Point3D_ada9a4f80fd2549bc60c703d315f11d23}
+
+
+Get tolerance on x. 
+
+\begin{DoxyReturn}{Returns}
+tolerance on x 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00165}{165} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!get\+ToleranceY@{get\+ToleranceY}}
+\index{get\+ToleranceY@{get\+ToleranceY}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{get\+Tolerance\+Y()}{getToleranceY()}}]{\setlength{\rightskip}{0pt plus 5cm}static const {\bf Real}\& F\+V\+Code3\+D\+::\+Point3\+D\+::get\+ToleranceY (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a1215124223c3c61359e9e41ca4d383d8}{}\label{classFVCode3D_1_1Point3D_a1215124223c3c61359e9e41ca4d383d8}
+
+
+Get tolerance on y. 
+
+\begin{DoxyReturn}{Returns}
+tolerance on y 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00172}{172} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!get\+ToleranceZ@{get\+ToleranceZ}}
+\index{get\+ToleranceZ@{get\+ToleranceZ}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{get\+Tolerance\+Z()}{getToleranceZ()}}]{\setlength{\rightskip}{0pt plus 5cm}static const {\bf Real}\& F\+V\+Code3\+D\+::\+Point3\+D\+::get\+ToleranceZ (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a14cccea4d030ed38a5ae3b7bfc415113}{}\label{classFVCode3D_1_1Point3D_a14cccea4d030ed38a5ae3b7bfc415113}
+
+
+Get tolerance on z. 
+
+\begin{DoxyReturn}{Returns}
+tolerance on z 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00179}{179} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!linear\+Transform@{linear\+Transform}}
+\index{linear\+Transform@{linear\+Transform}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{linear\+Transform(const Real scaling, const Real x\+Shift, const Real y\+Shift, const Real z\+Shift)}{linearTransform(const Real scaling, const Real xShift, const Real yShift, const Real zShift)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Point3\+D\+::linear\+Transform (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{scaling, }
+\item[{const {\bf Real}}]{x\+Shift, }
+\item[{const {\bf Real}}]{y\+Shift, }
+\item[{const {\bf Real}}]{z\+Shift}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a2044e0fdef7e870557c89ad0edb0b0d4}{}\label{classFVCode3D_1_1Point3D_a2044e0fdef7e870557c89ad0edb0b0d4}
+
+
+Apply a linear transformation to the point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em scaling} & scale factor \\
+\hline
+{\em x\+Shift} & translation along x \\
+\hline
+{\em y\+Shift} & translation along y \\
+\hline
+{\em z\+Shift} & translation along z \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00033}{33} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a2044e0fdef7e870557c89ad0edb0b0d4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!linear\+Transform@{linear\+Transform}}
+\index{linear\+Transform@{linear\+Transform}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{linear\+Transform(const Real x\+Scaling, const Real y\+Scaling, const Real z\+Scaling, const Real x\+Shift, const Real y\+Shift, const Real z\+Shift)}{linearTransform(const Real xScaling, const Real yScaling, const Real zScaling, const Real xShift, const Real yShift, const Real zShift)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Point3\+D\+::linear\+Transform (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{x\+Scaling, }
+\item[{const {\bf Real}}]{y\+Scaling, }
+\item[{const {\bf Real}}]{z\+Scaling, }
+\item[{const {\bf Real}}]{x\+Shift, }
+\item[{const {\bf Real}}]{y\+Shift, }
+\item[{const {\bf Real}}]{z\+Shift}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a41c0aeb4de5f0f08a15f0aa9ff22e44b}{}\label{classFVCode3D_1_1Point3D_a41c0aeb4de5f0f08a15f0aa9ff22e44b}
+
+
+Apply a linear transformation to the point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+Scaling} & scale factor along x \\
+\hline
+{\em y\+Scaling} & scale factor along y \\
+\hline
+{\em z\+Scaling} & scale factor along z \\
+\hline
+{\em x\+Shift} & translation along x \\
+\hline
+{\em y\+Shift} & translation along y \\
+\hline
+{\em z\+Shift} & translation along z \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00040}{40} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!norm@{norm}}
+\index{norm@{norm}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{norm() const }{norm() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::norm (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01}{}\label{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01}
+
+
+Compute norm of the current point. 
+
+\begin{DoxyReturn}{Returns}
+norm of the point 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00087}{87} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_ac9e4bf311b24cea10ad3fde1d703be01_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!normalize@{normalize}}
+\index{normalize@{normalize}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{normalize()}{normalize()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Point3\+D\+::normalize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}{}\label{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673}
+
+
+Normalize the current point. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00016}{16} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a0d1cd3d114b0985ae2b11cd1c52de673_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!normalized@{normalized}}
+\index{normalized@{normalized}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{normalized() const }{normalized() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Point3\+D\+::normalized (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_acc1ad771660943c0dc2ae28c73fcf866}{}\label{classFVCode3D_1_1Point3D_acc1ad771660943c0dc2ae28c73fcf866}
+
+
+Return the normalized point. 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00093}{93} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_acc1ad771660943c0dc2ae28c73fcf866_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator$\ast$=@{operator$\ast$=}}
+\index{operator$\ast$=@{operator$\ast$=}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$=(const Real \&r)}{operator*=(const Real &r)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} \& F\+V\+Code3\+D\+::\+Point3\+D\+::operator$\ast$= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real} \&}]{r}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a3e9b71f50ab0b9e52a3bc5ace577bbb7}{}\label{classFVCode3D_1_1Point3D_a3e9b71f50ab0b9e52a3bc5ace577bbb7}
+
+
+$\ast$= operator 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00087}{87} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_a3e9b71f50ab0b9e52a3bc5ace577bbb7_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator+=(const Point3\+D \&p)}{operator+=(const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} \& F\+V\+Code3\+D\+::\+Point3\+D\+::operator+= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a30dfdd9a0df466233b6d82798a7770a1}{}\label{classFVCode3D_1_1Point3D_a30dfdd9a0df466233b6d82798a7770a1}
+
+
++= operator 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00071}{71} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_a30dfdd9a0df466233b6d82798a7770a1_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator-\/=(const Point3\+D \&p)}{operator-=(const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} \& F\+V\+Code3\+D\+::\+Point3\+D\+::operator-\/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a22a46a2c737e9a494f3d13b8e2e5f37f}{}\label{classFVCode3D_1_1Point3D_a22a46a2c737e9a494f3d13b8e2e5f37f}
+
+
+-\/= operator 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00079}{79} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_a22a46a2c737e9a494f3d13b8e2e5f37f_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator/=@{operator/=}}
+\index{operator/=@{operator/=}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator/=(const Real \&r)}{operator/=(const Real &r)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} \& F\+V\+Code3\+D\+::\+Point3\+D\+::operator/= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real} \&}]{r}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a559b58149768e633607a90b765d86883}{}\label{classFVCode3D_1_1Point3D_a559b58149768e633607a90b765d86883}
+
+
+/= operator 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00095}{95} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_a559b58149768e633607a90b765d86883_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator=@{operator=}}
+\index{operator=@{operator=}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator=(const Point3\+D \&p)}{operator=(const Point3D &p)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} \& F\+V\+Code3\+D\+::\+Point3\+D\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_a94bf902b79e445db8f54846d35d59018}{}\label{classFVCode3D_1_1Point3D_a94bf902b79e445db8f54846d35d59018}
+
+
+Assignment operator. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00060}{60} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_a94bf902b79e445db8f54846d35d59018_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator[](const U\+Int coord) const }{operator[](const UInt coord) const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{coord}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1Point3D_aac840a4571707984aab37f689b3d096c}{}\label{classFVCode3D_1_1Point3D_aac840a4571707984aab37f689b3d096c}
+
+
+Access to the coord-\/th component of the point (const) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coord} & subscript of the coordinate (0, 1 ,2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the coord-\/th component 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00103}{103} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFVCode3D_1_1Point3D_aac840a4571707984aab37f689b3d096c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator[](const U\+Int coord)}{operator[](const UInt coord)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} \& F\+V\+Code3\+D\+::\+Point3\+D\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{coord}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Point3D_a66f607a43957db2e6922112d4cc4f286}{}\label{classFVCode3D_1_1Point3D_a66f607a43957db2e6922112d4cc4f286}
+
+
+Access to the coord-\/th component of the point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coord} & subscript of the coordinate (0, 1 ,2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the coord-\/th component 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00123}{123} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!set\+ToleranceX@{set\+ToleranceX}}
+\index{set\+ToleranceX@{set\+ToleranceX}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{set\+Tolerance\+X(const Real tolerance)}{setToleranceX(const Real tolerance)}}]{\setlength{\rightskip}{0pt plus 5cm}static void F\+V\+Code3\+D\+::\+Point3\+D\+::set\+ToleranceX (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{tolerance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_ac0a8b34122ec9539270198e638e1bdf8}{}\label{classFVCode3D_1_1Point3D_ac0a8b34122ec9539270198e638e1bdf8}
+
+
+Set tolerance on x. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tolerance} & tolerance on x \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00186}{186} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!set\+ToleranceY@{set\+ToleranceY}}
+\index{set\+ToleranceY@{set\+ToleranceY}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{set\+Tolerance\+Y(const Real tolerance)}{setToleranceY(const Real tolerance)}}]{\setlength{\rightskip}{0pt plus 5cm}static void F\+V\+Code3\+D\+::\+Point3\+D\+::set\+ToleranceY (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{tolerance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a95a65422250722b77f60246d469995a1}{}\label{classFVCode3D_1_1Point3D_a95a65422250722b77f60246d469995a1}
+
+
+Set tolerance on y. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tolerance} & tolerance on y \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00193}{193} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!set\+ToleranceZ@{set\+ToleranceZ}}
+\index{set\+ToleranceZ@{set\+ToleranceZ}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{set\+Tolerance\+Z(const Real tolerance)}{setToleranceZ(const Real tolerance)}}]{\setlength{\rightskip}{0pt plus 5cm}static void F\+V\+Code3\+D\+::\+Point3\+D\+::set\+ToleranceZ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{tolerance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a4df5eee86f2f40aaf068647f27dfbb6e}{}\label{classFVCode3D_1_1Point3D_a4df5eee86f2f40aaf068647f27dfbb6e}
+
+
+Set tolerance on z. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tolerance} & tolerance on z \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00200}{200} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!set\+Values@{set\+Values}}
+\index{set\+Values@{set\+Values}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{set\+Values(const Real x, const Real y, const Real z)}{setValues(const Real x, const Real y, const Real z)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Point3\+D\+::set\+Values (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{x, }
+\item[{const {\bf Real}}]{y, }
+\item[{const {\bf Real}}]{z}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d}{}\label{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d}
+
+
+Set coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & x-\/coordinate \\
+\hline
+{\em y} & y-\/coordinate \\
+\hline
+{\em z} & z-\/coordinate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00026}{26} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_af250a1c49cf1aeeb52f59a687257451d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!x@{x}}
+\index{x@{x}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{x() const }{x() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::x (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}{}\label{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19}
+
+
+Get x-\/coordinate (const) 
+
+\begin{DoxyReturn}{Returns}
+x-\/coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00051}{51} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_ae015d6aa31f8b304f69696bdcbd4da19_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!x@{x}}
+\index{x@{x}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{x()}{x()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real}\& F\+V\+Code3\+D\+::\+Point3\+D\+::x (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_acfeb3c442958a0e127041daf22418626}{}\label{classFVCode3D_1_1Point3D_acfeb3c442958a0e127041daf22418626}
+
+
+Get reference to x-\/coordinate. 
+
+\begin{DoxyReturn}{Returns}
+x-\/coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00069}{69} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!y@{y}}
+\index{y@{y}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{y() const }{y() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::y (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}{}\label{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416}
+
+
+Get y-\/coordinate (const) 
+
+\begin{DoxyReturn}{Returns}
+x-\/coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00057}{57} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a950abcabbf3bb32fc2daf64c28d77416_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!y@{y}}
+\index{y@{y}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{y()}{y()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real}\& F\+V\+Code3\+D\+::\+Point3\+D\+::y (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_ad2bdad9fb491be7b904267315dd9e032}{}\label{classFVCode3D_1_1Point3D_ad2bdad9fb491be7b904267315dd9e032}
+
+
+Get reference to y-\/coordinate. 
+
+\begin{DoxyReturn}{Returns}
+y-\/coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00075}{75} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!z@{z}}
+\index{z@{z}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{z() const }{z() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::z (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}{}\label{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa}
+
+
+Get x-\/coordinate (const) 
+
+\begin{DoxyReturn}{Returns}
+x-\/coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00063}{63} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Point3D_a865109e2006cc1de3681ab601081f5aa_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!z@{z}}
+\index{z@{z}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{z()}{z()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real}\& F\+V\+Code3\+D\+::\+Point3\+D\+::z (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Point3D_abcea334e05978fd0e91db2283afd1695}{}\label{classFVCode3D_1_1Point3D_abcea334e05978fd0e91db2283afd1695}
+
+
+Get reference to z-\/coordinate. 
+
+\begin{DoxyReturn}{Returns}
+z-\/coordinate 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00081}{81} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!cross\+Product@{cross\+Product}}
+\index{cross\+Product@{cross\+Product}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{cross\+Product}{crossProduct}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} cross\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_a065de1710a2bd7a7b6a33ec14eae4688}{}\label{classFVCode3D_1_1Point3D_a065de1710a2bd7a7b6a33ec14eae4688}
+
+
+Cross product. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00211}{211} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!distance@{distance}}
+\index{distance@{distance}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{distance}{distance}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} distance (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_af7cc7631755aaf9b6ff4bc328be2f20c}{}\label{classFVCode3D_1_1Point3D_af7cc7631755aaf9b6ff4bc328be2f20c}
+
+
+Compute distance between points. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00206}{206} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!dot\+Product@{dot\+Product}}
+\index{dot\+Product@{dot\+Product}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{dot\+Product}{dotProduct}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} dot\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_abed858bc07c6f152b0307c824486887c}{}\label{classFVCode3D_1_1Point3D_abed858bc07c6f152b0307c824486887c}
+
+
+Dot product. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00186}{186} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!inner\+Angle\+Deg@{inner\+Angle\+Deg}}
+\index{inner\+Angle\+Deg@{inner\+Angle\+Deg}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{inner\+Angle\+Deg}{innerAngleDeg}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} inner\+Angle\+Deg (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_a3fade3157c26f62dd589b7c4b3eba346}{}\label{classFVCode3D_1_1Point3D_a3fade3157c26f62dd589b7c4b3eba346}
+
+
+Compute inner angle between two vector in degrees. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00199}{199} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!inner\+Angle\+Rad@{inner\+Angle\+Rad}}
+\index{inner\+Angle\+Rad@{inner\+Angle\+Rad}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{inner\+Angle\+Rad}{innerAngleRad}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} inner\+Angle\+Rad (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_ae6dfa3be3cb055f156e105091599b5e6}{}\label{classFVCode3D_1_1Point3D_ae6dfa3be3cb055f156e105091599b5e6}
+
+
+Compute inner angle between two vector in radians. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00192}{192} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_a43789e877280ec157cdf1ee6abe5cdc4}{}\label{classFVCode3D_1_1Point3D_a43789e877280ec157cdf1ee6abe5cdc4}
+
+\begin{DoxyItemize}
+\item operator between points (dot product) 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00162}{162} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p, }
+\item[{const {\bf Real}}]{r}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_ab47540dec82a8221068ed10ffbc19481}{}\label{classFVCode3D_1_1Point3D_ab47540dec82a8221068ed10ffbc19481}
+
+\begin{DoxyItemize}
+\item operator between point and scalar 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00167}{167} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator$\ast$}{operator*}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator$\ast$ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Real}}]{r, }
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_a992195935c2d83ef35a975b66a9d3392}{}\label{classFVCode3D_1_1Point3D_a992195935c2d83ef35a975b66a9d3392}
+
+\begin{DoxyItemize}
+\item operator between scalar and point 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00174}{174} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator+@{operator+}}
+\index{operator+@{operator+}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator+}{operator+}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator+ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_afa00949f6fabb0d42278788f592081f6}{}\label{classFVCode3D_1_1Point3D_afa00949f6fabb0d42278788f592081f6}
+
+\begin{DoxyItemize}
+\item operator 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00143}{143} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator-\/}{operator-}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p1, }
+\item[{const {\bf Point3D} \&}]{p2}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_ac10f2fc19824d0e150edb94b21eb75cd}{}\label{classFVCode3D_1_1Point3D_ac10f2fc19824d0e150edb94b21eb75cd}
+
+\begin{DoxyItemize}
+\item operator 
+\end{DoxyItemize}
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00150}{150} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator-\/}{operator-}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator-\/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_af0fe4c83e3094e9f73de5c8541a7b800}{}\label{classFVCode3D_1_1Point3D_af0fe4c83e3094e9f73de5c8541a7b800}
+
+
+Change sign operator. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00157}{157} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator/@{operator/}}
+\index{operator/@{operator/}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator/}{operator/}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} operator/ (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point3D} \&}]{p, }
+\item[{const {\bf Real}}]{r}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_a901cc35e13a74a226e0bce161dd9e03e}{}\label{classFVCode3D_1_1Point3D_a901cc35e13a74a226e0bce161dd9e03e}
+
+
+/ operator between point and scalar 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00179}{179} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{operator$<$$<$}{operator<<}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::ostream\& operator$<$$<$ (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{const {\bf Point3D} \&}]{p}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [friend]}}\hypertarget{classFVCode3D_1_1Point3D_a4d6f968755c16f7bd5d6c1a14fde3910}{}\label{classFVCode3D_1_1Point3D_a4d6f968755c16f7bd5d6c1a14fde3910}
+
+
+Print information about the point. 
+
+
+
+Definition at line \hyperlink{Point3D_8cpp_source_l00219}{219} of file \hyperlink{Point3D_8cpp_source}{Point3\+D.\+cpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!M\+\_\+x@{M\+\_\+x}}
+\index{M\+\_\+x@{M\+\_\+x}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+x}{M_x}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::\+M\+\_\+x\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Point3D_a3eaeca319f23ac0967891d55446fa1d7}{}\label{classFVCode3D_1_1Point3D_a3eaeca319f23ac0967891d55446fa1d7}
+
+
+x-\/coordinate 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00252}{252} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!M\+\_\+y@{M\+\_\+y}}
+\index{M\+\_\+y@{M\+\_\+y}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+y}{M_y}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::\+M\+\_\+y\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Point3D_a087a884a5ed2eafb804db5f0a2f9aea6}{}\label{classFVCode3D_1_1Point3D_a087a884a5ed2eafb804db5f0a2f9aea6}
+
+
+y-\/coordinate 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00254}{254} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!M\+\_\+z@{M\+\_\+z}}
+\index{M\+\_\+z@{M\+\_\+z}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+z}{M_z}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::\+M\+\_\+z\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Point3D_ae335813a9743fd9406322e77e395823d}{}\label{classFVCode3D_1_1Point3D_ae335813a9743fd9406322e77e395823d}
+
+
+z-\/coordinate 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00256}{256} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!S\+\_\+toleranceX@{S\+\_\+toleranceX}}
+\index{S\+\_\+toleranceX@{S\+\_\+toleranceX}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{S\+\_\+toleranceX}{S_toleranceX}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::\+S\+\_\+toleranceX = std\+::numeric\+\_\+limits$<${\bf Real}$>$\+::epsilon()\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a970c57d27a188366fb4a30fd08b98b7a}{}\label{classFVCode3D_1_1Point3D_a970c57d27a188366fb4a30fd08b98b7a}
+
+
+Relative x-\/tolerance. 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00243}{243} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!S\+\_\+toleranceY@{S\+\_\+toleranceY}}
+\index{S\+\_\+toleranceY@{S\+\_\+toleranceY}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{S\+\_\+toleranceY}{S_toleranceY}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::\+S\+\_\+toleranceY = std\+::numeric\+\_\+limits$<${\bf Real}$>$\+::epsilon()\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a1ec72cecf8486e2a9433093ac3b0cc2c}{}\label{classFVCode3D_1_1Point3D_a1ec72cecf8486e2a9433093ac3b0cc2c}
+
+
+Relative y-\/tolerance. 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00245}{245} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}!S\+\_\+toleranceZ@{S\+\_\+toleranceZ}}
+\index{S\+\_\+toleranceZ@{S\+\_\+toleranceZ}!F\+V\+Code3\+D\+::\+Point3D@{F\+V\+Code3\+D\+::\+Point3D}}
+\subsubsection[{\texorpdfstring{S\+\_\+toleranceZ}{S_toleranceZ}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Point3\+D\+::\+S\+\_\+toleranceZ = std\+::numeric\+\_\+limits$<${\bf Real}$>$\+::epsilon()\hspace{0.3cm}{\ttfamily [static]}}\hypertarget{classFVCode3D_1_1Point3D_a180a0f561aae1274ee37b0ce334db956}{}\label{classFVCode3D_1_1Point3D_a180a0f561aae1274ee37b0ce334db956}
+
+
+Relative z-\/tolerance. 
+
+
+
+Definition at line \hyperlink{Point3D_8hpp_source_l00247}{247} of file \hyperlink{Point3D_8hpp_source}{Point3\+D.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\hyperlink{Point3D_8hpp}{Point3\+D.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/geometry/\hyperlink{Point3D_8cpp}{Point3\+D.\+cpp}\end{DoxyCompactItemize}

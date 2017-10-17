@@ -1,0 +1,885 @@
+\hypertarget{classFVCode3D_1_1Mesh3D}{}\section{F\+V\+Code3D\+:\+:Mesh3D Class Reference}
+\label{classFVCode3D_1_1Mesh3D}\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+
+
+Class that implements a 3D mesh.  
+
+
+
+
+{\ttfamily \#include $<$Mesh3\+D.\+hpp$>$}
+
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Mesh3D\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{classFVCode3D_1_1Mesh3D__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D}
+\begin{DoxyCompactList}\small\item\em Class that implements a cell. \end{DoxyCompactList}\item 
+class \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D}
+\begin{DoxyCompactList}\small\item\em Class that implements a facet. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Mesh3D_a761b316925bc26ca886e126e9a397bd5}{Mesh3D} ()
+\begin{DoxyCompactList}\small\item\em Empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Mesh3D_a1d214ce5c2472a00e102176ff4e08eba}{Mesh3D} (const \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh)
+\begin{DoxyCompactList}\small\item\em Copy constructor. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1Mesh3D_a8722d39e0907d0f0e9e04bc6ef803836}{$\sim$\+Mesh3D} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+const std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \& \hyperlink{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c}{get\+Nodes\+Vector} () const 
+\begin{DoxyCompactList}\small\item\em Get the vector storing the nodes of the mesh (const) \end{DoxyCompactList}\item 
+std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \& \hyperlink{classFVCode3D_1_1Mesh3D_a4462a272f3a143761989b786f1adb778}{get\+Nodes\+Vector} ()
+\begin{DoxyCompactList}\small\item\em Get the vector storing the nodes of the mesh. \end{DoxyCompactList}\item 
+const std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} $>$ \& \hyperlink{classFVCode3D_1_1Mesh3D_a76de387da2a552e3e1210d795bc7acf9}{get\+Facets\+Map} () const 
+\begin{DoxyCompactList}\small\item\em Get the set storing the facets of the mesh (const) \end{DoxyCompactList}\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} $>$ \& \hyperlink{classFVCode3D_1_1Mesh3D_aee76d9e8ce9fd31bdcab54d99ce991a7}{get\+Facets\+Map} ()
+\begin{DoxyCompactList}\small\item\em Get the map storing the facets of the mesh. \end{DoxyCompactList}\item 
+const std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D} $>$ \& \hyperlink{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3}{get\+Cells\+Map} () const 
+\begin{DoxyCompactList}\small\item\em Get the map storing the cells of the mesh (const) \end{DoxyCompactList}\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D} $>$ \& \hyperlink{classFVCode3D_1_1Mesh3D_a071c9bc9824e46729282d688ad805e57}{get\+Cells\+Map} ()
+\begin{DoxyCompactList}\small\item\em Get the map storing the cells of the mesh. \end{DoxyCompactList}\item 
+const \hyperlink{classFVCode3D_1_1FractureNetwork3D}{Fracture\+Network3D} \& \hyperlink{classFVCode3D_1_1Mesh3D_a6ba176804035a210ee1f73348ec04aca}{get\+FN} () const 
+\begin{DoxyCompactList}\small\item\em Get the fracture network of the mesh (const) \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1FractureNetwork3D}{Fracture\+Network3D} \& \hyperlink{classFVCode3D_1_1Mesh3D_a9676abae24759a4294f5d67f37b21be3}{get\+FN} ()
+\begin{DoxyCompactList}\small\item\em Get the fracture network of the mesh. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Mesh3D_a22a32ee29c78d07cbdd033adf61bfa65}{get\+Number\+Of\+Nodes} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of nodes. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Mesh3D_a18c46222fef3bcbaacc0e32e6fb40ec0}{get\+Number\+Of\+Facets} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of facets. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Mesh3D_ab097ec995d4a70d599de3e5cd0ffe8b0}{get\+Number\+Of\+Cells} () const 
+\begin{DoxyCompactList}\small\item\em Get the number of cells. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Mesh3D_a269c01796091da2f599e66b6b91b39dd}{add\+Fracture\+Network} (\hyperlink{classFVCode3D_1_1FractureNetwork3D}{Fracture\+Network3D} \&fn)
+\begin{DoxyCompactList}\small\item\em Add the fracture network. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Mesh3D_a164529f402302f3f74235ad91c8bea07}{update\+Facets\+With\+Fractures} ()
+\begin{DoxyCompactList}\small\item\em Update the \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} with the id of the fracture. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Mesh3D_ab1595d6ad6373719cf597c323ed6909b}{update\+Facets\+With\+Cells} ()
+\begin{DoxyCompactList}\small\item\em Update the \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} with the id of the separated cells. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Mesh3D_a32920906ccad9ef0572ebc4009214c86}{update\+Cells\+With\+Neighbors} ()
+\begin{DoxyCompactList}\small\item\em Update the \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D} with the neighboring cells. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Mesh3D_a609f980329f5a98e9fad724049e509d2}{build\+Nodes\+To\+Facet\+Map} ()
+\begin{DoxyCompactList}\small\item\em Fill a map that associates to node ids of each facet the facet id. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Mesh3D_a2ac0b84c13a15ed42cdd8c98066eae98}{get\+Facet\+From\+Nodes} (std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \&nodes)  throw ()
+\begin{DoxyCompactList}\small\item\em Find the facet id given the list of the nodes. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Mesh3D_a9c8350dc981d42ba80f37625cf978d3c}{export\+V\+TU} (const std\+::string \&filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export the mesh in vtu format. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Mesh3D_a77553756736b340eb9de044471b73150}{export\+Cells\+V\+TU} (const std\+::string \&filename, const std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \&id\+Cells) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export some cells of the mesh in vtu format. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Mesh3D_a98c0a7dd95e33c21e813f9402d71da15}{export\+Fracture\+Network\+V\+TK} (const std\+::string \&filename) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export in a single vtk file all the facets representing each fracture in the network. \end{DoxyCompactList}\item 
+bool \hyperlink{classFVCode3D_1_1Mesh3D_a076fb54969f3922a67bf26e7bf0fd8be}{export\+Fracture\+V\+TK} (const std\+::string \&filename, const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \&f) const   throw ()
+\begin{DoxyCompactList}\small\item\em Export in a vtk file the facets representing a fracture in the network. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Mesh3D_a1789482a87137f0c47a2dd9a1e302d66}{clear} ()
+\begin{DoxyCompactList}\small\item\em Clear the mesh. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1FractureNetwork3D}{Fracture\+Network3D} \hyperlink{classFVCode3D_1_1Mesh3D_ab197671318545b2b026899d435e79ddd}{M\+\_\+fn}
+\begin{DoxyCompactList}\small\item\em The fracture network. \end{DoxyCompactList}\item 
+std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \hyperlink{classFVCode3D_1_1Mesh3D_a5464981fd097ce785675d91522884739}{M\+\_\+nodes}
+\begin{DoxyCompactList}\small\item\em The vector storing all the nodes of the mesh. \end{DoxyCompactList}\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} $>$ \hyperlink{classFVCode3D_1_1Mesh3D_a57d8b6af7f4385d749c2d83c235764de}{M\+\_\+facets}
+\begin{DoxyCompactList}\small\item\em The set storing all the facets of the mesh. \end{DoxyCompactList}\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D} $>$ \hyperlink{classFVCode3D_1_1Mesh3D_a8cac877e809226fb96078183efb25a2f}{M\+\_\+cells}
+\begin{DoxyCompactList}\small\item\em The map storing all the cells of the mesh. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ \hyperlink{classFVCode3D_1_1Mesh3D_add5bb503fb6d9bf6ee0656f02e712b06}{M\+\_\+nodes\+To\+Facet}
+\begin{DoxyCompactList}\small\item\em The map that associates to a vector of node ids a facet id. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that implements a 3D mesh. 
+
+This class implements the concept of a three dimensional polyhedrical unstructured mesh. It is composed of points, facets and cells. 
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00033}{33} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!Mesh3D@{Mesh3D}}
+\index{Mesh3D@{Mesh3D}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{Mesh3\+D()}{Mesh3D()}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+Mesh3D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_a761b316925bc26ca886e126e9a397bd5}{}\label{classFVCode3D_1_1Mesh3D_a761b316925bc26ca886e126e9a397bd5}
+
+
+Empty constructor. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00898}{898} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!Mesh3D@{Mesh3D}}
+\index{Mesh3D@{Mesh3D}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{Mesh3\+D(const Mesh3\+D \&mesh)}{Mesh3D(const Mesh3D &mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+Mesh3D (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh3D} \&}]{mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_a1d214ce5c2472a00e102176ff4e08eba}{}\label{classFVCode3D_1_1Mesh3D_a1d214ce5c2472a00e102176ff4e08eba}
+
+
+Copy constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00901}{901} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!````~Mesh3D@{$\sim$\+Mesh3D}}
+\index{````~Mesh3D@{$\sim$\+Mesh3D}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{$\sim$\+Mesh3\+D()=default}{~Mesh3D()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Mesh3\+D\+::$\sim$\+Mesh3D (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Mesh3D_a8722d39e0907d0f0e9e04bc6ef803836}{}\label{classFVCode3D_1_1Mesh3D_a8722d39e0907d0f0e9e04bc6ef803836}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!add\+Fracture\+Network@{add\+Fracture\+Network}}
+\index{add\+Fracture\+Network@{add\+Fracture\+Network}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{add\+Fracture\+Network(\+Fracture\+Network3\+D \&fn)}{addFractureNetwork(FractureNetwork3D &fn)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Mesh3\+D\+::add\+Fracture\+Network (
+\begin{DoxyParamCaption}
+\item[{{\bf Fracture\+Network3D} \&}]{fn}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a269c01796091da2f599e66b6b91b39dd}{}\label{classFVCode3D_1_1Mesh3D_a269c01796091da2f599e66b6b91b39dd}
+
+
+Add the fracture network. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00591}{591} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a269c01796091da2f599e66b6b91b39dd_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a269c01796091da2f599e66b6b91b39dd_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!build\+Nodes\+To\+Facet\+Map@{build\+Nodes\+To\+Facet\+Map}}
+\index{build\+Nodes\+To\+Facet\+Map@{build\+Nodes\+To\+Facet\+Map}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{build\+Nodes\+To\+Facet\+Map()}{buildNodesToFacetMap()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Mesh3\+D\+::build\+Nodes\+To\+Facet\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_a609f980329f5a98e9fad724049e509d2}{}\label{classFVCode3D_1_1Mesh3D_a609f980329f5a98e9fad724049e509d2}
+
+
+Fill a map that associates to node ids of each facet the facet id. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00934}{934} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a609f980329f5a98e9fad724049e509d2_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!clear@{clear}}
+\index{clear@{clear}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{clear()}{clear()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Mesh3\+D\+::clear (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_a1789482a87137f0c47a2dd9a1e302d66}{}\label{classFVCode3D_1_1Mesh3D_a1789482a87137f0c47a2dd9a1e302d66}
+
+
+Clear the mesh. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l01231}{1231} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a1789482a87137f0c47a2dd9a1e302d66_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a1789482a87137f0c47a2dd9a1e302d66_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!export\+Cells\+V\+TU@{export\+Cells\+V\+TU}}
+\index{export\+Cells\+V\+TU@{export\+Cells\+V\+TU}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{export\+Cells\+V\+T\+U(const std\+::string \&filename, const std\+::vector$<$ U\+Int $>$ \&id\+Cells) const }{exportCellsVTU(const std::string &filename, const std::vector< UInt > &idCells) const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Mesh3\+D\+::export\+Cells\+V\+TU (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{const std\+::vector$<$ {\bf U\+Int} $>$ \&}]{id\+Cells}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1Mesh3D_a77553756736b340eb9de044471b73150}{}\label{classFVCode3D_1_1Mesh3D_a77553756736b340eb9de044471b73150}
+
+
+Export some cells of the mesh in vtu format. 
+
+(Use paraview to open the vtu file) 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the vtu file created by this method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE -\/$>$ operation ended correctly F\+A\+L\+SE -\/$>$ an error occurred 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l01108}{1108} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a77553756736b340eb9de044471b73150_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!export\+Fracture\+Network\+V\+TK@{export\+Fracture\+Network\+V\+TK}}
+\index{export\+Fracture\+Network\+V\+TK@{export\+Fracture\+Network\+V\+TK}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{export\+Fracture\+Network\+V\+T\+K(const std\+::string \&filename) const }{exportFractureNetworkVTK(const std::string &filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Mesh3\+D\+::export\+Fracture\+Network\+V\+TK (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1Mesh3D_a98c0a7dd95e33c21e813f9402d71da15}{}\label{classFVCode3D_1_1Mesh3D_a98c0a7dd95e33c21e813f9402d71da15}
+
+
+Export in a single vtk file all the facets representing each fracture in the network. 
+
+(Use paraview to open the vtk file) 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the vtk file created by this method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE -\/$>$ operation ended correctly F\+A\+L\+SE -\/$>$ an error occurred 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l01221}{1221} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a98c0a7dd95e33c21e813f9402d71da15_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a98c0a7dd95e33c21e813f9402d71da15_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!export\+Fracture\+V\+TK@{export\+Fracture\+V\+TK}}
+\index{export\+Fracture\+V\+TK@{export\+Fracture\+V\+TK}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{export\+Fracture\+V\+T\+K(const std\+::string \&filename, const U\+Int \&f) const }{exportFractureVTK(const std::string &filename, const UInt &f) const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Mesh3\+D\+::export\+Fracture\+V\+TK (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename, }
+\item[{const {\bf U\+Int} \&}]{f}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1Mesh3D_a076fb54969f3922a67bf26e7bf0fd8be}{}\label{classFVCode3D_1_1Mesh3D_a076fb54969f3922a67bf26e7bf0fd8be}
+
+
+Export in a vtk file the facets representing a fracture in the network. 
+
+(Use paraview to open the vtk file) 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the vtk file created by this method \\
+\hline
+{\em f} & the fracture id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE -\/$>$ operation ended correctly F\+A\+L\+SE -\/$>$ an error occurred 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l01226}{1226} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a076fb54969f3922a67bf26e7bf0fd8be_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a076fb54969f3922a67bf26e7bf0fd8be_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!export\+V\+TU@{export\+V\+TU}}
+\index{export\+V\+TU@{export\+V\+TU}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{export\+V\+T\+U(const std\+::string \&filename) const }{exportVTU(const std::string &filename) const }}]{\setlength{\rightskip}{0pt plus 5cm}bool F\+V\+Code3\+D\+::\+Mesh3\+D\+::export\+V\+TU (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{filename}
+\end{DoxyParamCaption}
+) const throw  ) }\hypertarget{classFVCode3D_1_1Mesh3D_a9c8350dc981d42ba80f37625cf978d3c}{}\label{classFVCode3D_1_1Mesh3D_a9c8350dc981d42ba80f37625cf978d3c}
+
+
+Export the mesh in vtu format. 
+
+(Use paraview to open the vtu file) 
+\begin{DoxyParams}{Parameters}
+{\em filename} & The name of the vtu file created by this method \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T\+R\+UE -\/$>$ operation ended correctly F\+A\+L\+SE -\/$>$ an error occurred 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00996}{996} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a9c8350dc981d42ba80f37625cf978d3c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Cells\+Map@{get\+Cells\+Map}}
+\index{get\+Cells\+Map@{get\+Cells\+Map}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Cells\+Map() const }{getCellsMap() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::map$<${\bf U\+Int},{\bf Cell3D}$>$\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Cells\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3}{}\label{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3}
+
+
+Get the map storing the cells of the mesh (const) 
+
+\begin{DoxyReturn}{Returns}
+a constant reference to the map storing the cells of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00549}{549} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_ad904ef5e068c89951d77e9364e960bf3_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Cells\+Map@{get\+Cells\+Map}}
+\index{get\+Cells\+Map@{get\+Cells\+Map}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Cells\+Map()}{getCellsMap()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int},{\bf Cell3D}$>$\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Cells\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a071c9bc9824e46729282d688ad805e57}{}\label{classFVCode3D_1_1Mesh3D_a071c9bc9824e46729282d688ad805e57}
+
+
+Get the map storing the cells of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+a reference to the map storing the cells of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00556}{556} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Facet\+From\+Nodes@{get\+Facet\+From\+Nodes}}
+\index{get\+Facet\+From\+Nodes@{get\+Facet\+From\+Nodes}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Facet\+From\+Nodes(std\+::vector$<$ U\+Int $>$ \&nodes)}{getFacetFromNodes(std::vector< UInt > &nodes)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Facet\+From\+Nodes (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf U\+Int} $>$ \&}]{nodes}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Mesh3D_a2ac0b84c13a15ed42cdd8c98066eae98}{}\label{classFVCode3D_1_1Mesh3D_a2ac0b84c13a15ed42cdd8c98066eae98}
+
+
+Find the facet id given the list of the nodes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nodes} & vector of nodes that define the facet \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the id of the facet 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00947}{947} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a2ac0b84c13a15ed42cdd8c98066eae98_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Facets\+Map@{get\+Facets\+Map}}
+\index{get\+Facets\+Map@{get\+Facets\+Map}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Facets\+Map() const }{getFacetsMap() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::map$<${\bf U\+Int},{\bf Facet3D}$>$\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Facets\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a76de387da2a552e3e1210d795bc7acf9}{}\label{classFVCode3D_1_1Mesh3D_a76de387da2a552e3e1210d795bc7acf9}
+
+
+Get the set storing the facets of the mesh (const) 
+
+\begin{DoxyReturn}{Returns}
+a constant reference to the set storing the facets of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00535}{535} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a76de387da2a552e3e1210d795bc7acf9_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Facets\+Map@{get\+Facets\+Map}}
+\index{get\+Facets\+Map@{get\+Facets\+Map}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Facets\+Map()}{getFacetsMap()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int},{\bf Facet3D}$>$\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Facets\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_aee76d9e8ce9fd31bdcab54d99ce991a7}{}\label{classFVCode3D_1_1Mesh3D_aee76d9e8ce9fd31bdcab54d99ce991a7}
+
+
+Get the map storing the facets of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+a reference to the map storing the facets of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00542}{542} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+FN@{get\+FN}}
+\index{get\+FN@{get\+FN}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+F\+N() const }{getFN() const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Fracture\+Network3D}\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+FN (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a6ba176804035a210ee1f73348ec04aca}{}\label{classFVCode3D_1_1Mesh3D_a6ba176804035a210ee1f73348ec04aca}
+
+
+Get the fracture network of the mesh (const) 
+
+\begin{DoxyReturn}{Returns}
+a constant reference to the fracture network of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00563}{563} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a6ba176804035a210ee1f73348ec04aca_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+FN@{get\+FN}}
+\index{get\+FN@{get\+FN}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+F\+N()}{getFN()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Fracture\+Network3D}\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+FN (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a9676abae24759a4294f5d67f37b21be3}{}\label{classFVCode3D_1_1Mesh3D_a9676abae24759a4294f5d67f37b21be3}
+
+
+Get the fracture network of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+a constant reference to the fracture network of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00570}{570} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Nodes\+Vector@{get\+Nodes\+Vector}}
+\index{get\+Nodes\+Vector@{get\+Nodes\+Vector}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Nodes\+Vector() const }{getNodesVector() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::vector$<${\bf Point3D}$>$\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Nodes\+Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c}{}\label{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c}
+
+
+Get the vector storing the nodes of the mesh (const) 
+
+\begin{DoxyReturn}{Returns}
+a constant reference to the vector storing the nodes of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00521}{521} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Nodes\+Vector@{get\+Nodes\+Vector}}
+\index{get\+Nodes\+Vector@{get\+Nodes\+Vector}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Nodes\+Vector()}{getNodesVector()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<${\bf Point3D}$>$\& F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Nodes\+Vector (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a4462a272f3a143761989b786f1adb778}{}\label{classFVCode3D_1_1Mesh3D_a4462a272f3a143761989b786f1adb778}
+
+
+Get the vector storing the nodes of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+a reference to the vector storing the nodes of the mesh 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00528}{528} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Number\+Of\+Cells@{get\+Number\+Of\+Cells}}
+\index{get\+Number\+Of\+Cells@{get\+Number\+Of\+Cells}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Number\+Of\+Cells() const }{getNumberOfCells() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Number\+Of\+Cells (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_ab097ec995d4a70d599de3e5cd0ffe8b0}{}\label{classFVCode3D_1_1Mesh3D_ab097ec995d4a70d599de3e5cd0ffe8b0}
+
+
+Get the number of cells. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00587}{587} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Number\+Of\+Facets@{get\+Number\+Of\+Facets}}
+\index{get\+Number\+Of\+Facets@{get\+Number\+Of\+Facets}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Number\+Of\+Facets() const }{getNumberOfFacets() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Number\+Of\+Facets (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a18c46222fef3bcbaacc0e32e6fb40ec0}{}\label{classFVCode3D_1_1Mesh3D_a18c46222fef3bcbaacc0e32e6fb40ec0}
+
+
+Get the number of facets. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00583}{583} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!get\+Number\+Of\+Nodes@{get\+Number\+Of\+Nodes}}
+\index{get\+Number\+Of\+Nodes@{get\+Number\+Of\+Nodes}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{get\+Number\+Of\+Nodes() const }{getNumberOfNodes() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Mesh3\+D\+::get\+Number\+Of\+Nodes (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Mesh3D_a22a32ee29c78d07cbdd033adf61bfa65}{}\label{classFVCode3D_1_1Mesh3D_a22a32ee29c78d07cbdd033adf61bfa65}
+
+
+Get the number of nodes. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00579}{579} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a22a32ee29c78d07cbdd033adf61bfa65_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!update\+Cells\+With\+Neighbors@{update\+Cells\+With\+Neighbors}}
+\index{update\+Cells\+With\+Neighbors@{update\+Cells\+With\+Neighbors}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{update\+Cells\+With\+Neighbors()}{updateCellsWithNeighbors()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Mesh3\+D\+::update\+Cells\+With\+Neighbors (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_a32920906ccad9ef0572ebc4009214c86}{}\label{classFVCode3D_1_1Mesh3D_a32920906ccad9ef0572ebc4009214c86}
+
+
+Update the \hyperlink{classFVCode3D_1_1Mesh3D_1_1Cell3D}{Cell3D} with the neighboring cells. 
+
+\begin{DoxyPrecond}{Precondition}
+\hyperlink{classFVCode3D_1_1Mesh3D_ab1595d6ad6373719cf597c323ed6909b}{update\+Facets\+With\+Cells()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00919}{919} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a32920906ccad9ef0572ebc4009214c86_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!update\+Facets\+With\+Cells@{update\+Facets\+With\+Cells}}
+\index{update\+Facets\+With\+Cells@{update\+Facets\+With\+Cells}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{update\+Facets\+With\+Cells()}{updateFacetsWithCells()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Mesh3\+D\+::update\+Facets\+With\+Cells (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_ab1595d6ad6373719cf597c323ed6909b}{}\label{classFVCode3D_1_1Mesh3D_ab1595d6ad6373719cf597c323ed6909b}
+
+
+Update the \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} with the id of the separated cells. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00912}{912} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_ab1595d6ad6373719cf597c323ed6909b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!update\+Facets\+With\+Fractures@{update\+Facets\+With\+Fractures}}
+\index{update\+Facets\+With\+Fractures@{update\+Facets\+With\+Fractures}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{update\+Facets\+With\+Fractures()}{updateFacetsWithFractures()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Mesh3\+D\+::update\+Facets\+With\+Fractures (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Mesh3D_a164529f402302f3f74235ad91c8bea07}{}\label{classFVCode3D_1_1Mesh3D_a164529f402302f3f74235ad91c8bea07}
+
+
+Update the \hyperlink{classFVCode3D_1_1Mesh3D_1_1Facet3D}{Facet3D} with the id of the fracture. 
+
+\begin{DoxyPrecond}{Precondition}
+\hyperlink{classFVCode3D_1_1Mesh3D_a269c01796091da2f599e66b6b91b39dd}{add\+Fracture\+Network()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Mesh3D_8cpp_source_l00905}{905} of file \hyperlink{Mesh3D_8cpp_source}{Mesh3\+D.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a164529f402302f3f74235ad91c8bea07_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Mesh3D_a164529f402302f3f74235ad91c8bea07_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!M\+\_\+cells@{M\+\_\+cells}}
+\index{M\+\_\+cells@{M\+\_\+cells}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+cells}{M_cells}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int},{\bf Cell3D}$>$ F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+M\+\_\+cells\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Mesh3D_a8cac877e809226fb96078183efb25a2f}{}\label{classFVCode3D_1_1Mesh3D_a8cac877e809226fb96078183efb25a2f}
+
+
+The map storing all the cells of the mesh. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00669}{669} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!M\+\_\+facets@{M\+\_\+facets}}
+\index{M\+\_\+facets@{M\+\_\+facets}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+facets}{M_facets}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int},{\bf Facet3D}$>$ F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+M\+\_\+facets\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Mesh3D_a57d8b6af7f4385d749c2d83c235764de}{}\label{classFVCode3D_1_1Mesh3D_a57d8b6af7f4385d749c2d83c235764de}
+
+
+The set storing all the facets of the mesh. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00667}{667} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!M\+\_\+fn@{M\+\_\+fn}}
+\index{M\+\_\+fn@{M\+\_\+fn}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+fn}{M_fn}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Fracture\+Network3D} F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+M\+\_\+fn\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Mesh3D_ab197671318545b2b026899d435e79ddd}{}\label{classFVCode3D_1_1Mesh3D_ab197671318545b2b026899d435e79ddd}
+
+
+The fracture network. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00663}{663} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!M\+\_\+nodes@{M\+\_\+nodes}}
+\index{M\+\_\+nodes@{M\+\_\+nodes}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+nodes}{M_nodes}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<${\bf Point3D}$>$ F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+M\+\_\+nodes\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Mesh3D_a5464981fd097ce785675d91522884739}{}\label{classFVCode3D_1_1Mesh3D_a5464981fd097ce785675d91522884739}
+
+
+The vector storing all the nodes of the mesh. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00665}{665} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}!M\+\_\+nodes\+To\+Facet@{M\+\_\+nodes\+To\+Facet}}
+\index{M\+\_\+nodes\+To\+Facet@{M\+\_\+nodes\+To\+Facet}!F\+V\+Code3\+D\+::\+Mesh3D@{F\+V\+Code3\+D\+::\+Mesh3D}}
+\subsubsection[{\texorpdfstring{M\+\_\+nodes\+To\+Facet}{M_nodesToFacet}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<$std\+::vector$<${\bf U\+Int}$>$, {\bf U\+Int}$>$ F\+V\+Code3\+D\+::\+Mesh3\+D\+::\+M\+\_\+nodes\+To\+Facet\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Mesh3D_add5bb503fb6d9bf6ee0656f02e712b06}{}\label{classFVCode3D_1_1Mesh3D_add5bb503fb6d9bf6ee0656f02e712b06}
+
+
+The map that associates to a vector of node ids a facet id. 
+
+
+
+Definition at line \hyperlink{Mesh3D_8hpp_source_l00671}{671} of file \hyperlink{Mesh3D_8hpp_source}{Mesh3\+D.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{Mesh3D_8hpp}{Mesh3\+D.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{Mesh3D_8cpp}{Mesh3\+D.\+cpp}\end{DoxyCompactItemize}

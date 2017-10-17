@@ -1,0 +1,198 @@
+\hypertarget{classFVCode3D_1_1ProxyEdge}{}\section{F\+V\+Code3D\+:\+:Proxy\+Edge Class Reference}
+\label{classFVCode3D_1_1ProxyEdge}\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+
+
+Class the allows to edit a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge} object.  
+
+
+
+
+{\ttfamily \#include $<$Proxy\+Rigid\+Mesh.\+hpp$>$}
+
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Proxy\+Edge\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFVCode3D_1_1ProxyEdge__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge} \hyperlink{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}{Edge}
+\begin{DoxyCompactList}\small\item\em Typedef for \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ProxyEdge_a217a71b435bee1599be7277a60c4ccfa}{Proxy\+Edge} ()=delete
+\begin{DoxyCompactList}\small\item\em No default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1ProxyEdge_ac176495583628bccf02fce0ac26a504d}{Proxy\+Edge} (\hyperlink{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}{Edge} \&edge)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1ProxyEdge_a2f14e6817570123336b38859b074f000}{$\sim$\+Proxy\+Edge} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1ProxyEdge_a3a9c2a3242118e9aeddb179ba69e6c7d}{set\+Border\+Edge} (bool is\+Border)
+\begin{DoxyCompactList}\small\item\em Set if the edge is a border edge (for the domain) \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1ProxyEdge_a54da497385654537b5e809d18df274cc}{set\+Tip} (bool is\+Tip)
+\begin{DoxyCompactList}\small\item\em Set if the edge is a tip, i.\+e. a border edge for the fracture. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}{Edge} \& \hyperlink{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{M\+\_\+edge}
+\begin{DoxyCompactList}\small\item\em Reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class the allows to edit a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge} object. 
+
+This class provides some methods that could be used to edit a Ridig\+\_\+\+Mesh\+::\+Edge. 
+
+Definition at line \hyperlink{ProxyRigidMesh_8hpp_source_l00020}{20} of file \hyperlink{ProxyRigidMesh_8hpp_source}{Proxy\+Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!Edge@{Edge}}
+\index{Edge@{Edge}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{Edge}{Edge}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\+V\+Code3\+D\+::\+Proxy\+Edge\+::\+Edge}}\hypertarget{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}{}\label{classFVCode3D_1_1ProxyEdge_ac30f33bd4416fe360398021fe1425e80}
+
+
+Typedef for \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge}. 
+
+This type definition permits to treat \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge} as a Edge. 
+
+Definition at line \hyperlink{ProxyRigidMesh_8hpp_source_l00029}{29} of file \hyperlink{ProxyRigidMesh_8hpp_source}{Proxy\+Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!Proxy\+Edge@{Proxy\+Edge}}
+\index{Proxy\+Edge@{Proxy\+Edge}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{Proxy\+Edge()=delete}{ProxyEdge()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Proxy\+Edge\+::\+Proxy\+Edge (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ProxyEdge_a217a71b435bee1599be7277a60c4ccfa}{}\label{classFVCode3D_1_1ProxyEdge_a217a71b435bee1599be7277a60c4ccfa}
+
+
+No default constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!Proxy\+Edge@{Proxy\+Edge}}
+\index{Proxy\+Edge@{Proxy\+Edge}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{Proxy\+Edge(\+Edge \&edge)}{ProxyEdge(Edge &edge)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Proxy\+Edge\+::\+Proxy\+Edge (
+\begin{DoxyParamCaption}
+\item[{{\bf Edge} \&}]{edge}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1ProxyEdge_ac176495583628bccf02fce0ac26a504d}{}\label{classFVCode3D_1_1ProxyEdge_ac176495583628bccf02fce0ac26a504d}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em edge} & reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Border__Edge}{Rigid\+\_\+\+Mesh\+::\+Border\+\_\+\+Edge} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ProxyRigidMesh_8hpp_source_l00038}{38} of file \hyperlink{ProxyRigidMesh_8hpp_source}{Proxy\+Rigid\+Mesh.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ProxyEdge_ac176495583628bccf02fce0ac26a504d_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!````~Proxy\+Edge@{$\sim$\+Proxy\+Edge}}
+\index{````~Proxy\+Edge@{$\sim$\+Proxy\+Edge}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{$\sim$\+Proxy\+Edge()=default}{~ProxyEdge()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Proxy\+Edge\+::$\sim$\+Proxy\+Edge (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1ProxyEdge_a2f14e6817570123336b38859b074f000}{}\label{classFVCode3D_1_1ProxyEdge_a2f14e6817570123336b38859b074f000}
+
+
+Default destructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ProxyEdge_a2f14e6817570123336b38859b074f000_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!set\+Border\+Edge@{set\+Border\+Edge}}
+\index{set\+Border\+Edge@{set\+Border\+Edge}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{set\+Border\+Edge(bool is\+Border)}{setBorderEdge(bool isBorder)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Proxy\+Edge\+::set\+Border\+Edge (
+\begin{DoxyParamCaption}
+\item[{bool}]{is\+Border}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1ProxyEdge_a3a9c2a3242118e9aeddb179ba69e6c7d}{}\label{classFVCode3D_1_1ProxyEdge_a3a9c2a3242118e9aeddb179ba69e6c7d}
+
+
+Set if the edge is a border edge (for the domain) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+Border} & True if the edge is a border edge (i.\+e. it separates a border facet) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ProxyRigidMesh_8hpp_source_l00047}{47} of file \hyperlink{ProxyRigidMesh_8hpp_source}{Proxy\+Rigid\+Mesh.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!set\+Tip@{set\+Tip}}
+\index{set\+Tip@{set\+Tip}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{set\+Tip(bool is\+Tip)}{setTip(bool isTip)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Proxy\+Edge\+::set\+Tip (
+\begin{DoxyParamCaption}
+\item[{bool}]{is\+Tip}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1ProxyEdge_a54da497385654537b5e809d18df274cc}{}\label{classFVCode3D_1_1ProxyEdge_a54da497385654537b5e809d18df274cc}
+
+
+Set if the edge is a tip, i.\+e. a border edge for the fracture. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em True} & if the edge is a tip (i.\+e. it separates one of the fractures that it separates only once, i.\+e. it is a tip for at least a fracture) \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{ProxyRigidMesh_8hpp_source_l00054}{54} of file \hyperlink{ProxyRigidMesh_8hpp_source}{Proxy\+Rigid\+Mesh.\+hpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}!M\+\_\+edge@{M\+\_\+edge}}
+\index{M\+\_\+edge@{M\+\_\+edge}!F\+V\+Code3\+D\+::\+Proxy\+Edge@{F\+V\+Code3\+D\+::\+Proxy\+Edge}}
+\subsubsection[{\texorpdfstring{M\+\_\+edge}{M_edge}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Edge}\& F\+V\+Code3\+D\+::\+Proxy\+Edge\+::\+M\+\_\+edge\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}{}\label{classFVCode3D_1_1ProxyEdge_aaf251030dfaa502e9280eb2dbb65094d}
+
+
+Reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Edge}{Rigid\+\_\+\+Mesh\+::\+Edge}. 
+
+
+
+Definition at line \hyperlink{ProxyRigidMesh_8hpp_source_l00060}{60} of file \hyperlink{ProxyRigidMesh_8hpp_source}{Proxy\+Rigid\+Mesh.\+hpp}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{ProxyRigidMesh_8hpp}{Proxy\+Rigid\+Mesh.\+hpp}\end{DoxyCompactItemize}

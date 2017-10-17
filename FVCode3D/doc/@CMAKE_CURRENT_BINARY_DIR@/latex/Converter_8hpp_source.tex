@@ -1,0 +1,29 @@
+\hypertarget{Converter_8hpp_source}{}\section{Converter.\+hpp}
+\label{Converter_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Converter.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/utility/\+Converter.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef CONVERTER\_HPP\_}
+00007 \textcolor{preprocessor}{#define CONVERTER\_HPP\_}
+00008 
+00009 \textcolor{preprocessor}{#include <\hyperlink{TypeDefinition_8hpp}{FVCode3D/core/TypeDefinition.hpp}>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+00014 \textcolor{keyword}{class }Mesh3D;
+00015 \textcolor{keyword}{class }PropertiesMap;
+00016 
+00018 
+00025 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_ab3d72976b29466b3b389c290d0e8dadb}{saveAsSolverFormat}(\textcolor{keyword}{const} std::string filename, Mesh3D & mesh, PropertiesMap & 
+      properties) \textcolor{keywordflow}{throw}();
+00026 
+00028 
+00034 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a309feff3c4ef28a971e23350d895579c}{saveAsMeditFormat}(\textcolor{keyword}{const} std::string filename, Mesh3D & mesh) \textcolor{keywordflow}{throw}();
+00035 
+00037 
+00043 \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a2f158b0ae2187840985b44465f65e126}{saveAsOpenFOAMFormat}(\textcolor{keyword}{const} std::string filename, Mesh3D & mesh) \textcolor{keywordflow}{throw}();
+00044 
+00045 \} \textcolor{comment}{// namespace FVCode3D}
+00046 \textcolor{preprocessor}{#endif }\textcolor{comment}{/* CONVERTER\_HPP\_ */}\textcolor{preprocessor}{}
+\end{DoxyCode}

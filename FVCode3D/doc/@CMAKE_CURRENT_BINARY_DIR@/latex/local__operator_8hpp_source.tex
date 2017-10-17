@@ -1,0 +1,160 @@
+\hypertarget{local__operator_8hpp_source}{}\section{local\+\_\+operator.\+hpp}
+\label{local__operator_8hpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/local\+\_\+operator.\+hpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/local\+\_\+operator.\+hpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#ifndef \_\_LOCAL\_OPERATOR\_HPP\_\_}
+00007 \textcolor{preprocessor}{#define \_\_LOCAL\_OPERATOR\_HPP\_\_}
+00008 
+00009 \textcolor{preprocessor}{#include <vector>}
+00010 \textcolor{preprocessor}{#include <cmath>}
+00011 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00012 \textcolor{preprocessor}{#include <Eigen/LU>}
+00013 \textcolor{preprocessor}{#include <unsupported/Eigen/SparseExtra>}
+00014 
+00015 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00016 \{
+00017 \textcolor{keyword}{using} Eigen::Dynamic;
+00018 
+00020 
+\hypertarget{local__operator_8hpp_source.tex_l00026}{}\hyperlink{classFVCode3D_1_1local__MimeticOperator}{00026} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\_MimeticOperator}
+00027 \{
+00028 \textcolor{keyword}{public}:
+00030 
+00031 
+\hypertarget{local__operator_8hpp_source.tex_l00036}{}\hyperlink{classFVCode3D_1_1local__MimeticOperator_acea81a53f6e046ebc48b5a701cbb73b0}{00036}         \hyperlink{classFVCode3D_1_1local__MimeticOperator_acea81a53f6e046ebc48b5a701cbb73b0}{local\_MimeticOperator}( \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rMesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & cell ):
+00037                 \hyperlink{classFVCode3D_1_1local__MimeticOperator_aaedb6f563c6c3c28afadc1d3725b3f71}{pMesh}(rMesh), \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}(cell)\{\}
+00039     \hyperlink{classFVCode3D_1_1local__MimeticOperator_af70d5b13edb21afd8b3e7c12c2aa7aa6}{local\_MimeticOperator}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\_MimeticOperator} &) = \textcolor{keyword}{delete}
+      ;
+00041     \hyperlink{classFVCode3D_1_1local__MimeticOperator_af70d5b13edb21afd8b3e7c12c2aa7aa6}{local\_MimeticOperator}() = \textcolor{keyword}{delete};
+00043     \textcolor{keyword}{virtual} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a28d725299b33aa2685b734883df21f6b}{~local\_MimeticOperator}() = \textcolor{keywordflow}{default};
+00045 
+00047 
+00048 
+\hypertarget{local__operator_8hpp_source.tex_l00052}{}\hyperlink{classFVCode3D_1_1local__MimeticOperator_a052b31cc0128915b383e00f8ba199875}{00052}     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a052b31cc0128915b383e00f8ba199875}{getDofs}()\textcolor{keyword}{ const }
+00053 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell_adbfb39c41f1d6c6d96c77578eecbf766}{getFacetsIds}().size(); \};
+00054         
+00056 
+\hypertarget{local__operator_8hpp_source.tex_l00059}{}\hyperlink{classFVCode3D_1_1local__MimeticOperator_a70ba32e87d122a734d44ef19fffbb17c}{00059}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & \hyperlink{classFVCode3D_1_1local__MimeticOperator_a70ba32e87d122a734d44ef19fffbb17c}{getCell}()\textcolor{keyword}{ const }
+00060 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp}; \};
+00062 
+00064 
+00065 
+00069     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a3ba6c8741558f4be2be8fcd73e10311d}{assemble}() = 0;
+00071 
+00072 \textcolor{keyword}{protected}:
+\hypertarget{local__operator_8hpp_source.tex_l00074}{}\hyperlink{classFVCode3D_1_1local__MimeticOperator_aaedb6f563c6c3c28afadc1d3725b3f71}{00074}         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh}                  & \hyperlink{classFVCode3D_1_1local__MimeticOperator_aaedb6f563c6c3c28afadc1d3725b3f71}{pMesh};          
+\hypertarget{local__operator_8hpp_source.tex_l00076}{}\hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{00076}         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell}            & \hyperlink{classFVCode3D_1_1local__MimeticOperator_a771437af467a250d8bcaf1d06372ae8e}{cellp};                         
+00077 \};
+00078 
+00079 
+00081 
+\hypertarget{local__operator_8hpp_source.tex_l00088}{}\hyperlink{classFVCode3D_1_1local__InnerProduct}{00088} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}: \textcolor{keyword}{public} \hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\_MimeticOperator}
+00089 \{
+00090 \textcolor{keyword}{public}:
+00092 
+00093 
+00095 
+\hypertarget{local__operator_8hpp_source.tex_l00100}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_ac827da4502cb7e61d699bcd77dff8ca6}{00100}         \hyperlink{classFVCode3D_1_1local__InnerProduct_ac827da4502cb7e61d699bcd77dff8ca6}{local\_InnerProduct}( \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rMesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & cell ):
+00101                 \hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\_MimeticOperator}(rMesh, cell)\{\}
+00103     \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct} &) = \textcolor{keyword}{delete};
+00105     \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}() = \textcolor{keyword}{delete};
+00107     ~\hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}() = \textcolor{keywordflow}{default};
+00109 
+00111 
+00112 
+\hypertarget{local__operator_8hpp_source.tex_l00116}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a2f4a937da9b93f66e48632556b74b960}{00116}     \textcolor{keyword}{const} Eigen::Matrix<Real,Dynamic,3> & \hyperlink{classFVCode3D_1_1local__InnerProduct_a2f4a937da9b93f66e48632556b74b960}{getRp}()\textcolor{keyword}{ const }
+00117 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} Rp; \};
+00118         
+00120 
+\hypertarget{local__operator_8hpp_source.tex_l00123}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_acdfbfce6bfe6ef984ce82b7d0b15d1aa}{00123}     \textcolor{keyword}{const} Eigen::Matrix<Real,Dynamic,3> & \hyperlink{classFVCode3D_1_1local__InnerProduct_acdfbfce6bfe6ef984ce82b7d0b15d1aa}{getNp}()\textcolor{keyword}{ const }
+00124 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} Np; \};
+00125                 
+00127 
+\hypertarget{local__operator_8hpp_source.tex_l00130}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a2d1dce124daf8b3d2c5f0eae44687237}{00130}     \textcolor{keyword}{const} Eigen::Matrix<Real,Dynamic,Dynamic> & \hyperlink{classFVCode3D_1_1local__InnerProduct_a2d1dce124daf8b3d2c5f0eae44687237}{getMp0}()\textcolor{keyword}{ const }
+00131 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} Mp0; \};
+00132         
+00134 
+\hypertarget{local__operator_8hpp_source.tex_l00137}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a65009b748d27225795e6daa3fa77fa45}{00137}     \textcolor{keyword}{const} Eigen::Matrix<Real,Dynamic,Dynamic> & \hyperlink{classFVCode3D_1_1local__InnerProduct_a65009b748d27225795e6daa3fa77fa45}{getMp1}()\textcolor{keyword}{ const }
+00138 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} Mp1; \};
+00139         
+00141 
+\hypertarget{local__operator_8hpp_source.tex_l00144}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a16d585bf2b6ed9f84bab4eff1027b671}{00144}     \textcolor{keyword}{const} Eigen::Matrix<Real,Dynamic,Dynamic> & \hyperlink{classFVCode3D_1_1local__InnerProduct_a16d585bf2b6ed9f84bab4eff1027b671}{getMp}()\textcolor{keyword}{ const }
+00145 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} Mp; \};
+00147 
+00149 
+00150 
+00154     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a3ba6c8741558f4be2be8fcd73e10311d}{assemble}();
+00156 
+\hypertarget{local__operator_8hpp_source.tex_l00157}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_abcd35ed5f4c4c65e5aee0132d25150ff}{00157} \textcolor{keyword}{friend} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1local__builder}{local\_builder};
+00158 
+00159 \textcolor{keyword}{private}:                     
+\hypertarget{local__operator_8hpp_source.tex_l00161}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{00161}     Eigen::Matrix<Real,Dynamic,3>       \hyperlink{classFVCode3D_1_1local__InnerProduct_ab1529332657085ba0189352ec057d75d}{Np};            
+\hypertarget{local__operator_8hpp_source.tex_l00163}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{00163}     Eigen::Matrix<Real,Dynamic,3>       \hyperlink{classFVCode3D_1_1local__InnerProduct_a47cd5f267a0825f86a1dcce0958ff10f}{Rp};            
+\hypertarget{local__operator_8hpp_source.tex_l00165}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{00165}     Eigen::Matrix<Real,Dynamic,Dynamic> \hyperlink{classFVCode3D_1_1local__InnerProduct_a232fd611ad739786558956e561607ba2}{Mp0};           
+\hypertarget{local__operator_8hpp_source.tex_l00167}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a6aa515dc796d733d582fc1a3c260bb4c}{00167}     Eigen::Matrix<Real,Dynamic,Dynamic> \hyperlink{classFVCode3D_1_1local__InnerProduct_a6aa515dc796d733d582fc1a3c260bb4c}{Mp1};           
+\hypertarget{local__operator_8hpp_source.tex_l00169}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_a6d4624fe743827c6fa08d7977eafcb28}{00169}     Eigen::Matrix<Real,Dynamic,Dynamic> \hyperlink{classFVCode3D_1_1local__InnerProduct_a6d4624fe743827c6fa08d7977eafcb28}{Mp};            
+00170 \textcolor{comment}{//      //! Scalar factor in Mp1 expression}
+\hypertarget{local__operator_8hpp_source.tex_l00171}{}\hyperlink{classFVCode3D_1_1local__InnerProduct_af7c3e141a73231635abf5fdb7fe65fae}{00171}         \textcolor{keyword}{static} constexpr \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}               gamma = 2.;
+00172 \};
+00173 
+00175 
+\hypertarget{local__operator_8hpp_source.tex_l00181}{}\hyperlink{classFVCode3D_1_1local__Div}{00181} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1local__Div}{local\_Div}: \textcolor{keyword}{public} \hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\_MimeticOperator}
+00182 \{
+00183 \textcolor{keyword}{public}:
+00185 
+00186 
+00188 
+\hypertarget{local__operator_8hpp_source.tex_l00192}{}\hyperlink{classFVCode3D_1_1local__Div_ac694c9494b555a05f76ad7a8f1054ef0}{00192}         \hyperlink{classFVCode3D_1_1local__Div_ac694c9494b555a05f76ad7a8f1054ef0}{local\_Div}( \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rMesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & cell ):
+00193                 \hyperlink{classFVCode3D_1_1local__MimeticOperator}{local\_MimeticOperator}(rMesh, cell)\{\}
+00195     \hyperlink{classFVCode3D_1_1local__Div}{local\_Div}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1local__Div}{local\_Div} &) = \textcolor{keyword}{delete};
+00197     \hyperlink{classFVCode3D_1_1local__Div}{local\_Div}() = \textcolor{keyword}{delete};
+00199     ~\hyperlink{classFVCode3D_1_1local__Div}{local\_Div}() = \textcolor{keywordflow}{default};
+00201 
+00203 
+00204 
+\hypertarget{local__operator_8hpp_source.tex_l00208}{}\hyperlink{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{00208}     \textcolor{keyword}{const} std::vector<Real> & \hyperlink{classFVCode3D_1_1local__Div_aaed22251b9f77eec2f0ea5321cfb8ad5}{getBp}()\textcolor{keyword}{ const }
+00209 \textcolor{keyword}{                }\{ \textcolor{keywordflow}{return} Bp; \};
+00211 
+00213 
+00214 
+00218     \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1local__MimeticOperator_a3ba6c8741558f4be2be8fcd73e10311d}{assemble}();
+00220 
+\hypertarget{local__operator_8hpp_source.tex_l00221}{}\hyperlink{classFVCode3D_1_1local__Div_abcd35ed5f4c4c65e5aee0132d25150ff}{00221} \textcolor{keyword}{friend} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1local__builder}{local\_builder};
+00222 
+00223 \textcolor{keyword}{private}:            
+\hypertarget{local__operator_8hpp_source.tex_l00225}{}\hyperlink{classFVCode3D_1_1local__Div_a43a4652e156243c0f8c82af161ab0b8f}{00225}         std::vector<Real> \hyperlink{classFVCode3D_1_1local__Div_a43a4652e156243c0f8c82af161ab0b8f}{Bp};         
+00226 \};
+00227 
+00228 
+00230 
+\hypertarget{local__operator_8hpp_source.tex_l00235}{}\hyperlink{classFVCode3D_1_1local__builder}{00235} \textcolor{keyword}{class }\hyperlink{classFVCode3D_1_1local__builder}{local\_builder}
+00236 \{
+00237 \textcolor{keyword}{public}:
+00239 
+00240 
+00242 
+\hypertarget{local__operator_8hpp_source.tex_l00247}{}\hyperlink{classFVCode3D_1_1local__builder_aecc0f796a65099773776eba879b96f21}{00247}         \hyperlink{classFVCode3D_1_1local__builder_aecc0f796a65099773776eba879b96f21}{local\_builder}( \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct} & InnP, 
+      \hyperlink{classFVCode3D_1_1local__Div}{local\_Div} & DivOp, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell} & cell ):
+00248                 IP(InnP), Div(DivOp), cel(cell)\{\}
+00250     \hyperlink{classFVCode3D_1_1local__builder}{local\_builder}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1local__builder}{local\_builder} &) = \textcolor{keyword}{delete};
+00252     \hyperlink{classFVCode3D_1_1local__builder}{local\_builder}() = \textcolor{keyword}{delete};
+00254     ~\hyperlink{classFVCode3D_1_1local__builder}{local\_builder}() = \textcolor{keywordflow}{default};
+00256 
+00258 
+00259 
+00263     \textcolor{keywordtype}{void} build();
+00265 
+00266 \textcolor{keyword}{private}:            
+\hypertarget{local__operator_8hpp_source.tex_l00268}{}\hyperlink{classFVCode3D_1_1local__builder_adc109a32e01c2f6acb673ee503c37446}{00268}     \hyperlink{classFVCode3D_1_1local__InnerProduct}{local\_InnerProduct}          & \hyperlink{classFVCode3D_1_1local__builder_adc109a32e01c2f6acb673ee503c37446}{IP};            
+\hypertarget{local__operator_8hpp_source.tex_l00270}{}\hyperlink{classFVCode3D_1_1local__builder_a2ac4ebad7f42bb69cdd73fdf215b7e99}{00270}     \hyperlink{classFVCode3D_1_1local__Div}{local\_Div}                   & \hyperlink{classFVCode3D_1_1local__builder_a2ac4ebad7f42bb69cdd73fdf215b7e99}{Div};            
+\hypertarget{local__operator_8hpp_source.tex_l00272}{}\hyperlink{classFVCode3D_1_1local__builder_a4fe73771f0cce11419c866ab34ee8fd4}{00272}     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Cell}{Rigid\_Mesh::Cell}      & \hyperlink{classFVCode3D_1_1local__builder_a4fe73771f0cce11419c866ab34ee8fd4}{cel};                       
+00273 \};
+00274         
+00275 \}
+00276 
+00277 \textcolor{preprocessor}{#endif // \_\_LOCAL\_OPERATOR\_HPP\_\_}
+\end{DoxyCode}

@@ -1,0 +1,193 @@
+\hypertarget{classFVCode3D_1_1ImporterMedit}{}\section{F\+V\+Code3D\+:\+:Importer\+Medit Class Reference}
+\label{classFVCode3D_1_1ImporterMedit}\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+
+
+Class used to read a Medit format file (.mesh).  
+
+
+
+
+{\ttfamily \#include $<$Import.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Importer\+Medit\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classFVCode3D_1_1ImporterMedit__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Importer\+Medit\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ImporterMedit__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ImporterMedit_ad9e9f6db2229ccc96a93cf8e8cd8c42e}{Importer\+Medit} (const std\+::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \&properties)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ImporterMedit_a588447299960ebaf2f7583fe2ddecdcc}{import} (bool fractures\+On=true)  throw ()
+\begin{DoxyCompactList}\small\item\em Import from a .mesh file. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1ImporterMedit_afb8cd52d29e9500a52e485a8b7ae9f32}{$\sim$\+Importer\+Medit} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ImporterMedit_a08f4ccf787f7901b650ea2c10c90a3cb}{Importer\+Medit} ()=delete
+\begin{DoxyCompactList}\small\item\em No default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1ImporterMedit_abc63cf8b7ea4f9c0783edd7fddc71ebe}{Importer\+Medit} (const \hyperlink{classFVCode3D_1_1ImporterMedit}{Importer\+Medit} \&)=delete
+\begin{DoxyCompactList}\small\item\em No copy-\/constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1ImporterMedit}{Importer\+Medit} \& \hyperlink{classFVCode3D_1_1ImporterMedit_af62c6871262d52a4eec85215b6dc348d}{operator=} (const \hyperlink{classFVCode3D_1_1ImporterMedit}{Importer\+Medit} \&)=delete
+\begin{DoxyCompactList}\small\item\em No assignment operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class used to read a Medit format file (.mesh). 
+
+This class allows to read a Medit format file (.mesh). 
+
+Definition at line \hyperlink{Import_8hpp_source_l00117}{117} of file \hyperlink{Import_8hpp_source}{Import.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}!Importer\+Medit@{Importer\+Medit}}
+\index{Importer\+Medit@{Importer\+Medit}!F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+\subsubsection[{\texorpdfstring{Importer\+Medit(const std\+::string filename, Mesh3\+D \&mesh, Properties\+Map \&properties)}{ImporterMedit(const std::string filename, Mesh3D &mesh, PropertiesMap &properties)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Importer\+Medit\+::\+Importer\+Medit (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename, }
+\item[{{\bf Mesh3D} \&}]{mesh, }
+\item[{{\bf Properties\+Map} \&}]{properties}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1ImporterMedit_ad9e9f6db2229ccc96a93cf8e8cd8c42e}{}\label{classFVCode3D_1_1ImporterMedit_ad9e9f6db2229ccc96a93cf8e8cd8c42e}
+
+
+Constructor. 
+
+Constructor from a medit file 
+\begin{DoxyParams}{Parameters}
+{\em filename} & filename of the .mesh file \\
+\hline
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em properties} & reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Import_8hpp_source_l00128}{128} of file \hyperlink{Import_8hpp_source}{Import.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ImporterMedit_ad9e9f6db2229ccc96a93cf8e8cd8c42e_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}!````~Importer\+Medit@{$\sim$\+Importer\+Medit}}
+\index{````~Importer\+Medit@{$\sim$\+Importer\+Medit}!F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+\subsubsection[{\texorpdfstring{$\sim$\+Importer\+Medit()=default}{~ImporterMedit()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Importer\+Medit\+::$\sim$\+Importer\+Medit (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1ImporterMedit_afb8cd52d29e9500a52e485a8b7ae9f32}{}\label{classFVCode3D_1_1ImporterMedit_afb8cd52d29e9500a52e485a8b7ae9f32}
+
+
+Destructor. 
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}!Importer\+Medit@{Importer\+Medit}}
+\index{Importer\+Medit@{Importer\+Medit}!F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+\subsubsection[{\texorpdfstring{Importer\+Medit()=delete}{ImporterMedit()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Importer\+Medit\+::\+Importer\+Medit (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ImporterMedit_a08f4ccf787f7901b650ea2c10c90a3cb}{}\label{classFVCode3D_1_1ImporterMedit_a08f4ccf787f7901b650ea2c10c90a3cb}
+
+
+No default constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}!Importer\+Medit@{Importer\+Medit}}
+\index{Importer\+Medit@{Importer\+Medit}!F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+\subsubsection[{\texorpdfstring{Importer\+Medit(const Importer\+Medit \&)=delete}{ImporterMedit(const ImporterMedit &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Importer\+Medit\+::\+Importer\+Medit (
+\begin{DoxyParamCaption}
+\item[{const {\bf Importer\+Medit} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ImporterMedit_abc63cf8b7ea4f9c0783edd7fddc71ebe}{}\label{classFVCode3D_1_1ImporterMedit_abc63cf8b7ea4f9c0783edd7fddc71ebe}
+
+
+No copy-\/constructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}!import@{import}}
+\index{import@{import}!F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+\subsubsection[{\texorpdfstring{import(bool fractures\+On=true)}{import(bool fracturesOn=true)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Importer\+Medit\+::import (
+\begin{DoxyParamCaption}
+\item[{bool}]{fractures\+On = {\ttfamily true}}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ImporterMedit_a588447299960ebaf2f7583fe2ddecdcc}{}\label{classFVCode3D_1_1ImporterMedit_a588447299960ebaf2f7583fe2ddecdcc}
+
+
+Import from a .mesh file. 
+
+Read points, polygons, polyhedra 
+\begin{DoxyParams}{Parameters}
+{\em fractures\+On} & if true, imports the fractures, else the fractures are disabled \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Importer_aee8e68c30c3fd4a01f10a5a4365b30ea}{F\+V\+Code3\+D\+::\+Importer}.
+
+
+
+Reimplemented in \hyperlink{classFVCode3D_1_1ImporterTetGen_a37d0191b42bbb7af28f5c42acb1185b7}{F\+V\+Code3\+D\+::\+Importer\+Tet\+Gen}.
+
+
+
+Definition at line \hyperlink{Import_8cpp_source_l00095}{95} of file \hyperlink{Import_8cpp_source}{Import.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ImporterMedit_a588447299960ebaf2f7583fe2ddecdcc_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}!operator=@{operator=}}
+\index{operator=@{operator=}!F\+V\+Code3\+D\+::\+Importer\+Medit@{F\+V\+Code3\+D\+::\+Importer\+Medit}}
+\subsubsection[{\texorpdfstring{operator=(const Importer\+Medit \&)=delete}{operator=(const ImporterMedit &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Importer\+Medit}\& F\+V\+Code3\+D\+::\+Importer\+Medit\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Importer\+Medit} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ImporterMedit_af62c6871262d52a4eec85215b6dc348d}{}\label{classFVCode3D_1_1ImporterMedit_af62c6871262d52a4eec85215b6dc348d}
+
+
+No assignment operator. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/import/\hyperlink{Import_8hpp}{Import.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/import/\hyperlink{Import_8cpp}{Import.\+cpp}\end{DoxyCompactItemize}

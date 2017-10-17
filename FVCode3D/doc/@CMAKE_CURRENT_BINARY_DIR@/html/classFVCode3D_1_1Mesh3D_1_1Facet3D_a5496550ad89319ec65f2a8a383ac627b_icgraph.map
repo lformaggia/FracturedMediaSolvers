@@ -1,0 +1,4 @@
+<map id="FVCode3D::Mesh3D::Facet3D::getVertexId" name="FVCode3D::Mesh3D::Facet3D::getVertexId">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ae410bd71367b8bb52d9e4b1a53a2bb13" title="Compute the vertex ids that composed the cell. " alt="" coords="245,5,437,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ac02c0684ef4259520ed1a312ce402bb5" title="Constructor for a cell in a specified mesh given the facets. " alt="" coords="485,5,677,47"/>
+</map>

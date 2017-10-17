@@ -1,0 +1,34 @@
+<map id="FVCode3D::Mesh3D::Cell3D::computeVolumeAndCentroid" name="FVCode3D::Mesh3D::Cell3D::computeVolumeAndCentroid">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#a4877a883d7ae0abfe581809606ce260c" title="The number of vertexes of the cell. " alt="" coords="271,5,463,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D.html#a76de387da2a552e3e1210d795bc7acf9" title="Get the set storing the facets of the mesh (const) " alt="" coords="249,71,484,98"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1Mesh3D.html#a04162ec60e0fe52674b3ecbb7de1185c" title="Get the vector storing the nodes of the mesh (const) " alt="" coords="263,123,471,164"/>
+<area shape="rect" id="node5" href="$namespacestd.html#acec9a198880c12f51f02be95a298a48b" title="Implements std::begin() for Eigen::Matrix type. " alt="" coords="327,189,406,215"/>
+<area shape="rect" id="node6" href="$namespacestd.html#aeb4b319cf9afda99ba1f47d32df15bc9" title="Implements std::end() for Eigen::Matrix type. " alt="" coords="332,239,401,266"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1BoundingBox.html#a20d4281f025fd6a4ee51ec8cbc47874c" title="Scale node such that it is in the unit BB. " alt="" coords="281,291,453,332"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1BoundingBox.html#a8406e82493459d67f7c6e01c41401b01" title="FVCode3D::BoundingBox\l::xMin" alt="" coords="281,421,453,463"/>
+<area shape="rect" id="node10" href="$classFVCode3D_1_1BoundingBox.html#a8d241063de29672a73e478ccef500fcd" title="FVCode3D::BoundingBox\l::yMin" alt="" coords="281,487,453,528"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1BoundingBox.html#a332192fde3727b7de1c9864e98659ac1" title="FVCode3D::BoundingBox\l::zMin" alt="" coords="281,552,453,593"/>
+<area shape="rect" id="node12" href="$classFVCode3D_1_1BoundingBox.html#a0ba4fbfa989d212c7f9df6b5ee440ef2" title="FVCode3D::BoundingBox\l::xMax" alt="" coords="281,617,453,659"/>
+<area shape="rect" id="node13" href="$classFVCode3D_1_1BoundingBox.html#abcec6a60efb3a0bd3333bba6cb8c5eb4" title="FVCode3D::BoundingBox\l::yMax" alt="" coords="281,683,453,724"/>
+<area shape="rect" id="node14" href="$classFVCode3D_1_1BoundingBox.html#a9b1fee0fe7324865743f4029dd06e1a3" title="FVCode3D::BoundingBox\l::zMax" alt="" coords="281,748,453,789"/>
+<area shape="rect" id="node15" href="$classFVCode3D_1_1BoundingBox.html#a2afb68488fb7361595825089c271fa23" title="FVCode3D::BoundingBox::mx" alt="" coords="267,814,466,841"/>
+<area shape="rect" id="node16" href="$classFVCode3D_1_1BoundingBox.html#a286722e958824c1798a85a55325d9fe5" title="FVCode3D::BoundingBox::my" alt="" coords="267,865,466,891"/>
+<area shape="rect" id="node17" href="$classFVCode3D_1_1BoundingBox.html#aaff1f6eb030c4f8a15dd22c79a28bf0c" title="FVCode3D::BoundingBox::mz" alt="" coords="267,915,466,942"/>
+<area shape="rect" id="node18" href="$classFVCode3D_1_1BoundingBox.html#a6b6ca1d8e9bc92d6f5eebdb329577530" title="FVCode3D::BoundingBox::qx" alt="" coords="269,966,464,993"/>
+<area shape="rect" id="node19" href="$classFVCode3D_1_1BoundingBox.html#ae429d21fd242df838ed0343757eba744" title="FVCode3D::BoundingBox::qy" alt="" coords="269,1017,464,1043"/>
+<area shape="rect" id="node20" href="$classFVCode3D_1_1BoundingBox.html#accc6026eaa331a6075805479b60141f4" title="FVCode3D::BoundingBox::qz" alt="" coords="269,1067,464,1094"/>
+<area shape="rect" id="node21" href="$namespaceFVCode3D.html#a705717c0673e24ca607c7a65054de4f7" title="FVCode3D::distance" alt="" coords="295,1118,439,1145"/>
+<area shape="rect" id="node22" href="$namespaceFVCode3D.html#afdf87b62988c2271186926eb3a3baedc" title="Compute the normal moving from three points that lie on a plane (use the right&#45;hand rule) ..." alt="" coords="273,1219,460,1246"/>
+<area shape="rect" id="node26" href="$namespaceFVCode3D.html#a38b320ef9683fae74a67a2a5a921f0d9" title="Compute the area of a triangle. " alt="" coords="285,1169,449,1195"/>
+<area shape="rect" id="node27" href="$namespaceFVCode3D.html#a5b8d6a9c921fcd809d263ef9c484b1ad" title="Compute the centroid of a triangle. " alt="" coords="273,1371,460,1398"/>
+<area shape="rect" id="node28" href="$namespaceFVCode3D.html#ad07be7f9ed843ca65d02d0303dae6cb4" title="FVCode3D::dotProduct" alt="" coords="539,1321,697,1347"/>
+<area shape="rect" id="node29" href="$classFVCode3D_1_1Point3D.html#ae015d6aa31f8b304f69696bdcbd4da19" title="Get x&#45;coordinate (const) " alt="" coords="288,1422,445,1449"/>
+<area shape="rect" id="node30" href="$classFVCode3D_1_1Point3D.html#a950abcabbf3bb32fc2daf64c28d77416" title="Get y&#45;coordinate (const) " alt="" coords="288,1473,445,1499"/>
+<area shape="rect" id="node31" href="$classFVCode3D_1_1Point3D.html#a865109e2006cc1de3681ab601081f5aa" title="Get x&#45;coordinate (const) " alt="" coords="288,1523,445,1550"/>
+<area shape="rect" id="node32" href="$classFVCode3D_1_1BoundingBox.html#ae45df69b786a19e4413691e1c64059d0" title="Scale nodes such that it is in the original BB. " alt="" coords="281,356,453,397"/>
+<area shape="rect" id="node33" href="$namespaceFVCode3D.html#a8a6b07162e2801b628c3bd4057b9f221" title="Compute the volume of a tetrahedron. " alt="" coords="265,1270,469,1297"/>
+<area shape="rect" id="node8" href="$classFVCode3D_1_1Point3D.html#a2044e0fdef7e870557c89ad0edb0b0d4" title="Apply a linear transformation to the point. " alt="" coords="543,324,693,365"/>
+<area shape="rect" id="node23" href="$namespaceFVCode3D.html#a1ee7c9a5fcc645574f6a93e5f6f53b4b" title="FVCode3D::crossProduct" alt="" coords="532,1270,704,1297"/>
+<area shape="rect" id="node24" href="$classFVCode3D_1_1Point3D.html#a0d1cd3d114b0985ae2b11cd1c52de673" title="Normalize the current point. " alt="" coords="543,1204,693,1245"/>
+<area shape="rect" id="node25" href="$classFVCode3D_1_1Point3D.html#ac9e4bf311b24cea10ad3fde1d703be01" title="Compute norm of the current point. " alt="" coords="752,1211,931,1238"/>
+</map>

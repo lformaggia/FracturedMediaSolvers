@@ -1,0 +1,70 @@
+\hypertarget{MeshUtility_8cpp_source}{}\section{Mesh\+Utility.\+cpp}
+\label{MeshUtility_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Mesh\+Utility.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\+Mesh\+Utility.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <random>}
+00007 
+00008 \textcolor{preprocessor}{#include <\hyperlink{MeshUtility_8hpp}{FVCode3D/mesh/MeshUtility.hpp}>}
+00009 \textcolor{preprocessor}{#include <\hyperlink{Mesh3D_8hpp}{FVCode3D/mesh/Mesh3D.hpp}>}
+00010 
+00011 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00012 \{
+00013 
+\hypertarget{MeshUtility_8cpp_source.tex_l00014}{}\hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{00014} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{addNoiseToPoint}(\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} stDev)
+00015 \{
+00016     std::default\_random\_engine generator;
+00017     std::normal\_distribution<Real> distribution(mean, stDev);
+00018 
+00019     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& node : mesh.\hyperlink{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c}{getNodesVector}())
+00020     \{
+00021         node.x() += distribution(generator);
+00022         node.z() += distribution(generator);
+00023         node.y() += distribution(generator);
+00024     \}
+00025 \} \textcolor{comment}{// addNoiseToPoint}
+00026 
+\hypertarget{MeshUtility_8cpp_source.tex_l00027}{}\hyperlink{namespaceFVCode3D_a83503dfaf8e3d2594eda363a28c5425a}{00027} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{addNoiseToPoint}(\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::vector<bool> & nodesWithNoise, \textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean,
+00028     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} stDev)
+00029 \{
+00030     std::default\_random\_engine generator;
+00031     std::normal\_distribution<Real> distribution(mean, stDev);
+00032     std::vector<Point3D> & nodesRef = mesh.\hyperlink{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c}{getNodesVector}();
+00033     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} NoN ( mesh.\hyperlink{classFVCode3D_1_1Mesh3D_a22a32ee29c78d07cbdd033adf61bfa65}{getNumberOfNodes}() );
+00034 
+00035     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = 0; i<NoN; ++i)
+00036     \{
+00037         \textcolor{keywordflow}{if}(nodesWithNoise[i])
+00038         \{
+00039             nodesRef[i].x() += distribution(generator);
+00040             nodesRef[i].y() += distribution(generator);
+00041             nodesRef[i].z() += distribution(generator);
+00042         \}
+00043     \}
+00044 \} \textcolor{comment}{// addNoiseToPoint}
+00045 
+\hypertarget{MeshUtility_8cpp_source.tex_l00046}{}\hyperlink{namespaceFVCode3D_a2e19a6aeb189d2ca5370234dd84caa73}{00046} \textcolor{keywordtype}{void} \hyperlink{namespaceFVCode3D_a9f604a7093f7f7323727e7ba28d8ce75}{addNoiseToPoint}(\hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::vector<bool> & nodesWithNoise, \textcolor{keyword}{const} 
+      std::vector<UInt> & coords,
+00047     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} mean, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} stDev)
+00048 \{
+00049     std::default\_random\_engine generator;
+00050     std::normal\_distribution<Real> distribution(mean, stDev);
+00051     std::vector<Point3D> & nodesRef = mesh.\hyperlink{classFVCode3D_1_1Mesh3D_a04162ec60e0fe52674b3ecbb7de1185c}{getNodesVector}();
+00052     \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} NoN ( mesh.\hyperlink{classFVCode3D_1_1Mesh3D_a22a32ee29c78d07cbdd033adf61bfa65}{getNumberOfNodes}() );
+00053 
+00054     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i = 0; i<NoN; ++i)
+00055     \{
+00056         \textcolor{keywordflow}{if}(nodesWithNoise[i])
+00057         \{
+00058             \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} coord : coords)
+00059             \{
+00060                 nodesRef[i][coord] += distribution(generator);
+00061             \}
+00062         \}
+00063     \}
+00064 \} \textcolor{comment}{// addNoiseToPoint}
+00065 
+00066 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

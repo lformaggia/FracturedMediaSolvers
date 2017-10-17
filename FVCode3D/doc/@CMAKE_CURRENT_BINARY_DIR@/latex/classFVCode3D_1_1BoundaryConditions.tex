@@ -1,0 +1,250 @@
+\hypertarget{classFVCode3D_1_1BoundaryConditions}{}\section{F\+V\+Code3D\+:\+:Boundary\+Conditions Class Reference}
+\label{classFVCode3D_1_1BoundaryConditions}\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+
+
+Class for implementing the B\+Cs.  
+
+
+
+
+{\ttfamily \#include $<$B\+C.\+hpp$>$}
+
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}
+\begin{DoxyCompactList}\small\item\em Class that implements the BC on a portion of the border. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1BoundaryConditions_ae368974020ff21456d0fef9ef9d8006d}{set\+Boundary\+Conditions} (std\+::vector$<$ \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} $>$ \&border\+BC)
+\begin{DoxyCompactList}\small\item\em Set boundary condition from a vector of Border BC. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1BoundaryConditions_ab66c0203b4153380363c581b674b32e1}{Boundary\+Conditions} ()=default
+\begin{DoxyCompactList}\small\item\em Default empty constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1BoundaryConditions_aeed054db17712ec0e34b1881fe2e559f}{Boundary\+Conditions} (std\+::vector$<$ \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} $>$ \&border\+BC)
+\begin{DoxyCompactList}\small\item\em Constructor for a \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions}, given a vector of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1BoundaryConditions_acf62b456137dbdc223c10d84d885f584}{Boundary\+Conditions} (const \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} \&)=default
+\begin{DoxyCompactList}\small\item\em D\+Efault copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1BoundaryConditions_a0c8497994d4badd8115163ee358ade96}{$\sim$\+Boundary\+Conditions} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1BoundaryConditions_a6afde21eb7dbb56bc7e90bae87c12300}{get\+Border\+Conditions\+Number} () const 
+\begin{DoxyCompactList}\small\item\em Get Borders Number (const) \end{DoxyCompactList}\item 
+const std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} $>$ \& \hyperlink{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{get\+Borders\+B\+C\+Map} () const 
+\begin{DoxyCompactList}\small\item\em Get \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} vector (const) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::map$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int}, \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} $>$ \hyperlink{classFVCode3D_1_1BoundaryConditions_a22895d7e9ca19c8eb4a5ee34d2ad8b17}{M\+\_\+borders\+B\+C\+Map}
+\begin{DoxyCompactList}\small\item\em Map of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}. First -\/$>$ BC id, second -\/$>$ \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for implementing the B\+Cs. 
+
+This class implements the boundary conditions. 
+
+Definition at line \hyperlink{BC_8hpp_source_l00050}{50} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!Boundary\+Conditions@{Boundary\+Conditions}}
+\index{Boundary\+Conditions@{Boundary\+Conditions}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{Boundary\+Conditions()=default}{BoundaryConditions()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::\+Boundary\+Conditions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_ab66c0203b4153380363c581b674b32e1}{}\label{classFVCode3D_1_1BoundaryConditions_ab66c0203b4153380363c581b674b32e1}
+
+
+Default empty constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!Boundary\+Conditions@{Boundary\+Conditions}}
+\index{Boundary\+Conditions@{Boundary\+Conditions}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{Boundary\+Conditions(std\+::vector$<$ Border\+B\+C $>$ \&border\+B\+C)}{BoundaryConditions(std::vector< BorderBC > &borderBC)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::\+Boundary\+Conditions (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Border\+BC} $>$ \&}]{border\+BC}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_aeed054db17712ec0e34b1881fe2e559f}{}\label{classFVCode3D_1_1BoundaryConditions_aeed054db17712ec0e34b1881fe2e559f}
+
+
+Constructor for a \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions}, given a vector of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em border\+BC} & is a vector of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} containing the boundary conditions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{BC_8hpp_source_l00130}{130} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1BoundaryConditions_aeed054db17712ec0e34b1881fe2e559f_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!Boundary\+Conditions@{Boundary\+Conditions}}
+\index{Boundary\+Conditions@{Boundary\+Conditions}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{Boundary\+Conditions(const Boundary\+Conditions \&)=default}{BoundaryConditions(const BoundaryConditions &)=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::\+Boundary\+Conditions (
+\begin{DoxyParamCaption}
+\item[{const {\bf Boundary\+Conditions} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_acf62b456137dbdc223c10d84d885f584}{}\label{classFVCode3D_1_1BoundaryConditions_acf62b456137dbdc223c10d84d885f584}
+
+
+D\+Efault copy constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!````~Boundary\+Conditions@{$\sim$\+Boundary\+Conditions}}
+\index{````~Boundary\+Conditions@{$\sim$\+Boundary\+Conditions}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{$\sim$\+Boundary\+Conditions()=default}{~BoundaryConditions()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::$\sim$\+Boundary\+Conditions (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_a0c8497994d4badd8115163ee358ade96}{}\label{classFVCode3D_1_1BoundaryConditions_a0c8497994d4badd8115163ee358ade96}
+
+
+Default destructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1BoundaryConditions_a0c8497994d4badd8115163ee358ade96_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!get\+Border\+Conditions\+Number@{get\+Border\+Conditions\+Number}}
+\index{get\+Border\+Conditions\+Number@{get\+Border\+Conditions\+Number}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{get\+Border\+Conditions\+Number() const }{getBorderConditionsNumber() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::get\+Border\+Conditions\+Number (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_a6afde21eb7dbb56bc7e90bae87c12300}{}\label{classFVCode3D_1_1BoundaryConditions_a6afde21eb7dbb56bc7e90bae87c12300}
+
+
+Get Borders Number (const) 
+
+\begin{DoxyReturn}{Returns}
+The number of borders of the domain 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{BC_8hpp_source_l00146}{146} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!get\+Borders\+B\+C\+Map@{get\+Borders\+B\+C\+Map}}
+\index{get\+Borders\+B\+C\+Map@{get\+Borders\+B\+C\+Map}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{get\+Borders\+B\+C\+Map() const }{getBordersBCMap() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::map$<${\bf U\+Int},{\bf Border\+BC}$>$\& F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::get\+Borders\+B\+C\+Map (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}{}\label{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9}
+
+
+Get \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} vector (const) 
+
+\begin{DoxyReturn}{Returns}
+A reference to the vector of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{BC_8hpp_source_l00152}{152} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1BoundaryConditions_a5b53a81bdab88709fae14892bfe6a7c9_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!set\+Boundary\+Conditions@{set\+Boundary\+Conditions}}
+\index{set\+Boundary\+Conditions@{set\+Boundary\+Conditions}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{set\+Boundary\+Conditions(std\+::vector$<$ Border\+B\+C $>$ \&border\+B\+C)}{setBoundaryConditions(std::vector< BorderBC > &borderBC)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::set\+Boundary\+Conditions (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Border\+BC} $>$ \&}]{border\+BC}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1BoundaryConditions_ae368974020ff21456d0fef9ef9d8006d}{}\label{classFVCode3D_1_1BoundaryConditions_ae368974020ff21456d0fef9ef9d8006d}
+
+
+Set boundary condition from a vector of Border BC. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em border\+BC} & is a vector of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC} containing the boundary conditions. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{BC_8cpp_source_l00012}{12} of file \hyperlink{BC_8cpp_source}{B\+C.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1BoundaryConditions_ae368974020ff21456d0fef9ef9d8006d_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}!M\+\_\+borders\+B\+C\+Map@{M\+\_\+borders\+B\+C\+Map}}
+\index{M\+\_\+borders\+B\+C\+Map@{M\+\_\+borders\+B\+C\+Map}!F\+V\+Code3\+D\+::\+Boundary\+Conditions@{F\+V\+Code3\+D\+::\+Boundary\+Conditions}}
+\subsubsection[{\texorpdfstring{M\+\_\+borders\+B\+C\+Map}{M_bordersBCMap}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::map$<${\bf U\+Int},{\bf Border\+BC}$>$ F\+V\+Code3\+D\+::\+Boundary\+Conditions\+::\+M\+\_\+borders\+B\+C\+Map\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1BoundaryConditions_a22895d7e9ca19c8eb4a5ee34d2ad8b17}{}\label{classFVCode3D_1_1BoundaryConditions_a22895d7e9ca19c8eb4a5ee34d2ad8b17}
+
+
+Map of \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}. First -\/$>$ BC id, second -\/$>$ \hyperlink{classFVCode3D_1_1BoundaryConditions_1_1BorderBC}{Border\+BC}. 
+
+
+
+Definition at line \hyperlink{BC_8hpp_source_l00164}{164} of file \hyperlink{BC_8hpp_source}{B\+C.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/boundary\+Condition/\hyperlink{BC_8hpp}{B\+C.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/boundary\+Condition/\hyperlink{BC_8cpp}{B\+C.\+cpp}\end{DoxyCompactItemize}

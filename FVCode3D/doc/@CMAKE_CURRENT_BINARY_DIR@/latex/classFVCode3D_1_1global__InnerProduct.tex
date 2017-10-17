@@ -1,0 +1,306 @@
+\hypertarget{classFVCode3D_1_1global__InnerProduct}{}\section{F\+V\+Code3D\+:\+:global\+\_\+\+Inner\+Product Class Reference}
+\label{classFVCode3D_1_1global__InnerProduct}\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+
+
+Class for assembling a global inner product matrix.  
+
+
+
+
+{\ttfamily \#include $<$global\+\_\+operator.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:global\+\_\+\+Inner\+Product\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{classFVCode3D_1_1global__InnerProduct__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:global\+\_\+\+Inner\+Product\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__InnerProduct__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1global__InnerProduct_a17257f96b178ee259b159d60c268429c}{global\+\_\+\+Inner\+Product} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&r\+Mesh, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Prow, \hyperlink{classFVCode3D_1_1global__Operator_a9e94fbe56b84ba80f9e9be56c808e5c3}{d\+Type} Pcol, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} row\+Size, \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} col\+Size, const \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} \&B\+Cmap)
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{classFVCode3D_1_1global__InnerProduct}{global\+\_\+\+Inner\+Product} operator. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__InnerProduct_a471716cd776be590b7654665ce89d6ad}{global\+\_\+\+Inner\+Product} (const \hyperlink{classFVCode3D_1_1global__InnerProduct}{global\+\_\+\+Inner\+Product} \&)=delete
+\begin{DoxyCompactList}\small\item\em No Copy-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__InnerProduct_aadb65a50dd419d5e81ab7587d3850c57}{global\+\_\+\+Inner\+Product} ()=delete
+\begin{DoxyCompactList}\small\item\em No Empty-\/\+Constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1global__InnerProduct_a506223208f859208a5dd3256f60278bf}{$\sim$global\+\_\+\+Inner\+Product} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4}{reserve\+\_\+space} ()
+\begin{DoxyCompactList}\small\item\em Reserve method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059}{assemble} ()
+\begin{DoxyCompactList}\small\item\em Assemble method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed}{Impose\+BC} (\hyperlink{namespaceFVCode3D_ac1032289d96638cf0ad6c52ef639095f}{Sp\+Mat} \&S, \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Impose BC method. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1global__InnerProduct_ad5a02ae913446383b521c1b15a9fb11a}{Impose\+BC} (\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&rhs)
+\begin{DoxyCompactList}\small\item\em Impose BC method. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFVCode3D_1_1BoundaryConditions}{Boundary\+Conditions} \& \hyperlink{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{M\+\_\+bc}
+\begin{DoxyCompactList}\small\item\em Constant reference to the boundary conditions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class for assembling a global inner product matrix. 
+
+This is the classe to assemble the global inner product matrix. The strategy used is an assemblation cell by cell building a local inner product matrix and then assembling local contributions in the global matrix. The class allows also to impose the Neumann and Dirichlet bcs imposition both on the matrix and on the right hand side. 
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00152}{152} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!global\+\_\+\+Inner\+Product@{global\+\_\+\+Inner\+Product}}
+\index{global\+\_\+\+Inner\+Product@{global\+\_\+\+Inner\+Product}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Inner\+Product(const Rigid\+\_\+\+Mesh \&r\+Mesh, d\+Type Prow, d\+Type Pcol, U\+Int row\+Size, U\+Int col\+Size, const Boundary\+Conditions \&\+B\+Cmap)}{global_InnerProduct(const Rigid_Mesh &rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, const BoundaryConditions &BCmap)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::global\+\_\+\+Inner\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{r\+Mesh, }
+\item[{{\bf d\+Type}}]{Prow, }
+\item[{{\bf d\+Type}}]{Pcol, }
+\item[{{\bf U\+Int}}]{row\+Size, }
+\item[{{\bf U\+Int}}]{col\+Size, }
+\item[{const {\bf Boundary\+Conditions} \&}]{B\+Cmap}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_a17257f96b178ee259b159d60c268429c}{}\label{classFVCode3D_1_1global__InnerProduct_a17257f96b178ee259b159d60c268429c}
+
+
+Construct a \hyperlink{classFVCode3D_1_1global__InnerProduct}{global\+\_\+\+Inner\+Product} operator. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em r\+Mesh} & The rigid mesh of the problem \\
+\hline
+{\em Prow} & The row dimension type \\
+\hline
+{\em Pcol} & The col dimension type \\
+\hline
+{\em row\+Size} & The number of row \\
+\hline
+{\em col\+Size} & The number of col \\
+\hline
+{\em B\+Cmap} & The boundary conditions \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00166}{166} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__InnerProduct_a17257f96b178ee259b159d60c268429c_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!global\+\_\+\+Inner\+Product@{global\+\_\+\+Inner\+Product}}
+\index{global\+\_\+\+Inner\+Product@{global\+\_\+\+Inner\+Product}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Inner\+Product(const global\+\_\+\+Inner\+Product \&)=delete}{global_InnerProduct(const global_InnerProduct &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::global\+\_\+\+Inner\+Product (
+\begin{DoxyParamCaption}
+\item[{const {\bf global\+\_\+\+Inner\+Product} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_a471716cd776be590b7654665ce89d6ad}{}\label{classFVCode3D_1_1global__InnerProduct_a471716cd776be590b7654665ce89d6ad}
+
+
+No Copy-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!global\+\_\+\+Inner\+Product@{global\+\_\+\+Inner\+Product}}
+\index{global\+\_\+\+Inner\+Product@{global\+\_\+\+Inner\+Product}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{global\+\_\+\+Inner\+Product()=delete}{global_InnerProduct()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::global\+\_\+\+Inner\+Product (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_aadb65a50dd419d5e81ab7587d3850c57}{}\label{classFVCode3D_1_1global__InnerProduct_aadb65a50dd419d5e81ab7587d3850c57}
+
+
+No Empty-\/\+Constructor. 
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!````~global\+\_\+\+Inner\+Product@{$\sim$global\+\_\+\+Inner\+Product}}
+\index{````~global\+\_\+\+Inner\+Product@{$\sim$global\+\_\+\+Inner\+Product}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{$\sim$global\+\_\+\+Inner\+Product()=default}{~global_InnerProduct()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::$\sim$global\+\_\+\+Inner\+Product (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_a506223208f859208a5dd3256f60278bf}{}\label{classFVCode3D_1_1global__InnerProduct_a506223208f859208a5dd3256f60278bf}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!assemble@{assemble}}
+\index{assemble@{assemble}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{assemble()}{assemble()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::assemble (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059}{}\label{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059}
+
+
+Assemble method. 
+
+Assemble the global inner product matrix 
+
+Implements \hyperlink{classFVCode3D_1_1global__Operator_ac69b44903c8f69655f26078246de6dc3}{F\+V\+Code3\+D\+::global\+\_\+\+Operator}.
+
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00043}{43} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__InnerProduct_acc444616cd8702b28bf2337c6dc7b059_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!Impose\+BC@{Impose\+BC}}
+\index{Impose\+BC@{Impose\+BC}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{Impose\+B\+C(\+Sp\+Mat \&\+S, Vector \&rhs)}{ImposeBC(SpMat &S, Vector &rhs)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::\+Impose\+BC (
+\begin{DoxyParamCaption}
+\item[{{\bf Sp\+Mat} \&}]{S, }
+\item[{{\bf Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed}{}\label{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed}
+
+
+Impose BC method. 
+
+This method impose the Neumann and Dirichlet BC on the monolithic matrix and on the rhs. 
+\begin{DoxyParams}{Parameters}
+{\em S} & The monolithic matrix of the system \\
+\hline
+{\em rhs} & The right hand side vector of the system \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00094}{94} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__InnerProduct_a708f68bfd33ad98c55d64c0098733fed_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!Impose\+BC@{Impose\+BC}}
+\index{Impose\+BC@{Impose\+BC}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{Impose\+B\+C(\+Vector \&rhs)}{ImposeBC(Vector &rhs)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::\+Impose\+BC (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector} \&}]{rhs}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1global__InnerProduct_ad5a02ae913446383b521c1b15a9fb11a}{}\label{classFVCode3D_1_1global__InnerProduct_ad5a02ae913446383b521c1b15a9fb11a}
+
+
+Impose BC method. 
+
+This method impose the Neumann and Dirichlet BC on the inner product matrix and on the rhs of the system. 
+\begin{DoxyParams}{Parameters}
+{\em rhs} & The right hand side vector of the system \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00125}{125} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__InnerProduct_ad5a02ae913446383b521c1b15a9fb11a_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!reserve\+\_\+space@{reserve\+\_\+space}}
+\index{reserve\+\_\+space@{reserve\+\_\+space}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{reserve\+\_\+space()}{reserve_space()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::reserve\+\_\+space (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4}{}\label{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4}
+
+
+Reserve method. 
+
+Reserve the proper space for the inner product matrix 
+
+Implements \hyperlink{classFVCode3D_1_1global__Operator_adeaf69c5dbde01c928a38778f8628d16}{F\+V\+Code3\+D\+::global\+\_\+\+Operator}.
+
+
+
+Definition at line \hyperlink{global__operator_8cpp_source_l00019}{19} of file \hyperlink{global__operator_8cpp_source}{global\+\_\+operator.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1global__InnerProduct_ad0aeb15cd9fffc009025e5bb5e4ed5b4_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}!M\+\_\+bc@{M\+\_\+bc}}
+\index{M\+\_\+bc@{M\+\_\+bc}!F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product@{F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product}}
+\subsubsection[{\texorpdfstring{M\+\_\+bc}{M_bc}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Boundary\+Conditions}\& F\+V\+Code3\+D\+::global\+\_\+\+Inner\+Product\+::\+M\+\_\+bc\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}{}\label{classFVCode3D_1_1global__InnerProduct_a62bbb87bc4710a73980603b8b77ffda8}
+
+
+Constant reference to the boundary conditions. 
+
+
+
+Definition at line \hyperlink{global__operator_8hpp_source_l00210}{210} of file \hyperlink{global__operator_8hpp_source}{global\+\_\+operator.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8hpp}{global\+\_\+operator.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/assembler/\hyperlink{global__operator_8cpp}{global\+\_\+operator.\+cpp}\end{DoxyCompactItemize}

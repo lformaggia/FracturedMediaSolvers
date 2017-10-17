@@ -1,0 +1,189 @@
+\hypertarget{classFVCode3D_1_1ImporterOpenFOAM}{}\section{F\+V\+Code3D\+:\+:Importer\+Open\+F\+O\+AM Class Reference}
+\label{classFVCode3D_1_1ImporterOpenFOAM}\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+
+
+Class used to read the Open\+F\+O\+AM format file.  
+
+
+
+
+{\ttfamily \#include $<$Import.\+hpp$>$}
+
+
+
+Inheritance diagram for F\+V\+Code3D\+:\+:Importer\+Open\+F\+O\+AM\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classFVCode3D_1_1ImporterOpenFOAM__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Importer\+Open\+F\+O\+AM\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ImporterOpenFOAM__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ImporterOpenFOAM_a679c1d057723a5e11c53ec52a2de36b5}{Importer\+Open\+F\+O\+AM} (const std\+::string filename, \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \&mesh, \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \&properties)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classFVCode3D_1_1ImporterOpenFOAM_ac8d43d9c6d007f5637e5878cef77df5e}{import} (bool fractures\+On=true)  throw ()
+\begin{DoxyCompactList}\small\item\em Import from the Open\+F\+O\+AM files. \end{DoxyCompactList}\item 
+virtual \hyperlink{classFVCode3D_1_1ImporterOpenFOAM_a610b6318d309109c9a848316c99148fc}{$\sim$\+Importer\+Open\+F\+O\+AM} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1ImporterOpenFOAM_a5e42e3b615f7defa0db073545face0ba}{Importer\+Open\+F\+O\+AM} ()=delete
+\begin{DoxyCompactList}\small\item\em No default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1ImporterOpenFOAM_ada1669c2e0bbaa90bcad74fd4e7dd64e}{Importer\+Open\+F\+O\+AM} (const \hyperlink{classFVCode3D_1_1ImporterOpenFOAM}{Importer\+Open\+F\+O\+AM} \&)=delete
+\begin{DoxyCompactList}\small\item\em No copy-\/constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1ImporterOpenFOAM}{Importer\+Open\+F\+O\+AM} \& \hyperlink{classFVCode3D_1_1ImporterOpenFOAM_a2f0792dfcb70bc6e1f5ee540b5c635b1}{operator=} (const \hyperlink{classFVCode3D_1_1ImporterOpenFOAM}{Importer\+Open\+F\+O\+AM} \&)=delete
+\begin{DoxyCompactList}\small\item\em No assignment operator. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Class used to read the Open\+F\+O\+AM format file. 
+
+This class allows to read the Open\+F\+O\+AM format file. 
+
+Definition at line \hyperlink{Import_8hpp_source_l00240}{240} of file \hyperlink{Import_8hpp_source}{Import.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}!Importer\+Open\+F\+O\+AM@{Importer\+Open\+F\+O\+AM}}
+\index{Importer\+Open\+F\+O\+AM@{Importer\+Open\+F\+O\+AM}!F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+\subsubsection[{\texorpdfstring{Importer\+Open\+F\+O\+A\+M(const std\+::string filename, Mesh3\+D \&mesh, Properties\+Map \&properties)}{ImporterOpenFOAM(const std::string filename, Mesh3D &mesh, PropertiesMap &properties)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+A\+M\+::\+Importer\+Open\+F\+O\+AM (
+\begin{DoxyParamCaption}
+\item[{const std\+::string}]{filename, }
+\item[{{\bf Mesh3D} \&}]{mesh, }
+\item[{{\bf Properties\+Map} \&}]{properties}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1ImporterOpenFOAM_a679c1d057723a5e11c53ec52a2de36b5}{}\label{classFVCode3D_1_1ImporterOpenFOAM_a679c1d057723a5e11c53ec52a2de36b5}
+
+
+Constructor. 
+
+Constructor from the Open\+F\+O\+AM files 
+\begin{DoxyParams}{Parameters}
+{\em filename} & filename of the Open\+F\+O\+AM files \\
+\hline
+{\em mesh} & reference to a \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} \\
+\hline
+{\em properties} & reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Import_8hpp_source_l00251}{251} of file \hyperlink{Import_8hpp_source}{Import.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ImporterOpenFOAM_a679c1d057723a5e11c53ec52a2de36b5_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}!````~Importer\+Open\+F\+O\+AM@{$\sim$\+Importer\+Open\+F\+O\+AM}}
+\index{````~Importer\+Open\+F\+O\+AM@{$\sim$\+Importer\+Open\+F\+O\+AM}!F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+\subsubsection[{\texorpdfstring{$\sim$\+Importer\+Open\+F\+O\+A\+M()=default}{~ImporterOpenFOAM()=default}}]{\setlength{\rightskip}{0pt plus 5cm}virtual F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+A\+M\+::$\sim$\+Importer\+Open\+F\+O\+AM (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}\hypertarget{classFVCode3D_1_1ImporterOpenFOAM_a610b6318d309109c9a848316c99148fc}{}\label{classFVCode3D_1_1ImporterOpenFOAM_a610b6318d309109c9a848316c99148fc}
+
+
+Destructor. 
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}!Importer\+Open\+F\+O\+AM@{Importer\+Open\+F\+O\+AM}}
+\index{Importer\+Open\+F\+O\+AM@{Importer\+Open\+F\+O\+AM}!F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+\subsubsection[{\texorpdfstring{Importer\+Open\+F\+O\+A\+M()=delete}{ImporterOpenFOAM()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+A\+M\+::\+Importer\+Open\+F\+O\+AM (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ImporterOpenFOAM_a5e42e3b615f7defa0db073545face0ba}{}\label{classFVCode3D_1_1ImporterOpenFOAM_a5e42e3b615f7defa0db073545face0ba}
+
+
+No default constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}!Importer\+Open\+F\+O\+AM@{Importer\+Open\+F\+O\+AM}}
+\index{Importer\+Open\+F\+O\+AM@{Importer\+Open\+F\+O\+AM}!F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+\subsubsection[{\texorpdfstring{Importer\+Open\+F\+O\+A\+M(const Importer\+Open\+F\+O\+A\+M \&)=delete}{ImporterOpenFOAM(const ImporterOpenFOAM &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+A\+M\+::\+Importer\+Open\+F\+O\+AM (
+\begin{DoxyParamCaption}
+\item[{const {\bf Importer\+Open\+F\+O\+AM} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ImporterOpenFOAM_ada1669c2e0bbaa90bcad74fd4e7dd64e}{}\label{classFVCode3D_1_1ImporterOpenFOAM_ada1669c2e0bbaa90bcad74fd4e7dd64e}
+
+
+No copy-\/constructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}!import@{import}}
+\index{import@{import}!F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+\subsubsection[{\texorpdfstring{import(bool fractures\+On=true)}{import(bool fracturesOn=true)}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+A\+M\+::import (
+\begin{DoxyParamCaption}
+\item[{bool}]{fractures\+On = {\ttfamily true}}
+\end{DoxyParamCaption}
+) throw  ) \hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{classFVCode3D_1_1ImporterOpenFOAM_ac8d43d9c6d007f5637e5878cef77df5e}{}\label{classFVCode3D_1_1ImporterOpenFOAM_ac8d43d9c6d007f5637e5878cef77df5e}
+
+
+Import from the Open\+F\+O\+AM files. 
+
+Read points, faces, owner, neighbour, boundary 
+\begin{DoxyParams}{Parameters}
+{\em fractures\+On} & if true, imports the fractures, else the fractures are disabled \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classFVCode3D_1_1Importer_aee8e68c30c3fd4a01f10a5a4365b30ea}{F\+V\+Code3\+D\+::\+Importer}.
+
+
+
+Definition at line \hyperlink{Import_8cpp_source_l00415}{415} of file \hyperlink{Import_8cpp_source}{Import.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1ImporterOpenFOAM_ac8d43d9c6d007f5637e5878cef77df5e_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}!operator=@{operator=}}
+\index{operator=@{operator=}!F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM@{F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+AM}}
+\subsubsection[{\texorpdfstring{operator=(const Importer\+Open\+F\+O\+A\+M \&)=delete}{operator=(const ImporterOpenFOAM &)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Importer\+Open\+F\+O\+AM}\& F\+V\+Code3\+D\+::\+Importer\+Open\+F\+O\+A\+M\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Importer\+Open\+F\+O\+AM} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1ImporterOpenFOAM_a2f0792dfcb70bc6e1f5ee540b5c635b1}{}\label{classFVCode3D_1_1ImporterOpenFOAM_a2f0792dfcb70bc6e1f5ee540b5c635b1}
+
+
+No assignment operator. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/import/\hyperlink{Import_8hpp}{Import.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/import/\hyperlink{Import_8cpp}{Import.\+cpp}\end{DoxyCompactItemize}

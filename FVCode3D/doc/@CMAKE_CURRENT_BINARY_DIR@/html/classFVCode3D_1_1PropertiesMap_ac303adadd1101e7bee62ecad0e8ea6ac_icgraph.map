@@ -1,0 +1,7 @@
+<map id="FVCode3D::PropertiesMap::setZone" name="FVCode3D::PropertiesMap::setZone">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1ImporterMedit.html#a588447299960ebaf2f7583fe2ddecdcc" title="Import from a .mesh file. " alt="" coords="251,5,425,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1ImporterTetGen.html#a37d0191b42bbb7af28f5c42acb1185b7" title="Import from .node, .face, .ele files. " alt="" coords="245,71,431,112"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1ImporterTPFA.html#adafe208596baeaca51051ea9692fa757" title="Import from a standard grid file. " alt="" coords="249,136,427,177"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1ImporterOpenFOAM.html#ac8d43d9c6d007f5637e5878cef77df5e" title="Import from the OpenFOAM files. " alt="" coords="232,201,444,243"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1ImporterForSolver.html#a4ad5aee92b6abe9b6ed5150c707a83ad" title="Import from a file with boundary conditions and fracture network. " alt="" coords="239,267,437,308"/>
+</map>

@@ -1,0 +1,739 @@
+\hypertarget{classFVCode3D_1_1Quadrature}{}\section{F\+V\+Code3D\+:\+:Quadrature Class Reference}
+\label{classFVCode3D_1_1Quadrature}\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+
+
+Class that implements method to integrate function over the mesh.  
+
+
+
+
+{\ttfamily \#include $<$Quadrature.\+hpp$>$}
+
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Quadrature\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{classFVCode3D_1_1Quadrature__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{Indent}{\bf Constructor \& Destructor}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}{Quadrature} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&rigid\+\_\+mesh)
+\begin{DoxyCompactList}\small\item\em Constructor for \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}, given a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Quadrature_a9187a5705b15af6384771bc2e153b175}{Quadrature} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&rigid\+\_\+mesh, const \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} \&quadrature)
+\begin{DoxyCompactList}\small\item\em Constructor for \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}, given a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} and a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Quadrature_a5f61238ba1001ac521cae0ec308b601f}{Quadrature} (const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \&rigid\+\_\+mesh, const \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} \&quadrature, const \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} \&fracturequadrature)
+\begin{DoxyCompactList}\small\item\em Constructor for \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}, given a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}, a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}, and a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} to integrate fractures. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Quadrature_a1446f64b8ea79e20e42d68ef69849d1f}{$\sim$\+Quadrature} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133}{integrate} (const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&integrand)
+\begin{DoxyCompactList}\small\item\em Integrate a function. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80}{integrate\+Matrix} (const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&integrand)
+\begin{DoxyCompactList}\small\item\em Integrate a function only on the porous matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7}{integrate\+Fractures} (const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&integrand)
+\begin{DoxyCompactList}\small\item\em Integrate a function only on the fractures. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a6dfe290f1aa58ad93939df3180366cbc}{integrate} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&integrand)  throw ()
+\begin{DoxyCompactList}\small\item\em Integrate discrete function. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a2dc75b0980ba9e7edb74c5d8752b15b0}{integrate\+Matrix} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&integrand)  throw ()
+\begin{DoxyCompactList}\small\item\em Integrate discrete function only on the porous matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_ad214edec7046612f3a020199648c321c}{integrate\+Fractures} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&integrand)  throw ()
+\begin{DoxyCompactList}\small\item\em Integrate discrete function only on the fracturs. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a78618fc0f3f5ce0e8d20af98b84de66e}{L2\+Norm} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&integrand)
+\begin{DoxyCompactList}\small\item\em L2 Norm of a discrete function. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a94672e9671bb0bf9cf2e89951fd9535d}{L2\+Norm\+Matrix} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&integrand)
+\begin{DoxyCompactList}\small\item\em L2 Norm of a discrete function, only on the porous matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_aa55d8f4b6158bf626695a786ab43be9d}{L2\+Norm\+Fractures} (const \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \&integrand)
+\begin{DoxyCompactList}\small\item\em L2 Norm of a discrete function, only on the fractures. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1}{cell\+Integrate} (const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&func)
+\begin{DoxyCompactList}\small\item\em Integrate a function and return the integral cell by cell. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac}{cell\+Integrate\+Matrix} (const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&func)
+\begin{DoxyCompactList}\small\item\em Integrate a function and return the integral cell by cell, only in the porous matrix. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78}{cell\+Integrate\+Fractures} (const std\+::function$<$ \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})$>$ \&func)
+\begin{DoxyCompactList}\small\item\em Integrate a function and return the integral cell by cell, only in the fractures. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\begin{Indent}{\bf Get Methods}\par
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Quadrature_a2713fa3182f7a86c1b28f96f85ed68ec}{get\+Mesh\+Size} () const 
+\begin{DoxyCompactList}\small\item\em Get Mesh size (const) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{Indent}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} \& \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\+\_\+mesh}
+\begin{DoxyCompactList}\small\item\em A reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. \end{DoxyCompactList}\item 
+const \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map} \& \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\+\_\+properties}
+\begin{DoxyCompactList}\small\item\em A reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map}. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\+\_\+size}
+\begin{DoxyCompactList}\small\item\em The number of cells in M\+\_\+mesh. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Quadrature_ac1cc519f7f97b5dbb920ffffb24a2130}{Q\+R\+\_\+\+Handler} \hyperlink{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}{M\+\_\+quadrature}
+\begin{DoxyCompactList}\small\item\em A pointer to a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Quadrature_ac1cc519f7f97b5dbb920ffffb24a2130}{Q\+R\+\_\+\+Handler} \hyperlink{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}{M\+\_\+fracture\+Quadrature}
+\begin{DoxyCompactList}\small\item\em A pointer to a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} which is used to integrate on fractures. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \hyperlink{classFVCode3D_1_1QuadratureRule_aa112834316b236e0a9072b09fd94d9cc}{Quadrature\+Rule\+::\+Quadrature\+Rule\+Handler} \hyperlink{classFVCode3D_1_1Quadrature_ac1cc519f7f97b5dbb920ffffb24a2130}{Q\+R\+\_\+\+Handler}
+\begin{DoxyCompactList}\small\item\em Typedef for \hyperlink{classFVCode3D_1_1QuadratureRule_aa112834316b236e0a9072b09fd94d9cc}{Quadrature\+Rule\+::\+Quadrature\+Rule\+Handler}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that implements method to integrate function over the mesh. 
+
+This class integrates solutions to P\+DE solved with the finite volume method, computes the L2\+Norm of such a solution and integrates continuous functions. By passing a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} to the constructor it is possible to choose the quadrature rule you want to use. 
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00030}{30} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!Q\+R\+\_\+\+Handler@{Q\+R\+\_\+\+Handler}}
+\index{Q\+R\+\_\+\+Handler@{Q\+R\+\_\+\+Handler}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{Q\+R\+\_\+\+Handler}{QR_Handler}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf F\+V\+Code3\+D\+::\+Quadrature\+::\+Q\+R\+\_\+\+Handler}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Quadrature_ac1cc519f7f97b5dbb920ffffb24a2130}{}\label{classFVCode3D_1_1Quadrature_ac1cc519f7f97b5dbb920ffffb24a2130}
+
+
+Typedef for \hyperlink{classFVCode3D_1_1QuadratureRule_aa112834316b236e0a9072b09fd94d9cc}{Quadrature\+Rule\+::\+Quadrature\+Rule\+Handler}. 
+
+This type definition permits to handle a \hyperlink{classFVCode3D_1_1QuadratureRule_aa112834316b236e0a9072b09fd94d9cc}{Quadrature\+Rule\+::\+Quadrature\+Rule\+Handler} as a Q\+R\+\_\+\+Handler. 
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00037}{37} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!Quadrature@{Quadrature}}
+\index{Quadrature@{Quadrature}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{Quadrature(const Rigid\+\_\+\+Mesh \&rigid\+\_\+mesh)}{Quadrature(const Rigid_Mesh &rigid_mesh)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Quadrature\+::\+Quadrature (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{rigid\+\_\+mesh}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}{}\label{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}
+
+
+Constructor for \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}, given a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rigid\+\_\+mesh} & A \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} on which we want to integrate \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00013}{13} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!Quadrature@{Quadrature}}
+\index{Quadrature@{Quadrature}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{Quadrature(const Rigid\+\_\+\+Mesh \&rigid\+\_\+mesh, const Quadrature\+Rule \&quadrature)}{Quadrature(const Rigid_Mesh &rigid_mesh, const QuadratureRule &quadrature)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Quadrature\+::\+Quadrature (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{rigid\+\_\+mesh, }
+\item[{const {\bf Quadrature\+Rule} \&}]{quadrature}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a9187a5705b15af6384771bc2e153b175}{}\label{classFVCode3D_1_1Quadrature_a9187a5705b15af6384771bc2e153b175}
+
+
+Constructor for \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}, given a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} and a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rigid\+\_\+mesh} & A \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} on which we want to integrate \\
+\hline
+{\em quadrature} & A \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} we want to use in order to integrate a function \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00020}{20} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!Quadrature@{Quadrature}}
+\index{Quadrature@{Quadrature}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{Quadrature(const Rigid\+\_\+\+Mesh \&rigid\+\_\+mesh, const Quadrature\+Rule \&quadrature, const Quadrature\+Rule \&fracturequadrature)}{Quadrature(const Rigid_Mesh &rigid_mesh, const QuadratureRule &quadrature, const QuadratureRule &fracturequadrature)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Quadrature\+::\+Quadrature (
+\begin{DoxyParamCaption}
+\item[{const {\bf Rigid\+\_\+\+Mesh} \&}]{rigid\+\_\+mesh, }
+\item[{const {\bf Quadrature\+Rule} \&}]{quadrature, }
+\item[{const {\bf Quadrature\+Rule} \&}]{fracturequadrature}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a5f61238ba1001ac521cae0ec308b601f}{}\label{classFVCode3D_1_1Quadrature_a5f61238ba1001ac521cae0ec308b601f}
+
+
+Constructor for \hyperlink{classFVCode3D_1_1Quadrature}{Quadrature}, given a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}, a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}, and a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} to integrate fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rigid\+\_\+mesh} & A \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} on which we want to integrate \\
+\hline
+{\em quadrature} & A \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} we want to use in order to integrate a function \\
+\hline
+{\em fracturequadrature} & A \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} we want to use in order to integrate a function on fractures \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00027}{27} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!````~Quadrature@{$\sim$\+Quadrature}}
+\index{````~Quadrature@{$\sim$\+Quadrature}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{$\sim$\+Quadrature()=default}{~Quadrature()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Quadrature\+::$\sim$\+Quadrature (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Quadrature_a1446f64b8ea79e20e42d68ef69849d1f}{}\label{classFVCode3D_1_1Quadrature_a1446f64b8ea79e20e42d68ef69849d1f}
+
+
+Destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!cell\+Integrate@{cell\+Integrate}}
+\index{cell\+Integrate@{cell\+Integrate}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{cell\+Integrate(const std\+::function$<$ Real(\+Point3\+D)$>$ \&func)}{cellIntegrate(const std::function< Real(Point3D)> &func)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector} F\+V\+Code3\+D\+::\+Quadrature\+::cell\+Integrate (
+\begin{DoxyParamCaption}
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{func}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1}{}\label{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1}
+
+
+Integrate a function and return the integral cell by cell. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A function which returns a scalar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector with in the i-\/th component the integral of the considered Integrand function on the i-\/th cell 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00200}{200} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!cell\+Integrate\+Fractures@{cell\+Integrate\+Fractures}}
+\index{cell\+Integrate\+Fractures@{cell\+Integrate\+Fractures}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{cell\+Integrate\+Fractures(const std\+::function$<$ Real(\+Point3\+D)$>$ \&func)}{cellIntegrateFractures(const std::function< Real(Point3D)> &func)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector} F\+V\+Code3\+D\+::\+Quadrature\+::cell\+Integrate\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{func}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78}{}\label{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78}
+
+
+Integrate a function and return the integral cell by cell, only in the fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A function which returns a scalar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector with in the i-\/th component the integral of the considered Integrand function on the i-\/th cell, of the fractures 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The vector contains all the problem entries, the entries of the matrix are zero 
+\end{DoxyNote}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00272}{272} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!cell\+Integrate\+Matrix@{cell\+Integrate\+Matrix}}
+\index{cell\+Integrate\+Matrix@{cell\+Integrate\+Matrix}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{cell\+Integrate\+Matrix(const std\+::function$<$ Real(\+Point3\+D)$>$ \&func)}{cellIntegrateMatrix(const std::function< Real(Point3D)> &func)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector} F\+V\+Code3\+D\+::\+Quadrature\+::cell\+Integrate\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{func}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac}{}\label{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac}
+
+
+Integrate a function and return the integral cell by cell, only in the porous matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A function which returns a scalar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A vector with in the i-\/th component the integral of the considered Integrand function on the i-\/th cell of the porous matrix 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+The vector contains all the problem entries, fractures included which are zero 
+\end{DoxyNote}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00237}{237} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!get\+Mesh\+Size@{get\+Mesh\+Size}}
+\index{get\+Mesh\+Size@{get\+Mesh\+Size}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{get\+Mesh\+Size() const }{getMeshSize() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Quadrature\+::get\+Mesh\+Size (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Quadrature_a2713fa3182f7a86c1b28f96f85ed68ec}{}\label{classFVCode3D_1_1Quadrature_a2713fa3182f7a86c1b28f96f85ed68ec}
+
+
+Get Mesh size (const) 
+
+\begin{DoxyReturn}{Returns}
+The number of the cells in the \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh} considered 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00170}{170} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!integrate@{integrate}}
+\index{integrate@{integrate}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{integrate(const std\+::function$<$ Real(\+Point3\+D)$>$ \&integrand)}{integrate(const std::function< Real(Point3D)> &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::integrate (
+\begin{DoxyParamCaption}
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{integrand}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133}{}\label{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133}
+
+
+Integrate a function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A std\+::function which returns a scalar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The integral of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00105}{105} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!integrate@{integrate}}
+\index{integrate@{integrate}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{integrate(const Vector \&integrand)}{integrate(const Vector &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::integrate (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{integrand}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Quadrature_a6dfe290f1aa58ad93939df3180366cbc}{}\label{classFVCode3D_1_1Quadrature_a6dfe290f1aa58ad93939df3180366cbc}
+
+
+Integrate discrete function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A vector such that in the i-\/th component has the value of the function on the i-\/th cell \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The integral of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00034}{34} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a6dfe290f1aa58ad93939df3180366cbc_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!integrate\+Fractures@{integrate\+Fractures}}
+\index{integrate\+Fractures@{integrate\+Fractures}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{integrate\+Fractures(const std\+::function$<$ Real(\+Point3\+D)$>$ \&integrand)}{integrateFractures(const std::function< Real(Point3D)> &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::integrate\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{integrand}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7}{}\label{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7}
+
+
+Integrate a function only on the fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A std\+::function which returns a scalar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The integral of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00135}{135} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!integrate\+Fractures@{integrate\+Fractures}}
+\index{integrate\+Fractures@{integrate\+Fractures}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{integrate\+Fractures(const Vector \&integrand)}{integrateFractures(const Vector &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::integrate\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{integrand}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Quadrature_ad214edec7046612f3a020199648c321c}{}\label{classFVCode3D_1_1Quadrature_ad214edec7046612f3a020199648c321c}
+
+
+Integrate discrete function only on the fracturs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A vector such that in the i-\/th component has the value of the function on the i-\/th cell \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The integral of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00085}{85} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_ad214edec7046612f3a020199648c321c_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!integrate\+Matrix@{integrate\+Matrix}}
+\index{integrate\+Matrix@{integrate\+Matrix}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{integrate\+Matrix(const std\+::function$<$ Real(\+Point3\+D)$>$ \&integrand)}{integrateMatrix(const std::function< Real(Point3D)> &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::integrate\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const std\+::function$<$ {\bf Real}({\bf Point3D})$>$ \&}]{integrand}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80}{}\label{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80}
+
+
+Integrate a function only on the porous matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A std\+::function which returns a scalar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The integral of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00120}{120} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!integrate\+Matrix@{integrate\+Matrix}}
+\index{integrate\+Matrix@{integrate\+Matrix}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{integrate\+Matrix(const Vector \&integrand)}{integrateMatrix(const Vector &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::integrate\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{integrand}
+\end{DoxyParamCaption}
+) throw  ) }\hypertarget{classFVCode3D_1_1Quadrature_a2dc75b0980ba9e7edb74c5d8752b15b0}{}\label{classFVCode3D_1_1Quadrature_a2dc75b0980ba9e7edb74c5d8752b15b0}
+
+
+Integrate discrete function only on the porous matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A vector such that in the i-\/th component has the value of the function on the i-\/th cell \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The integral of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00060}{60} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a2dc75b0980ba9e7edb74c5d8752b15b0_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!L2\+Norm@{L2\+Norm}}
+\index{L2\+Norm@{L2\+Norm}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{L2\+Norm(const Vector \&integrand)}{L2Norm(const Vector &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::\+L2\+Norm (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{integrand}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a78618fc0f3f5ce0e8d20af98b84de66e}{}\label{classFVCode3D_1_1Quadrature_a78618fc0f3f5ce0e8d20af98b84de66e}
+
+
+L2 Norm of a discrete function. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A vector such that in the i-\/th component has the value of the function on the i-\/th cell \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The L2 norm of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00150}{150} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a78618fc0f3f5ce0e8d20af98b84de66e_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!L2\+Norm\+Fractures@{L2\+Norm\+Fractures}}
+\index{L2\+Norm\+Fractures@{L2\+Norm\+Fractures}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{L2\+Norm\+Fractures(const Vector \&integrand)}{L2NormFractures(const Vector &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::\+L2\+Norm\+Fractures (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{integrand}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_aa55d8f4b6158bf626695a786ab43be9d}{}\label{classFVCode3D_1_1Quadrature_aa55d8f4b6158bf626695a786ab43be9d}
+
+
+L2 Norm of a discrete function, only on the fractures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A vector such that in the i-\/th component has the value of the function on the i-\/th cell \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The L2 norm of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00187}{187} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_aa55d8f4b6158bf626695a786ab43be9d_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!L2\+Norm\+Matrix@{L2\+Norm\+Matrix}}
+\index{L2\+Norm\+Matrix@{L2\+Norm\+Matrix}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{L2\+Norm\+Matrix(const Vector \&integrand)}{L2NormMatrix(const Vector &integrand)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Quadrature\+::\+L2\+Norm\+Matrix (
+\begin{DoxyParamCaption}
+\item[{const {\bf Vector} \&}]{integrand}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1Quadrature_a94672e9671bb0bf9cf2e89951fd9535d}{}\label{classFVCode3D_1_1Quadrature_a94672e9671bb0bf9cf2e89951fd9535d}
+
+
+L2 Norm of a discrete function, only on the porous matrix. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Integrand} & A vector such that in the i-\/th component has the value of the function on the i-\/th cell \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The L2 norm of the considered Integrand function 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{Quadrature_8cpp_source_l00169}{169} of file \hyperlink{Quadrature_8cpp_source}{Quadrature.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1Quadrature_a94672e9671bb0bf9cf2e89951fd9535d_cgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!M\+\_\+fracture\+Quadrature@{M\+\_\+fracture\+Quadrature}}
+\index{M\+\_\+fracture\+Quadrature@{M\+\_\+fracture\+Quadrature}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{M\+\_\+fracture\+Quadrature}{M_fractureQuadrature}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Q\+R\+\_\+\+Handler} F\+V\+Code3\+D\+::\+Quadrature\+::\+M\+\_\+fracture\+Quadrature\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}{}\label{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}
+
+
+A pointer to a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule} which is used to integrate on fractures. 
+
+
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00184}{184} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!M\+\_\+mesh@{M\+\_\+mesh}}
+\index{M\+\_\+mesh@{M\+\_\+mesh}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{M\+\_\+mesh}{M_mesh}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Rigid\+\_\+\+Mesh}\& F\+V\+Code3\+D\+::\+Quadrature\+::\+M\+\_\+mesh\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{}\label{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}
+
+
+A reference to a \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\+\_\+\+Mesh}. 
+
+
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00176}{176} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!M\+\_\+properties@{M\+\_\+properties}}
+\index{M\+\_\+properties@{M\+\_\+properties}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{M\+\_\+properties}{M_properties}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Properties\+Map}\& F\+V\+Code3\+D\+::\+Quadrature\+::\+M\+\_\+properties\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{}\label{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}
+
+
+A reference to a \hyperlink{classFVCode3D_1_1PropertiesMap}{Properties\+Map}. 
+
+
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00178}{178} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!M\+\_\+quadrature@{M\+\_\+quadrature}}
+\index{M\+\_\+quadrature@{M\+\_\+quadrature}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{M\+\_\+quadrature}{M_quadrature}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Q\+R\+\_\+\+Handler} F\+V\+Code3\+D\+::\+Quadrature\+::\+M\+\_\+quadrature\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}{}\label{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}
+
+
+A pointer to a \hyperlink{classFVCode3D_1_1QuadratureRule}{Quadrature\+Rule}. 
+
+
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00182}{182} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}!M\+\_\+size@{M\+\_\+size}}
+\index{M\+\_\+size@{M\+\_\+size}!F\+V\+Code3\+D\+::\+Quadrature@{F\+V\+Code3\+D\+::\+Quadrature}}
+\subsubsection[{\texorpdfstring{M\+\_\+size}{M_size}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf U\+Int} F\+V\+Code3\+D\+::\+Quadrature\+::\+M\+\_\+size\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{}\label{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}
+
+
+The number of cells in M\+\_\+mesh. 
+
+
+
+Definition at line \hyperlink{Quadrature_8hpp_source_l00180}{180} of file \hyperlink{Quadrature_8hpp_source}{Quadrature.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/quadrature/\hyperlink{Quadrature_8hpp}{Quadrature.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/quadrature/\hyperlink{Quadrature_8cpp}{Quadrature.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,8 @@
+<map id="FVCode3D::ImporterOpenFOAM::import" name="FVCode3D::ImporterOpenFOAM::import">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D.html#a04162ec60e0fe52674b3ecbb7de1185c" title="Get the vector storing the nodes of the mesh (const) " alt="" coords="279,5,487,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D.html#a76de387da2a552e3e1210d795bc7acf9" title="Get the set storing the facets of the mesh (const) " alt="" coords="265,71,500,98"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1Mesh3D.html#ad904ef5e068c89951d77e9364e960bf3" title="Get the map storing the cells of the mesh (const) " alt="" coords="270,122,495,149"/>
+<area shape="rect" id="node5" href="$namespaceFVCode3D.html#a7d8605df83383ec5cf62f7efe480a68a" title="Convert a string to the desired type (using a stringstream) " alt="" coords="301,173,465,199"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1Properties.html#a0ddb477254cfacdb96a440ddedc2548c" title="Set properties. " alt="" coords="305,224,460,265"/>
+<area shape="rect" id="node7" href="$classFVCode3D_1_1PropertiesMap.html#ac303adadd1101e7bee62ecad0e8ea6ac" title="Set the properties of a selected zone. " alt="" coords="293,289,472,331"/>
+</map>

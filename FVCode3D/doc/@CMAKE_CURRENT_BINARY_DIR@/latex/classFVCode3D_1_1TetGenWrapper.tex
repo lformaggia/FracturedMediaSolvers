@@ -1,0 +1,401 @@
+\hypertarget{classFVCode3D_1_1TetGenWrapper}{}\section{F\+V\+Code3D\+:\+:Tet\+Gen\+Wrapper Class Reference}
+\label{classFVCode3D_1_1TetGenWrapper}\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+
+
+Class that tetrahedralizes a polyhedron and computes its volume.  
+
+
+
+
+{\ttfamily \#include $<$Tet\+Gen\+Wrapper.\+hpp$>$}
+
+
+
+Collaboration diagram for F\+V\+Code3D\+:\+:Tet\+Gen\+Wrapper\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{classFVCode3D_1_1TetGenWrapper__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1TetGenWrapper_adf67f9b1994b718a65f36724d42e65b0}{Tet\+Gen\+Wrapper} (std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ nodes, std\+::vector$<$ std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ $>$ faces)
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97}{generate\+Mesh} ()
+\begin{DoxyCompactList}\small\item\em Generate a tetrahedralization of the polyhedron. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1TetGenWrapper_a519cb27415baac338386403c46af7b08}{compute\+Volume} ()
+\begin{DoxyCompactList}\small\item\em Compute the volume of the polyhedron and return it. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1TetGenWrapper_ad3574fde5de1292dc9064d717a3ee353}{compute\+Center\+Of\+Mass} ()
+\begin{DoxyCompactList}\small\item\em Compute the center of mass of the polyhedron by considering a constant density. \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1TetGenWrapper_a5ac70d60ce38892615e0561b161c8401}{get\+Volume} () const 
+\begin{DoxyCompactList}\small\item\em Get the volume of the mesh. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1TetGenWrapper_a7e6a7df9467ab825a92f7cafae7934f4}{get\+Center\+Of\+Mass} () const 
+\begin{DoxyCompactList}\small\item\em Get the center of mass of the polyhedron. \end{DoxyCompactList}\item 
+const std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \hyperlink{classFVCode3D_1_1TetGenWrapper_aa078ba35c38e79cae708b7fd632ceac4}{get\+Element} (const \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} i) const 
+\begin{DoxyCompactList}\small\item\em Get i-\/th element. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1TetGenWrapper_a899fb8723246a4c6684ad447a1e0608d}{$\sim$\+Tet\+Gen\+Wrapper} ()=default
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1TetGenWrapper_ac89da37a0ce92c84ab8c74829031192e}{Tet\+Gen\+Wrapper} ()=delete
+\begin{DoxyCompactList}\small\item\em No default constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \hyperlink{classFVCode3D_1_1TetGenWrapper_ae0637911dffc55fc74b5414fc6e8e417}{M\+\_\+in\+Nodes}
+\begin{DoxyCompactList}\small\item\em Vector of points (input) \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ $>$ \hyperlink{classFVCode3D_1_1TetGenWrapper_ae883359645d72961078fe02a886df3be}{M\+\_\+faces}
+\begin{DoxyCompactList}\small\item\em Vector of faces (input) \end{DoxyCompactList}\item 
+std\+::vector$<$ \hyperlink{classFVCode3D_1_1Point3D}{Point3D} $>$ \hyperlink{classFVCode3D_1_1TetGenWrapper_a04672b7a2b60730190e0e82af43ed38b}{M\+\_\+out\+Nodes}
+\begin{DoxyCompactList}\small\item\em Vector of points (output) \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{U\+Int} $>$ $>$ \hyperlink{classFVCode3D_1_1TetGenWrapper_a016da330a68cb7cd44881dc26efed5b5}{M\+\_\+elements}
+\begin{DoxyCompactList}\small\item\em Vector of elements (output) \end{DoxyCompactList}\item 
+\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1TetGenWrapper_a820391e6d290e49db68b107fd5ab0e75}{M\+\_\+volume}
+\begin{DoxyCompactList}\small\item\em Volume of the mesh. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Point3D}{Point3D} \hyperlink{classFVCode3D_1_1TetGenWrapper_a4c2e389ea6cc0cec7c83b7e241976807}{M\+\_\+center\+Of\+Mass}
+\begin{DoxyCompactList}\small\item\em Center of mass. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that tetrahedralizes a polyhedron and computes its volume. 
+
+This class generates a tetrahedral mesh moving from a set of nodes and faces that describe a polyhedron. It permits to compute the volume of the polyhedron. 
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00020}{20} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!Tet\+Gen\+Wrapper@{Tet\+Gen\+Wrapper}}
+\index{Tet\+Gen\+Wrapper@{Tet\+Gen\+Wrapper}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{Tet\+Gen\+Wrapper(std\+::vector$<$ Point3\+D $>$ nodes, std\+::vector$<$ std\+::vector$<$ U\+Int $>$ $>$ faces)}{TetGenWrapper(std::vector< Point3D > nodes, std::vector< std::vector< UInt > > faces)}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+Tet\+Gen\+Wrapper (
+\begin{DoxyParamCaption}
+\item[{std\+::vector$<$ {\bf Point3D} $>$}]{nodes, }
+\item[{std\+::vector$<$ std\+::vector$<$ {\bf U\+Int} $>$ $>$}]{faces}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1TetGenWrapper_adf67f9b1994b718a65f36724d42e65b0}{}\label{classFVCode3D_1_1TetGenWrapper_adf67f9b1994b718a65f36724d42e65b0}
+
+
+Constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nodes} & vector of nodes that define the polyhedron \\
+\hline
+{\em faces} & vector of vector of ids of the nodes. Each vector define a face(polygon) of the polyhedron. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \hyperlink{TetGenWrapper_8cpp_source_l00013}{13} of file \hyperlink{TetGenWrapper_8cpp_source}{Tet\+Gen\+Wrapper.\+cpp}.
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!````~Tet\+Gen\+Wrapper@{$\sim$\+Tet\+Gen\+Wrapper}}
+\index{````~Tet\+Gen\+Wrapper@{$\sim$\+Tet\+Gen\+Wrapper}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{$\sim$\+Tet\+Gen\+Wrapper()=default}{~TetGenWrapper()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::$\sim$\+Tet\+Gen\+Wrapper (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a899fb8723246a4c6684ad447a1e0608d}{}\label{classFVCode3D_1_1TetGenWrapper_a899fb8723246a4c6684ad447a1e0608d}
+
+
+Destructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_a899fb8723246a4c6684ad447a1e0608d_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!Tet\+Gen\+Wrapper@{Tet\+Gen\+Wrapper}}
+\index{Tet\+Gen\+Wrapper@{Tet\+Gen\+Wrapper}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{Tet\+Gen\+Wrapper()=delete}{TetGenWrapper()=delete}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+Tet\+Gen\+Wrapper (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [delete]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_ac89da37a0ce92c84ab8c74829031192e}{}\label{classFVCode3D_1_1TetGenWrapper_ac89da37a0ce92c84ab8c74829031192e}
+
+
+No default constructor. 
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_ac89da37a0ce92c84ab8c74829031192e_icgraph}
+\end{center}
+\end{figure}
+
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!compute\+Center\+Of\+Mass@{compute\+Center\+Of\+Mass}}
+\index{compute\+Center\+Of\+Mass@{compute\+Center\+Of\+Mass}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{compute\+Center\+Of\+Mass()}{computeCenterOfMass()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::compute\+Center\+Of\+Mass (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1TetGenWrapper_ad3574fde5de1292dc9064d717a3ee353}{}\label{classFVCode3D_1_1TetGenWrapper_ad3574fde5de1292dc9064d717a3ee353}
+
+
+Compute the center of mass of the polyhedron by considering a constant density. 
+
+C = 1/$\vert$\+Omega$\vert$ int\+\_\+ x dx \begin{DoxyReturn}{Returns}
+the center of mass 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97}{generate\+Mesh()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{TetGenWrapper_8cpp_source_l00103}{103} of file \hyperlink{TetGenWrapper_8cpp_source}{Tet\+Gen\+Wrapper.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_ad3574fde5de1292dc9064d717a3ee353_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!compute\+Volume@{compute\+Volume}}
+\index{compute\+Volume@{compute\+Volume}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{compute\+Volume()}{computeVolume()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::compute\+Volume (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1TetGenWrapper_a519cb27415baac338386403c46af7b08}{}\label{classFVCode3D_1_1TetGenWrapper_a519cb27415baac338386403c46af7b08}
+
+
+Compute the volume of the polyhedron and return it. 
+
+\begin{DoxyReturn}{Returns}
+the volume of the polyhedron 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97}{generate\+Mesh()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{TetGenWrapper_8cpp_source_l00085}{85} of file \hyperlink{TetGenWrapper_8cpp_source}{Tet\+Gen\+Wrapper.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_a519cb27415baac338386403c46af7b08_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!generate\+Mesh@{generate\+Mesh}}
+\index{generate\+Mesh@{generate\+Mesh}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{generate\+Mesh()}{generateMesh()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::generate\+Mesh (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97}{}\label{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97}
+
+
+Generate a tetrahedralization of the polyhedron. 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8cpp_source_l00016}{16} of file \hyperlink{TetGenWrapper_8cpp_source}{Tet\+Gen\+Wrapper.\+cpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_ad2965002885016bd26494629af54ce97_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!get\+Center\+Of\+Mass@{get\+Center\+Of\+Mass}}
+\index{get\+Center\+Of\+Mass@{get\+Center\+Of\+Mass}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{get\+Center\+Of\+Mass() const }{getCenterOfMass() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::get\+Center\+Of\+Mass (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a7e6a7df9467ab825a92f7cafae7934f4}{}\label{classFVCode3D_1_1TetGenWrapper_a7e6a7df9467ab825a92f7cafae7934f4}
+
+
+Get the center of mass of the polyhedron. 
+
+\begin{DoxyReturn}{Returns}
+the center of mass of the polyhedron 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1TetGenWrapper_ad3574fde5de1292dc9064d717a3ee353}{compute\+Center\+Of\+Mass()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00062}{62} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_a7e6a7df9467ab825a92f7cafae7934f4_cgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!get\+Element@{get\+Element}}
+\index{get\+Element@{get\+Element}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{get\+Element(const U\+Int i) const }{getElement(const UInt i) const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::vector$<$ {\bf Point3D} $>$ F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::get\+Element (
+\begin{DoxyParamCaption}
+\item[{const {\bf U\+Int}}]{i}
+\end{DoxyParamCaption}
+) const}\hypertarget{classFVCode3D_1_1TetGenWrapper_aa078ba35c38e79cae708b7fd632ceac4}{}\label{classFVCode3D_1_1TetGenWrapper_aa078ba35c38e79cae708b7fd632ceac4}
+
+
+Get i-\/th element. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & i-\/th element \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vector that contains the 4 points that define the tetrahedron 
+\end{DoxyReturn}
+
+
+Definition at line \hyperlink{TetGenWrapper_8cpp_source_l00126}{126} of file \hyperlink{TetGenWrapper_8cpp_source}{Tet\+Gen\+Wrapper.\+cpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFVCode3D_1_1TetGenWrapper_aa078ba35c38e79cae708b7fd632ceac4_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!get\+Volume@{get\+Volume}}
+\index{get\+Volume@{get\+Volume}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{get\+Volume() const }{getVolume() const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::get\+Volume (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a5ac70d60ce38892615e0561b161c8401}{}\label{classFVCode3D_1_1TetGenWrapper_a5ac70d60ce38892615e0561b161c8401}
+
+
+Get the volume of the mesh. 
+
+\begin{DoxyReturn}{Returns}
+the volume of the polyhedron 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1TetGenWrapper_a519cb27415baac338386403c46af7b08}{compute\+Volume()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00054}{54} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!M\+\_\+center\+Of\+Mass@{M\+\_\+center\+Of\+Mass}}
+\index{M\+\_\+center\+Of\+Mass@{M\+\_\+center\+Of\+Mass}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{M\+\_\+center\+Of\+Mass}{M_centerOfMass}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point3D} F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+M\+\_\+center\+Of\+Mass\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a4c2e389ea6cc0cec7c83b7e241976807}{}\label{classFVCode3D_1_1TetGenWrapper_a4c2e389ea6cc0cec7c83b7e241976807}
+
+
+Center of mass. 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00091}{91} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!M\+\_\+elements@{M\+\_\+elements}}
+\index{M\+\_\+elements@{M\+\_\+elements}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{M\+\_\+elements}{M_elements}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ std\+::vector$<${\bf U\+Int}$>$ $>$ F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+M\+\_\+elements\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a016da330a68cb7cd44881dc26efed5b5}{}\label{classFVCode3D_1_1TetGenWrapper_a016da330a68cb7cd44881dc26efed5b5}
+
+
+Vector of elements (output) 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00087}{87} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!M\+\_\+faces@{M\+\_\+faces}}
+\index{M\+\_\+faces@{M\+\_\+faces}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{M\+\_\+faces}{M_faces}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<$ std\+::vector$<${\bf U\+Int}$>$ $>$ F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+M\+\_\+faces\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_ae883359645d72961078fe02a886df3be}{}\label{classFVCode3D_1_1TetGenWrapper_ae883359645d72961078fe02a886df3be}
+
+
+Vector of faces (input) 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00083}{83} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!M\+\_\+in\+Nodes@{M\+\_\+in\+Nodes}}
+\index{M\+\_\+in\+Nodes@{M\+\_\+in\+Nodes}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{M\+\_\+in\+Nodes}{M_inNodes}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<${\bf Point3D}$>$ F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+M\+\_\+in\+Nodes\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_ae0637911dffc55fc74b5414fc6e8e417}{}\label{classFVCode3D_1_1TetGenWrapper_ae0637911dffc55fc74b5414fc6e8e417}
+
+
+Vector of points (input) 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00081}{81} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!M\+\_\+out\+Nodes@{M\+\_\+out\+Nodes}}
+\index{M\+\_\+out\+Nodes@{M\+\_\+out\+Nodes}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{M\+\_\+out\+Nodes}{M_outNodes}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::vector$<${\bf Point3D}$>$ F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+M\+\_\+out\+Nodes\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a04672b7a2b60730190e0e82af43ed38b}{}\label{classFVCode3D_1_1TetGenWrapper_a04672b7a2b60730190e0e82af43ed38b}
+
+
+Vector of points (output) 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00085}{85} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}!M\+\_\+volume@{M\+\_\+volume}}
+\index{M\+\_\+volume@{M\+\_\+volume}!F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper@{F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper}}
+\subsubsection[{\texorpdfstring{M\+\_\+volume}{M_volume}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Real} F\+V\+Code3\+D\+::\+Tet\+Gen\+Wrapper\+::\+M\+\_\+volume\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1TetGenWrapper_a820391e6d290e49db68b107fd5ab0e75}{}\label{classFVCode3D_1_1TetGenWrapper_a820391e6d290e49db68b107fd5ab0e75}
+
+
+Volume of the mesh. 
+
+
+
+Definition at line \hyperlink{TetGenWrapper_8hpp_source_l00089}{89} of file \hyperlink{TetGenWrapper_8hpp_source}{Tet\+Gen\+Wrapper.\+hpp}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{TetGenWrapper_8hpp}{Tet\+Gen\+Wrapper.\+hpp}\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/mesh/\hyperlink{TetGenWrapper_8cpp}{Tet\+Gen\+Wrapper.\+cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,264 @@
+\hypertarget{classFVCode3D_1_1Chrono}{}\section{F\+V\+Code3D\+:\+:Chrono Class Reference}
+\label{classFVCode3D_1_1Chrono}\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+
+
+Class that implements a chronometer.  
+
+
+
+
+{\ttfamily \#include $<$Chrono.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFVCode3D_1_1Chrono_aa2308dc48aa2934b609c2f66dddb7cba}{Chrono} ()=default
+\begin{DoxyCompactList}\small\item\em Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Chrono_afa9a3677e0bba53175d47aa057138db1}{Chrono} (const \hyperlink{classFVCode3D_1_1Chrono}{Chrono} \&)=default
+\begin{DoxyCompactList}\small\item\em Default copy constructor. \end{DoxyCompactList}\item 
+\hyperlink{classFVCode3D_1_1Chrono_a6afbd7ea104fe781b6e9e209172dbb5c}{$\sim$\+Chrono} ()=default
+\begin{DoxyCompactList}\small\item\em Default destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}{start} ()
+\begin{DoxyCompactList}\small\item\em Start the chrono. \end{DoxyCompactList}\item 
+void \hyperlink{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e}{stop} ()
+\begin{DoxyCompactList}\small\item\em Stop the chrono. \end{DoxyCompactList}\item 
+double \hyperlink{classFVCode3D_1_1Chrono_a245a0c47da85e80de56e85d3689b925b}{partial} () const 
+\begin{DoxyCompactList}\small\item\em Get the passed time, until this moment. \end{DoxyCompactList}\item 
+double \hyperlink{classFVCode3D_1_1Chrono_a4cb287080efc462d06b1af5594c1f976}{time} () const 
+\begin{DoxyCompactList}\small\item\em Get the passed time. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::chrono\+::high\+\_\+resolution\+\_\+clock \hyperlink{classFVCode3D_1_1Chrono_a28b4a3f6072e73d2a4bc6308ba88a6bb}{Clock}
+\begin{DoxyCompactList}\small\item\em Type for std\+::chrono\+::high\+\_\+resolution\+\_\+clock. \end{DoxyCompactList}\item 
+typedef std\+::chrono\+::milliseconds \hyperlink{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}{chrono\+\_\+milli}
+\begin{DoxyCompactList}\small\item\em Type for std\+::chrono\+::milliseconds. \end{DoxyCompactList}\item 
+typedef std\+::chrono\+::seconds \hyperlink{classFVCode3D_1_1Chrono_a282eb6bb9bc31cca9094ecd4c7c1939f}{chrono\+\_\+sec}
+\begin{DoxyCompactList}\small\item\em Type for std\+::chrono\+::seconds. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Clock\+::time\+\_\+point \hyperlink{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{M\+\_\+start}
+\begin{DoxyCompactList}\small\item\em Time at start and stop. \end{DoxyCompactList}\item 
+Clock\+::time\+\_\+point \hyperlink{classFVCode3D_1_1Chrono_a4ba4c5c8b4393d2484a169c631977e40}{M\+\_\+end}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class that implements a chronometer. 
+
+This class implements a simple chronometer useful to measure the time. 
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00019}{19} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!chrono\+\_\+milli@{chrono\+\_\+milli}}
+\index{chrono\+\_\+milli@{chrono\+\_\+milli}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{chrono\+\_\+milli}{chrono_milli}}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::chrono\+::milliseconds {\bf F\+V\+Code3\+D\+::\+Chrono\+::chrono\+\_\+milli}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}{}\label{classFVCode3D_1_1Chrono_abb09cf94de0298f1e42b9b93d9134bee}
+
+
+Type for std\+::chrono\+::milliseconds. 
+
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00057}{57} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!chrono\+\_\+sec@{chrono\+\_\+sec}}
+\index{chrono\+\_\+sec@{chrono\+\_\+sec}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{chrono\+\_\+sec}{chrono_sec}}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::chrono\+::seconds {\bf F\+V\+Code3\+D\+::\+Chrono\+::chrono\+\_\+sec}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Chrono_a282eb6bb9bc31cca9094ecd4c7c1939f}{}\label{classFVCode3D_1_1Chrono_a282eb6bb9bc31cca9094ecd4c7c1939f}
+
+
+Type for std\+::chrono\+::seconds. 
+
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00060}{60} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!Clock@{Clock}}
+\index{Clock@{Clock}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{Clock}{Clock}}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::chrono\+::high\+\_\+resolution\+\_\+clock {\bf F\+V\+Code3\+D\+::\+Chrono\+::\+Clock}\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Chrono_a28b4a3f6072e73d2a4bc6308ba88a6bb}{}\label{classFVCode3D_1_1Chrono_a28b4a3f6072e73d2a4bc6308ba88a6bb}
+
+
+Type for std\+::chrono\+::high\+\_\+resolution\+\_\+clock. 
+
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00054}{54} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!Chrono@{Chrono}}
+\index{Chrono@{Chrono}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{Chrono()=default}{Chrono()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Chrono\+::\+Chrono (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Chrono_aa2308dc48aa2934b609c2f66dddb7cba}{}\label{classFVCode3D_1_1Chrono_aa2308dc48aa2934b609c2f66dddb7cba}
+
+
+Default constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!Chrono@{Chrono}}
+\index{Chrono@{Chrono}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{Chrono(const Chrono \&)=default}{Chrono(const Chrono &)=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Chrono\+::\+Chrono (
+\begin{DoxyParamCaption}
+\item[{const {\bf Chrono} \&}]{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Chrono_afa9a3677e0bba53175d47aa057138db1}{}\label{classFVCode3D_1_1Chrono_afa9a3677e0bba53175d47aa057138db1}
+
+
+Default copy constructor. 
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!````~Chrono@{$\sim$\+Chrono}}
+\index{````~Chrono@{$\sim$\+Chrono}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{$\sim$\+Chrono()=default}{~Chrono()=default}}]{\setlength{\rightskip}{0pt plus 5cm}F\+V\+Code3\+D\+::\+Chrono\+::$\sim$\+Chrono (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [default]}}\hypertarget{classFVCode3D_1_1Chrono_a6afbd7ea104fe781b6e9e209172dbb5c}{}\label{classFVCode3D_1_1Chrono_a6afbd7ea104fe781b6e9e209172dbb5c}
+
+
+Default destructor. 
+
+
+
+\subsection{Member Function Documentation}
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!partial@{partial}}
+\index{partial@{partial}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{partial() const }{partial() const }}]{\setlength{\rightskip}{0pt plus 5cm}double F\+V\+Code3\+D\+::\+Chrono\+::partial (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Chrono_a245a0c47da85e80de56e85d3689b925b}{}\label{classFVCode3D_1_1Chrono_a245a0c47da85e80de56e85d3689b925b}
+
+
+Get the passed time, until this moment. 
+
+\begin{DoxyReturn}{Returns}
+the seconds passed from the start 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}{start()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00042}{42} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=289pt]{classFVCode3D_1_1Chrono_a245a0c47da85e80de56e85d3689b925b_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!start@{start}}
+\index{start@{start}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{start()}{start()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Chrono\+::start (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}{}\label{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}
+
+
+Start the chrono. 
+
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00032}{32} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!stop@{stop}}
+\index{stop@{stop}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{stop()}{stop()}}]{\setlength{\rightskip}{0pt plus 5cm}void F\+V\+Code3\+D\+::\+Chrono\+::stop (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e}{}\label{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e}
+
+
+Stop the chrono. 
+
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00035}{35} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e_icgraph}
+\end{center}
+\end{figure}
+
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!time@{time}}
+\index{time@{time}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{time() const }{time() const }}]{\setlength{\rightskip}{0pt plus 5cm}double F\+V\+Code3\+D\+::\+Chrono\+::time (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [inline]}}\hypertarget{classFVCode3D_1_1Chrono_a4cb287080efc462d06b1af5594c1f976}{}\label{classFVCode3D_1_1Chrono_a4cb287080efc462d06b1af5594c1f976}
+
+
+Get the passed time. 
+
+\begin{DoxyReturn}{Returns}
+the second passed from the start to the stop 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondition}
+call \hyperlink{classFVCode3D_1_1Chrono_a13f2f4fa4096ec9eafa7ad59fea3df87}{start()} 
+
+call \hyperlink{classFVCode3D_1_1Chrono_acc8f31330aa1819b12947866075fbc9e}{stop()} 
+\end{DoxyPrecond}
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00050}{50} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+\subsection{Field Documentation}
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!M\+\_\+end@{M\+\_\+end}}
+\index{M\+\_\+end@{M\+\_\+end}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{M\+\_\+end}{M_end}}]{\setlength{\rightskip}{0pt plus 5cm}Clock\+::time\+\_\+point F\+V\+Code3\+D\+::\+Chrono\+::\+M\+\_\+end\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Chrono_a4ba4c5c8b4393d2484a169c631977e40}{}\label{classFVCode3D_1_1Chrono_a4ba4c5c8b4393d2484a169c631977e40}
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00063}{63} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+\index{F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}!M\+\_\+start@{M\+\_\+start}}
+\index{M\+\_\+start@{M\+\_\+start}!F\+V\+Code3\+D\+::\+Chrono@{F\+V\+Code3\+D\+::\+Chrono}}
+\subsubsection[{\texorpdfstring{M\+\_\+start}{M_start}}]{\setlength{\rightskip}{0pt plus 5cm}Clock\+::time\+\_\+point F\+V\+Code3\+D\+::\+Chrono\+::\+M\+\_\+start\hspace{0.3cm}{\ttfamily [private]}}\hypertarget{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}{}\label{classFVCode3D_1_1Chrono_aed2f31857e3d6f7ef71e2e36832f3286}
+
+
+Time at start and stop. 
+
+
+
+Definition at line \hyperlink{Chrono_8hpp_source_l00063}{63} of file \hyperlink{Chrono_8hpp_source}{Chrono.\+hpp}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/core/\hyperlink{Chrono_8hpp}{Chrono.\+hpp}\end{DoxyCompactItemize}

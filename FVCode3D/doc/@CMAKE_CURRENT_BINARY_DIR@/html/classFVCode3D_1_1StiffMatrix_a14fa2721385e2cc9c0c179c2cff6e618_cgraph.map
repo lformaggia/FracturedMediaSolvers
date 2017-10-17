@@ -1,0 +1,12 @@
+<map id="FVCode3D::StiffMatrix::assembleFracture" name="FVCode3D::StiffMatrix::assembleFracture">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#aadbe6d9ad704122537903396d91238e0" title="Get fracture facets ids vector (const) " alt="" coords="435,5,627,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1StiffMatrix.html#a53ce514c7a4c784061b5339350e00995" title="It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture..." alt="" coords="220,159,375,200"/>
+<area shape="rect" id="node11" href="$classFVCode3D_1_1PropertiesMap.html#a810ea62ca881e4db57acd601bcea23cf" title="Get the mobility of the fluid. " alt="" coords="208,224,387,265"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1StiffMatrix.html#a2702adc80c0667f24005a16672de0d39" title="Border center. " alt="" coords="453,71,608,112"/>
+<area shape="rect" id="node5" href="$classFVCode3D_1_1Rigid__Mesh.html#a7acee1523c8da4596273627acc652609" title="Get nodes vector (const) " alt="" coords="682,100,846,141"/>
+<area shape="rect" id="node6" href="$classFVCode3D_1_1PropertiesMap.html#ace888d15c9a4ab13d5e217a3a565604c" title="Get the map of properties (const) " alt="" coords="441,188,620,229"/>
+<area shape="rect" id="node7" href="$namespaceFVCode3D.html#ad07be7f9ed843ca65d02d0303dae6cb4" title="FVCode3D::dotProduct" alt="" coords="451,254,610,281"/>
+<area shape="rect" id="node8" href="$namespaceFVCode3D.html#a1ee7c9a5fcc645574f6a93e5f6f53b4b" title="FVCode3D::crossProduct" alt="" coords="445,305,617,331"/>
+<area shape="rect" id="node9" href="$classFVCode3D_1_1Point3D.html#a0d1cd3d114b0985ae2b11cd1c52de673" title="Normalize the current point. " alt="" coords="455,356,606,397"/>
+<area shape="rect" id="node10" href="$classFVCode3D_1_1Point3D.html#ac9e4bf311b24cea10ad3fde1d703be01" title="Compute norm of the current point. " alt="" coords="675,363,853,390"/>
+</map>

@@ -1,0 +1,327 @@
+\hypertarget{Quadrature_8cpp_source}{}\section{Quadrature.\+cpp}
+\label{Quadrature_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/quadrature/\+Quadrature.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/quadrature/\+Quadrature.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00007 \textcolor{preprocessor}{#include <\hyperlink{Properties_8hpp}{FVCode3D/property/Properties.hpp}>}
+00008 \textcolor{preprocessor}{#include <\hyperlink{Quadrature_8hpp}{FVCode3D/quadrature/Quadrature.hpp}>}
+00009 
+00010 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00011 \{
+00012 
+\hypertarget{Quadrature_8cpp_source.tex_l00013}{}\hyperlink{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}{00013} \hyperlink{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}{Quadrature::Quadrature} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rigid\_mesh):
+00014      M\_mesh (rigid\_mesh), M\_properties(rigid\_mesh.getPropertiesMap()),
+00015      M\_size (rigid\_mesh.getCellsVector().size()+ rigid\_mesh.getFractureFacetsIdsVector().size()),
+00016      M\_quadrature(\hyperlink{namespacestd}{std}::move(\hyperlink{namespacestd}{std}::unique\_ptr< \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule} >(new 
+      \hyperlink{classFVCode3D_1_1CentroidQuadrature}{CentroidQuadrature}))),
+00017      M\_fractureQuadrature(\hyperlink{namespacestd}{std}::move(\hyperlink{namespacestd}{std}::unique\_ptr< \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule} >(new 
+      \hyperlink{classFVCode3D_1_1CentroidQuadrature}{CentroidQuadrature})))
+00018 \{\}
+00019 
+\hypertarget{Quadrature_8cpp_source.tex_l00020}{}\hyperlink{classFVCode3D_1_1Quadrature_a9187a5705b15af6384771bc2e153b175}{00020} \hyperlink{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}{Quadrature::Quadrature} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rigid\_mesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule} & quadrature):
+00021     \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh} (rigid\_mesh), \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}(rigid\_mesh.getPropertiesMap()),
+00022     \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size} (rigid\_mesh.getCellsVector().size()+ rigid\_mesh.getFractureFacetsIdsVector().size()),
+00023     \hyperlink{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}{M\_quadrature}(\hyperlink{namespacestd}{std}::move(quadrature.clone())),
+00024     \hyperlink{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}{M\_fractureQuadrature}(\hyperlink{namespacestd}{std}::move(\hyperlink{namespacestd}{std}::unique\_ptr<
+      \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule} >(new \hyperlink{classFVCode3D_1_1CentroidQuadrature}{CentroidQuadrature})))
+00025 \{\}
+00026 
+\hypertarget{Quadrature_8cpp_source.tex_l00027}{}\hyperlink{classFVCode3D_1_1Quadrature_a5f61238ba1001ac521cae0ec308b601f}{00027} \hyperlink{classFVCode3D_1_1Quadrature_aefb925716304b6546c5aeba01fab383a}{Quadrature::Quadrature} (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & rigid\_mesh, \textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule} & quadrature, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1QuadratureRule}{QuadratureRule} & fracturequadrature):
+00028     \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh} (rigid\_mesh), \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}(rigid\_mesh.getPropertiesMap()),
+00029     \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size} (rigid\_mesh.getCellsVector().size()+ rigid\_mesh.getFractureFacetsIdsVector().size()),
+00030     \hyperlink{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}{M\_quadrature}(\hyperlink{namespacestd}{std}::move(quadrature.clone())),
+00031     \hyperlink{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}{M\_fractureQuadrature}(\hyperlink{namespacestd}{std}::move(fracturequadrature.clone()))
+00032 \{\}
+00033 
+\hypertarget{Quadrature_8cpp_source.tex_l00034}{}\hyperlink{classFVCode3D_1_1Quadrature_a6dfe290f1aa58ad93939df3180366cbc}{00034} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133}{Quadrature::integrate}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & integrand) \textcolor{keywordflow}{throw}()
+00035 \{
+00036     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} IntSize = integrand.size();
+00037     \textcolor{keywordflow}{if}(IntSize != \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size})
+00038     \{
+00039         std::stringstream error;
+00040         error << \textcolor{stringliteral}{"Error: dimension of integrand function "} << IntSize << \textcolor{stringliteral}{" differs from dimension of mesh "}
+       << \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size} << \textcolor{stringliteral}{"."};
+00041         \textcolor{keywordflow}{throw} std::runtime\_error(error.str());
+00042     \}
+00043     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00044     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00045     \{
+00046         integral += cell\_it.getVolume()*integrand(cell\_it.getId());
+00047     \}
+00048 
+00049     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00050     \{
+00051         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \_volume = \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).
+      M\_aperture * facet\_it.getFacet().area();
+00052         integral += \_volume*integrand(facet\_it.getIdAsCell());
+00053 \textcolor{comment}{//        integral -= \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[0]);}
+00054 \textcolor{comment}{//        integral -= \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[1]);}
+00055     \}
+00056 
+00057     \textcolor{keywordflow}{return} integral;
+00058 \}
+00059 
+\hypertarget{Quadrature_8cpp_source.tex_l00060}{}\hyperlink{classFVCode3D_1_1Quadrature_a2dc75b0980ba9e7edb74c5d8752b15b0}{00060} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80}{Quadrature::integrateMatrix}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & integrand) \textcolor{keywordflow}{throw}()
+00061 \{
+00062     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} IntSize = integrand.size();
+00063     \textcolor{keywordflow}{if}(IntSize != \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size})
+00064     \{
+00065         std::stringstream error;
+00066         error << \textcolor{stringliteral}{"Error: dimension of integrand function "} << IntSize << \textcolor{stringliteral}{" differs from dimension of mesh "}
+       << \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size} << \textcolor{stringliteral}{"."};
+00067         \textcolor{keywordflow}{throw} std::runtime\_error(error.str());
+00068     \}
+00069     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00070     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00071     \{
+00072         integral += cell\_it.getVolume()*integrand(cell\_it.getId());
+00073     \}
+00074 
+00075 \textcolor{comment}{//    for(auto& facet\_it : M\_mesh.getFractureFacetsIdsVector())}
+00076 \textcolor{comment}{//    \{}
+00077 \textcolor{comment}{//        Real \_volume = M\_properties.getProperties(facet\_it.getZoneCode()).M\_aperture *
+       facet\_it.getFacet().area();}
+00078 \textcolor{comment}{//        integral -= \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[0]);}
+00079 \textcolor{comment}{//        integral -= \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[1]);}
+00080 \textcolor{comment}{//    \}}
+00081 
+00082     \textcolor{keywordflow}{return} integral;
+00083 \}
+00084 
+\hypertarget{Quadrature_8cpp_source.tex_l00085}{}\hyperlink{classFVCode3D_1_1Quadrature_ad214edec7046612f3a020199648c321c}{00085} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7}{Quadrature::integrateFractures}(\textcolor{keyword}{const} 
+      \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} & integrand) \textcolor{keywordflow}{throw}()
+00086 \{
+00087     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} IntSize = integrand.size();
+00088     \textcolor{keywordflow}{if}(IntSize != \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size})
+00089     \{
+00090         std::stringstream error;
+00091         error << \textcolor{stringliteral}{"Error: dimension of integrand function "} << IntSize << \textcolor{stringliteral}{" differs from dimension of mesh "}
+       << \hyperlink{classFVCode3D_1_1Quadrature_ae0ab248f031fa026887c4e1fb91a3835}{M\_size} << \textcolor{stringliteral}{"."};
+00092         \textcolor{keywordflow}{throw} std::runtime\_error(error.str());
+00093     \}
+00094     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00095 
+00096     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00097     \{
+00098         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \_volume = \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).
+      M\_aperture * facet\_it.getFacet().area();
+00099         integral += \_volume*integrand(facet\_it.getIdAsCell());
+00100     \}
+00101 
+00102     \textcolor{keywordflow}{return} integral;
+00103 \}
+00104 
+\hypertarget{Quadrature_8cpp_source.tex_l00105}{}\hyperlink{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133}{00105} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a6fc230221b791290d8f410fb8ebd3133}{Quadrature::integrate}(\textcolor{keyword}{const} std::function<\hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(
+      \hyperlink{classFVCode3D_1_1Point3D}{Point3D})>& integrand)
+00106 \{
+00107     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00108     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result(N);
+00109     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00110     result = \hyperlink{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1}{cellIntegrate}(integrand);
+00111 
+00112     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} it = 0; it < N; ++it)
+00113     \{
+00114         integral += result (it);
+00115     \}
+00116 
+00117     \textcolor{keywordflow}{return} integral;
+00118 \}
+00119 
+\hypertarget{Quadrature_8cpp_source.tex_l00120}{}\hyperlink{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80}{00120} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a1b9bd586f125dcda6d4aaebcdda83b80}{Quadrature::integrateMatrix}(\textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})>& integrand)
+00121 \{
+00122     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size();
+00123     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result(N);
+00124     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00125     result = \hyperlink{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac}{cellIntegrateMatrix}(integrand);
+00126 
+00127     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} it = 0; it < N; ++it)
+00128     \{
+00129         integral += result (it);
+00130     \}
+00131 
+00132     \textcolor{keywordflow}{return} integral;
+00133 \}
+00134 
+\hypertarget{Quadrature_8cpp_source.tex_l00135}{}\hyperlink{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7}{00135} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a18e580bc530cfc004154b0e48a8617e7}{Quadrature::integrateFractures}(\textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})>& integrand)
+00136 \{
+00137     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00138     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result(N);
+00139     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00140     result = \hyperlink{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78}{cellIntegrateFractures}(integrand);
+00141 
+00142     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} it = 0; it < N; ++it)
+00143     \{
+00144         integral += result (it);
+00145     \}
+00146 
+00147     \textcolor{keywordflow}{return} integral;
+00148 \}
+00149 
+\hypertarget{Quadrature_8cpp_source.tex_l00150}{}\hyperlink{classFVCode3D_1_1Quadrature_a78618fc0f3f5ce0e8d20af98b84de66e}{00150} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a78618fc0f3f5ce0e8d20af98b84de66e}{Quadrature::L2Norm}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector}& integrand)
+00151 \{
+00152     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00153     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00154     \{
+00155         integral += cell\_it.getVolume()*integrand(cell\_it.getId())*integrand(cell\_it.getId());
+00156     \}
+00157 
+00158     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00159     \{
+00160         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \_volume = \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).
+      M\_aperture * facet\_it.getFacet().area();
+00161         integral += \_volume*integrand(facet\_it.getIdAsCell())*integrand(facet\_it.getIdAsCell());
+00162 \textcolor{comment}{//        integral -=
+       \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[0])*integrand(facet\_it.getSeparatedCellsIds()[0]);}
+00163 \textcolor{comment}{//        integral -=
+       \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[1])*integrand(facet\_it.getSeparatedCellsIds()[1]);}
+00164     \}
+00165 
+00166     \textcolor{keywordflow}{return} sqrt(integral);
+00167 \}
+00168 
+\hypertarget{Quadrature_8cpp_source.tex_l00169}{}\hyperlink{classFVCode3D_1_1Quadrature_a94672e9671bb0bf9cf2e89951fd9535d}{00169} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_a94672e9671bb0bf9cf2e89951fd9535d}{Quadrature::L2NormMatrix}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector}& integrand)
+00170 \{
+00171     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00172     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00173     \{
+00174         integral += cell\_it.getVolume()*integrand(cell\_it.getId())*integrand(cell\_it.getId());
+00175     \}
+00176 
+00177 \textcolor{comment}{//    for(auto& facet\_it : M\_mesh.getFractureFacetsIdsVector())}
+00178 \textcolor{comment}{//    \{}
+00179 \textcolor{comment}{//        Real \_volume = M\_properties.getProperties(facet\_it.getZoneCode()).M\_aperture *
+       facet\_it.getFacet().area();}
+00180 \textcolor{comment}{//        integral -=
+       \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[0])*integrand(facet\_it.getSeparatedCellsIds()[0]);}
+00181 \textcolor{comment}{//        integral -=
+       \_volume/2.*integrand(facet\_it.getSeparatedCellsIds()[1])*integrand(facet\_it.getSeparatedCellsIds()[1]);}
+00182 \textcolor{comment}{//    \}}
+00183 
+00184     \textcolor{keywordflow}{return} sqrt(integral);
+00185 \}
+00186 
+\hypertarget{Quadrature_8cpp_source.tex_l00187}{}\hyperlink{classFVCode3D_1_1Quadrature_aa55d8f4b6158bf626695a786ab43be9d}{00187} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \hyperlink{classFVCode3D_1_1Quadrature_aa55d8f4b6158bf626695a786ab43be9d}{Quadrature::L2NormFractures}(\textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector}& integrand)
+00188 \{
+00189     \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} integral = 0;
+00190 
+00191     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00192     \{
+00193         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \_volume = \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).
+      M\_aperture * facet\_it.getFacet().area();
+00194         integral += \_volume*integrand(facet\_it.getIdAsCell())*integrand(facet\_it.getIdAsCell());
+00195     \}
+00196 
+00197     \textcolor{keywordflow}{return} sqrt(integral);
+00198 \}
+00199 
+\hypertarget{Quadrature_8cpp_source.tex_l00200}{}\hyperlink{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1}{00200} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1Quadrature_aed4aa5c10cdca072aae596813ed179b1}{Quadrature::cellIntegrate} (\textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & func)
+00201 \{
+00202     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00203     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result(N);
+00204 \textcolor{comment}{//    Real partRes;}
+00205 \textcolor{comment}{//    UInt NeighboursId;}
+00206 
+00207     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00208     \{
+00209         result(cell\_it.getId()) = \hyperlink{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}{M\_quadrature}->apply(cell\_it, func);
+00210     \}
+00211 
+00212     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00213     \{
+00214         \textcolor{comment}{// contribution from the fracture}
+00215         \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \_volume = \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()).
+      M\_aperture * facet\_it.getFacet().area();
+00216 
+00217         result (facet\_it.getIdAsCell()) = \hyperlink{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}{M\_fractureQuadrature}->apply(
+      \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facet\_it.getId()], \_volume, func);
+00218 
+00219 \textcolor{comment}{//        // remove the contribution of the fracture from the first separated cell}
+00220 \textcolor{comment}{//        NeighboursId = M\_mesh.getFacetsVector()[facet\_it.getId()].getSeparatedCellsIds()[0];}
+00221 \textcolor{comment}{//}
+00222 \textcolor{comment}{//        partRes = M\_quadrature->apply(M\_mesh.getCellsVector()[NeighboursId], func);}
+00223 \textcolor{comment}{//}
+00224 \textcolor{comment}{//        result (NeighboursId) -= \_volume/2. * partRes /
+       M\_mesh.getCellsVector()[NeighboursId].getVolume();}
+00225 \textcolor{comment}{//}
+00226 \textcolor{comment}{//        // remove the contribution of the fracture from the second separated cell}
+00227 \textcolor{comment}{//        NeighboursId = M\_mesh.getFacetsVector()[facet\_it.getId()].getSeparatedCellsIds()[1];}
+00228 \textcolor{comment}{//}
+00229 \textcolor{comment}{//        partRes = M\_quadrature->apply(M\_mesh.getCellsVector()[NeighboursId], func);}
+00230 \textcolor{comment}{//}
+00231 \textcolor{comment}{//        result (NeighboursId) -= \_volume/2. * partRes /
+       M\_mesh.getCellsVector()[NeighboursId].getVolume();}
+00232     \}
+00233 
+00234     \textcolor{keywordflow}{return} result;
+00235 \}
+00236 
+\hypertarget{Quadrature_8cpp_source.tex_l00237}{}\hyperlink{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac}{00237} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1Quadrature_ab7900923eb32ae60c817532fba2d3aac}{Quadrature::cellIntegrateMatrix} (\textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & func)
+00238 \{
+00239     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00240     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result( Vector::Zero(N) );
+00241 \textcolor{comment}{//    Real partRes;}
+00242 \textcolor{comment}{//    UInt NeighboursId;}
+00243 
+00244     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& cell\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}())
+00245     \{
+00246         result (cell\_it.getId()) = \hyperlink{classFVCode3D_1_1Quadrature_a9a128b9525429cca80435552ee3b6e56}{M\_quadrature}->apply(cell\_it, func);
+00247     \} \textcolor{comment}{// for}
+00248 
+00249 \textcolor{comment}{//    for(auto& facet\_it : M\_mesh.getFractureFacetsIdsVector())}
+00250 \textcolor{comment}{//    \{}
+00251 \textcolor{comment}{//        // contribution from the fracture}
+00252 \textcolor{comment}{//        const Real \_volume = M\_properties.getProperties(facet\_it.getZoneCode()).M\_aperture *
+       facet\_it.getFacet().area();}
+00253 \textcolor{comment}{//}
+00254 \textcolor{comment}{//        // remove the contribution of the fracture from the first separated cell}
+00255 \textcolor{comment}{//        NeighboursId = M\_mesh.getFacetsVector()[facet\_it.getId()].getSeparatedCellsIds()[0];}
+00256 \textcolor{comment}{//}
+00257 \textcolor{comment}{//        partRes = M\_quadrature->apply(M\_mesh.getCellsVector()[NeighboursId], func);}
+00258 \textcolor{comment}{//}
+00259 \textcolor{comment}{//        result (NeighboursId) -= \_volume/2. * partRes /
+       M\_mesh.getCellsVector()[NeighboursId].getVolume();}
+00260 \textcolor{comment}{//}
+00261 \textcolor{comment}{//        // remove the contribution of the fracture from the second separated cell}
+00262 \textcolor{comment}{//        NeighboursId = M\_mesh.getFacetsVector()[facet\_it.getId()].getSeparatedCellsIds()[1];}
+00263 \textcolor{comment}{//}
+00264 \textcolor{comment}{//        partRes = M\_quadrature->apply(M\_mesh.getCellsVector()[NeighboursId], func);}
+00265 \textcolor{comment}{//}
+00266 \textcolor{comment}{//        result (NeighboursId) -= \_volume/2. * partRes /
+       M\_mesh.getCellsVector()[NeighboursId].getVolume();}
+00267 \textcolor{comment}{//    \} // for}
+00268 
+00269     \textcolor{keywordflow}{return} result;
+00270 \} \textcolor{comment}{// CellIntegrateMatrix}
+00271 
+\hypertarget{Quadrature_8cpp_source.tex_l00272}{}\hyperlink{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78}{00272} \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} \hyperlink{classFVCode3D_1_1Quadrature_a2c3240f24eed6f871394ca3eafbffc78}{Quadrature::cellIntegrateFractures} (\textcolor{keyword}{const} std::function<
+      \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real}(\hyperlink{classFVCode3D_1_1Point3D}{Point3D})> & func)
+00273 \{
+00274     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} N = \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_afefb62f2c37317402b495e2369ed495b}{getCellsVector}().size() + \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}().size();
+00275     \hyperlink{namespaceFVCode3D_a16ccf345652402bccd1a5d2e6782526c}{Vector} result( Vector::Zero(N) );
+00276 
+00277     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_aadbe6d9ad704122537903396d91238e0}{getFractureFacetsIdsVector}())
+00278     \{
+00279         \textcolor{comment}{// contribution from the fracture}
+00280         \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a40c1f5588a248569d80aa5f867080e83}{Real} \_volume = \hyperlink{classFVCode3D_1_1Quadrature_ace6cd23087209d3186ae173c265cde39}{M\_properties}.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(facet\_it.getZoneCode()
+      ).M\_aperture * facet\_it.getFacet().area();
+00281 
+00282         result (facet\_it.getIdAsCell()) = \hyperlink{classFVCode3D_1_1Quadrature_afc75e45ee2a0a8be3cd39f93c2ef0b7e}{M\_fractureQuadrature}->apply(
+      \hyperlink{classFVCode3D_1_1Quadrature_abaa2519ea32065df30242bd5f5cb2d01}{M\_mesh}.\hyperlink{classFVCode3D_1_1Rigid__Mesh_a6d3cdd4ef8a5225599953179d5302636}{getFacetsVector}()[facet\_it.getId()], \_volume, func);
+00283     \} \textcolor{comment}{// for}
+00284 
+00285     \textcolor{keywordflow}{return} result;
+00286 \} \textcolor{comment}{// CellIntegrateFractures}
+00287 
+00288 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

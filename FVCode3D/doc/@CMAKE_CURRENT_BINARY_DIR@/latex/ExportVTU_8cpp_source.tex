@@ -1,0 +1,1987 @@
+\hypertarget{ExportVTU_8cpp_source}{}\section{Export\+V\+T\+U.\+cpp}
+\label{ExportVTU_8cpp_source}\index{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/export/\+Export\+V\+T\+U.\+cpp@{/home/corinne/eni\+Reservoir\+G\+I\+T\+H\+U\+B/eni\+Reservoir/\+F\+V\+Code3\+D/src/\+F\+V\+Code3\+D/export/\+Export\+V\+T\+U.\+cpp}}
+
+\begin{DoxyCode}
+00001 
+00006 \textcolor{preprocessor}{#include <\hyperlink{ExportVTU_8hpp}{FVCode3D/export/ExportVTU.hpp}>}
+00007 
+00008 \textcolor{preprocessor}{#include <\hyperlink{Mesh3D_8hpp}{FVCode3D/mesh/Mesh3D.hpp}>}
+00009 \textcolor{preprocessor}{#include <\hyperlink{RigidMesh_8hpp}{FVCode3D/mesh/RigidMesh.hpp}>}
+00010 \textcolor{preprocessor}{#include <\hyperlink{Properties_8hpp}{FVCode3D/property/Properties.hpp}>}
+00011 \textcolor{preprocessor}{#include <\hyperlink{Permeability_8hpp}{FVCode3D/property/Permeability.hpp}>}
+00012 \textcolor{preprocessor}{#include <\hyperlink{Operations_8hpp}{FVCode3D/geometry/Operations.hpp}>}
+00013 
+00014 \textcolor{keyword}{namespace }\hyperlink{namespaceFVCode3D}{FVCode3D}
+00015 \{
+00016 
+\hypertarget{ExportVTU_8cpp_source.tex_l00017}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a8e5eff8e388cf6de1bf1c1deca863ac7}{00017} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a8e5eff8e388cf6de1bf1c1deca863ac7}{ExporterVTU::exportMesh}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{
+      const} \textcolor{keywordflow}{throw}()
+00018 \{
+00019     std::fstream filestr;
+00020 
+00021     filestr.open (filename.c\_str(), std::ios\_base::out);
+00022 
+00023     \textcolor{keywordflow}{if} (filestr.is\_open())
+00024     \{
+00025         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00026     \}
+00027     \textcolor{keywordflow}{else}
+00028     \{
+00029         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00030     \}
+00031 
+00032     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Mesh3D in Vtu format... "} << std::endl;
+00033 
+00034     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00035     \textcolor{keyword}{const} std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+00036     \textcolor{keyword}{const} std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+00037     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00038     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = cells.size();
+00039     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0, faceOffsets = 0;
+00040 
+00041     \textcolor{comment}{// Header}
+00042     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00043     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00044     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00045     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nCells << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00046 
+00047     \textcolor{comment}{// CellData}
+00048     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"cellID\(\backslash\)">"} << std::endl;
+00049     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"cellID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00050     filestr << std::scientific << std::setprecision(0);
+00051     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00052         filestr << it->first << std::endl;
+00053     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00054     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00055 
+00056     filestr << std::scientific << std::setprecision(16);
+00057 
+00058     \textcolor{comment}{// Points}
+00059     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00060     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00061     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00062         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00063     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00064     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00065 
+00066     \textcolor{comment}{// Cells}
+00067     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00068     \textcolor{comment}{//  Connectivity}
+00069     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00070     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00071     \{
+00072         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->second.getVerticesVector().begin(); jt != it->
+      second.getVerticesVector().end()-1; ++jt )
+00073             filestr << *jt << \textcolor{stringliteral}{" "};
+00074         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
+00075     \}
+00076     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00077 
+00078     \textcolor{comment}{//  Offsets}
+00079     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00080     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00081     \{
+00082         offsets += it->second.verticesNumber();
+00083         filestr << offsets << std::endl;
+00084     \}
+00085     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00086 
+00087     \textcolor{comment}{//  Types}
+00088     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00089     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells ; ++i )
+00090         filestr << \textcolor{stringliteral}{"42"} << std::endl;
+00091     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00092 
+00093     \textcolor{comment}{//  Faces}
+00094     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faces\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00095     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00096     \{
+00097         filestr << it->second.facetsNumber() << std::endl;
+00098         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+00099         \{
+00100             filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+00101             \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != 
+      facets.at(*jt).getVerticesVector().end()-1; ++kt )
+00102                 filestr << *kt << \textcolor{stringliteral}{" "};
+00103             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
+00104         \}
+00105     \}
+00106     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00107 
+00108     \textcolor{comment}{//  Faceoffsets}
+00109     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faceoffsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00110     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00111     \{
+00112         faceOffsets += 1 + it->second.facetsNumber();
+00113         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+00114             faceOffsets += facets.at(*jt).getNumberOfVertices();
+00115         filestr << faceOffsets << std::endl;
+00116     \}
+00117     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00118     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00119 
+00120     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00121     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00122     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00123 
+00124     filestr.close();
+00125 \}
+00126 
+\hypertarget{ExportVTU_8cpp_source.tex_l00127}{}\hyperlink{classFVCode3D_1_1ExporterVTU_ac043bd93a6a079f864bc1b76a21df6a2}{00127} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_ac043bd93a6a079f864bc1b76a21df6a2}{ExporterVTU::exportTetrahedralMesh}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00128 \{
+00129     std::fstream filestr;
+00130 
+00131     filestr.open (filename.c\_str(), std::ios\_base::out);
+00132 
+00133     \textcolor{keywordflow}{if} (filestr.is\_open())
+00134     \{
+00135         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00136     \}
+00137     \textcolor{keywordflow}{else}
+00138     \{
+00139         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00140     \}
+00141 
+00142     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Tetrahedral Mesh3D in Vtu format... "} << std::endl;
+00143 
+00144     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00145     \textcolor{keyword}{const} std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+00146     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00147     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = cells.size();
+00148     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0;
+00149 
+00150     \textcolor{comment}{// Header}
+00151     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00152     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00153     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00154     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nCells << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00155 
+00156     \textcolor{comment}{// CellData}
+00157     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"cellID\(\backslash\)">"} << std::endl;
+00158     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"cellID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00159     filestr << std::scientific << std::setprecision(0);
+00160     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00161         filestr << it->first << std::endl;
+00162     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00163     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00164 
+00165     filestr << std::scientific << std::setprecision(16);
+00166 
+00167     \textcolor{comment}{// Points}
+00168     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00169     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00170     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00171         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00172     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00173     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00174 
+00175     \textcolor{comment}{// Cells}
+00176     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00177     \textcolor{comment}{//  Connectivity}
+00178     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00179     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00180     \{
+00181         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->second.getVerticesVector().begin(); jt != it->
+      second.getVerticesVector().end()-1; ++jt )
+00182             filestr << *jt << \textcolor{stringliteral}{" "};
+00183         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
+00184     \}
+00185     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00186 
+00187     \textcolor{comment}{//  Offsets}
+00188     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00189     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00190     \{
+00191         offsets += it->second.verticesNumber();
+00192         filestr << offsets << std::endl;
+00193     \}
+00194     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00195 
+00196     \textcolor{comment}{//  Types}
+00197     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00198     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells ; ++i )
+00199         filestr << \textcolor{stringliteral}{"10"} << std::endl;
+00200     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00201     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00202 
+00203     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00204     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00205     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00206 
+00207     filestr.close();
+00208 \}
+00209 
+\hypertarget{ExportVTU_8cpp_source.tex_l00210}{}\hyperlink{classFVCode3D_1_1ExporterVTU_abdb2e3f36907610720d698d9bfa9428d}{00210} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_abdb2e3f36907610720d698d9bfa9428d}{ExporterVTU::exportFractures}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::string 
+      filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00211 \{
+00212     std::fstream filestr;
+00213 
+00214     filestr.open (filename, std::ios\_base::out);
+00215 
+00216     \textcolor{keywordflow}{if} (filestr.is\_open())
+00217     \{
+00218         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00219     \}
+00220     \textcolor{keywordflow}{else}
+00221     \{
+00222         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});;
+00223     \}
+00224 
+00225     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Fractures in Vtu format... "} << std::endl;
+00226 
+00227     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00228     \textcolor{keyword}{const} std::map<UInt,Facet3D> & facets = mesh.getFacetsMap();
+00229     \textcolor{keyword}{const} std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
+00230     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00231     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = 0;
+00232     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0;
+00233 
+00234     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it)
+00235         nCells += it->getNumberOfFractureFacets();
+00236 
+00237     \textcolor{comment}{// Header}
+00238     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00239     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00240     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00241     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nCells << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00242 
+00243     \textcolor{comment}{// CellData}
+00244     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"scalars\(\backslash\)">"} << std::endl;
+00245     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"facetID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00246     filestr << std::scientific << std::setprecision(0);
+00247     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00248         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00249             filestr << it->getFractureFacetsId()[i] << std::endl;
+00250     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00251     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"fractureID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00252     filestr << std::scientific << std::setprecision(0);
+00253     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00254         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00255             filestr << it->getId() << std::endl;
+00256     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00257     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00258 
+00259     filestr << std::scientific << std::setprecision(16);
+00260 
+00261     \textcolor{comment}{// Points}
+00262     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00263     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00264     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00265         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00266     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00267     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00268 
+00269     \textcolor{comment}{// Cells}
+00270     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00271     \textcolor{comment}{//  Connectivity}
+00272     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00273     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00274     \{
+00275         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+00276         \{
+00277             \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+00278                 filestr << *jt << \textcolor{stringliteral}{" "};
+00279             filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << std::endl
+      ;
+00280         \}
+00281     \}
+00282     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00283 
+00284     \textcolor{comment}{//  Offsets}
+00285     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00286     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00287     \{
+00288         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+00289         \{
+00290             offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+00291             filestr << offsets << std::endl;
+00292         \}
+00293     \}
+00294     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00295 
+00296     \textcolor{comment}{//  Types}
+00297     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00298     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells ; ++i )
+00299         filestr << \textcolor{stringliteral}{"7"} << std::endl;
+00300     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00301 
+00302     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00303 
+00304     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00305     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00306     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00307 
+00308     filestr.close();
+00309 \}
+00310 
+\hypertarget{ExportVTU_8cpp_source.tex_l00311}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a5af587a4d971f4d41caecbef3477211b}{00311} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a5af587a4d971f4d41caecbef3477211b}{ExporterVTU::exportMeshWithFractures}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00312 \{
+00313     std::fstream filestr;
+00314 
+00315     filestr.open (filename.c\_str(), std::ios\_base::out);
+00316 
+00317     \textcolor{keywordflow}{if} (filestr.is\_open())
+00318     \{
+00319         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00320     \}
+00321     \textcolor{keywordflow}{else}
+00322     \{
+00323         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00324     \}
+00325 
+00326     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Mesh3D in Vtu format... "} << std::endl;
+00327 
+00328     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00329     \textcolor{keyword}{const} std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+00330     \textcolor{keyword}{const} std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+00331     \textcolor{keyword}{const} std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
+00332     std::set<UInt> ids;
+00333     std::set<UInt>::const\_iterator itSet;
+00334     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00335     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = cells.size();
+00336     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nFractures = 0;
+00337     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nTotal;
+00338     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0, faceOffsets = 0;
+00339 
+00340     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it)
+00341         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<it->getNumberOfFractureFacets(); ++i)
+00342           ids.insert(it->getFractureFacetsId()[i]);
+00343     nFractures = ids.size();
+00344     ids.clear();
+00345 
+00346     nTotal = nCells + nFractures;
+00347 
+00348     \textcolor{comment}{// Header}
+00349     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00350     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00351     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00352     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nTotal << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00353 
+00354     \textcolor{comment}{// CellData}
+00355     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"cellID\(\backslash\)">"} << std::endl;
+00356     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"cellID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00357     filestr << std::scientific << std::setprecision(0);
+00358     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00359         filestr << it->first << std::endl;
+00360     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<nFractures; ++i )
+00361         filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+00362     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00363 
+00364     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"facetID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00365     filestr << std::scientific << std::setprecision(0);
+00366     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00367         filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+00368     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00369     \{
+00370         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00371         \{
+00372             itSet = ids.find(it->getFractureFacetsId()[i]);
+00373             \textcolor{keywordflow}{if}(itSet == ids.end())
+00374             \{
+00375                 filestr << it->getFractureFacetsId()[i] << std::endl;
+00376                 ids.insert(it->getFractureFacetsId()[i]);
+00377             \}
+00378         \}
+00379     \}
+00380     ids.clear();
+00381     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00382     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00383 
+00384     filestr << std::scientific << std::setprecision(16);
+00385 
+00386     \textcolor{comment}{// Points}
+00387     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00388     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00389     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00390         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00391     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00392     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00393 
+00394     \textcolor{comment}{// Cells}
+00395     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00396     \textcolor{comment}{//  Connectivity}
+00397     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00398     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00399     \{
+00400         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->second.getVerticesVector().begin(); jt != it->
+      second.getVerticesVector().end()-1; ++jt )
+00401             filestr << *jt << \textcolor{stringliteral}{" "};
+00402         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
+00403     \}
+00404     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00405     \{
+00406         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00407         \{
+00408             itSet = ids.find(it->getFractureFacetsId()[i]);
+00409             \textcolor{keywordflow}{if}(itSet == ids.end())
+00410             \{
+00411                 \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+00412                     filestr << *jt << \textcolor{stringliteral}{" "};
+00413                 filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << 
+      std::endl;
+00414                 ids.insert(it->getFractureFacetsId()[i]);
+00415             \}
+00416         \}
+00417     \}
+00418     ids.clear();
+00419     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00420 
+00421     \textcolor{comment}{//  Offsets}
+00422     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00423     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00424     \{
+00425         offsets += it->second.verticesNumber();
+00426         filestr << offsets << std::endl;
+00427     \}
+00428     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00429     \{
+00430         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00431         \{
+00432             itSet = ids.find(it->getFractureFacetsId()[i]);
+00433             \textcolor{keywordflow}{if}(itSet == ids.end())
+00434             \{
+00435                 offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+00436                 filestr << offsets << std::endl;
+00437                 ids.insert(it->getFractureFacetsId()[i]);
+00438             \}
+00439         \}
+00440     \}
+00441     ids.clear();
+00442     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00443 
+00444     \textcolor{comment}{//  Types}
+00445     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00446     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nTotal ; ++i )
+00447         filestr << \textcolor{stringliteral}{"42"} << std::endl;
+00448     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00449 
+00450     \textcolor{comment}{//  Faces}
+00451     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faces\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00452     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00453     \{
+00454         filestr << it->second.facetsNumber() << std::endl;
+00455         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+00456         \{
+00457             filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+00458             \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != 
+      facets.at(*jt).getVerticesVector().end()-1; ++kt )
+00459                 filestr << *kt << \textcolor{stringliteral}{" "};
+00460             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
+00461         \}
+00462     \}
+00463     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00464     \{
+00465         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00466         \{
+00467             itSet = ids.find(it->getFractureFacetsId()[i]);
+00468             \textcolor{keywordflow}{if}(itSet == ids.end())
+00469             \{
+00470                 filestr << \textcolor{stringliteral}{"1"} << std::endl;
+00471                 filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices() << std::endl;
+00472                 \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+00473                     filestr << *jt << \textcolor{stringliteral}{" "};
+00474                 filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << 
+      std::endl;
+00475                 ids.insert(it->getFractureFacetsId()[i]);
+00476             \}
+00477         \}
+00478     \}
+00479     ids.clear();
+00480     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00481 
+00482     \textcolor{comment}{//  Faceoffsets}
+00483     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faceoffsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00484     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+00485     \{
+00486         faceOffsets += 1 + it->second.facetsNumber();
+00487         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+00488             faceOffsets += facets.at(*jt).getNumberOfVertices();
+00489         filestr << faceOffsets << std::endl;
+00490     \}
+00491     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+00492     \{
+00493         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+00494         \{
+00495             itSet = ids.find(it->getFractureFacetsId()[i]);
+00496             \textcolor{keywordflow}{if}(itSet == ids.end())
+00497             \{
+00498                 faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+00499                 filestr << faceOffsets << std::endl;
+00500                 ids.insert(it->getFractureFacetsId()[i]);
+00501             \}
+00502         \}
+00503     \}
+00504     ids.clear();
+00505     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00506     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00507 
+00508     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00509     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00510     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00511 
+00512     filestr.close();
+00513 \}
+00514 
+\hypertarget{ExportVTU_8cpp_source.tex_l00515}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a672c00cd380554714d09d5d9b0b56a24}{00515} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a672c00cd380554714d09d5d9b0b56a24}{ExporterVTU::exportWireframe}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} std::string 
+      filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00516 \{
+00517     std::fstream filestr;
+00518 
+00519     filestr.open (filename.c\_str(), std::ios\_base::out);
+00520 
+00521     \textcolor{keywordflow}{if} (filestr.is\_open())
+00522     \{
+00523         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00524     \}
+00525     \textcolor{keywordflow}{else}
+00526     \{
+00527         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00528     \}
+00529 
+00530     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Wireframe in Vtu format... "} << std::endl;
+00531 
+00532     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00533     \textcolor{keyword}{const} std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+00534     std::map< std::pair<UInt,UInt>, \textcolor{keywordtype}{bool} > edges;
+00535     std::map< std::pair<UInt,UInt>, \textcolor{keywordtype}{bool} >::const\_iterator itSet;
+00536     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} edgesFacet = 0;
+00537     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00538     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nEdges = 0, offsets = 0;
+00539 
+00540     \textcolor{keywordflow}{for}(std::map<UInt, Facet3D>::const\_iterator it = facets.begin(); it != facets.end(); ++it)
+00541     \{
+00542         edgesFacet = it->second.getNumberOfVertices();
+00543         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<edgesFacet-1; ++i)
+00544         \{
+00545             \textcolor{keywordflow}{if}(it->second.getVertexId(i) < it->second.getVertexId(i+1))
+00546             \{
+00547                 itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(i), it->second.getVertexId(
+      i+1)) );
+00548                 \textcolor{keywordflow}{if}(itSet == edges.end())
+00549                     edges.insert(std::pair< std::pair<UInt,UInt>, \textcolor{keywordtype}{bool}>(std::make\_pair(it->second.
+      getVertexId(i), it->second.getVertexId(i+1)), it->second.isFracture()));
+00550                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(it->second.isFracture() == \textcolor{keyword}{true})
+00551                     edges[std::pair<UInt,UInt>(it->second.getVertexId(i), it->second.getVertexId(i+1))] = \textcolor{keyword}{
+      true};
+00552             \}
+00553             \textcolor{keywordflow}{else}
+00554             \{
+00555                 itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(i+1), it->second.
+      getVertexId(i)) );
+00556                 \textcolor{keywordflow}{if}(itSet == edges.end())
+00557                     edges.insert(std::pair< std::pair<UInt,UInt>, \textcolor{keywordtype}{bool}>(std::make\_pair(it->second.
+      getVertexId(i+1), it->second.getVertexId(i)), it->second.isFracture()));
+00558                 \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(it->second.isFracture() == \textcolor{keyword}{true})
+00559                     edges[std::pair<UInt,UInt>(it->second.getVertexId(i+1), it->second.getVertexId(i))] = \textcolor{keyword}{
+      true};
+00560             \}
+00561         \}
+00562         \textcolor{keywordflow}{if}(it->second.getVertexId(edgesFacet-1) < it->second.getVertexId(0))
+00563         \{
+00564             itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(edgesFacet-1), it->second.
+      getVertexId(0)) );
+00565             \textcolor{keywordflow}{if}(itSet == edges.end())
+00566                 edges.insert(std::pair< std::pair<UInt,UInt>, \textcolor{keywordtype}{bool}>(std::make\_pair(it->second.getVertexId(
+      edgesFacet-1), it->second.getVertexId(0)), it->second.isFracture()));
+00567             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(it->second.isFracture() == \textcolor{keyword}{true})
+00568                 edges[std::pair<UInt,UInt>(it->second.getVertexId(edgesFacet-1), it->second.getVertexId(0))
+      ] = \textcolor{keyword}{true};
+00569         \}
+00570         \textcolor{keywordflow}{else}
+00571         \{
+00572             itSet = edges.find( std::pair<UInt,UInt>(it->second.getVertexId(0), it->second.getVertexId(
+      edgesFacet-1)) );
+00573             \textcolor{keywordflow}{if}(itSet == edges.end())
+00574                 edges.insert(std::pair< std::pair<UInt,UInt>, \textcolor{keywordtype}{bool}>(std::make\_pair(it->second.getVertexId(0
+      ), it->second.getVertexId(edgesFacet-1)), it->second.isFracture()));
+00575             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(it->second.isFracture() == \textcolor{keyword}{true})
+00576                 edges[std::pair<UInt,UInt>(it->second.getVertexId(0), it->second.getVertexId(edgesFacet-1))
+      ] = \textcolor{keyword}{true};
+00577         \}
+00578     \}
+00579     nEdges = edges.size();
+00580 
+00581     \textcolor{comment}{// Header}
+00582     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00583     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00584     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00585     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nEdges << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00586 
+00587     \textcolor{comment}{// CellData}
+00588     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"scalars\(\backslash\)">"} << std::endl;
+00589     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"isFrac\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00590     filestr << std::scientific << std::setprecision(0);
+00591     \textcolor{keywordflow}{for}(itSet = edges.begin(); itSet != edges.end(); ++itSet )
+00592         filestr << itSet->second << std::endl;
+00593     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00594     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00595 
+00596     filestr << std::scientific << std::setprecision(16);
+00597 
+00598     \textcolor{comment}{// Points}
+00599     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00600     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00601     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00602         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00603     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00604     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00605 
+00606     \textcolor{comment}{// Cells}
+00607     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00608     \textcolor{comment}{//  Connectivity}
+00609     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00610     \textcolor{keywordflow}{for}(itSet = edges.begin(); itSet != edges.end(); ++itSet )
+00611         filestr << itSet->first.first << \textcolor{stringliteral}{" "} << itSet->first.second << std::endl;
+00612     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00613 
+00614     \textcolor{comment}{//  Offsets}
+00615     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00616     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nEdges; ++i )
+00617     \{
+00618         offsets += 2;
+00619         filestr << offsets << std::endl;
+00620     \}
+00621     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00622 
+00623     \textcolor{comment}{//  Types}
+00624     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00625     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nEdges ; ++i )
+00626         filestr << \textcolor{stringliteral}{"3"} << std::endl;
+00627     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00628 
+00629     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00630 
+00631     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00632     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00633     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00634 
+00635     filestr.close();
+00636 \}
+00637 
+\hypertarget{ExportVTU_8cpp_source.tex_l00638}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e}{00638} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a3ee8f96689d31f85372b580caffdcc7e}{ExporterVTU::exportEdges}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::string 
+      filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00639 \{
+00640     std::fstream filestr;
+00641 
+00642     filestr.open (filename.c\_str(), std::ios\_base::out);
+00643 
+00644     \textcolor{keywordflow}{if} (filestr.is\_open())
+00645     \{
+00646         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00647     \}
+00648     \textcolor{keywordflow}{else}
+00649     \{
+00650         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00651     \}
+00652 
+00653     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Edges in Vtu format... "} << std::endl;
+00654 
+00655     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00656     \textcolor{keyword}{const} std::vector<Edge> & edges = mesh.getEdgesVector();
+00657     \textcolor{keyword}{const} std::vector<Regular\_Edge> & regularEdges = mesh.getInternalEdgesIdsVector();
+00658     \textcolor{keyword}{const} std::vector<Juncture\_Edge> & junctureEdges = mesh.getJunctureEdgesIdsVector();
+00659     \textcolor{keyword}{const} std::vector<Internal\_Tip\_Edge> & intTipEdges = mesh.getInternalTipEdgesIdsVector();
+00660     \textcolor{keyword}{const} std::vector<Border\_Tip\_Edge> & borTipEdges = mesh.getBorderTipEdgesIdsVector();
+00661     \textcolor{keyword}{const} std::vector<Pure\_Border\_Edge> & pureBorEdges = mesh.getPureBorderEdgesIdsVector();
+00662 
+00663     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00664     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nEdges = edges.size();
+00665     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0;
+00666 
+00667     \textcolor{comment}{// Header}
+00668     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00669     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00670     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00671     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nEdges << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00672 
+00673     \textcolor{comment}{// CellData}
+00674     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"Prop\(\backslash\)">"} << std::endl;
+00675 
+00676     filestr << std::scientific << std::setprecision(0);
+00677     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"edgeType\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00678     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<regularEdges.size(); ++i)
+00679         filestr << \textcolor{stringliteral}{"1"} << std::endl;
+00680     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<junctureEdges.size(); ++i)
+00681         filestr << \textcolor{stringliteral}{"2"} << std::endl;
+00682     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<intTipEdges.size(); ++i)
+00683         filestr << \textcolor{stringliteral}{"3"} << std::endl;
+00684     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<borTipEdges.size(); ++i)
+00685         filestr << \textcolor{stringliteral}{"4"} << std::endl;
+00686     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<pureBorEdges.size(); ++i)
+00687         filestr << \textcolor{stringliteral}{"5"} << std::endl;
+00688     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00689 
+00690     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"edgeId\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00691     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : regularEdges )
+00692         filestr << edge.getId() << std::endl;
+00693     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : junctureEdges )
+00694         filestr << edge.getId() << std::endl;
+00695     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : intTipEdges )
+00696         filestr << edge.getId() << std::endl;
+00697     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : borTipEdges )
+00698         filestr << edge.getId() << std::endl;
+00699     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : pureBorEdges )
+00700         filestr << edge.getId() << std::endl;
+00701     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00702 
+00703     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt64\(\backslash\)" Name=\(\backslash\)"edgeBC\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00704 
+00705     std::for\_each( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}(regularEdges), \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}(regularEdges),
+00706                    [&filestr] (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Regular__Edge}{Regular\_Edge} &) \{ filestr << \textcolor{stringliteral}{"0"} << std::endl; \} );
+00707 
+00708     std::for\_each( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}(junctureEdges), \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}(junctureEdges),
+00709                    [&filestr] (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Juncture__Edge}{Juncture\_Edge} &) \{ filestr << \textcolor{stringliteral}{"0"} << std::endl; \} );
+00710 
+00711     std::for\_each( \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}(intTipEdges), \hyperlink{namespacestd_aeb4b319cf9afda99ba1f47d32df15bc9}{std::end}(intTipEdges),
+00712                    [&filestr] (\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Internal__Tip__Edge}{Internal\_Tip\_Edge} &) \{ filestr << \textcolor{stringliteral}{"0"} << std::endl; \}
+       );
+00713 
+00714     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : borTipEdges )
+00715         filestr << *\hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}(edge.getBorderIds()) << std::endl;
+00716     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : pureBorEdges )
+00717         filestr << *\hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{std::begin}(edge.getBorderIds()) << std::endl;
+00718     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00719 
+00720     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00721 
+00722     filestr << std::scientific << std::setprecision(16);
+00723 
+00724     \textcolor{comment}{// Points}
+00725     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00726     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)" format=\(\backslash\)"ascii
+      \(\backslash\)">"} << std::endl;
+00727     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00728         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00729     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00730     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00731 
+00732     \textcolor{comment}{// Cells}
+00733     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00734     \textcolor{comment}{//  Connectivity}
+00735     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00736     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : regularEdges )
+00737         filestr << edge.getEdge().getEdge().first << \textcolor{stringliteral}{" "} << edge.getEdge().getEdge().second << std::endl;
+00738     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : junctureEdges )
+00739         filestr << edge.getEdge().getEdge().first << \textcolor{stringliteral}{" "} << edge.getEdge().getEdge().second << std::endl;
+00740     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : intTipEdges )
+00741         filestr << edge.getEdge().getEdge().first << \textcolor{stringliteral}{" "} << edge.getEdge().getEdge().second << std::endl;
+00742     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : borTipEdges )
+00743         filestr << edge.getEdge().getEdge().first << \textcolor{stringliteral}{" "} << edge.getEdge().getEdge().second << std::endl;
+00744     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& edge : pureBorEdges )
+00745         filestr << edge.getEdge().getEdge().first << \textcolor{stringliteral}{" "} << edge.getEdge().getEdge().second << std::endl;
+00746     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00747 
+00748     \textcolor{comment}{//  Offsets}
+00749     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00750     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i< nEdges; ++i )
+00751     \{
+00752         offsets += 2;
+00753         filestr << offsets << std::endl;
+00754     \}
+00755     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00756 
+00757     \textcolor{comment}{//  Types}
+00758     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00759     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nEdges ; ++i )
+00760         filestr << \textcolor{stringliteral}{"3"} << std::endl;
+00761     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00762 
+00763     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00764 
+00765     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00766     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00767     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00768 
+00769     filestr.close();
+00770 \}
+00771 
+\hypertarget{ExportVTU_8cpp_source.tex_l00772}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a15e1d2e6940ac0a37bf3c4d0ee5dc4d5}{00772} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a15e1d2e6940ac0a37bf3c4d0ee5dc4d5}{ExporterVTU::exportFacets}(\textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} 
+      std::string filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00773 \{
+00774     std::fstream filestr;
+00775 
+00776     filestr.open (filename.c\_str(), std::ios\_base::out);
+00777 
+00778     \textcolor{keywordflow}{if} (filestr.is\_open())
+00779     \{
+00780         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00781     \}
+00782     \textcolor{keywordflow}{else}
+00783     \{
+00784         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00785     \}
+00786 
+00787     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Facets in Vtu format... "} << std::endl;
+00788 
+00789     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00790     \textcolor{keyword}{const} std::vector<Facet> & facets = mesh.getFacetsVector();
+00791     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+00792     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nFacets = facets.size();
+00793     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0;
+00794 
+00795     \textcolor{comment}{// Header}
+00796     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00797     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00798     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00799     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nFacets << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00800 
+00801     \textcolor{comment}{// CellData}
+00802     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"facetId\(\backslash\)">"} << std::endl;
+00803 
+00804     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"facetId\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00805     filestr << std::scientific << std::setprecision(16);
+00806     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : facets)
+00807         filestr << facet\_it.getId() << std::endl;
+00808     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00809 
+00810     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"borderId\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00811     filestr << std::scientific << std::setprecision(16);
+00812     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : facets)
+00813         filestr << facet\_it.getBorderId() << std::endl;
+00814     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00815 
+00816     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+00817 
+00818     filestr << std::scientific << std::setprecision(16);
+00819 
+00820     \textcolor{comment}{// Points}
+00821     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00822     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)" format=\(\backslash\)"ascii
+      \(\backslash\)">"} << std::endl;
+00823     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+00824         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+00825     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00826     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00827 
+00828     \textcolor{comment}{// Cells}
+00829     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00830     \textcolor{comment}{//  Connectivity}
+00831     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00832     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : facets)
+00833     \{
+00834         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} vertex\_it : facet\_it.getVerticesIds())
+00835             filestr << vertex\_it << \textcolor{stringliteral}{" "};
+00836         filestr << std::endl;
+00837     \}
+00838     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00839 
+00840     \textcolor{comment}{//  Offsets}
+00841     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00842     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& facet\_it : facets)
+00843     \{
+00844         offsets += facet\_it.verticesNumber();
+00845         filestr << offsets << std::endl;
+00846     \}
+00847     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00848 
+00849     \textcolor{comment}{//  Types}
+00850     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00851     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFacets ; ++i)
+00852         filestr << \textcolor{stringliteral}{"7"} << std::endl;
+00853     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00854 
+00855     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00856 
+00857     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00858     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00859     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00860 
+00861     filestr.close();
+00862 \}
+00863 
+\hypertarget{ExportVTU_8cpp_source.tex_l00864}{}\hyperlink{classFVCode3D_1_1ExporterVTU_aef7601095b83f975d009f9cb68563ae4}{00864} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_aef7601095b83f975d009f9cb68563ae4}{ExporterVTU::exportFractureJunctures}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00865 \{
+00866     std::fstream filestr;
+00867 
+00868     filestr.open (filename.c\_str(), std::ios\_base::out);
+00869 
+00870     \textcolor{keywordflow}{if} (filestr.is\_open())
+00871     \{
+00872         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00873     \}
+00874     \textcolor{keywordflow}{else}
+00875     \{
+00876         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00877     \}
+00878 
+00879     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Fracture Junctures in Vtu format... "} << std::endl;
+00880 
+00881     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00882     \textcolor{keyword}{const} std::vector<Fracture\_Facet> & fractures = mesh.getFractureFacetsIdsVector();
+00883     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = 0;
+00884     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = 0;
+00885     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0;
+00886     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} count = 0;
+00887 
+00888     std::set<UInt> localPoints;
+00889     std::set<Fracture\_Juncture, less< std::pair<UInt,UInt> > > fracturesJunctures;
+00890     std::map<UInt,UInt> GlobalToLocal;
+00891 
+00892     \textcolor{comment}{// Compute # of fracture junctures}
+00893     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& fractureFacet\_it : fractures)
+00894     \{
+00895         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& juncture\_it : fractureFacet\_it.getFractureNeighbors())
+00896         \{
+00897             localPoints.insert(juncture\_it.first.first);
+00898             localPoints.insert(juncture\_it.first.second);
+00899             fracturesJunctures.insert( std::make\_pair(juncture\_it.first.first,juncture\_it.first.second) );
+00900         \}
+00901     \}
+00902     nCells = fracturesJunctures.size();
+00903     nPoints = localPoints.size();
+00904 
+00905     \textcolor{comment}{// Header}
+00906     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00907     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00908     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+00909     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nCells << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+00910 
+00911     filestr << std::scientific << std::setprecision(16);
+00912 
+00913     \textcolor{comment}{// Points}
+00914     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+00915     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)" format=\(\backslash\)"ascii
+      \(\backslash\)">"} << std::endl;
+00916     \textcolor{keywordflow}{for}(std::set<UInt>::const\_iterator it = localPoints.begin(); it != localPoints.end(); ++it )
+00917     \{
+00918         GlobalToLocal.insert( std::make\_pair(*it, count++) );
+00919         filestr << nodes[*it].x() << \textcolor{stringliteral}{" "} << nodes[*it].y() << \textcolor{stringliteral}{" "} << nodes[*it].z() <<std::endl;
+00920     \}
+00921     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00922     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+00923 
+00924     \textcolor{comment}{// Cells}
+00925     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+00926     \textcolor{comment}{//  Connectivity}
+00927     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00928     \textcolor{keywordflow}{for}(std::set<\hyperlink{classFVCode3D_1_1Exporter_a30344139bcff116e4b2b34dd829bac98}{Fracture\_Juncture}, \hyperlink{structFVCode3D_1_1less}{less}< std::pair<UInt,UInt> > >::const\_iterator it 
+      = fracturesJunctures.begin(); it != fracturesJunctures.end(); ++it )
+00929         filestr << GlobalToLocal[it->first] << \textcolor{stringliteral}{" "} << GlobalToLocal[it->second] << std::endl;
+00930     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00931 
+00932     \textcolor{comment}{//  Offsets}
+00933     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00934     \textcolor{keywordflow}{for}(std::set<\hyperlink{classFVCode3D_1_1Exporter_a30344139bcff116e4b2b34dd829bac98}{Fracture\_Juncture}, \hyperlink{structFVCode3D_1_1less}{less}< std::pair<UInt,UInt> > >::const\_iterator it 
+      = fracturesJunctures.begin(); it != fracturesJunctures.end(); ++it )
+00935     \{
+00936         offsets += 2;
+00937         filestr << offsets << std::endl;
+00938     \}
+00939     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00940 
+00941     \textcolor{comment}{//  Types}
+00942     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+00943     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells ; ++i )
+00944         filestr << \textcolor{stringliteral}{"3"} << std::endl;
+00945     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+00946     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+00947 
+00948     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+00949     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+00950     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+00951 
+00952     filestr.close();
+00953 \}
+00954 
+\hypertarget{ExportVTU_8cpp_source.tex_l00955}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a95853064ccbdab9ab24b3aa6f67ff19c}{00955} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a95853064ccbdab9ab24b3aa6f67ff19c}{ExporterVTU::exportFractureTips}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+00956 \{
+00957     std::fstream filestr;
+00958 
+00959     filestr.open (filename.c\_str(), std::ios\_base::out);
+00960 
+00961     \textcolor{keywordflow}{if} (filestr.is\_open())
+00962     \{
+00963         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+00964     \}
+00965     \textcolor{keywordflow}{else}
+00966     \{
+00967         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+00968     \}
+00969 
+00970     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Fracture Tips in Vtu format... "} << std::endl;
+00971 
+00972     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+00973     \textcolor{keyword}{const} std::vector<Fracture\_Facet> & fractures = mesh.getFractureFacetsIdsVector();
+00974     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = 0;
+00975     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = 0;
+00976     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0;
+00977     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} count = 0;
+00978 
+00979     std::set<UInt> localPoints;
+00980     std::set<Fracture\_Tip, less< std::pair<UInt,UInt> > > fracturesTips;
+00981     std::map<UInt,UInt> GlobalToLocal;
+00982 
+00983     \textcolor{comment}{// Compute # of fracture tips}
+00984     \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& fractureFacet : fractures)
+00985     \{
+00986         \textcolor{keywordflow}{for}(\textcolor{keyword}{auto}& tips : fractureFacet.getFractureTips())
+00987         \{
+00988             localPoints.insert(tips.first);
+00989             localPoints.insert(tips.second);
+00990             fracturesTips.insert( std::make\_pair(tips.first, tips.second) );
+00991         \}
+00992     \}
+00993     nCells = fracturesTips.size();
+00994     nPoints = localPoints.size();
+00995 
+00996     \textcolor{comment}{// Header}
+00997     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+00998     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+00999     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+01000     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nCells << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+01001 
+01002     filestr << std::scientific << std::setprecision(16);
+01003 
+01004     \textcolor{comment}{// Points}
+01005     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+01006     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)" format=\(\backslash\)"ascii
+      \(\backslash\)">"} << std::endl;
+01007     \textcolor{keywordflow}{for}(std::set<UInt>::const\_iterator it = localPoints.begin(); it != localPoints.end(); ++it )
+01008     \{
+01009         GlobalToLocal.insert( std::make\_pair(*it, count++) );
+01010         filestr << nodes[*it].x() << \textcolor{stringliteral}{" "} << nodes[*it].y() << \textcolor{stringliteral}{" "} << nodes[*it].z() <<std::endl;
+01011     \}
+01012     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01013     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+01014 
+01015     \textcolor{comment}{// Cells}
+01016     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+01017     \textcolor{comment}{//  Connectivity}
+01018     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01019     \textcolor{keywordflow}{for}(std::set<\hyperlink{classFVCode3D_1_1Exporter_a0b32ca80de98d8d633485ef5c0f537bb}{Fracture\_Tip}, \hyperlink{structFVCode3D_1_1less}{less}< std::pair<UInt,UInt> > >::const\_iterator it = 
+      fracturesTips.begin(); it != fracturesTips.end(); ++it )
+01020         filestr << GlobalToLocal[it->first] << \textcolor{stringliteral}{" "} << GlobalToLocal[it->second] << std::endl;
+01021     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01022 
+01023     \textcolor{comment}{//  Offsets}
+01024     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01025     \textcolor{keywordflow}{for}(std::set<\hyperlink{classFVCode3D_1_1Exporter_a0b32ca80de98d8d633485ef5c0f537bb}{Fracture\_Tip}, \hyperlink{structFVCode3D_1_1less}{less}< std::pair<UInt,UInt> > >::const\_iterator it = 
+      fracturesTips.begin(); it != fracturesTips.end(); ++it )
+01026     \{
+01027         offsets += 2;
+01028         filestr << offsets << std::endl;
+01029     \}
+01030     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01031 
+01032     \textcolor{comment}{//  Types}
+01033     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01034     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells ; ++i )
+01035         filestr << \textcolor{stringliteral}{"3"} << std::endl;
+01036     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01037     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+01038 
+01039     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+01040     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+01041     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+01042 
+01043     filestr.close();
+01044 \}
+01045 
+\hypertarget{ExportVTU_8cpp_source.tex_l01046}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}{01046} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}{ExporterVTU::exportWithProperties}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap} & properties,
+01047     \textcolor{keyword}{const} std::string filename, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{Flag16bit} propertiesType, \textcolor{keyword}{const} std::vector<Real> * property
+      ) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+01048 \{
+01049     std::fstream filestr;
+01050 
+01051     filestr.open (filename.c\_str(), std::ios\_base::out);
+01052 
+01053     \textcolor{keywordflow}{if} (filestr.is\_open())
+01054     \{
+01055         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+01056     \}
+01057     \textcolor{keywordflow}{else}
+01058     \{
+01059         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+01060     \}
+01061 
+01062     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Mesh3D in Vtu format... "} << std::endl;
+01063 
+01064     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+01065     \textcolor{keyword}{const} std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+01066     \textcolor{keyword}{const} std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+01067     \textcolor{keyword}{const} std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
+01068     std::set<UInt> ids;
+01069     std::set<UInt>::const\_iterator itSet;
+01070     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+01071     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = cells.size();
+01072     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nFractures = 0;
+01073     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nTotal;
+01074     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0, faceOffsets = 0;
+01075 
+01076     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it)
+01077         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<it->getNumberOfFractureFacets(); ++i)
+01078           ids.insert(it->getFractureFacetsId()[i]);
+01079     nFractures = ids.size();
+01080     ids.clear();
+01081 
+01082     nTotal = nCells + nFractures;
+01083 
+01084     \textcolor{comment}{// Header}
+01085     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+01086     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+01087     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+01088     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nTotal << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+01089     filestr << std::scientific << std::setprecision(16);
+01090 
+01091     \textcolor{comment}{// CellData}
+01092     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"Prop\(\backslash\)">"} << std::endl;
+01093     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a98a639655750204022119fd2d64ecdf0}{ZoneCode})
+01094     \{
+01095         filestr << std::scientific << std::setprecision(0);
+01096         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"zoneCode\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01097         \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01098             filestr << it->second.getZoneCode() << std::endl;
+01099         \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01100         \{
+01101             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01102             \{
+01103                 itSet = ids.find(it->getFractureFacetsId()[i]);
+01104                 \textcolor{keywordflow}{if}(itSet == ids.end())
+01105                 \{
+01106                     filestr << facets.at(it->getFractureFacetsId()[i]).getZoneCode() << std::endl;
+01107                     ids.insert(it->getFractureFacetsId()[i]);
+01108                 \}
+01109             \}
+01110         \}
+01111         ids.clear();
+01112         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01113     \}
+01114     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ad2b21a53311e3478541b39809a3877b9}{IsFrac})
+01115     \{
+01116         filestr << std::scientific << std::setprecision(0);
+01117         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"isFrac\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01118         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01119             filestr << \textcolor{stringliteral}{"0"} << std::endl;
+01120         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01121             filestr << \textcolor{stringliteral}{"1"} << std::endl;
+01122         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01123     \}
+01124     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a7bea6d441c4661b396fc86912312c47e}{Aperture})
+01125     \{
+01126         filestr << std::scientific << std::setprecision(16);
+01127         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"aperture\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01128         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01129             filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01130         \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01131         \{
+01132             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01133             \{
+01134                 itSet = ids.find(it->getFractureFacetsId()[i]);
+01135                 \textcolor{keywordflow}{if}(itSet == ids.end())
+01136                 \{
+01137                     filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode
+      ()).M\_aperture << std::endl;
+01138                     ids.insert(it->getFractureFacetsId()[i]);
+01139                 \}
+01140             \}
+01141         \}
+01142         ids.clear();
+01143         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01144     \}
+01145     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a8bb92532e203b2a2b45c4b2ce0354a90}{Porosity})
+01146     \{
+01147         filestr << std::scientific << std::setprecision(16);
+01148         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"porosity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01149         \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01150             filestr << properties.getProperties(it->second.getZoneCode()).M\_porosity << std::endl;
+01151         \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01152         \{
+01153             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01154             \{
+01155                 itSet = ids.find(it->getFractureFacetsId()[i]);
+01156                 \textcolor{keywordflow}{if}(itSet == ids.end())
+01157                 \{
+01158                     filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode
+      ()).M\_porosity << std::endl;
+01159                     ids.insert(it->getFractureFacetsId()[i]);
+01160                 \}
+01161             \}
+01162         \}
+01163         ids.clear();
+01164         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01165     \}
+01166     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a23fa3ea40f896b28978ffc259e5281cf}{Permeability})
+01167     \{
+01168         filestr << std::scientific << std::setprecision(16);
+01169         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"permeability\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << 
+      std::endl;
+01170         \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01171             filestr << properties.getProperties(it->second.getZoneCode()).M\_permeability->norm() << 
+      std::endl;
+01172         \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01173         \{
+01174             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01175             \{
+01176                 itSet = ids.find(it->getFractureFacetsId()[i]);
+01177                 \textcolor{keywordflow}{if}(itSet == ids.end())
+01178                 \{
+01179                       filestr <<
+01180                       properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).
+      M\_permeability->norm() << std::endl;
+01181                       ids.insert(it->getFractureFacetsId()[i]);
+01182                 \}
+01183             \}
+01184         \}
+01185         ids.clear();
+01186         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01187     \}
+01188     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ae672dc66b11cd1f93a00d52d617a1866}{BorderID})
+01189     \{
+01190         filestr << std::scientific << std::setprecision(0);
+01191         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"borderID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01192         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01193             filestr << \textcolor{stringliteral}{"0"} << std::endl;
+01194         \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01195         \{
+01196             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01197             \{
+01198                 itSet = ids.find(it->getFractureFacetsId()[i]);
+01199                 \textcolor{keywordflow}{if}(itSet == ids.end())
+01200                 \{
+01201                     filestr << facets.at(it->getFractureFacetsId()[i]).getBorderId() << std::endl;
+01202                     ids.insert(it->getFractureFacetsId()[i]);
+01203                 \}
+01204             \}
+01205         \}
+01206         ids.clear();
+01207         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01208     \}
+01209     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a864b9d45a578bf09e82a32916c9c3c03}{ElementID})
+01210     \{
+01211         filestr << std::scientific << std::setprecision(0);
+01212         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"cellID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01213         \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01214             filestr << it->first << std::endl;
+01215         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01216             filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01217         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01218         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"facetID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01219         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01220             filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01221         \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01222         \{
+01223             \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01224             \{
+01225                 itSet = ids.find(it->getFractureFacetsId()[i]);
+01226                 \textcolor{keywordflow}{if}(itSet == ids.end())
+01227                 \{
+01228                     filestr << it->getFractureFacetsId()[i] << std::endl;
+01229                     ids.insert(it->getFractureFacetsId()[i]);
+01230                 \}
+01231             \}
+01232         \}
+01233         ids.clear();
+01234         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01235     \}
+01236     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ab8c2eb493dc98b25b8fc2e3e176d4892}{Other})
+01237     \{
+01238         filestr << std::scientific << std::setprecision(16);
+01239         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"prop\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01240         \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nTotal ; ++i )
+01241             filestr << (*property)[i] << std::endl;
+01242         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01243     \}
+01244     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+01245 
+01246     filestr << std::scientific << std::setprecision(16);
+01247 
+01248     \textcolor{comment}{// Points}
+01249     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+01250     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01251     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+01252         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+01253     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01254     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+01255 
+01256     \textcolor{comment}{// Cells}
+01257     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+01258     \textcolor{comment}{//  Connectivity}
+01259     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01260     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01261     \{
+01262         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->second.getVerticesVector().begin(); jt != it->
+      second.getVerticesVector().end()-1; ++jt )
+01263             filestr << *jt << \textcolor{stringliteral}{" "};
+01264         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
+01265     \}
+01266     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01267     \{
+01268         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01269         \{
+01270             itSet = ids.find(it->getFractureFacetsId()[i]);
+01271             \textcolor{keywordflow}{if}(itSet == ids.end())
+01272             \{
+01273                 \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+01274                     filestr << *jt << \textcolor{stringliteral}{" "};
+01275                 filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << 
+      std::endl;
+01276                 ids.insert(it->getFractureFacetsId()[i]);
+01277             \}
+01278         \}
+01279     \}
+01280     ids.clear();
+01281     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01282 
+01283     \textcolor{comment}{//  Offsets}
+01284     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01285     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01286     \{
+01287         offsets += it->second.verticesNumber();
+01288         filestr << offsets << std::endl;
+01289     \}
+01290     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01291     \{
+01292         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01293         \{
+01294             itSet = ids.find(it->getFractureFacetsId()[i]);
+01295             \textcolor{keywordflow}{if}(itSet == ids.end())
+01296             \{
+01297                 offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+01298                 filestr << offsets << std::endl;
+01299                 ids.insert(it->getFractureFacetsId()[i]);
+01300             \}
+01301         \}
+01302     \}
+01303     ids.clear();
+01304     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01305 
+01306     \textcolor{comment}{//  Types}
+01307     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01308     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nTotal ; ++i )
+01309         filestr << \textcolor{stringliteral}{"42"} << std::endl;
+01310     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01311 
+01312     \textcolor{comment}{//  Faces}
+01313     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faces\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01314     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01315     \{
+01316         filestr << it->second.facetsNumber() << std::endl;
+01317         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+01318         \{
+01319             filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+01320             \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != 
+      facets.at(*jt).getVerticesVector().end()-1; ++kt )
+01321                 filestr << *kt << \textcolor{stringliteral}{" "};
+01322             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
+01323         \}
+01324     \}
+01325     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01326     \{
+01327         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01328         \{
+01329             itSet = ids.find(it->getFractureFacetsId()[i]);
+01330             \textcolor{keywordflow}{if}(itSet == ids.end())
+01331             \{
+01332                 filestr << \textcolor{stringliteral}{"1"} << std::endl;
+01333                 filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices() << std::endl;
+01334                 \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+01335                     filestr << *jt << \textcolor{stringliteral}{" "};
+01336                 filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << 
+      std::endl;
+01337                 ids.insert(it->getFractureFacetsId()[i]);
+01338             \}
+01339         \}
+01340     \}
+01341     ids.clear();
+01342     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01343 
+01344     \textcolor{comment}{//  Faceoffsets}
+01345     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faceoffsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01346     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01347     \{
+01348         faceOffsets += 1 + it->second.facetsNumber();
+01349         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+01350             faceOffsets += facets.at(*jt).getNumberOfVertices();
+01351         filestr << faceOffsets << std::endl;
+01352     \}
+01353     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01354     \{
+01355         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01356         \{
+01357             itSet = ids.find(it->getFractureFacetsId()[i]);
+01358             \textcolor{keywordflow}{if}(itSet == ids.end())
+01359             \{
+01360                 faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+01361                 filestr << faceOffsets << std::endl;
+01362                 ids.insert(it->getFractureFacetsId()[i]);
+01363             \}
+01364         \}
+01365     \}
+01366     ids.clear();
+01367     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01368     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+01369 
+01370     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+01371     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+01372     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+01373 
+01374     filestr.close();
+01375 \}
+01376 
+\hypertarget{ExportVTU_8cpp_source.tex_l01377}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a0013b4e717db2c4719b00a5122f7b405}{01377} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}{ExporterVTU::exportWithProperties}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Mesh3D}{Mesh3D} & mesh, \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap} & properties, \textcolor{keyword}{const} std::string filename) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}
+      ()
+01378 \{
+01379     std::fstream filestr;
+01380 
+01381     filestr.open (filename.c\_str(), std::ios\_base::out);
+01382 
+01383     \textcolor{keywordflow}{if} (filestr.is\_open())
+01384     \{
+01385         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+01386     \}
+01387     \textcolor{keywordflow}{else}
+01388     \{
+01389         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+01390     \}
+01391 
+01392     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Mesh3D in Vtu format... "} << std::endl;
+01393 
+01394     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+01395     \textcolor{keyword}{const} std::map<UInt, Facet3D> & facets = mesh.getFacetsMap();
+01396     \textcolor{keyword}{const} std::map<UInt, Cell3D> & cells = mesh.getCellsMap();
+01397     \textcolor{keyword}{const} std::vector<Fracture3D> & fractures = mesh.getFN().getNetwork();
+01398     std::set<UInt> ids;
+01399     std::set<UInt>::const\_iterator itSet;
+01400     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+01401     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = cells.size();
+01402     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nFractures = 0;
+01403     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nTotal;
+01404     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0, faceOffsets = 0;
+01405 
+01406     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it)
+01407         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i<it->getNumberOfFractureFacets(); ++i)
+01408           ids.insert(it->getFractureFacetsId()[i]);
+01409     nFractures = ids.size();
+01410     ids.clear();
+01411 
+01412     nTotal = nCells + nFractures;
+01413 
+01414     \textcolor{comment}{// Header}
+01415     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+01416     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+01417     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+01418     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nTotal << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+01419     filestr << std::scientific << std::setprecision(16);
+01420 
+01421     \textcolor{comment}{// CellData}
+01422     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"PropScal\(\backslash\)">"} << std::endl;
+01423     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"isFrac\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01424     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01425         filestr << \textcolor{stringliteral}{"0"} << std::endl;
+01426     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01427         filestr << \textcolor{stringliteral}{"1"} << std::endl;
+01428     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01429 
+01430     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"aperture\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01431     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01432         filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01433     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01434     \{
+01435         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01436         \{
+01437             itSet = ids.find(it->getFractureFacetsId()[i]);
+01438             \textcolor{keywordflow}{if}(itSet == ids.end())
+01439             \{
+01440                 filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).
+      M\_aperture << std::endl;
+01441                 ids.insert(it->getFractureFacetsId()[i]);
+01442             \}
+01443         \}
+01444     \}
+01445     ids.clear();
+01446     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01447 
+01448     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"porosity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01449     \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01450         filestr << properties.getProperties(it->second.getZoneCode()).M\_porosity << std::endl;
+01451     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01452     \{
+01453         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01454         \{
+01455             itSet = ids.find(it->getFractureFacetsId()[i]);
+01456             \textcolor{keywordflow}{if}(itSet == ids.end())
+01457             \{
+01458                   filestr << properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()
+      ).M\_porosity << std::endl;
+01459                   ids.insert(it->getFractureFacetsId()[i]);
+01460             \}
+01461         \}
+01462     \}
+01463     ids.clear();
+01464     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01465 
+01466     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"permeability\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01467     \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01468         filestr << properties.getProperties(it->second.getZoneCode()).M\_permeability->norm() << std::endl;
+01469     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01470     \{
+01471         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01472         \{
+01473             itSet = ids.find(it->getFractureFacetsId()[i]);
+01474             \textcolor{keywordflow}{if}(itSet == ids.end())
+01475             \{
+01476                   filestr <<
+01477                   properties.getProperties(facets.at(it->getFractureFacetsId()[i]).getZoneCode()).
+      M\_permeability->norm() << std::endl;
+01478                   ids.insert(it->getFractureFacetsId()[i]);
+01479             \}
+01480         \}
+01481     \}
+01482     ids.clear();
+01483     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01484 
+01485     filestr << std::scientific << std::setprecision(0);
+01486 
+01487     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"cellID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01488     \textcolor{keywordflow}{for}(std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01489         filestr << it->first << std::endl;
+01490     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01491         filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01492     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01493 
+01494     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"facetID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01495     \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01496         filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01497     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01498     \{
+01499         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i )
+01500         \{
+01501             itSet = ids.find(it->getFractureFacetsId()[i]);
+01502             \textcolor{keywordflow}{if}(itSet == ids.end())
+01503             \{
+01504                 filestr << it->getFractureFacetsId()[i] << std::endl;
+01505                 ids.insert(it->getFractureFacetsId()[i]);
+01506             \}
+01507         \}
+01508     \}
+01509     ids.clear();
+01510     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01511     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+01512 
+01513     filestr << std::scientific << std::setprecision(16);
+01514 
+01515     \textcolor{comment}{// Points}
+01516     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+01517     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)""} << \textcolor{stringliteral}{"Float64"} << \textcolor{stringliteral}{"\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)"
+       format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01518     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+01519         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+01520     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01521     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+01522 
+01523     \textcolor{comment}{// Cells}
+01524     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+01525     \textcolor{comment}{//  Connectivity}
+01526     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01527     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01528     \{
+01529         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->second.getVerticesVector().begin(); jt != it->
+      second.getVerticesVector().end()-1; ++jt )
+01530             filestr << *jt << \textcolor{stringliteral}{" "};
+01531         filestr << *(it->second.getVerticesVector().rbegin()) << std::endl;
+01532     \}
+01533     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01534     \{
+01535         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01536         \{
+01537             itSet = ids.find(it->getFractureFacetsId()[i]);
+01538             \textcolor{keywordflow}{if}(itSet == ids.end())
+01539             \{
+01540                 \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+01541                     filestr << *jt << \textcolor{stringliteral}{" "};
+01542                 filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << 
+      std::endl;
+01543                 ids.insert(it->getFractureFacetsId()[i]);
+01544             \}
+01545         \}
+01546     \}
+01547     ids.clear();
+01548     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01549 
+01550     \textcolor{comment}{//  Offsets}
+01551     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01552     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01553     \{
+01554         offsets += it->second.verticesNumber();
+01555         filestr << offsets << std::endl;
+01556     \}
+01557     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01558     \{
+01559         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01560         \{
+01561             itSet = ids.find(it->getFractureFacetsId()[i]);
+01562             \textcolor{keywordflow}{if}(itSet == ids.end())
+01563             \{
+01564                 offsets += facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+01565                 filestr << offsets << std::endl;
+01566                 ids.insert(it->getFractureFacetsId()[i]);
+01567             \}
+01568         \}
+01569     \}
+01570     ids.clear();
+01571     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01572 
+01573     \textcolor{comment}{//  Types}
+01574     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01575     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nTotal ; ++i )
+01576         filestr << \textcolor{stringliteral}{"42"} << std::endl;
+01577     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01578 
+01579     \textcolor{comment}{//  Faces}
+01580     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faces\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01581     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01582     \{
+01583         filestr << it->second.facetsNumber() << std::endl;
+01584         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+01585         \{
+01586             filestr << facets.at(*jt).getNumberOfVertices() << std::endl;
+01587             \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator kt = facets.at(*jt).getVerticesVector().begin(); kt != 
+      facets.at(*jt).getVerticesVector().end()-1; ++kt )
+01588                 filestr << *kt << \textcolor{stringliteral}{" "};
+01589             filestr << *(facets.at(*jt).getVerticesVector().rbegin()) << std::endl;
+01590         \}
+01591     \}
+01592     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01593     \{
+01594         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01595         \{
+01596             itSet = ids.find(it->getFractureFacetsId()[i]);
+01597             \textcolor{keywordflow}{if}(itSet == ids.end())
+01598             \{
+01599                 filestr << \textcolor{stringliteral}{"1"} << std::endl;
+01600                 filestr << facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices() << std::endl;
+01601                 \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets.at(it->getFractureFacetsId()[i]).
+      getVerticesVector().begin(); jt != facets.at(it->getFractureFacetsId()[i]).getVerticesVector().end()-1; ++jt )
+01602                     filestr << *jt << \textcolor{stringliteral}{" "};
+01603                 filestr << *(facets.at(it->getFractureFacetsId()[i]).getVerticesVector().rbegin()) << 
+      std::endl;
+01604                 ids.insert(it->getFractureFacetsId()[i]);
+01605             \}
+01606         \}
+01607     \}
+01608     ids.clear();
+01609     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01610 
+01611     \textcolor{comment}{//  Faceoffsets}
+01612     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faceoffsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01613     \textcolor{keywordflow}{for}( std::map<UInt,Cell3D>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01614     \{
+01615         faceOffsets += 1 + it->second.facetsNumber();
+01616         \textcolor{keywordflow}{for}( std::set<UInt>::const\_iterator jt = it->second.getFacetsSet().begin(); jt != it->second.
+      getFacetsSet().end(); ++jt )
+01617             faceOffsets += facets.at(*jt).getNumberOfVertices();
+01618         filestr << faceOffsets << std::endl;
+01619     \}
+01620     \textcolor{keywordflow}{for}(std::vector<Fracture3D>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01621     \{
+01622         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < it->getNumberOfFractureFacets(); ++i)
+01623         \{
+01624             itSet = ids.find(it->getFractureFacetsId()[i]);
+01625             \textcolor{keywordflow}{if}(itSet == ids.end())
+01626             \{
+01627                 faceOffsets += 2 + facets.at(it->getFractureFacetsId()[i]).getNumberOfVertices();
+01628                 filestr << faceOffsets << std::endl;
+01629                 ids.insert(it->getFractureFacetsId()[i]);
+01630             \}
+01631         \}
+01632     \}
+01633     ids.clear();
+01634     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01635     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+01636 
+01637     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+01638     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+01639     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+01640 
+01641     filestr.close();
+01642 \}
+01643 
+\hypertarget{ExportVTU_8cpp_source.tex_l01644}{}\hyperlink{classFVCode3D_1_1ExporterVTU_a2500450bb97bf68e5a6a5f035b2b775d}{01644} \textcolor{keywordtype}{void} \hyperlink{classFVCode3D_1_1ExporterVTU_a12240c4de9e7b3a5bf8f513c873c4547}{ExporterVTU::exportWithProperties}(\textcolor{keyword}{const} 
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh}{Rigid\_Mesh} & mesh, \textcolor{keyword}{const} std::string filename, \textcolor{keyword}{const} \hyperlink{namespaceFVCode3D_a17a9cb86e2e25bbfbfcb645a2eec1d64}{Flag16bit} propertiesType, \textcolor{keyword}{const} 
+      std::vector<Real> * property) \textcolor{keyword}{const} \textcolor{keywordflow}{throw}()
+01645 \{
+01646     std::fstream filestr;
+01647 
+01648     filestr.open (filename.c\_str(), std::ios\_base::out);
+01649 
+01650     \textcolor{keywordflow}{if} (filestr.is\_open())
+01651     \{
+01652         std::cout << std::endl << \textcolor{stringliteral}{" File: "} << filename << \textcolor{stringliteral}{", successfully opened"};
+01653     \}
+01654     \textcolor{keywordflow}{else}
+01655     \{
+01656         \textcolor{keywordflow}{throw} std::runtime\_error(\textcolor{stringliteral}{"Error: file "} + filename + \textcolor{stringliteral}{" not opened."});
+01657     \}
+01658 
+01659     std::cout << std::endl << \textcolor{stringliteral}{" Exporting Mesh3D in Vtu format... "} << std::endl;
+01660 
+01661     \textcolor{keyword}{const} std::vector<Point3D> & nodes = mesh.getNodesVector();
+01662     \textcolor{keyword}{const} std::vector<Facet> & facets = mesh.getFacetsVector();
+01663     \textcolor{keyword}{const} std::vector<Cell> & cells = mesh.getCellsVector();
+01664     \textcolor{keyword}{const} std::vector<Fracture\_Facet> & fractures = mesh.getFractureFacetsIdsVector();
+01665     \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1PropertiesMap}{PropertiesMap} & properties = mesh.getPropertiesMap();
+01666     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nPoints = nodes.size();
+01667     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nCells = cells.size();
+01668     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nFractures = mesh.getFractureFacetsIdsVector().size();
+01669     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} nTotal = nCells + nFractures;
+01670     \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} offsets = 0, faceOffsets = 0;
+01671 
+01672     \textcolor{comment}{// Header}
+01673     filestr << \textcolor{stringliteral}{"<?xml version=\(\backslash\)"1.0\(\backslash\)"?>"} << std::endl;
+01674     filestr << \textcolor{stringliteral}{"<VTKFile type=\(\backslash\)"UnstructuredGrid\(\backslash\)" version=\(\backslash\)"0.1\(\backslash\)" byte\_order=\(\backslash\)"LittleEndian\(\backslash\)" compressor=
+      \(\backslash\)"vtkZLibDataCompressor\(\backslash\)">"} << std::endl;
+01675     filestr << \textcolor{stringliteral}{"\(\backslash\)t<UnstructuredGrid>"} << std::endl;
+01676     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t<Piece NumberOfPoints=\(\backslash\)""} << nPoints << \textcolor{stringliteral}{"\(\backslash\)" NumberOfCells=\(\backslash\)""} << nTotal << \textcolor{stringliteral}{"\(\backslash\)">"} << 
+      std::endl;
+01677 
+01678     \textcolor{comment}{// CellData}
+01679     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<CellData Scalars=\(\backslash\)"Prop\(\backslash\)">"} << std::endl;
+01680     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a98a639655750204022119fd2d64ecdf0}{ZoneCode})
+01681     \{
+01682         filestr << std::scientific << std::setprecision(0);
+01683         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"zoneCode\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01684         \textcolor{keywordflow}{for}(std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01685             filestr << it->getZoneCode() << std::endl;
+01686         \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it
+       )
+01687             filestr << it->getZoneCode() << std::endl;
+01688         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01689     \}
+01690     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ad2b21a53311e3478541b39809a3877b9}{IsFrac})
+01691     \{
+01692         filestr << std::scientific << std::setprecision(0);
+01693         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"isFrac\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01694         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01695             filestr << \textcolor{stringliteral}{"0"} << std::endl;
+01696         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01697             filestr << \textcolor{stringliteral}{"1"} << std::endl;
+01698         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01699     \}
+01700     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a7bea6d441c4661b396fc86912312c47e}{Aperture})
+01701     \{
+01702         filestr << std::scientific << std::setprecision(16);
+01703         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"aperture\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01704         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01705             filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01706         \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it
+       )
+01707             filestr << properties.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(it->getZoneCode()).M\_aperture << std::endl;
+01708         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01709     \}
+01710     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a8bb92532e203b2a2b45c4b2ce0354a90}{Porosity})
+01711     \{
+01712         filestr << std::scientific << std::setprecision(16);
+01713         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"porosity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01714         \textcolor{keywordflow}{for}(std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01715             filestr << properties.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(it->getZoneCode()).M\_porosity << std::endl;
+01716         \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it
+       )
+01717             filestr <<  properties.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(it->getZoneCode()).M\_porosity << std::endl;
+01718         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01719     \}
+01720     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a23fa3ea40f896b28978ffc259e5281cf}{Permeability})
+01721     \{
+01722         filestr << std::scientific << std::setprecision(16);
+01723         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"permeability\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << 
+      std::endl;
+01724         \textcolor{keywordflow}{for}(std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01725             filestr << properties.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(it->getZoneCode()).M\_permeability->norm() << 
+      std::endl;
+01726         \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it
+       )
+01727             filestr <<  properties.\hyperlink{classFVCode3D_1_1PropertiesMap_ace888d15c9a4ab13d5e217a3a565604c}{getProperties}(it->getZoneCode()).M\_permeability->norm() << 
+      std::endl;
+01728         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01729     \}
+01730     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ae672dc66b11cd1f93a00d52d617a1866}{BorderID})
+01731     \{
+01732         filestr << std::scientific << std::setprecision(0);
+01733         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"borderID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01734         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01735             filestr << \textcolor{stringliteral}{"0"} << std::endl;
+01736         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01737             filestr <<  \textcolor{stringliteral}{"0"} << std::endl;
+01738         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01739     \}
+01740     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41a864b9d45a578bf09e82a32916c9c3c03}{ElementID})
+01741     \{
+01742         filestr << std::scientific << std::setprecision(0);
+01743         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"cellID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01744         \textcolor{keywordflow}{for}(std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01745             filestr << it->getId() << std::endl;
+01746         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nFractures; ++i )
+01747             filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01748         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01749         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"facetID\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01750         \textcolor{keywordflow}{for}(\hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nCells; ++i )
+01751             filestr << \textcolor{stringliteral}{"-1"} << std::endl;
+01752         \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it
+       )
+01753         \{
+01754             filestr << it->getFractureId() << std::endl;
+01755         \}
+01756         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01757     \}
+01758     \textcolor{keywordflow}{if}(propertiesType & \hyperlink{namespaceFVCode3D_ab3abc77722284ce4344be90bb61c1a41ab8c2eb493dc98b25b8fc2e3e176d4892}{Other})
+01759     \{
+01760         filestr << std::scientific << std::setprecision(16);
+01761         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"prop\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01762         \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nTotal ; ++i )
+01763             filestr << (*property)[i] << std::endl;
+01764         filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01765     \}
+01766     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</CellData>"} << std::endl;
+01767 
+01768     filestr << std::scientific << std::setprecision(16);
+01769 
+01770     \textcolor{comment}{// Points}
+01771     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Points>"} << std::endl;
+01772     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Float64\(\backslash\)" Name=\(\backslash\)"Points\(\backslash\)" NumberOfComponents=\(\backslash\)"3\(\backslash\)" format=\(\backslash\)"ascii
+      \(\backslash\)">"} << std::endl;
+01773     \textcolor{keywordflow}{for}( std::vector<Point3D>::const\_iterator it = nodes.begin(); it != nodes.end(); ++it )
+01774         filestr << it->x() << \textcolor{stringliteral}{" "} << it->y() << \textcolor{stringliteral}{" "} << it->z() <<std::endl;
+01775     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01776     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Points>"} << std::endl;
+01777 
+01778     \textcolor{comment}{// Cells}
+01779     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t<Cells>"} << std::endl;
+01780     \textcolor{comment}{//  Connectivity}
+01781     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"connectivity\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01782     \textcolor{keywordflow}{for}( std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01783     \{
+01784         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->getVerticesIds().begin(); jt != it->getVerticesIds(
+      ).end()-1; ++jt )
+01785             filestr << *jt << \textcolor{stringliteral}{" "};
+01786         filestr << *(it->getVerticesIds().rbegin()) << std::endl;
+01787     \}
+01788     \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01789     \{
+01790         \textcolor{keyword}{const} \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet}{Facet} & f = it->getFacet();
+01791         \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = f.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af92ad0b6b79c69f6c04584301b8998a7}{getVerticesIds}().begin(); jt != f.
+      \hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af92ad0b6b79c69f6c04584301b8998a7}{getVerticesIds}().end()-1; ++jt )
+01792             filestr << *jt << \textcolor{stringliteral}{" "};
+01793         filestr << *(f.\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_af92ad0b6b79c69f6c04584301b8998a7}{getVerticesIds}().rbegin()) << std::endl;
+01794 
+01795     \}
+01796     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01797 
+01798     \textcolor{comment}{//  Offsets}
+01799     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"offsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01800     \textcolor{keywordflow}{for}( std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01801     \{
+01802         offsets += it->\hyperlink{classFVCode3D_1_1Rigid__Mesh_1_1Facet_a5d18db39a0eeb85e6a4afc2b09813201}{verticesNumber}();
+01803         filestr << offsets << std::endl;
+01804     \}
+01805     \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01806     \{
+01807         offsets += it->getFacet().verticesNumber();
+01808         filestr << offsets << std::endl;
+01809     \}
+01810     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01811 
+01812     \textcolor{comment}{//  Types}
+01813     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"UInt8\(\backslash\)" Name=\(\backslash\)"types\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01814     \textcolor{keywordflow}{for}( \hyperlink{namespaceFVCode3D_a4bf7e328c75d0fd504050d040ebe9eda}{UInt} i=0; i < nTotal ; ++i )
+01815         filestr << \textcolor{stringliteral}{"42"} << std::endl;
+01816     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01817 
+01818     \textcolor{comment}{//  Faces}
+01819     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faces\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01820     \textcolor{keywordflow}{for}( std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01821     \{
+01822         filestr << it->facetsNumber() << std::endl;
+01823         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->getFacetsIds().begin(); jt != it->getFacetsIds().
+      end(); ++jt )
+01824         \{
+01825             filestr << facets[*jt].verticesNumber() << std::endl;
+01826             \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator kt = facets[*jt].getVerticesIds().
+      \hyperlink{namespacestd_acec9a198880c12f51f02be95a298a48b}{begin}(); kt != facets[*jt].getVerticesIds().end()-1; ++kt )
+01827                 filestr << *kt << \textcolor{stringliteral}{" "};
+01828             filestr << *(facets[*jt].getVerticesIds().rbegin()) << std::endl;
+01829         \}
+01830     \}
+01831     \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01832     \{
+01833         filestr << \textcolor{stringliteral}{"1"} << std::endl;
+01834         filestr << facets[it->getId()].verticesNumber() << std::endl;
+01835         \textcolor{keywordflow}{for}(std::vector<UInt>::const\_iterator jt = facets[it->getId()].getVerticesIds().begin(); jt != 
+      facets[it->getId()].getVerticesIds().end()-1; ++jt )
+01836             filestr << *jt << \textcolor{stringliteral}{" "};
+01837         filestr << *(facets[it->getId()].getVerticesIds().rbegin()) << std::endl;
+01838     \}
+01839     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01840 
+01841     \textcolor{comment}{//  Faceoffsets}
+01842     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t<DataArray type=\(\backslash\)"Int64\(\backslash\)" Name=\(\backslash\)"faceoffsets\(\backslash\)" format=\(\backslash\)"ascii\(\backslash\)">"} << std::endl;
+01843     \textcolor{keywordflow}{for}( std::vector<Cell>::const\_iterator it = cells.begin(); it != cells.end(); ++it )
+01844     \{
+01845         faceOffsets += 1 + it->facetsNumber();
+01846         \textcolor{keywordflow}{for}( std::vector<UInt>::const\_iterator jt = it->getFacetsIds().begin(); jt != it->getFacetsIds().
+      end(); ++jt )
+01847             faceOffsets += facets[*jt].verticesNumber();
+01848         filestr << faceOffsets << std::endl;
+01849     \}
+01850     \textcolor{keywordflow}{for}(std::vector<Fracture\_Facet>::const\_iterator it = fractures.begin(); it != fractures.end(); ++it )
+01851     \{
+01852         faceOffsets += 2 + facets[it->getId()].verticesNumber();
+01853         filestr << faceOffsets << std::endl;
+01854     \}
+01855     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t\(\backslash\)t</DataArray>"} << std::endl;
+01856     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t\(\backslash\)t</Cells>"} << std::endl;
+01857 
+01858     filestr << \textcolor{stringliteral}{"\(\backslash\)t\(\backslash\)t</Piece>"} << std::endl;
+01859     filestr << \textcolor{stringliteral}{"\(\backslash\)t</UnstructuredGrid>"} << std::endl;
+01860     filestr << \textcolor{stringliteral}{"\(\backslash\)t</VTKFile>"} << std::endl;
+01861 
+01862     filestr.close();
+01863 \}
+01864 
+01865 \} \textcolor{comment}{// namespace FVCode3D}
+\end{DoxyCode}

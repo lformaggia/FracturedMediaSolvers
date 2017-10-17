@@ -1,0 +1,5 @@
+<map id="FVCode3D::PermeabilityDiagonal::setPermeability" name="FVCode3D::PermeabilityDiagonal::setPermeability">
+<area shape="rect" id="node2" href="$classFVCode3D_1_1PermeabilityBase.html#aa60c227795b5b7dd6413ef90b211875e" title="Vector&#45;tensor product. " alt="" coords="272,5,469,47"/>
+<area shape="rect" id="node3" href="$classFVCode3D_1_1PermeabilityBase.html#a1c77d0168dd4ee2e3a1ce922e0c1725c" title="Tensor&#45;vector product. " alt="" coords="272,71,469,112"/>
+<area shape="rect" id="node4" href="$classFVCode3D_1_1PermeabilityBase.html#a4f06952af19c0100b6b6043fa1f8f97a" title="Show the permeability tensor. " alt="" coords="272,136,469,177"/>
+</map>
