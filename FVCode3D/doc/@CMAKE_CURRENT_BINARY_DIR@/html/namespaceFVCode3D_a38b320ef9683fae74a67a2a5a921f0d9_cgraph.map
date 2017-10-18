@@ -1,5 +1,0 @@
-<map id="FVCode3D::triangleArea" name="FVCode3D::triangleArea">
-<area shape="rect" id="node2" href="$namespaceFVCode3D.html#a1ee7c9a5fcc645574f6a93e5f6f53b4b" title="FVCode3D::crossProduct" alt="" coords="221,5,393,32"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Point3D.html#ac9e4bf311b24cea10ad3fde1d703be01" title="Compute norm of the current point. " alt="" coords="217,56,396,83"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Point3D.html#a0d1cd3d114b0985ae2b11cd1c52de673" title="Normalize the current point. " alt="" coords="444,49,595,90"/>
-</map>

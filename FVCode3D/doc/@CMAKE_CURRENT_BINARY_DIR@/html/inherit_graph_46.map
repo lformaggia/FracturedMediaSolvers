@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFVCode3D_1_1Solver.html" title="Class Solver. " alt="" coords="5,56,137,83"/>
-<area shape="rect" id="node2" href="$classFVCode3D_1_1EigenCholesky.html" title="Class EigenCholesky. " alt="" coords="185,5,368,32"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1EigenLU.html" title="Class EigenLU. " alt="" coords="204,56,349,83"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1IterativeSolver.html" title="Class IterativeSolver. " alt="" coords="187,107,366,133"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1EigenBiCGSTAB.html" title="Class EigenBiCGSTAB. " alt="" coords="416,81,611,108"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1EigenCG.html" title="Class EigenCG. " alt="" coords="439,132,587,159"/>
-</map>

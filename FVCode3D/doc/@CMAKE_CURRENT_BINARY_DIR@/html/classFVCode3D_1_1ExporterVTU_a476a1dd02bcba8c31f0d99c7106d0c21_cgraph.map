@@ -1,6 +1,0 @@
-<map id="FVCode3D::ExporterVTU::exportSolution" name="FVCode3D::ExporterVTU::exportSolution">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet.html#af92ad0b6b79c69f6c04584301b8998a7" title="Get vertices Ids (const) " alt="" coords="235,5,399,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet.html#a5d18db39a0eeb85e6a4afc2b09813201" title="Get vertices number (const) " alt="" coords="235,71,399,112"/>
-<area shape="rect" id="node4" href="$namespacestd.html#acec9a198880c12f51f02be95a298a48b" title="Implements std::begin() for Eigen::Matrix type. " alt="" coords="277,137,356,163"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1ExporterVTU.html#abc88a5113c02b55942862ef39b30ec80" title="Export the solution on cells and fracture facets in a single file. " alt="" coords="224,188,409,229"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="FVCode3D::Rigid_Mesh::Border_Edge" name="FVCode3D::Rigid_Mesh::Border_Edge">
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh_1_1Border__Tip__Edge.html" title="Class that represents a border tip edge. " alt="" coords="5,184,169,225"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Rigid__Mesh_1_1Pure__Border__Edge.html" title="Class that represents a border edge. " alt="" coords="193,184,357,225"/>
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh_1_1Edge__ID.html" title="Class that handles the several types of edges. " alt="" coords="99,5,263,47"/>
-</map>

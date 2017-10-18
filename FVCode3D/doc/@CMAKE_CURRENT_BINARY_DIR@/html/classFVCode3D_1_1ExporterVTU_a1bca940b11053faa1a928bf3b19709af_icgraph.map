@@ -1,4 +1,0 @@
-<map id="FVCode3D::ExporterVTU::exportFluxOnFractures" name="FVCode3D::ExporterVTU::exportFluxOnFractures">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1ExporterVTU.html#a8e6ee7a5a2bede11d9671d37e78651a4" title="Export the solution on cells and fracture facets in a single file. " alt="" coords="224,5,395,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1ExporterVTU.html#a3dd6650210988750d8c057f68a0f016d" title="Export a solution on facets. " alt="" coords="443,5,613,47"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="FVCode3D::BoundingBox::setZMax" name="FVCode3D::BoundingBox::setZMax">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1BoundingBox.html#a8a1df0623c373b7a2c887e24d1fe298a" title="FVCode3D::BoundingBox\l::setExtremes" alt="" coords="225,51,397,92"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1BoundingBox.html#a9975a2a4ae9e3991d5f5ab1d3f1544ff" title="Set the scaling parameters. " alt="" coords="445,5,636,47"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1BoundingBox.html#a24191e6688c9db0070714f28fc70eb8e" title="Set the diagonal of the BB. " alt="" coords="455,96,627,137"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1BoundingBox.html#a20d4281f025fd6a4ee51ec8cbc47874c" title="Scale node such that it is in the unit BB. " alt="" coords="225,168,397,209"/>
-<area shape="rect" id="node7" href="$classFVCode3D_1_1BoundingBox.html#ae45df69b786a19e4413691e1c64059d0" title="Scale nodes such that it is in the original BB. " alt="" coords="225,233,397,275"/>
-<area shape="rect" id="node8" href="$classFVCode3D_1_1BoundingBox.html#a41ac5eca6ae3f4c556c5616074c13631" title="Destructor. " alt="" coords="225,299,397,340"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1Point3D.html#a2044e0fdef7e870557c89ad0edb0b0d4" title="Apply a linear transformation to the point. " alt="" coords="465,191,616,232"/>
-</map>

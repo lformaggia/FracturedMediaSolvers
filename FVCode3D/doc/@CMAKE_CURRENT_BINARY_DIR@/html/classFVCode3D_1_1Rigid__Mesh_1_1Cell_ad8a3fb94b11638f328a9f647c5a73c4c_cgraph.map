@@ -1,4 +1,0 @@
-<map id="FVCode3D::Rigid_Mesh::Cell::Cell" name="FVCode3D::Rigid_Mesh::Cell::Cell">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ab39f9e4bf268566da035b41ce6a409be" title="Get the set that contains the facets ids (const) " alt="" coords="217,5,409,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#a87f2464749df5772205e0dd76afe46e6" title="Get the set that contains the ids of the neighbor cells (const) " alt="" coords="217,71,409,112"/>
-</map>

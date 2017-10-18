@@ -1,4 +1,0 @@
-<map id="FVCode3D::Fracture3D::exportVTK" name="FVCode3D::Fracture3D::exportVTK">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D.html#a76de387da2a552e3e1210d795bc7acf9" title="Get the set storing the facets of the mesh (const) " alt="" coords="213,5,448,32"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D.html#a04162ec60e0fe52674b3ecbb7de1185c" title="Get the vector storing the nodes of the mesh (const) " alt="" coords="227,57,435,98"/>
-</map>

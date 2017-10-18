@@ -1,5 +1,0 @@
-<map id="FVCode3D::Problem::assemble" name="FVCode3D::Problem::assemble">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Problem.html#aea78fa4b5f2c4231fdc1a19a9eb8e4d4" title="Assemble matrix method. " alt="" coords="204,5,355,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Problem.html#a65afac2ca3bf78e5918461d41b972495" title="Assemble vector method. " alt="" coords="204,71,355,112"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Problem.html#a7ee30db5a251dc7a9778c821e49cf376" title="Solve method. " alt="" coords="204,136,355,177"/>
-</map>

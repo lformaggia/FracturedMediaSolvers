@@ -1,8 +1,0 @@
-<map id="FVCode3D::Solver::solve" name="FVCode3D::Solver::solve">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Solver.html#ad99fa52d7c034196359feb91151ba13f" title="Get the non zero values. " alt="" coords="224,5,419,32"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1EigenCholesky.html#acaae9a0f80fb7c8a7ba5eb0418b70462" title="Constructor. " alt="" coords="230,57,413,98"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1EigenLU.html#af14fce48a3c29af1b0111ab333a99722" title="Constructor. " alt="" coords="245,122,398,163"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1IterativeSolver.html#ae3ce4a200ffcc97fcc2bb4b9a2b5784b" title="Set relative tolerance for the residual error. " alt="" coords="232,187,411,229"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1EigenCG.html#a01a141ef7435f1c52d2c69325544b255" title="Constructor. " alt="" coords="243,253,399,294"/>
-<area shape="rect" id="node7" href="$classFVCode3D_1_1EigenBiCGSTAB.html#abb0a20944c75cefecc1caa15584ce023" title="Constructor. " alt="" coords="224,318,419,359"/>
-</map>

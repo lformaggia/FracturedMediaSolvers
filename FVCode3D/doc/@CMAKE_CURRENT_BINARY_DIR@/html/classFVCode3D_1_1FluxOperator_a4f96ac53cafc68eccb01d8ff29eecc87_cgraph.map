@@ -1,5 +1,0 @@
-<map id="FVCode3D::FluxOperator::assemble" name="FVCode3D::FluxOperator::assemble">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#aadbe6d9ad704122537903396d91238e0" title="Get fracture facets ids vector (const) " alt="" coords="224,5,416,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#ab6e52fa6193e5db83fe7ccbb1c3737e8" title="Get the properties map (const) " alt="" coords="238,71,402,112"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1PropertiesMap.html#a810ea62ca881e4db57acd601bcea23cf" title="Get the mobility of the fluid. " alt="" coords="231,136,409,177"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="FVCode3D::StiffMatrix::assembleFracture" name="FVCode3D::StiffMatrix::assembleFracture">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1StiffMatrix.html#af63e81815a2ba8bd62a2156a80adce55" title="Assemble method. " alt="" coords="208,39,363,80"/>
-<area shape="rect" id="node7" href="$classFVCode3D_1_1StiffMatrix.html#a21f75de574e807c965eedb52f626527e" title="Set offsets. " alt="" coords="208,104,363,145"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1StiffMatrix.html#a6cb858d3e2c0196e1884deddde864343" title="Get BC vector (const) " alt="" coords="411,9,565,51"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1DarcySteady.html#af48f96919f23df0f0708c8692da14bbd" title="Assemble matrix method. " alt="" coords="613,39,784,80"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1DarcySteady.html#a2709d24b9841b8f227b5b7c1417505df" title="Get the stiffness matrix. " alt="" coords="832,5,1003,47"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1DarcySteady.html#aaa82aad9d7006a5c1e96e103f602082b" title="Solve method. " alt="" coords="832,71,1003,112"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="FVCode3D::Quadrature::integrate" name="FVCode3D::Quadrature::integrate">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#afefb62f2c37317402b495e2369ed495b" title="Get cells vector (const) " alt="" coords="433,5,597,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#aadbe6d9ad704122537903396d91238e0" title="Get fracture facets ids vector (const) " alt="" coords="419,71,611,112"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Quadrature.html#aed4aa5c10cdca072aae596813ed179b1" title="Integrate a function and return the integral cell by cell. " alt="" coords="212,123,371,164"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1PropertiesMap.html#ace888d15c9a4ab13d5e217a3a565604c" title="Get the map of properties (const) " alt="" coords="425,136,604,177"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1Rigid__Mesh.html#a6d3cdd4ef8a5225599953179d5302636" title="Get facets vector (const) " alt="" coords="433,201,597,243"/>
-</map>

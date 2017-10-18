@@ -1,7 +1,0 @@
-<map id="FVCode3D::Rigid_Mesh::Cell::getFacetsIds" name="FVCode3D::Rigid_Mesh::Cell::getFacetsIds">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1local__InnerProduct.html#a5e5ade44aeb3e5982cdbc20e7721e07a" title="Assemble method. " alt="" coords="229,5,431,47"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1local__Div.html#a36cda0a641aa6c4de76a3e5852436d86" title="Assemble method. " alt="" coords="255,71,405,112"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1local__MimeticOperator.html#a052b31cc0128915b383e00f8ba199875" title="Get the number of dofs of the local operator. " alt="" coords="217,136,443,177"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1global__InnerProduct.html#acc444616cd8702b28bf2337c6dc7b059" title="Assemble method. " alt="" coords="491,5,701,47"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1global__Div.html#a57a22172d3cf6f1e45d00de946befc68" title="Assemble method. " alt="" coords="518,71,674,112"/>
-</map>

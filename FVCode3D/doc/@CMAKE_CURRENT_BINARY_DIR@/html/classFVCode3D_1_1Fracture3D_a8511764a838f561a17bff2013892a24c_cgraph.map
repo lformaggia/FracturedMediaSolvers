@@ -1,6 +1,0 @@
-<map id="FVCode3D::Fracture3D::push_back" name="FVCode3D::Fracture3D::push_back">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Fracture3D.html#a1043c8fc93b79a1cea8d67d8adb2a418" title="Export in vtk format the facets representing the fracture (as VTK_POLYGON) " alt="" coords="213,27,373,69"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Fracture3D.html#a35cf7c9104e494422e41a87faae74d65" title="Display general information about the content of the class. " alt="" coords="213,93,373,134"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D.html#a76de387da2a552e3e1210d795bc7acf9" title="Get the set storing the facets of the mesh (const) " alt="" coords="421,5,656,32"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Mesh3D.html#a04162ec60e0fe52674b3ecbb7de1185c" title="Get the vector storing the nodes of the mesh (const) " alt="" coords="435,57,643,98"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFVCode3D_1_1global__Operator.html" title="Base class for assembling a global operator of the problem. " alt="" coords="5,81,192,108"/>
-<area shape="rect" id="node2" href="$classFVCode3D_1_1CouplingConditions.html" title="Class for assembling a coupling conditions matrix. " alt="" coords="241,5,449,32"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1FluxOperator.html" title="Class for assembling a coupling conditions matrix. " alt="" coords="260,56,431,83"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1global__Div.html" title="Class for assembling a global divergence matrix. " alt="" coords="267,107,423,133"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1global__InnerProduct.html" title="Class for assembling a global inner product matrix. " alt="" coords="240,157,451,184"/>
-</map>

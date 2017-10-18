@@ -1,6 +1,0 @@
-<map id="FVCode3D::CouplingConditions::assemble" name="FVCode3D::CouplingConditions::assemble">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#aadbe6d9ad704122537903396d91238e0" title="Get fracture facets ids vector (const) " alt="" coords="261,5,453,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#ab6e52fa6193e5db83fe7ccbb1c3737e8" title="Get the properties map (const) " alt="" coords="275,71,439,112"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1PropertiesMap.html#ace888d15c9a4ab13d5e217a3a565604c" title="Get the map of properties (const) " alt="" coords="268,136,447,177"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Rigid__Mesh.html#a6d3cdd4ef8a5225599953179d5302636" title="Get facets vector (const) " alt="" coords="275,201,439,243"/>
-</map>

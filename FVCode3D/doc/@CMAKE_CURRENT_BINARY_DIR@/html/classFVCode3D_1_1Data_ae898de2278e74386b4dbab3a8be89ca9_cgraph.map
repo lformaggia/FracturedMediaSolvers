@@ -1,6 +1,0 @@
-<map id="FVCode3D::Data::Data" name="FVCode3D::Data::Data">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1EnumParser.html#a47ae536aad82ef52509472c0c7f1022e" title="Parse method. " alt="" coords="212,23,379,65"/>
-<area shape="rect" id="node3" href="$namespaceFVCode3D.html#aab0ceb729c2ff3e7fd288097aee76a59" title="Convert a string to its upper case version. " alt="" coords="427,31,568,57"/>
-<area shape="rect" id="node4" href="$namespacestd.html#acec9a198880c12f51f02be95a298a48b" title="Implements std::begin() for Eigen::Matrix type. " alt="" coords="616,5,695,32"/>
-<area shape="rect" id="node5" href="$namespacestd.html#aeb4b319cf9afda99ba1f47d32df15bc9" title="Implements std::end() for Eigen::Matrix type. " alt="" coords="621,56,690,83"/>
-</map>

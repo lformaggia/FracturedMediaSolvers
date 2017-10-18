@@ -1,6 +1,0 @@
-<map id="FVCode3D::Rigid_Mesh::getMaxEdgeSize" name="FVCode3D::Rigid_Mesh::getMaxEdgeSize">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh_1_1Edge.html#a3ef3549d709a4b537437f9e3e7f3e67b" title="Get the length of the edge (const) " alt="" coords="217,35,381,76"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#a7acee1523c8da4596273627acc652609" title="Get nodes vector (const) " alt="" coords="437,5,601,47"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Point3D.html#ac9e4bf311b24cea10ad3fde1d703be01" title="Compute norm of the current point. " alt="" coords="429,71,608,98"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Point3D.html#a0d1cd3d114b0985ae2b11cd1c52de673" title="Normalize the current point. " alt="" coords="656,64,807,105"/>
-</map>

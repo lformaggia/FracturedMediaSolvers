@@ -1,7 +1,0 @@
-<map id="FVCode3D::Importer" name="FVCode3D::Importer">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1ImporterForSolver.html" title="Class used to read files optimized for the solver (.fvg). " alt="" coords="203,5,401,32"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1ImporterMedit.html" title="Class used to read a Medit format file (.mesh). " alt="" coords="215,56,389,83"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1ImporterOpenFOAM.html" title="Class used to read the OpenFOAM format file. " alt="" coords="196,107,408,133"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1ImporterTPFA.html" title="Class used to read a standard TPFA format file (.grid). " alt="" coords="213,157,391,184"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1ImporterTetGen.html" title="Class used to read TetGen format files (.node, .face, .ele). " alt="" coords="456,56,643,83"/>
-</map>

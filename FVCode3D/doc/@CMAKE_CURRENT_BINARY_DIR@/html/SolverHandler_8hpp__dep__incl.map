@@ -1,9 +1,0 @@
-<map id="/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp" name="/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp">
-<area shape="rect" id="node2" href="$Data_8cpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/FVCode3D/core/Data.cpp" alt="" coords="5,109,224,165"/>
-<area shape="rect" id="node3" href="$FVCode3D_8hpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/FVCode3D/FVCode3D.hpp" alt="" coords="288,317,507,373"/>
-<area shape="rect" id="node4" href="$Problem_8hpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/FVCode3D/problem/Problem.hpp" alt="" coords="332,109,572,165"/>
-<area shape="rect" id="node8" href="$SolverHandler_8cpp.html" title="Factory that handles the creation of the Solver classes (definitions). " alt="" coords="597,109,859,165"/>
-<area shape="rect" id="node5" href="$DarcyPseudoSteady_8hpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/FVCode3D/problem/DarcyPseudoSteady.hpp" alt="" coords="643,213,955,269"/>
-<area shape="rect" id="node6" href="$main_8cpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/main.cpp" alt="" coords="689,317,908,373"/>
-<area shape="rect" id="node7" href="$DarcySteady_8hpp.html" title="Class that defines and solves the Darcy&#39;s problem at steady state. " alt="" coords="350,213,618,269"/>
-</map>

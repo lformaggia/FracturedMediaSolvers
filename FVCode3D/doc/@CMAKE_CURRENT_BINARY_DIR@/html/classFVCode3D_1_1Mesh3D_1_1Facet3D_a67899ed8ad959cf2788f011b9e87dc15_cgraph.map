@@ -1,7 +1,0 @@
-<map id="FVCode3D::Mesh3D::Facet3D::computeCentroid" name="FVCode3D::Mesh3D::Facet3D::computeCentroid">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D.html#a04162ec60e0fe52674b3ecbb7de1185c" title="Get the vector storing the nodes of the mesh (const) " alt="" coords="245,5,453,47"/>
-<area shape="rect" id="node3" href="$namespaceFVCode3D.html#a38b320ef9683fae74a67a2a5a921f0d9" title="Compute the area of a triangle. " alt="" coords="267,71,431,98"/>
-<area shape="rect" id="node4" href="$namespaceFVCode3D.html#a1ee7c9a5fcc645574f6a93e5f6f53b4b" title="FVCode3D::crossProduct" alt="" coords="505,46,677,73"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Point3D.html#ac9e4bf311b24cea10ad3fde1d703be01" title="Compute norm of the current point. " alt="" coords="501,97,680,123"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1Point3D.html#a0d1cd3d114b0985ae2b11cd1c52de673" title="Normalize the current point. " alt="" coords="728,89,879,131"/>
-</map>

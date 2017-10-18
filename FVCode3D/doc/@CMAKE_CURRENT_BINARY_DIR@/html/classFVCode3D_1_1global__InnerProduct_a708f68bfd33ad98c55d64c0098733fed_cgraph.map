@@ -1,9 +1,0 @@
-<map id="FVCode3D::global_InnerProduct::ImposeBC" name="FVCode3D::global_InnerProduct::ImposeBC">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#aa72b7fad937f0d1586fc10b176ef5d3e" title="Get border facets ids vector (const) " alt="" coords="279,5,461,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1BoundaryConditions.html#a5b53a81bdab88709fae14892bfe6a7c9" title="Get BorderBC vector (const) " alt="" coords="264,71,476,112"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Rigid__Mesh.html#afefb62f2c37317402b495e2369ed495b" title="Get cells vector (const) " alt="" coords="288,136,452,177"/>
-<area shape="rect" id="node6" href="$classFVCode3D_1_1Rigid__Mesh_1_1Cell.html#a7ded24addbc6c535d7e3da6617e23c7c" title="The facet orientation wrt the cell. " alt="" coords="288,201,452,243"/>
-<area shape="rect" id="node8" href="$classFVCode3D_1_1Rigid__Mesh.html#a6d3cdd4ef8a5225599953179d5302636" title="Get facets vector (const) " alt="" coords="288,267,452,308"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1BoundaryConditions.html#ae368974020ff21456d0fef9ef9d8006d" title="Set boundary condition from a vector of Border BC. " alt="" coords="524,71,736,112"/>
-<area shape="rect" id="node7" href="$namespaceFVCode3D.html#ad07be7f9ed843ca65d02d0303dae6cb4" title="FVCode3D::dotProduct" alt="" coords="551,209,709,235"/>
-</map>

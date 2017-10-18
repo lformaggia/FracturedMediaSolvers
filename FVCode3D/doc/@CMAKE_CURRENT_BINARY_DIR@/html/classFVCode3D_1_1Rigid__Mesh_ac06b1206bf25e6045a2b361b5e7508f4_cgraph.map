@@ -1,6 +1,0 @@
-<map id="FVCode3D::Rigid_Mesh::edgesVectorBuilder" name="FVCode3D::Rigid_Mesh::edgesVectorBuilder">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#aaceb00b0d75dee23a330033d46f592c7" title="Builds the vector of RigidMesh::Edge. " alt="" coords="217,5,381,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#a68a8a1bcfe66af2379baa44772026fd3" title="Builds the vector of RigidMesh::Edge_ID. " alt="" coords="217,71,381,112"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Rigid__Mesh.html#a137e1a9da5d7fadfac8053c15ff4749b" title="Converts the neighbors ids of cells from old one to new one. It is called by constructor. " alt="" coords="217,136,381,177"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Rigid__Mesh.html#a24c847643d9dc98dc3e7b2435e22cdf6" title="Converts the facets id of the cells from old one to new one. It is called by constructor. " alt="" coords="217,201,381,243"/>
-</map>

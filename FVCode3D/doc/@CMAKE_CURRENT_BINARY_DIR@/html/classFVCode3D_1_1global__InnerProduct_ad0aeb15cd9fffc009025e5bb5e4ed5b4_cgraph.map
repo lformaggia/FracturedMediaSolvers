@@ -1,6 +1,0 @@
-<map id="FVCode3D::global_InnerProduct::reserve_space" name="FVCode3D::global_InnerProduct::reserve_space">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#afefb62f2c37317402b495e2369ed495b" title="Get cells vector (const) " alt="" coords="273,5,437,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Rigid__Mesh.html#a6d3cdd4ef8a5225599953179d5302636" title="Get facets vector (const) " alt="" coords="273,71,437,112"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet.html#aed3f579d52847e839501f647e90c35ab" title="Test if the facet represents a fracture. " alt="" coords="273,136,437,177"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Rigid__Mesh_1_1Facet.html#a08dc369eccd02b29133187cede7511eb" title="Get id of the fracture facet that it represents (const) " alt="" coords="264,201,445,243"/>
-</map>

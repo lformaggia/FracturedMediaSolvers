@@ -1,6 +1,0 @@
-<map id="FVCode3D::sparseBlock" name="FVCode3D::sparseBlock">
-<area shape="rect" id="node2" href="$namespaceFVCode3D.html#a13bcca787028985b3fdbca71334eb63f" title="Extract the top left block of a Sparse Matrix. " alt="" coords="220,5,431,32"/>
-<area shape="rect" id="node3" href="$namespaceFVCode3D.html#a4e9be96975d446ebb5e3acd53150bbbb" title="Extract the top right block of a Sparse Matrix. " alt="" coords="232,57,419,98"/>
-<area shape="rect" id="node4" href="$namespaceFVCode3D.html#a2b06bf4215f4ce6cbd1a940fbd2ef6e6" title="Extract the bottom left block of a Sparse Matrix. " alt="" coords="226,122,425,163"/>
-<area shape="rect" id="node5" href="$namespaceFVCode3D.html#a2468aefbc3231765755c7316f146bc3d" title="Extract the bottom right block of a Sparse Matrix. " alt="" coords="222,187,429,229"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="FVCode3D::computeBoundingBox" name="FVCode3D::computeBoundingBox">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Point3D.html#af250a1c49cf1aeeb52f59a687257451d" title="Set coordinates. " alt="" coords="276,27,427,68"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Point3D.html#ae015d6aa31f8b304f69696bdcbd4da19" title="Get x&#45;coordinate (const) " alt="" coords="475,8,632,34"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Point3D.html#a950abcabbf3bb32fc2daf64c28d77416" title="Get y&#45;coordinate (const) " alt="" coords="475,62,632,89"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Point3D.html#a865109e2006cc1de3681ab601081f5aa" title="Get x&#45;coordinate (const) " alt="" coords="475,128,632,154"/>
-</map>

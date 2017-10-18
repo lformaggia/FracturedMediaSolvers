@@ -1,5 +1,0 @@
-<map id="FVCode3D::MatrixHandler::closeMatrix" name="FVCode3D::MatrixHandler::closeMatrix">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1DarcySteady.html#af48f96919f23df0f0708c8692da14bbd" title="Assemble matrix method. " alt="" coords="229,39,400,80"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1DarcySteady.html#a2709d24b9841b8f227b5b7c1417505df" title="Get the stiffness matrix. " alt="" coords="448,5,619,47"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1DarcySteady.html#aaa82aad9d7006a5c1e96e103f602082b" title="Solve method. " alt="" coords="448,71,619,112"/>
-</map>

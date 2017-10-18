@@ -1,7 +1,0 @@
-<map id="/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Stiffness.hpp" name="/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Stiffness.hpp">
-<area shape="rect" id="node2" href="$Stiffness_8cpp.html" title="This class build a Stiffness&#45;matrix of the Darcy problem (definitions). " alt="" coords="5,109,264,165"/>
-<area shape="rect" id="node3" href="$FVCode3D_8hpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/FVCode3D/FVCode3D.hpp" alt="" coords="385,213,604,269"/>
-<area shape="rect" id="node4" href="$DarcyPseudoSteady_8hpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/FVCode3D/problem/DarcyPseudoSteady.hpp" alt="" coords="339,109,651,165"/>
-<area shape="rect" id="node6" href="$DarcySteady_8hpp.html" title="Class that defines and solves the Darcy&#39;s problem at steady state. " alt="" coords="675,109,943,165"/>
-<area shape="rect" id="node5" href="$main_8cpp.html" title="/home/corinne/eniReservoir\lGITHUB/eniReservoir/FVCode3D\l/src/main.cpp" alt="" coords="664,213,883,269"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="FVCode3D::tetrahedronVolume" name="FVCode3D::tetrahedronVolume">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ae4ba3b75f888448f83672fcef7d24f2c" title="Computes the volume and the centroid of the cell. " alt="" coords="257,5,453,47"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1TetGenWrapper.html#a519cb27415baac338386403c46af7b08" title="Compute the volume of the polyhedron and return it. " alt="" coords="262,71,449,112"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1TetGenWrapper.html#ad3574fde5de1292dc9064d717a3ee353" title="Compute the center of mass of the polyhedron by considering a constant density. " alt="" coords="262,136,449,177"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ac02c0684ef4259520ed1a312ce402bb5" title="Constructor for a cell in a specified mesh given the facets. " alt="" coords="501,5,693,47"/>
-</map>

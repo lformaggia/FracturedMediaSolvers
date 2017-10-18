@@ -1,5 +1,0 @@
-<map id="FVCode3D::TetGenWrapper::computeVolume" name="FVCode3D::TetGenWrapper::computeVolume">
-<area shape="rect" id="node2" href="$namespaceFVCode3D.html#a8a6b07162e2801b628c3bd4057b9f221" title="Compute the volume of a tetrahedron. " alt="" coords="240,31,444,57"/>
-<area shape="rect" id="node3" href="$namespaceFVCode3D.html#ad07be7f9ed843ca65d02d0303dae6cb4" title="FVCode3D::dotProduct" alt="" coords="499,5,657,32"/>
-<area shape="rect" id="node4" href="$namespaceFVCode3D.html#a1ee7c9a5fcc645574f6a93e5f6f53b4b" title="FVCode3D::crossProduct" alt="" coords="492,56,664,83"/>
-</map>

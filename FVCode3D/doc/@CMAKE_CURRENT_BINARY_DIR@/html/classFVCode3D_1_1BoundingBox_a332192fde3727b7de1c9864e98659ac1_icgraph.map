@@ -1,4 +1,0 @@
-<map id="FVCode3D::BoundingBox::zMin" name="FVCode3D::BoundingBox::zMin">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ae4ba3b75f888448f83672fcef7d24f2c" title="Computes the volume and the centroid of the cell. " alt="" coords="225,5,421,47"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Mesh3D_1_1Cell3D.html#ac02c0684ef4259520ed1a312ce402bb5" title="Constructor for a cell in a specified mesh given the facets. " alt="" coords="469,5,661,47"/>
-</map>

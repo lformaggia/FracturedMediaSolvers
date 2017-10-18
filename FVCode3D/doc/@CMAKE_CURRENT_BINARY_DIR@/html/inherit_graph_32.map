@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFVCode3D_1_1Problem.html" title="Class that defines a generic problem. " alt="" coords="5,85,168,141"/>
-<area shape="rect" id="node2" href="$classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01BDF2_01_4.html" title="Specialization class that defines the pseudo&#45;steady&#45;state Darcy problem for the BDF2 time scheme..." alt="" coords="216,5,431,61"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1DarcyPseudoSteady_3_01QRMatrix_00_01QRFracture_00_01MatrixType_00_01Implicit_01_4.html" title="Specialization class that defines the pseudo&#45;steady&#45;state Darcy problem for the implicit time scheme..." alt="" coords="216,85,431,141"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1DarcySteady.html" title="Class that defines the steady&#45;state Darcy problem. " alt="" coords="238,165,409,221"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="FVCode3D::Rigid_Mesh::Cell::showMe" name="FVCode3D::Rigid_Mesh::Cell::showMe">
-<area shape="rect" id="node2" href="$classFVCode3D_1_1Rigid__Mesh.html#a3bbdb25ce1eddaf66316487bfc05e089" title="Prints the components of a point. " alt="" coords="217,49,381,90"/>
-<area shape="rect" id="node3" href="$classFVCode3D_1_1Point3D.html#ae015d6aa31f8b304f69696bdcbd4da19" title="Get x&#45;coordinate (const) " alt="" coords="429,5,587,32"/>
-<area shape="rect" id="node4" href="$classFVCode3D_1_1Point3D.html#a950abcabbf3bb32fc2daf64c28d77416" title="Get y&#45;coordinate (const) " alt="" coords="429,56,587,83"/>
-<area shape="rect" id="node5" href="$classFVCode3D_1_1Point3D.html#a865109e2006cc1de3681ab601081f5aa" title="Get x&#45;coordinate (const) " alt="" coords="429,107,587,133"/>
-</map>
