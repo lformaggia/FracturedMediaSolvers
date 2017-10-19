@@ -281,15 +281,6 @@ void CouplingConditions::assemble()
 }
 
 
-Point3D FluxOperator::getBorderCenter(Fracture_Juncture fj) const
-{
-    return (M_mesh.getNodesVector()[fj.first] +
-                (M_mesh.getNodesVector()[fj.second] -
-                 M_mesh.getNodesVector()[fj.first]
-                )/2.
-           );
-}
-
 Real FluxOperator::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_Id) const
 {
     const Point3D borderCenter = getBorderCenter(fj);
@@ -621,7 +612,7 @@ void global_BulkBuilder::reserve_space()
     Dt.reserve(DtMatrix_elements);	
 }
 
-void global_BulkBuilder::assemble_Monolithic()   
+void global_BulkBuilder::build_Monolithic()   
 {
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
 	const UInt numFacets    = facetVectorRef.size();
@@ -688,7 +679,7 @@ void global_BulkBuilder::assemble_Monolithic()
 	}
 }
 
-void global_BulkBuilder::assemble()   
+void global_BulkBuilder::build()   
 {
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
 	const UInt numFacets    = facetVectorRef.size();
@@ -766,7 +757,7 @@ void FractureBuilder::reserve_space_Monolithic()
 		//This is for -T
 		auto f_neighbors = facet_it.getFractureNeighbors();
 		UInt N_neighbors = 0;
-        auto sum_maker = [&N_neighbors](std::pair< Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
+        auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
 		Matrix_elements[ numFacetsTot+numCells + facet_it.getFractureId() ] += N_neighbors + 1;
 		
@@ -790,7 +781,7 @@ void FractureBuilder::reserve_space()
 		//This is for -T
 		auto f_neighbors = facet_it.getFractureNeighbors();
 		UInt N_neighbors = 0;
-        auto sum_maker = [&N_neighbors](std::pair< Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
+        auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
 		TMatrix_elements[ facet_it.getFractureId() ] = N_neighbors + 1;
 		
@@ -807,7 +798,7 @@ void FractureBuilder::reserve_space()
 	M.reserve(MMatrix_elements);
 }
 
-void FractureBuilder::assemble_Monolithic()
+void FractureBuilder::build_Monolithic()
 {
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
@@ -863,7 +854,7 @@ void FractureBuilder::assemble_Monolithic()
     }
 }
 
-void FractureBuilder::assemble()
+void FractureBuilder::build()
 {
 	auto & T = FO.getMatrix();
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
@@ -916,6 +907,45 @@ void FractureBuilder::assemble()
             }
         }
     }
+}
+
+
+void StiffnessMFD_Builder::build()
+{
+	// Define the degrees of fredoom
+	const UInt numFracture  = M_mesh.getFractureFacetsIdsVector().size();
+	const UInt numFacetsTot = M_mesh.getFacetsVector().size() + numFracture;
+	const UInt numCell      = M_mesh.getCellsVector().size();
+	
+	// Define the global inner product
+	global_InnerProduct gIP(M_mesh, dFacet, dFacet, numFacetsTot, numFacetsTot, M_bc);
+	gIP.ShowMe();
+	
+	// Define the global divergence operator
+	global_Div gDIV(M_mesh, dCell, dFacet, numCell, numFacetsTot, M_bc);
+	gDIV.ShowMe();
+	
+	// Define the coupling conditions
+	CouplingConditions coupling(M_mesh, dFracture, dFacet, numFracture, numFacetsTot, gIP.getMatrix());
+	coupling.ShowMe();
+	
+	// Define the flux operator
+	FluxOperator fluxOP(M_mesh, dFracture, dFracture, numFracture, numFracture, M_bc);
+	fluxOP.ShowMe();
+	
+	// Define the global bulk builder
+	global_BulkBuilder gBulkBuilder( M_mesh, M_bc, gIP.getMatrix(), gDIV.getMatrix(), gDIV.getDtMatrix(), *S_matrix );
+	// Build the bulk problem
+	gBulkBuilder.build_Monolithic();
+	// Impose BC on bulk
+	gIP.ImposeBC(*S_matrix, *rhs_vector);
+	
+	// Define the fracture builder
+	FractureBuilder FBuilder( M_mesh, coupling.getMatrix(), fluxOP, gIP.getMatrix(), *S_matrix, coupling.get_xsi() );
+	// Build the fracture problem
+	FBuilder.build_Monolithic();
+	// Impose BC on fractures
+	fluxOP.ImposeBConFractures(*S_matrix, *rhs_vector);
 }
 
 }  //FVCode3d

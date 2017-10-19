@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <cmath>
+#include <ostream>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
@@ -17,6 +18,25 @@
 namespace FVCode3D
 {
 	
+//! Define the type of discretization
+/*!
+* @enum dType
+* This enumerator is used to show the type of discretization of row/column
+* of the operators.
+*/
+enum dType{dCell, dFacet, dFracture};
+	
+std::ostream & operator<<(std::ostream & o, const dType & d)
+{
+	if(d == dCell)
+		std::cout<<"Cell type";
+	if(d == dFacet)
+		std::cout<<"Facet type";
+	if(d == dFracture)
+		std::cout<<"Fracture type";			
+	return o;
+};
+		
 //! Base class for assembling a global operator of the problem.
 /*!
  * @class global_Operator
@@ -28,15 +48,7 @@ namespace FVCode3D
 class global_Operator
 {
 public:
-    //! Define the type of discretization
-    /*!
-     * @enum dType
-     * This enumerator is used to show the type of discretization of row/column
-     * of the operators.
-     */
-	enum dType{dCell, dFacet, dFracture};
-
-    //! @name Constructor & Destructor
+	//! @name Constructor & Destructor
     //@{
     //! Construct a global_Operator.
     /*!
@@ -110,7 +122,22 @@ public:
      */
     void CompressMatrix()
 		{ (*M_matrix).makeCompressed(); };
-    
+		
+	//! Show matrix method
+    /*!
+     * Show basic matrix information
+     */
+	virtual void ShowMe() const
+	{ 
+		std::cout<<"Discretizzazione righe : "<<row_policy<<std::endl;
+		std::cout<<"Numero righe : "<<Nrow<<std::endl;
+		std::cout<<"Discretizzazione colonne : "<<col_policy<<std::endl;
+		std::cout<<"Numero colonne : "<<Ncol<<std::endl;
+	};
+	//@}
+  
+	//! @name Assemble Methods
+    //@{
     //! Reserve method
     /*!
      * Reserve the proper space for the operator matrix
@@ -175,6 +202,19 @@ public:
 
 	//! @name Methods
     //@{
+	//! Show matrix method
+    /*!
+     * Show basic matrix information
+     */
+    void ShowMe() const
+    {
+		std::cout<<"Basic information of inner prouct matrix M:"<<std::endl;
+		global_Operator::ShowMe();
+    };
+	//@}
+
+	//! @name Assemble Methods
+    //@{
     //! Reserve method
     /*!
      * Reserve the proper space for the inner product matrix
@@ -187,7 +227,7 @@ public:
      */
     void assemble();
     
-    //! Impose BC method
+    //! Impose BC method on monolithic matrix S and on the rhs
     /*!
      * This method impose the Neumann and Dirichlet BC on the monolithic matrix
      * and on the rhs.
@@ -196,7 +236,7 @@ public:
      */
     void ImposeBC(SpMat & S, Vector & rhs);
     
-    //! Impose BC method
+    //! Impose BC method on inner product matrix and on the rhs
     /*!
      * This method impose the Neumann and Dirichlet BC on the inner product matrix
      * and on the rhs of the system.
@@ -217,7 +257,7 @@ private:
  * This is the classe to assemble the global divergence matrix. The strategy used
  * is an assemblation cell by cell building a local divergence matrix and then
  * assembling local contributions in the global matrix.
- * The class assemble also the matrix Dt that is the divergence matrix transposed
+ * The class assembles also the matrix Dt that is the divergence matrix transposed
  * and modified to take into account the Neumann bc.
  */
 class global_Div: public global_Operator
@@ -244,7 +284,7 @@ public:
     ~global_Div() = default;
 	//@}
 
-	//! @name Methods
+	//! @name Get Methods
     //@{
     //! Get the Dt matrix (read only version)
     /*!
@@ -259,7 +299,30 @@ public:
      */
     SpMat & getDtMatrix() 
 		{ return *Dt_matrix; };
+	//@}
 	
+	//! @name Methods
+    //@{
+	//! Compress method for the Dt matrix
+    /*!
+     * Convert the matrix Dt in compressed format
+     */
+    void CompressDtMatrix()
+		{ (*Dt_matrix).makeCompressed(); };
+	
+	//! Show matrix method
+    /*!
+     * Show basic matrix information
+     */
+	void ShowMe() const
+    {
+		std::cout<<"Basic information of divergence matrix B:"<<std::endl;
+		global_Operator::ShowMe();
+    };
+    //@}
+
+	//! @name Assemble Methods
+    //@{
     //! Reserve method
     /*!
      * Reserve the proper space for the div matrix
@@ -271,19 +334,12 @@ public:
      * Assemble the global inner div matrix
      */
     void assemble();
-    
-    //! Compress method for the Dt matrix
-    /*!
-     * Convert the matrix Dt in compressed format
-     */
-    void CompressDtMatrix()
-		{ (*Dt_matrix).makeCompressed(); };
     //@}
 
 private:
 	//! Constant reference to the boundary conditions
 	const BoundaryConditions & 	M_bc;
-	//! The sparse matrix representing modified trasnposed matrix
+	//! The sparse matrix representing the modified trasnposed matrix
 	std::unique_ptr<SpMat>     Dt_matrix;
     
 };
@@ -318,7 +374,7 @@ public:
     ~CouplingConditions() = default;
 	//@}
 
-	//! @name Methods
+	//! @name Get Methods
     //@{
     //! Get transpose method
     /*!
@@ -333,14 +389,30 @@ public:
      */
     const Real & get_xsi() const
 		{ return xsi; };
-		
+	//@}
+	
+	//! @name Methods
+	//@{
 	//! Set xsi parameter
     /*!
      * Set the xsi parameter of the coupling conditions 
      */
     void Set_xsi(const Real & xsiToSet)
 		{ xsi = xsiToSet; };
+	
+	//! Show matrix method
+    /*!
+     * Show basic matrix information
+     */
+	void ShowMe() const
+    {
+		std::cout<<"Basic information of coupling conditions matrix C:"<<std::endl;
+		global_Operator::ShowMe();
+    };
+	//@}
     
+	//! @name Assemble Methods
+	//@{
     //! Reserve method
     /*!
      * Reserve the proper space for the coupling conditions matrix C
@@ -364,17 +436,19 @@ private:
 	
 };
 
-//! Class for assembling a coupling conditions matrix.
+//! Class for assembling a trasmissibility fracture matrix.
 /*!
  * @class FluxOperator
- * This is the classe to assemble the finite volume transmissibility matrix (changed in sign)
- * in fracture. To do it a fracture loop is performed; to take into account 
- * the fractures intersection the "star-delta" transformation is employed.
+ * This is the classe to assemble the finite volume transmissibility matrix (changed in sign).
+ * To do it a fracture loop is performed; to take into account 
+ * the fractures intersection, the "star-delta" transformation is employed.
  * This class allow also the imposition of bcs on fractures.
  */
 class FluxOperator: public global_Operator
 {
-	
+
+public:
+
 //! Typedef for std::pair<UInt,UInt>
 /*!
 * @typedef Fracture_Juncture
@@ -388,7 +462,6 @@ typedef std::pair<UInt,UInt> Fracture_Juncture;
 */
 typedef Rigid_Mesh::Edge_ID Edge_ID;
 
-public:
     //! @name Constructor & Destructor
     //@{
     //! Construct a FluxOperator matrix.
@@ -416,8 +489,12 @@ public:
      * @param fj the Id of the juncture of two Fracture_Facet in 3D
      * @return The center of the juncture between two Fracure_Facet
      */
-    Point3D getBorderCenter(Fracture_Juncture fj) const;
-    
+	Point3D getBorderCenter(Fracture_Juncture fj) const
+	{
+		return ( M_mesh.getNodesVector()[fj.first] + (M_mesh.getNodesVector()[fj.second] -
+                 M_mesh.getNodesVector()[fj.first])/2. );
+	};
+	
     //! It is called by the method assemble() and it computes the coefficient alpha
     /*!
      * @param facetId the Id of a Facet
@@ -426,7 +503,7 @@ public:
      */
     Real findAlpha (const UInt & facetId, const Edge_ID * edge) const;
 
-    //! It is called by the method assemble() and it computes the coefficient alpha in the case of Dirichlet BC
+    //! It is called by the bcs method and it computes the coefficient alpha in the case of Dirichlet BC
     /*!
      * @param facetId the Id of a Facet
      * @param edge A pointer to a Rigid_mesh::Edge_ID
@@ -434,13 +511,26 @@ public:
      */
     Real findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const;
 
-    //! It is called by the method assemble() and it computes the coefficient alpha in the case of a fracture in 3D
+    //! It is called by the bcs method and it computes the coefficient alpha in the case of a fracture in 3D
     /*!
      * @param fj is a Fracture_Juncture
      * @param n_Id The Id of the Fracture_Facet
      * @return The computed coefficient alpha
      */
     Real findFracturesAlpha (const Fracture_Juncture fj, const UInt n_Id) const;
+    //@}
+    
+    //! @name Methods
+    //@{
+    //! Show matrix method
+    /*!
+     * Show basic matrix information
+     */
+	void ShowMe() const
+    {
+		std::cout<<"Basic information of trasmissibility matrix T:"<<std::endl;
+		global_Operator::ShowMe();
+    };
     //@}
     
     //! @name Assemble Methods
@@ -457,7 +547,7 @@ public:
      */
     void assemble();
     
-    //! Impose fractures BC method
+    //! Impose fractures BC method on the monolithic matrix and on the rhs
     /*!
      * This method impose the Neumann and Dirichlet BC on fractures
      * modifying the monolithic matrix and the rhs.
@@ -466,7 +556,7 @@ public:
      */
     void ImposeBConFractures(SpMat & S, Vector & rhs);
     
-    //! Impose fractures BC method
+    //! Impose fractures BC method on the trasmissibility matrix and on the rhs
     /*!
      * This method impose the Neumann and Dirichlet BC on fractures
      * modifying the transmissibility matrix and the rhs of the system.
@@ -495,7 +585,7 @@ class global_BulkBuilder
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a global_BulkBuilder operator.
+    //! Construct a global_BulkBuilder.
     /*!
      * @param rMesh A constant reference to the mesh
      * @param BCmap A constant reference to the boundary conditions
@@ -515,7 +605,7 @@ public:
     ~global_BulkBuilder() = default;
 	//@}
 
-	//! @name Methods
+	//! @name Assemble Methods
     //@{
     //! Reserve method for the monolithic matrix.
     /*!
@@ -533,13 +623,13 @@ public:
     /*!
      * Assemble the M, B, Dt matrices in the monolithic matrix S
      */
-    void assemble_Monolithic();
+    void build_Monolithic();
     
     //! Assemble method for the bulk matrices.
     /*!
      * Assemble the M, B, Dt matrices separately
      */
-    void assemble();
+    void build();
     //@}
 
 private:
@@ -557,7 +647,7 @@ private:
 	SpMat                         & S; 
 };
 
-//! Class for assembling a global bulk builder.
+//! Class for assembling a fracture builder.
 /*!
  * @class FractureBuilder
  * This is the classe to assemble the fracture builder. It's useful using a builder 
@@ -568,18 +658,10 @@ private:
  */
 class FractureBuilder
 {
-	
-//! Typedef for std::pair<UInt,UInt>
-/*!
-* @typedef Fracture_Juncture
-* This type definition permits to treat std::pair<UInt,UInt> as a Fracture_Juncture.
-*/
-typedef std::pair<UInt,UInt> Fracture_Juncture;
-
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a FractureBuilder operator.
+    //! Construct a FractureBuilder.
     /*!
      * @param rMesh A constant reference to the mesh
      * @param C_matrix A reference to the coupling conditions matrix
@@ -597,7 +679,7 @@ public:
     ~FractureBuilder() = default;
 	//@}
 
-	//! @name Methods
+	//! @name Assemble Methods
     //@{
     //! Reserve method for the monolithic matrix.
     /*!
@@ -615,13 +697,13 @@ public:
     /*!
      * Assemble the C, T and M matrices in the monolithic matrix S
      */
-    void assemble_Monolithic();
+    void build_Monolithic();
     
-    //! Assemble method for the bulk matrices.
+    //! Assemble method for the fracture matrices.
     /*!
      * Assemble the C, T and M matrices separately
      */
-    void assemble();
+    void build();
     //@}
 
 private:
@@ -640,6 +722,54 @@ private:
 };
 
 
-}
+//! Class for assembling a Stiffness MFD builder.
+/*!
+ * @class StiffnessMFD_Builder
+ * This is the class to assemble the Stiffness MFD builder. It builds up the matrix system S
+ * in an efficient way using the global_BulkBuilder and the FractureBuilder.
+ */
+class StiffnessMFD_Builder
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a StiffnessMFD_Builder.
+    /*!
+     * @param rMesh A constant reference to the mesh
+     * @param BCmap A constant reference to the boundary conditions
+     * @param Nrow  The row dimension of the stiffness matrix
+     * @param Ncol  The col dimension of the stiffness matrix
+     */
+	StiffnessMFD_Builder( const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, UInt Nrow, UInt Ncol ):
+		M_mesh(rMesh), M_bc(BCmap), S_matrix(new SpMat(Nrow, Ncol)), rhs_vector(new Vector(Vector::Constant(Nrow, 0.))){}
+	//! No Copy-Constructor
+    StiffnessMFD_Builder(const StiffnessMFD_Builder &) = delete;
+	//! No Empty-Constructor
+    StiffnessMFD_Builder() = delete;
+	//! Destructor
+    ~StiffnessMFD_Builder() = default;
+	//@}
+
+	//! @name Assemble Methods
+    //@{
+    //! Assemble method for the stiffness MFD matrix.
+    /*!
+     * Assemble the stiffness MFD matrix using the bulk and fracture builders.
+     */
+    void build();
+    //@}
+
+private:
+	//! Constant reference to the rigid mesh
+	const Rigid_Mesh              & M_mesh;
+	//! Constant reference to the boundary conditions
+	const BoundaryConditions      &	M_bc;
+	//! A reference to the monolithic matrix of the system
+	std::unique_ptr<SpMat>          S_matrix;
+	//! A reference to the rhs of the system
+	std::unique_ptr<Vector>         rhs_vector;  
+};
+
+} //FVCode3D
 
 #endif // __GLOBAL_OPERATOR_HPP__
