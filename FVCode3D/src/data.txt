@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir    = ./data/
-mesh_file   = cubePolyF2.fvg
+mesh_file   = cubePolyF2.fvg      
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output

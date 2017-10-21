@@ -438,7 +438,6 @@ private:
 	Real                           xsi;
 	//! The default parameter defining the coupling confition, it must be less or equal 1 and greater then 0
 	static constexpr Real          Default_xsi = 1.;
-	
 };
 
 //! Class for assembling a trasmissibility fracture matrix.
@@ -600,8 +599,8 @@ public:
      * @param S_matrix A reference to the monolithic matrix of the system
      */
 	global_BulkBuilder( const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, SpMat & M_matrix, SpMat & B_matrix,
-		SpMat & Dt_matrix, SpMat & S_matrix ):
-		M_mesh(rMesh), M_bc(BCmap), M(M_matrix), B(B_matrix), Dt(Dt_matrix), S(S_matrix){}
+		SpMat & Dt_matrix ):
+		M_mesh(rMesh), M_bc(BCmap), M(M_matrix), B(B_matrix), Dt(Dt_matrix){}
 	//! No Copy-Constructor
     global_BulkBuilder(const global_BulkBuilder &) = delete;
 	//! No Empty-Constructor
@@ -616,7 +615,7 @@ public:
     /*!
      * Reserve the proper space for the monolithic matrix S
      */
-    void reserve_space_Monolithic();
+    void reserve_space(SpMat & S);
     
     //! Reserve method for the bulk matrices.
     /*!
@@ -628,7 +627,7 @@ public:
     /*!
      * Assemble the M, B, Dt matrices in the monolithic matrix S
      */
-    void build_Monolithic();
+    void build(SpMat & S);
     
     //! Assemble method for the bulk matrices.
     /*!
@@ -648,8 +647,6 @@ private:
 	SpMat                         & B;
 	//! A reference to the transposed divergence modified matrix
 	SpMat                         & Dt;
-	//! A reference to the monolithic matrix of the system
-	SpMat                         & S; 
 };
 
 //! Class for assembling a fracture builder.
@@ -674,8 +671,8 @@ public:
      * @param M_matrix A reference to the inner product matrix
      * @param S_matrix A reference to the monolithic matrix of the system
      */
-	FractureBuilder( const Rigid_Mesh & rMesh, SpMat & C_matrix, FluxOperator & fo, SpMat & M_matrix, SpMat & S_matrix, const Real & xsiOfC ):
-		M_mesh(rMesh), C(C_matrix), FO(fo), M(M_matrix), S(S_matrix), xsi(xsiOfC){}
+	FractureBuilder( const Rigid_Mesh & rMesh, SpMat & C_matrix, FluxOperator & fo, SpMat & M_matrix, const Real & xsiOfC ):
+		M_mesh(rMesh), C(C_matrix), FO(fo), M(M_matrix), xsi(xsiOfC){}
 	//! No Copy-Constructor
     FractureBuilder(const FractureBuilder &) = delete;
 	//! No Empty-Constructor
@@ -690,7 +687,7 @@ public:
     /*!
      * Reserve the proper space for the monolithic matrix S
      */
-    void reserve_space_Monolithic();
+    void reserve_space(SpMat & S);
     
     //! Reserve method for the fracture matrices.
     /*!
@@ -702,7 +699,7 @@ public:
     /*!
      * Assemble the C, T and M matrices in the monolithic matrix S
      */
-    void build_Monolithic();
+    void build(SpMat & S);
     
     //! Assemble method for the fracture matrices.
     /*!
@@ -720,8 +717,6 @@ private:
 	FluxOperator                  & FO;
 	//! A reference to the inner product matrix
 	SpMat                         & M;
-	//! A reference to the monolithic matrix of the system
-	SpMat                         & S;
 	//! The xsi parameter of coupling conditions
 	const Real                    & xsi; 
 };

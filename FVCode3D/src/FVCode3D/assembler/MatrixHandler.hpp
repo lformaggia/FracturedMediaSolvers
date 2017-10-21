@@ -93,7 +93,7 @@ protected:
 
 //! Base class for assembling a FV system matrix
 /*!
- * @class MatrixHandler
+ * @class MatrixHandlerFV
  * This class is a base class used as a model for the derived 
  * FV classes (such as the FV stiffness matrix or FV mass matrix).
  * The used scheme is based on the Eigen triplets.
@@ -191,10 +191,10 @@ protected:
 
 //! Base class for assembling a MFD system matrix
 /*!
- * @class MatrixHandler
- * This class is a base class used as a model for the derived 
+ * @class MatrixHandlerMFD
+ * This class is a base class used as a model for the derived system 
  * MFD classes (such as the MFD stiffness matrix).
- * We build up matrix system directly with insert, so we do not need the
+ * We build up the matrix system directly with insert, so we do not need the
  * triplets but we need to compress it after having built it.
  * Abstract class.
  */

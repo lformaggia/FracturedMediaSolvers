@@ -22,7 +22,7 @@ class PropertiesMap;
 
 //! Class for assembling a stiffness matrix
 /*!
- * @class StiffMatrix
+ * @class StiffMatrixFV
  * This class constructs the FV stiffness-matrix for the Darcy problem.
  * The adopted technique is a two point finite volume method.
  * The fractures are considered as cells and take part to discretization.
@@ -202,7 +202,7 @@ protected:
 
 //! Class for assembling a MFD system matrix.
 /*!
- * @class StiffnessMFD_Builder
+ * @class StiffMatrixMFD
  * This is the class to assemble the MFD stiffness matrix. It builds up the matrix system S
  * in an efficient way using the global_BulkBuilder and the FractureBuilder. The bulk builder
  * builds up the M, B, Dt matrices, then we impose the bulk bcs on M and on the rhs. The 

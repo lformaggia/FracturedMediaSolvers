@@ -388,20 +388,20 @@ void StiffMatrixMFD::assemble()
 	fluxOP.ShowMe();
 	
 	// Define the global bulk builder
-	global_BulkBuilder gBulkBuilder( M_mesh, M_bc, gIP.getMatrix(), gDIV.getMatrix(), gDIV.getDtMatrix(), *M_Matrix );
+	global_BulkBuilder gBulkBuilder(M_mesh, M_bc, gIP.getMatrix(), gDIV.getMatrix(), gDIV.getDtMatrix());
 	// Reserve space for the bulk matrices
-	gBulkBuilder.reserve_space_Monolithic();
+	gBulkBuilder.reserve_space(*M_Matrix);
 	// Build the bulk matrices
-	gBulkBuilder.build_Monolithic();
+	gBulkBuilder.build(*M_Matrix);
 	// Impose bulk BCs
 	gIP.ImposeBC(*M_Matrix, *M_b);
 	
 	// Define the fracture builder
-	FractureBuilder FBuilder( M_mesh, coupling.getMatrix(), fluxOP, gIP.getMatrix(), *M_Matrix, coupling.get_xsi() );
+	FractureBuilder FBuilder(M_mesh, coupling.getMatrix(), fluxOP, gIP.getMatrix(), coupling.get_xsi());
 	// Reserve space for the fracture matrices
-	FBuilder.reserve_space_Monolithic();
+	FBuilder.reserve_space(*M_Matrix);
 	// Build the fracture matrices
-	FBuilder.build_Monolithic();
+	FBuilder.build(*M_Matrix);
 	// Impose fractures BCs
 	fluxOP.ImposeBConFractures(*M_Matrix, *M_b);
 }

@@ -19,7 +19,7 @@ class PropertiesMap;
 
 //! Class for assembling a mass matrix
 /*!
- * @class MassMatrix
+ * @class MassMatrixFV
  * This class constructs the mass-matrix.
  * The adopted technique is the one of the finite volume method:
  * it hence represents the volume of the cell. The fractures are considered as cells.

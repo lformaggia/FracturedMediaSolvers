@@ -256,6 +256,9 @@ void CouplingConditions::reserve_space()
 	M.reserve(MMatrix_elements);
 }
 
+
+constexpr Real CouplingConditions::Default_xsi;
+
 void CouplingConditions::assemble()
 {
 	auto & C = *M_matrix;
@@ -546,7 +549,7 @@ void FluxOperator::ImposeBConFractures(Vector & rhs)
 }
 
 
-void global_BulkBuilder::reserve_space_Monolithic() 
+void global_BulkBuilder::reserve_space(SpMat & S) 
 {
 	std::vector<UInt> Matrix_elements(S.cols(),0);
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
@@ -617,7 +620,7 @@ void global_BulkBuilder::reserve_space()
     Dt.reserve(DtMatrix_elements);	
 }
 
-void global_BulkBuilder::build_Monolithic()   
+void global_BulkBuilder::build(SpMat & S)   
 {
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
 	const UInt numFacets    = facetVectorRef.size();
@@ -756,7 +759,7 @@ void global_BulkBuilder::build()
 	std::cout<<"Done."<<std::endl;
 }
 
-void FractureBuilder::reserve_space_Monolithic()
+void FractureBuilder::reserve_space(SpMat & S)
 {
 	const UInt numFacetsTot = M.cols();
 	const UInt numCells     = M_mesh.getCellsVector().size(); 
@@ -811,7 +814,7 @@ void FractureBuilder::reserve_space()
 	M.reserve(MMatrix_elements);
 }
 
-void FractureBuilder::build_Monolithic()
+void FractureBuilder::build(SpMat & S)
 {
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
