@@ -24,7 +24,7 @@ class PropertiesMap;
  * The adopted technique is the one of the finite volume method:
  * it hence represents the volume of the cell. The fractures are considered as cells.
  */
-class MassMatrix: public MatrixHandler
+class MassMatrixFV: public MatrixHandlerFV
 {
 public:
     //! @name Constructor & Destructor
@@ -34,14 +34,14 @@ public:
     /*!
         @param rigid_mesh A Rigid_Mesh used to build the matrix
     */
-    MassMatrix(const Rigid_Mesh & rigid_mesh):
-        MatrixHandler(rigid_mesh) {}
+    MassMatrixFV(const Rigid_Mesh & rigid_mesh, UInt size):
+        MatrixHandlerFV(rigid_mesh, size) {}
     //! No Copy-Constructor
-    MassMatrix(const MassMatrix&) = delete;
+    MassMatrixFV(const MassMatrixFV&) = delete;
     //! No Empty-Constructor
-    MassMatrix() = delete;
+    MassMatrixFV() = delete;
     //! Destructor
-    ~MassMatrix() = default;
+    ~MassMatrixFV() = default;
     //@}
 
     //! @name Methods

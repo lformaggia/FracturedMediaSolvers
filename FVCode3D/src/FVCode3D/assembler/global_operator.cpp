@@ -46,12 +46,15 @@ void global_InnerProduct::assemble()
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
 	const UInt numFacets    = facetVectorRef.size();
 	
+	std::cout<<"Assembling mimetic inner product..."<<std::endl;
+	
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
 		// Definisco prodotto interno locale
 		local_InnerProduct   localIP(M_mesh,cell);
 		// Assemblo prodotto interno locale
 		localIP.assemble();
+		
 		auto & Mp = localIP.getMp();
 		
 		const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
@@ -89,11 +92,13 @@ void global_InnerProduct::assemble()
             }
         }
 	}
+	std::cout<<"Done."<<std::endl;
 }
 
 void global_InnerProduct::ImposeBC(SpMat & S, Vector & rhs)      
 {
-	std::cout << "Zero the Neumann row of S and impose BC on the rhs" << std::endl;
+	std::cout<<std::endl;
+	std::cout << "Zero the Neumann row of S and impose BC on the rhs" << std::endl<<std::endl;
 	
 	for( auto facet_it : M_mesh.getBorderFacetsIdsVector() )
 	{	
@@ -124,7 +129,7 @@ void global_InnerProduct::ImposeBC(SpMat & S, Vector & rhs)
 
 void global_InnerProduct::ImposeBC(Vector & rhs)      
 {
-	std::cout << "Zero the Neumann row of M and impose BC on the rhs" << std::endl;
+	std::cout << "Zero the Neumann row of M and impose BC on the rhs" << std::endl<<std::endl;;
 	auto & M = *M_matrix;
 	
 	for( auto facet_it : M_mesh.getBorderFacetsIdsVector() )
@@ -616,7 +621,9 @@ void global_BulkBuilder::build_Monolithic()
 {
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
 	const UInt numFacets    = facetVectorRef.size();
-	const UInt numFacetsTot = S.cols();
+	const UInt numFacetsTot = M.cols();
+	
+	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
 	
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
@@ -628,7 +635,7 @@ void global_BulkBuilder::build_Monolithic()
 		local_builder        localBUILDER(localIP,localDIV,cell);
 		// Assemblo matrici locali
 		localBUILDER.build();
-		
+
 		auto & Mp = localIP.getMp();
 		auto & Bp = localDIV.getBp();
 		
@@ -677,12 +684,15 @@ void global_BulkBuilder::build_Monolithic()
 			
         }
 	}
+	std::cout<<"Done."<<std::endl;
 }
 
 void global_BulkBuilder::build()   
 {
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
 	const UInt numFacets    = facetVectorRef.size();
+	
+	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
 	
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
@@ -743,6 +753,7 @@ void global_BulkBuilder::build()
 				
 		}
 	}
+	std::cout<<"Done."<<std::endl;
 }
 
 void FractureBuilder::reserve_space_Monolithic()
@@ -757,7 +768,8 @@ void FractureBuilder::reserve_space_Monolithic()
 		//This is for -T
 		auto f_neighbors = facet_it.getFractureNeighbors();
 		UInt N_neighbors = 0;
-        auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
+        auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture,std::vector<UInt> > p)
+			{N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
 		Matrix_elements[ numFacetsTot+numCells + facet_it.getFractureId() ] += N_neighbors + 1;
 		
@@ -781,7 +793,8 @@ void FractureBuilder::reserve_space()
 		//This is for -T
 		auto f_neighbors = facet_it.getFractureNeighbors();
 		UInt N_neighbors = 0;
-        auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture, std::vector<UInt> > p){N_neighbors += p.second.size() ;};
+        auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture, std::vector<UInt> > p)
+			{N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
 		TMatrix_elements[ facet_it.getFractureId() ] = N_neighbors + 1;
 		
@@ -909,44 +922,6 @@ void FractureBuilder::build()
     }
 }
 
-
-void StiffnessMFD_Builder::build()
-{
-	// Define the degrees of fredoom
-	const UInt numFracture  = M_mesh.getFractureFacetsIdsVector().size();
-	const UInt numFacetsTot = M_mesh.getFacetsVector().size() + numFracture;
-	const UInt numCell      = M_mesh.getCellsVector().size();
-	
-	// Define the global inner product
-	global_InnerProduct gIP(M_mesh, dFacet, dFacet, numFacetsTot, numFacetsTot, M_bc);
-	gIP.ShowMe();
-	
-	// Define the global divergence operator
-	global_Div gDIV(M_mesh, dCell, dFacet, numCell, numFacetsTot, M_bc);
-	gDIV.ShowMe();
-	
-	// Define the coupling conditions
-	CouplingConditions coupling(M_mesh, dFracture, dFacet, numFracture, numFacetsTot, gIP.getMatrix());
-	coupling.ShowMe();
-	
-	// Define the flux operator
-	FluxOperator fluxOP(M_mesh, dFracture, dFracture, numFracture, numFracture, M_bc);
-	fluxOP.ShowMe();
-	
-	// Define the global bulk builder
-	global_BulkBuilder gBulkBuilder( M_mesh, M_bc, gIP.getMatrix(), gDIV.getMatrix(), gDIV.getDtMatrix(), *S_matrix );
-	// Build the bulk problem
-	gBulkBuilder.build_Monolithic();
-	// Impose BC on bulk
-	gIP.ImposeBC(*S_matrix, *rhs_vector);
-	
-	// Define the fracture builder
-	FractureBuilder FBuilder( M_mesh, coupling.getMatrix(), fluxOP, gIP.getMatrix(), *S_matrix, coupling.get_xsi() );
-	// Build the fracture problem
-	FBuilder.build_Monolithic();
-	// Impose BC on fractures
-	fluxOP.ImposeBConFractures(*S_matrix, *rhs_vector);
-}
 
 }  //FVCode3d
 

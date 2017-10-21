@@ -24,16 +24,21 @@ namespace FVCode3D
 * This enumerator is used to show the type of discretization of row/column
 * of the operators.
 */
-enum dType{dCell, dFacet, dFracture};
-	
-std::ostream & operator<<(std::ostream & o, const dType & d)
+enum dType{dFacet, dCell, dFracture};
+
+inline std::ostream & operator<<(std::ostream & o, const dType & d)
 {
-	if(d == dCell)
-		std::cout<<"Cell type";
-	if(d == dFacet)
-		std::cout<<"Facet type";
-	if(d == dFracture)
-		std::cout<<"Fracture type";			
+	switch(d)
+	{
+	case dFacet    :
+		o<<"Facet type";
+		break;
+	case dCell     :
+		o<<"Cell type";
+		break;
+	case dFracture :
+		o<<"Fracture type";	
+	}		
 	return o;
 };
 		
@@ -132,7 +137,7 @@ public:
 		std::cout<<"Discretizzazione righe : "<<row_policy<<std::endl;
 		std::cout<<"Numero righe : "<<Nrow<<std::endl;
 		std::cout<<"Discretizzazione colonne : "<<col_policy<<std::endl;
-		std::cout<<"Numero colonne : "<<Ncol<<std::endl;
+		std::cout<<"Numero colonne : "<<Ncol<<std::endl<<std::endl;
 	};
 	//@}
   
@@ -719,55 +724,6 @@ private:
 	SpMat                         & S;
 	//! The xsi parameter of coupling conditions
 	const Real                    & xsi; 
-};
-
-
-//! Class for assembling a Stiffness MFD builder.
-/*!
- * @class StiffnessMFD_Builder
- * This is the class to assemble the Stiffness MFD builder. It builds up the matrix system S
- * in an efficient way using the global_BulkBuilder and the FractureBuilder.
- */
-class StiffnessMFD_Builder
-{
-public:
-    //! @name Constructor & Destructor
-    //@{
-    //! Construct a StiffnessMFD_Builder.
-    /*!
-     * @param rMesh A constant reference to the mesh
-     * @param BCmap A constant reference to the boundary conditions
-     * @param Nrow  The row dimension of the stiffness matrix
-     * @param Ncol  The col dimension of the stiffness matrix
-     */
-	StiffnessMFD_Builder( const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, UInt Nrow, UInt Ncol ):
-		M_mesh(rMesh), M_bc(BCmap), S_matrix(new SpMat(Nrow, Ncol)), rhs_vector(new Vector(Vector::Constant(Nrow, 0.))){}
-	//! No Copy-Constructor
-    StiffnessMFD_Builder(const StiffnessMFD_Builder &) = delete;
-	//! No Empty-Constructor
-    StiffnessMFD_Builder() = delete;
-	//! Destructor
-    ~StiffnessMFD_Builder() = default;
-	//@}
-
-	//! @name Assemble Methods
-    //@{
-    //! Assemble method for the stiffness MFD matrix.
-    /*!
-     * Assemble the stiffness MFD matrix using the bulk and fracture builders.
-     */
-    void build();
-    //@}
-
-private:
-	//! Constant reference to the rigid mesh
-	const Rigid_Mesh              & M_mesh;
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions      &	M_bc;
-	//! A reference to the monolithic matrix of the system
-	std::unique_ptr<SpMat>          S_matrix;
-	//! A reference to the rhs of the system
-	std::unique_ptr<Vector>         rhs_vector;  
 };
 
 } //FVCode3D

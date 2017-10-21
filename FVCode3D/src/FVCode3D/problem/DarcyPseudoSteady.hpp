@@ -11,6 +11,7 @@
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
 #include <FVCode3D/assembler/Mass.hpp>
+#include <exception>
 
 namespace FVCode3D
 {
@@ -99,7 +100,7 @@ public:
      * The BCs and the source are not added to the RHS.
      * To be called only once.
      */
-    virtual void initialize();
+    virtual void initialize() throw();
 
     //! Assemble matrix method
     /*!
@@ -142,9 +143,9 @@ protected:
     bool M_isInitialized;
 
     //! Pointer to the mass matrix
-    std::unique_ptr<MassMatrix> M_M;
+    std::unique_ptr<MassMatrixFV> M_M;
     //! Pointer to the stiffness matrix
-    std::unique_ptr<StiffMatrix> M_S;
+    std::unique_ptr<StiffMatrixFV> M_S;
 };
 
 //! Specialization class that defines the pseudo-steady-state Darcy problem for the BDF2 time scheme
@@ -206,7 +207,7 @@ public:
      * The BCs and the source are not added to the RHS.
      * To be called only once.
      */
-    virtual void initialize();
+    virtual void initialize() throw();
 
     //! Assemble the linear system
     /*!
@@ -257,9 +258,9 @@ protected:
     bool M_isInitialized;
 
     //! Pointer to the mass matrix
-    std::unique_ptr<MassMatrix> M_M;
+    std::unique_ptr<MassMatrixFV> M_M;
     //! Pointer to the stiffness matrix
-    std::unique_ptr<StiffMatrix> M_S;
+    std::unique_ptr<StiffMatrixFV> M_S;
 };
 
 
@@ -281,16 +282,18 @@ assemble()
 
 template <class QRMatrix, class QRFracture, typename MatrixType>
 void DarcyPseudoSteady< QRMatrix, QRFracture, MatrixType, Implicit >::
-initialize()
+initialize() throw()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new MassMatrix(this->M_mesh) );
+    M_M.reset( new MassMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size()) );
     M_M->assemble();
     M_M->closeMatrix();
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
-    M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
+    M_S.reset( new StiffMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
@@ -299,7 +302,9 @@ initialize()
     }
     else if(this->M_numet == Data::NumericalMethodType::MFD)
     {
-        M_S->assembleMFD();
+		std::stringstream error;
+		error << "Transient not supported for the MFD up to now";
+		throw std::runtime_error(error.str());
     }
 
     this->M_A = M_S->getMatrix() + M_M->getMatrix();
@@ -365,16 +370,18 @@ assemble()
 
 template <class QRMatrix, class QRFracture, typename MatrixType>
 void DarcyPseudoSteady< QRMatrix, QRFracture, MatrixType, BDF2 >::
-initialize()
+initialize() throw()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new MassMatrix(this->M_mesh) );
+    M_M.reset( new MassMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size()) );
     M_M->assemble();
     M_M->closeMatrix();
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
-    M_S.reset( new StiffMatrix(this->M_mesh, this->M_bc) );
+    M_S.reset( new StiffMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
@@ -383,7 +390,9 @@ initialize()
     }
     else if(this->M_numet == Data::NumericalMethodType::MFD)
     {
-        M_S->assembleMFD();
+		std::stringstream error;
+		error << "Transient not supported for the MFD up to now";
+		throw std::runtime_error(error.str());
     }
 
     this->M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();

@@ -170,7 +170,7 @@ int main(int argc, char * argv[])
     std::cout << "hMin: " << myrmesh.getMinEdgeSize() << std::endl;
     std::cout << "hMax: " << myrmesh.getMaxEdgeSize() << std::endl;
     std::cout << "hAve: " << myrmesh.getAveEdgeSize() << std::endl;
-
+	std::cout << std::endl;
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
 #ifdef FVCODE3D_EXPORT
@@ -184,7 +184,7 @@ int main(int argc, char * argv[])
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 #endif // FVCODE3D_EXPORT
 
-    std::cout << "Build problem..." << std::flush;
+    std::cout << "Define the problem..." << std::flush;
     Pb * darcy(nullptr);
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
     {
@@ -204,10 +204,13 @@ int main(int argc, char * argv[])
 
     MSR<Pb> * multipleSubRegions(nullptr);
 
-    std::cout << "Solve problem..." << std::flush;
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
     {
+		std::cout << "Assemble the problem..." << std::endl<<std::endl;
         darcy->assemble();
+        std::cout<<"Assembling done."<<std::endl<<std::endl;
+        std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+        
         if(dataPtr->MSROn())
         {
             multipleSubRegions = new MSR<Pb>(darcy, dataPtr);
@@ -218,7 +221,10 @@ int main(int argc, char * argv[])
             FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
             fpd.apply(dataPtr->getPressuresInFractures());
         }
+        std::cout << "Solve the problem..." << std::endl<<std::endl;
         darcy->solve();
+        std::cout<<"done."<<std::endl<<std::endl;
+        
         if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
         {
             std::cout << std::endl;
@@ -284,7 +290,6 @@ int main(int argc, char * argv[])
 #endif // FVCODE3D_EXPORT
         }
     }
-    std::cout << " done." << std::endl << std::endl;
 
     if(dataPtr->MSROn())
     {

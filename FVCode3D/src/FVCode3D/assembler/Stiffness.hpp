@@ -23,11 +23,11 @@ class PropertiesMap;
 //! Class for assembling a stiffness matrix
 /*!
  * @class StiffMatrix
- * This class constructs the stiffness-matrix for the Darcy problem.
+ * This class constructs the FV stiffness-matrix for the Darcy problem.
  * The adopted technique is a two point finite volume method.
  * The fractures are considered as cells and take part to discretization.
  */
-class StiffMatrix: public MatrixHandler
+class StiffMatrixFV: public MatrixHandlerFV
 {
 
     //! Typedef for std::pair<UInt,UInt>
@@ -58,25 +58,31 @@ public:
      * @param rigid_mesh A Rigid_Mesh used to build the matrix
      * @param BC Boundary conditions given in the container BoundaryConditions
      */
-    StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC,
-     Data::NumericalMethodType M_numet = Data::NumericalMethodType::FV):
-        MatrixHandler(rigid_mesh,M_numet), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
+    StiffMatrixFV(const Rigid_Mesh & rigid_mesh, UInt size, const BoundaryConditions & BC):
+        MatrixHandlerFV(rigid_mesh, size), M_b(new Vector(Vector::Constant(size, 0.))),
         M_bc(BC) {}
     //! No Copy-Constructor
-    StiffMatrix(const StiffMatrix &) = delete;
+    StiffMatrixFV(const StiffMatrixFV &) = delete;
     //! No Empty-Constructor
-    StiffMatrix() = delete;
+    StiffMatrixFV() = delete;
     //! Destructor
-    ~StiffMatrix() = default;
+    ~StiffMatrixFV() = default;
     //@}
 
     //! @name Get Methods
     //@{
-    //! Get BC vector (const)
+    //! Get BC vector (read only)
     /*!
      * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
      */
-    const Vector & getBCVector() const
+    const Vector & getBCVector_readOnly() const
+        {return *M_b;}
+        
+    //! Get BC vector 
+    /*!
+     * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    Vector & getBCVector() const
         {return *M_b;}
     //@}
 
@@ -87,14 +93,6 @@ public:
      * Assemble the stiffness matrix
      */
     void assemble();
-
-    //! @name Methods
-    //@{
-    //! Assemble method with MFD
-    /*!
-     * Assemble the stiffness matrix
-     */
-    void assembleMFD();
 
     //! Set offsets
     /*!
@@ -199,6 +197,71 @@ protected:
     std::unique_ptr<Vector> M_b;
     //! The constant container of the BCs
     const BoundaryConditions & M_bc;
+};
+
+
+//! Class for assembling a MFD system matrix.
+/*!
+ * @class StiffnessMFD_Builder
+ * This is the class to assemble the MFD stiffness matrix. It builds up the matrix system S
+ * in an efficient way using the global_BulkBuilder and the FractureBuilder. The bulk builder
+ * builds up the M, B, Dt matrices, then we impose the bulk bcs on M and on the rhs. The 
+ * fracture builder builds up the coupling conditions matrices C and Ct, it modifies properly
+ * the M matrix (coupling conditions again) and builds up the trasmissibility matrix -T.
+ * Then the fracture bcs are imposed on -T and on the rhs.
+ */
+class StiffMatrixMFD: public MatrixHandlerMFD
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a StiffnessMFD_Builder.
+    /*!
+     * @param rMesh A constant reference to the mesh
+     * @param BCmap A constant reference to the boundary conditions
+     * @param size  The dimension of the stiffness matrix
+     */
+	StiffMatrixMFD( const Rigid_Mesh & rMesh, UInt size, const BoundaryConditions & BCmap):
+		MatrixHandlerMFD(rMesh, size), M_bc(BCmap), M_b(new Vector(Vector::Constant(size, 0.))){}
+	//! No Copy-Constructor
+    StiffMatrixMFD(const StiffMatrixMFD &) = delete;
+	//! No Empty-Constructor
+    StiffMatrixMFD() = delete;
+	//! Destructor
+    ~StiffMatrixMFD() = default;
+	//@}
+
+    //! @name Get Methods
+    //@{
+    //! Get BC vector (read only)
+    /*!
+     * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    const Vector & getBCVector_readOnly() const
+        {return *M_b;}
+        
+    //! Get BC vector 
+    /*!
+     * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    Vector & getBCVector() const
+        {return *M_b;}
+    //@}
+
+	//! @name Assemble Methods
+    //@{
+    //! Assemble method for the MFD stiffness matrix.
+    /*!
+     * Assemble the MFD stiffness matrix using the bulk and fracture builders.
+     */
+    void assemble();
+    //@}
+
+private:
+	//! Constant reference to the boundary conditions
+	const BoundaryConditions      &	M_bc;
+	//! A reference to the rhs of the system
+	std::unique_ptr<Vector>         M_b;  
 };
 
 } // namespace FVCode3D

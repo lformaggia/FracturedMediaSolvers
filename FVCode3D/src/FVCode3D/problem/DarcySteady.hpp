@@ -89,20 +89,26 @@ assembleMatrix()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-	StiffMatrix S(this->M_mesh, this->M_bc, this->M_numet);
-
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
+		StiffMatrixFV S(this->M_mesh, this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc);
         S.assemble();
         S.closeMatrix();
+        
+        this->M_A = S.getMatrix();    // Move semantic!!!
+		this->M_b = S.getBCVector();  // Move semantic!!!
     }
     else if(this->M_numet == Data::NumericalMethodType::MFD)
     {
-        S.assembleMFD();
+        StiffMatrixMFD S(this->M_mesh, this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size()
+			+ this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc);
+		S.assemble();
+		S.CompressMatrix();
+		
+		this->M_A = S.getMatrix();    // Move semantic!!!
+		this->M_b = S.getBCVector();  // Move semantic!!!
     }
-
-    this->M_A = S.getMatrix();
-    this->M_b = S.getBCVector();
 } // DarcySteady::assembleMatrix
 
 template <class QRMatrix, class QRFracture, typename MatrixType>
