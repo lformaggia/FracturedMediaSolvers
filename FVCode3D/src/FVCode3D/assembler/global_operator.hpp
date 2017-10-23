@@ -231,14 +231,14 @@ public:
     /*!
      * Assemble the local face contributions in the global system matrix 
      */
-    void assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
+    void assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
 		const Rigid_Mesh::Cell & cell, SpMat & S);
 		
 	//! Assemble face method 
     /*!
      * Assemble the local face contributions in the inner product matrix 
      */
-    void assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
+    void assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
 		const Rigid_Mesh::Cell & cell);
 
     //! Assemble method
@@ -353,14 +353,14 @@ public:
     /*!
      * Assemble the local face contributions in the global system matrix 
      */
-    void assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+    void assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell, SpMat & S);
 		
 	//! Assemble face method 
     /*!
      * Assemble the local face contributions in the divergence matrix 
      */
-    void assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+    void assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell);
 
     //! Assemble method
@@ -627,9 +627,8 @@ public:
      * @param Dt_matrix A reference to the transposed modified divergence matrix
      * @param S_matrix A reference to the monolithic matrix of the system
      */
-	global_BulkBuilder( const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, SpMat & M_matrix, SpMat & B_matrix,
-		SpMat & Dt_matrix ):
-		M_mesh(rMesh), M_bc(BCmap), M(M_matrix), B(B_matrix), Dt(Dt_matrix){}
+	global_BulkBuilder(const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, global_InnerProduct & ip, global_Div & div):
+		M_mesh(rMesh), M_bc(BCmap), IP(ip), Div(div){}
 	//! No Copy-Constructor
     global_BulkBuilder(const global_BulkBuilder &) = delete;
 	//! No Empty-Constructor
@@ -670,12 +669,10 @@ private:
 	const Rigid_Mesh              & M_mesh;
 	//! Constant reference to the boundary conditions
 	const BoundaryConditions      &	M_bc;
-	//! A reference to the inner product matrix
-	SpMat                         & M;
-	//! A reference to the divergence matrix
-	SpMat                         & B;
-	//! A reference to the transposed divergence modified matrix
-	SpMat                         & Dt;
+	//! A reference to the inner product
+	global_InnerProduct           & IP;
+	//! A reference to the divergence operator
+	global_Div                    & Div;
 };
 
 //! Class for assembling a fracture builder.

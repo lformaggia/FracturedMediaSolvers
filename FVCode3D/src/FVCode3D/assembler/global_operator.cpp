@@ -40,9 +40,14 @@ void global_InnerProduct::reserve_space()
     M.reserve(Matrix_elements);		
 }
 
-void global_InnerProduct::assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
+void global_InnerProduct::assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
 	const Rigid_Mesh::Cell & cell, SpMat & S)
 {   
+	UInt i = cell.getFacetsIds()[iloc];              //global Id    
+	// This is to take into account the decoupling of fractures facets
+	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[i])<0) )
+		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
+	
 	if( Mp(iloc,iloc) != 0. )
 			S.coeffRef(i,i) += Mp(iloc,iloc);
 
@@ -60,10 +65,15 @@ void global_InnerProduct::assembleFace(const UInt & iloc, const UInt & i, const 
 	}
 }
 
-void global_InnerProduct::assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
+void global_InnerProduct::assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
 	const Rigid_Mesh::Cell & cell)
 {   
 	auto & M = *M_matrix;
+	UInt i = cell.getFacetsIds()[iloc];              //global Id    
+	// This is to take into account the decoupling of fractures facets
+	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[i])<0) )
+		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
+	
 	if( Mp(iloc,iloc) != 0. )
 			M.coeffRef(i,i) += Mp(iloc,iloc);
 
@@ -83,57 +93,18 @@ void global_InnerProduct::assembleFace(const UInt & iloc, const UInt & i, const 
 
 void global_InnerProduct::assemble()   
 {
-	auto & M                = *M_matrix;
-	auto & facetVectorRef   = M_mesh.getFacetsVector();
-	const UInt numFacets    = facetVectorRef.size();
-	
 	std::cout<<"Assembling mimetic inner product..."<<std::endl;
-	
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
 		// Definisco prodotto interno locale
 		local_InnerProduct   localIP(M_mesh,cell);
 		// Assemblo prodotto interno locale
 		localIP.assemble();
-		
-		auto & Mp = localIP.getMp();
-		
-		const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
-		const UInt numCellFacets  = cellFacetsId.size();
-		
 		// Assemblo matrice locale in matrice globale
-		for(UInt iloc=0; iloc<numCellFacets; ++iloc){
-			
-            UInt i = cellFacetsId[iloc];                                 //global Id
-            const Rigid_Mesh::Facet & fac = facetVectorRef[i];     
-            
-            // This is to take into account the decoupling of fractures facets
-			if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					i = numFacets + fac.getFractureFacetId();
-
-            Real Mcoeff = Mp(iloc,iloc);
-
-            if( Mcoeff != 0. )
-                M.coeffRef(i,i) += Mcoeff;
-
-            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc){
-
-                UInt j = cellFacetsId[jloc];
-                const Rigid_Mesh::Facet & fac = facetVectorRef[j];
-                Mcoeff = Mp(iloc,jloc);
-                
-                // This is to take into account the decoupling of fractures facets
-				if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					j = numFacets + fac.getFractureFacetId();
-
-                if (Mcoeff != 0.){
-                    M.coeffRef(i,j) += Mcoeff;
-                    M.coeffRef(j,i) += Mcoeff;
-                } 
-            }
-        }
+		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
+			assembleFace(iloc, localIP.getMp(), cell);
+		std::cout<<"Done."<<std::endl;
 	}
-	std::cout<<"Done."<<std::endl;
 }
 
 void global_InnerProduct::ImposeBC(SpMat & S, Vector & rhs)      
@@ -235,78 +206,58 @@ void global_Div::reserve_space()
     Dt.reserve(DtMatrix_elements);	
 }
 
-void global_Div::assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+void global_Div::assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell, SpMat & S)
 {
+	UInt i = cell.getFacetsIds()[iloc];              //global Id    
+	auto & fac = M_mesh.getFacetsVector()[i];
+	// This is to take into account the decoupling of fractures facets
+	if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+		i = M_mesh.getFacetsVector().size() + fac.getFractureFacetId();
+					
 	if( Bp[iloc] != 0. )
 	{
-		S.insert(M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() +
-			cell.getId(), i) = Bp[iloc];
-		
-		if( ! (  M_mesh.getFacetsVector()[i].isBorderFacet() &&
-			(M_bc.getBordersBCMap().at( M_mesh.getFacetsVector()[i].getBorderId()).getBCType() == Neumann) ) )
+		S.insert(M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() + cell.getId(), i) = Bp[iloc];
 			
-			S.insert(i, M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() +
-				cell.getId()) = Bp[iloc];
+	if( !( fac.isBorderFacet() &&
+		( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) ) )
+		S.insert(i, M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() + cell.getId()) = Bp[iloc];
 	}
 }
 
-void global_Div::assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+void global_Div::assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell)
 {
 	auto & B = *M_matrix;
 	auto & Dt = *Dt_matrix; 
+	UInt i = cell.getFacetsIds()[iloc];              //global Id    
+	auto & fac = M_mesh.getFacetsVector()[i];
+	// This is to take into account the decoupling of fractures facets
+	if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+		i = M_mesh.getFacetsVector().size() + fac.getFractureFacetId();
+					
 	if( Bp[iloc] != 0. )
 	{
 		B.insert(cell.getId(), i) = Bp[iloc];
-		
-		if( ! ( M_mesh.getFacetsVector()[i].isBorderFacet() &&
-			(M_bc.getBordersBCMap().at(M_mesh.getFacetsVector()[i].getBorderId()).getBCType() == Neumann) ) )
 			
-			Dt.insert(i, cell.getId()) = Bp[iloc];
+	if( !( fac.isBorderFacet() &&
+		( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) ) )
+		Dt.insert(i,cell.getId()) = Bp[iloc];
 	}
 }
 
 
 void global_Div::assemble()   
 {
-	auto & B                = *M_matrix;
-	auto & Dt               = *Dt_matrix;
-	auto & facetVectorRef   = M_mesh.getFacetsVector();
-	const UInt numFacets    = facetVectorRef.size();
-	
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
 		// Definisco divergenza locale
 		local_Div   localDIV(M_mesh,cell);
 		// Assemblo divergenza locale
 		localDIV.assemble();
-		auto & Bp = localDIV.getBp();
-		
-		const UInt cellId = cell.getId();
-		const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
-		const UInt numCellFacets  = cellFacetsId.size();
-		
 		// Assemblo matrice locale in matrice globale
-		for(UInt iloc=0; iloc<numCellFacets; ++iloc){
-			
-            UInt i = cellFacetsId[iloc];                                 //global Id
-            const Rigid_Mesh::Facet & fac = facetVectorRef[i]; 
-            const Real Bcoeff = Bp[iloc];    
-            
-            // This is to take into account the decoupling of fractures facets
-			if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					i = numFacets + fac.getFractureFacetId();
-
-            if( Bcoeff != 0. ){
-				B.insert(cellId, i) = Bcoeff;
-				
-				if( fac.isBorderFacet() &&
-				( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) )
-					continue;
-				Dt.insert(i, cellId) = Bcoeff;
-			}
-        }
+		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
+			assembleFace(iloc, localDIV.getBp(), cell);
 	}
 }
 
@@ -627,7 +578,7 @@ void global_BulkBuilder::reserve_space(SpMat & S)
 {
 	std::vector<UInt> Matrix_elements(S.cols(),0);
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
-	const UInt numFacetsTot = M.cols();
+	const UInt numFacetsTot = IP.getMatrix_readOnly().cols();
 	
 	for (auto& cell : M_mesh.getCellsVector())
 	{
@@ -658,6 +609,9 @@ void global_BulkBuilder::reserve_space(SpMat & S)
 
 void global_BulkBuilder::reserve_space() 
 {
+	auto & M = IP.getMatrix();
+	auto & B = Div.getMatrix();
+	auto & Dt = Div.getDtMatrix();
 	std::vector<UInt> MMatrix_elements(M.cols(),0);
 	std::vector<UInt> BMatrix_elements(B.cols(),0);
 	std::vector<UInt> DtMatrix_elements(Dt.cols(),0);
@@ -695,11 +649,7 @@ void global_BulkBuilder::reserve_space()
 }
 
 void global_BulkBuilder::build(SpMat & S)   
-{
-	auto & facetVectorRef   = M_mesh.getFacetsVector();
-	const UInt numFacets    = facetVectorRef.size();
-	const UInt numFacetsTot = M.cols();
-	
+{	
 	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
 	
 	for (auto& cell : M_mesh.getCellsVector())
@@ -712,65 +662,20 @@ void global_BulkBuilder::build(SpMat & S)
 		local_builder        localBUILDER(localIP,localDIV,cell);
 		// Assemblo matrici locali
 		localBUILDER.build();
-
-		auto & Mp = localIP.getMp();
-		auto & Bp = localDIV.getBp();
-		
-		const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
-		const UInt numCellFacets  = cellFacetsId.size();
-		const UInt cellId         = cell.getId();
-		
 		// Assemblo matrice locale in matrice globale
-		for(UInt iloc=0; iloc<numCellFacets; ++iloc)
-		{
-            UInt i = cellFacetsId[iloc];                                 //global Id
-            const Rigid_Mesh::Facet & fac = facetVectorRef[i];     
-            
-            // This is to take into account the decoupling of fractures facets
-			if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					i = numFacets + fac.getFractureFacetId();
-
-	        Real Bcoeff = Bp[iloc];
-            if( Bcoeff != 0. )
-				S.insert(numFacetsTot + cellId, i) = Bcoeff;
-
-            Real Mcoeff = Mp(iloc,iloc);
-            if( Mcoeff != 0. )
-                S.coeffRef(i,i) += Mcoeff;
-
-            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc)
-            {
-                UInt j = cellFacetsId[jloc];
-                const Rigid_Mesh::Facet & fac = facetVectorRef[j];
-                Mcoeff = Mp(iloc,jloc);
-                
-                // This is to take into account the decoupling of fractures facets
-				if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					j = numFacets + fac.getFractureFacetId();
-
-                if (Mcoeff != 0.){
-                    S.coeffRef(i,j) += Mcoeff;
-                    S.coeffRef(j,i) += Mcoeff;
-                } 
-            }
-            
-			if( fac.isBorderFacet() &&
-				( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) )
-				continue;
-			S.insert(i, numFacetsTot + cellId) = Bcoeff;
-			
-        }
+		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
+		{			
+			IP.assembleFace(iloc, localIP.getMp(), cell, S);
+			Div.assembleFace(iloc, localDIV.getBp(), cell, S);
+		}
 	}
 	std::cout<<"Done."<<std::endl;
 }
 
 void global_BulkBuilder::build()   
 {
-	auto & facetVectorRef   = M_mesh.getFacetsVector();
-	const UInt numFacets    = facetVectorRef.size();
-	
 	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
-	
+		
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
 		// Definisco prodotto interno locale
@@ -781,53 +686,11 @@ void global_BulkBuilder::build()
 		local_builder        localBUILDER(localIP,localDIV,cell);
 		// Assemblo matrici locali
 		localBUILDER.build();
-		
-		auto & Mp = localIP.getMp();
-		auto & Bp = localDIV.getBp();
-		
-		const std::vector<UInt> & cellFacetsId( cell.getFacetsIds() );
-		const UInt numCellFacets  = cellFacetsId.size();
-		const UInt cellId         = cell.getId();
-		
-		// Assemblo matrice locale in matrice globale
-		for(UInt iloc=0; iloc<numCellFacets; ++iloc)
-		{	
-            UInt i = cellFacetsId[iloc];                                 //global Id
-            const Rigid_Mesh::Facet & fac = facetVectorRef[i];     
-            
-            // This is to take into account the decoupling of fractures facets
-			if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					i = numFacets + fac.getFractureFacetId();
-
-	        Real Bcoeff = Bp[iloc];
-            if( Bcoeff != 0. )
-				B.insert(cellId, i) = Bcoeff;
-
-            Real Mcoeff = Mp(iloc,iloc);
-            if( Mcoeff != 0. )
-                M.coeffRef(i,i) += Mcoeff;
-
-            for(UInt jloc=iloc+1; jloc<numCellFacets; ++jloc){
-
-                UInt j = cellFacetsId[jloc];
-                const Rigid_Mesh::Facet & fac = facetVectorRef[j];
-                Mcoeff = Mp(iloc,jloc);
-                
-                // This is to take into account the decoupling of fractures facets
-				if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
-					j = numFacets + fac.getFractureFacetId();
-
-                if (Mcoeff != 0.){
-                    M.coeffRef(i,j) += Mcoeff;
-                    M.coeffRef(j,i) += Mcoeff;
-                } 
-            }
-            
-			if( fac.isBorderFacet() &&
-				( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) )
-				continue;
-			Dt.insert(i, cellId) = Bcoeff;
-				
+		// Assemblo matrici locali in matrici globali
+		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
+		{						
+			IP.assembleFace(iloc, localIP.getMp(), cell);
+			Div.assembleFace(iloc, localDIV.getBp(), cell);
 		}
 	}
 	std::cout<<"Done."<<std::endl;

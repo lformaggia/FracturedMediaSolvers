@@ -388,7 +388,7 @@ void StiffMatrixMFD::assemble()
 	fluxOP.ShowMe();
 	
 	// Define the global bulk builder
-	global_BulkBuilder gBulkBuilder(M_mesh, M_bc, gIP.getMatrix(), gDIV.getMatrix(), gDIV.getDtMatrix());
+	global_BulkBuilder gBulkBuilder(M_mesh, M_bc, gIP, gDIV);
 	// Reserve space for the bulk matrices
 	gBulkBuilder.reserve_space(*M_Matrix);
 	// Build the bulk matrices
