@@ -17,6 +17,7 @@
 
 namespace FVCode3D
 {
+	using Eigen::Dynamic;
 	
 //! Define the type of discretization
 /*!
@@ -225,6 +226,20 @@ public:
      * Reserve the proper space for the inner product matrix
      */
     void reserve_space();
+    
+    //! Assemble face method for the monolithic system
+    /*!
+     * Assemble the local face contributions in the global system matrix 
+     */
+    void assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
+		const Rigid_Mesh::Cell & cell, SpMat & S);
+		
+	//! Assemble face method 
+    /*!
+     * Assemble the local face contributions in the inner product matrix 
+     */
+    void assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
+		const Rigid_Mesh::Cell & cell);
 
     //! Assemble method
     /*!
@@ -333,10 +348,24 @@ public:
      * Reserve the proper space for the div matrix
      */
     void reserve_space();
+    
+    //! Assemble face method for the monolithic system
+    /*!
+     * Assemble the local face contributions in the global system matrix 
+     */
+    void assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+		const Rigid_Mesh::Cell & cell, SpMat & S);
+		
+	//! Assemble face method 
+    /*!
+     * Assemble the local face contributions in the divergence matrix 
+     */
+    void assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+		const Rigid_Mesh::Cell & cell);
 
     //! Assemble method
     /*!
-     * Assemble the global inner div matrix
+     * Assemble the global divergence matrix
      */
     void assemble();
     //@}

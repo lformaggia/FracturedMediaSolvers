@@ -40,6 +40,47 @@ void global_InnerProduct::reserve_space()
     M.reserve(Matrix_elements);		
 }
 
+void global_InnerProduct::assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
+	const Rigid_Mesh::Cell & cell, SpMat & S)
+{   
+	if( Mp(iloc,iloc) != 0. )
+			S.coeffRef(i,i) += Mp(iloc,iloc);
+
+	for(UInt jloc=iloc+1; jloc<cell.getFacetsIds().size(); ++jloc)
+	{
+		UInt j = cell.getFacetsIds()[jloc];
+		// This is to take into account the decoupling of fractures facets
+		if( M_mesh.getFacetsVector()[j].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[j])<0) )
+			j = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[j].getFractureFacetId();
+		if (Mp(iloc,jloc) != 0.)
+		{
+			S.coeffRef(i,j) += Mp(iloc,jloc);
+			S.coeffRef(j,i) += Mp(iloc,jloc);
+		} 
+	}
+}
+
+void global_InnerProduct::assembleFace(const UInt & iloc, const UInt & i, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
+	const Rigid_Mesh::Cell & cell)
+{   
+	auto & M = *M_matrix;
+	if( Mp(iloc,iloc) != 0. )
+			M.coeffRef(i,i) += Mp(iloc,iloc);
+
+	for(UInt jloc=iloc+1; jloc<cell.getFacetsIds().size(); ++jloc)
+	{
+		UInt j = cell.getFacetsIds()[jloc];
+		// This is to take into account the decoupling of fractures facets
+		if( M_mesh.getFacetsVector()[j].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[j])<0) )
+			j = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[j].getFractureFacetId();
+		if (Mp(iloc,jloc) != 0.)
+		{
+			M.coeffRef(i,j) += Mp(iloc,jloc);
+			M.coeffRef(j,i) += Mp(iloc,jloc);
+		}
+	}
+}
+
 void global_InnerProduct::assemble()   
 {
 	auto & M                = *M_matrix;
@@ -193,6 +234,39 @@ void global_Div::reserve_space()
     B.reserve(Matrix_elements);	
     Dt.reserve(DtMatrix_elements);	
 }
+
+void global_Div::assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+		const Rigid_Mesh::Cell & cell, SpMat & S)
+{
+	if( Bp[iloc] != 0. )
+	{
+		S.insert(M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() +
+			cell.getId(), i) = Bp[iloc];
+		
+		if( ! (  M_mesh.getFacetsVector()[i].isBorderFacet() &&
+			(M_bc.getBordersBCMap().at( M_mesh.getFacetsVector()[i].getBorderId()).getBCType() == Neumann) ) )
+			
+			S.insert(i, M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() +
+				cell.getId()) = Bp[iloc];
+	}
+}
+
+void global_Div::assembleFace(const UInt & iloc, const UInt & i, const std::vector<Real> & Bp,
+		const Rigid_Mesh::Cell & cell)
+{
+	auto & B = *M_matrix;
+	auto & Dt = *Dt_matrix; 
+	if( Bp[iloc] != 0. )
+	{
+		B.insert(cell.getId(), i) = Bp[iloc];
+		
+		if( ! ( M_mesh.getFacetsVector()[i].isBorderFacet() &&
+			(M_bc.getBordersBCMap().at(M_mesh.getFacetsVector()[i].getBorderId()).getBCType() == Neumann) ) )
+			
+			Dt.insert(i, cell.getId()) = Bp[iloc];
+	}
+}
+
 
 void global_Div::assemble()   
 {
