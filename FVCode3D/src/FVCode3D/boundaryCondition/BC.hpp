@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iostream>
 #include <limits>
+#include <FVCode3D/mesh/RigidMesh.hpp>
 
 namespace FVCode3D
 {
@@ -153,11 +154,21 @@ public:
         { return M_bordersBCMap; }
     //@}
 
+	//! @name Methods
+    //@{
     //! Set boundary condition from a vector of Border BC
     /*!
      * @param borderBC is a vector of BorderBC containing the boundary conditions.
      */
     void setBoundaryConditions(std::vector<BorderBC> & borderBC);
+    
+    //! Select which BC to apply on an fracture edge
+    /*!
+     *  Select wich BC to apply on an fracture edge. The convenction is Dirichlet>Neumann and the one 
+     * with the gratest Id
+     */
+    UInt selectBC_onFractureEdge(const Rigid_Mesh::Border_Tip_Edge & edge_it) const;
+    //@}
 
 protected:
     //! Map of BorderBC. First -> BC id, second -> BorderBC

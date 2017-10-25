@@ -27,6 +27,12 @@ namespace FVCode3D
 */
 enum dType{dFacet, dCell, dFracture};
 
+//! Show the permeability tensor
+/*!
+* @param o output stream
+* @param d the dType that I want to print out
+* @return output stream
+*/
 inline std::ostream & operator<<(std::ostream & o, const dType & d)
 {
 	switch(d)
@@ -155,6 +161,12 @@ public:
      * Assemble the global operator matrix
      */
     virtual void assemble() = 0;
+    
+    //! Assemble method to build up the global operator matrix in the system matrix
+    /*!
+     * @param S the system matrix
+     */
+    virtual void assemble(SpMat & S) = 0;
     //@}
 
 protected:
@@ -246,6 +258,12 @@ public:
      * Assemble the global inner product matrix
      */
     void assemble();
+    
+    //! Assemble the global inner product matrix in the system matrix
+    /*!
+     * @param S The system matrix
+     */
+    void assemble(SpMat & S);
     
     //! Impose BC method on monolithic matrix S and on the rhs
     /*!
@@ -368,6 +386,12 @@ public:
      * Assemble the global divergence matrix
      */
     void assemble();
+    
+    //! Assemble method for the system matrix
+    /*!
+     * Assemble the global operator matrix in the system matrix S
+     */
+    void assemble(SpMat & S);
     //@}
 
 private:
@@ -452,12 +476,42 @@ public:
      * Reserve the proper space for the coupling conditions matrix C
      */
 	void reserve_space();
+	
+    //! Assemble fracture facet method for C matrix in the whole system
+    /*!
+     * Assemble the fracture facet contributions of coupling conditions matrix C in the system matrix
+     */
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);
+    
+    //! Assemble fracture facet method for  matrix
+    /*!
+     * Assemble the fracture facet contributions of the coupling confitions matrix C
+     */
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it);
+    
+    //! Assemble fracture facet method modifying the M matrix in the whole matrix
+    /*!
+     * Assemble the fracture facet contributions due to coupling conditions properly modifying M in the matrix system
+     */
+    void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);	
+    
+    //! Assemble fracture facet method modifying the M matrix
+    /*!
+     * Assemble the fracture facet contributions due to coupling conditions properly modifying M
+     */
+    void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it);
 
     //! Assemble method
     /*!
      * Assemble the coupling conditions matrix
      */
     void assemble();
+    
+    //! Assemble method for the system matrix
+    /*!
+     * Assemble the global operator matrix in the system matrix S
+     */
+    void assemble(SpMat & S);
     //@}
 
 private:
@@ -574,11 +628,31 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      */
 	void reserve_space();
 
+    //! Assemble fracture facet trasmissibilities method in the system matrix
+    /*!
+     * Assemble the fracture facet trasmissibilities in the system matrix 
+     * taking into account fracture trasformations with the "star-delta"trasformation
+     */
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);
+    
+	//! Assemble fracture facet trasmissibilities method 
+    /*!
+     * Assemble the fracture facet trasmissibilities taking into account fractures 
+     * intersections with the "star-delta" trasformation
+     */
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it);
+
     //! Assemble method
     /*!
      * Assemble the coupling conditions matrix
      */
     void assemble();
+    
+    //! Assemble method for the system matrix
+    /*!
+     * Assemble the global operator matrix in the system matrix S
+     */
+    void assemble(SpMat & S);
     
     //! Impose fractures BC method on the monolithic matrix and on the rhs
     /*!
@@ -605,6 +679,63 @@ private:
 };
 
 
+//! Base class for assembling a global_Builder.
+/*!
+ * @class global_Builder
+ * This is the base classe to assemble a global builder useful to build up the matrices of the
+ * problem in a efficient way. It's an abstract class.
+ */
+ class global_Builder
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a global_Builder.
+    /*!
+     * @param rMesh A constant reference to the mesh
+     */
+	global_Builder(const Rigid_Mesh & rMesh):
+		M_mesh(rMesh){}
+	//! No Copy-Constructor
+    global_Builder(const global_Builder &) = delete;
+	//! No Empty-Constructor
+    global_Builder() = delete;
+	//! Destructor
+    ~global_Builder() = default;
+	//@}
+
+	//! @name Assemble Methods
+    //@{
+    //! Reserve method for the monolithic matrix.
+    /*!
+     * Reserve the proper space for the monolithic matrix S
+     */
+    virtual void reserve_space(SpMat & S)=0;
+    
+    //! Reserve method for the bulk matrices.
+    /*!
+     * Reserve the proper space for the matrices separately
+     */
+    virtual void reserve_space()=0;
+
+    //! Assemble method for the monolithic matrix.
+    /*!
+     * Assemble the M, B, Dt matrices in the monolithic matrix S
+     */
+    virtual void build(SpMat & S)=0;
+    
+    //! Assemble method for the bulk matrices.
+    /*!
+     * Assemble the matrices separately
+     */
+    virtual void build()=0;
+    //@}
+
+protected:
+	//! Constant reference to the rigid mesh
+	const Rigid_Mesh              & M_mesh;
+};
+
 //! Class for assembling a global bulk builder.
 /*!
  * @class global_BulkBuilder
@@ -613,14 +744,13 @@ private:
  * M, B, Dt matrices jointly with only one cells loop. This builder allow both to build up
  * M, B, Dt separately or to build up these matrices in the monolithic matrix of the system
  */
-class global_BulkBuilder
+class global_BulkBuilder: public global_Builder
 {
 public:
     //! @name Constructor & Destructor
     //@{
     //! Construct a global_BulkBuilder.
     /*!
-     * @param rMesh A constant reference to the mesh
      * @param BCmap A constant reference to the boundary conditions
      * @param M_matrix A reference to the inner product matrix
      * @param B_matrix A reference to the divergence matrix
@@ -628,7 +758,7 @@ public:
      * @param S_matrix A reference to the monolithic matrix of the system
      */
 	global_BulkBuilder(const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, global_InnerProduct & ip, global_Div & div):
-		M_mesh(rMesh), M_bc(BCmap), IP(ip), Div(div){}
+		global_Builder(rMesh), M_bc(BCmap), IP(ip), Div(div){}
 	//! No Copy-Constructor
     global_BulkBuilder(const global_BulkBuilder &) = delete;
 	//! No Empty-Constructor
@@ -665,8 +795,6 @@ public:
     //@}
 
 private:
-	//! Constant reference to the rigid mesh
-	const Rigid_Mesh              & M_mesh;
 	//! Constant reference to the boundary conditions
 	const BoundaryConditions      &	M_bc;
 	//! A reference to the inner product
@@ -684,21 +812,20 @@ private:
  * This builder allow both to build up T and C and modifying M separately or
  * to build up these matrices in the monolithic matrix of the system.
  */
-class FractureBuilder
+class FractureBuilder: public global_Builder
 {
 public:
     //! @name Constructor & Destructor
     //@{
     //! Construct a FractureBuilder.
     /*!
-     * @param rMesh A constant reference to the mesh
      * @param C_matrix A reference to the coupling conditions matrix
      * @param T_matrix A reference to the transmissibility matrix
      * @param M_matrix A reference to the inner product matrix
      * @param S_matrix A reference to the monolithic matrix of the system
      */
-	FractureBuilder( const Rigid_Mesh & rMesh, SpMat & C_matrix, FluxOperator & fo, SpMat & M_matrix, const Real & xsiOfC ):
-		M_mesh(rMesh), C(C_matrix), FO(fo), M(M_matrix), xsi(xsiOfC){}
+	FractureBuilder( const Rigid_Mesh & rMesh, CouplingConditions & cc, FluxOperator & fo, global_InnerProduct & ip):
+		global_Builder(rMesh), coupling(cc), FluxOp(fo), IP(ip){}
 	//! No Copy-Constructor
     FractureBuilder(const FractureBuilder &) = delete;
 	//! No Empty-Constructor
@@ -735,16 +862,12 @@ public:
     //@}
 
 private:
-	//! Constant reference to the rigid mesh
-	const Rigid_Mesh              & M_mesh;
 	//! A reference to the coupling conditions matrix
-	SpMat                         & C;
+	CouplingConditions            & coupling;
 	//! A reference to the transmissibility matrix
-	FluxOperator                  & FO;
+	FluxOperator                  & FluxOp;
 	//! A reference to the inner product matrix
-	SpMat                         & M;
-	//! The xsi parameter of coupling conditions
-	const Real                    & xsi; 
+	global_InnerProduct           & IP;
 };
 
 } //FVCode3D

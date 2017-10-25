@@ -397,7 +397,7 @@ void StiffMatrixMFD::assemble()
 	gIP.ImposeBC(*M_Matrix, *M_b);
 	
 	// Define the fracture builder
-	FractureBuilder FBuilder(M_mesh, coupling.getMatrix(), fluxOP, gIP.getMatrix(), coupling.get_xsi());
+	FractureBuilder FBuilder(M_mesh, coupling, fluxOP, gIP);
 	// Reserve space for the fracture matrices
 	FBuilder.reserve_space(*M_Matrix);
 	// Build the fracture matrices

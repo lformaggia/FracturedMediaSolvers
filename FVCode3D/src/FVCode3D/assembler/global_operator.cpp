@@ -107,6 +107,22 @@ void global_InnerProduct::assemble()
 	}
 }
 
+void global_InnerProduct::assemble(SpMat & S)
+{
+	std::cout<<"Assembling mimetic inner product..."<<std::endl;
+	for (auto& cell : M_mesh.getCellsVector())
+	{	 	
+		// Definisco prodotto interno locale
+		local_InnerProduct   localIP(M_mesh,cell);
+		// Assemblo prodotto interno locale
+		localIP.assemble();
+		// Assemblo matrice locale in matrice globale
+		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
+			assembleFace(iloc, localIP.getMp(), cell, S);
+		std::cout<<"Done."<<std::endl;
+	}
+}
+
 void global_InnerProduct::ImposeBC(SpMat & S, Vector & rhs)      
 {
 	std::cout<<std::endl;
@@ -261,6 +277,20 @@ void global_Div::assemble()
 	}
 }
 
+void global_Div::assemble(SpMat & S)
+{
+	for (auto& cell : M_mesh.getCellsVector())
+	{	 	
+		// Definisco divergenza locale
+		local_Div   localDIV(M_mesh,cell);
+		// Assemblo divergenza locale
+		localDIV.assemble();
+		// Assemblo matrice locale in matrice globale
+		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
+			assembleFace(iloc, localDIV.getBp(), cell, S);
+	}	
+}
+
 void CouplingConditions::reserve_space()
 {
 	auto & C = *M_matrix;
@@ -284,32 +314,76 @@ void CouplingConditions::reserve_space()
 
 constexpr Real CouplingConditions::Default_xsi;
 
-void CouplingConditions::assemble()
+void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S)
+{
+	// We insert Ct
+	S.insert(facet_it.getId(), Ncol+M_mesh.getCellsVector().size()+facet_it.getFractureId())     
+		=  facet_it.getSize();
+	S.insert(M_mesh.getFacetsVector().size()+facet_it.getFractureId(), Ncol+M_mesh.getCellsVector().size()+facet_it.getFractureId())    
+		= -facet_it.getSize();
+	// We insert C
+	S.insert(Ncol+M_mesh.getCellsVector().size()+facet_it.getFractureId(), facet_it.getId())     
+		=  facet_it.getSize();
+	S.insert(Ncol+M_mesh.getCellsVector().size()+facet_it.getFractureId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())    
+		= -facet_it.getSize();
+}
+
+void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it)
 {
 	auto & C = *M_matrix;
+	C.insert(facet_it.getFractureId(), facet_it.getId())     
+		=  facet_it.getSize();
+	C.insert(facet_it.getFractureId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())    
+		= -facet_it.getSize();
+}
+
+void CouplingConditions::assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S)
+{
+	const Real eta = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture / 
+		M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_permeability->operator()(0,0);
+	const Real xsi0     =  (2. * xsi - 1.) / 4.;
+		
+	S.coeffRef(facet_it.getId(), facet_it.getId())    
+		+=   eta*facet_it.getSize()/4. + eta*xsi0*facet_it.getSize();
+	S.insert(facet_it.getId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())      
+		 =   eta*facet_it.getSize()/4. - eta*xsi0*facet_it.getSize();
+	S.coeffRef(M_mesh.getFacetsVector().size()+facet_it.getFractureId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())  
+		+=   eta*facet_it.getSize()/4. + eta*xsi0*facet_it.getSize();
+	S.insert(M_mesh.getFacetsVector().size()+facet_it.getFractureId(), facet_it.getId())      
+		 =   eta*facet_it.getSize()/4. - eta*xsi0*facet_it.getSize();
+}
+
+void CouplingConditions::assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it)
+{
+	const Real eta = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture / 
+		M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_permeability->operator()(0,0);
+	const Real xsi0     =  (2. * xsi - 1.) / 4.;
+		
+	M.coeffRef(facet_it.getId(), facet_it.getId())    
+		+=   eta*facet_it.getSize()/4. + eta*xsi0*facet_it.getSize();
+	M.insert(facet_it.getId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())      
+		 =   eta*facet_it.getSize()/4. - eta*xsi0*facet_it.getSize();
+	M.coeffRef(M_mesh.getFacetsVector().size()+facet_it.getFractureId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())  
+		+=   eta*facet_it.getSize()/4. + eta*xsi0*facet_it.getSize();
+	M.insert(M_mesh.getFacetsVector().size()+facet_it.getFractureId(), facet_it.getId())      
+		 =   eta*facet_it.getSize()/4. - eta*xsi0*facet_it.getSize();
+}
+
+void CouplingConditions::assemble()
+{
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
-	{		
-        auto& F_permeability = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_permeability;
-        const Real Kfn = F_permeability->operator()(0,0);
-        const Real F_aperture = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture;
-        
-		const Real eta          = F_aperture / Kfn;
-		const Real xsi0     =  (2. * xsi - 1.) / 4.;
-		
-		const UInt Id_plus         = facet_it.getId();
-		const UInt Id_F            = facet_it.getFractureId();
-		const UInt Id_minus        = M_mesh.getFacetsVector().size() + Id_F;
-		const Real facetMeasure    = facet_it.getSize();
-		
-		// Coupling terms on M
-		M.coeffRef(Id_plus,Id_plus)    +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
-		M.insert(Id_plus,Id_minus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
-		M.coeffRef(Id_minus,Id_minus)  +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
-		M.insert(Id_minus,Id_plus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
-		
-		// Coupling matrix C
-		C.insert(Id_F, Id_plus)     =  facetMeasure;
-		C.insert(Id_F, Id_minus)    = -facetMeasure;
+    {
+		assembleFrFace_onM(facet_it);
+		assembleFrFace(facet_it);
+	}
+}
+
+void CouplingConditions::assemble(SpMat & S)
+{
+    for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
+    {
+		assembleFrFace_onM(facet_it,S);
+		assembleFrFace(facet_it,S);
 	}
 }
 
@@ -415,36 +489,70 @@ void FluxOperator::reserve_space()
 	T.reserve(Matrix_elements);
 }
 
+void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S)
+{
+	const UInt Offset = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size()+M_mesh.getCellsVector().size();
+	for (auto juncture_it : facet_it.getFractureNeighbors())
+	{	
+		std::vector<Real> alphas;
+		const Real alphaF = findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
+
+		for (auto neighbors_it : juncture_it.second)
+			alphas.emplace_back(findFracturesAlpha (juncture_it.first, neighbors_it));
+
+		Real a_sum = alphaF;
+		auto sum_maker = [&a_sum](Real item){a_sum += item;};
+		std::for_each(alphas.begin(), alphas.end(), sum_maker);
+
+		for (UInt counter = 0; counter < alphas.size(); ++counter)
+		{
+			const Real QFf = alphaF * alphas[counter] * M_mesh.getPropertiesMap().getMobility() / a_sum;
+                
+			S.coeffRef(Offset+facet_it.getFractureId(), Offset+facet_it.getFractureId()) -= QFf;
+                
+			S.insert(Offset+facet_it.getFractureId(), Offset+juncture_it.second[counter]) = QFf; 
+		}
+	}	
+}    
+
+void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it)
+{
+	auto & T = *M_matrix;
+	for (auto juncture_it : facet_it.getFractureNeighbors())
+	{	
+		std::vector<Real> alphas;
+		const Real alphaF = findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
+
+		for (auto neighbors_it : juncture_it.second)
+			alphas.emplace_back(findFracturesAlpha (juncture_it.first, neighbors_it));
+
+		Real a_sum = alphaF;
+		auto sum_maker = [&a_sum](Real item){a_sum += item;};
+		std::for_each(alphas.begin(), alphas.end(), sum_maker);
+
+		for (UInt counter = 0; counter < alphas.size(); ++counter)
+		{
+			const Real QFf = alphaF * alphas[counter] * M_mesh.getPropertiesMap().getMobility() / a_sum;
+                
+			T.coeffRef(facet_it.getFractureId(), facet_it.getFractureId()) -= QFf;
+                
+			T.insert(facet_it.getFractureId(), juncture_it.second[counter]) = QFf; 
+		}
+	}	
+}    
+
 void FluxOperator::assemble()
 {
 	auto & T = *M_matrix;
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
-    {	
-		const UInt Id_F = facet_it.getFractureId();	
-		// Assemble -T matrix taking into account fractures intersections with the "star-delta" transformation
-        for (auto juncture_it : facet_it.getFractureNeighbors())
-        {	
-            std::vector<Real> alphas;
-            const Real alphaF = findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
+		assembleFrFace(facet_it);
+}
 
-            for (auto neighbors_it : juncture_it.second)
-                alphas.emplace_back(findFracturesAlpha (juncture_it.first, neighbors_it));
-
-            Real a_sum = alphaF;
-            auto sum_maker = [&a_sum](Real item){a_sum += item;};
-            std::for_each(alphas.begin(), alphas.end(), sum_maker);
-
-            for (UInt counter = 0; counter < alphas.size(); ++counter)
-            {
-				
-                const Real QFf = alphaF * alphas[counter] * M_mesh.getPropertiesMap().getMobility() / a_sum;
-                
-                T.coeffRef(Id_F, Id_F) -= QFf;
-                
-                T.insert(Id_F,juncture_it.second[counter]) = QFf; 
-			}
-		}
-    }
+void FluxOperator::assemble(SpMat & S)
+{
+	auto & T = *M_matrix;
+    for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
+		assembleFrFace(facet_it,S);	
 }
 
 void FluxOperator::ImposeBConFractures(SpMat & S, Vector & rhs)
@@ -453,28 +561,8 @@ void FluxOperator::ImposeBConFractures(SpMat & S, Vector & rhs)
 	// assemble BC on fractures
     for (auto& edge_it : M_mesh.getBorderTipEdgesIdsVector())
     {	
-        bool isD = false;
-        UInt borderId = 0;
-        
-        // select which BC to apply
-        for(auto border_it : edge_it.getBorderIds())
-        {
-            // BC = D > N && the one with greatest id
-            if(M_bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
-            {	
-                if(!isD)
-                {
-                    isD = true;
-                    borderId = border_it;
-                }
-                else
-                    borderId = (border_it > borderId) ? border_it : borderId;
-            }
-            else if(!isD && M_bc.getBordersBCMap().at(border_it).getBCType() == Neumann)
-            {	
-                borderId = (border_it > borderId) ? border_it : borderId;
-			}
-        }
+		// Select which BC to apply : BC = D > N && the one with greatest id
+		UInt borderId = M_bc.selectBC_onFractureEdge(edge_it);
 		
 		const UInt numFacetsTot = M_mesh.getFacetsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 		const UInt numCells     = M_mesh.getCellsVector().size();
@@ -517,28 +605,8 @@ void FluxOperator::ImposeBConFractures(Vector & rhs)
 	// assemble BC on fractures
     for (auto& edge_it : M_mesh.getBorderTipEdgesIdsVector())
     {	
-        bool isD = false;
-        UInt borderId = 0;
-        
-        // select which BC to apply
-        for(auto border_it : edge_it.getBorderIds())
-        {
-            // BC = D > N && the one with greatest id
-            if(M_bc.getBordersBCMap().at(border_it).getBCType() == Dirichlet)
-            {	
-                if(!isD)
-                {
-                    isD = true;
-                    borderId = border_it;
-                }
-                else
-                    borderId = (border_it > borderId) ? border_it : borderId;
-            }
-            else if(!isD && M_bc.getBordersBCMap().at(border_it).getBCType() == Neumann)
-            {	
-                borderId = (border_it > borderId) ? border_it : borderId;
-			}
-        }
+		// Select which BC to apply : BC = D > N && the one with greatest id
+		UInt borderId = M_bc.selectBC_onFractureEdge(edge_it);
 		
 		const UInt numCells     = M_mesh.getCellsVector().size();
 		
@@ -698,7 +766,7 @@ void global_BulkBuilder::build()
 
 void FractureBuilder::reserve_space(SpMat & S)
 {
-	const UInt numFacetsTot = M.cols();
+	const UInt numFacetsTot = IP.getMatrix_readOnly().cols();
 	const UInt numCells     = M_mesh.getCellsVector().size(); 
 	std::vector<UInt> Matrix_elements(S.cols(),0);
     std::fill( Matrix_elements.begin() + numFacetsTot+numCells, Matrix_elements.end(), 2);
@@ -724,7 +792,9 @@ void FractureBuilder::reserve_space(SpMat & S)
 
 void FractureBuilder::reserve_space()
 {
-	auto & T = FO.getMatrix();
+	auto & C = coupling.getMatrix();
+	auto & T = FluxOp.getMatrix();
+	auto & M = IP.getMatrix();
 	std::vector<UInt> CMatrix_elements( C.cols(), 0 );
 	std::vector<UInt> TMatrix_elements( T.cols(), 0 );
 	std::vector<UInt> MMatrix_elements( M.cols(), 0 );
@@ -755,110 +825,19 @@ void FractureBuilder::build(SpMat & S)
 {
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
-        auto& F_permeability = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_permeability;
-        const Real Kfn = F_permeability->operator()(0,0);
-        const Real F_aperture = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture;
-		const Real eta = F_aperture / Kfn;
-		const Real xsi0     =  (2. * xsi - 1.) / 4.;
-		
-		const UInt numFacetsTot = M.cols();
-		const UInt numCells     = M_mesh.getCellsVector().size();
-		
-		const UInt Id_plus         = facet_it.getId();
-		const UInt Id_F            = facet_it.getFractureId();
-		const UInt Id_minus        = M_mesh.getFacetsVector().size() + Id_F;
-		const Real facetMeasure    = facet_it.getSize();
-		
-		// Coupling terms on M
-		S.coeffRef(Id_plus,Id_plus)    +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
-		S.insert(Id_plus,Id_minus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
-		S.coeffRef(Id_minus,Id_minus)  +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
-		S.insert(Id_minus,Id_plus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
-		
-		// Coupling matrix Ct and C
-		S.insert(Id_plus, numFacetsTot+numCells + Id_F)     =  facetMeasure;
-		S.insert(Id_minus, numFacetsTot+numCells + Id_F)    = -facetMeasure;
-		S.insert(numFacetsTot+numCells + Id_F, Id_plus)     =  facetMeasure;
-		S.insert(numFacetsTot+numCells + Id_F, Id_minus)    = -facetMeasure;
-	
-		// Assemble -T matrix taking into account fractures intersections with the "star-delta" transformation
-        for (auto juncture_it : facet_it.getFractureNeighbors())
-        {	
-            std::vector<Real> alphas;
-            const Real alphaF = FO.findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
-
-            for (auto neighbors_it : juncture_it.second)
-                alphas.emplace_back(FO.findFracturesAlpha (juncture_it.first, neighbors_it));
-
-            Real a_sum = alphaF;
-            auto sum_maker = [&a_sum](Real item){a_sum += item;};
-            std::for_each(alphas.begin(), alphas.end(), sum_maker);
-
-            for (UInt counter = 0; counter < alphas.size(); ++counter)
-            {	
-                const Real QFf = alphaF * alphas[counter] * M_mesh.getPropertiesMap().getMobility() / a_sum;
-                
-                S.coeffRef( numFacetsTot+numCells + Id_F, numFacetsTot+numCells + Id_F ) -= QFf;
-                
-                S.insert( numFacetsTot+numCells + Id_F, numFacetsTot+numCells + juncture_it.second[counter]) = QFf; 
-                
-            }
-        }
+		coupling.assembleFrFace_onM(facet_it, S);
+		coupling.assembleFrFace(facet_it, S);
+		FluxOp.assembleFrFace(facet_it, S);
     }
 }
 
 void FractureBuilder::build()
 {
-	auto & T = FO.getMatrix();
-    for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
+	for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
-        auto& F_permeability = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_permeability;
-        const Real Kfn = F_permeability->operator()(0,0);
-        const Real F_aperture = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture;
-		const Real eta = F_aperture / Kfn;
-		const Real xsi0     =  (2. * xsi - 1.) / 4.;
-		
-		const UInt numFacetsTot = M.cols();
-		const UInt numCells     = M_mesh.getCellsVector().size();
-		
-		const UInt Id_plus         = facet_it.getId();
-		const UInt Id_F            = facet_it.getFractureId();
-		const UInt Id_minus        = M_mesh.getFacetsVector().size() + Id_F;
-		const Real facetMeasure    = facet_it.getSize();
-		
-		// Coupling terms on M
-		M.coeffRef(Id_plus,Id_plus)    +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
-		M.insert(Id_plus,Id_minus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
-		M.coeffRef(Id_minus,Id_minus)  +=   eta*facetMeasure/4. + eta*xsi0*facetMeasure;
-		M.insert(Id_minus,Id_plus)      =   eta*facetMeasure/4. - eta*xsi0*facetMeasure;
-		
-		// Coupling matrix Ct and C
-		C.insert(Id_F, Id_plus)     =  facetMeasure;
-		C.insert(Id_F, Id_minus)    = -facetMeasure;
-	
-		// Assemble -T matrix taking into account fractures intersections with the "star-delta" transformation
-        for (auto juncture_it : facet_it.getFractureNeighbors())
-        {	
-            std::vector<Real> alphas;
-            const Real alphaF = FO.findFracturesAlpha (juncture_it.first, facet_it.getFractureId());
-
-            for (auto neighbors_it : juncture_it.second)
-                alphas.emplace_back(FO.findFracturesAlpha (juncture_it.first, neighbors_it));
-
-            Real a_sum = alphaF;
-            auto sum_maker = [&a_sum](Real item){a_sum += item;};
-            std::for_each(alphas.begin(), alphas.end(), sum_maker);
-
-            for (UInt counter = 0; counter < alphas.size(); ++counter)
-            {	
-                const Real QFf = alphaF * alphas[counter] * M_mesh.getPropertiesMap().getMobility() / a_sum;
-                
-                T.coeffRef( Id_F, Id_F ) -= QFf;
-                
-                T.insert( Id_F, juncture_it.second[counter] ) = QFf; 
-                
-            }
-        }
+		coupling.assembleFrFace_onM(facet_it);
+		coupling.assembleFrFace(facet_it);
+		FluxOp.assembleFrFace(facet_it);
     }
 }
 
