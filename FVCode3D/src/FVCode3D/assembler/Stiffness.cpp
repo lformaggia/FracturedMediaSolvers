@@ -372,19 +372,19 @@ void StiffMatrixMFD::assemble()
 	const UInt numCell      = M_mesh.getCellsVector().size();
 	
 	// Define the global inner product
-	global_InnerProduct gIP(M_mesh, dFacet, dFacet, numFacetsTot, numFacetsTot, M_bc);
+	global_InnerProduct gIP(M_mesh, dType::dFacet, dType::dFacet, numFacetsTot, numFacetsTot, M_bc);
 	gIP.ShowMe();
 	
 	// Define the global divergence operator
-	global_Div gDIV(M_mesh, dCell, dFacet, numCell, numFacetsTot, M_bc);
+	global_Div gDIV(M_mesh, dType::dCell, dType::dFacet, numCell, numFacetsTot, M_bc);
 	gDIV.ShowMe();
 	
 	// Define the coupling conditions
-	CouplingConditions coupling(M_mesh, dFracture, dFacet, numFracture, numFacetsTot, gIP.getMatrix());
+	CouplingConditions coupling(M_mesh, dType::dFracture, dType::dFacet, numFracture, numFacetsTot, gIP.getMatrix());
 	coupling.ShowMe();
 	
 	// Define the flux operator
-	FluxOperator fluxOP(M_mesh, dFracture, dFracture, numFracture, numFracture, M_bc);
+	FluxOperator fluxOP(M_mesh, dType::dFracture, dType::dFracture, numFracture, numFracture, M_bc);
 	fluxOP.ShowMe();
 	
 	// Define the global bulk builder

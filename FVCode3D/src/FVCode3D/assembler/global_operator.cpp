@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <cmath>
+#include <exception>
 #include <FVCode3D/assembler/global_operator.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
@@ -103,22 +104,6 @@ void global_InnerProduct::assemble()
 		// Assemblo matrice locale in matrice globale
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 			assembleFace(iloc, localIP.getMp(), cell);
-		std::cout<<"Done."<<std::endl;
-	}
-}
-
-void global_InnerProduct::assemble(SpMat & S)
-{
-	std::cout<<"Assembling mimetic inner product..."<<std::endl;
-	for (auto& cell : M_mesh.getCellsVector())
-	{	 	
-		// Definisco prodotto interno locale
-		local_InnerProduct   localIP(M_mesh,cell);
-		// Assemblo prodotto interno locale
-		localIP.assemble();
-		// Assemblo matrice locale in matrice globale
-		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
-			assembleFace(iloc, localIP.getMp(), cell, S);
 		std::cout<<"Done."<<std::endl;
 	}
 }
@@ -277,18 +262,19 @@ void global_Div::assemble()
 	}
 }
 
-void global_Div::assemble(SpMat & S)
-{
-	for (auto& cell : M_mesh.getCellsVector())
-	{	 	
-		// Definisco divergenza locale
-		local_Div   localDIV(M_mesh,cell);
-		// Assemblo divergenza locale
-		localDIV.assemble();
-		// Assemblo matrice locale in matrice globale
-		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
-			assembleFace(iloc, localDIV.getBp(), cell, S);
-	}	
+
+constexpr Real CouplingConditions::Default_xsi;
+
+void CouplingConditions::Set_xsi(const Real & xsiToSet) throw()
+{	
+	if(xsiToSet>=0 && xsiToSet<=1)
+		xsi = xsiToSet;
+	else
+	{
+		std::stringstream error;
+		error << "Error: the xsi parameter must be 0 <= xsi <= 1. ";
+		throw std::runtime_error(error.str());
+	}
 }
 
 void CouplingConditions::reserve_space()
@@ -310,9 +296,6 @@ void CouplingConditions::reserve_space()
 	C.reserve(CMatrix_elements);
 	M.reserve(MMatrix_elements);
 }
-
-
-constexpr Real CouplingConditions::Default_xsi;
 
 void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S)
 {
@@ -375,15 +358,6 @@ void CouplingConditions::assemble()
     {
 		assembleFrFace_onM(facet_it);
 		assembleFrFace(facet_it);
-	}
-}
-
-void CouplingConditions::assemble(SpMat & S)
-{
-    for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
-    {
-		assembleFrFace_onM(facet_it,S);
-		assembleFrFace(facet_it,S);
 	}
 }
 
@@ -546,13 +520,6 @@ void FluxOperator::assemble()
 	auto & T = *M_matrix;
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
 		assembleFrFace(facet_it);
-}
-
-void FluxOperator::assemble(SpMat & S)
-{
-	auto & T = *M_matrix;
-    for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
-		assembleFrFace(facet_it,S);	
 }
 
 void FluxOperator::ImposeBConFractures(SpMat & S, Vector & rhs)

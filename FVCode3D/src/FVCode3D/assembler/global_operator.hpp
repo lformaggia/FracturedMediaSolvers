@@ -9,6 +9,7 @@
 #include <vector>
 #include <cmath>
 #include <ostream>
+#include <exception>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
@@ -17,7 +18,7 @@
 
 namespace FVCode3D
 {
-	using Eigen::Dynamic;
+using Eigen::Dynamic;
 	
 //! Define the type of discretization
 /*!
@@ -25,7 +26,7 @@ namespace FVCode3D
 * This enumerator is used to show the type of discretization of row/column
 * of the operators.
 */
-enum dType{dFacet, dCell, dFracture};
+enum class dType{dFacet, dCell, dFracture};
 
 //! Show the permeability tensor
 /*!
@@ -37,13 +38,13 @@ inline std::ostream & operator<<(std::ostream & o, const dType & d)
 {
 	switch(d)
 	{
-	case dFacet    :
+	case dType::dFacet    :
 		o<<"Facet type";
 		break;
-	case dCell     :
+	case dType::dCell     :
 		o<<"Cell type";
 		break;
-	case dFracture :
+	case dType::dFracture :
 		o<<"Fracture type";	
 	}		
 	return o;
@@ -128,14 +129,14 @@ public:
 
     //! @name Methods
     //@{
-    //! Compress method
+    //! Convert the matrix in compressed format
     /*!
-     * Convert the matrix in compressed format
+     * Convert the matrix in compressed format using the proper Eigen functionality
      */
     void CompressMatrix()
 		{ (*M_matrix).makeCompressed(); };
 		
-	//! Show matrix method
+	//! Show basic matrix information
     /*!
      * Show basic matrix information
      */
@@ -150,23 +151,19 @@ public:
   
 	//! @name Assemble Methods
     //@{
-    //! Reserve method
+    //! Reserve space for the global operator matrix.
     /*!
-     * Reserve the proper space for the operator matrix
+     * Reserve the proper space for the operator matrix computing it and then using the Eigen reserve() method.
+     * Pure virtual method.
      */
     virtual void reserve_space() = 0;
     
-    //! Assemble method
+    //! Assemble the global operator matrix
     /*!
-     * Assemble the global operator matrix
+     * Assemble the global operator matrix using Eigen insert/coeffRef methods.
+     * Pure virtual method.
      */
     virtual void assemble() = 0;
-    
-    //! Assemble method to build up the global operator matrix in the system matrix
-    /*!
-     * @param S the system matrix
-     */
-    virtual void assemble(SpMat & S) = 0;
     //@}
 
 protected:
@@ -233,42 +230,39 @@ public:
 
 	//! @name Assemble Methods
     //@{
-    //! Reserve method
+    //! Reserve space for the inner product matrix.
     /*!
-     * Reserve the proper space for the inner product matrix
+     * Reserve the proper space for the inner product matrix computing it and then using the Eigen reserve() method.
      */
     void reserve_space();
     
-    //! Assemble face method for the monolithic system
+    //! Assemble the local face contributions in the global system matrix 
     /*!
-     * Assemble the local face contributions in the global system matrix 
+     * @param iloc The local facet Id
+     * @param Mp The local inner product matrix
+     * @param cell The actuak cell
+     * @param S The system matrix 
      */
     void assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
 		const Rigid_Mesh::Cell & cell, SpMat & S);
 		
-	//! Assemble face method 
+	//! Assemble the local face contributions in the inner product matrix 
     /*!
-     * Assemble the local face contributions in the inner product matrix 
+     * @param iloc The local facet Id
+     * @param Mp The local inner product matrix
+     * @param cell The actual cell
      */
     void assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
 		const Rigid_Mesh::Cell & cell);
 
-    //! Assemble method
+    //! Assemble the innner product matrix
     /*!
-     * Assemble the global inner product matrix
+     * Assemble the inner product matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
     
-    //! Assemble the global inner product matrix in the system matrix
+    //! Impose BCs on the monolithic matrix S and on the rhs
     /*!
-     * @param S The system matrix
-     */
-    void assemble(SpMat & S);
-    
-    //! Impose BC method on monolithic matrix S and on the rhs
-    /*!
-     * This method impose the Neumann and Dirichlet BC on the monolithic matrix
-     * and on the rhs.
      * @param S The monolithic matrix of the system
      * @param rhs The right hand side vector of the system
      */
@@ -276,8 +270,6 @@ public:
     
     //! Impose BC method on inner product matrix and on the rhs
     /*!
-     * This method impose the Neumann and Dirichlet BC on the inner product matrix
-     * and on the rhs of the system.
      * @param rhs The right hand side vector of the system
      */
     void ImposeBC(Vector & rhs);
@@ -361,37 +353,36 @@ public:
 
 	//! @name Assemble Methods
     //@{
-    //! Reserve method
+    //! Reserve space for the divergence matrix.
     /*!
-     * Reserve the proper space for the div matrix
+     * Reserve the proper space for the divergence matrix computing it and then using the Eigen reserve() method.
      */
     void reserve_space();
     
-    //! Assemble face method for the monolithic system
+    //! Assemble the local face contributions in the global system matrix
     /*!
-     * Assemble the local face contributions in the global system matrix 
+     * @param iloc The local facet Id
+     * @param Mp The local inner product matrix
+     * @param cell The actuak cell
+     * @param S The system matrix  
      */
     void assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell, SpMat & S);
 		
-	//! Assemble face method 
+	//! Assemble the local face contributions in the divergence matrix
     /*!
-     * Assemble the local face contributions in the divergence matrix 
+     * @param iloc The local facet Id
+     * @param Mp The local inner product matrix
+     * @param cell The actuak cell 
      */
     void assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell);
 
-    //! Assemble method
+    //! Assemble the divergence matrix
     /*!
-     * Assemble the global divergence matrix
+     * Assemble the divergence matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
-    
-    //! Assemble method for the system matrix
-    /*!
-     * Assemble the global operator matrix in the system matrix S
-     */
-    void assemble(SpMat & S);
     //@}
 
 private:
@@ -453,10 +444,10 @@ public:
 	//@{
 	//! Set xsi parameter
     /*!
-     * Set the xsi parameter of the coupling conditions 
+     * Set the xsi parameter of the coupling conditions, it must be set between 0 and 1.
+     * To avoid instabilities problem better 0.5 <= xsi <= 1.
      */
-    void Set_xsi(const Real & xsiToSet)
-		{ xsi = xsiToSet; };
+    void Set_xsi(const Real & xsiToSet) throw();
 	
 	//! Show matrix method
     /*!
@@ -471,47 +462,43 @@ public:
     
 	//! @name Assemble Methods
 	//@{
-    //! Reserve method
+    //! Reserve space for the coupling conditions matrix.
     /*!
-     * Reserve the proper space for the coupling conditions matrix C
+     * Reserve the proper space for the coupling conditions matrix computing it and then using the Eigen reserve() method.
      */
-	void reserve_space();
+    void reserve_space();
 	
-    //! Assemble fracture facet method for C matrix in the whole system
+    //! Assemble the fracture facet contributions of coupling conditions matrix C and Ct in the system matrix
     /*!
-     * Assemble the fracture facet contributions of coupling conditions matrix C in the system matrix
+     * @param facet_it The actual fracture facet
+     * @param S The system matrix
      */
     void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);
     
-    //! Assemble fracture facet method for  matrix
+    //! Assemble the fracture facet contributions of coupling conditions in the C matrix
     /*!
-     * Assemble the fracture facet contributions of the coupling confitions matrix C
+     * @param facet_it The actual fracture facet
      */
     void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it);
     
-    //! Assemble fracture facet method modifying the M matrix in the whole matrix
+    //! Assemble the fracture facet contributions due to coupling conditions properly modifying M in the matrix system
     /*!
-     * Assemble the fracture facet contributions due to coupling conditions properly modifying M in the matrix system
+     * @param facet_it The actual fracture facet
+     * @param S The system matrix
      */
     void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);	
     
-    //! Assemble fracture facet method modifying the M matrix
+    //! Assemble the fracture facet contributions due to coupling conditions properly modifying M
     /*!
-     * Assemble the fracture facet contributions due to coupling conditions properly modifying M
+     * @param facet_it The actual fracture facet
      */
     void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it);
 
-    //! Assemble method
+    //! Assemble the coupling conditions matrix
     /*!
-     * Assemble the coupling conditions matrix
+     * Assemble the coupling conditions matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
-    
-    //! Assemble method for the system matrix
-    /*!
-     * Assemble the global operator matrix in the system matrix S
-     */
-    void assemble(SpMat & S);
     //@}
 
 private:
@@ -520,7 +507,7 @@ private:
 	//! The parameter defining the coupling confition, it must be less or equal 1 and greater then 0
 	Real                           xsi;
 	//! The default parameter defining the coupling confition, it must be less or equal 1 and greater then 0
-	static constexpr Real          Default_xsi = 1.;
+	static constexpr Real          Default_xsi = 1;
 };
 
 //! Class for assembling a trasmissibility fracture matrix.
@@ -622,37 +609,34 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
     
     //! @name Assemble Methods
     //@{
-    //! Reserve method
+    //! Reserve space for the flux operator (trasmissibility) matrix.
     /*!
-     * Reserve the proper space for the coupling conditions matrix C
+     * Reserve the proper space for the flux operatore (trasmissibility) matrix computing it and then using the Eigen reserve() method.
      */
-	void reserve_space();
+    void reserve_space();
 
-    //! Assemble fracture facet trasmissibilities method in the system matrix
+    //! Assemble fracture facet trasmissibilities in the system matrix
     /*!
      * Assemble the fracture facet trasmissibilities in the system matrix 
      * taking into account fracture trasformations with the "star-delta"trasformation
+     * @param facet_it The actual fracture facet
+     * @param S The system matrix
      */
     void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);
     
-	//! Assemble fracture facet trasmissibilities method 
+	//! Assemble fracture facet trasmissibilities
     /*!
      * Assemble the fracture facet trasmissibilities taking into account fractures 
      * intersections with the "star-delta" trasformation
+     * @param facet_it The actual fracture facet
      */
     void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it);
 
-    //! Assemble method
+    //! Assemble the flux operator (trasmissibility) matrix
     /*!
-     * Assemble the coupling conditions matrix
+     * Assemble the flux operator (trasmissibility) matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
-    
-    //! Assemble method for the system matrix
-    /*!
-     * Assemble the global operator matrix in the system matrix S
-     */
-    void assemble(SpMat & S);
     
     //! Impose fractures BC method on the monolithic matrix and on the rhs
     /*!
@@ -683,7 +667,7 @@ private:
 /*!
  * @class global_Builder
  * This is the base classe to assemble a global builder useful to build up the matrices of the
- * problem in a efficient way. It's an abstract class.
+ * problem in an efficient way. It's an abstract class.
  */
  class global_Builder
 {
@@ -706,27 +690,28 @@ public:
 
 	//! @name Assemble Methods
     //@{
-    //! Reserve method for the monolithic matrix.
+    //! Reserve the proper space for the monolithic matrix S
     /*!
-     * Reserve the proper space for the monolithic matrix S
+     * @param S The system matrix
      */
     virtual void reserve_space(SpMat & S)=0;
     
-    //! Reserve method for the bulk matrices.
+    //! Reserve the proper space for matrices separately.
     /*!
-     * Reserve the proper space for the matrices separately
+     * Reserve the proper space for matrices separately (not assebled in the system matrix S)
      */
     virtual void reserve_space()=0;
 
     //! Assemble method for the monolithic matrix.
     /*!
-     * Assemble the M, B, Dt matrices in the monolithic matrix S
+     * Assemble the matrices in the monolithic matrix S
+     * @param S The system matrix
      */
     virtual void build(SpMat & S)=0;
     
-    //! Assemble method for the bulk matrices.
+    //! Assemble method for the matrices separately.
     /*!
-     * Assemble the matrices separately
+     * Assemble the matrices separately (not in the system matrix S)
      */
     virtual void build()=0;
     //@}
@@ -769,9 +754,10 @@ public:
 
 	//! @name Assemble Methods
     //@{
-    //! Reserve method for the monolithic matrix.
+    //! Reserve space for the bulk matrices in the system matrix
     /*!
-     * Reserve the proper space for the monolithic matrix S
+     * Reserve the proper space for M, B, Dt in the monolithic matrix S
+     * @param S The system matrix
      */
     void reserve_space(SpMat & S);
     
@@ -781,9 +767,10 @@ public:
      */
     void reserve_space();
 
-    //! Assemble method for the monolithic matrix.
+    //! Assemble the bulk matrices in the monolithic matrix.
     /*!
      * Assemble the M, B, Dt matrices in the monolithic matrix S
+     * @param S The system matrix
      */
     void build(SpMat & S);
     
@@ -836,27 +823,29 @@ public:
 
 	//! @name Assemble Methods
     //@{
-    //! Reserve method for the monolithic matrix.
+    //! Reserve space for the fractures matrices in the monolithic matrix.
     /*!
-     * Reserve the proper space for the monolithic matrix S
+     * Reserve the proper space for C, Ct, modifying M and T in the monolithic matrix S
+     * @param S The monolithic matrix
      */
     void reserve_space(SpMat & S);
     
-    //! Reserve method for the fracture matrices.
+    //! Reserve method for the fracture matrices separately.
     /*!
-     * Reserve the proper space for the C, T and M matrices
+     * Reserve the proper space for C, T and modifying M separately
      */
     void reserve_space();
 
-    //! Assemble method for the monolithic matrix.
+    //! Assemble the fractrues matrice in the monolithic matrix.
     /*!
-     * Assemble the C, T and M matrices in the monolithic matrix S
+     * Assemble the C, T and modify M in the monolithic matrix S
+     * @param The monolithic matrix
      */
     void build(SpMat & S);
     
     //! Assemble method for the fracture matrices.
     /*!
-     * Assemble the C, T and M matrices separately
+     * Assemble C, T and modify M separately
      */
     void build();
     //@}
