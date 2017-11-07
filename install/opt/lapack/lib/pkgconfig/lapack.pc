@@ -1,0 +1,9 @@
+prefix=/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/lapack
+libdir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/lapack/lib
+
+Name: lapack
+Description: FORTRAN reference implementation of LAPACK Linear Algebra PACKage
+Version: 3.4.2
+URL: http://www.netlib.org/lapack/
+Libs: -L/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/lapack/lib -llapack
+Requires: blas

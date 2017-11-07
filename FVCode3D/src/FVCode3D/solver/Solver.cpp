@@ -4,6 +4,8 @@
  */
 
 #include <sstream>
+//#include <iostream>
+//#include <unsupported/Eigen/IterativeSolvers>
 
 #include <FVCode3D/solver/Solver.hpp>
 #ifdef FVCODE3D_HAS_UMFPACK
@@ -63,6 +65,7 @@ void EigenCG::solve()
 
 void EigenBiCGSTAB::solve()
 {
+
     Eigen::BiCGSTAB<SpMat> bicgstab;
 
     bicgstab.setMaxIterations(M_maxIter);
@@ -73,6 +76,18 @@ void EigenBiCGSTAB::solve()
 
     M_iter = bicgstab.iterations();
     M_res = bicgstab.error();
+/*
+    Eigen::GMRES<SpMat> bicgstab;
+
+    bicgstab.setMaxIterations(M_maxIter);
+    bicgstab.setTolerance(M_tol);
+
+    bicgstab.compute(M_A);
+    M_x = bicgstab.solve(M_b);
+
+    M_iter = bicgstab.iterations();
+    M_res = bicgstab.error();
+*/
 } // EigenBiCGSTAB::solve
 
 

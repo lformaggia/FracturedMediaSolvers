@@ -507,7 +507,7 @@ private:
 	//! The parameter defining the coupling confition, it must be less or equal 1 and greater then 0
 	Real                           xsi;
 	//! The default parameter defining the coupling confition, it must be less or equal 1 and greater then 0
-	static constexpr Real          Default_xsi = 1;
+	static constexpr Real          Default_xsi = 1.;
 };
 
 //! Class for assembling a trasmissibility fracture matrix.

@@ -147,6 +147,7 @@ protected:
  * This class implements a linear solver for the system Ax=b.
  * It uses the Cholesky factorization on a SPD matrix.
  */
+
 class EigenCholesky : public Solver
 {
 public:

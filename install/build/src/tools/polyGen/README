@@ -1,0 +1,21 @@
+First of all you need:
+- tetgen 1.5.0
+- OpenFOAM version 2.3.1
+
+Follow the steps:
+1) Install the OpenFOAM application to generate polyhedral mesh
+    a) tar -xvf myPolyDualMesh.tar.gz
+    b) mv myPolyDualMesh \
+       <OpenFOAM231>/applications/utilities/mesh/manipulation
+    c) source <OpenFOAM231>/etc/bashrc
+    d) cd <OpenFOAM231>/applications/utilities/mesh/manipulation/myPolyDualMesh
+    e) wmake
+2) Set the tet2fvg.sh script
+    a) set tetgen and OpenFOAM directory and executable
+
+To run the program:
+1) Set into tet2foam.txt file the 'mesh_file' variable.
+   It is the input prefix name of the .poly mesh.
+2) Set into foam2fvg.txt file the 'output_file' variable.
+   It is the output prefix name of the .fvg mesh.
+3) ./tet2fvg.sh <refinement> <prefix_input_file>
