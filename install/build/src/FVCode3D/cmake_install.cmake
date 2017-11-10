@@ -153,7 +153,27 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FVCode3D/solver" TYPE FILE FILES "/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres_util.hpp")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FVCode3D/solver" TYPE FILE FILES "/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FVCode3D/solver" TYPE FILE FILES "/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/bicgstab.hpp")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FVCode3D/solver" TYPE FILE FILES "/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/LinearAlgebraTraits.hpp")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FVCode3D/solver" TYPE FILE FILES "/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres.hpp")
+endif()
+
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FVCode3D/solver" TYPE FILE FILES "/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/cg.hpp")
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")

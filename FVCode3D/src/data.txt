@@ -5,7 +5,7 @@
 ## input
 [mesh]
 mesh_dir    = ./data/
-mesh_file   = polyGrid3.fvg      
+mesh_file   = cubePolyF2.fvg      
 mesh_type   = .fvg      # .grid or .fvg or .mesh
 
 ## output
@@ -40,7 +40,7 @@ theta       = 0.
 
 ## solver
 [solver]
-type    = EigenUmfPack  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
+type    = EigenBiCGSTAB  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
                         # SamgSym , SamgNotSym
 
     [./iterative]

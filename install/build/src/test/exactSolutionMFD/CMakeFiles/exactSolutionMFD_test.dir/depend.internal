@@ -41,22 +41,38 @@ src/test/exactSolutionMFD/CMakeFiles/exactSolutionMFD_test.dir/main.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/quadrature/Quadrature.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/quadrature/QuadratureRules.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/LinearAlgebraTraits.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/bicgstab.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/cg.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres_util.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/Converter.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/Evaluate.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/Matrix.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/StringManipolator.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/test/exactSolutionMFD/main.cpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Cholesky
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Core
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Dense
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Eigenvalues
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Geometry
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Householder
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/IterativeLinearSolvers
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Jacobi
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/LU
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/OrderingMethods
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/QR
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SVD
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Sparse
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SparseCholesky
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SparseCore
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SparseLU
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SparseQR
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Cholesky/LDLT.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Cholesky/LLT.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Cholesky/LLT_LAPACKE.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/Array.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/ArrayBase.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/ArrayWrapper.h
@@ -147,11 +163,49 @@ src/test/exactSolutionMFD/CMakeFiles/exactSolutionMFD_test.dir/main.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/StaticAssert.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/XprHelper.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./ComplexSchur.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./HessenbergDecomposition.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./RealQZ.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./RealSchur.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/./Tridiagonalization.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur_LAPACKE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/RealSchur_LAPACKE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver_LAPACKE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/AlignedBox.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/AngleAxis.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/EulerAngles.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Homogeneous.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Hyperplane.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/OrthoMethods.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/ParametrizedLine.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Quaternion.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Rotation2D.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/RotationBase.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Scaling.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Transform.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Translation.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/Umeyama.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Geometry/arch/Geometry_SSE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Householder/BlockHouseholder.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Householder/Householder.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Householder/HouseholderSequence.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Jacobi/Jacobi.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h
@@ -159,6 +213,17 @@ src/test/exactSolutionMFD/CMakeFiles/exactSolutionMFD_test.dir/main.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Amd.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/QR/FullPivHouseholderQR.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/QR/HouseholderQR.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/QR/HouseholderQR_LAPACKE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SVD/BDCSVD.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SVD/JacobiSVD.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SVD/SVDBase.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseCore/AmbiVector.h
@@ -206,6 +271,9 @@ src/test/exactSolutionMFD/CMakeFiles/exactSolutionMFD_test.dir/main.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseQR/SparseQR.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Image.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/RealSvd2x2.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke_mangling.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/BlockMethods.h

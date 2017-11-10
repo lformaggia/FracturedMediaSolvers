@@ -4,10 +4,11 @@
  */
 
 #include <sstream>
-//#include <iostream>
-//#include <unsupported/Eigen/IterativeSolvers>
 
 #include <FVCode3D/solver/Solver.hpp>
+#include <FVCode3D/solver/bicgstab.hpp>
+#include <FVCode3D/solver/gmres.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 #ifdef FVCODE3D_HAS_UMFPACK
 #include <Eigen/UmfPackSupport>
 #endif // FVCODE3D_HAS_UMFPACK
@@ -65,7 +66,7 @@ void EigenCG::solve()
 
 void EigenBiCGSTAB::solve()
 {
-
+/*
     Eigen::BiCGSTAB<SpMat> bicgstab;
 
     bicgstab.setMaxIterations(M_maxIter);
@@ -76,18 +77,18 @@ void EigenBiCGSTAB::solve()
 
     M_iter = bicgstab.iterations();
     M_res = bicgstab.error();
-/*
-    Eigen::GMRES<SpMat> bicgstab;
-
-    bicgstab.setMaxIterations(M_maxIter);
-    bicgstab.setTolerance(M_tol);
-
-    bicgstab.compute(M_A);
-    M_x = bicgstab.solve(M_b);
-
-    M_iter = bicgstab.iterations();
-    M_res = bicgstab.error();
 */
+	M_x = Vector::Zero(M_A.cols());
+	int iter = (int) M_maxIter;
+	M_res  = M_tol;
+	diagonal_preconditioner D(M_A);
+	identity_preconditioner I;
+	int m = 300;
+//	int conv = BiCGSTAB(M_A, M_x, M_b, D, iter, M_res);
+	int conv = GMRES(M_A, M_x, M_b, D, m, iter, M_res);
+	std::cout<<conv<<std::endl;
+	M_iter = (UInt) iter;
+
 } // EigenBiCGSTAB::solve
 
 

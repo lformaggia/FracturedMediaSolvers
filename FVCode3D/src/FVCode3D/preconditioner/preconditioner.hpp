@@ -31,7 +31,7 @@ public:
      * @param r The rhs vector on what we apply the P^-1
      * Note that the return value is passed through move semantic.
      */
-    virtual Vector solve(const Vector & r) = 0;
+    virtual Vector solve(const Vector & r) const = 0;
     //@}                  	
 };
 
@@ -51,7 +51,7 @@ public:
     /*!
      * @param r The rhs vector on what we apply the P^-1
      */
-    Vector solve(const Vector & r)
+    Vector solve(const Vector & r) const
 		{ return r; };
     //@}                 
 };
@@ -88,7 +88,7 @@ public:
     /*!
      * @param r The rhs vector on what we apply the P^-1
      */
-    Vector solve(const Vector & r);
+    Vector solve(const Vector & r) const;
     //@}
     
 private:            

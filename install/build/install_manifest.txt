@@ -33,6 +33,11 @@
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/mesh/TetGenWrapper.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/SolverHandler.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/Solver.hpp
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/bicgstab.hpp
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/cg.hpp
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/gmres.hpp
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/gmres_util.hpp
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/solver/LinearAlgebraTraits.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/assembler/Mass.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/assembler/FixPressureDofs.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/include/FVCode3D/assembler/MatrixHandler.hpp

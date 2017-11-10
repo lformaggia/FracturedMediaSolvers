@@ -11,11 +11,16 @@
 namespace FVCode3D
 {
 
-Vector diagonal_preconditioner::solve(const Vector & r)
+Vector diagonal_preconditioner::solve(const Vector & r) const
 {
-	Vector z(A.rows());                     // The preconditioned residual
+	Vector z = Vector::Zero(A.cols());                     // The preconditioned residual
 	for(UInt i = 0; i<A.rows(); i++)        // Solving Pz=r
-		z[i] = r[i]/A.coeff(i,i);
+	{
+		if(A.coeff(i,i)!=0)
+			z[i] = r[i]/A.coeff(i,i);
+		else
+			z[i] = r[i];
+    }
 	return z;                               // Move semantic will move the Eigen vector
 }
 
