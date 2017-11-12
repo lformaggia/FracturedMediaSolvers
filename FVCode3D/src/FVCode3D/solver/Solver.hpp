@@ -252,7 +252,7 @@ public:
     //! Empty constructor
     IterativeSolver( const UInt nbDofs = 0 ):
         Solver( nbDofs ),
-        M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0) {}
+        M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0), CIndex(0) {}
 
     //! Constructor
     /*!
@@ -261,7 +261,7 @@ public:
      */
     IterativeSolver( const SpMat & A, const Vector & b,
                      const UInt maxIter = S_referenceTol, const Real tol = S_referenceMaxIter ):
-        Solver( A, b), M_maxIter(maxIter), M_iter(0), M_tol(tol), M_res(0) {}
+        Solver( A, b), M_maxIter(maxIter), M_iter(0), M_tol(tol), M_res(0), CIndex(0) {}
 
     //! @name Get Methods
     //@{
@@ -289,7 +289,6 @@ public:
      * @return the normalized residual error || b - A * x || / || b ||
      */
     Real getResidual() const { return M_res; }
-
     //@}
 
     //! @name Set Methods
@@ -299,15 +298,33 @@ public:
     /*!
      * @param maximum number of iterations
      */
-    void setMaxIter(const UInt maxIter) { M_maxIter = maxIter; };
+    void setMaxIter(const UInt maxIter) { M_maxIter = M_iter = maxIter; };
 
     //! Set relative tolerance for the residual error
     /*!
      * @param relative tolerance for the residual error
      */
-    void setTolerance(const Real tol) { M_tol = tol; };
-
+    void setTolerance(const Real tol) { M_tol = M_res = tol; };
     //@}
+    
+    //! Print out the computation details
+    /*!
+     * Print out the cimputation details
+     */
+    virtual void print()
+    {
+		std::cout << std::endl;
+		std::cout << "\t# iterations: " << M_iter << std::endl;
+		std::cout << "\tResidual: " << M_res << std::endl<<std::endl;
+		switch(CIndex)
+		{
+			case 0 :
+			std::cout<<"Ok, the method converge within the tolerance."<<std::endl;
+			break;
+			case 1 :
+			std::cout<<"The method does not converge."<<std::endl;
+		}
+	};
 
     //! Solve the linear system
     /*!
@@ -329,86 +346,158 @@ protected:
     Real M_tol;
     //! Residual error
     Real M_res;
+    //! Computation index
+    UInt CIndex;
 
-    static Real S_referenceTol;
-    static UInt S_referenceMaxIter;
+    static constexpr Real S_referenceTol = 1e-6;
+    static constexpr UInt S_referenceMaxIter = 100;
 }; // class IterativeSolver
 
-//! Class EigenCG
+//! Class imlCG
 /*!
- * @class EigenCG
+ * @class imlCG
  * This class implements a linear solver for the system Ax=b.
  * It uses the conjugate gradient method on a spd matrix.
  */
-class EigenCG : public IterativeSolver
+class imlCG : public IterativeSolver
 {
 public:
 
     //! Empty constructor
-    EigenCG( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
+    imlCG( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-    EigenCG( const SpMat & A, const Vector & b,
+    imlCG( const SpMat & A, const Vector & b,
              const UInt maxIter = IterativeSolver::S_referenceTol,
              const Real tol = IterativeSolver::S_referenceMaxIter ):
         IterativeSolver(A, b,maxIter,tol) {}
+        
+    //! Destructor
+    virtual ~imlCG() = default;
 
     //! Solve the linear system
     /*!
      * Solve the linear system Ax=b by means of the conjugate gradient method.
      */
     virtual void solve();
-
-    //! Destructor
-    virtual ~EigenCG() = default;
-
+    
 }; // class EigenCG
 
-//! Class EigenBiCGSTAB
+
+//! Class imlBiCGSTAB
 /*!
- * @class EigenBiCGSTAB
+ * @class imlBiCGSTAB
  * This class implements a linear solver for the system Ax=b.
  * It uses the stabilized bi-conjugate gradient method on a square matrix.
  */
-class EigenBiCGSTAB : public IterativeSolver
+class imlBiCGSTAB : public IterativeSolver
 {
 public:
 
     //! Empty constructor
-    EigenBiCGSTAB( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ) {}
+    imlBiCGSTAB( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ), restart(Default_restart) {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-    EigenBiCGSTAB(const SpMat & A, const Vector & b):
-        IterativeSolver( A, b) {}
+    imlBiCGSTAB( const SpMat & A, const Vector & b,
+				const UInt maxIter = IterativeSolver::S_referenceTol,
+				const Real tol = IterativeSolver::S_referenceMaxIter, const bool rest = Default_restart ):
+        IterativeSolver(A, b,maxIter,tol), restart(rest) {}
+        
+    //! Destructor
+    virtual ~imlBiCGSTAB() = default;
 
-    //! Constructor
+    //! Set the restart
     /*!
-     * @param A Eigen sparse matrix
-     * @param b RHS, it is Eigen vector
+     * @param The restart
      */
-    EigenBiCGSTAB( const SpMat & A, const Vector & b,
-                   const UInt maxIter = IterativeSolver::S_referenceTol,
-                   const Real tol = IterativeSolver::S_referenceMaxIter ):
-        IterativeSolver(A, b,maxIter,tol) {}
+    void setRestart(bool rest){ restart = rest; };
+    
+    //! Print out the computation details
+    /*!
+     * Print out the cimputation details
+     */
+    void print()
+    {
+		IterativeSolver::print();
+		switch(CIndex)
+		{
+			case 2 :
+			std::cout<<"A 1st type breakdown is occurred."<<std::endl;
+			break;
+			case 3 :
+			std::cout<<"A 2st type breakdown is occurred."<<std::endl;
+		}
+	};
 
     //! Solve the linear system
     /*!
-     * Solve the linear system Ax=b by means of the conjugate gradient method.
+     * Solve the linear system Ax=b by means of the stabilized bi-conjugate gradient method.
+     */
+    virtual void solve();
+    
+private:
+	//! A bool to know if using BiCGSTAB with restart or not
+	bool restart;
+	//! The default restart value
+	static constexpr bool Default_restart = false;
+	
+}; // class BiCGSTAB
+
+
+//! Class imlGMRES
+/*!
+ * @class imlGMRES
+ * This class implements a linear solver for the system Ax=b.
+ * It uses the generalized minimum residual method with restart on a square matrix.
+ */
+class imlGMRES : public IterativeSolver
+{
+public:
+
+    //! Empty constructor
+    imlGMRES( const UInt nbDofs = 0 ): IterativeSolver( nbDofs ), m(Default_m) {}
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    imlGMRES( const SpMat & A, const Vector & b,
+				const UInt maxIter = IterativeSolver::S_referenceTol,
+				const Real tol = IterativeSolver::S_referenceMaxIter, const UInt rest = Default_m ):
+        IterativeSolver(A, b,maxIter,tol), m(rest) {}
+  
+    //! Destructor
+    virtual ~imlGMRES() = default;
+          
+    //! Set the restart
+    /*!
+     * @param The restart
+     */
+    void set_m(UInt rest_val){ m = rest_val; };
+    
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b by means of the GMRES method.
      */
     virtual void solve();
 
-    //! Destructor
-    virtual ~EigenBiCGSTAB() = default;
+private:
+	//! The restart level (how many iterations nedded to perform a restart)
+	UInt m;
+	//! The default restart value
+	static constexpr UInt Default_m = 40;
+	
+}; // class GMRES
 
-}; // class EigenBiCGSTAB
 
 #ifdef FVCODE3D_HAS_SAMG
 //! Class SamgSolver

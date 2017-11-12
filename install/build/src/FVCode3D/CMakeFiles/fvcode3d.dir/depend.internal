@@ -4879,6 +4879,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.cpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/bicgstab.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/cg.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres_util.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Cholesky

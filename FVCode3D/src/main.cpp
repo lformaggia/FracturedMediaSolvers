@@ -221,15 +221,13 @@ int main(int argc, char * argv[])
             FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
             fpd.apply(dataPtr->getPressuresInFractures());
         }
-        std::cout << "Solve the problem..." << std::endl<<std::endl;
+        std::cout << "Solve the problem..." << std::endl;
         darcy->solve();
-        std::cout<<"done."<<std::endl<<std::endl;
         
         if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
         {
-            std::cout << std::endl;
-            std::cout << "\t# iterations: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getIter() << std::endl;
-            std::cout << "\tResidual: " << dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->getResidual() << std::endl;
+              dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->print();
+              std::cout<<std::endl;
         }
     }
     else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)

@@ -25,7 +25,7 @@
 template < class Matrix, class Vector, class Preconditioner>
 int 
 BiCGSTAB(const Matrix &A, Vector &x, const Vector &b,
-         const Preconditioner &M, int &max_iter, typename Vector::Scalar &tol)
+         const Preconditioner &M, const bool & Restart, int &max_iter, typename Vector::Scalar &tol)
 {
   using LinearAlgebra::dot;
   using LinearAlgebra::norm;
@@ -51,17 +51,19 @@ BiCGSTAB(const Matrix &A, Vector &x, const Vector &b,
   for (int i = 1; i <= max_iter; i++) {
     rho_1 = dot(rtilde, r);
     if (rho_1 == 0) {
+	  if(Restart == true){
 	  // PATCH_JACOPO
       // The new residual vector became orthogonal to the arbitrarily chosen direction rtilde
       // Let's restart with a new rtilde:
       r  = b - A * x;
       rtilde = r;
       rho_1 = dot(rtilde, r);
-/*
+      }
+	  else{	
       tol = norm(r) / normb;
       max_iter = i;
       return 2;
-*/
+	  }	
     }
     if (i == 1)
       p = r;

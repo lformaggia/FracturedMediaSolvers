@@ -627,6 +627,8 @@ sstream
 -
 FVCode3D/solver/Solver.hpp
 -
+FVCode3D/solver/cg.hpp
+-
 FVCode3D/solver/bicgstab.hpp
 -
 FVCode3D/solver/gmres.hpp
@@ -657,6 +659,8 @@ FVCode3D/solver/Solver.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/bicgstab.hpp
 LinearAlgebraTraits.hpp
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/LinearAlgebraTraits.hpp
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/cg.hpp
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/gmres.hpp
 Eigen/Dense

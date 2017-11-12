@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include <FVCode3D/solver/Solver.hpp>
+#include <FVCode3D/solver/cg.hpp>
 #include <FVCode3D/solver/bicgstab.hpp>
 #include <FVCode3D/solver/gmres.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
@@ -45,51 +46,64 @@ void EigenUmfPack::solve()
 #endif // FVCODE3D_HAS_UMFPACK
 
 
-Real IterativeSolver::S_referenceTol = 1e-6;
-UInt IterativeSolver::S_referenceMaxIter = 100;
+Real constexpr IterativeSolver::S_referenceTol;
+UInt constexpr IterativeSolver::S_referenceMaxIter;
 
 
-void EigenCG::solve()
+void imlCG::solve()
 {
-    Eigen::ConjugateGradient<SpMat> cg;
-
-    cg.setMaxIterations(M_maxIter);
-    cg.setTolerance(M_tol);
-
-    cg.compute(M_A);
-    M_x = cg.solve(M_b);
-
-    M_iter = cg.iterations();
-    M_res = cg.error();
-} // EigenCG::solve
-
-
-void EigenBiCGSTAB::solve()
-{
-/*
-    Eigen::BiCGSTAB<SpMat> bicgstab;
-
-    bicgstab.setMaxIterations(M_maxIter);
-    bicgstab.setTolerance(M_tol);
-
-    bicgstab.compute(M_A);
-    M_x = bicgstab.solve(M_b);
-
-    M_iter = bicgstab.iterations();
-    M_res = bicgstab.error();
-*/
+	// Define the initial guess to zero
 	M_x = Vector::Zero(M_A.cols());
-	int iter = (int) M_maxIter;
-	M_res  = M_tol;
+	// Define the preconditioner
 	diagonal_preconditioner D(M_A);
-	identity_preconditioner I;
-	int m = 300;
-//	int conv = BiCGSTAB(M_A, M_x, M_b, D, iter, M_res);
-	int conv = GMRES(M_A, M_x, M_b, D, m, iter, M_res);
-	std::cout<<conv<<std::endl;
+	// Conversion needed
+	int iter = (int) M_maxIter;
+	// Solve the system
+	int conv = CG(M_A, M_x, M_b, D, iter, M_res);
+	// Conversion needed
+	CIndex = (UInt) conv;	
+	M_iter = (UInt) iter;
+} // imlCG::solve
+
+constexpr bool imlBiCGSTAB::Default_restart;
+void imlBiCGSTAB::solve()
+{
+	// Define the initial guess to zero
+	M_x = Vector::Zero(M_A.cols());
+	// Define the preconditioner
+	diagonal_preconditioner D(M_A);
+	// Set the restart
+	setRestart(true);
+	// Conversion needed
+	int iter = (int) M_maxIter;
+	// Solve the system
+	int conv = BiCGSTAB(M_A, M_x, M_b, D, restart, iter, M_res);
+	// Conversion needed
+	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;
 
-} // EigenBiCGSTAB::solve
+} // imlBiCGSTAB::solve
+
+
+constexpr UInt imlGMRES::Default_m;
+void imlGMRES::solve()
+{
+	// Define the initial guess to zero
+	M_x = Vector::Zero(M_A.cols());
+	// Define the preconditioner
+	diagonal_preconditioner D(M_A);
+	// Set the restart level
+	set_m(300);
+	// Conversion needed
+	int iter = (int) M_maxIter;
+	int m_int = (int) m;
+	// Solve the system
+	int conv = GMRES(M_A, M_x, M_b, D, m_int, iter, M_res);
+	// Conversion needed
+	CIndex = (UInt) conv;	
+	M_iter = (UInt) iter;
+	
+} // imlGMRES::solve
 
 
 #ifdef FVCODE3D_HAS_SAMG

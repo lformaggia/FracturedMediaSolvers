@@ -40,7 +40,7 @@ theta       = 0.
 
 ## solver
 [solver]
-type    = EigenBiCGSTAB  # EigenCholesky , EigenLU , EigenUmfPack , EigenCG , EigenBiCGSTAB
+type    = imlGMRES  # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlGMRES
                         # SamgSym , SamgNotSym
 
     [./iterative]
