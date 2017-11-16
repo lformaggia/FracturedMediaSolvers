@@ -74,6 +74,15 @@ public:
     //! @name Methods
     //@{
 
+    //! Show system dimension 
+    /*!
+     * Show system dimension
+     */
+    void showMe() const
+        {
+			std::cout<<"The system dimension is : "<<M_size<<std::endl<<std::endl;
+		};
+        
     //! Assemble method
     /*!
      * Assemble the matrix

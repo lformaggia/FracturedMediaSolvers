@@ -101,6 +101,8 @@ void global_InnerProduct::assemble()
 		local_InnerProduct   localIP(M_mesh,cell);
 		// Assemblo prodotto interno locale
 		localIP.assemble();
+		// Erase Np,Rp,Mp0,Mp1 
+		localIP.free_unusefulSpace();		
 		// Assemblo matrice locale in matrice globale
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 			assembleFace(iloc, localIP.getMp(), cell);
@@ -112,6 +114,8 @@ void global_InnerProduct::ImposeBC(SpMat & S, Vector & rhs)
 {
 	std::cout<<std::endl;
 	std::cout << "Zero the Neumann row of S and impose BC on the rhs" << std::endl<<std::endl;
+	Real penalty  = 1e30;
+	UInt numfacetsTot = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size();
 	
 	for( auto facet_it : M_mesh.getBorderFacetsIdsVector() )
 	{	
@@ -121,11 +125,19 @@ void global_InnerProduct::ImposeBC(SpMat & S, Vector & rhs)
 		if( M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
 		{
 			// Impose Neumann BC on the matrix of the system
-			S.prune( [facetId]( UInt i, UInt, Real ){ return ( i!= facetId ); });
+/*			S.prune( [facetId]( UInt i, UInt, Real ){ return ( i!= facetId ); });
 			S.coeffRef(facetId,facetId) = 1;
 			// Impose Neumann BC on the rhs
 			const Real vel_N = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
             rhs[facetId] = vel_N;
+*/
+			//Nitsche formulation
+			UInt cellId = facet_it.getSeparatedCellsIds()[0];
+			S.coeffRef(facetId, facetId) += penalty*facet_it.getSize()/facet_it.get_h();
+			S.coeffRef(numfacetsTot+cellId, facetId) -= facet_it.getSize();
+			S.coeffRef(facetId, numfacetsTot+cellId) -= facet_it.getSize();
+			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())/facet_it.get_h();
+			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 		}
 			
 		else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
@@ -219,10 +231,11 @@ void global_Div::assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
 	if( Bp[iloc] != 0. )
 	{
 		S.insert(M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() + cell.getId(), i) = Bp[iloc];
-			
-	if( !( fac.isBorderFacet() &&
+		S.insert(i, M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() + cell.getId()) = Bp[iloc];
+/*	if( !( fac.isBorderFacet() &&
 		( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) ) )
 		S.insert(i, M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size() + cell.getId()) = Bp[iloc];
+*/
 	}
 }
 
@@ -632,9 +645,10 @@ void global_BulkBuilder::reserve_space(SpMat & S)
 
 		Matrix_elements[globalFacetId] += numCellFacets + 1;            // space for the M and B elements
 		
-		if( fac.isBorderFacet() &&
+/*		if( fac.isBorderFacet() &&
 		( M_bc.getBordersBCMap().at(fac.getBorderId()).getBCType() == Neumann ) )
 			continue;
+*/
 		Matrix_elements[ numFacetsTot+cellId ] += 1;                    // space fot the Dt element
 		
         }
@@ -697,6 +711,8 @@ void global_BulkBuilder::build(SpMat & S)
 		local_builder        localBUILDER(localIP,localDIV,cell);
 		// Assemblo matrici locali
 		localBUILDER.build();
+		// Erase Np,Rp,Mp0,Mp1 
+		localIP.free_unusefulSpace();		
 		// Assemblo matrice locale in matrice globale
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 		{			
@@ -721,6 +737,8 @@ void global_BulkBuilder::build()
 		local_builder        localBUILDER(localIP,localDIV,cell);
 		// Assemblo matrici locali
 		localBUILDER.build();
+		// Erase Np,Rp,Mp0,Mp1 
+		localIP.free_unusefulSpace();
 		// Assemblo matrici locali in matrici globali
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 		{						

@@ -84,6 +84,11 @@ protected:
  * The adopted scheme is based on building a consistency term Mp0 and a stability term Mp1
  * and then summing up the two contribution to obtain Mp.
  * For the stability term we use the scaled-orthogonal projector.
+ * The class stores all the matrices needed to build Mp (that are Np,Rp,Mp0,Mp1) because
+ * it may be of interest studying them (especially the consistency/stability terms).
+ * Thanks to the free_unusefulSpace() methods, if one is interestd only in assembling
+ * the local inner product matrix Mp it's possible to free the space occupied
+ * by the intermediate matrices Np,Rp,Mp0,Mp1.
  */
 class local_InnerProduct: public local_MimeticOperator
 {
@@ -147,6 +152,18 @@ public:
 
     //! @name Methods
     //@{
+    //! Free method
+    /*!
+     * Free the unuseful space after assembling Mp
+     */
+    void free_unusefulSpace()
+		{ 
+			Np.resize(0,0);
+			Rp.resize(0,0);
+			Mp0.resize(0,0);
+			Mp1.resize(0,0);
+		};
+    
     //! Assemble method
     /*!
      * Assemble the local_InnerProduct

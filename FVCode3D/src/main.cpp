@@ -221,7 +221,7 @@ int main(int argc, char * argv[])
             FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
             fpd.apply(dataPtr->getPressuresInFractures());
         }
-        std::cout << "Solve the problem..." << std::endl;
+        std::cout << "Solve the problem..." << std::endl<<std::endl;
         darcy->solve();
         
         if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
@@ -347,6 +347,6 @@ int main(int argc, char * argv[])
     delete importer;
 
     chrono.stop();
-
+    
     return 0;
 }

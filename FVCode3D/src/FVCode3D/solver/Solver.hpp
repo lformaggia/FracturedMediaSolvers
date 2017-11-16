@@ -311,7 +311,7 @@ public:
     /*!
      * Print out the cimputation details
      */
-    virtual void print()
+    virtual void print() const
     {
 		std::cout << std::endl;
 		std::cout << "\t# iterations: " << M_iter << std::endl;
@@ -392,7 +392,10 @@ public:
 /*!
  * @class imlBiCGSTAB
  * This class implements a linear solver for the system Ax=b.
- * It uses the stabilized bi-conjugate gradient method on a square matrix.
+ * It uses the stabilized bi-conjugate gradient method on a square matrix. There's also the possibility to use a restart 
+ * for the 1st type of breakdown due to the fact that the actual residual becomes orthogonal to the initial one.
+ * This strategy may lead to the convergence of the method, but it may also fail leading to a non convergent method
+ * that does not stop itself due to 1st type breakdow.
  */
 class imlBiCGSTAB : public IterativeSolver
 {
@@ -424,7 +427,7 @@ public:
     /*!
      * Print out the cimputation details
      */
-    void print()
+    void print() const
     {
 		IterativeSolver::print();
 		switch(CIndex)

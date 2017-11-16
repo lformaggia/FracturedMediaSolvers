@@ -23,7 +23,7 @@ namespace FVCode3D
 
 void EigenCholesky::solve()
 {
-    Eigen::SimplicialCholesky<SpMat> chol(M_A);
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol(M_A);
     M_x = chol.solve(M_b);
 } // EigenCholesky::solve
 

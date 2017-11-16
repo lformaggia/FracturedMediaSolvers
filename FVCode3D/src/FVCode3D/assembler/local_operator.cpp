@@ -20,7 +20,8 @@ void local_InnerProduct::assemble()
 	Eigen::Matrix<Real,Dynamic,3> Sp;                                   // I will take Np as the column base of Sp
 	Eigen::Matrix<Real,3,3> Kp;                                         // permability tensor
 	
-	auto & K = pMesh.getPropertiesMap().getProperties(cellp.getZoneCode()).M_permeability;
+	auto & K = pMesh.getPropertiesMap().getProperties(cellp.getZoneCode()).M_permeability; 
+	Real Mob = pMesh.getPropertiesMap().getMobility();
 	const std::vector<UInt> & cellFacetsId( cellp.getFacetsIds() );
 	const UInt numCellFacets  = cellFacetsId.size();
     const Real cellMeasure    = cellp.getVolume();
@@ -34,15 +35,15 @@ void local_InnerProduct::assemble()
     Rp.resize(numCellFacets,Eigen::NoChange);
 	Rp.setZero();
         
-	Kp(0,0) = K->operator()(0,0);
-	Kp(0,1) = K->operator()(0,1);
-	Kp(0,2) = K->operator()(0,2);
-	Kp(1,0) = K->operator()(1,0);
-	Kp(1,1) = K->operator()(1,1);
-	Kp(1,2) = K->operator()(1,2);
-    Kp(2,0) = K->operator()(2,0);
-    Kp(2,1) = K->operator()(2,1);
-    Kp(2,2) = K->operator()(2,2);
+	Kp(0,0) = Mob*K->operator()(0,0);
+	Kp(0,1) = Mob*K->operator()(0,1);
+	Kp(0,2) = Mob*K->operator()(0,2);
+	Kp(1,0) = Mob*K->operator()(1,0);
+	Kp(1,1) = Mob*K->operator()(1,1);
+	Kp(1,2) = Mob*K->operator()(1,2);
+    Kp(2,0) = Mob*K->operator()(2,0);
+    Kp(2,1) = Mob*K->operator()(2,1);
+    Kp(2,2) = Mob*K->operator()(2,2);
 
 	// Loop on facets to build Rp, Np
 	for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
