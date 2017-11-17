@@ -80,6 +80,7 @@ public:
      */
     void showMe() const
         {
+			std::cout<<std::endl;
 			std::cout<<"The system dimension is : "<<M_size<<std::endl<<std::endl;
 		};
         

@@ -56,7 +56,7 @@ inline std::ostream & operator<<(std::ostream & o, const dType & d)
  * This is the base class to build one of the operators of the problem (the operator
  * can be a mimetic one associated to the bulk problem or a fracture operator such
  * as the coupling conditions or the finite volume trasmissibility matrix).
- * It's an abstract class.
+ * It's an abstract class. 
  */
 class global_Operator
 {
@@ -194,6 +194,13 @@ protected:
 class global_InnerProduct: public global_Operator
 {
 public:
+	//! Typedef for Eigen::Matrix<Real,Dynamic,Dynamic>
+	/*!
+	* @typedef locMatrix
+	* This type definition permits to treat Eigen::Matrix<Real,Dynamic,Dynamic>> as a locMatrix.
+	*/
+	typedef Eigen::Matrix<Real,Dynamic,Dynamic> locMatrix;
+
     //! @name Constructor & Destructor
     //@{
     //! Construct a global_InnerProduct operator
@@ -236,15 +243,17 @@ public:
      */
     void reserve_space();
     
-    //! Assemble the local face contributions in the global system matrix 
+    //! Assemble the local face contributions in a matrix S using the offsets
     /*!
      * @param iloc The local facet Id
      * @param Mp The local inner product matrix
-     * @param cell The actuak cell
-     * @param S The system matrix 
+     * @param cell The actual cell
+     * @param S The matrix
+     * @param rowoff The row offset 
+     * @param coloff The col offset 
      */
-    void assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
-		const Rigid_Mesh::Cell & cell, SpMat & S);
+    void assembleFace(const UInt iloc, const locMatrix & Mp, const Rigid_Mesh::Cell & cell,
+		SpMat & S, const UInt rowoff, const UInt coloff);
 		
 	//! Assemble the local face contributions in the inner product matrix 
     /*!
@@ -252,27 +261,13 @@ public:
      * @param Mp The local inner product matrix
      * @param cell The actual cell
      */
-    void assembleFace(const UInt & iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp,
-		const Rigid_Mesh::Cell & cell);
+    void assembleFace(const UInt iloc, const locMatrix & Mp, const Rigid_Mesh::Cell & cell);
 
     //! Assemble the innner product matrix
     /*!
      * Assemble the inner product matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
-    
-    //! Impose BCs on the monolithic matrix S and on the rhs
-    /*!
-     * @param S The monolithic matrix of the system
-     * @param rhs The right hand side vector of the system
-     */
-    void ImposeBC(SpMat & S, Vector & rhs);
-    
-    //! Impose BC method on inner product matrix and on the rhs
-    /*!
-     * @param rhs The right hand side vector of the system
-     */
-    void ImposeBC(Vector & rhs);
     //@}
     
 private:
@@ -305,7 +300,7 @@ public:
      * @param BCmap The boundary conditions
      */
 	global_Div( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, const BoundaryConditions & BCmap ):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), M_bc(BCmap), Dt_matrix(new SpMat(Ncol, Nrow)){}
+		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), M_bc(BCmap) {}
 	//! No Copy-Constructor
     global_Div(const global_Div &) = delete;
 	//! No Empty-Constructor
@@ -316,30 +311,17 @@ public:
 
 	//! @name Get Methods
     //@{
-    //! Get the Dt matrix (read only version)
-    /*!
-     * @return A const reference to the operator matrix
-     */
-    const SpMat & getDtMatrix_readOnly() const
-		{ return *Dt_matrix; };
 		
-	//! Get the operator matrix (writable version)
+    //! Get transpose method
     /*!
-     * @return A reference to the operator matrix
+     * @return the tranpose of the coupling conditions matrix C
      */
-    SpMat & getDtMatrix() 
-		{ return *Dt_matrix; };
+    SpMat getTranspose() const
+		{ return (*M_matrix).transpose(); };
 	//@}
 	
 	//! @name Methods
     //@{
-	//! Compress method for the Dt matrix
-    /*!
-     * Convert the matrix Dt in compressed format
-     */
-    void CompressDtMatrix()
-		{ (*Dt_matrix).makeCompressed(); };
-	
 	//! Show matrix method
     /*!
      * Show basic matrix information
@@ -359,24 +341,25 @@ public:
      */
     void reserve_space();
     
-    //! Assemble the local face contributions in the global system matrix
+    //! Assemble the local face contributions of B and Bt in a matrix S using the offsets
     /*!
      * @param iloc The local facet Id
      * @param Mp The local inner product matrix
-     * @param cell The actuak cell
+     * @param cell The actual cell
      * @param S The system matrix  
+     * @param rowoff The row offset 
+     * @param coloff The col offset 
      */
-    void assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
-		const Rigid_Mesh::Cell & cell, SpMat & S);
+    void assembleFace(const UInt iloc, const std::vector<Real> & Bp, const Rigid_Mesh::Cell & cell,
+		SpMat & S, const UInt rowoff, const UInt coloff);
 		
 	//! Assemble the local face contributions in the divergence matrix
     /*!
      * @param iloc The local facet Id
      * @param Mp The local inner product matrix
-     * @param cell The actuak cell 
+     * @param cell The actual cell 
      */
-    void assembleFace(const UInt & iloc, const std::vector<Real> & Bp,
-		const Rigid_Mesh::Cell & cell);
+    void assembleFace(const UInt iloc, const std::vector<Real> & Bp, const Rigid_Mesh::Cell & cell);
 
     //! Assemble the divergence matrix
     /*!
@@ -387,10 +370,7 @@ public:
 
 private:
 	//! Constant reference to the boundary conditions
-	const BoundaryConditions & 	M_bc;
-	//! The sparse matrix representing the modified trasnposed matrix
-	std::unique_ptr<SpMat>     Dt_matrix;
-    
+	const BoundaryConditions & 	M_bc;    
 };
 
 //! Class for assembling a coupling conditions matrix.
@@ -468,12 +448,14 @@ public:
      */
     void reserve_space();
 	
-    //! Assemble the fracture facet contributions of coupling conditions matrix C and Ct in the system matrix
+    //! Assemble the fracture facet contributions of  C and Ct in a matrix S using the offsets
     /*!
      * @param facet_it The actual fracture facet
      * @param S The system matrix
+     * @param rowoff The row offset 
+     * @param coloff The col offset 
      */
-    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff);
     
     //! Assemble the fracture facet contributions of coupling conditions in the C matrix
     /*!
@@ -481,12 +463,14 @@ public:
      */
     void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it);
     
-    //! Assemble the fracture facet contributions due to coupling conditions properly modifying M in the matrix system
+    //! Assemble the fracture facet contributions due to coupling conditions properly modifying M in the matrix S using the offsets
     /*!
      * @param facet_it The actual fracture facet
      * @param S The system matrix
+     * @param rowoff The row offset 
+     * @param coloff The col offset 
      */
-    void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);	
+    void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff);	
     
     //! Assemble the fracture facet contributions due to coupling conditions properly modifying M
     /*!
@@ -621,8 +605,10 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      * taking into account fracture trasformations with the "star-delta"trasformation
      * @param facet_it The actual fracture facet
      * @param S The system matrix
+     * @param rowoff The row offset 
+     * @param coloff The col offset 
      */
-    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S);
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff);
     
 	//! Assemble fracture facet trasmissibilities
     /*!
@@ -637,23 +623,6 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      * Assemble the flux operator (trasmissibility) matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
-    
-    //! Impose fractures BC method on the monolithic matrix and on the rhs
-    /*!
-     * This method impose the Neumann and Dirichlet BC on fractures
-     * modifying the monolithic matrix and the rhs.
-     * @param S The monolithic matrix of the system
-     * @param rhs The right hand side vector of the system
-     */
-    void ImposeBConFractures(SpMat & S, Vector & rhs);
-    
-    //! Impose fractures BC method on the trasmissibility matrix and on the rhs
-    /*!
-     * This method impose the Neumann and Dirichlet BC on fractures
-     * modifying the transmissibility matrix and the rhs of the system.
-     * @param rhs The right hand side vector of the system
-     */
-    void ImposeBConFractures(Vector & rhs);
     //@}
 
 private:
@@ -853,11 +822,86 @@ public:
 private:
 	//! A reference to the coupling conditions matrix
 	CouplingConditions            & coupling;
-	//! A reference to the transmissibility matrix
+	//! A reference to the flux operator
 	FluxOperator                  & FluxOp;
-	//! A reference to the inner product matrix
+	//! A reference to the global inner product
 	global_InnerProduct           & IP;
 };
+
+
+//! Class for assembling for imposing the boundary conditions on the system.
+/*!
+ * @class FractureBuilder
+ * This is the class to impose the bcs both on bulk and fractures.
+ * The bulk Neumann bcs are imposed through a Nitsche approach that allows to keep the
+ * symmetry of the system and (important!!!) to avoid a very unefficient prune Eigen command.
+ * The bulk Dirichlet bcs are imposed directly on the rhs because they are natural bcs in our problem.
+ * The fracture bcs are imposed through the typical FV approach (that is Neumann imposes the flux and
+ * Dirichlet is imposed through a ghost-cell approach).
+ */
+class BCimposition
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a BCimposition.
+    /*!
+     * @param rMesh A const reference to the rigid mesh
+     * @param bc A const reference to the boujndary conditions
+     */
+	BCimposition( const Rigid_Mesh & rMesh, const BoundaryConditions & bc):
+		M_mesh(rMesh), M_bc(bc), penalty(Default_penalty) {}
+	//! No Copy-Constructor
+    BCimposition(const BCimposition &) = delete;
+	//! No Empty-Constructor
+    BCimposition() = delete;
+	//! Destructor
+    ~BCimposition() = default;
+	//@}
+	
+	//! @name Methods
+    //@{
+    //! Set penalty.
+    /*!
+     * Set the penalty coefficient.
+     * @param gamma The penalty value to be set.
+     */
+    void set_penalty(const Real gamma)
+		{ penalty = gamma; };
+    //@}
+	
+	//! @name Assemble Methods
+    //@{
+    //! Assemble bcs on bulk.
+    /*!
+     * Assemble Neumann bcs through Nitshce approach and Dirichlet directly on the rhs.
+     * @param S The monolithic matrix
+     * @param rhs The rhs of the system
+     */
+    void ImposeBConBulk(SpMat & S, Vector & rhs) const; 
+    
+    //! Assemble bcs on fractures.
+    /*!
+     * Assemble the Neumann bcs imposing the flux, the Dirichlet through ghost-cells.
+     * @param S The trasmissibility matrix
+     * @param rhs The rhs of the system
+     * @param rowoff The row offset
+     * @param coloff The col offset
+     */
+    void ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo, const UInt rowoff, const UInt coloff) const;
+    //@}
+
+private:
+	//! A reference to the rigid mesh
+	const Rigid_Mesh            & M_mesh;
+	//! A reference to the boundary conditions
+	const BoundaryConditions    & M_bc;
+	//! The penalty coefficient
+	Real penalty;
+	//! The default penalty value
+	static constexpr Real Default_penalty = 1e30;
+};
+
 
 } //FVCode3D
 

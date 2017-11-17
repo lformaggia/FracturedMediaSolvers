@@ -393,8 +393,6 @@ void StiffMatrixMFD::assemble()
 	gBulkBuilder.reserve_space(*M_Matrix);
 	// Build the bulk matrices
 	gBulkBuilder.build(*M_Matrix);
-	// Impose bulk BCs
-	gIP.ImposeBC(*M_Matrix, *M_b);
 	
 	// Define the fracture builder
 	FractureBuilder FBuilder(M_mesh, coupling, fluxOP, gIP);
@@ -402,8 +400,13 @@ void StiffMatrixMFD::assemble()
 	FBuilder.reserve_space(*M_Matrix);
 	// Build the fracture matrices
 	FBuilder.build(*M_Matrix);
-	// Impose fractures BCs
-	fluxOP.ImposeBConFractures(*M_Matrix, *M_b);
+
+	// Define the BCs imposition object
+	BCimposition BCimp(M_mesh, M_bc);
+	// Impose BCs on bulk
+	BCimp.ImposeBConBulk(*M_Matrix, *M_b);
+	// Impose BCs in fractures
+	BCimp.ImposeBConFracture(*M_Matrix, *M_b, fluxOP, numFacetsTot+numCell, numFacetsTot+numCell);	
 }
 
 } // namespace FVCode3D
