@@ -29,6 +29,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o"
   "CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o"
   "CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o"
+  "CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o"
   "CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o"
   "CMakeFiles/fvcode3d.dir/core/Data.cpp.o"
   "CMakeFiles/fvcode3d.dir/boundaryCondition/BC.cpp.o"

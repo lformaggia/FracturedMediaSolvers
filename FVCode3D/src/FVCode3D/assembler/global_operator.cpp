@@ -11,6 +11,7 @@
 #include <FVCode3D/boundaryCondition/BC.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/property/Permeability.hpp>
+#include <FVCode3D/core/BasicType.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 
@@ -41,16 +42,20 @@ void global_InnerProduct::reserve_space()
     M.reserve(Matrix_elements);		
 }
 
-void global_InnerProduct::assembleFace(const UInt iloc, const locMatrix & Mp, const Rigid_Mesh::Cell & cell, 
+void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Rigid_Mesh::Cell & cell, 
 		SpMat & S, const UInt rowoff, const UInt coloff)
-{
+{   
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	// This is to take into account the decoupling of fractures facets
 	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[i])<0) )
 		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
 	
 	if( Mp(iloc,iloc) != 0. )
+	{
 			S.coeffRef(rowoff + i,coloff + i) += Mp(iloc,iloc);
+			if(lumpON)
+				(*M_lump).diagonal()[i] += Mp(iloc,iloc);
+	}
 
 	for(UInt jloc=iloc+1; jloc<cell.getFacetsIds().size(); ++jloc)
 	{
@@ -62,11 +67,16 @@ void global_InnerProduct::assembleFace(const UInt iloc, const locMatrix & Mp, co
 		{
 			S.coeffRef(rowoff + i,coloff + j) += Mp(iloc,jloc);
 			S.coeffRef(rowoff + j,coloff + i) += Mp(iloc,jloc);
+			if(lumpON)
+			{
+				(*M_lump).diagonal()[i] += Mp(iloc,jloc);
+				(*M_lump).diagonal()[j] += Mp(iloc,jloc);
+		    }
 		} 
 	}
 }
 
-void global_InnerProduct::assembleFace(const UInt iloc, const Eigen::Matrix<Real,Dynamic,Dynamic> & Mp, 
+void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, 
 	const Rigid_Mesh::Cell & cell)
 {   
 	auto & M = *M_matrix;
@@ -136,7 +146,7 @@ void global_Div::reserve_space()
 }
 
 void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
-		const Rigid_Mesh::Cell & cell, SpMat & S, const UInt rowoff, const UInt coloff)
+		const Rigid_Mesh::Cell & cell, SpMat & S, const UInt rowoff, const UInt coloff, const bool transpose)
 {
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	auto & fac = M_mesh.getFacetsVector()[i];
@@ -147,6 +157,7 @@ void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
 	if( Bp[iloc] != 0. )
 	{
 		S.insert(rowoff + cell.getId(), coloff + i) = Bp[iloc];
+		if(transpose)
 		S.insert(coloff + i, rowoff + cell.getId()) = Bp[iloc];
 	}
 }
@@ -215,13 +226,17 @@ void CouplingConditions::reserve_space()
 	M.reserve(MMatrix_elements);
 }
 
-void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff)
+void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, 
+	const UInt rowoff, const UInt coloff, const bool transpose)
 {
+	if(transpose)
+	{
 	// We insert Ct
 	S.insert(coloff + facet_it.getId(), rowoff + facet_it.getFractureId())     
 		=  facet_it.getSize();
 	S.insert(coloff + M_mesh.getFacetsVector().size()+facet_it.getFractureId(), rowoff + facet_it.getFractureId())    
 		= -facet_it.getSize();
+	}
 	// We insert C
 	S.insert(rowoff + facet_it.getFractureId(), coloff + facet_it.getId())     
 		=  facet_it.getSize();
@@ -469,10 +484,8 @@ void global_BulkBuilder::reserve_space(SpMat & S)
     S.reserve(Matrix_elements);	
 }
 
-void global_BulkBuilder::reserve_space() 
+void global_BulkBuilder::reserve_space(SpMat & M, SpMat & B) 
 {
-	auto & M = IP.getMatrix();
-	auto & B = Div.getMatrix();
 	std::vector<UInt> MMatrix_elements(M.cols(),0);
 	std::vector<UInt> BMatrix_elements(B.cols(),0);
 	
@@ -527,7 +540,7 @@ void global_BulkBuilder::build(SpMat & S)
 	std::cout<<"Done."<<std::endl;
 }
 
-void global_BulkBuilder::build()   
+void global_BulkBuilder::build(SpMat & M, SpMat & B)   
 {
 	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
 		
@@ -546,8 +559,8 @@ void global_BulkBuilder::build()
 		// Assemblo matrici locali in matrici globali
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 		{						
-			IP.assembleFace(iloc, localIP.getMp(), cell);
-			Div.assembleFace(iloc, localDIV.getBp(), cell);
+			IP.assembleFace(iloc, localIP.getMp(), cell, M, 0, 0);
+			Div.assembleFace(iloc, localDIV.getBp(), cell, B, 0, 0, false);
 		}
 	}
 	std::cout<<"Done."<<std::endl;
@@ -555,7 +568,7 @@ void global_BulkBuilder::build()
 
 void FractureBuilder::reserve_space(SpMat & S)
 {
-	const UInt numFacetsTot = IP.getMatrix_readOnly().cols();
+	const UInt numFacetsTot = M_mesh.getFacetsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 	const UInt numCells     = M_mesh.getCellsVector().size(); 
 	std::vector<UInt> Matrix_elements(S.cols(),0);
     std::fill( Matrix_elements.begin() + numFacetsTot+numCells, Matrix_elements.end(), 2);
@@ -579,14 +592,11 @@ void FractureBuilder::reserve_space(SpMat & S)
     S.reserve(Matrix_elements);
 }
 
-void FractureBuilder::reserve_space()
+void FractureBuilder::reserve_space(SpMat & M, SpMat & B, SpMat & T)
 {
-	auto & C = coupling.getMatrix();
-	auto & T = FluxOp.getMatrix();
-	auto & M = IP.getMatrix();
-	std::vector<UInt> CMatrix_elements( C.cols(), 0 );
-	std::vector<UInt> TMatrix_elements( T.cols(), 0 );
 	std::vector<UInt> MMatrix_elements( M.cols(), 0 );
+	std::vector<UInt> BMatrix_elements( B.cols(), 0 );
+	std::vector<UInt> TMatrix_elements( T.cols(), 0 );
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
 		//This is for -T
@@ -595,19 +605,19 @@ void FractureBuilder::reserve_space()
         auto sum_maker = [&N_neighbors](std::pair< FluxOperator::Fracture_Juncture, std::vector<UInt> > p)
 			{N_neighbors += p.second.size() ;};
         std::for_each(f_neighbors.begin(), f_neighbors.end(), sum_maker);
-		TMatrix_elements[ facet_it.getFractureId() ] = N_neighbors + 1;
+		TMatrix_elements[ M_mesh.getCellsVector().size() + facet_it.getFractureId() ] = N_neighbors + 1;
 		
 		// This is for C and coupling terms on M
 		UInt Id_plus   = facet_it.getId();
 		UInt Id_minus  = M_mesh.getFacetsVector().size() + facet_it.getFractureId();
-		CMatrix_elements[ Id_plus ]   = 1;
-		CMatrix_elements[ Id_minus ]  = 1;
+		BMatrix_elements[ Id_plus ]   = 1;
+		BMatrix_elements[ Id_minus ]  = 1;
 		MMatrix_elements[ Id_plus ]   = 1;
 		MMatrix_elements[ Id_minus ]  = 1;
 	}	
-	C.reserve(CMatrix_elements);
-	T.reserve(TMatrix_elements);
 	M.reserve(MMatrix_elements);
+	B.reserve(BMatrix_elements);
+	T.reserve(TMatrix_elements);
 }
 
 void FractureBuilder::build(SpMat & S)
@@ -623,13 +633,13 @@ void FractureBuilder::build(SpMat & S)
     }
 }
 
-void FractureBuilder::build()
+void FractureBuilder::build(SpMat & M, SpMat & B, SpMat & T)
 {
 	for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
-		coupling.assembleFrFace_onM(facet_it);
-		coupling.assembleFrFace(facet_it);
-		FluxOp.assembleFrFace(facet_it);
+		coupling.assembleFrFace_onM(facet_it, M, 0, 0);
+		coupling.assembleFrFace(facet_it, B, M_mesh.getCellsVector().size(), 0, false);
+		FluxOp.assembleFrFace(facet_it, T, M_mesh.getCellsVector().size(), M_mesh.getCellsVector().size());
     }
 }
 
@@ -650,6 +660,36 @@ void BCimposition::ImposeBConBulk(SpMat & S, Vector & rhs) const
 			S.coeffRef(facetId, facetId) += penalty*facet_it.getSize()/facet_it.get_h();
 			S.coeffRef(numfacetsTot+cellId, facetId) -= facet_it.getSize();
 			S.coeffRef(facetId, numfacetsTot+cellId) -= facet_it.getSize();
+			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())/facet_it.get_h();
+			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+		}
+		else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
+		{
+			// Impose Dirichlet BC on the rhs
+			Real pD = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+			const Real facetMeasure = facet_it.getSize();
+			const Rigid_Mesh::Cell & cell = M_mesh.getCellsVector()[ facet_it.getSeparatedCellsIds()[0] ];
+			const Real alpha = cell.orientationFacet( M_mesh.getFacetsVector()[ facetId ] ); 
+			rhs[facetId] = - alpha * facetMeasure * pD;
+		}
+	}	
+}
+
+void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
+{
+	UInt numfacetsTot = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size();
+	
+	for( auto facet_it : M_mesh.getBorderFacetsIdsVector() )
+	{	
+		UInt borderId = facet_it.getBorderId();
+		UInt facetId  = facet_it.getId();
+			
+		if( M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
+		{
+			// Nitsche formulation for Neumann bcs
+			UInt cellId = facet_it.getSeparatedCellsIds()[0];
+			M.coeffRef(facetId, facetId) += penalty*facet_it.getSize()/facet_it.get_h();
+			B.coeffRef(numfacetsTot+cellId, facetId) -= facet_it.getSize();
 			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())/facet_it.get_h();
 			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 		}

@@ -13,12 +13,12 @@
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
+#include <FVCode3D/core/BasicType.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
 {
-using Eigen::Dynamic;
 	
 //! Define the type of discretization
 /*!
@@ -194,13 +194,6 @@ protected:
 class global_InnerProduct: public global_Operator
 {
 public:
-	//! Typedef for Eigen::Matrix<Real,Dynamic,Dynamic>
-	/*!
-	* @typedef locMatrix
-	* This type definition permits to treat Eigen::Matrix<Real,Dynamic,Dynamic>> as a locMatrix.
-	*/
-	typedef Eigen::Matrix<Real,Dynamic,Dynamic> locMatrix;
-
     //! @name Constructor & Destructor
     //@{
     //! Construct a global_InnerProduct operator
@@ -212,8 +205,8 @@ public:
      * @param colSize The number of col
      * @param BCmap The boundary conditions
      */
-	global_InnerProduct( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, const BoundaryConditions & BCmap ):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), M_bc(BCmap){}
+	global_InnerProduct( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
+		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), lumpON(false) {}
 	//! No Copy-Constructor
     global_InnerProduct(const global_InnerProduct &) = delete;
 	//! No Empty-Constructor
@@ -232,6 +225,17 @@ public:
     {
 		std::cout<<"Basic information of inner prouct matrix M:"<<std::endl;
 		global_Operator::ShowMe();
+    };
+    
+	//! Set lump matrix
+    /*!
+     * Set the lumped inner product matrix
+     */
+    void Set_lump()
+    {
+		M_lump.reset(new DiagMat(Ncol));
+		(*M_lump).setZero();
+		lumpON=true;
     };
 	//@}
 
@@ -252,7 +256,7 @@ public:
      * @param rowoff The row offset 
      * @param coloff The col offset 
      */
-    void assembleFace(const UInt iloc, const locMatrix & Mp, const Rigid_Mesh::Cell & cell,
+    void assembleFace(const UInt iloc, const Mat & Mp, const Rigid_Mesh::Cell & cell,
 		SpMat & S, const UInt rowoff, const UInt coloff);
 		
 	//! Assemble the local face contributions in the inner product matrix 
@@ -261,7 +265,7 @@ public:
      * @param Mp The local inner product matrix
      * @param cell The actual cell
      */
-    void assembleFace(const UInt iloc, const locMatrix & Mp, const Rigid_Mesh::Cell & cell);
+    void assembleFace(const UInt iloc, const Mat & Mp, const Rigid_Mesh::Cell & cell);
 
     //! Assemble the innner product matrix
     /*!
@@ -269,11 +273,12 @@ public:
      */
     void assemble();
     //@}
-    
+
 private:
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions & 	M_bc;
-               	
+	//! The diagonal matrix representing the lumped inner product matrix
+	std::unique_ptr<DiagMat>        M_lump;
+	//! A bool to say if I want to build up the lumped inner product matrix
+	bool                            lumpON;
 };
 
 //! Class for assembling a global divergence matrix.
@@ -299,8 +304,8 @@ public:
      * @param colSize The number of col
      * @param BCmap The boundary conditions
      */
-	global_Div( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, const BoundaryConditions & BCmap ):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), M_bc(BCmap) {}
+	global_Div( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
+		global_Operator(rMesh, Prow, Pcol, rowSize, colSize) {}
 	//! No Copy-Constructor
     global_Div(const global_Div &) = delete;
 	//! No Empty-Constructor
@@ -351,7 +356,7 @@ public:
      * @param coloff The col offset 
      */
     void assembleFace(const UInt iloc, const std::vector<Real> & Bp, const Rigid_Mesh::Cell & cell,
-		SpMat & S, const UInt rowoff, const UInt coloff);
+		SpMat & S, const UInt rowoff, const UInt coloff, const bool transpose = true);
 		
 	//! Assemble the local face contributions in the divergence matrix
     /*!
@@ -366,11 +371,7 @@ public:
      * Assemble the divergence matrix using Eigen insert/coeffRef methods.
      */
     void assemble();
-    //@}
-
-private:
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions & 	M_bc;    
+    //@}    
 };
 
 //! Class for assembling a coupling conditions matrix.
@@ -455,7 +456,8 @@ public:
      * @param rowoff The row offset 
      * @param coloff The col offset 
      */
-    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff);
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, 
+		const UInt rowoff, const UInt coloff, const bool transpose = true);
     
     //! Assemble the fracture facet contributions of coupling conditions in the C matrix
     /*!
@@ -530,8 +532,8 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      * @param rowSize The number of row
      * @param colSize The number of col
      */
-	FluxOperator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize,  const BoundaryConditions & BCmap):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), M_bc(BCmap){}
+	FluxOperator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
+		global_Operator(rMesh, Prow, Pcol, rowSize, colSize) {}
 	//! No Copy-Constructor
     FluxOperator(const FluxOperator &) = delete;
 	//! No Empty-Constructor
@@ -624,11 +626,6 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      */
     void assemble();
     //@}
-
-private:
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions & 	M_bc;
-	
 };
 
 
@@ -664,12 +661,6 @@ public:
      * @param S The system matrix
      */
     virtual void reserve_space(SpMat & S)=0;
-    
-    //! Reserve the proper space for matrices separately.
-    /*!
-     * Reserve the proper space for matrices separately (not assebled in the system matrix S)
-     */
-    virtual void reserve_space()=0;
 
     //! Assemble method for the monolithic matrix.
     /*!
@@ -677,12 +668,6 @@ public:
      * @param S The system matrix
      */
     virtual void build(SpMat & S)=0;
-    
-    //! Assemble method for the matrices separately.
-    /*!
-     * Assemble the matrices separately (not in the system matrix S)
-     */
-    virtual void build()=0;
     //@}
 
 protected:
@@ -693,10 +678,10 @@ protected:
 //! Class for assembling a global bulk builder.
 /*!
  * @class global_BulkBuilder
- * This is the classe to assemble the global bulk builder. It's useful using a builder 
+ * This is the class to assemble the global bulk builder. It's useful using a builder 
  * of this type to assemble efficiently the bulk matrices. With this builder we can assemble
- * M, B, Dt matrices jointly with only one cells loop. This builder allow both to build up
- * M, B, Dt separately or to build up these matrices in the monolithic matrix of the system
+ * inner product and divergence matrices jointly with only one cells loop. This builder allows both to build up
+ * them in the system matrix or in the saddle point blocks.
  */
 class global_BulkBuilder: public global_Builder
 {
@@ -705,14 +690,12 @@ public:
     //@{
     //! Construct a global_BulkBuilder.
     /*!
-     * @param BCmap A constant reference to the boundary conditions
-     * @param M_matrix A reference to the inner product matrix
-     * @param B_matrix A reference to the divergence matrix
-     * @param Dt_matrix A reference to the transposed modified divergence matrix
-     * @param S_matrix A reference to the monolithic matrix of the system
+     * @param rMesh A constant reference to the rigid mesh
+     * @param ip A reference to the inner product
+     * @param div A reference to the divergence matrix
      */
-	global_BulkBuilder(const Rigid_Mesh & rMesh, const BoundaryConditions & BCmap, global_InnerProduct & ip, global_Div & div):
-		global_Builder(rMesh), M_bc(BCmap), IP(ip), Div(div){}
+	global_BulkBuilder(const Rigid_Mesh & rMesh, global_InnerProduct & ip, global_Div & div):
+		global_Builder(rMesh), IP(ip), Div(div){}
 	//! No Copy-Constructor
     global_BulkBuilder(const global_BulkBuilder &) = delete;
 	//! No Empty-Constructor
@@ -725,34 +708,36 @@ public:
     //@{
     //! Reserve space for the bulk matrices in the system matrix
     /*!
-     * Reserve the proper space for M, B, Dt in the monolithic matrix S
+     * Reserve the proper space for M, B, Bt in the monolithic matrix S
      * @param S The system matrix
      */
     void reserve_space(SpMat & S);
     
     //! Reserve method for the bulk matrices.
     /*!
-     * Reserve the proper space for the M, B, Dt matrices separately
+     * Reserve the proper space for the inner product matrix and divergence in the M and B blocks
+     * @param M The M block matrix
+     * @param B The B block matrix
      */
-    void reserve_space();
+    void reserve_space(SpMat & M, SpMat & B);
 
     //! Assemble the bulk matrices in the monolithic matrix.
     /*!
-     * Assemble the M, B, Dt matrices in the monolithic matrix S
+     * Assemble the M, B, Bt matrices in the monolithic matrix S
      * @param S The system matrix
      */
     void build(SpMat & S);
     
     //! Assemble method for the bulk matrices.
     /*!
-     * Assemble the M, B, Dt matrices separately
+     * Assemble the inner product matrix and divergence in the M and B blocks
+     * @param M The M block matrix
+     * @param B The B block matrix
      */
-    void build();
+    void build(SpMat & M, SpMat & B);
     //@}
 
 private:
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions      &	M_bc;
 	//! A reference to the inner product
 	global_InnerProduct           & IP;
 	//! A reference to the divergence operator
@@ -762,11 +747,11 @@ private:
 //! Class for assembling a fracture builder.
 /*!
  * @class FractureBuilder
- * This is the classe to assemble the fracture builder. It's useful using a builder 
+ * This is the class to assemble the fracture builder. It's useful using a builder 
  * of this type to assemble efficiently the fracture matrices. With this builder we can assemble
- * T and C matrices and modifying M jointly with only one fractures loop. 
- * This builder allow both to build up T and C and modifying M separately or
- * to build up these matrices in the monolithic matrix of the system.
+ * coupling conditions and trasmissibilities and modifying the inner product jointly with only one fractures loop. 
+ * This builder allows both to build up these matrices and modifying M in the system matrix 
+ * or in the saddle point block matrices.
  */
 class FractureBuilder: public global_Builder
 {
@@ -775,13 +760,12 @@ public:
     //@{
     //! Construct a FractureBuilder.
     /*!
-     * @param C_matrix A reference to the coupling conditions matrix
-     * @param T_matrix A reference to the transmissibility matrix
-     * @param M_matrix A reference to the inner product matrix
-     * @param S_matrix A reference to the monolithic matrix of the system
+     * @param rMesh A constant reference to the rigid mesh
+     * @param cc A const reference to coupling conditions
+     * @param ip A reference to the flux operator
      */
-	FractureBuilder( const Rigid_Mesh & rMesh, CouplingConditions & cc, FluxOperator & fo, global_InnerProduct & ip):
-		global_Builder(rMesh), coupling(cc), FluxOp(fo), IP(ip){}
+	FractureBuilder( const Rigid_Mesh & rMesh, CouplingConditions & cc, FluxOperator & fo):
+		global_Builder(rMesh), coupling(cc), FluxOp(fo){}
 	//! No Copy-Constructor
     FractureBuilder(const FractureBuilder &) = delete;
 	//! No Empty-Constructor
@@ -799,11 +783,14 @@ public:
      */
     void reserve_space(SpMat & S);
     
-    //! Reserve method for the fracture matrices separately.
+    //! Reserve method for the block matrices separately.
     /*!
-     * Reserve the proper space for C, T and modifying M separately
+     * Reserve the proper space for coupling conditions and trasmissibilities in the blocks M, B and T
+     * @param M The inner product matrix
+     * @param B The divergence matrix
+     * @param T The trasmissibility matrix
      */
-    void reserve_space();
+    void reserve_space(SpMat & M, SpMat & B, SpMat & T);
 
     //! Assemble the fractrues matrice in the monolithic matrix.
     /*!
@@ -814,9 +801,12 @@ public:
     
     //! Assemble method for the fracture matrices.
     /*!
-     * Assemble C, T and modify M separately
+     * Assemble coupling conditions and trasmissibilities in the blocks M, B and T
+     * @param M The inner product matrix
+     * @param B The divergence matrix
+     * @param T The trasmissibility matrix
      */
-    void build();
+    void build(SpMat & M, SpMat & B, SpMat & T);
     //@}
 
 private:
@@ -824,14 +814,12 @@ private:
 	CouplingConditions            & coupling;
 	//! A reference to the flux operator
 	FluxOperator                  & FluxOp;
-	//! A reference to the global inner product
-	global_InnerProduct           & IP;
 };
 
 
 //! Class for assembling for imposing the boundary conditions on the system.
 /*!
- * @class FractureBuilder
+ * @class BCimposition
  * This is the class to impose the bcs both on bulk and fractures.
  * The bulk Neumann bcs are imposed through a Nitsche approach that allows to keep the
  * symmetry of the system and (important!!!) to avoid a very unefficient prune Eigen command.
@@ -872,13 +860,21 @@ public:
 	
 	//! @name Assemble Methods
     //@{
-    //! Assemble bcs on bulk.
+    //! Assemble bulk bc in the system matrix.
     /*!
      * Assemble Neumann bcs through Nitshce approach and Dirichlet directly on the rhs.
      * @param S The monolithic matrix
      * @param rhs The rhs of the system
      */
     void ImposeBConBulk(SpMat & S, Vector & rhs) const; 
+    
+    //! Assemble bulk bc in block matrices M and B.
+    /*!
+     * Assemble Neumann bcs through Nitshce approach and Dirichlet directly on the rhs.
+     * @param S The monolithic matrix
+     * @param rhs The rhs of the system
+     */
+    void ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const; 
     
     //! Assemble bcs on fractures.
     /*!

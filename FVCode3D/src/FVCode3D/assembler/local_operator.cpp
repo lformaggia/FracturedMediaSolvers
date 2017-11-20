@@ -7,6 +7,7 @@
 #include <cmath>
 #include <FVCode3D/assembler/local_operator.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/core/BasicType.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 
@@ -17,8 +18,8 @@ constexpr Real local_InnerProduct::gamma;
 
 void local_InnerProduct::assemble()      
 {	
-	Eigen::Matrix<Real,Dynamic,3> Sp;                                   // I will take Np as the column base of Sp
-	Eigen::Matrix<Real,3,3> Kp;                                         // permability tensor
+	Mat      Sp;         // I will take Np as the column base of Sp
+	Mat33    Kp;         // permability tensor
 	
 	auto & K = pMesh.getPropertiesMap().getProperties(cellp.getZoneCode()).M_permeability; 
 	Real Mob = pMesh.getPropertiesMap().getMobility();
@@ -34,7 +35,7 @@ void local_InnerProduct::assemble()
 	Np.setZero();
     Rp.resize(numCellFacets,Eigen::NoChange);
 	Rp.setZero();
-        
+
 	Kp(0,0) = Mob*K->operator()(0,0);
 	Kp(0,1) = Mob*K->operator()(0,1);
 	Kp(0,2) = Mob*K->operator()(0,2);
@@ -73,8 +74,8 @@ void local_InnerProduct::assemble()
 	// Building the Mp matrix
 	Sp = Np.fullPivLu().image(Np);   // Because otherwise NtN could be singular in the unlucky case of 2 parallelel faces
 
-	Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
-	Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
+	Mat     NtN = Sp.transpose() * Sp;
+	Mat     NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
 
 	Mp0.resize(numCellFacets,numCellFacets);
 	Mp0.setZero();
@@ -116,8 +117,8 @@ void local_Div::assemble()
 
 void local_builder::build()
 {	
-	Eigen::Matrix<Real,Dynamic,Dynamic> Sp;                             // I will take Np as the column base of Sp
-	Eigen::Matrix<Real,3,3> Kp;                                         // permability tensor
+	Mat     Sp;          // I will take Np as the column base of Sp
+	Mat33   Kp;          // permability tensor
 	
 	auto & K = IP.pMesh.getPropertiesMap().getProperties( cel.getZoneCode() ).M_permeability;
 	const std::vector<UInt> & cellFacetsId( cel.getFacetsIds() );
@@ -132,7 +133,7 @@ void local_builder::build()
 	IP.Np.setZero();
     IP.Rp.resize(numCellFacets,Eigen::NoChange);
 	IP.Rp.setZero();
-        
+
 	Kp(0,0) = K->operator()(0,0);
 	Kp(0,1) = K->operator()(0,1);
 	Kp(0,2) = K->operator()(0,2);
@@ -173,8 +174,8 @@ void local_builder::build()
 	// Building the Mp matrix
 	Sp = IP.Np.fullPivLu().image(IP.Np);    // Because otherwise NtN could be singular in the unlucky case of 2 parallelel faces
 
-	Eigen::Matrix<Real,Dynamic,Dynamic> NtN = Sp.transpose() * Sp;
-	Eigen::Matrix<Real,Dynamic,Dynamic> NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
+	Mat      NtN = Sp.transpose() * Sp;
+	Mat      NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
 
 	IP.Mp0.resize(numCellFacets,numCellFacets);
 	IP.Mp0.setZero();
@@ -182,7 +183,7 @@ void local_builder::build()
 	IP.Mp1.setZero();
 	IP.Mp.resize(numCellFacets,numCellFacets);
 	IP.Mp.setZero();
-	
+
 	IP.Mp0 = ( 1. / cellMeasure ) *
 		( IP.Rp * Kp.inverse() * IP.Rp.transpose() );
 	IP.Mp1 = IP.Mp0.trace() * IP.gamma / numCellFacets *
@@ -190,6 +191,7 @@ void local_builder::build()
 			NNtNiNt );
 
 	IP.Mp  = IP.Mp0 + IP.Mp1;
+
 }	
 
 }

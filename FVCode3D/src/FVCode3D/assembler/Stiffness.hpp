@@ -59,7 +59,7 @@ public:
      * @param BC Boundary conditions given in the container BoundaryConditions
      */
     StiffMatrixFV(const Rigid_Mesh & rigid_mesh, UInt size, const BoundaryConditions & BC):
-        MatrixHandlerFV(rigid_mesh, size), M_b(new Vector(Vector::Constant(size, 0.))),
+        MatrixHandlerFV(rigid_mesh, size), M_b(new Vector(Vector::Zero(size))),
         M_bc(BC) {}
     //! No Copy-Constructor
     StiffMatrixFV(const StiffMatrixFV &) = delete;
@@ -82,7 +82,7 @@ public:
     /*!
      * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
      */
-    Vector & getBCVector() const
+    Vector & getBCVector() 
         {return *M_b;}
     //@}
 

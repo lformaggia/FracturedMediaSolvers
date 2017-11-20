@@ -9,12 +9,12 @@
 #include <vector>
 #include <cmath>
 #include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/core/BasicType.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
 {
-using Eigen::Dynamic;
 
 //! Base class for assembling a local mimetic operator.
 /*!
@@ -118,35 +118,35 @@ public:
     /*!
      * @return a reference to the Rp matrix
      */
-    const Eigen::Matrix<Real,Dynamic,3> & getRp() const 
+    const Mat3 & getRp() const 
 		{ return Rp; };
 	
 	//! Get the Np matrix
     /*!
      * @return a reference to the Np matrix
      */
-    const Eigen::Matrix<Real,Dynamic,3> & getNp() const 
+    const Mat3 & getNp() const 
 		{ return Np; };
 		
 	//! Get the Mp0 matrix
     /*!
      * @return a reference to the Mp0 matrix
      */
-    const Eigen::Matrix<Real,Dynamic,Dynamic> & getMp0() const 
+    const Mat & getMp0() const 
 		{ return Mp0; };
 	
 	//! Get the Mp1 matrix
     /*!
      * @return a reference to the Mp1 matrix
      */
-    const Eigen::Matrix<Real,Dynamic,Dynamic> & getMp1() const 
+    const Mat & getMp1() const 
 		{ return Mp1; };
 	
 	//! Get the Mp matrix
     /*!
      * @return a reference to the Mp matrix
      */
-    const Eigen::Matrix<Real,Dynamic,Dynamic> & getMp() const 
+    const Mat & getMp() const 
 		{ return Mp; };
     //@}
 
@@ -175,17 +175,17 @@ friend class local_builder;
 
 private:                     
 	//! Facet normals matrix, necessary to build Mp
-    Eigen::Matrix<Real,Dynamic,3>       Np;            
+    Mat3                     Np;            
     //! Centroid * area matrix, necessary to build Mp
-    Eigen::Matrix<Real,Dynamic,3>       Rp;            
+    Mat3                     Rp;            
     //! Consistency component Mp0
-    Eigen::Matrix<Real,Dynamic,Dynamic> Mp0;           
+    Mat                      Mp0;           
     //! Stability component Mp1
-    Eigen::Matrix<Real,Dynamic,Dynamic> Mp1;           
+    Mat                      Mp1;           
     //! Local Mp matrix for internal product
-    Eigen::Matrix<Real,Dynamic,Dynamic> Mp;            
+    Mat                      Mp;            
 //	//! Scalar factor in Mp1 expression
-	static constexpr Real               gamma = 2.;
+	static constexpr Real    gamma = 2.;
 };
 
 //! Class for assembling a local div matrix

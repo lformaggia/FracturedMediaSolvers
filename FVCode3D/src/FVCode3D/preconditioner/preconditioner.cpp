@@ -13,7 +13,7 @@ namespace FVCode3D
 
 Vector diagonal_preconditioner::solve(const Vector & r) const
 {
-	Vector z = Vector::Zero(A.cols());                     // The preconditioned residual
+	Vector z = Vector::Zero(A.cols());      // The preconditioned residual
 	for(UInt i = 0; i<A.rows(); i++)        // Solving Pz=r
 	{
 		if(A.coeff(i,i)!=0)
@@ -22,6 +22,16 @@ Vector diagonal_preconditioner::solve(const Vector & r) const
 			z[i] = r[i];
     }
 	return z;                               // Move semantic will move the Eigen vector
+}
+
+void lump_InnerProduct::assemble()
+{
+	for (UInt k=0; k < M.outerSize(); ++k)
+		for (SpMat::InnerIterator it(M,k); it; ++it)
+		{
+			(*M_lump).diagonal()[it.row()] += it.value();
+		}
+	SpMat E = M*(*M_lump);
 }
 
 }

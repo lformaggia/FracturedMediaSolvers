@@ -56,7 +56,7 @@ public:
     const SpMat & getMatrix_readOnly() const
         {return *M_Matrix;}
     
-    //! Get Matrix (const)
+    //! Get Matrix 
     /*!
      * @return A reference to the matrix
      */

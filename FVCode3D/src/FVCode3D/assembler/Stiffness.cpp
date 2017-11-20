@@ -372,11 +372,11 @@ void StiffMatrixMFD::assemble()
 	const UInt numCell      = M_mesh.getCellsVector().size();
 	
 	// Define the global inner product
-	global_InnerProduct gIP(M_mesh, dType::dFacet, dType::dFacet, numFacetsTot, numFacetsTot, M_bc);
+	global_InnerProduct gIP(M_mesh, dType::dFacet, dType::dFacet, numFacetsTot, numFacetsTot);
 	gIP.ShowMe();
 	
 	// Define the global divergence operator
-	global_Div gDIV(M_mesh, dType::dCell, dType::dFacet, numCell, numFacetsTot, M_bc);
+	global_Div gDIV(M_mesh, dType::dCell, dType::dFacet, numCell, numFacetsTot);
 	gDIV.ShowMe();
 	
 	// Define the coupling conditions
@@ -384,18 +384,18 @@ void StiffMatrixMFD::assemble()
 	coupling.ShowMe();
 	
 	// Define the flux operator
-	FluxOperator fluxOP(M_mesh, dType::dFracture, dType::dFracture, numFracture, numFracture, M_bc);
+	FluxOperator fluxOP(M_mesh, dType::dFracture, dType::dFracture, numFracture, numFracture);
 	fluxOP.ShowMe();
 	
 	// Define the global bulk builder
-	global_BulkBuilder gBulkBuilder(M_mesh, M_bc, gIP, gDIV);
+	global_BulkBuilder gBulkBuilder(M_mesh, gIP, gDIV);
 	// Reserve space for the bulk matrices
 	gBulkBuilder.reserve_space(*M_Matrix);
 	// Build the bulk matrices
 	gBulkBuilder.build(*M_Matrix);
 	
 	// Define the fracture builder
-	FractureBuilder FBuilder(M_mesh, coupling, fluxOP, gIP);
+	FractureBuilder FBuilder(M_mesh, coupling, fluxOP);
 	// Reserve space for the fracture matrices
 	FBuilder.reserve_space(*M_Matrix);
 	// Build the fracture matrices

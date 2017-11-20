@@ -35,6 +35,7 @@
 #include <FVCode3D/assembler/MatrixHandler.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
 #include <FVCode3D/assembler/global_operator.hpp>
+#include <FVCode3D/assembler/SaddlePoint.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/geometry/CoordinateSystem.hpp>
 #include <FVCode3D/geometry/Operations.hpp>
