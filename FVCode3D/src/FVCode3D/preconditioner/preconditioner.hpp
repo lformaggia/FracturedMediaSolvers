@@ -7,6 +7,7 @@
 #define __PRECONDITIONER_HPP__
 
 #include <FVCode3D/core/BasicType.hpp>
+#include <FVCode3D/assembler/SaddlePoint.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 
@@ -96,127 +97,248 @@ private:
 };
 
 
-//! Class for assembling a lumped inner product.
+//! Class for assembling a lumped inner product builder.
 /*!
- * @class lump_InnerProduct
+ * @class lumpIP_builder
  * This class implements the lumping of the inner product matrix.
 */
-class lump_InnerProduct
+class lumpIP_builder
 {
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a diagonal preconditioner.
+    //! Construct a lumped inner product builder.
     /*!
-     * @param Mat The matrix of the system that we want to precondition
+     * @param ip_Mat The innner product matrix
      */
-	lump_InnerProduct( const SpMat & ip_Mat):
-		M(ip_Mat), M_lump(new DiagMat(ip_Mat.rows())) { (*M_lump).setZero(); }
+	lumpIP_builder( const SpMat & ip_Mat):
+		M(ip_Mat) {}
 	//! No Copy-Constructor
-    lump_InnerProduct(const lump_InnerProduct &) = delete;
+    lumpIP_builder(const lumpIP_builder &) = delete;
 	//! No Empty-Constructor
-    lump_InnerProduct() = delete;
+    lumpIP_builder() = delete;
 	//! Destructor
-    ~lump_InnerProduct() = default;
+    ~lumpIP_builder() = default;
 	//@}
-	
-	//! @name Get Methods
-    //@{
-	//! Get M lumped (read only)
-    /*!
-     * @return A const reference to the lumped inner product
-     */
-    const DiagMat & get_readOnly() const
-        {return *M_lump;}
-    
-    //! Get M lumped 
-    /*!
-     * @return A reference to the lumped inner product
-     */
-    DiagMat & get() 
-        {return *M_lump;}
-    //@}
     
     //! @name Assemble Methods
     //@{
-	//! Assemble the M lump
+	//! Assemble the lumped inner product
     /*!
-     * Assemble the lumped inner product
+     * @param M_lump A reference to the lumped inner product to be built
      */
-    void assemble();
+    void build(DiagMat & M_lump) const;
     //@}    
     
 private:
 	//! A const reference to the inner product matrix
-	const SpMat                & M;
-	//! The diagonal matrix represented the lumped inner product
-	std::unique_ptr<DiagMat>     M_lump;
+	const SpMat       & M;
 };
 
 
-//! Class for assembling a lumped inner product.
+//! Class for assembling an inexact Schur Complement builder.
 /*!
- * @class Inexact_SchurComplement
- * This class implements the inexact Schur Complement. It's a template class depending
- * on which type we choose for the inverse of the inner product matrix approximation.
+ * @class ISchurComplement_builder
+ * This class implements the inexact Schur Complement with a lumping to approximate the 
+ * inverse of the inner product matrix.
 */
-template<class MinvType>
-class Inexact_SchurComplement
+class ISchurComplement_builder
 {
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a diagonal preconditioner.
+    //! Construct an inexact Schur Complement.
     /*!
-     * @param Mat The matrix of the system that we want to precondition
+     * @param M_lump The lumped inner product matrix
+     * @param Bmat The B block of the saddle point system
+     * @param Tmat The T block of the saddle point system
      */
-	Inexact_SchurComplement(const MinvType & Minverse, const SpMat & Bmat, const SpMat & Tmat):
-		M_inv(Minverse), B(Bmat), T(Tmat), ISchurCompl(new SpMat(T.rows(),T.cols())) {}
+	ISchurComplement_builder(const DiagMat & Ml, const SpMat & Bmat, const SpMat & Tmat):
+		Mlump(Ml), B(Bmat), T(Tmat) {}
 	//! No Copy-Constructor
-    Inexact_SchurComplement(const Inexact_SchurComplement &) = delete;
+    ISchurComplement_builder(const ISchurComplement_builder &) = delete;
 	//! No Empty-Constructor
-    Inexact_SchurComplement() = delete;
+    ISchurComplement_builder() = delete;
 	//! Destructor
-    ~Inexact_SchurComplement() = default;
+    ~ISchurComplement_builder() = default;
 	//@}
-	
-	//! @name Get Methods
-    //@{
-	//! Get M lumped (read only)
-    /*!
-     * @return A const reference to the inexact Schur Complement
-     */
-    const SpMat & get_readOnly() const
-        {return *ISchurCompl;}
-    
-    //! Get M lumped 
-    /*!
-     * @return A reference to the inexact Schur Complement
-     */
-    SpMat & get() 
-        {return *ISchurCompl;}
-    //@}
     
     //! @name Assemble Methods
     //@{
 	//! Assemble the inexact Schur Complement
     /*!
-     * Assemble the inexact Schur Complement
+     * @param A reference to the inexact Schur Complement to be built
      */
-    void assemble()
-		{ *ISchurCompl = T - B*M_inv*B.transpose(); }
+    void build(SpMat & ISchurCompl) const
+		{
+			ISchurCompl =  - B * Mlump.inverse() * B.transpose();
+			ISchurCompl += T; 
+		}
     //@}    
     
 private:
 	//! A const reference to the lumped inner product matrix
-	const MinvType             & M_inv;
-	//! A const reference to the divergence matrix
+	const DiagMat              & Mlump;
+	//! A const reference to the B block 
 	const SpMat                & B;
-	//! A const reference to the trasmissibility matrix
+	//! A const reference to the T block
 	const SpMat                & T;
-	//! The inexact Schur Complement matrix
-	std::unique_ptr<SpMat>       ISchurCompl;
 };
+
+
+//! Class for assembling a saddle point matrix.
+/*!
+ * @class SPMatrix
+ * This class implements a generic saddle point matrix. It consists of 3 block matrices
+ * M, B and T. It is build up with through an object of type SaddlePoint_StiffMatrix
+ * that is the assembler of the numerical method and it overloads the *(Vector) operator
+ * to use the blocks matrix to compute the matrix-vector product. In this way we avoid
+ * to storage the whole system matrix and we use the same 3 blocks (without any copy of them)
+ * to make everything we need: matrix-vector product, building and inverting the preconditioner.
+ * Clearly this class is interesting only with an iterative system solving the system.
+ * Constructors, assignement, destructor and so on are all defaulted.
+*/
+class SPMatrix
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a saddle point matrix
+    /*!
+     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     */
+	SPMatrix(SaddlePoint_StiffMatrix & SP_Stiff):
+		M(SP_Stiff.getM()), B(SP_Stiff.getB()), T(SP_Stiff.getT()) {}
+		//! No Copy-Constructor
+    SPMatrix(const SPMatrix &) = default;
+	//! No Empty-Constructor
+    SPMatrix() = default;
+	//! Destructor
+    ~SPMatrix() = default;
+	//@}
+		
+    //! @name Set Methods
+    //@{
+	//! Set the saddle point matrix
+    /*!
+     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     */
+    void Set(SaddlePoint_StiffMatrix & SP_Stiff)
+	{
+		M = SP_Stiff.getM();
+		B = SP_Stiff.getB();
+		T = SP_Stiff.getT();
+	}
+    //@}
+    
+    //! @name Get Methods
+    //@{
+    //! Get M block (read only)
+    /*!
+     * @return A const reference to the M block
+     */
+    const SpMat & getM() const
+        {return M;}
+    
+    //! Get B block 
+    /*!
+     * @return A reference to the B block
+     */
+    const SpMat & getB() const
+        {return B;}
+        
+    //! Get T block (read only)
+    /*!
+     * @return A const reference to the T block
+     */
+    const SpMat & getT() const
+        {return T;}
+    //@}
+
+    //! @name Operators
+    //@{
+	//! Overload of matrix-vector product operator using the blocks
+    /*!
+     * @param x A const reference to the vector
+     * @return The vector resulting from the matrix-vector product 
+     */
+    Vector operator * (const Vector & x) const
+    {
+		Vector result(M.rows()+B.rows());
+		result.segment(0, M.rows()) = M*x.segment(0,M.rows()) + B.transpose()*x.segment(M.rows(),B.rows());
+		result.segment(M.rows(),B.rows()) = B*x.segment(0,M.rows()) + T*x.segment(M.rows(),B.rows());
+		return result;
+	}    
+    //@}
+
+private:
+	//! The M block matrix
+	SpMat      M;
+	//! The B block matrix 
+	SpMat      B;
+	//! The T block matrix
+	SpMat      T;
+};
+
+
+//! Class for assembling a saddle point matrix.
+/*!
+ * @class SPMatrix
+ * This class builds up a block triangolar preconditioner where the M and SC
+ * blocks are approximated using the lumping on the inner product matrix.
+ * The SC linear system is solved through Cholesky.
+*/
+class BlockTriangular_preconditioner: public preconditioner
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a diagonal preconditioner.
+    /*!
+     * @param SP The saddle point matrix
+     */
+	BlockTriangular_preconditioner( const SPMatrix & SP ): B(SP.getB()){}
+	//! No Copy-Constructor
+    BlockTriangular_preconditioner(const BlockTriangular_preconditioner &) = delete;
+	//! No Empty-Constructor
+    BlockTriangular_preconditioner() = delete;
+	//! Destructor
+    ~BlockTriangular_preconditioner() = default;
+	//@}
+
+    //! @name Assemble Methods
+    //@{
+	//! Assemble the approximations of M and SC
+    /*!
+     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     */
+    void assemble(const SPMatrix & SP)
+	{
+		lumpIP_builder lumpBuild(SP.getM());
+		lumpBuild.build(IM);
+		ISchurComplement_builder ISCBuilder(IM, B, SP.getT());
+		ISCBuilder.build(ISC);
+	}
+    //@}
+
+    //! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     */
+    Vector solve(const Vector & r) const;
+    //@}
+    
+private:
+	//! The B block matrix
+    const SpMat         & B;
+	//! The M approximation
+    DiagMat               IM;   
+	//! The inexact Schur Complement matrix
+    SpMat                 ISC;                           
+};
+
 
 }
 

@@ -24,14 +24,25 @@ Vector diagonal_preconditioner::solve(const Vector & r) const
 	return z;                               // Move semantic will move the Eigen vector
 }
 
-void lump_InnerProduct::assemble()
+void lumpIP_builder::build(DiagMat & M_lump) const
 {
 	for (UInt k=0; k < M.outerSize(); ++k)
 		for (SpMat::InnerIterator it(M,k); it; ++it)
-		{
-			(*M_lump).diagonal()[it.row()] += it.value();
-		}
-	SpMat E = M*(*M_lump);
+			M_lump.diagonal()[it.row()] += it.value();
 }
+
+Vector BlockTriangular_preconditioner::solve(const Vector & r) const
+{
+	// First step: solve Inexact Schur Complement system
+	Vector y2(B.rows());
+	Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol(-ISC);
+    y2 = chol.solve(r.segment(IM.rows(),B.rows()));
+    // Second step: solve the Lumped system
+    Vector z(IM.rows()+B.rows());
+    z.segment(0,IM.rows()) = IM.inverse()*(r.segment(0,IM.rows())+B.transpose()*y2);
+    z.segment(IM.rows(),B.rows()) = -y2;
+    return z;
+}
+
 
 }

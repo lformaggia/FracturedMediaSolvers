@@ -106,7 +106,7 @@ assembleMatrix()
 			+ this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc);
 		S.assemble();
 		S.CompressMatrix();
-		S.showMe();
+		S.showMe();		
 		
 		this->M_A = S.getMatrix();    // Move semantic!!!
 		this->M_b = S.getBCVector();  // Move semantic!!!
