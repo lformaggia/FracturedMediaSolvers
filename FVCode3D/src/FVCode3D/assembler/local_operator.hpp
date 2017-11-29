@@ -88,7 +88,9 @@ protected:
  * it may be of interest studying them (especially the consistency/stability terms).
  * Thanks to the free_unusefulSpace() methods, if one is interestd only in assembling
  * the local inner product matrix Mp it's possible to free the space occupied
- * by the intermediate matrices Np,Rp,Mp0,Mp1.
+ * by the intermediate matrices Np,Rp,Mp0,Mp1. The class can be used also to assemble
+ * the approximation of the inverse of matrix Mp^-1 that is an exact inverse only of
+ * the consistency part Mp0^-1.
  */
 class local_InnerProduct: public local_MimeticOperator
 {
@@ -169,6 +171,12 @@ public:
      * Assemble the local_InnerProduct
      */
     void assemble();
+    
+    //! Inverse assemble method
+     /*!
+     * Assemble the inverse local_InnerProduct
+     */
+    void assemble_inv();
     //@}
 
 friend class local_builder;

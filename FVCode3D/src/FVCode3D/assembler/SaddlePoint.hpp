@@ -151,6 +151,17 @@ public:
 			std::cout<<std::endl;
 			std::cout<<"The system dimension is : "<<Mdim+Bdim.first<<std::endl<<std::endl;
 		};
+		
+	//! Compress the block matrices
+    /*!
+     * Compress the block matrices M, B and T
+     */
+    void Compress() const
+        {
+			(*M).makeCompressed();
+			(*B).makeCompressed();
+			(*T).makeCompressed();
+		};
         
     //! Assemble method
     /*!

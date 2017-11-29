@@ -406,7 +406,7 @@ void StiffMatrixMFD::assemble()
 	// Impose BCs on bulk
 	BCimp.ImposeBConBulk(*M_Matrix, *M_b);
 	// Impose BCs in fractures
-	BCimp.ImposeBConFracture(*M_Matrix, *M_b, fluxOP, numFacetsTot+numCell, numFacetsTot+numCell);	
+	BCimp.ImposeBConFracture(*M_Matrix, *M_b, fluxOP);	
 }
 
 } // namespace FVCode3D

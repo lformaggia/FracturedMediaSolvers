@@ -55,7 +55,7 @@ void imlCG::solve()
 	// Define the initial guess to zero
 	M_x = Vector::Zero(M_A.cols());
 	// Define the preconditioner
-	diagonal_preconditioner D(M_A);
+	diagonal_preconditioner D(M_SP);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	// Solve the system
@@ -69,15 +69,18 @@ constexpr bool imlBiCGSTAB::Default_restart;
 void imlBiCGSTAB::solve()
 {
 	// Define the initial guess to zero
-	M_x = Vector::Zero(M_A.cols());
+	M_x = Vector::Zero(M_SP.getM().rows()+M_SP.getB().rows());
 	// Define the preconditioner
-	diagonal_preconditioner D(M_A);
+//	diagonal_preconditioner BT(M_SP);
+//	BlockTriangular_preconditioner BT(M_SP);
+	ILU_preconditioner BT(M_SP);
+	BT.assemble(M_SP);
 	// Set the restart
 	setRestart(true);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	// Solve the system
-	int conv = BiCGSTAB(M_A, M_x, M_b, D, restart, iter, M_res);
+	int conv = BiCGSTAB(M_SP, M_x, M_b, BT, restart, iter, M_res);
 	// Conversion needed
 	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;
@@ -89,16 +92,19 @@ constexpr UInt imlGMRES::Default_m;
 void imlGMRES::solve()
 {
 	// Define the initial guess to zero
-	M_x = Vector::Zero(M_A.cols());
+	M_x = Vector::Zero(M_SP.getM().cols()+M_SP.getB().rows());
 	// Define the preconditioner
-	diagonal_preconditioner D(M_A);
+//	diagonal_preconditioner BT(M_SP);
+//	BlockTriangular_preconditioner BT(M_SP);
+	ILU_preconditioner BT(M_SP);
+	BT.assemble(M_SP);
 	// Set the restart level
 	set_m(300);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	int m_int = (int) m;
 	// Solve the system
-	int conv = GMRES(M_A, M_x, M_b, D, m_int, iter, M_res);
+	int conv = GMRES(M_SP, M_x, M_b, BT, m_int, iter, M_res);
 	// Conversion needed
 	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;

@@ -11,6 +11,7 @@
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
 #include <FVCode3D/solver/SolverHandler.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 
 namespace FVCode3D
 {
@@ -155,8 +156,10 @@ protected:
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
     SolverPtr_Type M_solver;
+    //! The saddle point matrix
+    SPMatrix & M_SP;
     //! Sparse matrix A from the linear system Ax=b
-    Matrix_Type& M_A;
+    Matrix_Type & M_A;
     //! Vector b from the linear system Ax=b
     Vector& M_b;
 };
@@ -172,9 +175,10 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_numet(data->getNumericalMethodType()),
     M_quadrature(nullptr),
     M_solver( SolverHandler::Instance().getProduct(solver) ),
+    M_SP( M_solver->getSP() ),
     M_A( M_solver->getA() ),
     M_b( M_solver->getb() )
-{} // Problem::Problem
+	{} // Problem::Problem
 
 } // namespace FVCode3D
 

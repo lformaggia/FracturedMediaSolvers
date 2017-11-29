@@ -58,45 +58,6 @@ public:
 };
 
 
-//! Class for assembling a diagonal preconditioner
-/*!
- * @class diagonal_preconditioner
- * This class constructs a diagonal preconditioner.
- */
-class diagonal_preconditioner: public preconditioner
-{
-public:
-    //! @name Constructor & Destructor
-    //@{
-    //! Construct a diagonal preconditioner.
-    /*!
-     * @param Mat The matrix of the system that we want to precondition
-     */
-	diagonal_preconditioner( const SpMat & Mat ):
-		A(Mat){}
-	//! No Copy-Constructor
-    diagonal_preconditioner(const diagonal_preconditioner &) = delete;
-	//! No Empty-Constructor
-    diagonal_preconditioner() = delete;
-	//! Destructor
-    ~diagonal_preconditioner() = default;
-	//@}
-
-    //! @name Solve Methods
-    //@{
-    //! Solve the linear system Pz=r
-    /*!
-     * @param r The rhs vector on what we apply the P^-1
-     */
-    Vector solve(const Vector & r) const;
-    //@}
-    
-private:            
-	//! The matrix of the system that we want to precondition
-    const SpMat &   A;                  
-};
-
-
 //! Class for assembling a lumped inner product builder.
 /*!
  * @class lumpIP_builder
@@ -153,8 +114,8 @@ public:
      * @param Bmat The B block of the saddle point system
      * @param Tmat The T block of the saddle point system
      */
-	ISchurComplement_builder(const DiagMat & Ml, const SpMat & Bmat, const SpMat & Tmat):
-		Mlump(Ml), B(Bmat), T(Tmat) {}
+	ISchurComplement_builder(const DiagMat & Mdi, const SpMat & Bmat, const SpMat & Tmat):
+		Md_inv(Mdi), B(Bmat), T(Tmat) {}
 	//! No Copy-Constructor
     ISchurComplement_builder(const ISchurComplement_builder &) = delete;
 	//! No Empty-Constructor
@@ -171,14 +132,14 @@ public:
      */
     void build(SpMat & ISchurCompl) const
 		{
-			ISchurCompl =  - B * Mlump.inverse() * B.transpose();
+			ISchurCompl =  - B * Md_inv * B.transpose();
 			ISchurCompl += T; 
 		}
     //@}    
     
 private:
-	//! A const reference to the lumped inner product matrix
-	const DiagMat              & Mlump;
+	//! A const reference to the inner product matrix
+	const DiagMat              & Md_inv;
 	//! A const reference to the B block 
 	const SpMat                & B;
 	//! A const reference to the T block
@@ -209,9 +170,9 @@ public:
      */
 	SPMatrix(SaddlePoint_StiffMatrix & SP_Stiff):
 		M(SP_Stiff.getM()), B(SP_Stiff.getB()), T(SP_Stiff.getT()) {}
-		//! No Copy-Constructor
+	//! Copy-Constructor
     SPMatrix(const SPMatrix &) = default;
-	//! No Empty-Constructor
+	//! Empty-Constructor
     SPMatrix() = default;
 	//! Destructor
     ~SPMatrix() = default;
@@ -265,10 +226,10 @@ public:
     Vector operator * (const Vector & x) const
     {
 		Vector result(M.rows()+B.rows());
-		result.segment(0, M.rows()) = M*x.segment(0,M.rows()) + B.transpose()*x.segment(M.rows(),B.rows());
-		result.segment(M.rows(),B.rows()) = B*x.segment(0,M.rows()) + T*x.segment(M.rows(),B.rows());
+		result.segment(0,M.rows()) = M*x.segment(0,M.cols()) + B.transpose()*x.segment(M.cols(),B.rows());
+		result.segment(M.rows(),B.rows()) = B*x.segment(0,M.cols()) + T*x.segment(M.cols(),B.rows());
 		return result;
-	}    
+	}
     //@}
 
 private:
@@ -281,12 +242,53 @@ private:
 };
 
 
-//! Class for assembling a saddle point matrix.
+//! Class for assembling a diagonal preconditioner
 /*!
- * @class SPMatrix
- * This class builds up a block triangolar preconditioner where the M and SC
- * blocks are approximated using the lumping on the inner product matrix.
- * The SC linear system is solved through Cholesky.
+ * @class diagonal_preconditioner
+ * This class constructs a diagonal preconditioner.
+ */
+class diagonal_preconditioner: public preconditioner
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a diagonal preconditioner.
+    /*!
+     * @param Mat The matrix of the system that we want to precondition
+     */
+	diagonal_preconditioner( const SPMatrix & Mat ):
+		M(Mat.getM()), T(Mat.getT()) {}
+	//! No Copy-Constructor
+    diagonal_preconditioner(const diagonal_preconditioner &) = delete;
+	//! No Empty-Constructor
+    diagonal_preconditioner() = delete;
+	//! Destructor
+    ~diagonal_preconditioner() = default;
+	//@}
+
+    //! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     */
+    Vector solve(const Vector & r) const;
+    //@}
+    
+private:            
+	//! A const reference to the inner product matrix
+    const SpMat &       M;    
+	//! A const reference to the T block matrix
+    const SpMat &       T;               
+};
+
+//! Base class for assembling a Block Triangular preconditioner.
+/*!
+ * @class BlockTriangular_preconditioner
+ * This class builds up a block triangolar preconditioner. The M block is
+ * approximated through the diagonal part of M and the SC through the inverse
+ * of the diagonal part of M. The SC system is solved through the CG method.
+ * This is a base abstract class.
 */
 class BlockTriangular_preconditioner: public preconditioner
 {
@@ -297,7 +299,8 @@ public:
     /*!
      * @param SP The saddle point matrix
      */
-	BlockTriangular_preconditioner( const SPMatrix & SP ): B(SP.getB()){}
+	BlockTriangular_preconditioner( const SPMatrix & SP ): 
+		B(SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default) {}
 	//! No Copy-Constructor
     BlockTriangular_preconditioner(const BlockTriangular_preconditioner &) = delete;
 	//! No Empty-Constructor
@@ -305,6 +308,128 @@ public:
 	//! Destructor
     ~BlockTriangular_preconditioner() = default;
 	//@}
+	
+	//! @name Get Methods
+    //@{
+    //! Get ISC block 
+    /*!
+     * @return A reference to the ISC block
+     */
+	const SpMat & getISC() const
+		{return ISC;}
+    //@}
+    
+    //! @name Set Methods
+    //@{
+    //! Set the max it value for CG
+    /*!
+     * @param itmax Max it value for CG
+     */
+	void setMaxIt(const UInt itmax)
+		{MaxIt = itmax;}
+		
+	//! Set the tolerance value for CG
+    /*!
+     * @param Tol tolerance value for CG
+     */
+	void set_tol(const UInt Tol)
+		{tol = Tol;}
+    //@}
+
+    //! @name Assemble Methods
+    //@{
+	//! Assemble the the inverse diag of M and the SC
+    /*!
+     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     */
+    void assemble(const SPMatrix & SP)
+	{
+		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
+		ISchurComplement_builder ISCBuilder(Md_inv, B, SP.getT());
+		ISCBuilder.build(ISC);
+	}
+    //@}
+
+    //! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     */
+    virtual Vector solve(const Vector & r) const;
+    //@}
+    
+protected:
+	//! The B block matrix
+    const SpMat              & B;
+    //! The inverse of the diagonal of M
+    DiagMat                    Md_inv;
+	//! The inexact Schur Complement matrix
+    SpMat                      ISC;
+    //! The max it for CG
+    UInt                       MaxIt;
+    //! The tolerance for CG
+    Real                       tol;
+    //! The max it for CG (default value)
+    static constexpr UInt      MaxIt_Default = 150;
+    //! The tolerance for CG (default value)
+    static constexpr Real      tol_Default = 1e-2;
+                      
+};
+
+//! Class for assembling a ILU preconditioner.
+/*!
+ * @class BlockTriangular_preconditioner
+ * This class builds up a ILU preconditioner where the inverse of M
+ * is modelled through a diagonal matrix. It uses the SC builder to build up the SC.
+ * The SC linear system is solved through the Eigen CG.
+*/
+class ILU_preconditioner: public preconditioner
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a diagonal preconditioner.
+    /*!
+     * @param SP The saddle point matrix
+     */
+	ILU_preconditioner( const SPMatrix & SP ): 
+		B(SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default)
+			{ Md_inv.setZero(); }
+	//! No Copy-Constructor
+    ILU_preconditioner(const ILU_preconditioner &) = delete;
+	//! No Empty-Constructor
+    ILU_preconditioner() = delete;
+	//! Destructor
+    ~ILU_preconditioner() = default;
+	//@}
+	
+	//! @name Get Methods
+    //@{
+    //! Get B block 
+    /*!
+     * @return A reference to the B block
+     */
+	const SpMat & getISC() const
+		{return ISC;}
+    //@}
+    
+    //! @name Set Methods
+    //@{
+    //! Set the max it value for CG
+    /*!
+     * @param itmax Max it value for CG
+     */
+	void setMaxIt(const UInt itmax)
+		{MaxIt = itmax;}
+		
+	//! Set the tolerance value for CG
+    /*!
+     * @param Tol tolerance value for CG
+     */
+	void set_tol(const UInt Tol)
+		{tol = Tol;}
+    //@}
 
     //! @name Assemble Methods
     //@{
@@ -314,9 +439,8 @@ public:
      */
     void assemble(const SPMatrix & SP)
 	{
-		lumpIP_builder lumpBuild(SP.getM());
-		lumpBuild.build(IM);
-		ISchurComplement_builder ISCBuilder(IM, B, SP.getT());
+		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
+		ISchurComplement_builder ISCBuilder(Md_inv, B, SP.getT());
 		ISCBuilder.build(ISC);
 	}
     //@}
@@ -332,13 +456,21 @@ public:
     
 private:
 	//! The B block matrix
-    const SpMat         & B;
-	//! The M approximation
-    DiagMat               IM;   
+    const SpMat              & B;
+    //! The inverse of the diagonal of M
+    DiagMat                    Md_inv; 
 	//! The inexact Schur Complement matrix
-    SpMat                 ISC;                           
+    SpMat                      ISC;
+    //! The max it for CG
+    UInt                       MaxIt;
+    //! The tolerance for CG
+    Real                       tol;
+    //! The max it for CG (default value)
+    static constexpr UInt      MaxIt_Default = 150;
+    //! The tolerance for CG (default value)
+    static constexpr Real      tol_Default = 1e-2;
+                      
 };
-
 
 }
 

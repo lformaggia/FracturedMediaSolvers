@@ -5,6 +5,7 @@ src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eni
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/FixPressureDofs.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Mass.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/MatrixHandler.hpp
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Stiffness.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/BasicType.hpp
@@ -25,6 +26,7 @@ src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eni
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.hpp
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/DarcyPseudoSteady.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/DarcySteady.hpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp
@@ -42,6 +44,7 @@ src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eni
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/main.cpp
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Core
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/IterativeLinearSolvers
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/LU
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/OrderingMethods
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Sparse
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SparseCholesky
@@ -143,6 +146,12 @@ src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eni
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/InverseImpl.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Amd.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
@@ -191,6 +200,10 @@ src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eni
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseQR/SparseQR.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Image.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke.h
+src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke_mangling.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h
 src/CMakeFiles/fvcode3d.exe.dir/main.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/BlockMethods.h

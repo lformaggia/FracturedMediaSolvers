@@ -51,11 +51,7 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
 	
 	if( Mp(iloc,iloc) != 0. )
-	{
 			S.coeffRef(rowoff + i,coloff + i) += Mp(iloc,iloc);
-			if(lumpON)
-				(*M_lump).diagonal()[i] += Mp(iloc,iloc);
-	}
 
 	for(UInt jloc=iloc+1; jloc<cell.getFacetsIds().size(); ++jloc)
 	{
@@ -67,11 +63,6 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 		{
 			S.coeffRef(rowoff + i,coloff + j) += Mp(iloc,jloc);
 			S.coeffRef(rowoff + j,coloff + i) += Mp(iloc,jloc);
-			if(lumpON)
-			{
-				(*M_lump).diagonal()[i] += Mp(iloc,jloc);
-				(*M_lump).diagonal()[j] += Mp(iloc,jloc);
-		    }
 		} 
 	}
 }
@@ -116,8 +107,8 @@ void global_InnerProduct::assemble()
 		// Assemblo matrice locale in matrice globale
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 			assembleFace(iloc, localIP.getMp(), cell);
-		std::cout<<"Done."<<std::endl;
 	}
+	std::cout<<"Done."<<std::endl;
 }
 
 
@@ -689,7 +680,7 @@ void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
 			// Nitsche formulation for Neumann bcs
 			UInt cellId = facet_it.getSeparatedCellsIds()[0];
 			M.coeffRef(facetId, facetId) += penalty*facet_it.getSize()/facet_it.get_h();
-			B.coeffRef(numfacetsTot+cellId, facetId) -= facet_it.getSize();
+			B.coeffRef(cellId, facetId) -= facet_it.getSize();
 			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())/facet_it.get_h();
 			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 		}
@@ -705,8 +696,11 @@ void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
 	}	
 }
 
-void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo, const UInt rowoff, const UInt coloff) const
+void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo) const
 {
+	UInt numfacetsTot = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size();
+	UInt numCell = M_mesh.getCellsVector().size();
+		
 	auto & facetVectorRef = M_mesh.getFacetsVector();
 	// assemble BC on fractures
     for (auto& edge_it : M_mesh.getBorderTipEdgesIdsVector())
@@ -725,7 +719,7 @@ void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo
                 if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
                 {	
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
-                    rhs[ rowoff + neighborId ] += Q1o;
+                    rhs[ numfacetsTot+numCell + neighborId ] += Q1o;
                 } // if
                 
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
@@ -737,8 +731,51 @@ void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo
                     const Real Q12 = T12 * M_mesh.getPropertiesMap().getMobility();
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
-                    S.coeffRef( rowoff + neighborId, coloff + neighborId) -= Q12; 
-                    rhs[ rowoff + neighborId ] -= Q1o;
+                    S.coeffRef( numfacetsTot+numCell + neighborId, numfacetsTot+numCell + neighborId) -= Q12; 
+                    rhs[ numfacetsTot+numCell + neighborId ] -= Q1o;
+                } // else if
+            } // if
+        }// for
+    } // for	
+}
+
+void BCimposition::ImposeBConFracture_onT(SpMat & T, Vector & rhs, FluxOperator & Fo) const
+{
+	UInt numfacetsTot = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size();
+	UInt numCell = M_mesh.getCellsVector().size();
+		
+	auto & facetVectorRef = M_mesh.getFacetsVector();
+	// assemble BC on fractures
+    for (auto& edge_it : M_mesh.getBorderTipEdgesIdsVector())
+    {	
+		// Select which BC to apply : BC = D > N && the one with greatest id
+		UInt borderId = M_bc.selectBC_onFractureEdge(edge_it);
+		
+        // loop over the fracture facets to impose BC on fractures
+        for(auto facet_it : edge_it.getSeparatedFacetsIds())
+        {	 
+            if(facetVectorRef[facet_it].isFracture())
+            {	
+                const UInt neighborId = facetVectorRef[facet_it].getFractureFacetId();
+                const Real aperture = M_mesh.getPropertiesMap().getProperties( facetVectorRef[facet_it].getZoneCode() ).M_aperture;
+
+                if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
+                {	
+                    const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
+                    rhs[ numfacetsTot+numCell + neighborId ] += Q1o;
+                } // if
+                
+                else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
+                {	
+                    const Real alpha1 = Fo.findAlpha (facet_it, &edge_it);
+                    const Real alpha2 = Fo.findDirichletAlpha (facet_it, &edge_it);
+
+                    const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
+                    const Real Q12 = T12 * M_mesh.getPropertiesMap().getMobility();
+                    const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
+
+                    T.coeffRef( numCell + neighborId, numCell + neighborId) -= Q12; 
+                    rhs[ numfacetsTot+numCell + neighborId ] -= Q1o;
                 } // else if
             } // if
         }// for

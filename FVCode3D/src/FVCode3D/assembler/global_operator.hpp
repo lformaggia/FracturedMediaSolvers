@@ -206,7 +206,7 @@ public:
      * @param BCmap The boundary conditions
      */
 	global_InnerProduct( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), lumpON(false) {}
+		global_Operator(rMesh, Prow, Pcol, rowSize, colSize) {}
 	//! No Copy-Constructor
     global_InnerProduct(const global_InnerProduct &) = delete;
 	//! No Empty-Constructor
@@ -225,17 +225,6 @@ public:
     {
 		std::cout<<"Basic information of inner prouct matrix M:"<<std::endl;
 		global_Operator::ShowMe();
-    };
-    
-	//! Set lump matrix
-    /*!
-     * Set the lumped inner product matrix
-     */
-    void Set_lump()
-    {
-		M_lump.reset(new DiagMat(Ncol));
-		(*M_lump).setZero();
-		lumpON=true;
     };
 	//@}
 
@@ -273,12 +262,6 @@ public:
      */
     void assemble();
     //@}
-
-private:
-	//! The diagonal matrix representing the lumped inner product matrix
-	std::unique_ptr<DiagMat>        M_lump;
-	//! A bool to say if I want to build up the lumped inner product matrix
-	bool                            lumpON;
 };
 
 //! Class for assembling a global divergence matrix.
@@ -876,15 +859,22 @@ public:
      */
     void ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const; 
     
-    //! Assemble bcs on fractures.
+    //! Assemble bcs on fractures acting on the system matrix.
     /*!
      * Assemble the Neumann bcs imposing the flux, the Dirichlet through ghost-cells.
      * @param S The trasmissibility matrix
      * @param rhs The rhs of the system
-     * @param rowoff The row offset
-     * @param coloff The col offset
      */
-    void ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo, const UInt rowoff, const UInt coloff) const;
+    void ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo) const;
+    
+    //! Assemble bcs on fractures acting on the T block matrix.
+    /*!
+     * Assemble the Neumann bcs imposing the flux, the Dirichlet through ghost-cells.
+     * @param S The trasmissibility matrix
+     * @param rhs The rhs of the system
+     */
+    void ImposeBConFracture_onT(SpMat & T, Vector & rhs, FluxOperator & Fo) const;
+    //@}
     //@}
 
 private:

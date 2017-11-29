@@ -203,13 +203,15 @@ int main(int argc, char * argv[])
     }
 
     MSR<Pb> * multipleSubRegions(nullptr);
+    Real Tsolving1 = 0;
 
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
     {
 		std::cout << "Assemble the problem..." << std::endl<<std::endl;
         darcy->assemble();
         std::cout<<"Assembling done."<<std::endl<<std::endl;
-        std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+        Tsolving1 = chrono.partial();
+        std::cout << "Passed seconds: " << Tsolving1 << " s." << std::endl << std::endl;
         
         if(dataPtr->MSROn())
         {
@@ -298,10 +300,10 @@ int main(int argc, char * argv[])
         multipleSubRegions->computeTransmissibility();
         std::cout << " done." << std::endl << std::endl;
     }
-
-    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
-    
-    
+	
+	std::cout<< "Time to solve the system: "<< chrono.partial()-Tsolving1 <<"s."<< std::endl << std::endl;
+    std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;  
+     
     if(dataPtr->getNumericalMethodType() == Data::MFD){
 		UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
 		UInt numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
@@ -347,6 +349,5 @@ int main(int argc, char * argv[])
     delete importer;
 
     chrono.stop();
-    
     return 0;
 }

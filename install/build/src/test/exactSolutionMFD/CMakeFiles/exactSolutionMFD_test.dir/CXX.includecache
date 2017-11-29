@@ -451,6 +451,10 @@ FVCode3D/assembler/Stiffness.hpp
 -
 unsupported/Eigen/SparseExtra
 -
+Eigen/LU
+-
+vector
+-
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp
 FVCode3D/core/Data.hpp
@@ -462,6 +466,8 @@ FVCode3D/mesh/RigidMesh.hpp
 FVCode3D/boundaryCondition/BC.hpp
 -
 FVCode3D/solver/SolverHandler.hpp
+-
+FVCode3D/preconditioner/preconditioner.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
@@ -518,6 +524,8 @@ Eigen/SparseLU
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
 FVCode3D/core/TypeDefinition.hpp
+-
+FVCode3D/preconditioner/preconditioner.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp

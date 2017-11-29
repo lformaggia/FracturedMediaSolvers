@@ -62,6 +62,18 @@ FVCode3D/mesh/RigidMesh.hpp
 FVCode3D/core/Data.hpp
 -
 
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
+cmath
+-
+utility
+-
+FVCode3D/core/BasicType.hpp
+-
+FVCode3D/mesh/RigidMesh.hpp
+-
+FVCode3D/boundaryCondition/BC.hpp
+-
+
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Stiffness.hpp
 vector
 -
@@ -260,6 +272,16 @@ FVCode3D/core/TypeDefinition.hpp
 FVCode3D/core/Data.hpp
 -
 
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
+FVCode3D/core/BasicType.hpp
+-
+FVCode3D/assembler/SaddlePoint.hpp
+-
+Eigen/LU
+-
+unsupported/Eigen/SparseExtra
+-
+
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/DarcyPseudoSteady.hpp
 FVCode3D/core/Data.hpp
 -
@@ -285,6 +307,10 @@ FVCode3D/assembler/Stiffness.hpp
 -
 unsupported/Eigen/SparseExtra
 -
+Eigen/LU
+-
+vector
+-
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp
 FVCode3D/core/Data.hpp
@@ -296,6 +322,8 @@ FVCode3D/mesh/RigidMesh.hpp
 FVCode3D/boundaryCondition/BC.hpp
 -
 FVCode3D/solver/SolverHandler.hpp
+-
+FVCode3D/preconditioner/preconditioner.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
@@ -344,6 +372,8 @@ FVCode3D/core/TypeDefinition.hpp
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
 FVCode3D/core/TypeDefinition.hpp
+-
+FVCode3D/preconditioner/preconditioner.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp
@@ -701,6 +731,32 @@ src/IterativeLinearSolvers/BiCGSTAB.h
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h
 src/IterativeLinearSolvers/IncompleteLUT.h
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
+src/Core/util/ReenableStupidWarnings.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/LU
+Core
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Core
+src/Core/util/DisableStupidWarnings.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/DisableStupidWarnings.h
+src/misc/Kernel.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h
+src/misc/Image.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Image.h
+src/LU/FullPivLU.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h
+src/LU/PartialPivLU.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h
+src/misc/lapacke.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke.h
+src/LU/PartialPivLU_LAPACKE.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
+src/LU/Determinant.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h
+src/LU/InverseImpl.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/InverseImpl.h
+src/LU/arch/Inverse_SSE.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
 src/Core/util/ReenableStupidWarnings.h
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
 
@@ -1102,6 +1158,18 @@ unistd.h
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
 
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/InverseImpl.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
+
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Amd.h
 ../Core/util/NonMPL2.h
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/Core/util/NonMPL2.h
@@ -1213,6 +1281,24 @@ Eigen_Colamd.h
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseQR/SparseQR.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Image.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke.h
+lapacke_config.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke_config.h
+stdlib.h
+-
+complex.h
+-
+complex.h
+-
+lapacke_mangling.h
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke_mangling.h
+
+/home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/lapacke_mangling.h
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h
 

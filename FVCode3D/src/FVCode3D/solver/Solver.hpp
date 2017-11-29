@@ -7,6 +7,7 @@
 #define SOLVER_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 
 namespace FVCode3D
 {
@@ -68,7 +69,19 @@ public:
         M_b = Vector::Zero( nbDofs );
         M_x = Vector::Zero( nbDofs );
     }
+    
+    //! Get the SP matrix
+    /*!
+     * @return the SP matrix
+     */
+    const SPMatrix & getSP() const { return M_SP; }
 
+    //! Get the matrix SP matrix
+    /*!
+     * @return the SP matrix
+     */
+    SPMatrix & getSP() { return M_SP; }
+    
     //! Get the matrix A
     /*!
      * @return the matrix A
@@ -131,14 +144,18 @@ public:
 
 protected:
 
+    //! Saddle Point matrix
+    SPMatrix    		M_SP;
+    
     //! Sparse Matrix
-    SpMat M_A;
+    SpMat       		M_A;
 
     //! RHS
-    Vector M_b;
+    Vector      		M_b;
 
     //! Solution vector
-    Vector M_x;
+    Vector      		M_x;
+    
 }; // class Solver
 
 //! Class EigenCholesky

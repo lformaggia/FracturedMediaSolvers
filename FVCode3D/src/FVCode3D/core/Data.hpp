@@ -656,7 +656,7 @@ public:
     /*!
      * @param the solver type
      */
-    void getSolverType(const std::string solver) { M_solverType = solver; }
+    void setSolverType(const std::string solver) { M_solverType = solver; }
 
     //! Set maximum iterations of the iterative solver
     /*!

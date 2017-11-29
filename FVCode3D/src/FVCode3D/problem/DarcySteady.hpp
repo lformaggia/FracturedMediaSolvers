@@ -11,6 +11,8 @@
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
 #include <unsupported/Eigen/SparseExtra>
+#include <Eigen/LU>
+#include <vector>
 
 namespace FVCode3D
 {
@@ -87,30 +89,43 @@ template <class QRMatrix, class QRFracture, typename MatrixType>
 void DarcySteady<QRMatrix, QRFracture, MatrixType >::
 assembleMatrix()
 {
+	const UInt numFracture  = this->M_mesh.getFractureFacetsIdsVector().size();
+	const UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + numFracture;
+	const UInt numCell      = this->M_mesh.getCellsVector().size();
+	
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
-		StiffMatrixFV S(this->M_mesh, this->M_mesh.getCellsVector().size() 
-			+ this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc);
+		StiffMatrixFV S(this->M_mesh, numCell+numFracture, this->M_bc);
         S.assemble();
         S.closeMatrix();
         S.showMe();
         
-        this->M_A = S.getMatrix();    // Move semantic!!!
-		this->M_b = S.getBCVector();  // Move semantic!!!
+        this->M_A = S.getMatrix();    
+		this->M_b = S.getBCVector();  
     }
-    else if(this->M_numet == Data::NumericalMethodType::MFD)
+   else if( this->M_numet == Data::NumericalMethodType::MFD && !(dynamic_cast<IterativeSolver*>(this->getSolverPtr())) )
     {
-        StiffMatrixMFD S(this->M_mesh, this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size()
-			+ this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc);
+        StiffMatrixMFD S(this->M_mesh, numFacetsTot+numCell+numFracture, this->M_bc);
 		S.assemble();
 		S.CompressMatrix();
 		S.showMe();		
 		
-		this->M_A = S.getMatrix();    // Move semantic!!!
-		this->M_b = S.getBCVector();  // Move semantic!!!
+		this->M_A = S.getMatrix(); 
+		this->M_b = S.getBCVector();  
     }
+    else if( this->M_numet == Data::NumericalMethodType::MFD && dynamic_cast<IterativeSolver*>(this->getSolverPtr()) )
+    {
+		SaddlePoint_StiffMatrix S(this->M_mesh, this->M_bc, numFacetsTot, numCell+numFracture, numFacetsTot, numCell+numFracture);
+		S.assemble();
+		S.Compress();
+		S.showMe();		
+		
+		(this->M_SP).Set(S); 
+		this->M_b = S.getBCVector(); 
+	}
+
 } // DarcySteady::assembleMatrix
 
 template <class QRMatrix, class QRFracture, typename MatrixType>

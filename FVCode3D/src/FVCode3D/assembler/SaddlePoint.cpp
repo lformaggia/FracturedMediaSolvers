@@ -54,7 +54,7 @@ void SaddlePoint_StiffMatrix::assemble()
 	// Impose BCs on bulk
 	BCimp.ImposeBConBulk(*M, *B, *M_b);
 	// Impose BCs in fractures
-	BCimp.ImposeBConFracture(*T, *M_b, fluxOP, numCell, numCell);	
+	BCimp.ImposeBConFracture_onT(*T, *M_b, fluxOP);	
 }
 	
 		
