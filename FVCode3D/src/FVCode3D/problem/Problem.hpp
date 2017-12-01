@@ -157,7 +157,7 @@ protected:
     //! Pointer to the solver class
     SolverPtr_Type M_solver;
     //! The saddle point matrix
-    SPMatrix & M_SP;
+    SaddlePointMat & M_SP;
     //! Sparse matrix A from the linear system Ax=b
     Matrix_Type & M_A;
     //! Vector b from the linear system Ax=b

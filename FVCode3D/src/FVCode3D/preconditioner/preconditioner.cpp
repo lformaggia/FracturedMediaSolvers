@@ -3,6 +3,9 @@
  * @brief These classes implement simple classes that perform the "inversion" of the preconditioner (definition version)
 */
 
+// Add this macro to enable the printing of MaxIt and error for the CG method used to solve the SC system in the internal cycle.
+//#define PRINT_INFO_CG
+
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/assembler/global_operator.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
@@ -49,6 +52,10 @@ Vector BlockTriangular_preconditioner::solve(const Vector & r) const
     cg.setTolerance(tol);
     cg.compute(-ISC);
     Vector y2 = cg.solve(r.segment(Md_inv.rows(),B.rows()));
+#ifdef PRINT_INFO_CG
+ 	std::cout << "#iterations:     " << cg.iterations() << std::endl;
+	std::cout << "estimated error: " << cg.error()      << std::endl;
+#endif
     // Second step: solve the diagonal linear system
     Vector z(Md_inv.rows()+B.rows());
 	z.segment(0,Md_inv.rows()) = Md_inv*(r.segment(0,Md_inv.rows())+B.transpose()*y2);
@@ -66,6 +73,10 @@ Vector ILU_preconditioner::solve(const Vector & r) const
     cg.setTolerance(tol);
     cg.compute(-ISC);
     Vector y2 = cg.solve(B*y1-r.segment(Md_inv.rows(),B.rows()));
+#ifdef PRINT_INFO_CG
+	std::cout << "#iterations:     " << cg.iterations() << std::endl;
+	std::cout << "estimated error: " << cg.error()      << std::endl;
+#endif
     // Third step: solve the 2nd diagonal linear system
     Vector z(Md_inv.rows()+B.rows());
 	z.segment(0,Md_inv.rows()) = y1-Md_inv*B.transpose()*y2;

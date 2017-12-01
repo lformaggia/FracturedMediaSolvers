@@ -74,13 +74,13 @@ public:
     /*!
      * @return the SP matrix
      */
-    const SPMatrix & getSP() const { return M_SP; }
+    const SaddlePointMat & getSP() const { return M_SP; }
 
     //! Get the matrix SP matrix
     /*!
      * @return the SP matrix
      */
-    SPMatrix & getSP() { return M_SP; }
+    SaddlePointMat & getSP() { return M_SP; }
     
     //! Get the matrix A
     /*!
@@ -145,7 +145,7 @@ public:
 protected:
 
     //! Saddle Point matrix
-    SPMatrix    		M_SP;
+    SaddlePointMat      M_SP;
     
     //! Sparse Matrix
     SpMat       		M_A;
@@ -514,7 +514,7 @@ private:
 	//! The restart level (how many iterations nedded to perform a restart)
 	UInt m;
 	//! The default restart value
-	static constexpr UInt Default_m = 40;
+	static constexpr UInt Default_m = 300;
 	
 }; // class GMRES
 

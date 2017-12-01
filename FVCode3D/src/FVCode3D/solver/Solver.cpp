@@ -76,7 +76,7 @@ void imlBiCGSTAB::solve()
 	ILU_preconditioner BT(M_SP);
 	BT.assemble(M_SP);
 	// Set the restart
-	setRestart(true);
+//	setRestart(true);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	// Solve the system
@@ -99,7 +99,7 @@ void imlGMRES::solve()
 	ILU_preconditioner BT(M_SP);
 	BT.assemble(M_SP);
 	// Set the restart level
-	set_m(300);
+//	set_m(60);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	int m_int = (int) m;

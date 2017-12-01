@@ -15,7 +15,7 @@
 namespace FVCode3D
 {
 
-//! Base class for assembling a saddle point matrix
+//! Base class for assembling a saddle point stiffness matrix
 /*!
  * @class SaddlePoint_StiffMatrix
  * This is the class implementing the stiffness matrix as a block saddle point matrix,

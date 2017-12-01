@@ -20,7 +20,7 @@ namespace FVCode3D
  * This is the base class for a preconditioner. As derived classes we can have any preconditioner:
  * identity, diagonal, inexact LU factorization and so on. The goal of these classes is not the
  * assemblation of the preconditioner matrix, but solving the linear system Pz = r in the iterative
- * scheme. They act as a wrapper around that allow the practical usage of preconditioner.
+ * scheme. They act as a wrapper that allows the practical usage of preconditioner.
 */
 class preconditioner
 {
@@ -100,8 +100,8 @@ private:
 //! Class for assembling an inexact Schur Complement builder.
 /*!
  * @class ISchurComplement_builder
- * This class implements the inexact Schur Complement with a lumping to approximate the 
- * inverse of the inner product matrix.
+ * This class implements the inexact Schur Complement with the inverse of the diagonal block M
+ * to approximate the inverse of the inner product matrix.
 */
 class ISchurComplement_builder
 {
@@ -110,7 +110,7 @@ public:
     //@{
     //! Construct an inexact Schur Complement.
     /*!
-     * @param M_lump The lumped inner product matrix
+     * @param Mdi The diagonal inverse matrix
      * @param Bmat The B block of the saddle point system
      * @param Tmat The T block of the saddle point system
      */
@@ -149,9 +149,9 @@ private:
 
 //! Class for assembling a saddle point matrix.
 /*!
- * @class SPMatrix
+ * @class SaddlePointMat
  * This class implements a generic saddle point matrix. It consists of 3 block matrices
- * M, B and T. It is build up with through an object of type SaddlePoint_StiffMatrix
+ * M, B and T. It is build up through an object of type SaddlePoint_StiffMatrix
  * that is the assembler of the numerical method and it overloads the *(Vector) operator
  * to use the blocks matrix to compute the matrix-vector product. In this way we avoid
  * to storage the whole system matrix and we use the same 3 blocks (without any copy of them)
@@ -159,7 +159,7 @@ private:
  * Clearly this class is interesting only with an iterative system solving the system.
  * Constructors, assignement, destructor and so on are all defaulted.
 */
-class SPMatrix
+class SaddlePointMat
 {
 public:
     //! @name Constructor & Destructor
@@ -168,14 +168,14 @@ public:
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
-	SPMatrix(SaddlePoint_StiffMatrix & SP_Stiff):
+	SaddlePointMat(SaddlePoint_StiffMatrix & SP_Stiff):
 		M(SP_Stiff.getM()), B(SP_Stiff.getB()), T(SP_Stiff.getT()) {}
 	//! Copy-Constructor
-    SPMatrix(const SPMatrix &) = default;
+    SaddlePointMat(const SaddlePointMat &) = default;
 	//! Empty-Constructor
-    SPMatrix() = default;
+    SaddlePointMat() = default;
 	//! Destructor
-    ~SPMatrix() = default;
+    ~SaddlePointMat() = default;
 	//@}
 		
     //! @name Set Methods
@@ -256,7 +256,7 @@ public:
     /*!
      * @param Mat The matrix of the system that we want to precondition
      */
-	diagonal_preconditioner( const SPMatrix & Mat ):
+	diagonal_preconditioner( const SaddlePointMat & Mat ):
 		M(Mat.getM()), T(Mat.getT()) {}
 	//! No Copy-Constructor
     diagonal_preconditioner(const diagonal_preconditioner &) = delete;
@@ -285,10 +285,9 @@ private:
 //! Base class for assembling a Block Triangular preconditioner.
 /*!
  * @class BlockTriangular_preconditioner
- * This class builds up a block triangolar preconditioner. The M block is
+ * Class that builds up a block triangolar preconditioner. The M block is
  * approximated through the diagonal part of M and the SC through the inverse
  * of the diagonal part of M. The SC system is solved through the CG method.
- * This is a base abstract class.
 */
 class BlockTriangular_preconditioner: public preconditioner
 {
@@ -299,7 +298,7 @@ public:
     /*!
      * @param SP The saddle point matrix
      */
-	BlockTriangular_preconditioner( const SPMatrix & SP ): 
+	BlockTriangular_preconditioner( const SaddlePointMat & SP ): 
 		B(SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default) {}
 	//! No Copy-Constructor
     BlockTriangular_preconditioner(const BlockTriangular_preconditioner &) = delete;
@@ -342,7 +341,7 @@ public:
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
-    void assemble(const SPMatrix & SP)
+    void assemble(const SaddlePointMat & SP)
 	{
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
 		ISchurComplement_builder ISCBuilder(Md_inv, B, SP.getT());
@@ -371,7 +370,7 @@ protected:
     //! The tolerance for CG
     Real                       tol;
     //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_Default = 150;
+    static constexpr UInt      MaxIt_Default = 200;
     //! The tolerance for CG (default value)
     static constexpr Real      tol_Default = 1e-2;
                       
@@ -379,9 +378,9 @@ protected:
 
 //! Class for assembling a ILU preconditioner.
 /*!
- * @class BlockTriangular_preconditioner
- * This class builds up a ILU preconditioner where the inverse of M
- * is modelled through a diagonal matrix. It uses the SC builder to build up the SC.
+ * @class ILU_preconditioner
+ * This class builds up a ILU preconditioner where the M block is approximated via its diagonal part
+ * and the SC is approximated through the inverse of the diagonal part of M.
  * The SC linear system is solved through the Eigen CG.
 */
 class ILU_preconditioner: public preconditioner
@@ -393,7 +392,7 @@ public:
     /*!
      * @param SP The saddle point matrix
      */
-	ILU_preconditioner( const SPMatrix & SP ): 
+	ILU_preconditioner( const SaddlePointMat & SP ): 
 		B(SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default)
 			{ Md_inv.setZero(); }
 	//! No Copy-Constructor
@@ -437,7 +436,7 @@ public:
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
-    void assemble(const SPMatrix & SP)
+    void assemble(const SaddlePointMat & SP)
 	{
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
 		ISchurComplement_builder ISCBuilder(Md_inv, B, SP.getT());
@@ -466,7 +465,7 @@ private:
     //! The tolerance for CG
     Real                       tol;
     //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_Default = 150;
+    static constexpr UInt      MaxIt_Default = 200;
     //! The tolerance for CG (default value)
     static constexpr Real      tol_Default = 1e-2;
                       
