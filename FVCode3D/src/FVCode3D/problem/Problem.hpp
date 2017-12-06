@@ -6,6 +6,8 @@
 #ifndef PROBLEM_HPP_
 #define PROBLEM_HPP_
 
+#include <utility>
+
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
@@ -25,16 +27,17 @@ class Quadrature;
  *  It is an abstract base class. It declares the assemble and the solve method.
  *  The first and the second template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class QRMatrix, class QRFracture, typename MatrixType = SpMat>
+template <class QRMatrix, class QRFracture>
 class Problem
 {
 public:
 
-    //! Typedef for the matrix type
-    /*!
-     * @typedef Matrix_Type
-     */
-    typedef MatrixType Matrix_Type;
+//! Typedef for SolverPtr_Type
+/*!
+ * @typedef SolverPtr_Type
+ * This type definition permits to handle a std::tuple<SpMat*,SaddlePointMat*,Vector*> as a AlgebricTuple.
+ */
+typedef std::tuple<SpMat*,SaddlePointMat*,Vector*> AlgebricTuple;
 
     //! No default constructor
     Problem() = delete;
@@ -102,18 +105,30 @@ public:
      * @return a pointer to the Solver
      */
     Solver * getSolverPtr() { return M_solver.get(); }
-
-    //! Get the matrix A
+    
+    //! Get the algebraic counterpart of the problem
     /*!
-     * @return the matrix A
+     * @return a tuple of three different pointers.
+     * The first pointer is to an SpMat that, if the solver is of direct type,
+     * is the system matrix, otherwise it is a null ptr.
+     * The second pointer is to an SaddlePointMat that, if the solver is of iterative type, 
+     * is the system block matrix, otherwise it is a null ptr.
+     * The third ptr is to a Vector that is the rhs of the system.
      */
-    Matrix_Type & getA() { return M_A; }
-
-    //! Get the RHS
-    /*!
-     * @return the vector b
-     */
-    Vector & getb() { return M_b; }
+    AlgebricTuple getAlgebry() 
+    { 
+		SpMat          *   M_A(nullptr);
+		SaddlePointMat *   M_SP(nullptr);
+		Vector         *   M_b(& this->M_solver->getb());
+    
+		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
+			M_A = & dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
+        
+		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
+			M_SP = & dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();   
+			
+		return std::make_tuple(M_A,M_SP,M_b);
+	}
     //@}
 
     //! Assemble method
@@ -156,16 +171,10 @@ protected:
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
     SolverPtr_Type M_solver;
-    //! The saddle point matrix
-    SaddlePointMat & M_SP;
-    //! Sparse matrix A from the linear system Ax=b
-    Matrix_Type & M_A;
-    //! Vector b from the linear system Ax=b
-    Vector& M_b;
 };
 
-template <class QRMatrix, class QRFracture, typename MatrixType>
-Problem<QRMatrix, QRFracture, MatrixType>::
+template <class QRMatrix, class QRFracture>
+Problem<QRMatrix, QRFracture>::
 Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
         const Func & func, const DataPtr_Type & data):
     M_mesh(mesh),
@@ -174,11 +183,8 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_ssOn(data->getSourceSinkOn()),
     M_numet(data->getNumericalMethodType()),
     M_quadrature(nullptr),
-    M_solver( SolverHandler::Instance().getProduct(solver) ),
-    M_SP( M_solver->getSP() ),
-    M_A( M_solver->getA() ),
-    M_b( M_solver->getb() )
-	{} // Problem::Problem
+    M_solver( SolverHandler::Instance().getProduct(solver) )
+	{} // Problem
 
 } // namespace FVCode3D
 

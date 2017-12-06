@@ -3,9 +3,8 @@
  * @section intro Introduction
  *
  * This code allows to solve the single-phase flow in a fractured porous medium modeled via the Darcy equation by using the
- Finite Volume (FV) method with a two-point flux approximation (TPFA). The fractures are required to be matching with the grid.\n
- * The code is written in C++.
- * As input, the program requires a mesh as '.fvg' format file.
+ * Finite Volume (FV) method with a two-point flux approximation (TPFA) or by using an hybrid scheme MFD in the bulk and a TPFA FV approximation
+ * in the fractures. In this latter case the bulk problem is in mixed form.
  * The output is given as '.vtu' file format, viewable by Paraview.\n
  *
  * @section howto How to execute the program

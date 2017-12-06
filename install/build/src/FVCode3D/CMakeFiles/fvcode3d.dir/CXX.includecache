@@ -278,10 +278,6 @@ FVCode3D/core/Chrono.hpp
 FVCode3D/GetPot
 -
 
-/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/eigenPatch/RangeSupport.hpp
-Eigen/Sparse
--
-
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/eigenPatch/SparseBlock.cpp
 FVCode3D/eigenPatch/SparseBlock.hpp
 -
@@ -540,20 +536,18 @@ FVCode3D/mesh/TetGenWrapper.hpp
 FVCode3D/core/TypeDefinition.hpp
 -
 
-/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.cpp
-FVCode3D/multipleSubRegions/MultipleSubRegions.hpp
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp
+FVCode3D/preconditioner/preconditioner.hpp
+-
+FVCode3D/preconditioner/preconHandler.hpp
+-
+FVCode3D/utility/StringManipolator.hpp
 -
 
-/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.hpp
-functional
--
-memory
--
-FVCode3D/eigenPatch/RangeSupport.hpp
--
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
 FVCode3D/core/TypeDefinition.hpp
 -
-FVCode3D/core/Data.hpp
+FVCode3D/preconditioner/preconditioner.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.cpp
@@ -677,12 +671,16 @@ FVCode3D/solver/gmres.hpp
 -
 FVCode3D/preconditioner/preconditioner.hpp
 -
+FVCode3D/preconditioner/preconHandler.hpp
+-
 Eigen/UmfPackSupport
 -
 samg.h
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
+string
+-
 FVCode3D/core/TypeDefinition.hpp
 -
 FVCode3D/preconditioner/preconditioner.hpp

@@ -3882,19 +3882,31 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/BasicType.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Chrono.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Data.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/TypeDefinition.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/eigenPatch/RangeSupport.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/Fracture3D.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/FractureNetwork3D.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.cpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/StringManipolator.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Core
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/IterativeLinearSolvers
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/LU
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/OrderingMethods
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Sparse
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/SparseCholesky
@@ -3996,6 +4008,10 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/Determinant.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/FullPivLU.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/PartialPivLU.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Amd.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
@@ -4044,6 +4060,8 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/SparseQR/SparseQR.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Image.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/misc/Kernel.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseBinaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/ArrayCwiseUnaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/BlockMethods.h
@@ -4051,6 +4069,12 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/CommonCwiseUnaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/SparseExtra
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/src/SparseExtra/BlockOfDynamicSparseMatrix.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/src/SparseExtra/DynamicSparseMatrix.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/src/SparseExtra/MarketIO.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/src/SparseExtra/MatrixMarketIterator.h
+ /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/src/SparseExtra/RandomSetter.h
 src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
@@ -5119,6 +5143,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp

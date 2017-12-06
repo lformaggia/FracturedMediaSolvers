@@ -324,9 +324,33 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o.provide
 src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o.provides.build: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o
 
 
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o"
+	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp
+
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.i"
+	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp > CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.i
+
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.s"
+	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp -o CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.s
+
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.requires:
+
+.PHONY : src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.requires
+
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.provides: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.requires
+	$(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.provides.build
+.PHONY : src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.provides
+
+src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.provides.build: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o
+
+
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/BoundingBox.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/BoundingBox.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.i: cmake_force
@@ -350,7 +374,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o.provides.build: 
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.i: cmake_force
@@ -374,7 +398,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o.provides.bu
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.i: cmake_force
@@ -398,7 +422,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o.provides.build: s
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.i: cmake_force
@@ -422,7 +446,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Point3D.cpp.o.provides.build: src/
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/export/ExportVTU.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/export/ExportVTU.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.i: cmake_force
@@ -446,7 +470,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportVTU.cpp.o.provides.build: src/
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/export/ExportCP.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/export/ExportCP.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.i: cmake_force
@@ -470,7 +494,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/export/ExportCP.cpp.o.provides.build: src/F
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/eigenPatch/SparseBlock.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/eigenPatch/SparseBlock.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.i: cmake_force
@@ -494,7 +518,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/eigenPatch/SparseBlock.cpp.o.provides.build
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/import/Import.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/import/Import.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/import/Import.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/import/Import.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/import/Import.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/import/Import.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/import/Import.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/import/Import.cpp.i: cmake_force
@@ -518,7 +542,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/import/Import.cpp.o.provides.build: src/FVC
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/CartesianGrid.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/CartesianGrid.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.i: cmake_force
@@ -542,7 +566,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/CartesianGrid.cpp.o.provides.build: sr
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/MeshUtility.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/MeshUtility.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.i: cmake_force
@@ -566,7 +590,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/MeshUtility.cpp.o.provides.build: src/
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.i: cmake_force
@@ -590,7 +614,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o.provides.build: sr
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.i: cmake_force
@@ -614,7 +638,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/Mesh3D.cpp.o.provides.build: src/FVCod
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.i: cmake_force
@@ -638,7 +662,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/RigidMesh.cpp.o.provides.build: src/FV
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.i: cmake_force
@@ -662,7 +686,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o.provides.build: src/FVC
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.i: cmake_force
@@ -686,7 +710,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o.provides.build: 
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Mass.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Mass.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.i: cmake_force
@@ -710,7 +734,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Mass.cpp.o.provides.build: src/FV
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/global_operator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/global_operator.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.i: cmake_force
@@ -734,7 +758,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/global_operator.cpp.o.provides.bu
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/local_operator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/local_operator.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.i: cmake_force
@@ -758,7 +782,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o.provides.bui
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Stiffness.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Stiffness.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.i: cmake_force
@@ -782,7 +806,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o.provides.build: s
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o"
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.cpp
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.i: cmake_force
@@ -802,30 +826,6 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o.provides: src/F
 .PHONY : src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o.provides
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o.provides.build: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o
-
-
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o: /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/corinne/eniReservoirGITHUB/eniReservoir/install/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o"
-	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o -c /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.cpp
-
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.i"
-	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.cpp > CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.i
-
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.s"
-	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build/src/FVCode3D && /usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.cpp -o CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.s
-
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.requires:
-
-.PHONY : src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.requires
-
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.provides: src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.requires
-	$(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.provides.build
-.PHONY : src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.provides
-
-src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.provides.build: src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
 
 
 src/FVCode3D/CMakeFiles/fvcode3d.dir/core/Data.cpp.o: src/FVCode3D/CMakeFiles/fvcode3d.dir/flags.make
@@ -889,6 +889,7 @@ fvcode3d_OBJECTS = \
 "CMakeFiles/fvcode3d.dir/utility/Matrix.cpp.o" \
 "CMakeFiles/fvcode3d.dir/utility/Evaluate.cpp.o" \
 "CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o" \
+"CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o" \
 "CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o" \
 "CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o" \
 "CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o" \
@@ -909,7 +910,6 @@ fvcode3d_OBJECTS = \
 "CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o" \
 "CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o" \
 "CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o" \
-"CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o" \
 "CMakeFiles/fvcode3d.dir/core/Data.cpp.o" \
 "CMakeFiles/fvcode3d.dir/boundaryCondition/BC.cpp.o"
 
@@ -927,6 +927,7 @@ src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/utility/Convert
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/utility/Matrix.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/utility/Evaluate.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o
+src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o
@@ -947,7 +948,6 @@ src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/globa
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o
-src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/core/Data.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/boundaryCondition/BC.cpp.o
 src/FVCode3D/libfvcode3d.a: src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make
@@ -972,6 +972,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/utility/Matrix.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/utility/Evaluate.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o.requires
+src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/BoundingBox.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/CoordinateSystem.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/geometry/Operations.cpp.o.requires
@@ -992,7 +993,6 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/local_operator.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/Stiffness.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o.requires
-src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/core/Data.cpp.o.requires
 src/FVCode3D/CMakeFiles/fvcode3d.dir/requires: src/FVCode3D/CMakeFiles/fvcode3d.dir/boundaryCondition/BC.cpp.o.requires
 

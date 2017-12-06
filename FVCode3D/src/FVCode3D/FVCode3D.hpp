@@ -36,6 +36,7 @@
 #include <FVCode3D/assembler/global_operator.hpp>
 #include <FVCode3D/assembler/SaddlePoint.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
+#include <FVCode3D/preconditioner/preconHandler.hpp>
 #include <FVCode3D/geometry/CoordinateSystem.hpp>
 #include <FVCode3D/geometry/Operations.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>

@@ -160,10 +160,6 @@ FVCode3D/core/Chrono.hpp
 FVCode3D/GetPot
 -
 
-/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/eigenPatch/RangeSupport.hpp
-Eigen/Sparse
--
-
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/export/Export.hpp
 FVCode3D/core/TypeDefinition.hpp
 -
@@ -260,18 +256,6 @@ utility
 FVCode3D/core/TypeDefinition.hpp
 -
 
-/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/multipleSubRegions/MultipleSubRegions.hpp
-functional
--
-memory
--
-FVCode3D/eigenPatch/RangeSupport.hpp
--
-FVCode3D/core/TypeDefinition.hpp
--
-FVCode3D/core/Data.hpp
--
-
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
 FVCode3D/core/BasicType.hpp
 -
@@ -305,6 +289,8 @@ FVCode3D/quadrature/Quadrature.hpp
 -
 FVCode3D/assembler/Stiffness.hpp
 -
+FVCode3D/preconditioner/preconditioner.hpp
+-
 unsupported/Eigen/SparseExtra
 -
 Eigen/LU
@@ -313,6 +299,8 @@ vector
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp
+utility
+-
 FVCode3D/core/Data.hpp
 -
 FVCode3D/core/TypeDefinition.hpp
@@ -371,6 +359,8 @@ FVCode3D/core/TypeDefinition.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
+string
+-
 FVCode3D/core/TypeDefinition.hpp
 -
 FVCode3D/preconditioner/preconditioner.hpp
@@ -423,6 +413,8 @@ FVCode3D/property/Properties.hpp
 -
 FVCode3D/property/Permeability.hpp
 -
+FVCode3D/preconditioner/preconditioner.hpp
+-
 FVCode3D/mesh/CartesianGrid.hpp
 -
 FVCode3D/boundaryCondition/BC.hpp
@@ -442,8 +434,6 @@ FVCode3D/problem/DarcySteady.hpp
 FVCode3D/problem/DarcyPseudoSteady.hpp
 -
 FVCode3D/assembler/FixPressureDofs.hpp
--
-FVCode3D/multipleSubRegions/MultipleSubRegions.hpp
 -
 FVCode3D/utility/Evaluate.hpp
 -

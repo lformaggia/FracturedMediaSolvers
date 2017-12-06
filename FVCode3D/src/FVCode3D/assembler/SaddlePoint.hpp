@@ -41,9 +41,9 @@ public:
         @param size The size of the stiffness matrix
     */
     SaddlePoint_StiffMatrix(const Rigid_Mesh & pmesh, const BoundaryConditions & bc,
-		const UInt mdim, const UInt brow, const UInt bcol, const UInt tdim):
-        M_mesh(pmesh), M_bc(bc), Mdim(mdim), Bdim(brow,bcol), Tdim(tdim), 
-        M(new SpMat(mdim,mdim)), B(new SpMat(brow,bcol)), T(new SpMat(tdim,tdim)),
+		const UInt mdim, const UInt brow, const UInt bcol):
+        M_mesh(pmesh), M_bc(bc), Mdim(mdim), Bdim(brow,bcol), Tdim(brow), 
+        M(new SpMat(mdim,mdim)), B(new SpMat(brow,bcol)), T(new SpMat(brow,brow)),
         M_b(new Vector(Vector::Zero(mdim+brow))) {}
     //! No Copy-Constructor
     SaddlePoint_StiffMatrix(const SaddlePoint_StiffMatrix &) = delete;

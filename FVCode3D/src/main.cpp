@@ -16,6 +16,7 @@
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/property/Properties.hpp>
 #include <FVCode3D/property/Permeability.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/mesh/CartesianGrid.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
@@ -26,7 +27,6 @@
 #include <FVCode3D/problem/DarcySteady.hpp>
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
-#include <FVCode3D/multipleSubRegions/MultipleSubRegions.hpp>
 #include <FVCode3D/utility/Evaluate.hpp>
 #include "functions.hpp"
 
@@ -34,7 +34,7 @@ using namespace FVCode3D;
 
 typedef Problem<CentroidQuadrature, CentroidQuadrature> Pb;
 typedef DarcySteady<CentroidQuadrature, CentroidQuadrature> DarcyPb;
-typedef DarcyPseudoSteady<CentroidQuadrature, CentroidQuadrature, SpMat, TimeScheme::BDF2> PseudoDarcyPb;
+typedef DarcyPseudoSteady<CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
 
 int main(int argc, char * argv[])
 {
@@ -184,25 +184,42 @@ int main(int argc, char * argv[])
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 #endif // FVCODE3D_EXPORT
 
-    std::cout << "Define the problem..." << std::flush;
+    std::cout << "Define the problem..." << std::endl<<std::endl;
+    
     Pb * darcy(nullptr);
-    if(dataPtr->getProblemType() == Data::ProblemType::steady)
-    {
-        darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
-    }
-    else if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady)
-    {
-        darcy = new PseudoDarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
-    }
+    
+		if(dataPtr->getProblemType() == Data::ProblemType::steady && dataPtr->getNumericalMethodType() == Data::NumericalMethodType::MFD)
+		{
+			darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+		}
+		if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady && dataPtr->getNumericalMethodType() == Data::NumericalMethodType::MFD)
+		{
+			std::cout<<"Pseudo steady not supported for MFD"<<std::endl<<std::endl;
+			return 0;
+		}
+		if(dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV && dataPtr->getSolverPolicy() == Data::SolverPolicy::Direct)
+		{
+			if(dataPtr->getProblemType() == Data::ProblemType::steady)
+				darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+			else
+				darcy = new PseudoDarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+		}
+		if(dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV && dataPtr->getSolverPolicy() == Data::SolverPolicy::Iterative)
+		{
+			std::cout<<"Iterative solver not supported for MFD"<<std::endl<<std::endl;
+			return 0;
+		}
+			
+	
     std::cout << " done." << std::endl << std::endl;
 
     if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
     {
         dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setMaxIter(dataPtr->getIterativeSolverMaxIter());
         dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setTolerance(dataPtr->getIterativeSolverTolerance());
+		dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->set_precon(dataPtr->getpreconType());
     }
 
-    MSR<Pb> * multipleSubRegions(nullptr);
     Real Tsolving1 = 0;
 
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
@@ -213,16 +230,17 @@ int main(int argc, char * argv[])
         Tsolving1 = chrono.partial();
         std::cout << "Passed seconds: " << Tsolving1 << " s." << std::endl << std::endl;
         
-        if(dataPtr->MSROn())
-        {
-            multipleSubRegions = new MSR<Pb>(darcy, dataPtr);
-            multipleSubRegions->setup();
-        }
-        if(dataPtr->pressuresInFractures())
+       if(dataPtr->pressuresInFractures() && dataPtr->getSolverPolicy() == Data::SolverPolicy::Direct)
         {
             FixPressureDofs<DarcyPb> fpd(dynamic_cast<DarcyPb *>(darcy));
             fpd.apply(dataPtr->getPressuresInFractures());
         }
+       if(dataPtr->pressuresInFractures() && dataPtr->getSolverPolicy() == Data::SolverPolicy::Iterative)
+       {
+			std::cout<<"Fix pressure not supported with iterative schemes" <<std::endl;
+			return 0;
+       }
+
         std::cout << "Solve the problem..." << std::endl<<std::endl;
         darcy->solve();
         
@@ -264,6 +282,7 @@ int main(int argc, char * argv[])
                 FixPressureDofs<PseudoDarcyPb> fpd(dynamic_cast<PseudoDarcyPb *>(darcy));
                 fpd.apply(dataPtr->getPressuresInFractures());
             }
+
             darcy->solve();
 
             if(dynamic_cast<IterativeSolver*>(&(darcy->getSolver())))
@@ -290,16 +309,6 @@ int main(int argc, char * argv[])
 #endif // FVCODE3D_EXPORT
         }
     }
-
-    if(dataPtr->MSROn())
-    {
-        std::cout << "Compute sub-regions..." << std::flush;
-        multipleSubRegions->createRegions();
-        std::cout << " done." << std::endl;
-        std::cout << "Compute transmissibilities..." << std::flush;
-        multipleSubRegions->computeTransmissibility();
-        std::cout << " done." << std::endl << std::endl;
-    }
 	
 	std::cout<< "Time to solve the system: "<< chrono.partial()-Tsolving1 <<"s."<< std::endl << std::endl;
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;  
@@ -324,16 +333,6 @@ int main(int argc, char * argv[])
         darcy->getSolver().getSolution());
         std::cout << " done." << std::endl << std::endl;
 	}
-
-#ifdef FVCODE3D_EXPORT
-    if(dataPtr->MSROn())
-    {
-        std::cout << "Export SubRegions..." << std::flush;
-        exporter.exportSolution(myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_colour.vtu",
-    multipleSubRegions->getColorsVector() );
-        std::cout << " done." << std::endl << std::endl;
-    }
-#endif // FVCODE3D_EXPORT
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 

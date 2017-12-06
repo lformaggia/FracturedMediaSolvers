@@ -13,50 +13,15 @@
 
 namespace FVCode3D
 {
+
+class preconditioner;
 	
-//! Base class for assembling a preconditioner.
+//! Typedef for preconPtr_Type
 /*!
- * @class preconditioner
- * This is the base class for a preconditioner. As derived classes we can have any preconditioner:
- * identity, diagonal, inexact LU factorization and so on. The goal of these classes is not the
- * assemblation of the preconditioner matrix, but solving the linear system Pz = r in the iterative
- * scheme. They act as a wrapper that allows the practical usage of preconditioner.
-*/
-class preconditioner
-{
-public:
-    //! @name Solve Methods
-    //@{
-    //! Solve the linear system Pz=r.
-    /*!
-     * @param r The rhs vector on what we apply the P^-1
-     * Note that the return value is passed through move semantic.
-     */
-    virtual Vector solve(const Vector & r) const = 0;
-    //@}                  	
-};
-
-
-//! Class for assembling an identity preconditioner
-/*!
- * @class identity_preconditioner
- * This class constructs an identity preconditioner. Create and pass an object of this type
- * in the case of running an iterative solver without preconditioning.
+ * @typedef preconPtr_Type
+ * This type definition permits to handle a std::shared_ptr<preconditioner> as a preconPtr_Type.
  */
-class identity_preconditioner: public preconditioner
-{
-public:
-    //! @name Solve Methods
-    //@{
-    //! Solve the linear system Pz=r
-    /*!
-     * @param r The rhs vector on what we apply the P^-1
-     */
-    Vector solve(const Vector & r) const
-		{ return r; };
-    //@}                 
-};
-
+typedef std::shared_ptr<preconditioner> preconPtr_Type;
 
 //! Class for assembling a lumped inner product builder.
 /*!
@@ -151,7 +116,7 @@ private:
 /*!
  * @class SaddlePointMat
  * This class implements a generic saddle point matrix. It consists of 3 block matrices
- * M, B and T. It is build up through an object of type SaddlePoint_StiffMatrix
+ * M, B and T. It will be build up through an object of type SaddlePoint_StiffMatrix
  * that is the assembler of the numerical method and it overloads the *(Vector) operator
  * to use the blocks matrix to compute the matrix-vector product. In this way we avoid
  * to storage the whole system matrix and we use the same 3 blocks (without any copy of them)
@@ -164,16 +129,27 @@ class SaddlePointMat
 public:
     //! @name Constructor & Destructor
     //@{
+    //! Empty-Constructor
+    SaddlePointMat() = default;
+    
     //! Construct a saddle point matrix
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
-	SaddlePointMat(SaddlePoint_StiffMatrix & SP_Stiff):
-		M(SP_Stiff.getM()), B(SP_Stiff.getB()), T(SP_Stiff.getT()) {}
+	SaddlePointMat(const SpMat & Mmat,const SpMat & Bmat,const SpMat & Tmat):
+		M(Mmat), B(Bmat), T(Tmat) {}
+		
+	//! Construct a saddle point matrix
+    /*!
+     * @param Mdim M block dimension
+     * @param Brow B block row
+     * @param Bcol B block col
+     */
+	SaddlePointMat(const UInt Mdim,const UInt Brow,const UInt Bcol):
+		M(Mdim,Mdim), B(Brow,Bcol), T(Brow,Brow) {}
+		
 	//! Copy-Constructor
     SaddlePointMat(const SaddlePointMat &) = default;
-	//! Empty-Constructor
-    SaddlePointMat() = default;
 	//! Destructor
     ~SaddlePointMat() = default;
 	//@}
@@ -184,11 +160,11 @@ public:
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
-    void Set(SaddlePoint_StiffMatrix & SP_Stiff)
+    void Set(const SpMat & Mmat,const SpMat & Bmat,const SpMat & Tmat)
 	{
-		M = SP_Stiff.getM();
-		B = SP_Stiff.getB();
-		T = SP_Stiff.getT();
+		M = Mmat;
+		B = Bmat;
+		T = Tmat;
 	}
     //@}
     
@@ -200,12 +176,26 @@ public:
      */
     const SpMat & getM() const
         {return M;}
+        
+    //! Get M block 
+    /*!
+     * @return A reference to the M block
+     */
+    SpMat & getM() 
+        {return M;}
     
+    //! Get B block (read only)
+    /*!
+     * @return A const reference to the B block
+     */
+    const SpMat & getB() const
+        {return B;}
+        
     //! Get B block 
     /*!
      * @return A reference to the B block
      */
-    const SpMat & getB() const
+    SpMat & getB()
         {return B;}
         
     //! Get T block (read only)
@@ -214,6 +204,33 @@ public:
      */
     const SpMat & getT() const
         {return T;}
+        
+    //! Get T block
+    /*!
+     * @return A reference to the T block
+     */
+    SpMat & getT()
+        {return T;}
+    //@}
+
+    //! @name Methods
+    //@{
+	//! Resize the system
+    /*!
+     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     */
+    void resize(const UInt Mdim,const UInt Brow,const UInt Bcol)
+	{
+		M.resize(Mdim,Mdim);
+		B.resize(Brow,Bcol);
+		T.resize(Brow,Brow);
+	}
+	
+	//! Get the number of non zero
+    /*!
+     * @return the number of non zero
+     */
+    UInt nonZeros() { return M.nonZeros()+2*B.nonZeros()+T.nonZeros(); }
     //@}
 
     //! @name Operators
@@ -241,6 +258,60 @@ private:
 	SpMat      T;
 };
 
+//! Base class for assembling a preconditioner.
+/*!
+ * @class preconditioner
+ * This is the base class for a preconditioner. As derived classes we can have any preconditioner:
+ * identity, diagonal, inexact LU factorization and so on. The goal of these classes is not the
+ * assemblation of the preconditioner matrix, but solving the linear system Pz = r in the iterative
+ * scheme. They act as a wrapper that allows the practical usage of preconditioner.
+*/
+class preconditioner
+{
+public:
+    //! Set the preconditioner
+    /*!
+     * @param Mat The saddle point mat
+     */
+    virtual void set(const SaddlePointMat & Mat) = 0;
+    
+    //! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r.
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     * Note that the return value is passed through move semantic.
+     */
+    virtual Vector solve(const Vector & r) const = 0;
+    //@}                  	
+};
+
+
+//! Class for assembling an identity preconditioner
+/*!
+ * @class identity_preconditioner
+ * This class constructs an identity preconditioner. Create and pass an object of this type
+ * in the case of running an iterative solver without preconditioning.
+ */
+class identity_preconditioner: public preconditioner
+{
+public:
+    //! Set the preconditioner
+    /*!
+     * @param Mat The saddle point mat
+     */
+    void set(const SaddlePointMat & Mat){}
+    
+	//! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     */
+    Vector solve(const Vector & r) const
+		{ return r; };
+    //@}                 
+};
 
 //! Class for assembling a diagonal preconditioner
 /*!
@@ -257,14 +328,24 @@ public:
      * @param Mat The matrix of the system that we want to precondition
      */
 	diagonal_preconditioner( const SaddlePointMat & Mat ):
-		M(Mat.getM()), T(Mat.getT()) {}
+		Mptr(& Mat.getM()), Tptr(& Mat.getT()) {}
 	//! No Copy-Constructor
     diagonal_preconditioner(const diagonal_preconditioner &) = delete;
-	//! No Empty-Constructor
-    diagonal_preconditioner() = delete;
+	//! Empty-Constructor
+    diagonal_preconditioner(): Mptr(nullptr), Tptr(nullptr) {}
 	//! Destructor
     ~diagonal_preconditioner() = default;
 	//@}
+
+    //! Set the preconditioner
+    /*!
+     * @param Mat The saddle point mat
+     */
+    void set(const SaddlePointMat & Mat)
+    {
+		Mptr = & Mat.getM();
+		Tptr = & Mat.getT();
+	}
 
     //! @name Solve Methods
     //@{
@@ -277,9 +358,9 @@ public:
     
 private:            
 	//! A const reference to the inner product matrix
-    const SpMat &       M;    
+    const SpMat *       Mptr;    
 	//! A const reference to the T block matrix
-    const SpMat &       T;               
+    const SpMat *       Tptr;               
 };
 
 //! Base class for assembling a Block Triangular preconditioner.
@@ -299,11 +380,11 @@ public:
      * @param SP The saddle point matrix
      */
 	BlockTriangular_preconditioner( const SaddlePointMat & SP ): 
-		B(SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default) {}
+		Bptr(& SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default) {}
 	//! No Copy-Constructor
     BlockTriangular_preconditioner(const BlockTriangular_preconditioner &) = delete;
-	//! No Empty-Constructor
-    BlockTriangular_preconditioner() = delete;
+	//! Empty-Constructor
+    BlockTriangular_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_Default), tol(tol_Default) {}
 	//! Destructor
     ~BlockTriangular_preconditioner() = default;
 	//@}
@@ -339,12 +420,13 @@ public:
     //@{
 	//! Assemble the the inverse diag of M and the SC
     /*!
-     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     * @param Mat The saddle point mat
      */
-    void assemble(const SaddlePointMat & SP)
+    void set(const SaddlePointMat & SP)
 	{
+		Bptr = & SP.getB();
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
-		ISchurComplement_builder ISCBuilder(Md_inv, B, SP.getT());
+		ISchurComplement_builder ISCBuilder(Md_inv, *Bptr, SP.getT());
 		ISCBuilder.build(ISC);
 	}
     //@}
@@ -358,9 +440,9 @@ public:
     virtual Vector solve(const Vector & r) const;
     //@}
     
-protected:
+private:
 	//! The B block matrix
-    const SpMat              & B;
+    const SpMat *              Bptr;
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv;
 	//! The inexact Schur Complement matrix
@@ -393,12 +475,12 @@ public:
      * @param SP The saddle point matrix
      */
 	ILU_preconditioner( const SaddlePointMat & SP ): 
-		B(SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default)
+		Bptr(& SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default)
 			{ Md_inv.setZero(); }
 	//! No Copy-Constructor
     ILU_preconditioner(const ILU_preconditioner &) = delete;
-	//! No Empty-Constructor
-    ILU_preconditioner() = delete;
+	//! Empty-Constructor
+    ILU_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_Default), tol(tol_Default) {}
 	//! Destructor
     ~ILU_preconditioner() = default;
 	//@}
@@ -434,12 +516,13 @@ public:
     //@{
 	//! Assemble the approximations of M and SC
     /*!
-     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     * @param Mat The saddle point mat
      */
-    void assemble(const SaddlePointMat & SP)
+    void set(const SaddlePointMat & SP)
 	{
+		Bptr = & SP.getB();		
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
-		ISchurComplement_builder ISCBuilder(Md_inv, B, SP.getT());
+		ISchurComplement_builder ISCBuilder(Md_inv, *Bptr, SP.getT());
 		ISCBuilder.build(ISC);
 	}
     //@}
@@ -455,7 +538,7 @@ public:
     
 private:
 	//! The B block matrix
-    const SpMat              & B;
+    const SpMat *              Bptr;
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv; 
 	//! The inexact Schur Complement matrix

@@ -33,6 +33,17 @@ public:
         MFD         = 1
     };
 
+    //! Define the solver policy
+    /*!
+     * @enum SolverPolicy
+     * This enumerator allows to select the solver policy: direct solver or iterative solver
+     */
+    enum SolverPolicy
+    {
+        Direct     = 0,
+        Iterative  = 1
+    };
+
     //! Define the problem type
     /*!
      * @enum ProblemType
@@ -273,12 +284,6 @@ public:
      */
     Real getPressuresInFractures() const { return M_fracturesPressure; }
 
-    //! Test if the multiple sub-regions method is activated or not
-    /*!
-     * @return if true the multiple sub-regions method is activated
-     */
-    bool MSROn() const { return M_MSR; }
-
     //! Get the number of sub-regions
     /*!
      * @return the number of sub-regions
@@ -363,11 +368,23 @@ public:
      */
     Real getCompressibility() const { return M_compressibility; }
 
+    //! Get solver policy
+    /*!
+     * @return the solver policy
+     */
+    const SolverPolicy getSolverPolicy() const { return M_SolverPolicy; }
+
     //! Get solver type
     /*!
      * @return the solver type
      */
     const std::string getSolverType() const { return M_solverType; }
+    
+    //! Get preconditioner type
+    /*!
+     * @return the preconditioner type
+     */
+    const std::string getpreconType() const { return M_precon; }
 
     //! Get maximum iterations of the iterative solver
     /*!
@@ -562,12 +579,6 @@ public:
      */
     void setPressuresInFractures(const Real press) { M_fracturesPressure = press; }
 
-    //! Enable or disable the the multiple sub-regions method
-    /*!
-     * @param msr if true the multiple sub-regions method is activated
-     */
-    void MSROn(const bool msr) { M_MSR = msr; }
-
     //! Set the number of sub-regions
     /*!
      * @param nSubReg the number of sub-regions
@@ -652,11 +663,17 @@ public:
      */
     void setCompressibility(const Real compressibility) { M_compressibility = compressibility; }
 
-    //! Set solver type
+    //! Set solver policy
     /*!
-     * @param the solver type
+     * @param the solver policy
      */
-    void setSolverType(const std::string solver) { M_solverType = solver; }
+    void setSolverPolicy(const SolverPolicy solver) { M_SolverPolicy = solver; }
+
+    //! Set preconditioner type
+    /*!
+     * @param the preconditioner type
+     */
+    void setpreconType(const std::string precon) { M_precon =precon; }
 
     //! Set maximum iterations of the iterative solver
     /*!
@@ -749,8 +766,6 @@ protected:
     bool M_setFracturesPressure;
     //! Pressure value inside the fractures
     Real M_fracturesPressure;
-    //! Multiple sub-regions on?
-    bool M_MSR;
     //! Number of sub-regions
     UInt M_nbSubRegions;
     //! Number of time step to check for the steady state
@@ -780,12 +795,16 @@ protected:
     //! Compressibility
     Real M_compressibility;
 
+    //! Solver policy
+    SolverPolicy M_SolverPolicy;
     //! Solver used
     std::string M_solverType;
     //! Maximum iterations of the iterative solver
     UInt M_maxIt;
     //! Tolerance of the iterative solver
     Real M_tol;
+    //! The preconditioner
+    std::string M_precon;
 
     //! Angle used to rotate along z-axis the domain. It is used only to compute the normal for detecting BC!
     Real M_theta;
@@ -834,6 +853,10 @@ private:
 //! Specialized class that implements a parser for the Data::NumericalMethodType enum
 template<>
 EnumParser<Data::NumericalMethodType>::EnumParser();
+
+//! Specialized class that implements a parser for the Data::SolverPolicy enum
+template<>
+EnumParser<Data::SolverPolicy>::EnumParser();
 
 //! Specialized class that implements a parser for the Data::ProblemType enum
 template<>

@@ -777,32 +777,32 @@ mesh/TetGenWrapper.cpp.s:
 	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.s
 .PHONY : mesh/TetGenWrapper.cpp.s
 
-multipleSubRegions/MultipleSubRegions.o: multipleSubRegions/MultipleSubRegions.cpp.o
+preconditioner/preconHandler.o: preconditioner/preconHandler.cpp.o
 
-.PHONY : multipleSubRegions/MultipleSubRegions.o
+.PHONY : preconditioner/preconHandler.o
 
 # target to build an object file
-multipleSubRegions/MultipleSubRegions.cpp.o:
-	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.o
-.PHONY : multipleSubRegions/MultipleSubRegions.cpp.o
+preconditioner/preconHandler.cpp.o:
+	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o
+.PHONY : preconditioner/preconHandler.cpp.o
 
-multipleSubRegions/MultipleSubRegions.i: multipleSubRegions/MultipleSubRegions.cpp.i
+preconditioner/preconHandler.i: preconditioner/preconHandler.cpp.i
 
-.PHONY : multipleSubRegions/MultipleSubRegions.i
+.PHONY : preconditioner/preconHandler.i
 
 # target to preprocess a source file
-multipleSubRegions/MultipleSubRegions.cpp.i:
-	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.i
-.PHONY : multipleSubRegions/MultipleSubRegions.cpp.i
+preconditioner/preconHandler.cpp.i:
+	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.i
+.PHONY : preconditioner/preconHandler.cpp.i
 
-multipleSubRegions/MultipleSubRegions.s: multipleSubRegions/MultipleSubRegions.cpp.s
+preconditioner/preconHandler.s: preconditioner/preconHandler.cpp.s
 
-.PHONY : multipleSubRegions/MultipleSubRegions.s
+.PHONY : preconditioner/preconHandler.s
 
 # target to generate assembly for a file
-multipleSubRegions/MultipleSubRegions.cpp.s:
-	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/multipleSubRegions/MultipleSubRegions.cpp.s
-.PHONY : multipleSubRegions/MultipleSubRegions.cpp.s
+preconditioner/preconHandler.cpp.s:
+	cd /home/corinne/eniReservoirGITHUB/eniReservoir/install/build && $(MAKE) -f src/FVCode3D/CMakeFiles/fvcode3d.dir/build.make src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.s
+.PHONY : preconditioner/preconHandler.cpp.s
 
 preconditioner/preconditioner.o: preconditioner/preconditioner.cpp.o
 
@@ -1181,9 +1181,9 @@ help:
 	@echo "... mesh/TetGenWrapper.o"
 	@echo "... mesh/TetGenWrapper.i"
 	@echo "... mesh/TetGenWrapper.s"
-	@echo "... multipleSubRegions/MultipleSubRegions.o"
-	@echo "... multipleSubRegions/MultipleSubRegions.i"
-	@echo "... multipleSubRegions/MultipleSubRegions.s"
+	@echo "... preconditioner/preconHandler.o"
+	@echo "... preconditioner/preconHandler.i"
+	@echo "... preconditioner/preconHandler.s"
 	@echo "... preconditioner/preconditioner.o"
 	@echo "... preconditioner/preconditioner.i"
 	@echo "... preconditioner/preconditioner.s"

@@ -79,6 +79,8 @@ FVCode3D/assembler/SaddlePoint.hpp
 -
 FVCode3D/preconditioner/preconditioner.hpp
 -
+FVCode3D/preconditioner/preconHandler.hpp
+-
 FVCode3D/geometry/CoordinateSystem.hpp
 -
 FVCode3D/geometry/Operations.hpp
@@ -416,6 +418,12 @@ utility
 FVCode3D/core/TypeDefinition.hpp
 -
 
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
+FVCode3D/core/TypeDefinition.hpp
+-
+FVCode3D/preconditioner/preconditioner.hpp
+-
+
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
 FVCode3D/core/BasicType.hpp
 -
@@ -449,6 +457,8 @@ FVCode3D/quadrature/Quadrature.hpp
 -
 FVCode3D/assembler/Stiffness.hpp
 -
+FVCode3D/preconditioner/preconditioner.hpp
+-
 unsupported/Eigen/SparseExtra
 -
 Eigen/LU
@@ -457,6 +467,8 @@ vector
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/problem/Problem.hpp
+utility
+-
 FVCode3D/core/Data.hpp
 -
 FVCode3D/core/TypeDefinition.hpp
@@ -523,6 +535,8 @@ Eigen/SparseLU
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
+string
+-
 FVCode3D/core/TypeDefinition.hpp
 -
 FVCode3D/preconditioner/preconditioner.hpp

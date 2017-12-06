@@ -19,6 +19,8 @@ namespace FVCode3D
 
 Vector diagonal_preconditioner::solve(const Vector & r) const
 {
+	auto & M = *Mptr;
+	auto & T = *Tptr;
 	Vector z = Vector::Zero(M.rows()+T.rows());      // The preconditioned residual
 	for(UInt i = 0; i<M.rows(); i++)                 
 	{
@@ -46,6 +48,7 @@ void lumpIP_builder::build(DiagMat & M_lump) const
 
 Vector BlockTriangular_preconditioner::solve(const Vector & r) const
 {
+	auto & B = *Bptr;
 	// First step: solve Inexact Schur Complement linear system
     Eigen::ConjugateGradient<SpMat> cg;
     cg.setMaxIterations(MaxIt);
@@ -65,6 +68,7 @@ Vector BlockTriangular_preconditioner::solve(const Vector & r) const
 
 Vector ILU_preconditioner::solve(const Vector & r) const
 {
+	auto & B = *Bptr;
 	// First step: solve the 1st diagonal linear system
 	Vector y1 = Md_inv*r.segment(0,Md_inv.rows());
 	// Second step: solve the SC linear system
