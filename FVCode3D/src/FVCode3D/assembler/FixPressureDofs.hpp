@@ -7,6 +7,7 @@
 #define FIXPRESSUREDOFS_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
@@ -61,27 +62,25 @@ private:
 template <typename ProblemType>
 void FixPressureDofs<ProblemType>::apply(const Real pressure) throw()
 {
-	auto Algebry  = M_problem->getAlgebry();
-	auto & A    = std::get<0>(Algebry);
-	auto & b    = std::get<2>(Algebry);
-
-	if(A != nullptr)
+	if(M_problem->getSolverPolicy() == Data::SolverPolicy::Direct)
 	{
-    const UInt dofTotal = A->rows();
-    const UInt dofFractures = M_problem->getMesh().getFractureFacetsIdsVector().size();
-    const UInt dofPorousMatrix = dofTotal - dofFractures;
+		auto & A = M_problem->getMatrix();
+		auto & b = M_problem->getRHS();
+		const UInt dofTotal = A.rows();
+		const UInt dofFractures = M_problem->getMesh().getFractureFacetsIdsVector().size();
+		const UInt dofPorousMatrix = dofTotal - dofFractures;
 
-    // Clear the fractures rows
-    A->bottomRows( dofFractures ) *= 0.;
+		// Clear the fractures rows
+		A.bottomRows( dofFractures ) *= 0.;
 
-    const Real weight = A->diagonal().sum() / dofPorousMatrix;
+		const Real weight = A.diagonal().sum() / dofPorousMatrix;
 
-    b->tail( dofFractures ).setConstant( weight * pressure );
+		b.tail( dofFractures ).setConstant( weight * pressure );
 
-    for(UInt index = dofPorousMatrix; index < dofTotal; ++index )
-        A->coeffRef( index, index ) = weight;
+		for(UInt index = dofPorousMatrix; index < dofTotal; ++index )
+			A.coeffRef( index, index ) = weight;
 
-    A->prune(0.);
+		A.prune(0.);
 	}
 	else
 	{

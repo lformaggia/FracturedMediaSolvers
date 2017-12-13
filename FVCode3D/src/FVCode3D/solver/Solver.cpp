@@ -54,15 +54,12 @@ void imlBiCGSTAB::solve()
 {
 	// Define the initial guess to zero
 	M_x = Vector::Zero(M_A.getM().rows()+M_A.getB().rows());
-	// Define the preconditioner
-	preconPtr_Type M_precon( preconHandler::Instance().getProduct(precon) );
-	M_precon->set(M_A);
 	// Set the restart
 //	setRestart(true);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	// Solve the system
-	int conv = BiCGSTAB(M_A, M_x, M_b, *M_precon, restart, iter, M_res);
+	int conv = BiCGSTAB(M_A, M_x, M_b, *preconPtr, restart, iter, M_res);
 	// Conversion needed
 	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;
@@ -75,16 +72,13 @@ void imlGMRES::solve()
 {
 	// Define the initial guess to zero
 	M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
-	// Define the preconditioner
-	preconPtr_Type M_precon( preconHandler::Instance().getProduct(precon) );
-	M_precon->set(M_A);
 	// Set the restart level
 //	set_m(60);
 	// Conversion needed
 	int iter = (int) M_maxIter;
 	int m_int = (int) m;
 	// Solve the system
-	int conv = GMRES(M_A, M_x, M_b, *M_precon, m_int, iter, M_res);
+	int conv = GMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
 	// Conversion needed
 	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;

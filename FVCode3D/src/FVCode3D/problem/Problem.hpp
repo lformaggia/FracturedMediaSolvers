@@ -81,6 +81,18 @@ typedef std::tuple<SpMat*,SaddlePointMat*,Vector*> AlgebricTuple;
      * @return where the source/sink term is applied
      */
     Data::SourceSinkOn getSourceSinkOn() const { return M_ssOn; }
+    
+    //! Get where the numerical method type
+    /*!
+     * @return the numerical method type
+     */
+    Data::NumericalMethodType getNumet() const { return M_numet; }
+    
+    //! Get where the solver policy
+    /*!
+     * @return the solver policy
+     */
+    Data::SolverPolicy getSolverPolicy() const { return M_solvPolicy; }
 
     //! Get the class Quadrature
     /*!
@@ -106,29 +118,81 @@ typedef std::tuple<SpMat*,SaddlePointMat*,Vector*> AlgebricTuple;
      */
     Solver * getSolverPtr() { return M_solver.get(); }
     
-    //! Get the algebraic counterpart of the problem
+    //! Get the system matrix (Direct solver case)
     /*!
-     * @return a tuple of three different pointers.
-     * The first pointer is to an SpMat that, if the solver is of direct type,
-     * is the system matrix, otherwise it is a null ptr.
-     * The second pointer is to an SaddlePointMat that, if the solver is of iterative type, 
-     * is the system block matrix, otherwise it is a null ptr.
-     * The third ptr is to a Vector that is the rhs of the system.
+     * @return the momolithic system matrix 
      */
-    AlgebricTuple getAlgebry() 
-    { 
-		SpMat          *   M_A(nullptr);
-		SaddlePointMat *   M_SP(nullptr);
-		Vector         *   M_b(& this->M_solver->getb());
-    
+    SpMat & getMatrix() throw()
+    {
 		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
-			M_A = & dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
-        
-		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
-			M_SP = & dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();   
-			
-		return std::make_tuple(M_A,M_SP,M_b);
+			return dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as an SpMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
 	}
+	
+	//! Get the system matrix (Direct solver case)
+    /*!
+     * @return the momolithic system matrix 
+     */
+    const SpMat & getMatrix() const throw()
+    {
+		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
+			return dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as an SpMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+	
+	//! Get the system matrix (Iterative solver case)
+    /*!
+     * @return the system matrix in block form.
+     */
+    SaddlePointMat & getSaddlePointMatrix() throw()
+    {
+		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
+			return dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as a SaddlePointMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+
+	//! Get the system matrix (Iterative solver case)
+    /*!
+     * @return the system matrix in block form.
+     */
+    const SaddlePointMat & getSaddlePointMatrix() const throw()
+    {
+		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
+			return dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as a SaddlePointMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+
+    //! Get the rhs
+    /*!
+     * @return a reference to the rhs
+     */
+    Vector & getRHS() { return M_solver->getb(); }
+    
+    //! Get the rhs
+    /*!
+     * @return a reference to the rhs
+     */
+    const Vector & getRHS() const { return M_solver->getb(); }
     //@}
 
     //! Assemble method
@@ -167,6 +231,8 @@ protected:
     const Data::SourceSinkOn M_ssOn;
     //! Indicates the numerical method
     const Data::NumericalMethodType M_numet;
+    //! Indicates the solver policy
+    const Data::SolverPolicy M_solvPolicy;
     //! Pointer to the quadrature class
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
@@ -182,6 +248,7 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_func(func),
     M_ssOn(data->getSourceSinkOn()),
     M_numet(data->getNumericalMethodType()),
+    M_solvPolicy(data->getSolverPolicy()),
     M_quadrature(nullptr),
     M_solver( SolverHandler::Instance().getProduct(solver) )
 	{} // Problem

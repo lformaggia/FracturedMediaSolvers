@@ -33,6 +33,8 @@ iostream
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/FixPressureDofs.hpp
 FVCode3D/core/TypeDefinition.hpp
 -
+FVCode3D/core/Data.hpp
+-
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/Mass.hpp
 vector
@@ -256,6 +258,12 @@ utility
 FVCode3D/core/TypeDefinition.hpp
 -
 
+/home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
+FVCode3D/core/TypeDefinition.hpp
+-
+FVCode3D/preconditioner/preconditioner.hpp
+-
+
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
 FVCode3D/core/BasicType.hpp
 -
@@ -364,6 +372,8 @@ string
 FVCode3D/core/TypeDefinition.hpp
 -
 FVCode3D/preconditioner/preconditioner.hpp
+-
+FVCode3D/preconditioner/preconHandler.hpp
 -
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp

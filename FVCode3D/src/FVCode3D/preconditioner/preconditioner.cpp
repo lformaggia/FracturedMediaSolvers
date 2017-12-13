@@ -46,6 +46,9 @@ void lumpIP_builder::build(DiagMat & M_lump) const
 			M_lump.diagonal()[it.row()] += it.value();
 }
 
+UInt constexpr BlockTriangular_preconditioner::MaxIt_Default;
+Real constexpr BlockTriangular_preconditioner::tol_Default;
+
 Vector BlockTriangular_preconditioner::solve(const Vector & r) const
 {
 	auto & B = *Bptr;
@@ -65,6 +68,9 @@ Vector BlockTriangular_preconditioner::solve(const Vector & r) const
     z.segment(Md_inv.rows(),B.rows()) = -y2;
     return z;
 }
+
+UInt constexpr ILU_preconditioner::MaxIt_default;
+Real constexpr ILU_preconditioner::tol_default;
 
 Vector ILU_preconditioner::solve(const Vector & r) const
 {

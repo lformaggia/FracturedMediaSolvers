@@ -10,6 +10,7 @@
 
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
+#include <FVCode3D/preconditioner/preconHandler.hpp>
 
 namespace FVCode3D
 {
@@ -387,7 +388,8 @@ public:
      */
     void set_precon(const std::string prec)
     {
-		precon = prec;
+		preconPtr = preconHandler::Instance().getProduct(prec);
+		preconPtr->set(M_A);  
     }
     
     //! Set maximum number of iterations
@@ -441,6 +443,24 @@ public:
      */
     Real getResidual() const { return M_res; }
     
+    //! Get the preconditioner
+    /*!
+     * @return a constant reference to the preconditioner
+     */
+    const preconditioner & getprec() const { return *preconPtr; }
+
+    //! Get the preconditioner
+    /*!
+     * @return a reference to the preconditioner
+     */
+    preconditioner & getprec() { return *preconPtr; }
+
+    //! Get the preconditioner pointer
+    /*!
+     * @return a pointer to the preconditioner
+     */
+    preconditioner * getprecPtr() { return preconPtr.get(); }
+    
     //! Get the number of non zero
     /*!
      * @return the number of non zero
@@ -491,7 +511,7 @@ protected:
     //! Computation index
     UInt                 CIndex;
     //! The preconditioner type
-    std::string          precon;
+    preconPtr_Type       preconPtr;
 
     static constexpr Real S_referenceTol = 1e-6;
     static constexpr UInt S_referenceMaxIter = 100;

@@ -213,13 +213,6 @@ int main(int argc, char * argv[])
 	
     std::cout << " done." << std::endl << std::endl;
 
-    if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
-    {
-        dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setMaxIter(dataPtr->getIterativeSolverMaxIter());
-        dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setTolerance(dataPtr->getIterativeSolverTolerance());
-		dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->set_precon(dataPtr->getpreconType());
-    }
-
     Real Tsolving1 = 0;
 
     if(dataPtr->getProblemType() == Data::ProblemType::steady)
@@ -240,6 +233,13 @@ int main(int argc, char * argv[])
 			std::cout<<"Fix pressure not supported with iterative schemes" <<std::endl;
 			return 0;
        }
+       
+	   if(dynamic_cast<IterativeSolver*>(darcy->getSolverPtr()))
+       {
+			dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setMaxIter(dataPtr->getIterativeSolverMaxIter());
+			dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->setTolerance(dataPtr->getIterativeSolverTolerance());
+			dynamic_cast<IterativeSolver*>(darcy->getSolverPtr())->set_precon(dataPtr->getpreconType());
+		}
 
         std::cout << "Solve the problem..." << std::endl<<std::endl;
         darcy->solve();

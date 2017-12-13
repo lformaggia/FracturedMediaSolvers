@@ -15,7 +15,7 @@ output_file = sol
 
 ## numerical method
 [numet]
-method      = MFD    # FV or MFD
+method      = MFD   # FV or MFD
 
 ## problem parameter
 [problem]
@@ -48,3 +48,4 @@ type    = imlGMRES  # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGST
     maxIt       = 20000
     tolerance   = 1e-6
 	preconditioner = ILU  # Identity, Diagonal, BlockTriangular, ILU
+

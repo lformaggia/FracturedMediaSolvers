@@ -300,8 +300,10 @@ public:
     /*!
      * @param Mat The saddle point mat
      */
-    void set(const SaddlePointMat & Mat){}
-    
+    void set(const SaddlePointMat & Mat)
+    {
+		std::cout<<"WARNING: the system is highly ill conditioned. It is highly reccomended to precondition the system."<<std::endl<<std::endl;
+	}
 	//! @name Solve Methods
     //@{
     //! Solve the linear system Pz=r
@@ -475,12 +477,12 @@ public:
      * @param SP The saddle point matrix
      */
 	ILU_preconditioner( const SaddlePointMat & SP ): 
-		Bptr(& SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default)
+		Bptr(& SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_default), tol(tol_default)
 			{ Md_inv.setZero(); }
 	//! No Copy-Constructor
     ILU_preconditioner(const ILU_preconditioner &) = delete;
 	//! Empty-Constructor
-    ILU_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_Default), tol(tol_Default) {}
+    ILU_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_default), tol(tol_default) {}
 	//! Destructor
     ~ILU_preconditioner() = default;
 	//@}
@@ -548,9 +550,9 @@ private:
     //! The tolerance for CG
     Real                       tol;
     //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_Default = 200;
+    static constexpr UInt      MaxIt_default = 200;
     //! The tolerance for CG (default value)
-    static constexpr Real      tol_Default = 1e-2;
+    static constexpr Real      tol_default = 1e-2;
                       
 };
 

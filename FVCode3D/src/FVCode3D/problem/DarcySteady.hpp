@@ -81,40 +81,40 @@ assembleMatrix()
 	
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
     
-	auto Algebry  = this->getAlgebry();
+/*	auto Algebry  = this->getAlgebry();
 	auto & M_A    = std::get<0>(Algebry);
 	auto & M_SP   = std::get<1>(Algebry);
 	auto & M_b    = std::get<2>(Algebry);
-
-    if(this->M_numet == Data::NumericalMethodType::FV)
+*/
+    if( this->M_numet == Data::NumericalMethodType::FV && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
 		StiffMatrixFV S(this->M_mesh, numCell+numFracture, this->M_bc);
         S.assemble();
         S.closeMatrix();
         S.showMe();
         
-        *M_A = S.getMatrix();    
-		*M_b = S.getBCVector();  
+        this->getMatrix() = S.getMatrix();    
+		this->getRHS()    = S.getBCVector();  
     }
-   else if( this->M_numet == Data::NumericalMethodType::MFD && M_A != nullptr )
+   else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
         StiffMatrixMFD S(this->M_mesh, numFacetsTot+numCell+numFracture, this->M_bc);
 		S.assemble();
 		S.CompressMatrix();
 		S.showMe();		
 		
-		*M_A = S.getMatrix(); 
-		*M_b = S.getBCVector();  
+        this->getMatrix() = S.getMatrix();    
+		this->getRHS()    = S.getBCVector();
     }
-    else if( this->M_numet == Data::NumericalMethodType::MFD && M_SP != nullptr )
+    else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Iterative )
     {
 		SaddlePoint_StiffMatrix S(this->M_mesh, this->M_bc, numFacetsTot, numCell+numFracture, numFacetsTot);
 		S.assemble();
 		S.Compress();
 		S.showMe();		
 		
-		 M_SP->Set(S.getM(),S.getB(),S.getT()); 
-		 *M_b = S.getBCVector(); 
+		this->getSaddlePointMatrix().Set(S.getM(),S.getB(),S.getT()); 
+		this->getRHS() = S.getBCVector();
 	}
 } // DarcySteady::assembleMatrix
 
@@ -123,9 +123,7 @@ void DarcySteady<QRMatrix, QRFracture>::
 assembleVector()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
-    
-    auto Algebry = this->getAlgebry();
-    auto & M_b     = std::get<2>(Algebry);
+	auto & M_b = this->getRHS();
 		
 		UInt numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
 		Vector f( Vector::Constant( numCellsTot, 0.) );   
@@ -148,18 +146,18 @@ assembleVector()
         f += this->M_quadrature->cellIntegrateFractures(this->M_func);
     } // if
 
-    if ( M_b->size() == 0 )
+    if ( M_b.size() == 0 )
     {
-        *M_b = f;
+         M_b = f;
     } // if
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
-		*M_b += f;
+		 M_b += f;
 		}
     if(this->M_numet == Data::NumericalMethodType::MFD)
     {
 		UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
-        M_b->segment(numFacetsTot,numCellsTot) -= f;
+        M_b.segment(numFacetsTot,numCellsTot) -= f;
     } 
 } // DarcySteady::assembleVector
 
