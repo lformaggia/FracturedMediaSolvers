@@ -85,6 +85,8 @@ FVCode3D/core/BasicType.hpp
 -
 FVCode3D/mesh/RigidMesh.hpp
 -
+FVCode3D/preconditioner/preconditioner.hpp
+-
 FVCode3D/boundaryCondition/BC.hpp
 -
 
@@ -568,8 +570,6 @@ unsupported/Eigen/SparseExtra
 
 /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
 FVCode3D/core/BasicType.hpp
--
-FVCode3D/assembler/SaddlePoint.hpp
 -
 Eigen/LU
 -

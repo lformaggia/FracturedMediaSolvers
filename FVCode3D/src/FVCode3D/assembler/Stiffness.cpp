@@ -251,7 +251,7 @@ void StiffMatrixFV::assemblePorousMatrixBC()
             // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
             const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid()) * facet_it.getSize();
 
-            M_b->operator()(M_offsetRow + neighbor1id) -= Q1o;
+            M_b[M_offsetRow + neighbor1id] -= Q1o;     
         } // if
         else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
         {
@@ -264,7 +264,7 @@ void StiffMatrixFV::assemblePorousMatrixBC()
             const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 
             M_matrixElements.emplace_back(M_offsetRow + neighbor1id, M_offsetCol + neighbor1id, Q12); // Triplet
-            M_b->operator()(M_offsetRow + neighbor1id) += Q1o;
+            M_b[M_offsetRow + neighbor1id] += Q1o;
         } // else if
     } // for
 } // StiffMatrix::assemblePorousMatrixBC
@@ -343,7 +343,7 @@ void StiffMatrixFV::assembleFractureBC()
                     // Nella cond di bordo c'è già il contributo della permeabilità e mobilità (ma non la densità!)
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
 
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) -= Q1o;
+                    M_b[M_offsetRow + neighborIdAsCell] -= Q1o;
                 } // if
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {
@@ -356,7 +356,7 @@ void StiffMatrixFV::assembleFractureBC()
                     const Real Q1o = Q12 * M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid());
 
                     M_matrixElements.emplace_back(M_offsetRow + neighborIdAsCell, M_offsetCol + neighborIdAsCell, Q12); // Triplet
-                    M_b->operator()(M_offsetRow + neighborIdAsCell) += Q1o;
+                    M_b[M_offsetRow + neighborIdAsCell] += Q1o;
                 } // else if
             } // if
         }// for
@@ -390,23 +390,23 @@ void StiffMatrixMFD::assemble()
 	// Define the global bulk builder
 	global_BulkBuilder gBulkBuilder(M_mesh, gIP, gDIV);
 	// Reserve space for the bulk matrices
-	gBulkBuilder.reserve_space(*M_Matrix);
+	gBulkBuilder.reserve_space(M_Matrix);
 	// Build the bulk matrices
-	gBulkBuilder.build(*M_Matrix);
+	gBulkBuilder.build(M_Matrix);
 	
 	// Define the fracture builder
 	FractureBuilder FBuilder(M_mesh, coupling, fluxOP);
 	// Reserve space for the fracture matrices
-	FBuilder.reserve_space(*M_Matrix);
+	FBuilder.reserve_space(M_Matrix);
 	// Build the fracture matrices
-	FBuilder.build(*M_Matrix);
+	FBuilder.build(M_Matrix);
 
 	// Define the BCs imposition object
 	BCimposition BCimp(M_mesh, M_bc);
 	// Impose BCs on bulk
-	BCimp.ImposeBConBulk(*M_Matrix, *M_b);
+	BCimp.ImposeBConBulk(M_Matrix, M_b);
 	// Impose BCs in fractures
-	BCimp.ImposeBConFracture(*M_Matrix, *M_b, fluxOP);	
+	BCimp.ImposeBConFracture(M_Matrix, M_b, fluxOP);	
 }
 
 } // namespace FVCode3D

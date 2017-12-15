@@ -198,6 +198,7 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/assembler/SaddlePoint.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
+ /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
@@ -1127,26 +1128,14 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/boundaryCondition/BC.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 src/FVCode3D/CMakeFiles/fvcode3d.dir/core/Data.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/BasicType.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Chrono.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Data.cpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Data.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/TypeDefinition.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/Fracture3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/FractureNetwork3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/StringManipolator.hpp
@@ -3885,25 +3874,13 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/mesh/TetGenWrapper.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/BasicType.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Chrono.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/TypeDefinition.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/Fracture3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/FractureNetwork3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.cpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/utility/StringManipolator.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/Core
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/IterativeLinearSolvers
@@ -4078,7 +4055,6 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconHandler.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/unsupported/Eigen/src/SparseExtra/RandomSetter.h
 src/FVCode3D/CMakeFiles/fvcode3d.dir/preconditioner/preconditioner.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/global_operator.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/local_operator.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
@@ -5131,24 +5107,12 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/quadrature/QuadratureRules.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/eigen/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/BasicType.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Chrono.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/TypeDefinition.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/Fracture3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/FractureNetwork3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/LinearAlgebraTraits.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.cpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
@@ -5429,24 +5393,12 @@ src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/Solver.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/install/opt/suitesparse/include/umfpack_wsolve.h
 src/FVCode3D/CMakeFiles/fvcode3d.dir/solver/SolverHandler.cpp.o
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/GetPot
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/assembler/SaddlePoint.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/boundaryCondition/BC.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/BasicType.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/Chrono.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/core/TypeDefinition.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/Fracture3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/fracture/FractureNetwork3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/CoordinateSystem.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Operations.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/geometry/Point3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/Mesh3D.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/RigidMesh.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/mesh/TetGenWrapper.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconHandler.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/preconditioner/preconditioner.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Permeability.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/PermeabilityFactory.hpp
- /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/property/Properties.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/Solver.hpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.cpp
  /home/corinne/eniReservoirGITHUB/eniReservoir/FVCode3D/src/FVCode3D/solver/SolverHandler.hpp

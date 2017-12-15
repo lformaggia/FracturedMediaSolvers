@@ -260,16 +260,20 @@ template <class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< QRMatrix, QRFracture, Implicit >::
 initialize() throw()
 {
+	auto & A = this->getMatrix();
+	auto & b = this->getRHS();
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new MassMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
-			+ this->M_mesh.getFractureFacetsIdsVector().size()) );
+    M_M.reset( new MassMatrixFV(this->M_mesh, A) );
+	M_M->setDofs(this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size());
     M_M->assemble();
     M_M->closeMatrix();
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
-    M_S.reset( new StiffMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
-			+ this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc) );
+	SpMat A2(this->M_mesh.getCellsVector().size()+this->M_mesh.getFractureFacetsIdsVector().size(),this->M_mesh.getCellsVector().size() 
+			+this->M_mesh.getFractureFacetsIdsVector().size());
+    M_S.reset( new StiffMatrixFV(this->M_mesh, A2, b, this->M_bc) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
@@ -283,8 +287,7 @@ initialize() throw()
 		throw std::runtime_error(error.str());
     }
 
-    SpMat & M_A = dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
-    M_A = M_S->getMatrix() + M_M->getMatrix();
+    A += A2;
 
     M_f = Vector::Constant(M_S->getSize(), 0.);
     if ( this->M_mesh.getCellsVector().size() != 0
@@ -350,16 +353,20 @@ template <class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< QRMatrix, QRFracture, BDF2 >::
 initialize() throw()
 {
+	auto & A = this->getMatrix();
+	auto & b = this->getRHS();
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new MassMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
-			+ this->M_mesh.getFractureFacetsIdsVector().size()) );
+    M_M.reset( new MassMatrixFV(this->M_mesh, A) );
+	M_M->setDofs(this->M_mesh.getCellsVector().size() 
+			+ this->M_mesh.getFractureFacetsIdsVector().size());
     M_M->assemble();
     M_M->closeMatrix();
     M_M->getMatrix() = M_M->getMatrix() / M_tStep;
 
-    M_S.reset( new StiffMatrixFV(this->M_mesh, this->M_mesh.getCellsVector().size() 
-			+ this->M_mesh.getFractureFacetsIdsVector().size(), this->M_bc) );
+	SpMat A2(this->M_mesh.getCellsVector().size()+this->M_mesh.getFractureFacetsIdsVector().size(),this->M_mesh.getCellsVector().size() 
+			+this->M_mesh.getFractureFacetsIdsVector().size());
+    M_S.reset( new StiffMatrixFV(this->M_mesh, A2, b, this->M_bc) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
@@ -373,8 +380,7 @@ initialize() throw()
 		throw std::runtime_error(error.str());
     }
 
-    SpMat & M_A = dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
-    M_A = M_S->getMatrix() + (3./2.) * M_M->getMatrix();
+    A += (3./2.) * A2;
 
     M_f = Vector::Constant(M_S->getSize(), 0.);
     if ( this->M_mesh.getCellsVector().size() != 0

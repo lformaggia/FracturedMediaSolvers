@@ -10,6 +10,7 @@
 #include <utility>
 #include <FVCode3D/core/BasicType.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
 
 namespace FVCode3D
@@ -26,12 +27,6 @@ class SaddlePoint_StiffMatrix
 {
 	
 public:
-	//! Typedef for std::pair<UInt,UInt>
-	/*!
-	* @typedef couple
-	* This type definition permits to treat std::pair<UInt,UInt> as a couple.
-	*/
-	typedef std::pair<UInt,UInt> couple;
 	
     //! @name Constructor & Destructor
     //@{
@@ -40,11 +35,8 @@ public:
         @param rigid_mesh A Rigid_Mesh used to build the matrix
         @param size The size of the stiffness matrix
     */
-    SaddlePoint_StiffMatrix(const Rigid_Mesh & pmesh, const BoundaryConditions & bc,
-		const UInt mdim, const UInt brow, const UInt bcol):
-        M_mesh(pmesh), M_bc(bc), Mdim(mdim), Bdim(brow,bcol), Tdim(brow), 
-        M(new SpMat(mdim,mdim)), B(new SpMat(brow,bcol)), T(new SpMat(brow,brow)),
-        M_b(new Vector(Vector::Zero(mdim+brow))) {}
+    SaddlePoint_StiffMatrix(const Rigid_Mesh & pmesh, const BoundaryConditions & bc, SaddlePointMat & Msp, Vector & b):
+        M_mesh(pmesh), M_bc(bc), M_SP(Msp), M_b(b){}
     //! No Copy-Constructor
     SaddlePoint_StiffMatrix(const SaddlePoint_StiffMatrix &) = delete;
     //! No Empty-Constructor
@@ -59,109 +51,105 @@ public:
     /*!
      * @return A const reference to the M block
      */
-    const SpMat & getM_readOnly() const
-        {return *M;}
+    const SpMat & getM() const
+        {return M_SP.getM();}
     
     //! Get M block 
     /*!
      * @return A reference to the M block
      */
     SpMat & getM() 
-        {return *M;}
+        {return M_SP.getM();}
         
     //! Get B block (read only)
     /*!
      * @return A const reference to the B block
      */
-    const SpMat & getB_readOnly() const
-        {return *B;}
+    const SpMat & getB() const
+        {return M_SP.getB();}
     
     //! Get B block 
     /*!
      * @return A reference to the B block
      */
     SpMat & getB() 
-        {return *B;}
+        {return M_SP.getB();}
         
     //! Get T block (read only)
     /*!
      * @return A const reference to the T block
      */
-    const SpMat & getT_readOnly() const
-        {return *T;}
+    const SpMat & getT() const
+        {return M_SP.getT();}
     
     //! Get T block 
     /*!
      * @return A reference to the T block
      */
     SpMat & getT() 
-        {return *T;}
+        {return M_SP.getT();}
         
     //! Get BC vector (read only)
     /*!
      * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
      */
-    const Vector & getBCVector_readOnly() const
-        {return *M_b;}
+    const Vector & getBC() const
+        {return M_b;}
         
     //! Get BC vector 
     /*!
      * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
      */
-    Vector & getBCVector() 
-        {return *M_b;}
+    Vector & getBC() 
+        {return M_b;}
 
     //! Get size 
     /*!
      * @return The size of the whole matrix
      */
     UInt getSize() const
-        {return Mdim+Bdim.first;}
+        {return M_SP.getM().rows()+M_SP.getB().rows();}
         
     //! Get M size 
     /*!
      * @return The size of the M matrix
      */
-    UInt getMSize() const
-        {return Mdim;}
+    UInt getMsize() const
+        {return M_SP.getM().rows();}
         
-    //! Get size 
+    //! Get B rows
     /*!
-     * @return The rows/column of B matrix
+     * @return The rows of B matrix
      */
-    couple getBSize() const
-        {return Bdim;}
+    UInt getBrows() const
+        {return M_SP.getB().rows();}
     
-    //! Get size 
+    //! Get B cols
+    /*!
+     * @return The column of B matrix
+     */
+    UInt getBcols() const
+        {return M_SP.getM().rows();}
+    
+    //! Get T size 
     /*!
      * @return The size of the T matrix
      */
-    UInt getTSize() const
-        {return Tdim;}
+    UInt getTsize() const
+        {return M_SP.getB().rows();}
     //@}
 
     //! @name Methods
     //@{
-    //! Show system dimension 
+	//! Set dofs 
     /*!
-     * Show system dimension
+     * @param size The dofs to be set
      */
-    void showMe() const
-        {
-			std::cout<<std::endl;
-			std::cout<<"The system dimension is : "<<Mdim+Bdim.first<<std::endl<<std::endl;
-		};
-		
-	//! Compress the block matrices
-    /*!
-     * Compress the block matrices M, B and T
-     */
-    void Compress() const
-        {
-			(*M).makeCompressed();
-			(*B).makeCompressed();
-			(*T).makeCompressed();
-		};
+    void setDofs(const UInt Mdim, const UInt Brow)
+    {
+		M_SP.resize(Mdim,Brow);
+		M_b.resize(Mdim+Brow);
+	}
         
     //! Assemble method
     /*!
@@ -175,20 +163,10 @@ private:
 	const Rigid_Mesh              & M_mesh;
 	//! Constant reference to the boundary conditions
 	const BoundaryConditions      &	M_bc;  
-	//! M block dimension
-	UInt                            Mdim;
-	//! B block row/column number
-	couple                          Bdim;
-	//! T block dimension    
-	UInt                            Tdim;
-    //! A unique ptr to the inner product matrix
-    std::unique_ptr<SpMat>          M;
-    //! A unique ptr to the Btilde block 
-    std::unique_ptr<SpMat>          B;
-    //! A unique pointer to Ttilde block
-    std::unique_ptr<SpMat>          T;
+    //! A reference to the saddle point matrix
+    SaddlePointMat                & M_SP;
 	//! A reference to the rhs of the system
-	std::unique_ptr<Vector>         M_b;
+	Vector                        & M_b;
 };
 
 } //FVCode3D

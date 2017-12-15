@@ -36,8 +36,8 @@ public:
         @param rigid_mesh A Rigid_Mesh used to build the matrix
         @param size The size of the stiffness matrix
     */
-    MatrixHandler(const Rigid_Mesh & rigid_mesh, UInt size):
-        M_mesh(rigid_mesh), M_size(size), M_Matrix(new SpMat(size, size)){}
+    MatrixHandler(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+        M_mesh(rigid_mesh), M_Matrix(Mat){}
 			
     //! No Copy-Constructor
     MatrixHandler(const MatrixHandler &) = delete;
@@ -53,36 +53,34 @@ public:
     /*!
      * @return A const reference to the matrix
      */
-    const SpMat & getMatrix_readOnly() const
-        {return *M_Matrix;}
+    const SpMat & getMatrix() const
+        {return M_Matrix;}
     
     //! Get Matrix 
     /*!
      * @return A reference to the matrix
      */
     SpMat & getMatrix() 
-        {return *M_Matrix;}
+        {return M_Matrix;}
 
     //! Get size (const)
     /*!
      * @return The size N (number of rows) of the matrix
      */
     virtual UInt getSize() const
-        {return M_size;}
+        {return M_Matrix.size();}
     //@}
 
     //! @name Methods
     //@{
-
-    //! Show system dimension 
+    //! Set dofs 
     /*!
-     * Show system dimension
+     * @param size The dofs to be set
      */
-    void showMe() const
-        {
-			std::cout<<std::endl;
-			std::cout<<"The system dimension is : "<<M_size<<std::endl<<std::endl;
-		};
+    virtual void setDofs(const UInt size)
+    {
+		M_Matrix.resize(size,size);
+	}
         
     //! Assemble method
     /*!
@@ -92,12 +90,10 @@ public:
     //@}
 
 protected:
-    //! A constant reference to a Rigid_Mesh
+    //! A constant reference to the Rigid_Mesh
     const Rigid_Mesh & M_mesh;
-    //! The number of dofs of the matrix
-    UInt M_size;
-    //! A unique pointer to the assembled matrix
-    std::unique_ptr<SpMat> M_Matrix;
+    //! A reference to the system matrix
+    SpMat & M_Matrix;
 };
 
 
@@ -119,8 +115,8 @@ class MatrixHandlerFV: public MatrixHandler
         @param rigid_mesh A Rigid_Mesh used to build the matrix
         @param M_numet It is the numerical method used for the discretization
     */
-    MatrixHandlerFV(const Rigid_Mesh & rigid_mesh, UInt size):
-        MatrixHandler(rigid_mesh, size), M_offsetRow(0), M_offsetCol(0){}
+    MatrixHandlerFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+        MatrixHandler(rigid_mesh, Mat), M_offsetRow(0), M_offsetCol(0){}
     //! No Copy-Constructor
     MatrixHandlerFV(const MatrixHandlerFV &) = delete;
     //! No Empty-Constructor
@@ -143,7 +139,7 @@ class MatrixHandlerFV: public MatrixHandler
      * @return The size N (number of rows) of the matrix
      */
     UInt getSize() const
-        {return M_size + M_offsetRow;}
+        {return M_Matrix.size() + M_offsetRow;}
     //@}
 
     //! @name Assemble Methods
@@ -163,7 +159,7 @@ class MatrixHandlerFV: public MatrixHandler
      */
     virtual void closeMatrix()
     {
-        M_Matrix->setFromTriplets( std::begin( M_matrixElements ), std::end( M_matrixElements ) );
+        M_Matrix.setFromTriplets( std::begin( M_matrixElements ), std::end( M_matrixElements ) );
         M_matrixElements.clear();
     }
 
@@ -186,7 +182,7 @@ class MatrixHandlerFV: public MatrixHandler
     {
         M_offsetRow = row;
         M_offsetCol = col;
-        M_Matrix.reset(new SpMat(M_size + M_offsetRow, M_size + M_offsetCol));
+        M_Matrix = SpMat(M_Matrix.size() + M_offsetRow, M_Matrix.size() + M_offsetCol);
     }
     //@}
 
@@ -218,8 +214,8 @@ class MatrixHandlerMFD: public MatrixHandler
         @param rigid_mesh A Rigid_Mesh used to build the matrix
         @param M_numet It is the numerical method used for the discretization
     */
-    MatrixHandlerMFD(const Rigid_Mesh & rigid_mesh, UInt size):
-		MatrixHandler(rigid_mesh, size){}
+    MatrixHandlerMFD(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+		MatrixHandler(rigid_mesh, Mat){}
     //! No Copy-Constructor
     MatrixHandlerMFD(const MatrixHandlerMFD &) = delete;
     //! No Empty-Constructor
@@ -235,16 +231,6 @@ class MatrixHandlerMFD: public MatrixHandler
      * Assemble the matrix
      */
     virtual void assemble()=0;
-    //@}
-
-    //! @name Methods
-    //@{
-    //! Compress method
-    /*!
-     * Compress the matrix
-     */
-    void CompressMatrix()
-		{ (*M_Matrix).makeCompressed(); };
     //@}
 };
 

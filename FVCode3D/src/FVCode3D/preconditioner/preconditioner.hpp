@@ -7,7 +7,6 @@
 #define __PRECONDITIONER_HPP__
 
 #include <FVCode3D/core/BasicType.hpp>
-#include <FVCode3D/assembler/SaddlePoint.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
 
@@ -154,7 +153,7 @@ public:
     ~SaddlePointMat() = default;
 	//@}
 		
-    //! @name Set Methods
+    //! @name Methods
     //@{
 	//! Set the saddle point matrix
     /*!
@@ -166,6 +165,17 @@ public:
 		B = Bmat;
 		T = Tmat;
 	}
+	
+	//! Compress the block matrices
+    /*!
+     * Compress the block matrices M, B and T
+     */
+    void makeCompressed() 
+        {
+			M.makeCompressed();
+			B.makeCompressed();
+			T.makeCompressed();
+		};
     //@}
     
     //! @name Get Methods
@@ -219,10 +229,10 @@ public:
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
-    void resize(const UInt Mdim,const UInt Brow,const UInt Bcol)
+    void resize(const UInt Mdim,const UInt Brow)
 	{
 		M.resize(Mdim,Mdim);
-		B.resize(Brow,Bcol);
+		B.resize(Brow,Mdim);
 		T.resize(Brow,Brow);
 	}
 	

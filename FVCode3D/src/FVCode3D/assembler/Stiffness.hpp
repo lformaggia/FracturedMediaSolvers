@@ -58,9 +58,8 @@ public:
      * @param rigid_mesh A Rigid_Mesh used to build the matrix
      * @param BC Boundary conditions given in the container BoundaryConditions
      */
-    StiffMatrixFV(const Rigid_Mesh & rigid_mesh, UInt size, const BoundaryConditions & BC):
-        MatrixHandlerFV(rigid_mesh, size), M_b(new Vector(Vector::Zero(size))),
-        M_bc(BC) {}
+    StiffMatrixFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat, Vector & b, const BoundaryConditions & BC):
+        MatrixHandlerFV(rigid_mesh, Mat), M_b(b), M_bc(BC) {}
     //! No Copy-Constructor
     StiffMatrixFV(const StiffMatrixFV &) = delete;
     //! No Empty-Constructor
@@ -75,15 +74,15 @@ public:
     /*!
      * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
      */
-    const Vector & getBCVector_readOnly() const
-        {return *M_b;}
+    const Vector & getBCVector() const
+        {return M_b;}
         
     //! Get BC vector 
     /*!
      * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
      */
     Vector & getBCVector() 
-        {return *M_b;}
+        {return M_b;}
     //@}
 
     //! @name Methods
@@ -94,17 +93,28 @@ public:
      */
     void assemble();
 
+    //! Set dofs 
+    /*!
+     * @param size The dofs to be set
+     */
+    void setDofs(const UInt size)
+    {
+		MatrixHandler::setDofs(size);
+		M_b.resize(size);
+	}
+
     //! Set offsets
     /*!
      * Set offsets and resize the matrix as number of dofs + offsets.
-     * Further, it resizes the RHS and initializes it to zero.
+     * Further, it resizes the RHS.
      * @param row row offset
      * @param col column offset
      */
     virtual void setOffsets(const UInt row, const UInt col)
     {
         this->setOffsets(row, col);
-        M_b.reset( new Vector( Vector::Constant( this->M_size + this->M_offsetRow, 0. ) ) );
+        M_b.resize(M_Matrix.size() + M_offsetRow);
+        M_b.setZero();
     }
 
     //@}
@@ -193,8 +203,8 @@ protected:
     //@}
 
 protected:
-    //! Unique pointer to the vector that contains the effects of BCs on the RHS
-    std::unique_ptr<Vector> M_b;
+    //! A reference to the vector that contains the effects of BCs on the RHS
+    Vector & M_b;
     //! The constant container of the BCs
     const BoundaryConditions & M_bc;
 };
@@ -221,8 +231,8 @@ public:
      * @param BCmap A constant reference to the boundary conditions
      * @param size  The dimension of the stiffness matrix
      */
-	StiffMatrixMFD( const Rigid_Mesh & rMesh, UInt size, const BoundaryConditions & BCmap):
-		MatrixHandlerMFD(rMesh, size), M_bc(BCmap), M_b(new Vector(Vector::Constant(size, 0.))){}
+	StiffMatrixMFD( const Rigid_Mesh & rMesh, SpMat & Mat, Vector & b, const BoundaryConditions & BCmap):
+		MatrixHandlerMFD(rMesh, Mat), M_b(b), M_bc(BCmap){}
 	//! No Copy-Constructor
     StiffMatrixMFD(const StiffMatrixMFD &) = delete;
 	//! No Empty-Constructor
@@ -237,19 +247,29 @@ public:
     /*!
      * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
      */
-    const Vector & getBCVector_readOnly() const
-        {return *M_b;}
+    const Vector & getBCVector() const
+        {return M_b;}
         
     //! Get BC vector 
     /*!
      * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
      */
-    Vector & getBCVector() const
-        {return *M_b;}
+    Vector & getBCVector()
+        {return M_b;}
     //@}
 
 	//! @name Assemble Methods
     //@{
+    //! Set dofs 
+    /*!
+     * @param size The dofs to be set
+     */
+    void setDofs(const UInt size)
+    {
+		MatrixHandler::setDofs(size);
+		M_b.resize(size);
+	}
+	
     //! Assemble method for the MFD stiffness matrix.
     /*!
      * Assemble the MFD stiffness matrix using the bulk and fracture builders.
@@ -261,7 +281,7 @@ private:
 	//! Constant reference to the boundary conditions
 	const BoundaryConditions      &	M_bc;
 	//! A reference to the rhs of the system
-	std::unique_ptr<Vector>         M_b;  
+	Vector                        & M_b;  
 };
 
 } // namespace FVCode3D

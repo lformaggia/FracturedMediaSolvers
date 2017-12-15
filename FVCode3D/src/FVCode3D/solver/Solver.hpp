@@ -376,9 +376,9 @@ public:
      * @param Brow the B block rows
      * @param Bcol the B block cols
      */
-    void setDofs(const UInt Mdim, const UInt Brow, const UInt Bcol)
+    void setDofs(const UInt Mdim, const UInt Brow)
     {
-		M_A.resize(Mdim, Brow, Bcol);
+		M_A.resize(Mdim, Brow);
 		Solver::setDofs(Mdim+Brow);
     }
     

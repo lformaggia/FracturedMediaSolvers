@@ -14,6 +14,11 @@ namespace FVCode3D
 	
 void SaddlePoint_StiffMatrix::assemble()
 {
+	//Define the block matrices
+	auto & M = getM();
+	auto & B = getB();
+	auto & T = getT();
+	
 	// Define the degrees of fredoom
 	const UInt numFracture  = M_mesh.getFractureFacetsIdsVector().size();
 	const UInt numFacetsTot = M_mesh.getFacetsVector().size() + numFracture;
@@ -38,23 +43,25 @@ void SaddlePoint_StiffMatrix::assemble()
 	// Define the global bulk builder
 	global_BulkBuilder gBulkBuilder(M_mesh, gIP, gDIV);
 	// Reserve space for the bulk matrices
-	gBulkBuilder.reserve_space(*M, *B);
+	gBulkBuilder.reserve_space(M, B);
+	std::cout<<"hey"<<std::endl;
 	// Build the bulk matrices
-	gBulkBuilder.build(*M, *B);
+	gBulkBuilder.build(M, B);
+	std::cout<<"hey"<<std::endl;
 	
 	// Define the fracture builder
 	FractureBuilder FBuilder(M_mesh, coupling, fluxOP);
 	// Reserve space for the fracture matrices
-	FBuilder.reserve_space(*M, *B, *T);
+	FBuilder.reserve_space(M, B, T);
 	// Build the fracture matrices
-	FBuilder.build(*M, *B, *T);
+	FBuilder.build(M, B, T);
 
 	// Define the BCs imposition object
 	BCimposition BCimp(M_mesh, M_bc);
 	// Impose BCs on bulk
-	BCimp.ImposeBConBulk(*M, *B, *M_b);
+	BCimp.ImposeBConBulk(M, B, M_b);
 	// Impose BCs in fractures
-	BCimp.ImposeBConFracture_onT(*T, *M_b, fluxOP);	
+	BCimp.ImposeBConFracture_onT(T, M_b, fluxOP);	
 }
 	
 		

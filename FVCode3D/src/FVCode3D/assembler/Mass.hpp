@@ -34,8 +34,8 @@ public:
     /*!
         @param rigid_mesh A Rigid_Mesh used to build the matrix
     */
-    MassMatrixFV(const Rigid_Mesh & rigid_mesh, UInt size):
-        MatrixHandlerFV(rigid_mesh, size) {}
+    MassMatrixFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+        MatrixHandlerFV(rigid_mesh, Mat) {}
     //! No Copy-Constructor
     MassMatrixFV(const MassMatrixFV&) = delete;
     //! No Empty-Constructor

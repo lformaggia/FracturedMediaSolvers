@@ -10,6 +10,7 @@
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
+#include <FVCode3D/assembler/SaddlePoint.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <unsupported/Eigen/SparseExtra>
 #include <Eigen/LU>
@@ -80,41 +81,37 @@ assembleMatrix()
 	const UInt numCell      = this->M_mesh.getCellsVector().size();
 	
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
+    auto & b = this->getRHS();
     
-/*	auto Algebry  = this->getAlgebry();
-	auto & M_A    = std::get<0>(Algebry);
-	auto & M_SP   = std::get<1>(Algebry);
-	auto & M_b    = std::get<2>(Algebry);
-*/
     if( this->M_numet == Data::NumericalMethodType::FV && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
-		StiffMatrixFV S(this->M_mesh, numCell+numFracture, this->M_bc);
+		auto & A = this->getMatrix();
+		StiffMatrixFV S(this->M_mesh, A, b, this->M_bc);
+		S.setDofs(numFacetsTot+numCell+numFracture);
         S.assemble();
         S.closeMatrix();
-        S.showMe();
-        
-        this->getMatrix() = S.getMatrix();    
-		this->getRHS()    = S.getBCVector();  
+		std::cout<<std::endl;
+		std::cout<<"The system dimension is : "<<S.getSize()<<std::endl<<std::endl;
     }
    else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
-        StiffMatrixMFD S(this->M_mesh, numFacetsTot+numCell+numFracture, this->M_bc);
+		auto & A = this->getMatrix();
+        StiffMatrixMFD S(this->M_mesh, A, b, this->M_bc);
+		S.setDofs(numFacetsTot+numCell+numFracture);
 		S.assemble();
-		S.CompressMatrix();
-		S.showMe();		
-		
-        this->getMatrix() = S.getMatrix();    
-		this->getRHS()    = S.getBCVector();
+		A.makeCompressed();
+		std::cout<<std::endl;
+		std::cout<<"The system dimension is : "<<S.getSize()<<std::endl<<std::endl;	
     }
     else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Iterative )
     {
-		SaddlePoint_StiffMatrix S(this->M_mesh, this->M_bc, numFacetsTot, numCell+numFracture, numFacetsTot);
+		auto & ASP = this->getSaddlePointMatrix();
+		SaddlePoint_StiffMatrix S(this->M_mesh, this->M_bc, ASP, b);
+		S.setDofs(numFacetsTot,numCell+numFracture);
 		S.assemble();
-		S.Compress();
-		S.showMe();		
-		
-		this->getSaddlePointMatrix().Set(S.getM(),S.getB(),S.getT()); 
-		this->getRHS() = S.getBCVector();
+		ASP.makeCompressed();
+		std::cout<<std::endl;
+		std::cout<<"The system dimension is : "<<S.getSize()<<std::endl<<std::endl;
 	}
 } // DarcySteady::assembleMatrix
 
