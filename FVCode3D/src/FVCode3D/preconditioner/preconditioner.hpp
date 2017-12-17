@@ -60,58 +60,6 @@ private:
 	const SpMat       & M;
 };
 
-
-//! Class for assembling an inexact Schur Complement builder.
-/*!
- * @class ISchurComplement_builder
- * This class implements the inexact Schur Complement with the inverse of the diagonal block M
- * to approximate the inverse of the inner product matrix.
-*/
-template<class T>
-class ISchurComplement_builder
-{
-public:
-    //! @name Constructor & Destructor
-    //@{
-    //! Construct an inexact Schur Complement.
-    /*!
-     * @param Mdi The diagonal inverse matrix
-     * @param Bmat The B block of the saddle point system
-     * @param Tmat The T block of the saddle point system
-     */
-	ISchurComplement_builder(const DiagMat & Mdi, const SpMat & Bmat, const SpMat & Tmat):
-		Md_inv(Mdi), B(Bmat), T(Tmat) {}
-	//! No Copy-Constructor
-    ISchurComplement_builder(const ISchurComplement_builder &) = delete;
-	//! No Empty-Constructor
-    ISchurComplement_builder() = delete;
-	//! Destructor
-    ~ISchurComplement_builder() = default;
-	//@}
-    
-    //! @name Assemble Methods
-    //@{
-	//! Assemble the inexact Schur Complement
-    /*!
-     * @param A reference to the inexact Schur Complement to be built
-     */
-    void build(SpMat & ISchurCompl) const
-	{
-		ISchurCompl  =  - B * Md_inv * B.transpose();
-		ISchurCompl += T; 
-	}
-    //@}    
-    
-private:
-	//! A const reference to the inner product matrix
-	const DiagMat              & Md_inv;
-	//! A const reference to the B block 
-	const SpMat                & B;
-	//! A const reference to the T block
-	const SpMat                & T;
-};
-
-
 //! Class for assembling a saddle point matrix.
 /*!
  * @class SaddlePointMat
@@ -437,10 +385,10 @@ public:
      */
     void set(const SaddlePointMat & SP)
 	{
-		Bptr = & SP.getB();
+		Bptr   = & SP.getB();
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
-		ISchurComplement_builder ISCBuilder(Md_inv, *Bptr, SP.getT());
-		ISCBuilder.build(ISC);
+		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
+		ISC   += SP.getT(); 
 	}
     //@}
 
@@ -533,10 +481,10 @@ public:
      */
     void set(const SaddlePointMat & SP)
 	{
-		Bptr = & SP.getB();		
+		Bptr   = & SP.getB();
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
-		ISchurComplement_builder ISCBuilder(Md_inv, *Bptr, SP.getT());
-		ISCBuilder.build(ISC);
+		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
+		ISC   += SP.getT(); 
 	}
     //@}
 
