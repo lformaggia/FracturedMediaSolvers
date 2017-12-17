@@ -73,7 +73,7 @@ public:
      */
 	global_Operator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize ):
 		M_mesh(rMesh), row_policy(Prow), col_policy(Pcol), Nrow(rowSize), Ncol(colSize),
-		M_matrix(new SpMat(Nrow, Ncol)){}
+		M_matrix(Nrow, Ncol){}
 	//! No Copy-Constructor
     global_Operator(const global_Operator &) = delete;
 	//! No Empty-Constructor
@@ -116,15 +116,15 @@ public:
     /*!
      * @return A const reference to the operator matrix
      */
-    const SpMat & getMatrix_readOnly() const
-		{ return *M_matrix; };
+    const SpMat & getMatrix() const
+		{ return M_matrix; };
 		
 	//! Get the operator matrix (writable version)
     /*!
      * @return A reference to the operator matrix
      */
     SpMat & getMatrix() 
-		{ return *M_matrix; };
+		{ return M_matrix; };
 	//@}
 
     //! @name Methods
@@ -134,7 +134,7 @@ public:
      * Convert the matrix in compressed format using the proper Eigen functionality
      */
     void CompressMatrix()
-		{ (*M_matrix).makeCompressed(); };
+		{ M_matrix.makeCompressed(); };
 		
 	//! Show basic matrix information
     /*!
@@ -178,7 +178,7 @@ protected:
 	//! The number of columns
 	UInt                       Ncol;
 	//! The sparse matrix representing the operator
-	std::unique_ptr<SpMat>     M_matrix;                	
+	SpMat                      M_matrix;                	
 };
 
 
@@ -305,7 +305,7 @@ public:
      * @return the tranpose of the coupling conditions matrix C
      */
     SpMat getTranspose() const
-		{ return (*M_matrix).transpose(); };
+		{ return M_matrix.transpose(); };
 	//@}
 	
 	//! @name Methods
@@ -394,7 +394,7 @@ public:
      * @return the tranpose of the coupling conditions matrix C
      */
     SpMat getTranspose() const
-		{ return (*M_matrix).transpose(); };
+		{ return M_matrix.transpose(); };
 		
 	//! Get xsi parameter
     /*!

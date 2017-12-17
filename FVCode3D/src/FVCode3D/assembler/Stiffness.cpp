@@ -18,7 +18,7 @@
 namespace FVCode3D
 {
 
-Point3D StiffMatrixFV::getBorderCenter(Fracture_Juncture fj) const
+Point3D StiffMatHandlerFV::getBorderCenter(Fracture_Juncture fj) const
 {
     return (this->M_mesh.getNodesVector()[fj.first] +
                 (this->M_mesh.getNodesVector()[fj.second] -
@@ -27,7 +27,7 @@ Point3D StiffMatrixFV::getBorderCenter(Fracture_Juncture fj) const
            );
 }
 
-Real StiffMatrixFV::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_Id) const
+Real StiffMatHandlerFV::findFracturesAlpha (const Fracture_Juncture fj, const UInt n_Id) const
 {
     const Point3D borderCenter = getBorderCenter(fj);
     const Point3D cellCenter = this->M_mesh.getFractureFacetsIdsVector()[n_Id].getCentroid();
@@ -53,7 +53,7 @@ Real StiffMatrixFV::findFracturesAlpha (const Fracture_Juncture fj, const UInt n
     return A * KnDotF / D;
 }
 
-Real StiffMatrixFV::findAlpha (const UInt & cellId, const Facet_ID * facet) const
+Real StiffMatHandlerFV::findAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
     const Point3D facetCenter = facet->getCentroid();
     const Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
@@ -74,7 +74,7 @@ Real StiffMatrixFV::findAlpha (const UInt & cellId, const Facet_ID * facet) cons
     return facet->getSize() * KnDotF / D;
 }
 
-Real StiffMatrixFV::findAlpha (const UInt & facetId, const Edge_ID * edge) const
+Real StiffMatHandlerFV::findAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
     const Point3D edgeCenter = edge->getCentroid();
     const Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
@@ -104,7 +104,7 @@ Real StiffMatrixFV::findAlpha (const UInt & facetId, const Edge_ID * edge) const
     return A * KnDotF / D;
 }
 
-Real StiffMatrixFV::findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const
+Real StiffMatHandlerFV::findDirichletAlpha (const UInt & cellId, const Facet_ID * facet) const
 {
     const Point3D facetCenter = facet->getCentroid();
     const Point3D cellCenter = this->M_mesh.getCellsVector()[cellId].getCentroid();
@@ -125,7 +125,7 @@ Real StiffMatrixFV::findDirichletAlpha (const UInt & cellId, const Facet_ID * fa
     return facet->getSize() * KnDotF / D;
 }
 
-Real StiffMatrixFV::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const
+Real StiffMatHandlerFV::findDirichletAlpha (const UInt & facetId, const Edge_ID * edge) const
 {
     const Point3D borderCenter = edge->getCentroid();
     const Point3D facetCenter = this->M_mesh.getFacetsVector()[facetId].getCentroid();
@@ -155,7 +155,7 @@ Real StiffMatrixFV::findDirichletAlpha (const UInt & facetId, const Edge_ID * ed
     return A * KnDotF / D;
 }
 
-void StiffMatrixFV::assemble()
+void StiffMatHandlerFV::assemble()
 {
     // TODO reserve the vector!
 
@@ -180,7 +180,7 @@ void StiffMatrixFV::assemble()
     } // if
 } // assemble
 
-void StiffMatrixFV::assemblePorousMatrix()
+void StiffMatHandlerFV::assemblePorousMatrix()
 {
     for (auto& facet_it : this->M_mesh.getInternalFacetsIdsVector())
     {
@@ -239,7 +239,7 @@ void StiffMatrixFV::assemblePorousMatrix()
     } // for
 } // StiffMatrix::assemblePorousMatrix
 
-void StiffMatrixFV::assemblePorousMatrixBC()
+void StiffMatHandlerFV::assemblePorousMatrixBC()
 {
     for (auto& facet_it : this->M_mesh.getBorderFacetsIdsVector())
     {
@@ -269,7 +269,7 @@ void StiffMatrixFV::assemblePorousMatrixBC()
     } // for
 } // StiffMatrix::assemblePorousMatrixBC
 
-void StiffMatrixFV::assembleFracture()
+void StiffMatHandlerFV::assembleFracture()
 {
     for(auto& facet_it : this->M_mesh.getFractureFacetsIdsVector())
     {
@@ -301,7 +301,7 @@ void StiffMatrixFV::assembleFracture()
     } // for
 } // StiffMatrix::assembleFracture
 
-void StiffMatrixFV::assembleFractureBC()
+void StiffMatHandlerFV::assembleFractureBC()
 {
     for (auto& edge_it : this->M_mesh.getBorderTipEdgesIdsVector())
     {
@@ -364,7 +364,7 @@ void StiffMatrixFV::assembleFractureBC()
 } // StiffMatrix::assembleFractureBC
 
 
-void StiffMatrixMFD::assemble()
+void StiffMatHandlerMFD::assemble()
 {
 	// Define the degrees of fredoom
 	const UInt numFracture  = M_mesh.getFractureFacetsIdsVector().size();
@@ -406,7 +406,10 @@ void StiffMatrixMFD::assemble()
 	// Impose BCs on bulk
 	BCimp.ImposeBConBulk(M_Matrix, M_b);
 	// Impose BCs in fractures
-	BCimp.ImposeBConFracture(M_Matrix, M_b, fluxOP);	
+	BCimp.ImposeBConFracture(M_Matrix, M_b, fluxOP);
+	
+	//Comrpess the matrix
+	M_Matrix.makeCompressed();	
 }
 
 } // namespace FVCode3D

@@ -73,6 +73,16 @@ public:
 
     //! @name Methods
     //@{
+     //! Show method
+    /*!
+     * Show system dimension
+     */
+    void show()
+    {
+		std::cout<<std::endl;
+		std::cout<<"The system dimension is : "<<getSize()<<std::endl<<std::endl;
+	}   
+    
     //! Set dofs 
     /*!
      * @param size The dofs to be set

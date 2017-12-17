@@ -86,32 +86,27 @@ assembleMatrix()
     if( this->M_numet == Data::NumericalMethodType::FV && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
 		auto & A = this->getMatrix();
-		StiffMatrixFV S(this->M_mesh, A, b, this->M_bc);
+		StiffMatHandlerFV S(this->M_mesh, A, b, this->M_bc);
 		S.setDofs(numFacetsTot+numCell+numFracture);
         S.assemble();
         S.closeMatrix();
-		std::cout<<std::endl;
-		std::cout<<"The system dimension is : "<<S.getSize()<<std::endl<<std::endl;
+        S.show();
     }
    else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
 		auto & A = this->getMatrix();
-        StiffMatrixMFD S(this->M_mesh, A, b, this->M_bc);
+        StiffMatHandlerMFD S(this->M_mesh, A, b, this->M_bc);
 		S.setDofs(numFacetsTot+numCell+numFracture);
 		S.assemble();
-		A.makeCompressed();
-		std::cout<<std::endl;
-		std::cout<<"The system dimension is : "<<S.getSize()<<std::endl<<std::endl;	
+        S.show();
     }
     else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Iterative )
     {
 		auto & ASP = this->getSaddlePointMatrix();
-		SaddlePoint_StiffMatrix S(this->M_mesh, this->M_bc, ASP, b);
+		SaddlePoint_StiffMatHandler S(this->M_mesh, ASP, b, this->M_bc);
 		S.setDofs(numFacetsTot,numCell+numFracture);
 		S.assemble();
-		ASP.makeCompressed();
-		std::cout<<std::endl;
-		std::cout<<"The system dimension is : "<<S.getSize()<<std::endl<<std::endl;
+		S.show();
 	}
 } // DarcySteady::assembleMatrix
 

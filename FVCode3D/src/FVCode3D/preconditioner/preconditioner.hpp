@@ -67,6 +67,7 @@ private:
  * This class implements the inexact Schur Complement with the inverse of the diagonal block M
  * to approximate the inverse of the inner product matrix.
 */
+template<class T>
 class ISchurComplement_builder
 {
 public:
@@ -95,10 +96,10 @@ public:
      * @param A reference to the inexact Schur Complement to be built
      */
     void build(SpMat & ISchurCompl) const
-		{
-			ISchurCompl =  - B * Md_inv * B.transpose();
-			ISchurCompl += T; 
-		}
+	{
+		ISchurCompl  =  - B * Md_inv * B.transpose();
+		ISchurCompl += T; 
+	}
     //@}    
     
 private:

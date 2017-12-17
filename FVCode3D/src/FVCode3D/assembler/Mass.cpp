@@ -9,7 +9,7 @@
 namespace FVCode3D
 {
 
-void MassMatrixFV::assemble()
+void MassMatHandlerFV::assemble()
 {
     M_matrixElements.reserve(this->M_mesh.getCellsVector().size() + 3 * this->M_mesh.getFractureFacetsIdsVector().size());
 

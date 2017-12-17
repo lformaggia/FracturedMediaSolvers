@@ -12,7 +12,7 @@
 namespace FVCode3D
 {
 	
-void SaddlePoint_StiffMatrix::assemble()
+void SaddlePoint_StiffMatHandler::assemble()
 {
 	//Define the block matrices
 	auto & M = getM();
@@ -44,10 +44,8 @@ void SaddlePoint_StiffMatrix::assemble()
 	global_BulkBuilder gBulkBuilder(M_mesh, gIP, gDIV);
 	// Reserve space for the bulk matrices
 	gBulkBuilder.reserve_space(M, B);
-	std::cout<<"hey"<<std::endl;
 	// Build the bulk matrices
 	gBulkBuilder.build(M, B);
-	std::cout<<"hey"<<std::endl;
 	
 	// Define the fracture builder
 	FractureBuilder FBuilder(M_mesh, coupling, fluxOP);
@@ -61,7 +59,10 @@ void SaddlePoint_StiffMatrix::assemble()
 	// Impose BCs on bulk
 	BCimp.ImposeBConBulk(M, B, M_b);
 	// Impose BCs in fractures
-	BCimp.ImposeBConFracture_onT(T, M_b, fluxOP);	
+	BCimp.ImposeBConFracture_onT(T, M_b, fluxOP);
+	
+	//Comrpess the saddle point matrix
+	M_SP.makeCompressed();		
 }
 	
 		

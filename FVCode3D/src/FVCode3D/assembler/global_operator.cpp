@@ -20,7 +20,7 @@ namespace FVCode3D
 	
 void global_InnerProduct::reserve_space()      
 {
-	auto & M = *M_matrix;
+	auto & M = M_matrix;
 	std::vector<UInt> Matrix_elements(Ncol,0);
 	for (auto& cell : M_mesh.getCellsVector())
 	{
@@ -70,7 +70,7 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, 
 	const Rigid_Mesh::Cell & cell)
 {   
-	auto & M = *M_matrix;
+	auto & M = M_matrix;
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	// This is to take into account the decoupling of fractures facets
 	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[i])<0) )
@@ -114,7 +114,7 @@ void global_InnerProduct::assemble()
 
 void global_Div::reserve_space()      
 {
-	auto & B   = *M_matrix;
+	auto & B   = M_matrix;
 	std::vector<UInt> Matrix_elements(Ncol,0);
 	
 	for (auto& cell : M_mesh.getCellsVector())
@@ -156,7 +156,7 @@ void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
 void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
 		const Rigid_Mesh::Cell & cell)
 {
-	auto & B = *M_matrix; 
+	auto & B = M_matrix; 
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	auto & fac = M_mesh.getFacetsVector()[i];
 	// This is to take into account the decoupling of fractures facets
@@ -199,7 +199,7 @@ void CouplingConditions::Set_xsi(const Real & xsiToSet) throw()
 
 void CouplingConditions::reserve_space()
 {
-	auto & C = *M_matrix;
+	auto & C = M_matrix;
 	std::vector<UInt> CMatrix_elements( M.cols(), 0 );
 	std::vector<UInt> MMatrix_elements( M.cols(), 0 );
 	
@@ -237,7 +237,7 @@ void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet
 
 void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it)
 {
-	auto & C = *M_matrix;
+	auto & C = M_matrix;
 	C.insert(facet_it.getFractureId(), facet_it.getId())     
 		=  facet_it.getSize();
 	C.insert(facet_it.getFractureId(), M_mesh.getFacetsVector().size()+facet_it.getFractureId())    
@@ -374,7 +374,7 @@ Real FluxOperator::findDirichletAlpha (const UInt & facetId, const Edge_ID * edg
 
 void FluxOperator::reserve_space()
 {
-	auto & T = *M_matrix;
+	auto & T = M_matrix;
 	std::vector<UInt> Matrix_elements( T.cols(), 0 );
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
     {	
@@ -415,7 +415,7 @@ void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, S
 
 void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it)
 {
-	auto & T = *M_matrix;
+	auto & T = M_matrix;
 	for (auto juncture_it : facet_it.getFractureNeighbors())
 	{	
 		std::vector<Real> alphas;
@@ -441,7 +441,7 @@ void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it)
 
 void FluxOperator::assemble()
 {
-	auto & T = *M_matrix;
+	auto & T = M_matrix;
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
 		assembleFrFace(facet_it);
 }
@@ -450,7 +450,7 @@ void global_BulkBuilder::reserve_space(SpMat & S)
 {
 	std::vector<UInt> Matrix_elements(S.cols(),0);
 	auto & facetVectorRef   = M_mesh.getFacetsVector();
-	const UInt numFacetsTot = IP.getMatrix_readOnly().cols();
+	const UInt numFacetsTot = IP.getMatrix().cols();
 	
 	for (auto& cell : M_mesh.getCellsVector())
 	{

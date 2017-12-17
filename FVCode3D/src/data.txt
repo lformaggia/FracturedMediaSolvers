@@ -47,5 +47,5 @@ type    = imlGMRES  # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGST
     [./iterative]
     maxIt       = 20000
     tolerance   = 1e-6
-	preconditioner =ILU  # Identity, Diagonal, BlockTriangular, ILU
+	preconditioner = ILU  # Identity, Diagonal, BlockTriangular, ILU
 

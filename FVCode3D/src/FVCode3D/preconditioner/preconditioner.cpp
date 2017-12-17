@@ -57,15 +57,15 @@ Vector BlockTriangular_preconditioner::solve(const Vector & r) const
     cg.setMaxIterations(MaxIt);
     cg.setTolerance(tol);
     cg.compute(-ISC);
-    Vector y2 = cg.solve(r.segment(Md_inv.rows(),B.rows()));
+    Vector y2 = cg.solve(r.tail(B.rows()));
 #ifdef PRINT_INFO_CG
  	std::cout << "#iterations:     " << cg.iterations() << std::endl;
 	std::cout << "estimated error: " << cg.error()      << std::endl;
 #endif
     // Second step: solve the diagonal linear system
     Vector z(Md_inv.rows()+B.rows());
-	z.segment(0,Md_inv.rows()) = Md_inv*(r.segment(0,Md_inv.rows())+B.transpose()*y2);
-    z.segment(Md_inv.rows(),B.rows()) = -y2;
+	z.head(Md_inv.rows()) = Md_inv*(r.head(Md_inv.rows())+B.transpose()*y2);
+    z.tail(B.rows()) = -y2;
     return z;
 }
 
@@ -76,21 +76,21 @@ Vector ILU_preconditioner::solve(const Vector & r) const
 {
 	auto & B = *Bptr;
 	// First step: solve the 1st diagonal linear system
-	Vector y1 = Md_inv*r.segment(0,Md_inv.rows());
+	Vector y1 = Md_inv*r.head(Md_inv.rows());
 	// Second step: solve the SC linear system
     Eigen::ConjugateGradient<SpMat> cg;
     cg.setMaxIterations(MaxIt);
     cg.setTolerance(tol);
     cg.compute(-ISC);
-    Vector y2 = cg.solve(B*y1-r.segment(Md_inv.rows(),B.rows()));
+    Vector y2 = cg.solve(B*y1-r.tail(B.rows()));
 #ifdef PRINT_INFO_CG
 	std::cout << "#iterations:     " << cg.iterations() << std::endl;
 	std::cout << "estimated error: " << cg.error()      << std::endl;
 #endif
     // Third step: solve the 2nd diagonal linear system
     Vector z(Md_inv.rows()+B.rows());
-	z.segment(0,Md_inv.rows()) = y1-Md_inv*B.transpose()*y2;
-    z.segment(Md_inv.rows(),B.rows()) = y2;
+	z.head(Md_inv.rows()) = y1-Md_inv*B.transpose()*y2;
+    z.tail(B.rows()) = y2;
     return z;
 }
 

@@ -22,12 +22,12 @@ class PropertiesMap;
 
 //! Class for assembling a stiffness matrix
 /*!
- * @class StiffMatrixFV
+ * @class StiffMatHandlerFV
  * This class constructs the FV stiffness-matrix for the Darcy problem.
  * The adopted technique is a two point finite volume method.
  * The fractures are considered as cells and take part to discretization.
  */
-class StiffMatrixFV: public MatrixHandlerFV
+class StiffMatHandlerFV: public MatrixHandlerFV
 {
 
     //! Typedef for std::pair<UInt,UInt>
@@ -53,19 +53,21 @@ public:
     //! @name Constructor & Destructor
     //@{
 
-    //! Construct a stiffness-Matrix, given a Rigid_Mesh and the boundary conditions
+    //! Construct a stiffness-Matrix handler.
     /*!
      * @param rigid_mesh A Rigid_Mesh used to build the matrix
+     * @param Mat The matrix
+     * @param b The rhs
      * @param BC Boundary conditions given in the container BoundaryConditions
      */
-    StiffMatrixFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat, Vector & b, const BoundaryConditions & BC):
+    StiffMatHandlerFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat, Vector & b, const BoundaryConditions & BC):
         MatrixHandlerFV(rigid_mesh, Mat), M_b(b), M_bc(BC) {}
     //! No Copy-Constructor
-    StiffMatrixFV(const StiffMatrixFV &) = delete;
+    StiffMatHandlerFV(const StiffMatHandlerFV &) = delete;
     //! No Empty-Constructor
-    StiffMatrixFV() = delete;
+    StiffMatHandlerFV() = delete;
     //! Destructor
-    ~StiffMatrixFV() = default;
+    ~StiffMatHandlerFV() = default;
     //@}
 
     //! @name Get Methods
@@ -212,33 +214,33 @@ protected:
 
 //! Class for assembling a MFD system matrix.
 /*!
- * @class StiffMatrixMFD
- * This is the class to assemble the MFD stiffness matrix. It builds up the matrix system S
+ * @class StiffMatHandlerMFD
+ * This is the class that actually assemble the MFD stiffness matrix. It builds up the matrix system S
  * in an efficient way using the global_BulkBuilder and the FractureBuilder. The bulk builder
  * builds up the M, B, Dt matrices, then we impose the bulk bcs on M and on the rhs. The 
  * fracture builder builds up the coupling conditions matrices C and Ct, it modifies properly
  * the M matrix (coupling conditions again) and builds up the trasmissibility matrix -T.
  * Then the fracture bcs are imposed on -T and on the rhs.
  */
-class StiffMatrixMFD: public MatrixHandlerMFD
+class StiffMatHandlerMFD: public MatrixHandlerMFD
 {
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a StiffnessMFD_Builder.
+    //! Construct a StiffMatHandlerMFD.
     /*!
      * @param rMesh A constant reference to the mesh
      * @param BCmap A constant reference to the boundary conditions
      * @param size  The dimension of the stiffness matrix
      */
-	StiffMatrixMFD( const Rigid_Mesh & rMesh, SpMat & Mat, Vector & b, const BoundaryConditions & BCmap):
+	StiffMatHandlerMFD( const Rigid_Mesh & rMesh, SpMat & Mat, Vector & b, const BoundaryConditions & BCmap):
 		MatrixHandlerMFD(rMesh, Mat), M_b(b), M_bc(BCmap){}
 	//! No Copy-Constructor
-    StiffMatrixMFD(const StiffMatrixMFD &) = delete;
+    StiffMatHandlerMFD(const StiffMatHandlerMFD &) = delete;
 	//! No Empty-Constructor
-    StiffMatrixMFD() = delete;
+    StiffMatHandlerMFD() = delete;
 	//! Destructor
-    ~StiffMatrixMFD() = default;
+    ~StiffMatHandlerMFD() = default;
 	//@}
 
     //! @name Get Methods

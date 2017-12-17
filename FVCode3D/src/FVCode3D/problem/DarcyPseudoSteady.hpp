@@ -131,9 +131,9 @@ protected:
     bool M_isInitialized;
 
     //! Pointer to the mass matrix
-    std::unique_ptr<MassMatrixFV> M_M;
+    std::unique_ptr<MassMatHandlerFV> M_M;
     //! Pointer to the stiffness matrix
-    std::unique_ptr<StiffMatrixFV> M_S;
+    std::unique_ptr<StiffMatHandlerFV> M_S;
 };
 
 //! Specialization class that defines the pseudo-steady-state Darcy problem for the BDF2 time scheme
@@ -234,9 +234,9 @@ protected:
     bool M_isInitialized;
 
     //! Pointer to the mass matrix
-    std::unique_ptr<MassMatrixFV> M_M;
+    std::unique_ptr<MassMatHandlerFV> M_M;
     //! Pointer to the stiffness matrix
-    std::unique_ptr<StiffMatrixFV> M_S;
+    std::unique_ptr<StiffMatHandlerFV> M_S;
 };
 
 
@@ -264,7 +264,7 @@ initialize() throw()
 	auto & b = this->getRHS();
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new MassMatrixFV(this->M_mesh, A) );
+    M_M.reset( new MassMatHandlerFV(this->M_mesh, A) );
 	M_M->setDofs(this->M_mesh.getCellsVector().size() 
 			+ this->M_mesh.getFractureFacetsIdsVector().size());
     M_M->assemble();
@@ -273,7 +273,7 @@ initialize() throw()
 
 	SpMat A2(this->M_mesh.getCellsVector().size()+this->M_mesh.getFractureFacetsIdsVector().size(),this->M_mesh.getCellsVector().size() 
 			+this->M_mesh.getFractureFacetsIdsVector().size());
-    M_S.reset( new StiffMatrixFV(this->M_mesh, A2, b, this->M_bc) );
+    M_S.reset( new StiffMatHandlerFV(this->M_mesh, A2, b, this->M_bc) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
@@ -357,7 +357,7 @@ initialize() throw()
 	auto & b = this->getRHS();
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 
-    M_M.reset( new MassMatrixFV(this->M_mesh, A) );
+    M_M.reset( new MassMatHandlerFV(this->M_mesh, A) );
 	M_M->setDofs(this->M_mesh.getCellsVector().size() 
 			+ this->M_mesh.getFractureFacetsIdsVector().size());
     M_M->assemble();
@@ -366,7 +366,7 @@ initialize() throw()
 
 	SpMat A2(this->M_mesh.getCellsVector().size()+this->M_mesh.getFractureFacetsIdsVector().size(),this->M_mesh.getCellsVector().size() 
 			+this->M_mesh.getFractureFacetsIdsVector().size());
-    M_S.reset( new StiffMatrixFV(this->M_mesh, A2, b, this->M_bc) );
+    M_S.reset( new StiffMatHandlerFV(this->M_mesh, A2, b, this->M_bc) );
 
     if(this->M_numet == Data::NumericalMethodType::FV)
     {

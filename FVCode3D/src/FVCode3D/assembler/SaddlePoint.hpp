@@ -18,31 +18,33 @@ namespace FVCode3D
 
 //! Base class for assembling a saddle point stiffness matrix
 /*!
- * @class SaddlePoint_StiffMatrix
- * This is the class implementing the stiffness matrix as a block saddle point matrix,
+ * @class SaddlePoint_StiffMatHandler
+ * This is the class that catually build the stiffness matrix as a block saddle point matrix,
  * useful in the case of MFD if we want to solve the system with an iterative
  * method preconditioning it in a not trivial way.
  */
-class SaddlePoint_StiffMatrix
+class SaddlePoint_StiffMatHandler
 {
 	
 public:
 	
     //! @name Constructor & Destructor
     //@{
-    //! Construct a SaddlePoint_Matrix, given a Rigid_Mesh.
+    //! Construct a SaddlePoint_StiffMatHandler.
     /*!
         @param rigid_mesh A Rigid_Mesh used to build the matrix
-        @param size The size of the stiffness matrix
+        @param bc A boundary condition
+        @param Msp The saddle point matrix
+        @param b The rhs
     */
-    SaddlePoint_StiffMatrix(const Rigid_Mesh & pmesh, const BoundaryConditions & bc, SaddlePointMat & Msp, Vector & b):
-        M_mesh(pmesh), M_bc(bc), M_SP(Msp), M_b(b){}
+    SaddlePoint_StiffMatHandler(const Rigid_Mesh & pmesh, SaddlePointMat & Msp, Vector & b, const BoundaryConditions & bc):
+        M_mesh(pmesh), M_SP(Msp), M_b(b), M_bc(bc){}
     //! No Copy-Constructor
-    SaddlePoint_StiffMatrix(const SaddlePoint_StiffMatrix &) = delete;
+    SaddlePoint_StiffMatHandler(const SaddlePoint_StiffMatHandler &) = delete;
     //! No Empty-Constructor
-    SaddlePoint_StiffMatrix() = delete;
+    SaddlePoint_StiffMatHandler() = delete;
     //! Default Destructor
-    virtual ~SaddlePoint_StiffMatrix() = default;
+    virtual ~SaddlePoint_StiffMatHandler() = default;
     //@}
 
     //! @name Get Methods
@@ -141,6 +143,16 @@ public:
 
     //! @name Methods
     //@{
+	//! Show method 
+    /*!
+     * show the system dimension
+     */
+    void show()
+    {
+		std::cout<<std::endl;
+		std::cout<<"The system dimension is : "<<getSize()<<std::endl<<std::endl;
+	}
+	    
 	//! Set dofs 
     /*!
      * @param size The dofs to be set
@@ -160,13 +172,13 @@ public:
 
 private:
 	//! Const reference to the rigid mesh
-	const Rigid_Mesh              & M_mesh;
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions      &	M_bc;  
+	const Rigid_Mesh              & M_mesh; 
     //! A reference to the saddle point matrix
     SaddlePointMat                & M_SP;
 	//! A reference to the rhs of the system
 	Vector                        & M_b;
+	//! Constant reference to the boundary conditions
+	const BoundaryConditions      &	M_bc; 
 };
 
 } //FVCode3D
