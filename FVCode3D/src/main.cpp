@@ -321,7 +321,7 @@ int main(int argc, char * argv[])
 			darcy->getSolver().getSolution().tail(numCellsTot) );
 		std::cout << "Export Solution on Fractures..." << std::flush;
 		exporter.exportSolutionOnFractures( myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution_f.vtu", 
-			darcy->getSolver().getSolution().segment(numFacetsTot,numCellsTot) );
+			darcy->getSolver().getSolution().tail(numCellsTot) );
 		std::cout << " done." << std::endl << std::endl;
 	}
 	    

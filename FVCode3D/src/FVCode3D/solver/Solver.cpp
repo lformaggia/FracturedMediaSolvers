@@ -11,9 +11,7 @@
 #include <FVCode3D/solver/gmres.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/preconditioner/preconHandler.hpp>
-#ifdef FVCODE3D_HAS_UMFPACK
 #include <Eigen/UmfPackSupport>
-#endif // FVCODE3D_HAS_UMFPACK
 
 #ifdef FVCODE3D_HAS_SAMG
 #include <samg.h>
@@ -38,13 +36,11 @@ void EigenLU::solve()
 } // EigenLU::solve
 
 
-#ifdef FVCODE3D_HAS_UMFPACK
 void EigenUmfPack::solve()
 {
     Eigen::UmfPackLU<SpMat> lu( M_A );
     M_x = lu.solve( M_b );
 } // EigenUmfPack::solve
-#endif // FVCODE3D_HAS_UMFPACK
 
 Real constexpr IterativeSolver::S_referenceTol;
 UInt constexpr IterativeSolver::S_referenceMaxIter;

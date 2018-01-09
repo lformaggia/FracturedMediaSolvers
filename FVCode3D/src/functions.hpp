@@ -6,6 +6,8 @@
 #ifndef FUNCTIONS_HPP_
 #define FUNCTIONS_HPP_
 
+#include <cmath>
+
 namespace FVCode3D
 {
 
@@ -115,6 +117,14 @@ Func SSEDFMBC = [](Point3D p)
     { return 2. * ( (p.x() >= 0.8) && (p.x() <= 1.2 ) ); };
 
 Func SS = SSEDFM;//SourceDomain; //fZero;//SSGrid2;
+
+// TEST CASE: convergence order
+
+Func SourceBulk = [](Point3D p)
+	{ return (1-1e3)*cosh(1e-2/2.)*cos(p.x())*cos(p.z()); };
+	
+Func SourceFrac = [](Point3D p)
+	{ return pow(1e3,2)*cos(p.x()) + 1e3*(1-1e3)*cosh(1e-2/2.)*cos(p.x())*cos(p.z()); };
 
 } // namespace FVCode3D
 #endif /* FUNCTIONS_HPP_ */

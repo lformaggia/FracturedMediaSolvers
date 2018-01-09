@@ -32,13 +32,6 @@ class Problem
 {
 public:
 
-//! Typedef for SolverPtr_Type
-/*!
- * @typedef SolverPtr_Type
- * This type definition permits to handle a std::tuple<SpMat*,SaddlePointMat*,Vector*> as a AlgebricTuple.
- */
-typedef std::tuple<SpMat*,SaddlePointMat*,Vector*> AlgebricTuple;
-
     //! No default constructor
     Problem() = delete;
 
@@ -214,7 +207,7 @@ typedef std::tuple<SpMat*,SaddlePointMat*,Vector*> AlgebricTuple;
     /*!
      * It calls assemble() and solve()
      */
-    virtual void assembleAndSolve() { assemble(); solve(); }
+    void assembleAndSolve() { assemble(); solve(); }
 
     //! Destructor
     virtual ~Problem() = default;

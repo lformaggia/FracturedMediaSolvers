@@ -26,7 +26,7 @@ namespace FVCode3D
 * This enumerator is used to show the type of discretization of row/column
 * of the operators.
 */
-enum class dType{dFacet, dCell, dFracture};
+enum dType{dFacet, dCell, dFracture};
 
 //! Show the permeability tensor
 /*!
@@ -71,8 +71,12 @@ public:
      * @param rowSize The number of row
      * @param colSize The number of col
      */
-	global_Operator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize ):
-		M_mesh(rMesh), row_policy(Prow), col_policy(Pcol), Nrow(rowSize), Ncol(colSize),
+	global_Operator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol):
+		M_mesh(rMesh), row_policy(Prow), col_policy(Pcol),
+		Nrow( (row_policy==dFacet)*(M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size()) +
+		 (row_policy==dCell)*(M_mesh.getCellsVector().size()) + (row_policy==dFracture)*(M_mesh.getFractureFacetsIdsVector().size()) ),
+		Ncol( (col_policy==dFacet)*(M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size()) +
+		 (col_policy==dCell)*(M_mesh.getCellsVector().size()) + (col_policy==dFracture)*(M_mesh.getFractureFacetsIdsVector().size()) ),
 		M_matrix(Nrow, Ncol){}
 	//! No Copy-Constructor
     global_Operator(const global_Operator &) = delete;
@@ -205,8 +209,8 @@ public:
      * @param colSize The number of col
      * @param BCmap The boundary conditions
      */
-	global_InnerProduct( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize) {}
+	global_InnerProduct( const Rigid_Mesh & rMesh, dType Prow, dType Pcol):
+		global_Operator(rMesh, Prow, Pcol) {}
 	//! No Copy-Constructor
     global_InnerProduct(const global_InnerProduct &) = delete;
 	//! No Empty-Constructor
@@ -246,7 +250,7 @@ public:
      * @param coloff The col offset 
      */
     void assembleFace(const UInt iloc, const Mat & Mp, const Rigid_Mesh::Cell & cell,
-		SpMat & S, const UInt rowoff, const UInt coloff);
+		SpMat & S, const UInt rowoff, const UInt coloff) const;
 		
 	//! Assemble the local face contributions in the inner product matrix 
     /*!
@@ -287,8 +291,8 @@ public:
      * @param colSize The number of col
      * @param BCmap The boundary conditions
      */
-	global_Div( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize) {}
+	global_Div( const Rigid_Mesh & rMesh, dType Prow, dType Pcol):
+		global_Operator(rMesh, Prow, Pcol) {}
 	//! No Copy-Constructor
     global_Div(const global_Div &) = delete;
 	//! No Empty-Constructor
@@ -339,7 +343,7 @@ public:
      * @param coloff The col offset 
      */
     void assembleFace(const UInt iloc, const std::vector<Real> & Bp, const Rigid_Mesh::Cell & cell,
-		SpMat & S, const UInt rowoff, const UInt coloff, const bool transpose = true);
+		SpMat & S, const UInt rowoff, const UInt coloff, const bool transpose = true) const;
 		
 	//! Assemble the local face contributions in the divergence matrix
     /*!
@@ -377,8 +381,8 @@ public:
      * @param colSize The number of col
      * @param IP_matrix A constant reference to the inner product matrix
      */
-	CouplingConditions( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize, SpMat & IP_matrix):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize), M(IP_matrix), xsi(Default_xsi){}
+	CouplingConditions( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, SpMat & IP_matrix):
+		global_Operator(rMesh, Prow, Pcol), M(IP_matrix), xsi(Default_xsi){}
 	//! No Copy-Constructor
     CouplingConditions(const CouplingConditions &) = delete;
 	//! No Empty-Constructor
@@ -440,7 +444,7 @@ public:
      * @param coloff The col offset 
      */
     void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, 
-		const UInt rowoff, const UInt coloff, const bool transpose = true);
+		const UInt rowoff, const UInt coloff, const bool transpose = true) const;
     
     //! Assemble the fracture facet contributions of coupling conditions in the C matrix
     /*!
@@ -455,7 +459,7 @@ public:
      * @param rowoff The row offset 
      * @param coloff The col offset 
      */
-    void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff);	
+    void assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff) const;	
     
     //! Assemble the fracture facet contributions due to coupling conditions properly modifying M
     /*!
@@ -515,8 +519,8 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      * @param rowSize The number of row
      * @param colSize The number of col
      */
-	FluxOperator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol, UInt rowSize, UInt colSize):
-		global_Operator(rMesh, Prow, Pcol, rowSize, colSize) {}
+	FluxOperator( const Rigid_Mesh & rMesh, dType Prow, dType Pcol):
+		global_Operator(rMesh, Prow, Pcol) {}
 	//! No Copy-Constructor
     FluxOperator(const FluxOperator &) = delete;
 	//! No Empty-Constructor
@@ -593,7 +597,7 @@ typedef Rigid_Mesh::Edge_ID Edge_ID;
      * @param rowoff The row offset 
      * @param coloff The col offset 
      */
-    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff);
+    void assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff) const;
     
 	//! Assemble fracture facet trasmissibilities
     /*!
@@ -634,7 +638,7 @@ public:
 	//! No Empty-Constructor
     global_Builder() = delete;
 	//! Destructor
-    ~global_Builder() = default;
+    virtual ~global_Builder() = default;
 	//@}
 
 	//! @name Assemble Methods

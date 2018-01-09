@@ -68,7 +68,7 @@ public:
      * @return The size N (number of rows) of the matrix
      */
     virtual UInt getSize() const
-        {return M_Matrix.size();}
+        {return M_Matrix.rows();}
     //@}
 
     //! @name Methods

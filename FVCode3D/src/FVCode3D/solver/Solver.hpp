@@ -282,7 +282,6 @@ public:
     //@}
 }; // class EigenLU
 
-#ifdef FVCODE3D_HAS_UMFPACK
 //! Class EigenUmfPack
 /*!
  * @class EigenUmfPack
@@ -319,7 +318,6 @@ public:
     void solve();
     //@}
 };
-#endif // FVCODE3D_HAS_UMFPACK
 
 
 //! Class IterativeSolver
@@ -337,7 +335,7 @@ public:
     //@{
     //! Empty constructor
     IterativeSolver():
-    M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0), CIndex(0) {}
+    Solver(), M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0), CIndex(0) {}
     
 	//! Constructor
     /*!
@@ -345,8 +343,8 @@ public:
      * @param Brow B block row
      * @param Bcol B block col
      */
-	IterativeSolver(const UInt Mdim,const UInt Brow,const UInt Bcol):
-		M_A(Mdim,Brow,Bcol), Solver(Mdim+Brow), 
+	IterativeSolver(const UInt Mdim,const UInt Brow):
+		M_A(Mdim,Brow), Solver(Mdim+Brow), 
 		M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0), CIndex(0) {}
 
     //! Constructor
@@ -540,8 +538,8 @@ public:
      * @param Brow B block row
      * @param Bcol B block col
      */
-	imlBiCGSTAB(const UInt Mdim,const UInt Brow,const UInt Bcol):
-		IterativeSolver(Mdim,Brow,Bcol), restart(Default_restart) {}
+	imlBiCGSTAB(const UInt Mdim,const UInt Brow):
+		IterativeSolver(Mdim,Brow), restart(Default_restart) {}
 
     //! Constructor
     /*!
@@ -619,8 +617,8 @@ public:
      * @param Brow B block row
      * @param Bcol B block col
      */
-	imlGMRES(const UInt Mdim,const UInt Brow,const UInt Bcol):
-		IterativeSolver(Mdim,Brow,Bcol), m(Default_m) {}
+	imlGMRES(const UInt Mdim,const UInt Brow):
+		IterativeSolver(Mdim,Brow), m(Default_m) {}
 
     //! Constructor
     /*!
@@ -653,7 +651,7 @@ public:
     //@}
 
 private:
-	//! The restart level (how many iterations nedded to perform a restart)
+	//! The restart level (how many iterations needed to perform a restart)
 	UInt m;
 	//! The default restart value
 	static constexpr UInt Default_m = 300;

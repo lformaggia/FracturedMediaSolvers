@@ -93,8 +93,8 @@ public:
      * @param Brow B block row
      * @param Bcol B block col
      */
-	SaddlePointMat(const UInt Mdim,const UInt Brow,const UInt Bcol):
-		M(Mdim,Mdim), B(Brow,Bcol), T(Brow,Brow) {}
+	SaddlePointMat(const UInt Mdim,const UInt Brow):
+		M(Mdim,Mdim), B(Brow,Mdim), T(Brow,Brow) {}
 		
 	//! Copy-Constructor
     SaddlePointMat(const SaddlePointMat &) = default;
@@ -202,8 +202,8 @@ public:
     Vector operator * (const Vector & x) const
     {
 		Vector result(M.rows()+B.rows());
-		result.segment(0,M.rows()) = M*x.segment(0,M.cols()) + B.transpose()*x.segment(M.cols(),B.rows());
-		result.segment(M.rows(),B.rows()) = B*x.segment(0,M.cols()) + T*x.segment(M.cols(),B.rows());
+		result.head(M.rows()) = M*x.head(M.cols()) + B.transpose()*x.tail(B.rows());
+		result.tail(B.rows()) = B*x.head(M.cols()) + T*x.tail(B.rows());
 		return result;
 	}
     //@}
@@ -336,12 +336,6 @@ class BlockTriangular_preconditioner: public preconditioner
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a diagonal preconditioner.
-    /*!
-     * @param SP The saddle point matrix
-     */
-	BlockTriangular_preconditioner( const SaddlePointMat & SP ): 
-		Bptr(& SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_Default), tol(tol_Default) {}
 	//! No Copy-Constructor
     BlockTriangular_preconditioner(const BlockTriangular_preconditioner &) = delete;
 	//! Empty-Constructor
@@ -398,7 +392,7 @@ public:
     /*!
      * @param r The rhs vector on what we apply the P^-1
      */
-    virtual Vector solve(const Vector & r) const;
+    Vector solve(const Vector & r) const;
     //@}
     
 private:
@@ -431,13 +425,6 @@ class ILU_preconditioner: public preconditioner
 public:
     //! @name Constructor & Destructor
     //@{
-    //! Construct a diagonal preconditioner.
-    /*!
-     * @param SP The saddle point matrix
-     */
-	ILU_preconditioner( const SaddlePointMat & SP ): 
-		Bptr(& SP.getB()), Md_inv(SP.getM().rows()), ISC(SP.getB().rows(),SP.getB().rows()), MaxIt(MaxIt_default), tol(tol_default)
-			{ Md_inv.setZero(); }
 	//! No Copy-Constructor
     ILU_preconditioner(const ILU_preconditioner &) = delete;
 	//! Empty-Constructor

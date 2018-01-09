@@ -26,9 +26,7 @@ void SolverHandler::registration()
 {
     SolverProxy<EigenCholesky>  SolverChol( toUpper( "EigenCholesky" ) );
     SolverProxy<EigenLU>        SolverLU( toUpper( "EigenLU" ) );
-#ifdef FVCODE3D_HAS_UMFPACK
     SolverProxy<EigenUmfPack>   SolverUmfPack( toUpper( "EigenUmfPack" ) );
-#endif // FVCODE3D_HAS_UMFPACK
     SolverProxy<imlBiCGSTAB>    SolverBiCGSTAB( toUpper( "imlBiCGSTAB" ) );
     SolverProxy<imlGMRES>       SolverGMRES( toUpper( "imlGMRES" ) );
 #ifdef FVCODE3D_HAS_SAMG

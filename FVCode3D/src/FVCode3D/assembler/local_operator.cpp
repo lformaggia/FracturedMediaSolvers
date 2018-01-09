@@ -27,9 +27,6 @@ void local_InnerProduct::assemble()
 	const UInt numCellFacets  = cellFacetsId.size();
     const Real cellMeasure    = cellp.getVolume();
 
-	if(cellp.getId() % 500 == 0)
-		std::cout<<"Done "<< cellp.getId() <<" Cells"<<std::endl;
-
     // Resize local matrices
     Np.resize(numCellFacets,Eigen::NoChange);
 	Np.setZero();
@@ -103,9 +100,6 @@ void local_InnerProduct::assemble_inv()
 	const UInt numCellFacets  = cellFacetsId.size();
     const Real cellMeasure    = cellp.getVolume();
 
-	if(cellp.getId() % 500 == 0)
-		std::cout<<"Done "<< cellp.getId() <<" Cells"<<std::endl;
-
     // Resize local matrices
     Np.resize(numCellFacets,Eigen::NoChange);
 	Np.setZero();
@@ -174,9 +168,6 @@ void local_Div::assemble()
 	const std::vector<UInt> & cellFacetsId( cellp.getFacetsIds() );
 	const UInt numCellFacets  = cellFacetsId.size();
 
-	if(cellp.getId() % 500 == 0)
-		std::cout<<"Done "<< cellp.getId() <<" Cells"<<std::endl;
-
 	// Loop on facets to build Rp, Np
 	for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId)
     {
@@ -199,9 +190,6 @@ void local_builder::build()
 	const std::vector<UInt> & cellFacetsId( cel.getFacetsIds() );
 	const UInt numCellFacets  = cellFacetsId.size();
     const Real cellMeasure    = cel.getVolume();
-
-	if(cel.getId() % 500 == 0)
-		std::cout<<"Done "<< cel.getId() <<" Cells"<<std::endl;
 
     // Resize local matrices
     IP.Np.resize(numCellFacets,Eigen::NoChange);

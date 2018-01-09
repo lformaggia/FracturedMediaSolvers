@@ -43,7 +43,7 @@ void global_InnerProduct::reserve_space()
 }
 
 void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Rigid_Mesh::Cell & cell, 
-		SpMat & S, const UInt rowoff, const UInt coloff)
+		SpMat & S, const UInt rowoff, const UInt coloff) const
 {   
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	// This is to take into account the decoupling of fractures facets
@@ -95,7 +95,6 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp,
 
 void global_InnerProduct::assemble()   
 {
-	std::cout<<"Assembling mimetic inner product..."<<std::endl;
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
 		// Definisco prodotto interno locale
@@ -108,7 +107,6 @@ void global_InnerProduct::assemble()
 		for(UInt iloc=0; iloc<cell.getFacetsIds().size(); ++iloc)
 			assembleFace(iloc, localIP.getMp(), cell);
 	}
-	std::cout<<"Done."<<std::endl;
 }
 
 
@@ -137,7 +135,7 @@ void global_Div::reserve_space()
 }
 
 void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
-		const Rigid_Mesh::Cell & cell, SpMat & S, const UInt rowoff, const UInt coloff, const bool transpose)
+		const Rigid_Mesh::Cell & cell, SpMat & S, const UInt rowoff, const UInt coloff, const bool transpose) const
 {
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	auto & fac = M_mesh.getFacetsVector()[i];
@@ -218,7 +216,7 @@ void CouplingConditions::reserve_space()
 }
 
 void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, 
-	const UInt rowoff, const UInt coloff, const bool transpose)
+	const UInt rowoff, const UInt coloff, const bool transpose) const
 {
 	if(transpose)
 	{
@@ -244,7 +242,7 @@ void CouplingConditions::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet
 		= -facet_it.getSize();
 }
 
-void CouplingConditions::assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff)
+void CouplingConditions::assembleFrFace_onM(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff) const
 {
 	const Real eta = M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture / 
 		M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_permeability->operator()(0,0);
@@ -387,7 +385,7 @@ void FluxOperator::reserve_space()
 	T.reserve(Matrix_elements);
 }
 
-void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff)
+void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff) const
 {
 	const UInt Offset = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size()+M_mesh.getCellsVector().size();
 	for (auto juncture_it : facet_it.getFractureNeighbors())
@@ -441,7 +439,6 @@ void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it)
 
 void FluxOperator::assemble()
 {
-	auto & T = M_matrix;
     for (auto& facet_it : M_mesh.getFractureFacetsIdsVector())
 		assembleFrFace(facet_it);
 }
@@ -506,7 +503,6 @@ void global_BulkBuilder::reserve_space(SpMat & M, SpMat & B)
 
 void global_BulkBuilder::build(SpMat & S)   
 {	
-	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
 	const UInt numFacetsTot = M_mesh.getFacetsVector().size() + M_mesh.getFractureFacetsIdsVector().size();
 	
 	for (auto& cell : M_mesh.getCellsVector())
@@ -528,13 +524,10 @@ void global_BulkBuilder::build(SpMat & S)
 			Div.assembleFace(iloc, localDIV.getBp(), cell, S, numFacetsTot, 0);
 		}
 	}
-	std::cout<<"Done."<<std::endl;
 }
 
 void global_BulkBuilder::build(SpMat & M, SpMat & B)   
-{
-	std::cout<<"Assembling mimetic inner product and divergence..."<<std::endl;
-		
+{		
 	for (auto& cell : M_mesh.getCellsVector())
 	{	 	
 		// Definisco prodotto interno locale
@@ -554,7 +547,6 @@ void global_BulkBuilder::build(SpMat & M, SpMat & B)
 			Div.assembleFace(iloc, localDIV.getBp(), cell, B, 0, 0, false);
 		}
 	}
-	std::cout<<"Done."<<std::endl;
 }
 
 void FractureBuilder::reserve_space(SpMat & S)

@@ -365,26 +365,21 @@ void StiffMatHandlerFV::assembleFractureBC()
 
 
 void StiffMatHandlerMFD::assemble()
-{
-	// Define the degrees of fredoom
-	const UInt numFracture  = M_mesh.getFractureFacetsIdsVector().size();
-	const UInt numFacetsTot = M_mesh.getFacetsVector().size() + numFracture;
-	const UInt numCell      = M_mesh.getCellsVector().size();
-	
+{	
 	// Define the global inner product
-	global_InnerProduct gIP(M_mesh, dType::dFacet, dType::dFacet, numFacetsTot, numFacetsTot);
+	global_InnerProduct gIP(M_mesh, dFacet, dFacet);
 	gIP.ShowMe();
 	
 	// Define the global divergence operator
-	global_Div gDIV(M_mesh, dType::dCell, dType::dFacet, numCell, numFacetsTot);
+	global_Div gDIV(M_mesh, dCell, dFacet);
 	gDIV.ShowMe();
 	
 	// Define the coupling conditions
-	CouplingConditions coupling(M_mesh, dType::dFracture, dType::dFacet, numFracture, numFacetsTot, gIP.getMatrix());
+	CouplingConditions coupling(M_mesh, dFracture, dFacet, gIP.getMatrix());
 	coupling.ShowMe();
 	
 	// Define the flux operator
-	FluxOperator fluxOP(M_mesh, dType::dFracture, dType::dFracture, numFracture, numFracture);
+	FluxOperator fluxOP(M_mesh, dFracture, dFracture);
 	fluxOP.ShowMe();
 	
 	// Define the global bulk builder
