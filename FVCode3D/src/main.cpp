@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    const Real kf = 1.e3; 
+    const Real kf = 1.e-3; 
     fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
