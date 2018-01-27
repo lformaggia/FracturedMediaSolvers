@@ -1,3 +1,0 @@
-testMFD.poly: cube with an embedded fracture
-testMFD2.poly: cube with a fracture that cuts the whole domain
-caseMFD.poly: cube with some fractures
