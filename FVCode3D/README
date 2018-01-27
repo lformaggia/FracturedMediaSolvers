@@ -1,44 +1,78 @@
+
 ================================
 Installation
 ================================
 
-The simplest way to install FVCode3D is to run the install.sh script:
-    ./install.sh --prefix=<install dir>
+To install the code run the install-devel.sh script:
+    ./install-devel.sh --prefix=<install dir>
 This will install both FVCode3D and its dependencies in <install dir>.
 If --prefix is not specified, the default location is ../install.
 
-Unless told otherwise, the install script will also install all the needed
-packages (cmake, blas, lapack, suitesparse and eigen).
+Unless told otherwise, the install script will also install all the needed packages:
+cmake 2.8.12
+blas 3.8.0
+lapack 3.5.0
+suitesparse 4.2.1
+eigen 3.2.1
 If you wish to use an existing installation of one of the packages,
 its location can be specified with the option --with-<package>=<path>, e.g.:
-    ./install.sh --prefix=<install dir> --with-cmake=/usr --with-blas=/usr
+    ./install-devel.sh --prefix=<install dir> --with-cmake=/usr --with-blas=/usr
 
 For a full list of options:
-    ./install.sh --help
+    ./install-devel.sh --help
 
 ================================
-Development installation
+How to execute the program
 ================================
-The default installation install libraries, executables and headers to the
-specified location, creates the documentation with doxygen and removes the
-build directory. For development purposes these steps are not required.
-One can simply use:
-    ./install-devel.sh --prefix=<install dir>
-This script install the development version, meaning that it will not delete
-the build dir (by default located in <install dir>/build) and it wil not build
-the documentation.
 
-Alternatively, one can simply configure FVCode3D using CMake. This requires
-BLAS, SuiteSparse and Eigen to be already installed:
-    mkdir -p /path/to/build/dir
-    cd /path/to/build/dir
-    cmake \
-        -DTPL_BLAS_DIR:path=/path/to/blas/install \
-        -DTPL_CHOLMOD_DIR:path=/path/to/suitesparse/install \
-        -DTPL_UMFPACK_DIR:path=/path/to/suitesparse/install \
-        -DTPL_EIGEN3_DIR:path=/path/to/eigen/install \
-        /path/to/source/dir
-    make
+To run the program just execute
+	cd <install dir>/build/src
+	./fvcode3d.exe
+The data problem can be edited in the link <install dir>/build/src/data.txt and the available
+meshes can be viewed in the link <install dir>/build/src/data.
+To modify the forcing term, the boundary conditions and the properties (permeability, aperture, porosity)
+the main program eniReservoir/FVCode3D/src/main.cpp must be properly modified. After that 
+it's necessary to re-compile the code:
+	cd <install dir>/build/src
+	make
+and then the code can be re-runned in the same previous way.
 
-To generate documentation use:
-    make doc
+To run the examples:
+	cd <install dir>/build/src/test
+	cd <the test to be run>
+	./<the test to be run>_test
+where <the test to be run> = network1
+							 network2
+							 hexa
+							 tet
+E.g.
+	cd <install dir>/build/src/test
+	cd hexa
+	./hexa_test
+network1 and network2 are two examples with a complex network of fracture, hexa and tet are examples with
+a theoretical solution in which the norm of the error for the pressure in bulk, pressure in fractures
+and velocity is computed and printed out. To see the data problem in every example directory, that is
+<install dir>/build/src/test/<the test to be run>, there's a file data.txt and a main.cpp.
+The file data.txt can be edited and then the example can be directly re-run. Whereas if main.cpp is
+changed then it's necessary to type
+	make
+before re-running the example.
+
+================================
+How to generate the documentation
+================================
+
+To build the doxygen documentation:
+	cd <install dir>/build
+	make doc
+	cd doc/html
+	<browser> index.html
+where e.g. <browser> = firefox
+
+
+
+
+
+
+
+
