@@ -15,7 +15,7 @@ cmake 2.8.12
 blas 3.8.0
 lapack 3.5.0
 suitesparse 4.2.1
-eigen 3.3.4
+eigen 3.3.4 
 If you wish to use an existing installation of one of the packages,
 its location can be specified with the option --with-<package>=<path>, e.g.:
     ./install-devel.sh --prefix=<install dir> --with-cmake=/usr --with-blas=/usr
@@ -24,7 +24,7 @@ For a full list of options:
     ./install-devel.sh --help
 
 ================================
-How to execute the program
+How to run the program
 ================================
 
 To run the program just type
