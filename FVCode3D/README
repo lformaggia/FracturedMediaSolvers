@@ -19,6 +19,8 @@ eigen 3.3.4
 If you wish to use an existing installation of one of the packages,
 its location can be specified with the option --with-<package>=<path>, e.g.:
     ./install-devel.sh --prefix=<install dir> --with-cmake=/usr --with-blas=/usr
+Pay attentation that the version 3.3.4 of the eigen is mandatory to use the iterative
+preconditioned routines of the code.
 
 For a full list of options:
     ./install-devel.sh --help
@@ -54,10 +56,12 @@ E.g. to run hexa:
 network1 and network2 are two examples with a complex network of fracture, hexa and tet are examples with
 a theoretical solution in which the norm of the error for the pressure in bulk, pressure in fractures
 and velocity is computed and printed out. The results are in .vtu format viewable with Paraview and
-are the files sol_solution.vtu and sol_solution_f.vtu in the directory of the test, that is
-<install dir>/build/src/test/<the test to be run>. To see the data problem in every example directory
-there's a file data.txt and a main.cpp. The file data.txt can be modified and then the example can be
-directly re-run. Whereas if main.cpp is changed then it's necessary to type
+are the files sol_solution.vtu and sol_solution_f.vtu in <install dir>/build/src/test/<the test to be run>.
+To see the data problem in <install dir>/build/src/test<test to be run> there's a file data.txt that can be modified
+and then the example can be directly re-run. Whereas to change the properties of the example the file main.cpp 
+in the source directory of the example, that is eniReservoir/FVCode3D/src/test/<the test to be run>,
+has to be changed. Then it's necessary to re-compile the example
+	cd <install dir>/build/src/test/<the test to be run>
 	make
 before re-running the example.
 
@@ -65,7 +69,7 @@ before re-running the example.
 How to generate the documentation
 ================================
 
-The code is fully documented on Doxygen.
+The code is fully documented in Doxygen.
 To build the doxygen documentation:
 	cd <install dir>/build
 	make doc
