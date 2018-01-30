@@ -6,11 +6,14 @@
 #ifndef PROBLEM_HPP_
 #define PROBLEM_HPP_
 
+#include <utility>
+
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
 #include <FVCode3D/solver/SolverHandler.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 
 namespace FVCode3D
 {
@@ -24,16 +27,10 @@ class Quadrature;
  *  It is an abstract base class. It declares the assemble and the solve method.
  *  The first and the second template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class QRMatrix, class QRFracture, typename MatrixType = SpMat>
+template <class QRMatrix, class QRFracture>
 class Problem
 {
 public:
-
-    //! Typedef for the matrix type
-    /*!
-     * @typedef Matrix_Type
-     */
-    typedef MatrixType Matrix_Type;
 
     //! No default constructor
     Problem() = delete;
@@ -77,6 +74,18 @@ public:
      * @return where the source/sink term is applied
      */
     Data::SourceSinkOn getSourceSinkOn() const { return M_ssOn; }
+    
+    //! Get where the numerical method type
+    /*!
+     * @return the numerical method type
+     */
+    Data::NumericalMethodType getNumet() const { return M_numet; }
+    
+    //! Get where the solver policy
+    /*!
+     * @return the solver policy
+     */
+    Data::SolverPolicy getSolverPolicy() const { return M_solvPolicy; }
 
     //! Get the class Quadrature
     /*!
@@ -101,18 +110,82 @@ public:
      * @return a pointer to the Solver
      */
     Solver * getSolverPtr() { return M_solver.get(); }
-
-    //! Get the matrix A
+    
+    //! Get the system matrix (Direct solver case)
     /*!
-     * @return the matrix A
+     * @return the momolithic system matrix 
      */
-    Matrix_Type & getA() { return M_A; }
-
-    //! Get the RHS
+    SpMat & getMatrix() throw()
+    {
+		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
+			return dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as an SpMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+	
+	//! Get the system matrix (Direct solver case)
     /*!
-     * @return the vector b
+     * @return the momolithic system matrix 
      */
-    Vector & getb() { return M_b; }
+    const SpMat & getMatrix() const throw()
+    {
+		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
+			return dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as an SpMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+	
+	//! Get the system matrix (Iterative solver case)
+    /*!
+     * @return the system matrix in block form.
+     */
+    SaddlePointMat & getSaddlePointMatrix() throw()
+    {
+		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
+			return dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as a SaddlePointMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+
+	//! Get the system matrix (Iterative solver case)
+    /*!
+     * @return the system matrix in block form.
+     */
+    const SaddlePointMat & getSaddlePointMatrix() const throw()
+    {
+		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
+			return dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();
+		else
+		{
+			std::stringstream error;	
+			error << "Error: with an iterative solver the matrix is stored as a SaddlePointMat"<<std::endl;
+			throw std::runtime_error(error.str());	
+		}	
+	}
+
+    //! Get the rhs
+    /*!
+     * @return a reference to the rhs
+     */
+    Vector & getRHS() { return M_solver->getb(); }
+    
+    //! Get the rhs
+    /*!
+     * @return a reference to the rhs
+     */
+    const Vector & getRHS() const { return M_solver->getb(); }
     //@}
 
     //! Assemble method
@@ -134,7 +207,7 @@ public:
     /*!
      * It calls assemble() and solve()
      */
-    virtual void assembleAndSolve() { assemble(); solve(); }
+    void assembleAndSolve() { assemble(); solve(); }
 
     //! Destructor
     virtual ~Problem() = default;
@@ -151,18 +224,16 @@ protected:
     const Data::SourceSinkOn M_ssOn;
     //! Indicates the numerical method
     const Data::NumericalMethodType M_numet;
+    //! Indicates the solver policy
+    const Data::SolverPolicy M_solvPolicy;
     //! Pointer to the quadrature class
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
     SolverPtr_Type M_solver;
-    //! Sparse matrix A from the linear system Ax=b
-    Matrix_Type& M_A;
-    //! Vector b from the linear system Ax=b
-    Vector& M_b;
 };
 
-template <class QRMatrix, class QRFracture, typename MatrixType>
-Problem<QRMatrix, QRFracture, MatrixType>::
+template <class QRMatrix, class QRFracture>
+Problem<QRMatrix, QRFracture>::
 Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
         const Func & func, const DataPtr_Type & data):
     M_mesh(mesh),
@@ -170,11 +241,10 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_func(func),
     M_ssOn(data->getSourceSinkOn()),
     M_numet(data->getNumericalMethodType()),
+    M_solvPolicy(data->getSolverPolicy()),
     M_quadrature(nullptr),
-    M_solver( SolverHandler::Instance().getProduct(solver) ),
-    M_A( M_solver->getA() ),
-    M_b( M_solver->getb() )
-{} // Problem::Problem
+    M_solver( SolverHandler::Instance().getProduct(solver) )
+	{} // Problem
 
 } // namespace FVCode3D
 

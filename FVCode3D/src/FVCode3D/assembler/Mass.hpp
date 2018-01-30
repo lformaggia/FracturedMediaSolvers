@@ -19,12 +19,12 @@ class PropertiesMap;
 
 //! Class for assembling a mass matrix
 /*!
- * @class MassMatrix
+ * @class MassMatHandlerFV
  * This class constructs the mass-matrix.
  * The adopted technique is the one of the finite volume method:
  * it hence represents the volume of the cell. The fractures are considered as cells.
  */
-class MassMatrix: public MatrixHandler
+class MassMatHandlerFV: public MatrixHandlerFV
 {
 public:
     //! @name Constructor & Destructor
@@ -33,15 +33,16 @@ public:
     //! Construct a Mass-Matrix, given a Rigid_Mesh.
     /*!
         @param rigid_mesh A Rigid_Mesh used to build the matrix
+        @param Mat The matrix
     */
-    MassMatrix(const Rigid_Mesh & rigid_mesh):
-        MatrixHandler(rigid_mesh, D_Cell) {}
+    MassMatHandlerFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+        MatrixHandlerFV(rigid_mesh, Mat) {}
     //! No Copy-Constructor
-    MassMatrix(const MassMatrix&) = delete;
+    MassMatHandlerFV(const MassMatHandlerFV &) = delete;
     //! No Empty-Constructor
-    MassMatrix() = delete;
+    MassMatHandlerFV() = delete;
     //! Destructor
-    ~MassMatrix() = default;
+    ~MassMatHandlerFV() = default;
     //@}
 
     //! @name Methods

@@ -12,35 +12,21 @@
 #include <algorithm>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
 
-//! Type for matrix size
-/*!
- * @enum DiscretizationType
- * It is possible to choose the size of the matrix.
- */
-enum DiscretizationType {D_Cell, D_Nodes};
-
-//! Base class for assembling a matrix
+//! Base class for assembling a system matrix
 /*!
  * @class MatrixHandler
- * This class is a base class used as a model for the derived classes (such as the stiffness matrix and mass matrix).
- * It implements a square-Matrix (N x N). It needs a Rigid_Mesh to be built.
+ * This class is a base class used as a model for the derived classes (such as the FV stiffness matrix or the MFD one).
+ * It implements a square-Matrix (N x N). It needs a Rigid_Mesh and a size to be built.
  * Abstract class.
  */
 class MatrixHandler
 {
-public:
-
-    //! Typedef for DiscretizationType
-    /*!
-        @typedef DType
-        This type definition permits to treat DiscretizationType as a DType.
-    */
-    typedef DiscretizationType DType;
-
+	
 public:
     //! @name Constructor & Destructor
     //@{
@@ -48,13 +34,11 @@ public:
     //! Construct a MatrixHandler, given a Rigid_Mesh.
     /*!
         @param rigid_mesh A Rigid_Mesh used to build the matrix
-        @param dtype It is the policy adopted for the discretization: per Cell or per Nodes (default Cell)
+        @param size The size of the stiffness matrix
     */
-    MatrixHandler(const Rigid_Mesh & rigid_mesh, DType dtype = D_Cell):
-        M_mesh (rigid_mesh), M_properties(M_mesh.getPropertiesMap()), M_policy(dtype),
-        M_size ((1-dtype)*(rigid_mesh.getCellsVector().size()+rigid_mesh.getFractureFacetsIdsVector().size())+dtype*(rigid_mesh.getNodesVector().size())),
-        M_offsetRow(0), M_offsetCol(0),
-        M_Matrix(new SpMat(this->M_size, this->M_size)) {}
+    MatrixHandler(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+        M_mesh(rigid_mesh), M_Matrix(Mat){}
+			
     //! No Copy-Constructor
     MatrixHandler(const MatrixHandler &) = delete;
     //! No Empty-Constructor
@@ -65,14 +49,94 @@ public:
 
     //! @name Get Methods
     //@{
-
-    //! Get Matrix (const)
+    //! Get Matrix (read only)
+    /*!
+     * @return A const reference to the matrix
+     */
+    const SpMat & getMatrix() const
+        {return M_Matrix;}
+    
+    //! Get Matrix 
     /*!
      * @return A reference to the matrix
      */
-    SpMat & getMatrix() const
-        {return *M_Matrix;}
+    SpMat & getMatrix() 
+        {return M_Matrix;}
 
+    //! Get size (const)
+    /*!
+     * @return The size N (number of rows) of the matrix
+     */
+    virtual UInt getSize() const
+        {return M_Matrix.rows();}
+    //@}
+
+    //! @name Methods
+    //@{
+     //! Show method
+    /*!
+     * Show system dimension
+     */
+    void show()
+    {
+		std::cout<<std::endl;
+		std::cout<<"The system dimension is : "<<getSize()<<std::endl<<std::endl;
+	}   
+    
+    //! Set dofs 
+    /*!
+     * @param size The dofs to be set
+     */
+    virtual void setDofs(const UInt size)
+    {
+		M_Matrix.resize(size,size);
+	}
+        
+    //! Assemble method
+    /*!
+     * Assemble the matrix
+     */
+    virtual void assemble()=0;
+    //@}
+
+protected:
+    //! A constant reference to the Rigid_Mesh
+    const Rigid_Mesh & M_mesh;
+    //! A reference to the system matrix
+    SpMat & M_Matrix;
+};
+
+
+//! Base class for assembling a FV system matrix
+/*!
+ * @class MatrixHandlerFV
+ * This class is a base class used as a model for the derived 
+ * FV classes (such as the FV stiffness matrix or FV mass matrix).
+ * The used scheme is based on the Eigen triplets.
+ * Abstract class.
+ */
+class MatrixHandlerFV: public MatrixHandler
+{
+	public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a MatrixHandler, given a Rigid_Mesh.
+    /*!
+        @param rigid_mesh A Rigid_Mesh used to build the matrix
+        @param M_numet It is the numerical method used for the discretization
+    */
+    MatrixHandlerFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+        MatrixHandler(rigid_mesh, Mat), M_offsetRow(0), M_offsetCol(0){}
+    //! No Copy-Constructor
+    MatrixHandlerFV(const MatrixHandlerFV &) = delete;
+    //! No Empty-Constructor
+    MatrixHandlerFV() = delete;
+    //! Default Destructor
+    virtual ~MatrixHandlerFV() = default;
+    //@}
+
+    //! @name Get Methods
+    //@{
     //! Get Triplets (const)
     /*!
      * @return A reference to the triplets
@@ -85,25 +149,27 @@ public:
      * @return The size N (number of rows) of the matrix
      */
     UInt getSize() const
-        {return M_size + M_offsetRow;}
+        {return M_Matrix.size() + M_offsetRow;}
     //@}
 
-    //! @name Methods
+    //! @name Assemble Methods
     //@{
-
     //! Assemble method
     /*!
      * Assemble the matrix
      */
     virtual void assemble()=0;
+    //@}
 
+    //! @name Methods
+    //@{
     //! Close the matrix
     /*!
      * Fill the matrix with triplets and clear the vector of triplets
      */
     virtual void closeMatrix()
     {
-        M_Matrix->setFromTriplets( std::begin( M_matrixElements ), std::end( M_matrixElements ) );
+        M_Matrix.setFromTriplets( std::begin( M_matrixElements ), std::end( M_matrixElements ) );
         M_matrixElements.clear();
     }
 
@@ -126,29 +192,56 @@ public:
     {
         M_offsetRow = row;
         M_offsetCol = col;
-        M_Matrix.reset(new SpMat(M_size + M_offsetRow, M_size + M_offsetCol));
+        M_Matrix = SpMat(M_Matrix.size() + M_offsetRow, M_Matrix.size() + M_offsetCol);
     }
     //@}
 
 protected:
-    //! A constant reference to a Rigid_Mesh
-    const Rigid_Mesh & M_mesh;
-    //! A constant reference to a PropertiesMap
-    const PropertiesMap & M_properties;
-    //! It explains if the matrix has the size of the number of Cells or the number of Nodes
-    DType M_policy;
-    //! The number of dofs of the matrix
-    UInt M_size;
-
     //! Row offset
     UInt M_offsetRow;
     //! Column offset
     UInt M_offsetCol;
-
-    //! A unique pointer to the assembled matrix
-    std::unique_ptr<SpMat> M_Matrix;
     //! Vector of triplets
     std::vector<Triplet> M_matrixElements;
+};
+
+//! Base class for assembling a MFD system matrix
+/*!
+ * @class MatrixHandlerMFD
+ * This class is a base class used as a model for the derived system 
+ * MFD classes (such as the MFD stiffness matrix).
+ * We build up the matrix system directly with insert, so we do not need the
+ * triplets but we need to compress it after having built it.
+ * Abstract class.
+ */
+class MatrixHandlerMFD: public MatrixHandler
+{
+	public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a MatrixHandler, given a Rigid_Mesh.
+    /*!
+        @param rigid_mesh A Rigid_Mesh used to build the matrix
+        @param M_numet It is the numerical method used for the discretization
+    */
+    MatrixHandlerMFD(const Rigid_Mesh & rigid_mesh, SpMat & Mat):
+		MatrixHandler(rigid_mesh, Mat){}
+    //! No Copy-Constructor
+    MatrixHandlerMFD(const MatrixHandlerMFD &) = delete;
+    //! No Empty-Constructor
+    MatrixHandlerMFD() = delete;
+    //! Default Destructor
+    virtual ~MatrixHandlerMFD() = default;
+    //@}
+
+    //! @name Assemble Methods
+    //@{
+    //! Assemble method
+    /*!
+     * Assemble the matrix
+     */
+    virtual void assemble()=0;
+    //@}
 };
 
 } // namespace FVCode3D

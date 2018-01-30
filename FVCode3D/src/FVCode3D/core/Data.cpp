@@ -21,7 +21,7 @@ Data::Data():
     M_numet(FV), M_lumpedMim(false),
     M_problemType(steady), M_fracturesOn(true), M_ssOn(SourceSinkOn::None),
     M_setFracturesPressure(false), M_fracturesPressure(0.),
-    M_MSR(false), M_nbSubRegions(1),
+    M_nbSubRegions(1),
     M_nbTimeStepSteadyState(0), M_tolSteadyState(1e-8),
     M_permeabilityType("ScalarPermeability"),
     M_permMatrix(0.), M_poroMatrix(0.),
@@ -36,6 +36,7 @@ Data::Data(const std::string dataFileName) throw()
 {
     EnumParser<MeshFormatType> parserMeshType;
     EnumParser<NumericalMethodType> parserNumericalMethodType;
+    EnumParser<SolverPolicy> parserSolverPolicy;
     EnumParser<ProblemType> parserProblemType;
     EnumParser<NoiseOn> parserNoiseOn;
     EnumParser<SourceSinkOn> parserSourceSinkOn;
@@ -77,6 +78,7 @@ Data::Data(const std::string dataFileName) throw()
     M_stDevNDist = dataFile("domain/stDevN", 1.);
 
     M_numet = parserNumericalMethodType.parse( dataFile("numet/method", "FV") );
+    M_SolverPolicy = parserSolverPolicy.parse( dataFile("solver/policy", "Direct") );
     M_lumpedMim = static_cast<bool>(dataFile("mimetic/lumped", 0));
 
     M_problemType = parserProblemType.parse( dataFile("problem/type", "steady") );
@@ -86,7 +88,6 @@ Data::Data(const std::string dataFileName) throw()
     M_setFracturesPressure = static_cast<bool>(dataFile("problem/fracPressOn", 0));
     M_fracturesPressure = dataFile("problem/fracPress", 0.);
 
-    M_MSR = static_cast<bool>(dataFile("msr/MSROn", 0));
     M_nbSubRegions = dataFile("msr/nbSubRegions", 1 );
     M_nbTimeStepSteadyState = dataFile("msr/nbStep", 0 );
     M_tolSteadyState = dataFile("msr/tol", 1e-8 );
@@ -108,6 +109,7 @@ Data::Data(const std::string dataFileName) throw()
     M_solverType = dataFile("solver/type", "EigenUmfPack");
     M_maxIt = dataFile("solver/iterative/maxIt", 1000);
     M_tol = dataFile("solver/iterative/tolerance", 1e-4);
+    M_precon = dataFile("solver/iterative/preconditioner", "ILU");
 
     M_theta = dataFile("bc/theta", 0.);
 
@@ -244,8 +246,6 @@ void Data::showMe( std::ostream & output ) const
 
     output << "Size of the permeability: " << M_permeabilityType << std::endl;
 
-    output << "MSR On: " << M_MSR << std::endl;
-
     if(M_problemType == pseudoSteady)
     {
         output << "Initial time: " << M_initTime << std::endl;
@@ -253,13 +253,6 @@ void Data::showMe( std::ostream & output ) const
         output << "Time step: " << M_timeStep << std::endl;
 
         output << "Compressibility: " << M_compressibility << std::endl;
-
-        if(M_MSR)
-        {
-            output << "# sub regions: " << M_nbSubRegions << std::endl;
-            output << "# time step: " << M_nbTimeStepSteadyState << std::endl;
-            output << "Tolerance : " << M_tolSteadyState << std::endl;
-        }
     }
 
     output << "Mobility: " << M_mobility << std::endl;
@@ -270,6 +263,8 @@ void Data::showMe( std::ostream & output ) const
         output << "# max iter: " << M_maxIt << std::endl;
         output << "Tolerance: " << M_tol << std::endl;
     }
+    if(dynamic_cast<IterativeSolver*>(SolverHandler::Instance().getProduct(M_solverType).get()))
+		output << "Preconditioner: " << M_precon << std::endl;
 
     output << "Theta: " << M_theta << std::endl;
 
@@ -286,6 +281,13 @@ EnumParser<Data::NumericalMethodType>::EnumParser()
 {
     M_enumMap[ toUpper( "FV" ) ] = Data::NumericalMethodType::FV;
     M_enumMap[ toUpper( "MFD" ) ] = Data::NumericalMethodType::MFD;
+}
+
+template<>
+EnumParser<Data::SolverPolicy>::EnumParser()
+{
+    M_enumMap[ toUpper( "Direct" ) ] = Data::SolverPolicy::Direct;
+    M_enumMap[ toUpper( "Iterative" ) ] = Data::SolverPolicy::Iterative;
 }
 
 template<>

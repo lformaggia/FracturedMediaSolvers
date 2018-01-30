@@ -1,6 +1,6 @@
 #! /bin/bash
 
-ver="3.2.1"
+ver="3.3.4"
 
 download_eigen() {
     if [ -f ${packages_src_dir}/${ver}.tar.gz ]; then

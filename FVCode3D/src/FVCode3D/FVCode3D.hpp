@@ -16,7 +16,11 @@
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/core/Chrono.hpp>
 #include <FVCode3D/solver/Solver.hpp>
-#include <FVCode3D/solver/SolverHandler.hpp>
+#include <FVCode3D/solver/bicgstab.hpp>
+#include <FVCode3D/solver/cg.hpp>
+#include <FVCode3D/solver/gmres.hpp>
+#include <FVCode3D/solver/gmres_util.hpp>
+#include <FVCode3D/solver/LinearAlgebraTraits.hpp>
 #include <FVCode3D/import/Import.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/quadrature/QuadratureRules.hpp>
@@ -28,6 +32,11 @@
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/assembler/Mass.hpp>
 #include <FVCode3D/assembler/MatrixHandler.hpp>
+#include <FVCode3D/assembler/local_operator.hpp>
+#include <FVCode3D/assembler/global_operator.hpp>
+#include <FVCode3D/assembler/SaddlePoint.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
+#include <FVCode3D/preconditioner/preconHandler.hpp>
 #include <FVCode3D/geometry/CoordinateSystem.hpp>
 #include <FVCode3D/geometry/Operations.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>

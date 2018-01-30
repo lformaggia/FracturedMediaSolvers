@@ -10,7 +10,11 @@
 #include <FVCode3D/problem/Problem.hpp>
 #include <FVCode3D/quadrature/Quadrature.hpp>
 #include <FVCode3D/assembler/Stiffness.hpp>
+#include <FVCode3D/assembler/SaddlePoint.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <unsupported/Eigen/SparseExtra>
+#include <Eigen/LU>
+#include <vector>
 
 namespace FVCode3D
 {
@@ -22,16 +26,10 @@ namespace FVCode3D
  * It defines the assemble and the solve method.
  * The first and the second template parameter indicate the quadrature rule for the matrix and fracture respectively.
  */
-template <class QRMatrix, class QRFracture, typename MatrixType = SpMat>
-class DarcySteady : public Problem<QRMatrix, QRFracture, MatrixType>
+template <class QRMatrix, class QRFracture>
+class DarcySteady : public Problem<QRMatrix, QRFracture>
 {
 public:
-
-    //! Typedef for the matrix type
-    /*!
-     * @typedef Matrix_Type
-     */
-    typedef MatrixType Matrix_Type;
 
     //! No default constructor
     DarcySteady() = delete;
@@ -49,13 +47,7 @@ public:
      */
     DarcySteady(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditions & bc,
                 const Func & func, const DataPtr_Type & data):
-        Problem<QRMatrix, QRFracture, MatrixType>(solver, mesh, bc, func, data) {};
-
-    //! Get the stiffness matrix
-    /*!
-     * @return the stiffness matrix
-     */
-    virtual Matrix_Type & getStiffnessMatrix() { return this->M_A; }
+        Problem<QRMatrix, QRFracture>(solver, mesh, bc, func, data) {};
 
     //! Assemble matrix method
     /*!
@@ -74,44 +66,60 @@ public:
      * Solve the system Ax=b.
      * @pre call assemble().
      */
-    virtual void solve() { this->M_solver->solve();
-        Eigen::saveMarket( this->M_A, "./mMatrix/A.m" );
-        Eigen::saveMarket( this->M_b, "./mMatrix/b.m" );
-        Eigen::saveMarket( this->M_solver->getSolution(), "./mMatrix/sol.m" ); }
+    virtual void solve() { this->M_solver->solve(); }
 
     //! Destructor
     virtual ~DarcySteady() = default;
 };
 
-template <class QRMatrix, class QRFracture, typename MatrixType>
-void DarcySteady<QRMatrix, QRFracture, MatrixType >::
+template <class QRMatrix, class QRFracture>
+void DarcySteady<QRMatrix, QRFracture>::
 assembleMatrix()
 {
+	const UInt numFracture  = this->M_mesh.getFractureFacetsIdsVector().size();
+	const UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + numFracture;
+	const UInt numCell      = this->M_mesh.getCellsVector().size();
+	
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
-
-    StiffMatrix S(this->M_mesh, this->M_bc);
-
-    if(this->M_numet == Data::NumericalMethodType::FV)
+    auto & b = this->getRHS();
+    
+    if( this->M_numet == Data::NumericalMethodType::FV && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
+		auto & A = this->getMatrix();
+		StiffMatHandlerFV S(this->M_mesh, A, b, this->M_bc);
+		S.setDofs(numFacetsTot+numCell+numFracture);
         S.assemble();
         S.closeMatrix();
+        S.show();
     }
-    else if(this->M_numet == Data::NumericalMethodType::MFD)
+   else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
-        S.assembleMFD();
+		auto & A = this->getMatrix();
+        StiffMatHandlerMFD S(this->M_mesh, A, b, this->M_bc);
+		S.setDofs(numFacetsTot+numCell+numFracture);
+		S.assemble();
+        S.show();
     }
-
-    this->M_A = S.getMatrix();
-    this->M_b = S.getBCVector();
+    else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Iterative )
+    {
+		auto & ASP = this->getSaddlePointMatrix();
+		SaddlePoint_StiffMatHandler S(this->M_mesh, ASP, b, this->M_bc);
+		S.setDofs(numFacetsTot,numCell+numFracture);
+		S.assemble();
+		S.show();
+	}
 } // DarcySteady::assembleMatrix
 
-template <class QRMatrix, class QRFracture, typename MatrixType>
-void DarcySteady<QRMatrix, QRFracture, MatrixType >::
+template <class QRMatrix, class QRFracture>
+void DarcySteady<QRMatrix, QRFracture>::
 assembleVector()
 {
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
-
-    Vector f( Vector::Constant( this->M_A.rows(), 0.) );
+	auto & M_b = this->getRHS();
+		
+		UInt numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+		Vector f( Vector::Constant( numCellsTot, 0.) );   
+		
     if ( this->M_mesh.getCellsVector().size() != 0
             &&
             ( this->M_ssOn == Data::SourceSinkOn::Both
@@ -130,14 +138,19 @@ assembleVector()
         f += this->M_quadrature->cellIntegrateFractures(this->M_func);
     } // if
 
-    if ( this->M_b.size() == 0 )
+    if ( M_b.size() == 0 )
     {
-        this->M_b = f;
+         M_b = f;
     } // if
-    else
+    if(this->M_numet == Data::NumericalMethodType::FV)
     {
-        this->M_b += f;
-    } // else
+		 M_b += f;
+		}
+    if(this->M_numet == Data::NumericalMethodType::MFD)
+    {
+		UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+        M_b.segment(numFacetsTot,numCellsTot) -= f;
+    } 
 } // DarcySteady::assembleVector
 
 } // namespace FVCode3D

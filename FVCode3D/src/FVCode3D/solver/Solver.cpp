@@ -6,9 +6,12 @@
 #include <sstream>
 
 #include <FVCode3D/solver/Solver.hpp>
-#ifdef FVCODE3D_HAS_UMFPACK
+#include <FVCode3D/solver/cg.hpp>
+#include <FVCode3D/solver/bicgstab.hpp>
+#include <FVCode3D/solver/gmres.hpp>
+#include <FVCode3D/preconditioner/preconditioner.hpp>
+#include <FVCode3D/preconditioner/preconHandler.hpp>
 #include <Eigen/UmfPackSupport>
-#endif // FVCODE3D_HAS_UMFPACK
 
 #ifdef FVCODE3D_HAS_SAMG
 #include <samg.h>
@@ -19,7 +22,7 @@ namespace FVCode3D
 
 void EigenCholesky::solve()
 {
-    Eigen::SimplicialCholesky<SpMat> chol(M_A);
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol(M_A);
     M_x = chol.solve(M_b);
 } // EigenCholesky::solve
 
@@ -33,47 +36,50 @@ void EigenLU::solve()
 } // EigenLU::solve
 
 
-#ifdef FVCODE3D_HAS_UMFPACK
 void EigenUmfPack::solve()
 {
     Eigen::UmfPackLU<SpMat> lu( M_A );
     M_x = lu.solve( M_b );
 } // EigenUmfPack::solve
-#endif // FVCODE3D_HAS_UMFPACK
 
+Real constexpr IterativeSolver::S_referenceTol;
+UInt constexpr IterativeSolver::S_referenceMaxIter;
 
-Real IterativeSolver::S_referenceTol = 1e-6;
-UInt IterativeSolver::S_referenceMaxIter = 100;
-
-
-void EigenCG::solve()
+constexpr bool imlBiCGSTAB::Default_restart;
+void imlBiCGSTAB::solve()
 {
-    Eigen::ConjugateGradient<SpMat> cg;
+	// Define the initial guess to zero
+	M_x = Vector::Zero(M_A.getM().rows()+M_A.getB().rows());
+	// Set the restart
+//	setRestart(true);
+	// Conversion needed
+	int iter = (int) M_maxIter;
+	// Solve the system
+	int conv = BiCGSTAB(M_A, M_x, M_b, *preconPtr, restart, iter, M_res);
+	// Conversion needed
+	CIndex = (UInt) conv;	
+	M_iter = (UInt) iter;
 
-    cg.setMaxIterations(M_maxIter);
-    cg.setTolerance(M_tol);
-
-    cg.compute(M_A);
-    M_x = cg.solve(M_b);
-
-    M_iter = cg.iterations();
-    M_res = cg.error();
-} // EigenCG::solve
+} // imlBiCGSTAB::solve
 
 
-void EigenBiCGSTAB::solve()
+constexpr UInt imlGMRES::Default_m;
+void imlGMRES::solve()
 {
-    Eigen::BiCGSTAB<SpMat> bicgstab;
-
-    bicgstab.setMaxIterations(M_maxIter);
-    bicgstab.setTolerance(M_tol);
-
-    bicgstab.compute(M_A);
-    M_x = bicgstab.solve(M_b);
-
-    M_iter = bicgstab.iterations();
-    M_res = bicgstab.error();
-} // EigenBiCGSTAB::solve
+	// Define the initial guess to zero
+	M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
+	// Set the restart level
+//	set_m(60);
+	// Conversion needed
+	int iter = (int) M_maxIter;
+	int m_int = (int) m;
+	// Solve the system
+	int conv = GMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
+	// Conversion needed
+	CIndex = (UInt) conv;	
+	M_iter = (UInt) iter;
+	
+} // imlGMRES::solve
 
 
 #ifdef FVCODE3D_HAS_SAMG

@@ -62,8 +62,20 @@ typedef Eigen::SparseMatrix<Real> SpMat;
 //! Type for eigen row-major sparse matrix of Real
 typedef Eigen::SparseMatrix<Real, Eigen::RowMajor> SpMatRM;
 
+//! The diagonal matrix representing the lumped inner product matrix
+typedef	Eigen::DiagonalMatrix<Real, Eigen::Dynamic> DiagMat;
+
 //! Type for eigen vectors
 typedef Eigen::VectorXd Vector;
+
+//! Type for eigen dense matrix of real with dynamic size
+typedef Eigen::Matrix<Real,Eigen::Dynamic,Eigen::Dynamic> Mat;
+
+//! Type for eigen dense matrix of real with dynamic row size and 3 fixed column size
+typedef Eigen::Matrix<Real,Eigen::Dynamic,3> Mat3;
+
+//! Type for eigen dense matrix of real with 3x3 size
+typedef Eigen::Matrix<Real,3,3> Mat33;
 
 //! Type for eigen UInt vectors
 typedef Eigen::Matrix<UInt, Eigen::Dynamic, 1> UIntVector;

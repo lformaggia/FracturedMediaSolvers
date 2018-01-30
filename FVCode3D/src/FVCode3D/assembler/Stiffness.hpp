@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <FVCode3D/assembler/MatrixHandler.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
@@ -21,12 +22,12 @@ class PropertiesMap;
 
 //! Class for assembling a stiffness matrix
 /*!
- * @class StiffMatrix
- * This class constructs the stiffness-matrix for the Darcy problem.
+ * @class StiffMatHandlerFV
+ * This class constructs the FV stiffness-matrix for the Darcy problem.
  * The adopted technique is a two point finite volume method.
  * The fractures are considered as cells and take part to discretization.
  */
-class StiffMatrix: public MatrixHandler
+class StiffMatHandlerFV: public MatrixHandlerFV
 {
 
     //! Typedef for std::pair<UInt,UInt>
@@ -52,30 +53,38 @@ public:
     //! @name Constructor & Destructor
     //@{
 
-    //! Construct a stiffness-Matrix, given a Rigid_Mesh and the boundary conditions
+    //! Construct a stiffness-Matrix handler.
     /*!
      * @param rigid_mesh A Rigid_Mesh used to build the matrix
+     * @param Mat The matrix
+     * @param b The rhs
      * @param BC Boundary conditions given in the container BoundaryConditions
      */
-    StiffMatrix(const Rigid_Mesh & rigid_mesh, const BoundaryConditions & BC):
-        MatrixHandler(rigid_mesh), M_b (new Vector(Vector::Constant( this->M_size, 0.))),
-        M_bc(BC) {}
+    StiffMatHandlerFV(const Rigid_Mesh & rigid_mesh, SpMat & Mat, Vector & b, const BoundaryConditions & BC):
+        MatrixHandlerFV(rigid_mesh, Mat), M_b(b), M_bc(BC) {}
     //! No Copy-Constructor
-    StiffMatrix(const StiffMatrix &) = delete;
+    StiffMatHandlerFV(const StiffMatHandlerFV &) = delete;
     //! No Empty-Constructor
-    StiffMatrix() = delete;
+    StiffMatHandlerFV() = delete;
     //! Destructor
-    ~StiffMatrix() = default;
+    ~StiffMatHandlerFV() = default;
     //@}
 
     //! @name Get Methods
     //@{
-    //! Get BC vector (const)
+    //! Get BC vector (read only)
     /*!
      * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
      */
     const Vector & getBCVector() const
-        {return *M_b;}
+        {return M_b;}
+        
+    //! Get BC vector 
+    /*!
+     * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    Vector & getBCVector() 
+        {return M_b;}
     //@}
 
     //! @name Methods
@@ -86,25 +95,28 @@ public:
      */
     void assemble();
 
-    //! @name Methods
-    //@{
-    //! Assemble method with MFD
+    //! Set dofs 
     /*!
-     * Assemble the stiffness matrix
+     * @param size The dofs to be set
      */
-    void assembleMFD();
+    void setDofs(const UInt size)
+    {
+		MatrixHandler::setDofs(size);
+		M_b.resize(size);
+	}
 
     //! Set offsets
     /*!
      * Set offsets and resize the matrix as number of dofs + offsets.
-     * Further, it resizes the RHS and initializes it to zero.
+     * Further, it resizes the RHS.
      * @param row row offset
      * @param col column offset
      */
     virtual void setOffsets(const UInt row, const UInt col)
     {
         this->setOffsets(row, col);
-        M_b.reset( new Vector( Vector::Constant( this->M_size + this->M_offsetRow, 0. ) ) );
+        M_b.resize(M_Matrix.size() + M_offsetRow);
+        M_b.setZero();
     }
 
     //@}
@@ -193,10 +205,85 @@ protected:
     //@}
 
 protected:
-    //! Unique pointer to the vector that contains the effects of BCs on the RHS
-    std::unique_ptr<Vector> M_b;
+    //! A reference to the vector that contains the effects of BCs on the RHS
+    Vector & M_b;
     //! The constant container of the BCs
     const BoundaryConditions & M_bc;
+};
+
+
+//! Class for assembling a MFD system matrix.
+/*!
+ * @class StiffMatHandlerMFD
+ * This is the class that actually assemble the MFD stiffness matrix. It builds up the matrix system S
+ * in an efficient way using the global_BulkBuilder and the FractureBuilder. The bulk builder
+ * builds up the M, B, Dt matrices, then we impose the bulk bcs on M and on the rhs. The 
+ * fracture builder builds up the coupling conditions matrices C and Ct, it modifies properly
+ * the M matrix (coupling conditions again) and builds up the trasmissibility matrix -T.
+ * Then the fracture bcs are imposed on -T and on the rhs.
+ */
+class StiffMatHandlerMFD: public MatrixHandlerMFD
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Construct a StiffMatHandlerMFD.
+    /*!
+     * @param rMesh A constant reference to the mesh
+     * @param BCmap A constant reference to the boundary conditions
+     * @param size  The dimension of the stiffness matrix
+     */
+	StiffMatHandlerMFD( const Rigid_Mesh & rMesh, SpMat & Mat, Vector & b, const BoundaryConditions & BCmap):
+		MatrixHandlerMFD(rMesh, Mat), M_b(b), M_bc(BCmap){}
+	//! No Copy-Constructor
+    StiffMatHandlerMFD(const StiffMatHandlerMFD &) = delete;
+	//! No Empty-Constructor
+    StiffMatHandlerMFD() = delete;
+	//! Destructor
+    ~StiffMatHandlerMFD() = default;
+	//@}
+
+    //! @name Get Methods
+    //@{
+    //! Get BC vector (read only)
+    /*!
+     * @return A reference to a constant vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    const Vector & getBCVector() const
+        {return M_b;}
+        
+    //! Get BC vector 
+    /*!
+     * @return A reference to a vector that represents the part of the right hand side due to the boundary conditions.
+     */
+    Vector & getBCVector()
+        {return M_b;}
+    //@}
+
+	//! @name Assemble Methods
+    //@{
+    //! Set dofs 
+    /*!
+     * @param size The dofs to be set
+     */
+    void setDofs(const UInt size)
+    {
+		MatrixHandler::setDofs(size);
+		M_b.resize(size);
+	}
+	
+    //! Assemble method for the MFD stiffness matrix.
+    /*!
+     * Assemble the MFD stiffness matrix using the bulk and fracture builders.
+     */
+    void assemble();
+    //@}
+
+private:
+	//! Constant reference to the boundary conditions
+	const BoundaryConditions      &	M_bc;
+	//! A reference to the rhs of the system
+	Vector                        & M_b;  
 };
 
 } // namespace FVCode3D

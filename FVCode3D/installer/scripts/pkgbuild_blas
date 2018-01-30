@@ -1,6 +1,6 @@
 #! /bin/bash
 
-ver="3.5.0"
+ver="3.8.0"
 
 download_blas() {
     if [ -f ${packages_src_dir}/blas.tgz ]; then

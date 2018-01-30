@@ -9,6 +9,7 @@
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/Mesh3D.hpp>
 #include <FVCode3D/property/Properties.hpp>
+#include <FVCode3D/geometry/Point3D.hpp>
 
 #include <cmath>
 #include <set>
@@ -506,6 +507,13 @@ public:
          */
         UInt neighborsNumber() const
             { return M_neighborsIds.size (); }
+            
+        //! The facet orientation wrt the cell
+        /*!
+         * @param the Facet
+         * @return the alpha orientation of the facet
+         */
+        Real orientationFacet(const Facet & fac) const throw();
 
         //! Get volume (const)
         /*!
@@ -1135,6 +1143,17 @@ public:
          */
         UInt getBorderId() const
             {return M_mesh->getFacetsVector()[M_id].getBorderId();}
+            
+        //! Get facet characteristic length (useful for scaling Nitsche BC)
+        /*!
+         * @return the facet characteristic length
+         */
+        Real get_h() const
+            {
+				auto comp=[this](const UInt & Id1, const UInt & Id2)
+				{return ( ( (this->M_mesh)->getNodesVector()[Id1] - this->getCentroid() ).norm() < ( (this->M_mesh)->getNodesVector()[Id2] - this->getCentroid() ).norm() ) ;};
+				return ( (this->M_mesh)->getNodesVector()[ *(std::max_element(this->getFacet().getVerticesIds().begin(),this->getFacet().getVerticesIds().end(), comp)) ] - this->getCentroid() ).norm();
+			}    
         //@}
     };
 
