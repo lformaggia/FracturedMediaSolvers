@@ -9,6 +9,7 @@
 #include <FVCode3D/solver/cg.hpp>
 #include <FVCode3D/solver/bicgstab.hpp>
 #include <FVCode3D/solver/gmres.hpp>
+#include <FVCode3D/solver/fgmres.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/preconditioner/preconHandler.hpp>
 #include <Eigen/UmfPackSupport>
@@ -63,8 +64,8 @@ void imlBiCGSTAB::solve()
 } // imlBiCGSTAB::solve
 
 
-constexpr UInt imlGMRES::Default_m;
-void imlGMRES::solve()
+constexpr UInt imlFGMRES::Default_m;
+void imlFGMRES::solve()
 {
 	// Define the initial guess to zero
 	M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
@@ -74,7 +75,7 @@ void imlGMRES::solve()
 	int iter = (int) M_maxIter;
 	int m_int = (int) m;
 	// Solve the system
-	int conv = GMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
+	int conv = FGMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
 	// Conversion needed
 	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;

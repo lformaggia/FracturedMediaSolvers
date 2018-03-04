@@ -19,6 +19,8 @@
 #include <FVCode3D/solver/bicgstab.hpp>
 #include <FVCode3D/solver/cg.hpp>
 #include <FVCode3D/solver/gmres.hpp>
+#include <FVCode3D/solver/fgmres.hpp>
+#include <FVCode3D/solver/minres.hpp>
 #include <FVCode3D/solver/gmres_util.hpp>
 #include <FVCode3D/solver/LinearAlgebraTraits.hpp>
 #include <FVCode3D/import/Import.hpp>

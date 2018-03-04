@@ -603,13 +603,13 @@ private:
  * This class implements a linear solver for the system Ax=b.
  * It uses the generalized minimum residual method with restart on a square matrix.
  */
-class imlGMRES : public IterativeSolver
+class imlFGMRES : public IterativeSolver
 {
 public:
     //! @name Constructor & Destructor
     //@{
     //! Empty constructor
-    imlGMRES(): IterativeSolver(), m(Default_m) {}
+    imlFGMRES(): IterativeSolver(), m(Default_m) {}
 
 	//! Constructor
     /*!
@@ -617,7 +617,7 @@ public:
      * @param Brow B block row
      * @param Bcol B block col
      */
-	imlGMRES(const UInt Mdim,const UInt Brow):
+	imlFGMRES(const UInt Mdim,const UInt Brow):
 		IterativeSolver(Mdim,Brow), m(Default_m) {}
 
     //! Constructor
@@ -625,11 +625,11 @@ public:
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-    imlGMRES( const SaddlePointMat & A, const Vector & b ):
+    imlFGMRES( const SaddlePointMat & A, const Vector & b ):
         IterativeSolver(A, b), m(Default_m) {}
   
     //! Destructor
-    ~imlGMRES() = default;
+    ~imlFGMRES() = default;
     //@}
         
     //! @name Set Methods

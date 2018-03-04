@@ -46,6 +46,29 @@ void lumpIP_builder::build(DiagMat & M_lump) const
 			M_lump.diagonal()[it.row()] += it.value();
 }
 
+/*
+UInt constexpr BlockDiag_preconditioner::MaxIt_Default;
+Real constexpr BlockDiag_preconditioner::tol_Default;
+
+Vector BlockDiag_preconditioner::solve(const Vector & r) const
+{
+	Vector z(Md_inv.rows()+ISC.rows());
+	// First step: solve diagonal system
+	z.head(Md_inv.rows()) = Md_inv*r.head(Md_inv.rows());
+	// Second step: solve Inexact Schur Complement linear system
+    Eigen::ConjugateGradient<SpMat> cg;
+    cg.setMaxIterations(MaxIt);
+    cg.setTolerance(tol);
+    cg.compute(-ISC);
+    z.tail(ISC.rows()) = cg.solve(r.tail(ISC.rows()));
+#ifdef PRINT_INFO_CG
+ 	std::cout << "#iterations:     " << cg.iterations() << std::endl;
+	std::cout << "estimated error: " << cg.error()      << std::endl;
+#endif
+    return z;
+}
+*/
+
 UInt constexpr BlockTriangular_preconditioner::MaxIt_Default;
 Real constexpr BlockTriangular_preconditioner::tol_Default;
 
