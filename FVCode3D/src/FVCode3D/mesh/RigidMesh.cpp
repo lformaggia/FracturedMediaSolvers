@@ -468,6 +468,199 @@ void Rigid_Mesh::showMe ( std::ostream & out ) const
     out << "Number of Border-Tip-Edges: " << M_borderTipEdges.size() <<std::endl;
 }
 
+void Rigid_Mesh::BuildEdges ()
+{
+	for(auto & edge : M_edges)
+	{
+		std::vector<UInt> sepCells_byEdge;
+		for(auto & facetId : edge.getSeparatedFacetsIds())
+		{
+			M_facets[facetId].M_edgesIds.push_back(edge.getId());
+			for(auto & cellId : M_facets[facetId].getSeparatedCellsIds() ) 
+				sepCells_byEdge.push_back(cellId);
+		}
+		sort( sepCells_byEdge.begin(), sepCells_byEdge.end() );
+		sepCells_byEdge.erase( unique( sepCells_byEdge.begin(), sepCells_byEdge.end() ), sepCells_byEdge.end() );
+		for(auto & cellId : sepCells_byEdge)
+			M_cells[cellId].M_edgesIds.push_back(edge.getId());
+	}
+	// Reordinate facet edges
+	for(auto & facet : M_facets)
+	{
+		std::vector<UInt> NewEdgeOrder;
+		auto NumVertex = facet.getVerticesIds().size();
+		for(auto it_vertex = facet.getVerticesIds().begin(); it_vertex!=facet.getVerticesIds().end()-1; it_vertex++)
+		{
+			Edge3D edge_facet(*it_vertex,*(it_vertex+1));
+			for(auto & edgeId : facet.M_edgesIds)
+			{
+				auto & edgeVertex = M_edges[edgeId].getEdge();
+				if( (edge_facet.first == edgeVertex.first && edge_facet.second == edgeVertex.second) ||
+					(edge_facet.first == edgeVertex.second && edge_facet.second == edgeVertex.first) )
+					NewEdgeOrder.push_back(edgeId);
+			}
+		}
+		Edge3D edge_facet(facet.getVerticesIds()[NumVertex-1],facet.getVerticesIds()[0]);
+		for(auto & edgeId : facet.M_edgesIds)
+		{
+			auto & edgeVertex = M_edges[edgeId].getEdge();
+			if( (edge_facet.first == edgeVertex.first && edge_facet.second == edgeVertex.second) ||
+				(edge_facet.first == edgeVertex.second && edge_facet.second == edgeVertex.first) )
+				NewEdgeOrder.push_back(edgeId);
+		}
+		facet.M_edgesIds = NewEdgeOrder;		
+	}
+}
+
+void Rigid_Mesh::BuildOrientationFacets ()
+{
+// Loop over the cells of the mesh
+for(auto & cell : M_cells)
+{	
+	// Build map with tangent edge vectors of the facets of the cell and
+	// a map to know if a facet has been already visited
+	std::map<UInt, std::vector<Point3D> > tangVecToFacet;
+	std::map<UInt, bool> visitedFacets;
+	for(auto & facId : cell.getFacetsIds())
+	{
+		visitedFacets[facId] = false;
+		auto & facet = M_facets[facId];
+		auto NumVertex = facet.verticesNumber(); 
+		for(auto it_vertex = facet.getVerticesIds().begin(); it_vertex!=facet.getVerticesIds().end()-1; it_vertex++)
+		{
+			tangVecToFacet[facId].push_back( M_nodes[*(it_vertex+1)] - M_nodes[*it_vertex] );
+		}
+		tangVecToFacet[facId].push_back( M_nodes[facet.getVerticesIds()[0]] - M_nodes[facet.getVerticesIds()[NumVertex-1]] );	
+	}
+	
+	// Start the routine to make the orientations of the edges of the adjacent facets of the cell coherent
+	std::set<UInt> adjFacIds; 
+	adjFacIds.insert(cell.getFacetsIds()[0]);
+	visitedFacets[cell.getFacetsIds()[0]] = true;
+	UInt count = 1;
+	std::set<UInt> newadjFacs;
+	while(count != cell.facetsNumber())
+	{
+	for(auto & facId : adjFacIds)
+	{
+		if(count == cell.facetsNumber())
+			break;
+			
+		auto & edgesFac = M_facets[facId].M_edgesIds;
+		for(auto & edgeId : edgesFac)
+		{
+			if(count == cell.facetsNumber())
+				break;
+			
+			auto facId2 = cell.adjacentFacet(M_edges[edgeId],facId);
+			if(visitedFacets[facId2] == false)
+			{
+				auto & edgesFac2 = M_facets[facId2].M_edgesIds;
+				auto & v1 = tangVecToFacet[facId][std::distance(edgesFac.begin(),std::find(edgesFac.begin(),edgesFac.end(),edgeId))];
+				auto & v2 = tangVecToFacet[facId2][std::distance(edgesFac2.begin(),std::find(edgesFac2.begin(),edgesFac2.end(),edgeId))];
+				Real orientationEdge = ( (dotProduct(v1,v2) >= 0.) ? 1.0 : -1.0 );
+				if(orientationEdge == 1.0)
+				{
+					for(auto it = tangVecToFacet[facId2].begin(); it != tangVecToFacet[facId2].end(); it++)
+						*it *= -1.0;
+					std::reverse(tangVecToFacet[facId2].begin(),tangVecToFacet[facId2].end());
+					std::reverse(edgesFac2.begin(),edgesFac2.end());
+					std::reverse(M_facets[facId2].M_verticesIds.begin()+1,M_facets[facId2].M_verticesIds.end());
+				}
+				count++;
+				visitedFacets[facId2] = true;
+				newadjFacs.insert(facId2);
+		    }
+		}
+	}
+	adjFacIds.clear();
+	adjFacIds = newadjFacs;
+	newadjFacs.clear();
+	}
+	
+	// Compute the normals of the facets and the signed volume of the cell, this is performed through a routine
+	// for the general case of non planar facets. This is useful for possible numerical errors occurred in the
+	// generation of the polyhedral mesh, i.e. "not exaclty" coplanar vertices of a facet.
+	std::map<UInt, Point3D> mapNormFac;
+	Real vol = 0.;
+	for(auto & facetId : cell.getFacetsIds())
+	{	
+	auto & M_vertexIds = M_facets[facetId].M_verticesIds;
+	assert(M_vertexIds.size() >= 3);
+	
+    if(M_vertexIds.size() > 3)
+    {
+        Point3D center(0., 0., 0.);
+        for(auto id : M_vertexIds)
+        {
+            center += M_nodes[id];
+        }
+        center /= M_vertexIds.size();
+
+        auto it1 = M_vertexIds.begin();
+        auto it2 = it1;
+        it2++;
+        Real area = 0.;
+        Point3D normTr(0.,0.,0.);
+        mapNormFac[facetId] = Point3D(0., 0., 0.);
+
+        for( ; it2 != M_vertexIds.end(); ++it1, ++it2)
+        {
+            const Point3D B = M_nodes[*it1];
+            const Point3D C = M_nodes[*it2];
+
+            area = FVCode3D::triangleArea(center, B, C);
+			normTr = FVCode3D::computeNormal(center, B, C);
+            mapNormFac[facetId] += normTr * area;
+            vol += 1./3.*area*dotProduct(FVCode3D::triangleCentroid(center,B,C),normTr);
+        }
+
+        const Point3D B = M_nodes[ M_vertexIds[M_vertexIds.size()-1] ];
+        const Point3D C = M_nodes[ M_vertexIds[0] ];
+
+        area = FVCode3D::triangleArea( center, B, C );
+        normTr = FVCode3D::computeNormal(center, B, C);
+
+        mapNormFac[facetId] += normTr * area;
+        vol += 1./3.*area*dotProduct(FVCode3D::triangleCentroid(center,B,C),normTr);
+        
+        mapNormFac[facetId] /= M_facets[facetId].M_area;
+        mapNormFac[facetId].normalize();
+    }
+    else
+    {
+        const Point3D A(M_nodes[M_vertexIds[0]]);
+        const Point3D B(M_nodes[M_vertexIds[1]]);
+        const Point3D C(M_nodes[M_vertexIds[2]]);
+        Point3D normTr = FVCode3D::computeNormal(A, B, C);
+        Real area = FVCode3D::triangleArea( A, B, C );
+        mapNormFac[facetId] = normTr;
+        vol += 1./3.*area*dotProduct(FVCode3D::triangleCentroid(A,B,C),normTr);
+    }
+	}
+	
+	// Finally compute the orientation of the facets of the cell
+	for(auto & facetId : cell.getFacetsIds())
+	{	
+		if(vol < 0.) //&& cell.getId() != 5683)
+		{
+			mapNormFac[facetId] *= -1.;
+			cell.alphaFacets[facetId] =
+				( (dotProduct(M_facets[facetId].getUnsignedNormal(),mapNormFac[facetId])>=0.) ? 1.0 : -1.0 );
+		}
+		else
+		{
+			cell.alphaFacets[facetId] =
+				( (dotProduct(M_facets[facetId].getUnsignedNormal(),mapNormFac[facetId])>=0.) ? 1.0 : -1.0 );
+		}
+	}
+	// Test to verify the volume
+//	Real u = std::fabs(std::fabs(vol)-cell.getVolume())/cell.getVolume();
+//	std::cout<<u<<std::endl;
+}    // End loop over the cells of the mesh
+}
+
+
 const std::vector<Point3D> Rigid_Mesh::idsToPoints(const std::vector<UInt> & pointsIds) const
 {
     std::vector<Point3D> points;
@@ -537,7 +730,8 @@ void Rigid_Mesh::Edge::showMe (std::ostream & out) const
 
 Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh,
                          const std::map<UInt,UInt> & oldToNewMapCells, const UInt m_id):
-    M_mesh(mesh), M_id(m_id), M_verticesIds(generic_facet.getVerticesVector()), M_area(generic_facet.getArea()),
+    M_mesh(mesh), M_id(m_id), M_verticesIds(generic_facet.getVerticesVector()),
+    M_area(generic_facet.getArea()),
     M_centroid(generic_facet.getCentroid()), M_unsignedNormal(generic_facet.getUnsignedNormal()),
     M_isFracture(generic_facet.isFracture()), M_fractureFacetId(0), M_borderId(generic_facet.getBorderId()),
     M_representedFractureIds(generic_facet.getRepresentedFractureIds()), M_zone(generic_facet.getZoneCode())
@@ -551,14 +745,14 @@ Rigid_Mesh::Facet::Facet(const Facet3D & generic_facet, Rigid_Mesh * const mesh,
 }
 
 Rigid_Mesh::Facet::Facet(const Facet & facet):
-    M_mesh(facet.getMesh()), M_id(facet.getId()), M_verticesIds(facet.getVerticesIds()),
+    M_mesh(facet.getMesh()), M_id(facet.getId()), M_verticesIds(facet.getVerticesIds()), M_edgesIds(facet.getEdgesIds()),
     M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
     M_unsignedNormal(facet.getUnsignedNormal()),
     M_isFracture(facet.isFracture()), M_fractureFacetId(facet.getFractureFacetId()), M_borderId(facet.getBorderId()),
     M_representedFractureIds(facet.getRepresentedFractureIds()), M_zone(facet.getZoneCode()){}
 
 Rigid_Mesh::Facet::Facet(const Facet & facet, Rigid_Mesh * const mesh):
-    M_mesh(mesh), M_id(facet.getId()), M_verticesIds(facet.getVerticesIds()),
+    M_mesh(mesh), M_id(facet.getId()), M_verticesIds(facet.getVerticesIds()), M_edgesIds(facet.getEdgesIds()),
     M_separatedCellsIds(facet.getSeparatedCellsIds()), M_area(facet.area()), M_centroid(facet.getCentroid()),
     M_unsignedNormal(facet.getUnsignedNormal()),
     M_isFracture(facet.isFracture()), M_fractureFacetId(facet.getFractureFacetId()), M_borderId(facet.getBorderId()),
@@ -612,17 +806,29 @@ Rigid_Mesh::Cell::Cell( const Cell3D & generic_cell, Rigid_Mesh * const mesh, co
 
 Rigid_Mesh::Cell::Cell(const Cell & cell, Rigid_Mesh * const mesh):
     M_mesh(mesh), M_Id(cell.getId()), M_zoneCode(cell.getZoneCode()),
-    M_verticesIds(cell.getVerticesIds()), M_facetsIds(cell.getFacetsIds()),
-    M_neighborsIds(cell.getNeighborsIds()), M_centroid(cell.getCentroid()),
-    M_volume(cell.getVolume()){}
+    M_verticesIds(cell.getVerticesIds()), M_edgesIds(cell.getEdgesIds()),
+    M_facetsIds(cell.getFacetsIds()), M_neighborsIds(cell.getNeighborsIds()),
+    M_centroid(cell.getCentroid()), M_volume(cell.getVolume()){}
 
 Rigid_Mesh::Cell::Cell(const Cell & cell):
     M_mesh(cell.getMesh()), M_Id(cell.getId()), M_zoneCode(cell.getZoneCode()),
-    M_verticesIds(cell.getVerticesIds()), M_facetsIds(cell.getFacetsIds()),
-    M_neighborsIds(cell.getNeighborsIds()), M_centroid(cell.getCentroid()),
-    M_volume(cell.getVolume()){}
-    
-Real Rigid_Mesh::Cell::orientationFacet(const Facet & fac) const throw()
+    M_verticesIds(cell.getVerticesIds()), M_edgesIds(cell.getEdgesIds()),
+    M_facetsIds(cell.getFacetsIds()), M_neighborsIds(cell.getNeighborsIds()),
+    M_centroid(cell.getCentroid()), M_volume(cell.getVolume()){}
+
+Real Rigid_Mesh::Cell::getAlpha(const UInt facetId) const throw()
+{ 	
+	auto FacetIsInCell = find(M_facetsIds.begin(),M_facetsIds.end(),facetId);
+	if(FacetIsInCell == M_facetsIds.end())
+	{
+		std::stringstream error;
+		error << "Error in getAlpha method: the facet is not in the cell.";
+		throw std::runtime_error(error.str());
+	}
+	return alphaFacets.at(facetId);	
+}
+
+Real Rigid_Mesh::Cell::orientationFacet_forConvexCells(const Facet & fac) const throw()
 {
     bool found(false);
     UInt facetId = fac.getId();
@@ -674,6 +880,43 @@ void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
         for(auto it : M_neighborsIds)
             out << it << " ";
     out << "] " << std::endl;
+}
+
+UInt Rigid_Mesh::Cell::adjacentFacet (const Edge & edge, const UInt IdFac) const throw()
+{
+	auto edgeIsInCell = find(M_edgesIds.begin(),M_edgesIds.end(),edge.getId());
+	if(edgeIsInCell == M_edgesIds.end())
+	{
+		std::stringstream error;
+		error << "Error in adjacentFacet method: the edge is not in the cell.";
+		throw std::runtime_error(error.str());		
+	}
+	auto facetIsInCell = find(M_facetsIds.begin(),M_facetsIds.end(),IdFac);
+	if(facetIsInCell == M_facetsIds.end())
+	{
+		std::stringstream error;
+		error << "Error in adjacentFacet method: the facet is not in the cell.";
+		throw std::runtime_error(error.str());		
+	}
+	auto edgeIsInFacet = find(M_mesh->getFacetsVector()[IdFac].getEdgesIds().begin(),
+		M_mesh->getFacetsVector()[IdFac].getEdgesIds().end(),edge.getId());
+	if(edgeIsInFacet == M_mesh->getFacetsVector()[IdFac].getEdgesIds().end())
+	{
+		std::stringstream error;
+		error << "Error in adjacentFacet method: the edge is not in the facet.";
+		throw std::runtime_error(error.str());		
+	}
+	UInt adjFacet;
+	for(auto & facetId:edge.getSeparatedFacetsIds())
+	{
+		auto FacetIt = find(M_facetsIds.begin(),M_facetsIds.end(),facetId);
+		if( FacetIt != M_facetsIds.end() && facetId != IdFac )
+		{
+			adjFacet = facetId;
+			break;
+		}
+	}
+	return adjFacet;
 }
 
 // --------------------   Class Edge_ID   --------------------

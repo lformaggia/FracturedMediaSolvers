@@ -41,7 +41,7 @@ Mesh3D::Facet3D::Facet3D(const Facet3D & facet) :
 Mesh3D::Facet3D::Facet3D(Mesh3D * const mesh, const std::vector<UInt> & vertices, const UInt zone, const UInt borderId) :
                 M_mesh(mesh), M_vertexIds(vertices), M_borderId(borderId), M_zone(zone)
 {
-    computeCentroidAndNormalAndArea();
+	  computeCentroidAndNormalAndArea();
 }
 
 // ==================================================
@@ -162,16 +162,17 @@ void Mesh3D::Facet3D::computeNormal()
         M_normal = FVCode3D::computeNormal(A,B,C);
     }
 
-    // --- For planar facet ---
-//  UInt i = 3;
-//  const UInt nPoints = getNumberOfVertices();
-//  const Point3D A(M_mesh->getNodesVector()[M_vertexIds[0]]);
-//  const Point3D B(M_mesh->getNodesVector()[M_vertexIds[1]]);
-//  Point3D C(M_mesh->getNodesVector()[M_vertexIds[2]]);
-//  while( (std::fabs(innerAngleRad(B-A,C-A)) < 1e-6) && (i<nPoints) )
-//      C = M_mesh->getNodesVector()[M_vertexIds[i++]];
-//
-//  M_normal = FVCode3D::computeNormal(A,B,C);
+// --- For planar facet ---
+/*  UInt i = 3;
+  const UInt nPoints = getNumberOfVertices();
+  const Point3D A(M_mesh->getNodesVector()[M_vertexIds[0]]);
+  const Point3D B(M_mesh->getNodesVector()[M_vertexIds[1]]);
+  Point3D C(M_mesh->getNodesVector()[M_vertexIds[2]]);
+  while( (std::fabs(innerAngleRad(B-A,C-A)) < 1e-6) && (i<nPoints) )
+      C = M_mesh->getNodesVector()[M_vertexIds[i++]];
+
+  M_normal = FVCode3D::computeNormal(A,B,C);
+*/
 }
 
 void Mesh3D::Facet3D::computeArea()
@@ -198,13 +199,13 @@ void Mesh3D::Facet3D::computeArea()
             const Point3D B = M_mesh->getNodesVector()[*it1];
             const Point3D C = M_mesh->getNodesVector()[*it2];
 
-            M_area = FVCode3D::triangleArea(center, B, C);
+            M_area += FVCode3D::triangleArea(center, B, C);
         }
 
         const Point3D B = M_mesh->getNodesVector()[ M_vertexIds[M_vertexIds.size()-1] ];
         const Point3D C = M_mesh->getNodesVector()[ M_vertexIds[0] ];
 
-        M_area = FVCode3D::triangleArea( center, B, C );
+        M_area += FVCode3D::triangleArea( center, B, C );
     }
     else
     {
@@ -214,24 +215,26 @@ void Mesh3D::Facet3D::computeArea()
         M_area = FVCode3D::triangleArea(A,B,C);
     }
 
-    // --- For planar facet, also non-convex ---
-//    std::vector<Point3D> points;
-//    CoordinateSystem3D cs;
-//    Real area(0.);
-//    const UInt nPoints = M_vertexIds.size();
-//
-//    cs.computeCartesianCoordinateSystem(M_normal);
-//    points.reserve(nPoints);
-//
-//    for(UInt i=0; i < nPoints; ++i)
-//        points.emplace_back( M_mesh->getNodesVector()[M_vertexIds[i]].convertInLocalCoordinates(cs, Point3D(0.,0.,0.)) );
-//
-//    for(UInt i=0; i < (nPoints-1) ; ++i)
-//        area += points[i].x() * points[i+1].y() - points[i].y() * points[i+1].x();
-//
-//    area += points[nPoints-1].x() * points[0].y() - points[nPoints-1].y() * points[0].x();
-//
-//    M_area = std::fabs(area)/2;
+// --- For planar facet, also non-convex ---
+/*
+    std::vector<Point3D> points;
+    CoordinateSystem3D cs;
+    Real area(0.);
+    const UInt nPoints = M_vertexIds.size();
+
+    cs.computeCartesianCoordinateSystem(M_normal);
+    points.reserve(nPoints);
+
+    for(UInt i=0; i < nPoints; ++i)
+        points.emplace_back( M_mesh->getNodesVector()[M_vertexIds[i]].convertInLocalCoordinates(cs, Point3D(0.,0.,0.)) );
+
+    for(UInt i=0; i < (nPoints-1) ; ++i)
+        area += points[i].x() * points[i+1].y() - points[i].y() * points[i+1].x();
+
+    area += points[nPoints-1].x() * points[0].y() - points[nPoints-1].y() * points[0].x();
+
+    M_area = std::fabs(area)/2;
+*/
 }
 
 void Mesh3D::Facet3D::computeCentroid()

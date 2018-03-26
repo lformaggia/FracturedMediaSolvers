@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    const Real kf = 1.e-3; 
+    const Real kf = 1.e3; 
     fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
@@ -164,7 +164,10 @@ int main(int argc, char * argv[])
 
     std::cout << "Assemble rigid mesh..." << std::flush;
     Rigid_Mesh myrmesh(mesh, propMap);
+    myrmesh.BuildEdges();
+    myrmesh.BuildOrientationFacets();
     std::cout << " done." << std::endl << std::endl;
+    
 
     myrmesh.showMe();
     std::cout << "hMin: " << myrmesh.getMinEdgeSize() << std::endl;
@@ -206,7 +209,7 @@ int main(int argc, char * argv[])
 		}
 		if(dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV && dataPtr->getSolverPolicy() == Data::SolverPolicy::Iterative)
 		{
-			std::cout<<"Iterative solver not supported for MFD"<<std::endl<<std::endl;
+			std::cout<<"Iterative solver not supported for FV"<<std::endl<<std::endl;
 			return 0;
 		}
 			

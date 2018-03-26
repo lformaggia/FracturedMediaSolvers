@@ -164,6 +164,8 @@ int main(int argc, char * argv[])
 
     std::cout << "Assemble rigid mesh..." << std::flush;
     Rigid_Mesh myrmesh(mesh, propMap);
+    myrmesh.BuildEdges();
+    myrmesh.BuildOrientationFacets();
     std::cout << " done." << std::endl << std::endl;
 
     myrmesh.showMe();

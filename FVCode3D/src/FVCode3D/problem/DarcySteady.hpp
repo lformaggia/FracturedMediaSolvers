@@ -107,6 +107,7 @@ assembleMatrix()
 		S.setDofs(numFacetsTot,numCell+numFracture);
 		S.assemble();
 		S.show();
+//		S.ExportM();
 	}
 } // DarcySteady::assembleMatrix
 

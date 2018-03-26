@@ -4,7 +4,7 @@
 
 [mesh]
 mesh_dir    = ./                # mesh directory
-mesh_file   = cubeFracturedHexa.fvg          # mesh filename
+mesh_file   = cubeFracturedHexa2.fvg          # mesh filename
 mesh_type   = .fvg                   # mesh format: .fvg, .grid, .mesh
 
 [output]

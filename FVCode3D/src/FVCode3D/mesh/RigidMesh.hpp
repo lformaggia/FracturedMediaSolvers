@@ -276,6 +276,13 @@ public:
          */
         const std::vector<UInt> & getVerticesIds () const
             { return M_verticesIds; }
+        
+        //! Get edges Ids (const)
+        /*!
+         * @return a reference to a vector of the facet edges ids
+         */
+        const std::vector<UInt> & getEdgesIds () const
+            { return M_edgesIds; }
 
         //! Get vertices number (const)
         /*!
@@ -382,6 +389,8 @@ public:
         UInt M_id;
         //! The vector of the ids of the Facet's vertices
         std::vector<UInt> M_verticesIds;
+        //! The vector of the ids of the Facet's edges
+        std::vector<UInt> M_edgesIds;
         //! The vector of the ids of the Cells separated by Facet
         std::vector<UInt> M_separatedCellsIds;
         //! The area of the Facet
@@ -465,7 +474,36 @@ public:
          */
         const std::vector<UInt> & getVerticesIds () const
             { return M_verticesIds; }
-
+        
+        //! Get Edges ids (const)
+        /*!
+         * @return a reference to a vector which contains the ids of the Cell's edges
+         */
+        const std::vector<UInt> & getEdgesIds () const
+            { return M_edgesIds; }
+        
+         //! Get Edges ids
+        /*!
+         * @return a reference to a vector which contains the ids of the Cell's edges
+         */
+        std::vector<UInt> & getEdgesIds ()
+            { return M_edgesIds; }
+            
+        //! Get orientations facets (const)
+        /*!
+         * @return a reference to a vector which contains the orientations of the facets
+         */
+        const std::map<UInt, Real> & getOrientationsFacets () const
+            { return alphaFacets; }
+            
+        //! Get the orientation of a prescribed facet of the cell (for general polyhedrons)
+        /*!
+         * @return the orientation of a specified facet of the cell.
+         * To be used for general shaped cells. The vector of alhpas must have been built through Rigid_Mesh::BuildEdges and
+         * Rigid_Mesh::BuildOrientationfacets.
+         */
+        Real getAlpha(const UInt facetId) const throw();
+				
         //! Get Facets ids (const)
         /*!
          * @return a reference to a vector which contains the ids of the Facets
@@ -508,12 +546,12 @@ public:
         UInt neighborsNumber() const
             { return M_neighborsIds.size (); }
             
-        //! The facet orientation wrt the cell
+        //! The facet orientation wrt the cell (only for convex cells)
         /*!
          * @param the Facet
          * @return the alpha orientation of the facet
          */
-        Real orientationFacet(const Facet & fac) const throw();
+        Real orientationFacet_forConvexCells(const Facet & fac) const throw();
 
         //! Get volume (const)
         /*!
@@ -537,6 +575,14 @@ public:
          * @param out specify the output format (std::cout by default)
          */
         void showMe (std::ostream & out=std::cout) const;
+        
+        //! Return the adjacent facet to a specified facet in the cell. 
+        /*!
+         * @param The edge that divide the two facets
+         * @param The Id of the facet
+         * @return The Id of the adjacent facet
+         */
+        UInt adjacentFacet (const Edge & edge, const UInt IdFac) const throw();
 
         //@}
 
@@ -553,8 +599,12 @@ public:
         std::vector<UInt> M_verticesIds;
         //! The vector of the ids of the Facets
         std::vector<UInt> M_facetsIds;
+        //! The vector of the ids of the Cell's edges
+        std::vector<UInt> M_edgesIds;
         //! The vector of the ids of the Cells neighbors
         std::vector<UInt> M_neighborsIds;
+        //! The vector of the orientations of the facets
+        std::map<UInt, Real> alphaFacets;
         //! The centroid of the Cell
         Point3D M_centroid;
         //! The volume of the Cell
@@ -1467,6 +1517,20 @@ public:
 
     //! @name Methods
     //@{
+
+    //! Build the edge structure for facets and cells
+    /*!
+     *  Build the edge structure for facets and cells, so a vector of edge ids for every facet and cell.
+     */
+    void BuildEdges ();
+
+    //! Build the orientations of the facets cell by cell
+    /*!
+     *  Build the orientations of the facets (so the alpha coefficient) cell by cell. To do this the outward normal of every facet
+     * is computed. This code implements a general routine that is correct also for non-convex polyhedrons. It is based on the
+     * computation of the signed volume through the divergence theorem formula.
+     */
+    void BuildOrientationFacets ();
 
     //! Display general information about the Rigid_Mesh
     /*!

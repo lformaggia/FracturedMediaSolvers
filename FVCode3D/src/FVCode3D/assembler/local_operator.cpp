@@ -52,7 +52,7 @@ void local_InnerProduct::assemble()
 		const Point3D facetNormal     = fac.getUnsignedNormal();
         Point3D g                     = fac.getCentroid() - cellp.getCentroid();
 		const Real facetMeasure       = fac.area();
-		const Real alpha              = cellp.orientationFacet(fac);
+		const Real alpha              = cellp.getAlpha(globalFacetId);
             
 		Np(localFacetId,0) = facetNormal[0];
 		Np(localFacetId,1) = facetNormal[1];
@@ -125,7 +125,7 @@ void local_InnerProduct::assemble_inv()
 		const Point3D facetNormal     = fac.getUnsignedNormal();
         Point3D g                     = fac.getCentroid() - cellp.getCentroid();
 		const Real facetMeasure       = fac.area();
-		const Real alpha              = cellp.orientationFacet(fac);
+		const Real alpha              = cellp.getAlpha(globalFacetId);
             
 		Np(localFacetId,0) = facetNormal[0];
 		Np(localFacetId,1) = facetNormal[1];
@@ -173,7 +173,7 @@ void local_Div::assemble()
     {
 		const UInt globalFacetId = cellFacetsId[localFacetId];
         const Rigid_Mesh::Facet & fac = pMesh.getFacetsVector()[globalFacetId];
-		const Real alpha              = cellp.orientationFacet(fac);
+		const Real alpha              = cellp.getAlpha(globalFacetId);
 		const Real facetMeasure       = fac.area();
 
 		Bp.push_back( - alpha * facetMeasure );    // The minus because I have changed the sign to the conservation equation
@@ -216,7 +216,7 @@ void local_builder::build()
 		const Point3D facetNormal     = fac.getUnsignedNormal();
         Point3D g                     = fac.getCentroid() - cel.getCentroid();
 		const Real facetMeasure       = fac.area();
-		const Real alpha              = cel.orientationFacet(fac);
+		const Real alpha              = cel.getAlpha(globalFacetId);
             
 		IP.Np(localFacetId,0) = facetNormal[0];
 		IP.Np(localFacetId,1) = facetNormal[1];

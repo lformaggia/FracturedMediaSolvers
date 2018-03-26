@@ -28,7 +28,10 @@ class Fracture;
 /*!
  * @class Mesh3D
  * This class implements the concept of a three dimensional polyhedrical unstructured mesh.
- * It is composed of points, facets and cells.
+ * It is composed of points, facets and cells. Note that the computation of some geometrical
+ * quantities is performed cosidering the general case of non planar facets. This is because
+ * in the generation of polyhedral meshes there can be some numerical problems leading to
+ * facet verteces that are not "exactly" coplanar.
  */
 class Mesh3D
 {

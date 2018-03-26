@@ -8,6 +8,7 @@
 
 #include <cmath>
 #include <utility>
+#include <unsupported/Eigen/SparseExtra>
 #include <FVCode3D/core/BasicType.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
@@ -143,6 +144,15 @@ public:
 
     //! @name Methods
     //@{
+    //! Export method 
+    /*!
+     * export the M block
+     */
+    void ExportM()
+    {
+		Eigen::saveMarket( M_SP.getM(), "Mblock.m" );
+	}
+	
 	//! Show method 
     /*!
      * show the system dimension

@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
 
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityScalar );
     std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
-    const Real kf = 1.e3;
+    const Real kf = 1.e-3;
     matrixPerm->setPermeability( 1., 0 );
     fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
@@ -98,6 +98,8 @@ int main(int argc, char * argv[])
     BoundaryConditions BC(borders);
 
     Rigid_Mesh myrmesh(mesh, propMap);
+    myrmesh.BuildEdges();
+    myrmesh.BuildOrientationFacets();
 
     myrmesh.showMe();
     std::cout << "hMin: " << myrmesh.getMinEdgeSize() << std::endl;

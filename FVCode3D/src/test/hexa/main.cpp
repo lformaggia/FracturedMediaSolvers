@@ -98,6 +98,8 @@ int main(int argc, char * argv[])
     BoundaryConditions BC(borders);
 
     Rigid_Mesh myrmesh(mesh, propMap);
+    myrmesh.BuildEdges();
+    myrmesh.BuildOrientationFacets();
 
     myrmesh.showMe();
     std::cout << "hMin: " << myrmesh.getMinEdgeSize() << std::endl;

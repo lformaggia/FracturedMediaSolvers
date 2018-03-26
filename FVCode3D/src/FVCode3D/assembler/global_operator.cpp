@@ -33,7 +33,7 @@ void global_InnerProduct::reserve_space()
 		const Rigid_Mesh::Facet & fac = M_mesh.getFacetsVector()[globalFacetId];
 			
 		// This is to take into account the decoupling of fractures facets
-		if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+		if( fac.isFracture() && (cell.getAlpha(globalFacetId)<0) )
 			globalFacetId = M_mesh.getFacetsVector().size() + fac.getFractureFacetId();
 
 		Matrix_elements[globalFacetId] += numCellFacets;        
@@ -47,7 +47,7 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 {   
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	// This is to take into account the decoupling of fractures facets
-	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[i])<0) )
+	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.getAlpha(i)<0) )
 		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
 	
 	if( Mp(iloc,iloc) != 0. )
@@ -57,7 +57,7 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 	{
 		UInt j = cell.getFacetsIds()[jloc];
 		// This is to take into account the decoupling of fractures facets
-		if( M_mesh.getFacetsVector()[j].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[j])<0) )
+		if( M_mesh.getFacetsVector()[j].isFracture() && (cell.getAlpha(j)<0) )
 			j = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[j].getFractureFacetId();
 		if (Mp(iloc,jloc) != 0.)
 		{
@@ -73,7 +73,7 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp,
 	auto & M = M_matrix;
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	// This is to take into account the decoupling of fractures facets
-	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[i])<0) )
+	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.getAlpha(i)<0) )
 		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
 	
 	if( Mp(iloc,iloc) != 0. )
@@ -83,7 +83,7 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp,
 	{
 		UInt j = cell.getFacetsIds()[jloc];
 		// This is to take into account the decoupling of fractures facets
-		if( M_mesh.getFacetsVector()[j].isFracture() && (cell.orientationFacet(M_mesh.getFacetsVector()[j])<0) )
+		if( M_mesh.getFacetsVector()[j].isFracture() && (cell.getAlpha(j)<0) )
 			j = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[j].getFractureFacetId();
 		if (Mp(iloc,jloc) != 0.)
 		{
@@ -125,7 +125,7 @@ void global_Div::reserve_space()
 		const Rigid_Mesh::Facet & fac = M_mesh.getFacetsVector()[globalFacetId];
 			
 		// This is to take into account the decoupling of fractures facets
-		if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+		if( fac.isFracture() && (cell.getAlpha(globalFacetId)<0) )
 			globalFacetId = M_mesh.getFacetsVector().size() + fac.getFractureFacetId();
 
 		Matrix_elements[globalFacetId] += 1;           // space for B element
@@ -140,7 +140,7 @@ void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	auto & fac = M_mesh.getFacetsVector()[i];
 	// This is to take into account the decoupling of fractures facets
-	if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+	if( fac.isFracture() && (cell.getAlpha(i)<0) )
 		i = M_mesh.getFacetsVector().size() + fac.getFractureFacetId();
 					
 	if( Bp[iloc] != 0. )
@@ -158,7 +158,7 @@ void global_Div::assembleFace(const UInt iloc, const std::vector<Real> & Bp,
 	UInt i = cell.getFacetsIds()[iloc];              //global Id    
 	auto & fac = M_mesh.getFacetsVector()[i];
 	// This is to take into account the decoupling of fractures facets
-	if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+	if( fac.isFracture() && (cell.getAlpha(i)<0) )
 		i = M_mesh.getFacetsVector().size() + fac.getFractureFacetId();
 					
 	if( Bp[iloc] != 0. )
@@ -461,7 +461,7 @@ void global_BulkBuilder::reserve_space(SpMat & S)
 		const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 			
 		// This is to take into account the decoupling of fractures facets
-		if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+		if( fac.isFracture() && (cell.getAlpha(globalFacetId)<0) )
 			globalFacetId = facetVectorRef.size() + fac.getFractureFacetId();
 
 		Matrix_elements[globalFacetId] += numCellFacets + 1;            // space for the M and B elements
@@ -490,7 +490,7 @@ void global_BulkBuilder::reserve_space(SpMat & M, SpMat & B)
 		const Rigid_Mesh::Facet & fac = facetVectorRef[globalFacetId];
 			
 		// This is to take into account the decoupling of fractures facets
-		if( fac.isFracture() && (cell.orientationFacet(fac)<0) )
+		if( fac.isFracture() && (cell.getAlpha(globalFacetId)<0) )
 			globalFacetId = facetVectorRef.size() + fac.getFractureFacetId();
 
 		MMatrix_elements[globalFacetId] += numCellFacets;            // space for the M element
@@ -652,7 +652,7 @@ void BCimposition::ImposeBConBulk(SpMat & S, Vector & rhs) const
 			Real pD = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 			const Real facetMeasure = facet_it.getSize();
 			const Rigid_Mesh::Cell & cell = M_mesh.getCellsVector()[ facet_it.getSeparatedCellsIds()[0] ];
-			const Real alpha = cell.orientationFacet( M_mesh.getFacetsVector()[ facetId ] ); 
+			const Real alpha = cell.getAlpha(facetId); 
 			rhs[facetId] = - alpha * facetMeasure * pD;
 		}
 	}	
@@ -682,7 +682,7 @@ void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
 			Real pD = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 			const Real facetMeasure = facet_it.getSize();
 			const Rigid_Mesh::Cell & cell = M_mesh.getCellsVector()[ facet_it.getSeparatedCellsIds()[0] ];
-			const Real alpha = cell.orientationFacet( M_mesh.getFacetsVector()[ facetId ] ); 
+			const Real alpha = cell.getAlpha(facetId); 
 			rhs[facetId] = - alpha * facetMeasure * pD;
 		}
 	}	
