@@ -74,21 +74,21 @@ public:
      * @param Integrand A std::function which returns a scalar
      * @return The integral of the considered Integrand function
      */
-    Real integrate (const std::function<Real(Point3D)> & integrand);
+    Real integrate (const std::function<Real(Point3D)> & integrand) const;
 
     //! Integrate a function only on the porous matrix
     /*!
      * @param Integrand A std::function which returns a scalar
      * @return The integral of the considered Integrand function
      */
-    Real integrateMatrix (const std::function<Real(Point3D)> & integrand);
+    Real integrateMatrix (const std::function<Real(Point3D)> & integrand) const;
 
     //! Integrate a function only on the fractures
     /*!
      * @param Integrand A std::function which returns a scalar
      * @return The integral of the considered Integrand function
      */
-    Real integrateFractures (const std::function<Real(Point3D)> & integrand);
+    Real integrateFractures (const std::function<Real(Point3D)> & integrand) const;
 
 
     //! Integrate discrete function
@@ -96,19 +96,19 @@ public:
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The integral of the considered Integrand function
      */
-    Real integrate (const Vector & integrand) throw();
+    Real integrate (const Vector & integrand) const throw();
     //! Integrate discrete function only on the porous matrix
     /*!
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The integral of the considered Integrand function
      */
-    Real integrateMatrix (const Vector & integrand) throw();
+    Real integrateMatrix (const Vector & integrand) const throw();
     //! Integrate discrete function only on the fracturs
     /*!
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The integral of the considered Integrand function
      */
-    Real integrateFractures (const Vector & integrand) throw();
+    Real integrateFractures (const Vector & integrand) const throw();
 
 
     //! L2 Norm of a discrete function
@@ -116,21 +116,21 @@ public:
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The L2 norm of the considered Integrand function
      */
-    Real L2Norm (const Vector & integrand);
+    Real L2Norm (const Vector & integrand) const;
 
     //! L2 Norm of a discrete function, only on the porous matrix
     /*!
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The L2 norm of the considered Integrand function
      */
-    Real L2NormMatrix (const Vector & integrand);
+    Real L2NormMatrix (const Vector & integrand) const;
 
     //! L2 Norm of a discrete function, only on the fractures
     /*!
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The L2 norm of the considered Integrand function
      */
-    Real L2NormFractures (const Vector & integrand);
+    Real L2NormFractures (const Vector & integrand) const;
 
 
     //! Integrate a function and return the integral cell by cell
@@ -138,7 +138,7 @@ public:
      * @param Integrand A function which returns a scalar
      * @return A vector with in the i-th component the integral of the considered Integrand function on the i-th cell
      */
-    Vector cellIntegrate (const std::function<Real(Point3D)> & func);
+    Vector cellIntegrate (const std::function<Real(Point3D)> & func) const;
 
     //! Integrate a function and return the integral cell by cell, only in the porous matrix
     /*!
@@ -147,7 +147,7 @@ public:
      * of the porous matrix
      * @note The vector contains all the problem entries, fractures included which are zero
      */
-    Vector cellIntegrateMatrix (const std::function<Real(Point3D)> & func);
+    Vector cellIntegrateMatrix (const std::function<Real(Point3D)> & func) const;
 
     //! Integrate a function and return the integral cell by cell, only in the fractures
     /*!
@@ -156,7 +156,7 @@ public:
      * of the fractures
      * @note The vector contains all the problem entries, the entries of the matrix are zero
      */
-    Vector cellIntegrateFractures (const std::function<Real(Point3D)> & func);
+    Vector cellIntegrateFractures (const std::function<Real(Point3D)> & func) const;
 
     //@}
 

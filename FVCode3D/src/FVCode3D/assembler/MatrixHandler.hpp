@@ -10,6 +10,7 @@
 #include <cmath>
 #include <functional>
 #include <algorithm>
+#include <unsupported/Eigen/SparseExtra>
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/core/Data.hpp>
@@ -82,6 +83,15 @@ public:
 		std::cout<<std::endl;
 		std::cout<<"The system dimension is : "<<getSize()<<std::endl<<std::endl;
 	}   
+
+    //! Export method 
+    /*!
+     * export the system matrix
+     */
+    void ExportSystem()
+    {
+		Eigen::saveMarket( M_Matrix, "SystemMat.m" );
+	}
     
     //! Set dofs 
     /*!

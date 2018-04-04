@@ -149,9 +149,15 @@ int main(int argc, char * argv[])
 	Vector ut3 = Vector::Zero(numFacetsTot);
 
 	Vector utn  = Vector::Zero(numFacetsTot);
-	Vector pt   = evaluate(myrmesh,pex);
 
-	for(auto & facet_it : myrmesh.getFacetsVector())
+	Quadrature q(myrmesh, Tetrahedralization(), CentroidQuadrature());
+	Vector pt   = q.cellIntegrate(pex);
+	for(auto & cell_it : myrmesh.getCellsVector())
+		pt[cell_it.getId()] /= cell_it.getVolume();
+	for(auto & frfacet_it : myrmesh.getFractureFacetsIdsVector())
+		pt[frfacet_it.getIdAsCell()] /= frfacet_it.getSize();
+
+/*	for(auto & facet_it : myrmesh.getFacetsVector())
 	{
 		ut1[facet_it.getId()] = uex1(facet_it.getCentroid());
 		ut2[facet_it.getId()] = uex2(facet_it.getCentroid());
@@ -159,11 +165,13 @@ int main(int argc, char * argv[])
 		Point3D normal = facet_it.getUnsignedNormal();
 		utn[facet_it.getId()] = ut1[facet_it.getId()]*normal.x() + ut2[facet_it.getId()]*normal.y() + ut3[facet_it.getId()]*normal.z();
 	}
+*/
 
+	utn = evaluateVelocity(myrmesh,uex1,uex2,uex3);
+	
 	Vector p_diff     = pt - p;
 	Vector u_diff     = utn - u;
 
-	Quadrature q(myrmesh);
 	const Real err_p    = q.L2NormMatrix(p_diff)/q.L2NormMatrix(pt);
 	const Real err_pf   = q.L2NormFractures(p_diff)/q.L2NormFractures(pt);
 	

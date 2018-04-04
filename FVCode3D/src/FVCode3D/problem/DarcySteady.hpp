@@ -91,6 +91,7 @@ assembleMatrix()
         S.assemble();
         S.closeMatrix();
         S.show();
+//      S.ExportSystem();
     }
    else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Direct )
     {
@@ -99,6 +100,7 @@ assembleMatrix()
 		S.setDofs(numFacetsTot+numCell+numFracture);
 		S.assemble();
         S.show();
+        S.ExportSystem();
     }
     else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Iterative )
     {
@@ -136,7 +138,9 @@ assembleVector()
                 ||
               this->M_ssOn == Data::SourceSinkOn::Fractures ) )
     {
-        f += this->M_quadrature->cellIntegrateFractures(this->M_func);
+		f += this->M_quadrature->cellIntegrateFractures(this->M_func);
+		for( auto & facet_it : this->M_mesh.getFractureFacetsIdsVector() )
+			f[facet_it.getIdAsCell()] *= this->M_mesh.getPropertiesMap().getProperties(facet_it.getZoneCode()).M_aperture;
     } // if
 
     if ( M_b.size() == 0 )
@@ -146,7 +150,7 @@ assembleVector()
     if(this->M_numet == Data::NumericalMethodType::FV)
     {
 		 M_b += f;
-		}
+	}
     if(this->M_numet == Data::NumericalMethodType::MFD)
     {
 		UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();

@@ -277,6 +277,7 @@ public:
      * Assemble the MFD stiffness matrix using the bulk and fracture builders.
      */
     void assemble();
+    
     //@}
 
 private:

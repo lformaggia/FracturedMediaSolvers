@@ -33,7 +33,7 @@ compressibility = 1.                 # compressibility of the fluid
 theta       = 0.                     # rotation to apply to grid around the z
 
 [solver]
-policy  = Iterative    	         # Iterative , Direct
+policy  = Iterative   	         # Iterative , Direct
 type    = imlFGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlFGMRES
 
     [./iterative]
