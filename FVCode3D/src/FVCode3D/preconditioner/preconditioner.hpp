@@ -369,6 +369,12 @@ public:
      */
 	void set_tol(const UInt Tol)
 		{tol = Tol;}
+		
+	//! Export the preconditioner
+    /*!
+     * Export the preconditioner in matrix form
+     */
+	void ExportPrec(const SaddlePointMat & SP) const;
     //@}
 
     //! @name Assemble Methods
@@ -383,6 +389,7 @@ public:
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
 		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
 		ISC   += SP.getT(); 
+		ExportPrec(SP);
 	}
     //@}
 

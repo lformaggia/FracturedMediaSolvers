@@ -597,11 +597,11 @@ private:
 }; // class BiCGSTAB
 
 
-//! Class imlGMRES
+//! Class imlFGMRES
 /*!
- * @class imlGMRES
+ * @class imlFGMRES
  * This class implements a linear solver for the system Ax=b.
- * It uses the generalized minimum residual method with restart on a square matrix.
+ * It uses the flexible generalized minimum residual method with restart on a square matrix.
  */
 class imlFGMRES : public IterativeSolver
 {

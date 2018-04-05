@@ -92,6 +92,36 @@ Vector BlockTriangular_preconditioner::solve(const Vector & r) const
     return z;
 }
 
+void BlockTriangular_preconditioner::ExportPrec(const SaddlePointMat & SP) const
+{
+	auto & B = *Bptr;
+	auto & M = SP.getM();
+	const UInt n = Md_inv.rows();
+	const UInt m = B.rows();
+	SpMat P(n+m,n+m);
+	
+	typedef Eigen::Triplet<Real> T;
+	std::vector<T> tripletList;
+	
+	for(UInt i = 0; i < n; i++)
+		tripletList.push_back( T(i, i , M.coeff(i,i)) );
+		
+	for(UInt i = 0; i < B.outerSize(); ++i)
+	{
+		for(SpMat::InnerIterator it(B,i); it; ++it)
+			tripletList.push_back( T(it.col(), n + it.row(), B.coeff(it.row(),it.col())) );
+	}
+	
+	for(UInt i = 0; i < ISC.outerSize(); ++i)
+	{
+		for(SpMat::InnerIterator it(ISC,i); it; ++it)
+			tripletList.push_back( T(n + it.row(), n + it.col(), ISC.coeff(it.row(),it.col())) );
+	}
+	
+	P.setFromTriplets( tripletList.begin(), tripletList.end() );
+	Eigen::saveMarket( P, "BlockTrMat.m" );
+}
+
 UInt constexpr ILU_preconditioner::MaxIt_default;
 Real constexpr ILU_preconditioner::tol_default;
 
