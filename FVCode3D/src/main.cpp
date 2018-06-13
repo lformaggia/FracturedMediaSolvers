@@ -108,12 +108,16 @@ int main(int argc, char * argv[])
 
     std::cout << "Set uniform properties..." << std::flush;
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
-    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityDiagonal );
+//	std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    const Real kf = 1.e3; 
-    fracturesPerm->setPermeability( kf, 0 );
+    fracturesPerm->setPermeability( 1.e-4, 0 );
+    fracturesPerm->setPermeability( 1.e-2, 4 );
+    fracturesPerm->setPermeability( 1.e-2, 8 );
+//   const Real kf = 1.e-3; 
+//   fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
     const Real fracturesPoro = 1; 
@@ -145,7 +149,14 @@ int main(int argc, char * argv[])
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
     BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Neumann, fZero );
     BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
-    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
+    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );         
+    
+/*    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Neumann, fZero );
+    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fZero );
+    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
+    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fOne );
+    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
+    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );        */        
 
     std::vector<BoundaryConditions::BorderBC> borders;
 
