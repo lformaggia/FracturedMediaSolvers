@@ -153,6 +153,25 @@ public:
 		Eigen::saveMarket( M_SP.getM(), "Mblock.m" );
 	}
 	
+	//! Export method 
+    /*!
+     * export the T block
+     */
+    void ExportT()
+    {
+		Eigen::saveMarket( M_SP.getT(), "Tblock.m" );
+	}
+	
+	//! Export method 
+    /*!
+     * export the BBT block
+     */
+    void ExportBBT()
+    {
+		SpMat BBT = M_SP.getB()*M_SP.getB().transpose();
+		Eigen::saveMarket( BBT, "BBTblock.m" );
+	}
+	
 	//! Show method 
     /*!
      * show the system dimension

@@ -236,6 +236,7 @@ void local_builder::build()
 
 	// Building the Mp matrix
 	Sp = IP.Np.fullPivLu().image(IP.Np);    // Because otherwise NtN could be singular in the unlucky case of 2 parallelel faces
+//	Sp = IP.Np;
 
 	Mat      NtN = Sp.transpose() * Sp;
 	Mat      NNtNiNt = Sp * NtN.inverse() * Sp.transpose();
@@ -251,6 +252,8 @@ void local_builder::build()
 		( IP.Rp * Kp.inverse() * IP.Rp.transpose() );
 	IP.Mp1 = IP.Mp0.trace() * IP.gamma / numCellFacets *
 		( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) - NNtNiNt );
+//	IP.Mp1 = IP.Mp0.trace() * IP.gamma *
+//		( Eigen::MatrixXd::Identity(numCellFacets,numCellFacets) - NNtNiNt );
 
 	IP.Mp  = IP.Mp0 + IP.Mp1;
 

@@ -640,10 +640,10 @@ void BCimposition::ImposeBConBulk(SpMat & S, Vector & rhs) const
 		{
 			// Nitsche formulation for Neumann bcs
 			UInt cellId = facet_it.getSeparatedCellsIds()[0];
-			S.coeffRef(facetId, facetId) += penalty*facet_it.getSize()/facet_it.get_h();
+			S.coeffRef(facetId, facetId) += penalty*facet_it.getSize()*facet_it.get_h();
 			S.coeffRef(numfacetsTot+cellId, facetId) -= facet_it.getSize();
 			S.coeffRef(facetId, numfacetsTot+cellId) -= facet_it.getSize();
-			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())/facet_it.get_h();
+			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())*facet_it.get_h();
 			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 		}
 		else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
@@ -671,9 +671,9 @@ void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
 		{
 			// Nitsche formulation for Neumann bcs
 			UInt cellId = facet_it.getSeparatedCellsIds()[0];
-			M.coeffRef(facetId, facetId) += penalty*facet_it.getSize()/facet_it.get_h();
+			M.coeffRef(facetId, facetId) += penalty*facet_it.getSize()*facet_it.get_h();
 			B.coeffRef(cellId, facetId) -= facet_it.getSize();
-			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())/facet_it.get_h();
+			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())*facet_it.get_h();
 			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
 		}
 		else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
@@ -696,7 +696,7 @@ void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo
 	auto & facetVectorRef = M_mesh.getFacetsVector();
 	// assemble BC on fractures
     for (auto& edge_it : M_mesh.getBorderTipEdgesIdsVector())
-    {	
+    {
 		// Select which BC to apply : BC = D > N && the one with greatest id
 		UInt borderId = M_bc.selectBC_onFractureEdge(edge_it);
 		
@@ -710,8 +710,28 @@ void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo
 
                 if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
                 {	
+//					if(borderId != BorderLabel::Top && borderId != BorderLabel::Bottom)
+//					{
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
                     rhs[ numfacetsTot+numCell + neighborId ] += Q1o;
+//					}
+
+/*					if(borderId == BorderLabel::Top || borderId == BorderLabel::Bottom)
+					{
+                    const Real alpha1 = Fo.findAlpha (facet_it, &edge_it);
+                    const Real alpha2 = Fo.findDirichletAlpha (facet_it, &edge_it);
+
+                    const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
+                    const Real Q12 = T12 * M_mesh.getPropertiesMap().getMobility();
+                    Real Q1o = 0.;
+                    if(borderId == BorderLabel::Top)
+						Q1o = Q12 * 1.;
+					if(borderId == BorderLabel::Bottom)
+						Q1o = Q12 * 0.;
+						
+                    S.coeffRef( numfacetsTot+numCell + neighborId, numfacetsTot+numCell + neighborId) -= Q12; 
+                    rhs[ numfacetsTot+numCell + neighborId ] -= Q1o;
+					}			                                                      */			                                        
                 } // if
                 
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
@@ -752,10 +772,30 @@ void BCimposition::ImposeBConFracture_onT(SpMat & T, Vector & rhs, FluxOperator 
                 const Real aperture = M_mesh.getPropertiesMap().getProperties( facetVectorRef[facet_it].getZoneCode() ).M_aperture;
 
                 if(M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann)
-                {	
+                {
+//					if(borderId != BorderLabel::Top && borderId != BorderLabel::Bottom)
+//					{	
                     const Real Q1o = M_bc.getBordersBCMap().at(borderId).getBC()(edge_it.getCentroid()) * edge_it.getSize() * aperture;
                     rhs[ numfacetsTot+numCell + neighborId ] += Q1o;
-                } // if
+//					}
+                    
+/*					if(borderId == BorderLabel::Top || borderId == BorderLabel::Bottom)
+					{
+                    const Real alpha1 = Fo.findAlpha (facet_it, &edge_it);
+                    const Real alpha2 = Fo.findDirichletAlpha (facet_it, &edge_it);
+
+                    const Real T12 = 2 * alpha1*alpha2/(alpha1 + alpha2);
+                    const Real Q12 = T12 * M_mesh.getPropertiesMap().getMobility();
+                    Real Q1o = 0.;
+                    if(borderId == BorderLabel::Top)
+						Q1o = Q12 * 1.;
+					if(borderId == BorderLabel::Bottom)
+						Q1o = Q12 * 0.;
+						
+                    T.coeffRef( numCell + neighborId, numCell + neighborId) -= Q12; 
+                    rhs[ numfacetsTot+numCell + neighborId ] -= Q1o;
+					}                              */                                                                                                                                                                         
+                } // if            
                 
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
                 {	

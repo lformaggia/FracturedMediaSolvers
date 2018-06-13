@@ -376,6 +376,7 @@ void StiffMatHandlerMFD::assemble()
 	
 	// Define the coupling conditions
 	CouplingConditions coupling(M_mesh, dFracture, dFacet, gIP.getMatrix());
+	coupling.Set_xsi(0.75);
 	coupling.ShowMe();
 	
 	// Define the flux operator
@@ -403,7 +404,7 @@ void StiffMatHandlerMFD::assemble()
 	// Impose BCs in fractures
 	BCimp.ImposeBConFracture(M_Matrix, M_b, fluxOP);
 	
-	//Comrpess the matrix
+	//Compress the matrix
 	M_Matrix.makeCompressed();	
 }
 
