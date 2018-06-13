@@ -119,6 +119,11 @@ public:
      */
     std::unique_ptr<QuadratureRule> clone() const;
 
+//    void TetFunc(const std::vector<Point3D> & tetrahedronNodes, std::vector<std::vector<Point3D>> & V) const;
+    
+//    void TetFunc2(const std::vector<Point3D> & tetrahedronNodes, const UInt n, Real & result,
+//		const std::function<Real(Point3D)> & integrand) const;
+
     //! Method apply for cells
     /*!
      * @param cell the cell to integrate over

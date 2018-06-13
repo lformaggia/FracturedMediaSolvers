@@ -1,4 +1,7 @@
 #include <FVCode3D/utility/Evaluate.hpp>
+#include <cmath>
+#include <Eigen/LU>
+#include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
 {
@@ -51,6 +54,7 @@ Vector evaluate(const Rigid_Mesh & mesh, const std::function<Real(Point3D)> & fu
 Vector evaluateVelocity(const Rigid_Mesh & mesh, const std::function<Real(Point3D)> & funcx, const std::function<Real(Point3D)> & funcy,
 	const std::function<Real(Point3D)> & funcz)
 {
+	
 UInt numFacetsTot = mesh.getFacetsVector().size() + mesh.getFractureFacetsIdsVector().size();
 Vector result(Vector::Zero(numFacetsTot));
 
@@ -82,7 +86,6 @@ for(auto & facet : mesh.getFacetsVector())
             Real area = FVCode3D::triangleArea(center, B, C);
             Point3D TriaCentroid = FVCode3D::triangleCentroid(center,B,C);
             result[facet.getId()] += area * ( funcx(TriaCentroid)*normal.x() + funcy(TriaCentroid)*normal.y() + funcz(TriaCentroid)*normal.z() );
-		
         }
 
         const Point3D B = facet.getMesh()->getNodesVector()[ M_vertexIds[M_vertexIds.size()-1] ];
@@ -92,7 +95,7 @@ for(auto & facet : mesh.getFacetsVector())
         Real area = FVCode3D::triangleArea(center, B, C);
         Point3D TriaCentroid = FVCode3D::triangleCentroid(center,B,C);
         result[facet.getId()] += area * ( funcx(TriaCentroid)*normal.x() + funcy(TriaCentroid)*normal.y() + funcz(TriaCentroid)*normal.z() );
-        
+
         result[facet.getId()] /= facet.area();
     }
     else
@@ -104,6 +107,8 @@ for(auto & facet : mesh.getFacetsVector())
         Real area = FVCode3D::triangleArea(A, B, C);
         Point3D TriaCentroid = FVCode3D::triangleCentroid(A, B, C);
         result[facet.getId()] = funcx(TriaCentroid)*normal.x() + funcy(TriaCentroid)*normal.y() + funcz(TriaCentroid)*normal.z();
+        
+        result[facet.getId()] /= facet.area();	
     }	
 }
 return result;	

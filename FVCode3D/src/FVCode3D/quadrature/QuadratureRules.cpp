@@ -5,6 +5,8 @@
 
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/quadrature/QuadratureRules.hpp>
+#include <Eigen/LU>
+#include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
 {
@@ -32,7 +34,7 @@ std::unique_ptr<QuadratureRule> Tetrahedralization::clone() const
 
 Real Tetrahedralization::apply(const Cell & cell, const std::function<Real(Point3D)> & integrand) const
 {
-	Real result = 0;
+	Real result = 0.;
 	auto & M_vertexIds = cell.getVerticesIds();
     assert(M_vertexIds.size() >= 4);
 
@@ -135,9 +137,10 @@ Real Tetrahedralization::apply(const Cell & cell, const std::function<Real(Point
             tetrahedronNodes[1] = nodes[(*facetIt)[1]];
             tetrahedronNodes[2] = nodes[(*facetIt)[2]];
             tetrahedronNodes[3] = cellCenter;
-            Real partialVolume = FVCode3D::tetrahedronVolume(tetrahedronNodes);
-            Point3D centrioidTetra = ( tetrahedronNodes[0] + tetrahedronNodes[1] + tetrahedronNodes[2] + tetrahedronNodes[3] ) / 4.;
-            result += partialVolume*integrand(centrioidTetra);
+            
+			Real partialVolume = FVCode3D::tetrahedronVolume(tetrahedronNodes);
+			Point3D centroidTetra = ( tetrahedronNodes[0] + tetrahedronNodes[1] + tetrahedronNodes[2] + tetrahedronNodes[3] ) / 4.;
+			result += partialVolume*integrand(centroidTetra);
         }
     }
     else
@@ -149,8 +152,9 @@ Real Tetrahedralization::apply(const Cell & cell, const std::function<Real(Point
         nodes[3] = cell.getMesh()->getNodesVector()[M_vertexIds[3]];
 
         Point3D centroid = ( nodes[0] + nodes[1] + nodes[2] + nodes[3] ) / 4.;
-        result = cell.getVolume()*integrand(centroid);
-    }
+        Real partialVolume = FVCode3D::tetrahedronVolume(nodes);
+        result = partialVolume*integrand(centroid);	
+	}
     return result;
 }
 
