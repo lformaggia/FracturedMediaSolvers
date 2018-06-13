@@ -519,9 +519,9 @@ private:
 
 //! Class for assembling a HSS preconditioner.
 /*!
- * @class BlockTriangular_preconditioner
+ * @class HSS_preconditioner
  * This class builds up a HSS preconditioner.
- * The linear systema are solved through the Eigen CG.
+ * The linear systems are solved through the Eigen CG.
 */
 class HSS_preconditioner: public preconditioner
 {
