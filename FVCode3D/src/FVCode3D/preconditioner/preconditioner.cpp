@@ -13,6 +13,8 @@
 #include <FVCode3D/core/Chrono.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
+#include <chrono>
+#include <cmath>
 
 namespace FVCode3D
 {
@@ -37,13 +39,6 @@ Vector diagonal_preconditioner::solve(const Vector & r) const
 			z[M.rows()+i] = r[M.rows()+i];
     }    
 	return z;                           
-}
-
-void lumpIP_builder::build(DiagMat & M_lump) const
-{
-	for (UInt k=0; k < M.outerSize(); ++k)
-		for (SpMat::InnerIterator it(M,k); it; ++it)
-			M_lump.diagonal()[it.row()] += it.value();
 }
 
 /*
@@ -132,10 +127,13 @@ Vector ILU_preconditioner::solve(const Vector & r) const
 	Vector y1 = Md_inv*r.head(Md_inv.rows());
 	// Second step: solve the SC linear system
     Eigen::ConjugateGradient<SpMat> cg;
-    cg.setMaxIterations(MaxIt);
+//    cg.setMaxIterations(300);
     cg.setTolerance(tol);
     cg.compute(-ISC);
     Vector y2 = cg.solve(B*y1-r.tail(B.rows()));
+    
+//	Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol(-ISC);
+//	Vector y2 = chol.solve(B*y1-r.tail(B.rows()));
 #ifdef PRINT_INFO_CG
 	std::cout << "#iterations:     " << cg.iterations() << std::endl;
 	std::cout << "estimated error: " << cg.error()      << std::endl;
@@ -144,6 +142,78 @@ Vector ILU_preconditioner::solve(const Vector & r) const
     Vector z(Md_inv.rows()+B.rows());
 	z.head(Md_inv.rows()) = y1-Md_inv*B.transpose()*y2;
     z.tail(B.rows()) = y2;
+    return z;
+}
+
+UInt constexpr HSS_preconditioner::MaxIt_default;
+Real constexpr HSS_preconditioner::tol_default;
+Real constexpr HSS_preconditioner::alpha_default;
+
+void HSS_preconditioner::set(const SaddlePointMat & SP)
+{
+	auto & M = SP.getM();
+	auto & B = SP.getB();
+	auto & T = SP.getT();
+	Bptr = & SP.getB();
+	Halpha = M;
+	for(UInt i=0; i<M.rows(); i++)
+		Halpha.coeffRef(i,i) += alpha;
+		
+	UInt c  = 0;   //To count number of fracture facets
+	UInt cc = 0;
+	for (UInt k=0; k<T.outerSize(); ++k)
+	{
+		for (SpMat::InnerIterator it(T,k); it; ++it)
+		{
+			if(it.value() != 0)
+			{
+				cc++;
+				if(cc == 1)
+					c++;
+			}
+		}
+		cc = 0;
+	}
+	Nfrac = c;
+	Ncell = T.rows()-c;
+	Talpha = -T.bottomRightCorner(Nfrac,Nfrac);
+	for(UInt i=0; i<Talpha.rows(); i++)
+		Talpha.coeffRef(i,i) += alpha;		
+		
+	BBtalpha = B*B.transpose();
+	for(UInt i=0; i<BBtalpha.rows(); i++)
+		BBtalpha.coeffRef(i,i) += alpha*alpha;	
+}
+
+Vector HSS_preconditioner::solve(const Vector & r) const
+{
+	auto & B = *Bptr;
+	// First step: solve the H linear system
+	Eigen::ConjugateGradient<SpMat> cg;
+    cg.setMaxIterations(MaxIt);
+    cg.setTolerance(tol);
+    cg.compute(Halpha);
+    Vector omega1 = cg.solve(r.head(Halpha.rows()));
+
+	// Second step: solve the T linear system
+	Vector omega2(Ncell+Nfrac);
+	for(UInt i = 0; i<Ncell; i++)                 
+	{
+		omega2[i] = r[Halpha.rows()+i]/alpha;
+	}
+	Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol(Talpha);
+    omega2.tail(Nfrac) = chol.solve(r.tail(Nfrac));
+    
+    // Third step: solve the BBt linear system
+    cg.compute(BBtalpha);
+    Vector z(Halpha.rows()+Ncell+Nfrac);
+	z.tail(Ncell+Nfrac) = cg.solve(B*omega1+alpha*omega2);
+    z.head(Halpha.rows()) = (omega1-B.transpose()*z.tail(Ncell+Nfrac))/alpha;
+#ifdef PRINT_INFO_CG
+	std::cout << "#iterations:     " << cg.iterations() << std::endl;
+	std::cout << "estimated error: " << cg.error()      << std::endl;
+#endif
+
     return z;
 }
 

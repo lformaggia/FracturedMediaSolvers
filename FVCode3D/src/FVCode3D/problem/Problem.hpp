@@ -226,6 +226,8 @@ protected:
     const Data::NumericalMethodType M_numet;
     //! Indicates the solver policy
     const Data::SolverPolicy M_solvPolicy;
+    //! Indicates if the problem is sym-undef or defpos-unsym
+    const int isSymUndef;
     //! Pointer to the quadrature class
     std::unique_ptr<Quadrature> M_quadrature;
     //! Pointer to the solver class
@@ -242,6 +244,7 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     M_ssOn(data->getSourceSinkOn()),
     M_numet(data->getNumericalMethodType()),
     M_solvPolicy(data->getSolverPolicy()),
+    isSymUndef( (data->getpreconType()=="HSS") ? -1 : 1 ),
     M_quadrature(nullptr),
     M_solver( SolverHandler::Instance().getProduct(solver) )
 	{} // Problem

@@ -12,7 +12,6 @@
 #include <FVCode3D/assembler/Stiffness.hpp>
 #include <FVCode3D/assembler/SaddlePoint.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
-#include <unsupported/Eigen/SparseExtra>
 #include <Eigen/LU>
 #include <vector>
 
@@ -75,7 +74,7 @@ public:
 template <class QRMatrix, class QRFracture>
 void DarcySteady<QRMatrix, QRFracture>::
 assembleMatrix()
-{
+{	
 	const UInt numFracture  = this->M_mesh.getFractureFacetsIdsVector().size();
 	const UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + numFracture;
 	const UInt numCell      = this->M_mesh.getCellsVector().size();
@@ -100,7 +99,7 @@ assembleMatrix()
 		S.setDofs(numFacetsTot+numCell+numFracture);
 		S.assemble();
         S.show();
-        S.ExportSystem();
+//        S.ExportSystem();
     }
     else if( this->M_numet == Data::NumericalMethodType::MFD && this->M_solvPolicy == Data::SolverPolicy::Iterative )
     {
@@ -109,7 +108,11 @@ assembleMatrix()
 		S.setDofs(numFacetsTot,numCell+numFracture);
 		S.assemble();
 		S.show();
+		ASP.Set_isSymUndef(this->isSymUndef);
 //		S.ExportM();
+//		S.ExportT();
+//		S.ExportBBT();
+
 	}
 } // DarcySteady::assembleMatrix
 
@@ -120,8 +123,8 @@ assembleVector()
     this->M_quadrature.reset( new Quadrature(this->M_mesh, QRMatrix(), QRFracture()) );
 	auto & M_b = this->getRHS();
 		
-		UInt numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
-		Vector f( Vector::Constant( numCellsTot, 0.) );   
+	UInt numCellsTot = this->M_mesh.getCellsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
+	Vector f( Vector::Constant( numCellsTot, 0.) );   
 		
     if ( this->M_mesh.getCellsVector().size() != 0
             &&
@@ -155,6 +158,7 @@ assembleVector()
     {
 		UInt numFacetsTot = this->M_mesh.getFacetsVector().size() + this->M_mesh.getFractureFacetsIdsVector().size();
         M_b.segment(numFacetsTot,numCellsTot) -= f;
+        M_b.tail(numCellsTot) *= this->isSymUndef;
     } 
 } // DarcySteady::assembleVector
 

@@ -17,10 +17,14 @@ Func SourceDomain = [](Point3D p){return ((p.x() - 1.)*(p.x() - 1.) + (p.y() - 0
 
 Func fZero = [](Point3D){ return 0.; };
 Func fOne = [](Point3D){ return 1.; };
+Func fTwo = [](Point3D){ return 2.; };
+Func fFour = [](Point3D){ return 4.; };
 Func fMinusTwo = [](Point3D){ return -2.; };
 Func fMinusOne = [](Point3D){ return -1.; };
 Func fOneZero = [](Point3D p){ return (2. - p.x()) / 2.; };
 Func fTen = [](Point3D){ return 10.; };
+
+Func fZ = [](Point3D p){ return p.z(); };
 
 /* grid2 */
 Func SourceGrid2 = [](Point3D p)
@@ -108,15 +112,30 @@ Func SSOGrid3 = [](Point3D p)
                  ) <=1e6
                );
     };
+    
+Func SorgentSink = [](Point3D p)
+    {return 15.*( (
+                    (p.x()-0.3)*(p.x()-0.3) +
+                    (p.y()-0.3)*(p.y()-0.3) +
+                    (p.z()-0.8)*(p.z()-0.8)
+				  ) <=0.04
+				)
+            -15.*( (
+                      (p.x()-0.5)*(p.x()-0.5) +
+                      (p.y()-0.5)*(p.y()-0.5) +
+                      (p.z()-0.3)*(p.z()-0.3) 
+                    ) <=0.04
+                 );
+    };
 
 /* TEST EDFM */
 Func SSEDFM = [](Point3D p)
     { return 10. * ( p.x() <= 0.4 ); };
     
 Func SSEDFMBC = [](Point3D p)
-    { return 2. * ( (p.x() >= 0.8) && (p.x() <= 1.2 ) ); };
+    { return 2. * ( (p.x() <= 0.2) && (p.x() >= -0.2 ) ); };
 
-Func SS = SSEDFM;//SourceDomain; //fZero;//SSGrid2;
+Func SS = SorgentSink;//SourceDomain; //fZero;//SSGrid2;
 
 // TEST CASE: convergence order
 

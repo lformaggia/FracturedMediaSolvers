@@ -1,5 +1,3 @@
 add_subdirectory(network1)
 add_subdirectory(network2)
-add_subdirectory(hexa)
-add_subdirectory(tet)
-add_subdirectory(poly)
+

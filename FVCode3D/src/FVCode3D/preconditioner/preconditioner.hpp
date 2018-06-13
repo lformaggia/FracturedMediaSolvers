@@ -3,6 +3,10 @@
  * @brief These classes implement simple classes that perform the "inversion" of the preconditioner.
  */
 
+// Add this macro to enable the lumping of Mblock in place of taking the diagonal part
+// in BlockTr and ILU preconditioners
+//#define LUMP
+
 #ifndef __PRECONDITIONER_HPP__
 #define __PRECONDITIONER_HPP__
 
@@ -22,44 +26,6 @@ class preconditioner;
  */
 typedef std::shared_ptr<preconditioner> preconPtr_Type;
 
-//! Class for assembling a lumped inner product builder.
-/*!
- * @class lumpIP_builder
- * This class implements the lumping of the inner product matrix.
-*/
-class lumpIP_builder
-{
-public:
-    //! @name Constructor & Destructor
-    //@{
-    //! Construct a lumped inner product builder.
-    /*!
-     * @param ip_Mat The innner product matrix
-     */
-	lumpIP_builder( const SpMat & ip_Mat):
-		M(ip_Mat) {}
-	//! No Copy-Constructor
-    lumpIP_builder(const lumpIP_builder &) = delete;
-	//! No Empty-Constructor
-    lumpIP_builder() = delete;
-	//! Destructor
-    ~lumpIP_builder() = default;
-	//@}
-    
-    //! @name Assemble Methods
-    //@{
-	//! Assemble the lumped inner product
-    /*!
-     * @param M_lump A reference to the lumped inner product to be built
-     */
-    void build(DiagMat & M_lump) const;
-    //@}    
-    
-private:
-	//! A const reference to the inner product matrix
-	const SpMat       & M;
-};
-
 //! Class for assembling a saddle point matrix.
 /*!
  * @class SaddlePointMat
@@ -78,14 +44,15 @@ public:
     //! @name Constructor & Destructor
     //@{
     //! Empty-Constructor
-    SaddlePointMat() = default;
+    SaddlePointMat(): 
+		isSymUndef(1){}
     
     //! Construct a saddle point matrix
     /*!
      * @param SP_Stiff A reference to the saddle point stiffness matrix
      */
 	SaddlePointMat(const SpMat & Mmat,const SpMat & Bmat,const SpMat & Tmat):
-		M(Mmat), B(Bmat), T(Tmat) {}
+		isSymUndef(1), M(Mmat), B(Bmat), T(Tmat) {}
 		
 	//! Construct a saddle point matrix
     /*!
@@ -94,7 +61,7 @@ public:
      * @param Bcol B block col
      */
 	SaddlePointMat(const UInt Mdim,const UInt Brow):
-		M(Mdim,Mdim), B(Brow,Mdim), T(Brow,Brow) {}
+		isSymUndef(1), M(Mdim,Mdim), B(Brow,Mdim), T(Brow,Brow) {}
 		
 	//! Copy-Constructor
     SaddlePointMat(const SaddlePointMat &) = default;
@@ -113,6 +80,15 @@ public:
 		M = Mmat;
 		B = Bmat;
 		T = Tmat;
+	}
+	
+	//! Set the flag isSymUndef
+    /*!
+     * @param coeff The flag to be set
+     */
+    void Set_isSymUndef(const int coeff)
+	{
+		isSymUndef = coeff;
 	}
 	
 	//! Compress the block matrices
@@ -203,12 +179,14 @@ public:
     {
 		Vector result(M.rows()+B.rows());
 		result.head(M.rows()) = M*x.head(M.cols()) + B.transpose()*x.tail(B.rows());
-		result.tail(B.rows()) = B*x.head(M.cols()) + T*x.tail(B.rows());
+		result.tail(B.rows()) = isSymUndef*B*x.head(M.cols()) + isSymUndef*T*x.tail(B.rows());
 		return result;
 	}
     //@}
 
 private:
+	//! A flag indicating if it is sym-undef or defpos-unsym 
+	int       isSymUndef;
 	//! The M block matrix
 	SpMat      M;
 	//! The B block matrix 
@@ -386,10 +364,24 @@ public:
     void set(const SaddlePointMat & SP)
 	{
 		Bptr   = & SP.getB();
+#ifdef LUMP
+		auto & M = SP.getM();
+		Vector ML(M.rows());
+		ML.setZero();
+		for(UInt i = 0; i<M.rows(); i++)
+		{
+			for(UInt j = 0; j<M.cols(); j++)
+			{
+				ML[i] += M.coeff(i,j);
+			}
+		}
+		Md_inv = ML.asDiagonal().inverse();
+#else
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
+#endif
 		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
 		ISC   += SP.getT(); 
-		ExportPrec(SP);
+//		ExportPrec(SP);
 	}
     //@}
 
@@ -414,7 +406,7 @@ private:
     //! The tolerance for CG
     Real                       tol;
     //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_Default = 200;
+    static constexpr UInt      MaxIt_Default = 300;
     //! The tolerance for CG (default value)
     static constexpr Real      tol_Default = 1e-2;
                       
@@ -435,7 +427,7 @@ public:
 	//! No Copy-Constructor
     ILU_preconditioner(const ILU_preconditioner &) = delete;
 	//! Empty-Constructor
-    ILU_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_default), tol(tol_default) {}
+    ILU_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_default), tol(tol_default), ave(0), cc(0) {}
 	//! Destructor
     ~ILU_preconditioner() = default;
 	//@}
@@ -476,7 +468,21 @@ public:
     void set(const SaddlePointMat & SP)
 	{
 		Bptr   = & SP.getB();
+#ifdef LUMP
+		auto & M = SP.getM();
+		Vector ML(M.rows());
+		ML.setZero();
+		for(UInt i = 0; i<M.rows(); i++)
+		{
+			for(UInt j = 0; j<M.cols(); j++)
+			{
+				ML[i] += M.coeff(i,j);
+			}
+		}
+		Md_inv = ML.asDiagonal().inverse();
+#else
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
+#endif
 		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
 		ISC   += SP.getT(); 
 	}
@@ -502,8 +508,124 @@ private:
     UInt                       MaxIt;
     //! The tolerance for CG
     Real                       tol;
+    UInt                       ave;
+    UInt				   	   cc;	
     //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_default = 200;
+    static constexpr UInt      MaxIt_default = 300;
+    //! The tolerance for CG (default value)
+    static constexpr Real      tol_default = 1e-2;
+                      
+};
+
+//! Class for assembling a HSS preconditioner.
+/*!
+ * @class BlockTriangular_preconditioner
+ * This class builds up a HSS preconditioner.
+ * The linear systema are solved through the Eigen CG.
+*/
+class HSS_preconditioner: public preconditioner
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+	//! No Copy-Constructor
+    HSS_preconditioner(const HSS_preconditioner &) = delete;
+	//! Empty-Constructor
+    HSS_preconditioner():Ncell(0), Nfrac(0), Bptr(nullptr), alpha(alpha_default), MaxIt(MaxIt_default), tol(tol_default) {}
+	//! Destructor
+    ~HSS_preconditioner() = default;
+	//@}
+	
+	//! @name Get Methods
+    //@{
+    //! Get H+alpha*I block 
+    /*!
+     * @return A reference to the H+alpha*I block
+     */
+	SpMat getHalpha() const
+		{return Halpha;}
+		
+    //! Get T+alpha*I block 
+    /*!
+     * @return A reference to the T+alpha*I block
+     */
+	SpMat getTalpha() const
+		{return Talpha;}
+		
+    //! Get BBt+alpha^2*I block 
+    /*!
+     * @return A reference to the BBt+alpha^2*I block
+     */
+	const SpMat & getBBtalpha() const
+		{return BBtalpha;}
+    //@}
+    
+    //! @name Set Methods
+    //@{
+    
+    //! Set the max it value for CG
+    /*!
+     * @param itmax Max it value for CG
+     */
+	void set_alpha(const UInt a)
+		{alpha = a;}
+    
+    //! Set the max it value for CG
+    /*!
+     * @param itmax Max it value for CG
+     */
+	void set_MaxIt(const UInt itmax)
+		{MaxIt = itmax;}
+		
+	//! Set the tolerance value for CG
+    /*!
+     * @param Tol tolerance value for CG
+     */
+	void set_tol(const UInt Tol)
+		{tol = Tol;}
+    //@}
+
+    //! @name Assemble Methods
+    //@{
+	//! Assemble the approximations of M and SC
+    /*!
+     * @param SP_Stiff A reference to the saddle point stiffness matrix
+     */
+    void set(const SaddlePointMat & SP);
+    //@}
+
+    //! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     */
+    Vector solve(const Vector & r) const;
+    //@}
+    
+private:
+    //! Number of cells
+    UInt                       Ncell;
+    //! Number of cells
+    UInt                       Nfrac;
+	//! A  constant reference to the saddle point matrix
+	const SpMat *     		   Bptr;
+    //! The H+alpha*I block
+    SpMat                      Halpha;
+    //! The T+alpha*I block
+    SpMat                      Talpha;
+    //! The B*B^T+alpha*I block
+    SpMat                      BBtalpha;
+    //! The alpha coefficient of the scheme
+    Real                       alpha;
+    //! The max it for CG
+    UInt                       MaxIt;
+    //! The tolerance for CG
+    Real                       tol;
+    //! The alpha coeff of the scheme (default value)
+    static constexpr Real      alpha_default = 1e-2;
+    //! The max it for CG (default value)
+    static constexpr UInt      MaxIt_default = 300;
     //! The tolerance for CG (default value)
     static constexpr Real      tol_default = 1e-2;
                       
