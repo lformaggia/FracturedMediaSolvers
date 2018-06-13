@@ -71,9 +71,9 @@ How to generate the documentation
 
 The code is fully documented in Doxygen.
 To build the doxygen documentation:
-	cd <install dir>/build
-	make doc
-	cd doc/html
+	cd FVCode3D/doc
+	doxygen Doxyfile.in
+	cd html
 	<browser> index.html
 where e.g. <browser> = firefox.
 

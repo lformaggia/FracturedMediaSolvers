@@ -4,8 +4,8 @@
 
 [mesh]
 mesh_dir    = ./data/                # mesh directory
-mesh_file   = polyGrid3.fvg          # mesh filename
-mesh_type   = .fvg                   # mesh format: .fvg, .grid, .mesh
+mesh_file   = compMFD.fvg          # mesh filename
+mesh_type   = .fvg                  # mesh format: .fvg, .grid, .mesh
 
 [output]
 output_dir  = ./results/             # output directory
@@ -33,11 +33,11 @@ compressibility = 1.                 # compressibility of the fluid
 theta       = 0.                     # rotation to apply to grid around the z
 
 [solver]
-policy  = Iterative   	         # Iterative , Direct
+policy  = Iterative  	         # Iterative , Direct
 type    = imlFGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlFGMRES
 
     [./iterative]
     maxIt       = 20000              # maximum number of iterations of the iterative solver
     tolerance   = 1e-6               # tolerance of the iterative solver
-	preconditioner = ILU             # Identity, Diagonal, BlockTriangular, ILU
+	preconditioner = ILU           # Identity, Diagonal, BlockTriangular, ILU, HSS
 
