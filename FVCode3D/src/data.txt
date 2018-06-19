@@ -4,7 +4,7 @@
 
 [mesh]
 mesh_dir    = ./data/                # mesh directory
-mesh_file   = compMFD.fvg          # mesh filename
+mesh_file   = polyGrid3.fvg          # mesh filename
 mesh_type   = .fvg                  # mesh format: .fvg, .grid, .mesh
 
 [output]
@@ -34,7 +34,7 @@ theta       = 0.                     # rotation to apply to grid around the z
 
 [solver]
 policy  = Iterative  	         # Iterative , Direct
-type    = imlFGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlFGMRES
+type    = imlGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlGMRES, imlFGMRES
 
     [./iterative]
     maxIt       = 20000              # maximum number of iterations of the iterative solver

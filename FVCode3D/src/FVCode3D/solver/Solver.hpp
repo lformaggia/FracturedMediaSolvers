@@ -596,6 +596,66 @@ private:
 	
 }; // class BiCGSTAB
 
+//! Class imlGMRES
+/*!
+ * @class imlGMRES
+ * This class implements a linear solver for the system Ax=b.
+ * It uses the generalized minimum residual method with restart on a square matrix.
+ */
+class imlGMRES : public IterativeSolver
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Empty constructor
+    imlGMRES(): IterativeSolver(), m(Default_m) {}
+
+	//! Constructor
+    /*!
+     * @param Mdim M block dimension
+     * @param Brow B block row
+     * @param Bcol B block col
+     */
+	imlGMRES(const UInt Mdim,const UInt Brow):
+		IterativeSolver(Mdim,Brow), m(Default_m) {}
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    imlGMRES( const SaddlePointMat & A, const Vector & b ):
+        IterativeSolver(A, b), m(Default_m) {}
+  
+    //! Destructor
+    ~imlGMRES() = default;
+    //@}
+        
+    //! @name Set Methods
+    //@{  
+    //! Set the restart
+    /*!
+     * @param The restart
+     */
+    void set_m(const UInt rest_val){ m = rest_val; };
+	//@}
+        
+    //! @name Methods
+    //@{
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b by means of the GMRES method.
+     */
+    void solve();
+    //@}
+
+private:
+	//! The restart level (how many iterations needed to perform a restart)
+	UInt m;
+	//! The default restart value
+	static constexpr UInt Default_m = 300;
+	
+}; // class GMRES
 
 //! Class imlFGMRES
 /*!
@@ -656,7 +716,7 @@ private:
 	//! The default restart value
 	static constexpr UInt Default_m = 300;
 	
-}; // class GMRES
+}; // class FGMRES
 
 
 #ifdef FVCODE3D_HAS_SAMG

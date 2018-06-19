@@ -50,13 +50,14 @@ GMRES(const Matrix &A, Vector &x, const Vector &b,
     Eigen::Matrix<Real,Eigen::Dynamic,Eigen::Dynamic>::Zero(m+1,m);
   //  H.resize(m+1,m,0.0);
   Real normb = norm(M.solve(b));
-  w        = b- A*x;
-  Vector r = M.solve(w);
+//  w        = b- A*x;
+//  Vector r = M.solve(w);
+  Vector r = M.solve(b - A * x);
   Real beta = norm(r);
   
   if (normb == 0.0)
     normb = 1;
-  resid = norm(w)/normb;
+  resid = beta/normb;
   if (resid  <= tol) {
     tol = resid;
     max_iter = 0;
@@ -94,10 +95,11 @@ GMRES(const Matrix &A, Vector &x, const Vector &b,
       }
     }
     Update(x, m - 1, H, s, v);
-    w = b - A * x;
-    r = M.solve(w);
+//    w = b - A * x;
+//    r = M.solve(w);
+    r = M.solve(b - A * x);
     beta = norm(r);
-    resid = norm(w)/beta;
+    resid = beta/normb;
     if (resid < tol) {
       tol = resid;
       max_iter = j;

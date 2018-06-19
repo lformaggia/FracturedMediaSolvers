@@ -63,6 +63,23 @@ void imlBiCGSTAB::solve()
 
 } // imlBiCGSTAB::solve
 
+constexpr UInt imlGMRES::Default_m;
+void imlGMRES::solve()
+{
+	// Define the initial guess to zero
+	M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
+	// Set the restart level
+//	set_m(60);
+	// Conversion needed
+	int iter = (int) M_maxIter;
+	int m_int = (int) m;
+	// Solve the system
+	int conv = GMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
+	// Conversion needed
+	CIndex = (UInt) conv;	
+	M_iter = (UInt) iter;
+	
+} // imlGMRES::solve
 
 constexpr UInt imlFGMRES::Default_m;
 void imlFGMRES::solve()
@@ -80,7 +97,7 @@ void imlFGMRES::solve()
 	CIndex = (UInt) conv;	
 	M_iter = (UInt) iter;
 	
-} // imlGMRES::solve
+} // imlFGMRES::solve
 
 
 #ifdef FVCODE3D_HAS_SAMG
