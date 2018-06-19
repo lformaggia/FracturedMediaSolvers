@@ -3,9 +3,6 @@
  * @brief These classes implement simple classes that perform the "inversion" of the preconditioner (definition version)
 */
 
-// Add this macro to enable the printing of MaxIt and error for the CG method used to solve the SC system in the internal cycle.
-//#define PRINT_INFO_CG
-
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/assembler/global_operator.hpp>
 #include <FVCode3D/assembler/local_operator.hpp>
@@ -60,10 +57,6 @@ Vector ILU_preconditioner::solve(const Vector & r) const
 	Vector y1 = Md_inv*r.head(Md_inv.rows());
 	// Second step: solve the ISC linear system
 	Vector y2 = chol.solve(B*y1-r.tail(B.rows()));
-#ifdef PRINT_INFO_CG
-	std::cout << "#iterations:     " << cg.iterations() << std::endl;
-	std::cout << "estimated error: " << cg.error()      << std::endl;
-#endif
     // Third step: solve the 2nd diagonal linear system
     Vector z(Md_inv.rows()+B.rows());
 	z.head(Md_inv.rows()) = y1-Md_inv*B.transpose()*y2;
