@@ -793,8 +793,8 @@ void BCimposition::ImposeBConFracture_onT(SpMat & T, Vector & rhs, FluxOperator 
 						Q1o = Q12 * 0.;
 						
                     T.coeffRef( numCell + neighborId, numCell + neighborId) -= Q12; 
-                    rhs[ numfacetsTot+numCell + neighborId ] -= Q1o;
-					}                              */                                                                                                                                                                         
+                    rhs[ numfacetsTot+numCell + neighborId ] -= Q1o;                  
+					}                                                                 */                                                                                                                                                       
                 } // if            
                 
                 else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)

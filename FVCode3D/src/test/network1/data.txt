@@ -34,7 +34,7 @@ theta       = 0.                     # rotation to apply to grid around the z
 
 [solver]
 policy  = Iterative     	         # Iterative , Direct
-type    = imlFGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlFGMRES
+type    = imlFGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlGMRES, imlFGMRES
 
     [./iterative]
     maxIt       = 20000              # maximum number of iterations of the iterative solver

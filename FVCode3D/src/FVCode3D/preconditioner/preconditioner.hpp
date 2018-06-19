@@ -317,43 +317,10 @@ public:
 	//! No Copy-Constructor
     BlockTriangular_preconditioner(const BlockTriangular_preconditioner &) = delete;
 	//! Empty-Constructor
-    BlockTriangular_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_Default), tol(tol_Default) {}
+    BlockTriangular_preconditioner(): Bptr(nullptr) {}
 	//! Destructor
     ~BlockTriangular_preconditioner() = default;
 	//@}
-	
-	//! @name Get Methods
-    //@{
-    //! Get ISC block 
-    /*!
-     * @return A reference to the ISC block
-     */
-	const SpMat & getISC() const
-		{return ISC;}
-    //@}
-    
-    //! @name Set Methods
-    //@{
-    //! Set the max it value for CG
-    /*!
-     * @param itmax Max it value for CG
-     */
-	void setMaxIt(const UInt itmax)
-		{MaxIt = itmax;}
-		
-	//! Set the tolerance value for CG
-    /*!
-     * @param Tol tolerance value for CG
-     */
-	void set_tol(const UInt Tol)
-		{tol = Tol;}
-		
-	//! Export the preconditioner
-    /*!
-     * Export the preconditioner in matrix form
-     */
-	void ExportPrec(const SaddlePointMat & SP) const;
-    //@}
 
     //! @name Assemble Methods
     //@{
@@ -379,9 +346,10 @@ public:
 #else
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
 #endif
-		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
+		SpMat ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
 		ISC   += SP.getT(); 
-//		ExportPrec(SP);
+		
+		chol.compute(-ISC);
 	}
     //@}
 
@@ -399,16 +367,8 @@ private:
     const SpMat *              Bptr;
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv;
-	//! The inexact Schur Complement matrix
-    SpMat                      ISC;
-    //! The max it for CG
-    UInt                       MaxIt;
-    //! The tolerance for CG
-    Real                       tol;
-    //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_Default = 300;
-    //! The tolerance for CG (default value)
-    static constexpr Real      tol_Default = 1e-2;
+    //! Cholesky factorization
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
                       
 };
 
@@ -427,37 +387,10 @@ public:
 	//! No Copy-Constructor
     ILU_preconditioner(const ILU_preconditioner &) = delete;
 	//! Empty-Constructor
-    ILU_preconditioner(): Bptr(nullptr), MaxIt(MaxIt_default), tol(tol_default), ave(0), cc(0) {}
+    ILU_preconditioner(): Bptr(nullptr) {}
 	//! Destructor
     ~ILU_preconditioner() = default;
 	//@}
-	
-	//! @name Get Methods
-    //@{
-    //! Get B block 
-    /*!
-     * @return A reference to the B block
-     */
-	const SpMat & getISC() const
-		{return ISC;}
-    //@}
-    
-    //! @name Set Methods
-    //@{
-    //! Set the max it value for CG
-    /*!
-     * @param itmax Max it value for CG
-     */
-	void setMaxIt(const UInt itmax)
-		{MaxIt = itmax;}
-		
-	//! Set the tolerance value for CG
-    /*!
-     * @param Tol tolerance value for CG
-     */
-	void set_tol(const UInt Tol)
-		{tol = Tol;}
-    //@}
 
     //! @name Assemble Methods
     //@{
@@ -483,8 +416,10 @@ public:
 #else
 		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
 #endif
-		ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
+		SpMat ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
 		ISC   += SP.getT(); 
+		
+		chol.compute(-ISC);
 	}
     //@}
 
@@ -501,20 +436,9 @@ private:
 	//! The B block matrix
     const SpMat *              Bptr;
     //! The inverse of the diagonal of M
-    DiagMat                    Md_inv; 
-	//! The inexact Schur Complement matrix
-    SpMat                      ISC;
-    //! The max it for CG
-    UInt                       MaxIt;
-    //! The tolerance for CG
-    Real                       tol;
-    UInt                       ave;
-    UInt				   	   cc;	
-    //! The max it for CG (default value)
-    static constexpr UInt      MaxIt_default = 300;
-    //! The tolerance for CG (default value)
-    static constexpr Real      tol_default = 1e-2;
-                      
+    DiagMat                    Md_inv;
+    //! Cholesky factorization
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;                   
 };
 
 //! Class for assembling a HSS preconditioner.
@@ -535,30 +459,6 @@ public:
 	//! Destructor
     ~HSS_preconditioner() = default;
 	//@}
-	
-	//! @name Get Methods
-    //@{
-    //! Get H+alpha*I block 
-    /*!
-     * @return A reference to the H+alpha*I block
-     */
-	SpMat getHalpha() const
-		{return Halpha;}
-		
-    //! Get T+alpha*I block 
-    /*!
-     * @return A reference to the T+alpha*I block
-     */
-	SpMat getTalpha() const
-		{return Talpha;}
-		
-    //! Get BBt+alpha^2*I block 
-    /*!
-     * @return A reference to the BBt+alpha^2*I block
-     */
-	const SpMat & getBBtalpha() const
-		{return BBtalpha;}
-    //@}
     
     //! @name Set Methods
     //@{
@@ -606,16 +506,18 @@ public:
 private:
     //! Number of cells
     UInt                       Ncell;
-    //! Number of cells
+    //! Number of farcture facets
     UInt                       Nfrac;
 	//! A  constant reference to the saddle point matrix
 	const SpMat *     		   Bptr;
-    //! The H+alpha*I block
-    SpMat                      Halpha;
-    //! The T+alpha*I block
-    SpMat                      Talpha;
-    //! The B*B^T+alpha*I block
-    SpMat                      BBtalpha;
+	//! The matrix Halpha
+	SpMat                      Halpha;
+    //! The CG for Halpha
+	Eigen::ConjugateGradient<SpMat> cg;
+    // Cholesky factorization for Talpha
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> cholT;
+    //! Cholesky factorization for BBtalpha
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> cholBBt;
     //! The alpha coefficient of the scheme
     Real                       alpha;
     //! The max it for CG

@@ -113,9 +113,9 @@ int main(int argc, char * argv[])
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    fracturesPerm->setPermeability( 1.e-4, 0 );
-    fracturesPerm->setPermeability( 1.e-2, 4 );
-    fracturesPerm->setPermeability( 1.e-2, 8 );
+    fracturesPerm->setPermeability( 1.e3, 0 );
+    fracturesPerm->setPermeability( 1.e3, 4 );
+    fracturesPerm->setPermeability( 1.e3, 8 );
 //   const Real kf = 1.e-3; 
 //   fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
@@ -156,7 +156,7 @@ int main(int argc, char * argv[])
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
     BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fOne );
     BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
-    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );        */        
+    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );              */ 
 
     std::vector<BoundaryConditions::BorderBC> borders;
 
