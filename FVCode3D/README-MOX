@@ -1,0 +1,19 @@
+Instructions to install FVCODE3D on MOX Machines
+
+First of all be sure that your .bashrc file contains
+
+if [[ `hostname` != "hpc.mate.polimi.it" && `hostname` != "tosca.mate.polimi.it" ]]; then
+export mkPrefix=/u/sw
+source ${mkPrefix}/etc/profile
+fi
+
+in order to be able to loead the module.
+
+The script ./install-mox.sh contains a script that automaticaly installes the code in the directory indicated in the file as TARGET_DIR. Change it if you want to install it somewhere else.
+The script calls install-devel.sh and you may pass other options to that script you can just ise
+
+./install-mox.sh <other options>
+
+NOTE: a copy of the code is in /u/software/Repository/Sources/FracturedMediaSolvers/ you can access it in write mode if you belong to the group numer.
+
+
