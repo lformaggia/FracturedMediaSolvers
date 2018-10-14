@@ -10,19 +10,19 @@
 
 namespace FVCode3D
 {
+  
+  class CoordinateSystem3D;
 
-class CoordinateSystem3D;
-
-//! Class that defines a 3D Point and some operations.
-/*!
- * @class Point3D
- * This class defines a point as three Real coordinates.
- * It also implements some operation between two points or between a point and a scalar value.
- */
-class Point3D
-{
-public:
-
+  //! Class that defines a 3D Point and some operations.
+  /*!
+   * @class Point3D
+   * This class defines a point as three Real coordinates.
+   * It also implements some operation between two points or between a point and a scalar value.
+   */
+  class Point3D
+  {
+  public:
+    
     //! Empty constructor
     /*!
      * Initialize with null coordinates
@@ -37,7 +37,7 @@ public:
      * @param z z-coordinate
      */
     Point3D(Real x, Real y, Real z): M_x(x) ,M_y(y) , M_z(z) {};
-
+    
     //! Copy constructor
     /*!
      * @param p point
@@ -149,14 +149,14 @@ public:
      * @param coord subscript of the coordinate (0, 1 ,2)
      * @return the coord-th component
      */
-    Real operator[](const UInt coord) const throw();
+    Real operator[](const UInt coord) const;
 
     //! Access to the coord-th component of the point
     /*!
      * @param coord subscript of the coordinate (0, 1 ,2)
      * @return the coord-th component
      */
-    Real & operator[](const UInt coord) throw();
+    Real & operator[](const UInt coord);
 
     //! Get tolerance on x
     /*!
@@ -211,7 +211,7 @@ public:
 
     //! * operator between points (dot product)
     friend Real operator*(const Point3D & p1, const Point3D & p2);
-
+    
     //! * operator between point and scalar
     friend Point3D operator*(const Point3D & p, const Real r);
 
@@ -255,10 +255,18 @@ private:
     //! z-coordinate
     Real M_z;
 };
-
-//! Operator less between points
-bool operator<(const Point3D & p1, const Point3D & p2);
-
+  
+  //! Operator less between points
+  //! \note
+  //! This is very dangerous. It uses tolerances: it does not comply with the rules of an
+  //! ordering relation
+  //! \todo
+  //! Change it so it defines an ordering relation. Define separate functors that operates on
+  //! Point3D with tolerances. In fact you just need the == operator with tolerance (but with a different name).
+  //! Replace wherever is needed.
+  //!
+  bool operator<(const Point3D & p1, const Point3D & p2);
+  
 } // namespace FVCode3D
 
 #endif /* POINT3D_HPP_ */

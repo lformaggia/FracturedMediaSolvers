@@ -47,7 +47,7 @@ public:
     /*!
      * @param pressure pressure value to set inside the fractures
      */
-    void apply(const Real pressure) throw();
+    void apply(const Real pressure);
 
     //! Default destructor
     ~FixPressureDofs() = default;
@@ -60,7 +60,7 @@ private:
 }; // class FixPressureDofs
 
 template <typename ProblemType>
-void FixPressureDofs<ProblemType>::apply(const Real pressure) throw()
+void FixPressureDofs<ProblemType>::apply(const Real pressure)
 {
 	if(M_problem->getSolverPolicy() == Data::SolverPolicy::Direct)
 	{

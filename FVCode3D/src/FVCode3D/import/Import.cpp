@@ -92,7 +92,7 @@ void Importer::addBCAndFractures(const Real theta)
     addFractures();
 }
 
-void ImporterMedit::import(bool fracturesOn) throw()
+void ImporterMedit::import(bool fracturesOn)
 {
     std::ifstream file;
     file.open(M_filename.c_str(), std::ios_base::in);
@@ -201,7 +201,7 @@ void ImporterMedit::import(bool fracturesOn) throw()
     file.close();
 }
 
-void ImporterTetGen::import(bool fracturesOn) throw()
+void ImporterTetGen::import(bool fracturesOn)
 {
     std::ifstream file;
     file.open( (M_filename + ".node").c_str(), std::ios_base::in);
@@ -328,7 +328,7 @@ void ImporterTetGen::import(bool fracturesOn) throw()
     file.close();
 }
 
-void ImporterTPFA::import(bool fracturesOn) throw()
+void ImporterTPFA::import(bool fracturesOn)
 {
     std::ifstream file;
     file.open(M_filename.c_str(), std::ios_base::in);
@@ -412,7 +412,7 @@ void ImporterTPFA::import(bool fracturesOn) throw()
     file.close();
 }
 
-void ImporterOpenFOAM::import(bool fracturesOn) throw()
+void ImporterOpenFOAM::import(bool fracturesOn)
 {
     std::ifstream file;
 
@@ -736,7 +736,7 @@ void ImporterOpenFOAM::import(bool fracturesOn) throw()
     }
 }
 
-void ImporterForSolver::import(bool fracturesOn) throw()
+void ImporterForSolver::import(bool fracturesOn)
 {
     std::ifstream file;
     file.open(M_filename.c_str(), std::ios_base::in);

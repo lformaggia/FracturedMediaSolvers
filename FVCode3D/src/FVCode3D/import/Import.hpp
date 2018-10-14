@@ -37,7 +37,7 @@ public:
     /*!
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
-    virtual void import(bool fracturesOn) throw() = 0;
+    virtual void import(bool fracturesOn)= 0;
 
     //! Generate the BC ids from a standard TPFA file format
     /*!
@@ -133,7 +133,7 @@ public:
      * Read points, polygons, polyhedra
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
-    virtual void import(bool fracturesOn = true) throw();
+    virtual void import(bool fracturesOn = true);
 
     //! Destructor
     virtual ~ImporterMedit() = default;
@@ -174,7 +174,7 @@ public:
      * Read points, faces, tetrahedra
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
-    virtual void import(bool fracturesOn = true) throw();
+    virtual void import(bool fracturesOn = true);
 
     //! Destructor
     virtual ~ImporterTetGen() = default;
@@ -215,7 +215,7 @@ public:
      * Read points, polygons, polyhedra, zone properties
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
-    virtual void import(bool fracturesOn = true) throw();
+    virtual void import(bool fracturesOn = true);
 
     //! Destructor
     virtual ~ImporterTPFA() = default;
@@ -256,7 +256,7 @@ public:
      * Read points, faces, owner, neighbour, boundary
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
-    virtual void import(bool fracturesOn = true) throw();
+    virtual void import(bool fracturesOn = true);
 
     //! Destructor
     virtual ~ImporterOpenFOAM() = default;
@@ -298,7 +298,7 @@ public:
      * Read points, polygons, polyhedra, zone properties, BC ids, fracture network
      * @param fracturesOn if true, imports the fractures, else the fractures are disabled
      */
-    virtual void import(bool fracturesOn = true) throw();
+    virtual void import(bool fracturesOn = true);
 
     //! Destructor
     virtual ~ImporterForSolver() = default;

@@ -96,19 +96,19 @@ public:
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The integral of the considered Integrand function
      */
-    Real integrate (const Vector & integrand) const throw();
+    Real integrate (const Vector & integrand) const;
     //! Integrate discrete function only on the porous matrix
     /*!
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The integral of the considered Integrand function
      */
-    Real integrateMatrix (const Vector & integrand) const throw();
+    Real integrateMatrix (const Vector & integrand) const;
     //! Integrate discrete function only on the fracturs
     /*!
      * @param Integrand A vector such that in the i-th component has the value of the function on the i-th cell
      * @return The integral of the considered Integrand function
      */
-    Real integrateFractures (const Vector & integrand) const throw();
+    Real integrateFractures (const Vector & integrand) const;
 
 
     //! L2 Norm of a discrete function

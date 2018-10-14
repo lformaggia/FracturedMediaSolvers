@@ -11,7 +11,7 @@
 namespace FVCode3D
 {
 
-void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) const throw()
+void ExporterCP::exportMesh(const Mesh3D & mesh, const std::string filename) const
 {
 
     std::ostringstream specGridSS, coordSS, zCornSS, actnumSS;

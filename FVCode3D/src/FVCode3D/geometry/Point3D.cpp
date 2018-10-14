@@ -100,7 +100,7 @@ Point3D & Point3D::operator/=(const Real & r)
     return *this;
 }
 
-Real Point3D::operator[](const UInt coord) const throw()
+Real Point3D::operator[](const UInt coord) const
 {
     switch(coord)
     {
@@ -120,7 +120,7 @@ Real Point3D::operator[](const UInt coord) const throw()
     }
 }
 
-Real & Point3D::operator[](const UInt coord) throw()
+Real & Point3D::operator[](const UInt coord)
 {
     switch(coord)
     {

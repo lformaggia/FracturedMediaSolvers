@@ -415,7 +415,7 @@ public:
      * Set the xsi parameter of the coupling conditions, it must be set between 0 and 1.
      * To avoid instabilities problem better 0.5 <= xsi <= 1.
      */
-    void Set_xsi(const Real & xsiToSet) throw();
+    void Set_xsi(const Real & xsiToSet);
 	
 	//! Show matrix method
     /*!

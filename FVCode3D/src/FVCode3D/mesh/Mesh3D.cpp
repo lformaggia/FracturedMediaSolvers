@@ -372,7 +372,7 @@ void Mesh3D::Cell3D::computeVertexIds()
     M_vertexIds.erase( unique( M_vertexIds.begin(), M_vertexIds.end() ), M_vertexIds.end() );
 }
 
-Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const throw()
+Point3D Mesh3D::Cell3D::outerNormalToFacet(const UInt & facetId) const
 {
     bool found(false);
     Point3D normal(0., 0., 0.), v_centr;
@@ -947,7 +947,7 @@ void Mesh3D::buildNodesToFacetMap()
     }
 }
 
-UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes) throw()
+UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes)
 {
     bool found = true;
     UInt idFacet = 0;
@@ -996,7 +996,7 @@ UInt Mesh3D::getFacetFromNodes(std::vector<UInt> & nodes) throw()
     return idFacet;
 }
 
-bool Mesh3D::exportVTU(const std::string & filename) const throw()
+bool Mesh3D::exportVTU(const std::string & filename) const
 {
     std::fstream filestr;
 
@@ -1108,7 +1108,7 @@ bool Mesh3D::exportVTU(const std::string & filename) const throw()
     return true;
 }
 
-bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const throw()
+bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const
 {
     std::fstream filestr;
 
@@ -1221,12 +1221,12 @@ bool Mesh3D::exportCellsVTU(const std::string & filename, const std::vector<UInt
     return true;
 }
 
-bool Mesh3D::exportFractureNetworkVTK(const std::string & filename) const throw()
+bool Mesh3D::exportFractureNetworkVTK(const std::string & filename) const
 {
     return M_fn.exportNetworkVTK(filename);
 }
 
-bool Mesh3D::exportFractureVTK( const std::string & filename, const UInt & f) const throw()
+bool Mesh3D::exportFractureVTK( const std::string & filename, const UInt & f) const
 {
     return M_fn.getFracture(f).exportVTK(filename);
 }

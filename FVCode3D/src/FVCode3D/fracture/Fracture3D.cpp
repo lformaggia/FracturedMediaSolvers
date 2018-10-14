@@ -18,7 +18,7 @@ Fracture3D::Fracture3D(const Fracture3D & f):
 Fracture3D::Fracture3D(const Mesh3D & mesh, const std::vector<UInt> & fractureFacets, const UInt id):
     M_id(id), M_fractureFacets(fractureFacets), M_mesh(mesh) {}
 
-bool Fracture3D::exportVTK(const std::string & filename) const throw()
+bool Fracture3D::exportVTK(const std::string & filename) const
 {
     const UInt nFaces = M_fractureFacets.size();
     UInt totalNodes = 0;

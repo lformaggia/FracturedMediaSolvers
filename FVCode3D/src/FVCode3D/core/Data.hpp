@@ -11,38 +11,38 @@
 
 namespace FVCode3D
 {
-
-//! Class that handles the information needed for the solver
-/*!
- * @class Data
- * This class takes care of the information needed for the solver, as boundary conditions and the source/sink term.
- * It also handles the name of the input/output directory and the name of the input/output file,
- * the shared library name and miscellaneous options.
- */
-class Data{
-public:
-
+  
+  //! Class that handles the information needed for the solver
+  /*!
+   * @class Data
+   * This class takes care of the information needed for the solver, as boundary conditions and the source/sink term.
+   * It also handles the name of the input/output directory and the name of the input/output file,
+   * the shared library name and miscellaneous options.
+   */
+  class Data{
+  public:
+    
     //! Define the numerical method type
     /*!
      * @enum NumericalMethodType
      * This enumerator allows to select the numerical method: Finite Volume or Mimetic Finite Difference
      */
     enum NumericalMethodType
-    {
+      {
         FV          = 0,
         MFD         = 1
-    };
-
+      };
+    
     //! Define the solver policy
     /*!
      * @enum SolverPolicy
      * This enumerator allows to select the solver policy: direct solver or iterative solver
      */
     enum SolverPolicy
-    {
+      {
         Direct     = 0,
         Iterative  = 1
-    };
+      };
 
     //! Define the problem type
     /*!
@@ -50,11 +50,11 @@ public:
      * This enumerator allows to select the problem type: steady or pseudo-steady state
      */
     enum ProblemType
-    {
+      {
         steady          = 0,
         pseudoSteady    = 1
-    };
-
+      };
+    
     //! Define the format of the input mesh
     /*!
      * @enum MeshFormatType
@@ -62,14 +62,14 @@ public:
      * TPFA(.grid), forSolver(.fvg), Medit(.mesh) or TetGen(.node, .face, .ele)
      */
     enum MeshFormatType
-    {
+      {
         TPFA            = 0,
         forSolver       = 1,
         Medit           = 2,
         TetGen          = 3,
         OpenFOAM        = 4
-    };
-
+      };
+    
     //! Define where the noise is applied
     /*!
      * @enum NoiseOn
@@ -78,11 +78,11 @@ public:
      */
     enum class NoiseOn
     {
-        Matrix          = 0,
+      Matrix          = 0,
         Fractures       = 1,
         All             = 2
-    };
-
+        };
+    
     //! Define where to apply the source/sink term
     /*!
      * @enum SourceSinkOn
@@ -90,15 +90,15 @@ public:
      */
     enum class SourceSinkOn
     {
-        Matrix          = 0,
-        Fractures       = 1,
-        Both            = 2,
-        None            = 3
+      Matrix          = 0,
+      Fractures       = 1,
+      Both            = 2,
+      None            = 3
     };
 
     //! @name Constructors
     //@{
-
+    
     //! Default constructor
     /*!
      * Initialize the data
@@ -109,7 +109,7 @@ public:
     /*!
      * @param dataFileName name of the data file
      */
-    Data(const std::string dataFileName) throw();
+    Data(const std::string dataFileName);
 
     //! Copy constructor
     /*!
@@ -439,7 +439,7 @@ public:
      * @param type the format type of the mesh
      * @post modifies the mesh extension
      */
-    void setMeshType(const MeshFormatType type) throw();
+    void setMeshType(const MeshFormatType type);
 
     //! Set the output directory
     /*!
@@ -812,38 +812,38 @@ protected:
     bool M_verbose;
 };
 
-//! Class that implements a parser for a generic enumerator
-/*!
- * @class EnumParser
- * This class allows to convert a string to an enumerator value
- * The template parameter is the enumerator type
- */
-template <class T>
-class EnumParser
-{
-public:
-
-    //! Empty constructor
+  //! Class that implements a parser for a generic enumerator
+  /*!
+   * @class EnumParser
+   * This class allows to convert a string to an enumerator value
+   * The template parameter is the enumerator type
+   */
+  template <class T>
+  class EnumParser
+  {
+  public:
+    
+    //! Default constructor
     EnumParser();
-
+    
     //! Parse method
     /*!
      * @param str string of the enumerator value that you want to convert
      * @return the enumerator value associated with the string
      */
-    T parse(const std::string & str) const throw()
+    T parse(const std::string & str) const
     {
-        typename std::map<std::string, T>::const_iterator it = M_enumMap.find( toUpper( str ) );
-        if (it == M_enumMap.end())
+      typename std::map<std::string, T>::const_iterator it = M_enumMap.find( toUpper( str ) );
+      if (it == M_enumMap.end())
         {
-            throw std::runtime_error("Error: parsing an enum that does not exist.");
+          throw std::runtime_error("Error: parsing an enum that does not exist.");
         }
-        return it->second;
+      return it->second;
     }
 
     //! Destructor
     ~EnumParser() = default;
-
+    
 private:
 
     //! Map that links a string to an enumarator type

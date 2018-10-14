@@ -31,7 +31,7 @@ Quadrature::Quadrature (const Rigid_Mesh & rigid_mesh, const QuadratureRule & qu
     M_fractureQuadrature(std::move(fracturequadrature.clone()))
 {}
 
-Real Quadrature::integrate(const Vector & integrand) const throw()
+Real Quadrature::integrate(const Vector & integrand) const
 {
     UInt IntSize = integrand.size();
     if(IntSize != M_size)
@@ -55,7 +55,7 @@ Real Quadrature::integrate(const Vector & integrand) const throw()
     return integral;
 }
 
-Real Quadrature::integrateMatrix(const Vector & integrand) const throw()
+Real Quadrature::integrateMatrix(const Vector & integrand) const
 {
     UInt IntSize = integrand.size();
     if(IntSize != M_size)
@@ -72,7 +72,7 @@ Real Quadrature::integrateMatrix(const Vector & integrand) const throw()
     return integral;
 }
 
-Real Quadrature::integrateFractures(const Vector & integrand) const throw()
+Real Quadrature::integrateFractures(const Vector & integrand) const
 {
     UInt IntSize = integrand.size();
     if(IntSize != M_size)

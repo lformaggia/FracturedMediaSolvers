@@ -183,7 +183,7 @@ void global_Div::assemble()
 
 constexpr Real CouplingConditions::Default_xsi;
 
-void CouplingConditions::Set_xsi(const Real & xsiToSet) throw()
+void CouplingConditions::Set_xsi(const Real & xsiToSet)
 {	
 	if(xsiToSet>=0 && xsiToSet<=1)
 		xsi = xsiToSet;

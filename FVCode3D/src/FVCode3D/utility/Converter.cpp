@@ -11,7 +11,7 @@
 namespace FVCode3D
 {
 
-void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties) throw()
+void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap & properties)
 {
     std::fstream file;
 
@@ -150,7 +150,7 @@ void saveAsSolverFormat(const std::string filename, Mesh3D & mesh, PropertiesMap
     file.close();
 }
 
-void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw()
+void saveAsMeditFormat(const std::string filename, Mesh3D & mesh)
 {
     std::fstream file;
 
@@ -226,7 +226,7 @@ void saveAsMeditFormat(const std::string filename, Mesh3D & mesh) throw()
     file.close();
 }
 
-void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh) throw()
+void saveAsOpenFOAMFormat(const std::string filename, Mesh3D & mesh)
 {
     std::fstream file;
 

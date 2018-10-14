@@ -32,7 +32,7 @@ Data::Data():
     M_theta(0.), M_verbose(true)
 {}
 
-Data::Data(const std::string dataFileName) throw()
+Data::Data(const std::string dataFileName)
 {
     EnumParser<MeshFormatType> parserMeshType;
     EnumParser<NumericalMethodType> parserNumericalMethodType;
@@ -123,7 +123,7 @@ void Data::setMeshExtension(const std::string ext)
     M_meshType = parserMeshType.parse( M_meshExt );
 }
 
-void Data::setMeshType(const MeshFormatType type) throw()
+void Data::setMeshType(const MeshFormatType type)
 {
     switch(M_meshType)
     {

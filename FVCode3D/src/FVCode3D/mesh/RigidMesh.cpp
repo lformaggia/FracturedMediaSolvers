@@ -816,7 +816,7 @@ Rigid_Mesh::Cell::Cell(const Cell & cell):
     M_facetsIds(cell.getFacetsIds()), M_neighborsIds(cell.getNeighborsIds()),
     M_centroid(cell.getCentroid()), M_volume(cell.getVolume()){}
 
-Real Rigid_Mesh::Cell::getAlpha(const UInt facetId) const throw()
+Real Rigid_Mesh::Cell::getAlpha(const UInt facetId) const
 { 	
 	auto FacetIsInCell = find(M_facetsIds.begin(),M_facetsIds.end(),facetId);
 	if(FacetIsInCell == M_facetsIds.end())
@@ -828,7 +828,7 @@ Real Rigid_Mesh::Cell::getAlpha(const UInt facetId) const throw()
 	return alphaFacets.at(facetId);	
 }
 
-Real Rigid_Mesh::Cell::orientationFacet_forConvexCells(const Facet & fac) const throw()
+Real Rigid_Mesh::Cell::orientationFacet_forConvexCells(const Facet & fac) const
 {
     bool found(false);
     UInt facetId = fac.getId();
@@ -882,7 +882,7 @@ void Rigid_Mesh::Cell::showMe(std::ostream  & out) const
     out << "] " << std::endl;
 }
 
-UInt Rigid_Mesh::Cell::adjacentFacet (const Edge & edge, const UInt IdFac) const throw()
+UInt Rigid_Mesh::Cell::adjacentFacet (const Edge & edge, const UInt IdFac) const
 {
 	auto edgeIsInCell = find(M_edgesIds.begin(),M_edgesIds.end(),edge.getId());
 	if(edgeIsInCell == M_edgesIds.end())

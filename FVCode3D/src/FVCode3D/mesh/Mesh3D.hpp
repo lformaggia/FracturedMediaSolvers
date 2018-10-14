@@ -446,7 +446,7 @@ public:
          * @param facetId the facet id
          * @return The normalized vector normal to the facet
          */
-        Point3D outerNormalToFacet( const UInt & facetId) const throw();
+        Point3D outerNormalToFacet( const UInt & facetId) const;
 
         //! Test if a cell has a neighbor cell through the facet defined by the facet id
         /*!
@@ -617,7 +617,7 @@ public:
      * @param nodes vector of nodes that define the facet
      * @return the id of the facet
      */
-    UInt getFacetFromNodes(std::vector<UInt> & nodes) throw();
+    UInt getFacetFromNodes(std::vector<UInt> & nodes);
 
     //! Export the mesh in vtu format
     /*!
@@ -626,7 +626,7 @@ public:
      * @return TRUE  -> operation ended correctly
      *         FALSE -> an error occurred
      */
-    bool exportVTU(const std::string & filename) const throw();
+    bool exportVTU(const std::string & filename) const;
 
     //! Export some cells of the mesh in vtu format
     /*!
@@ -635,7 +635,7 @@ public:
      * @return TRUE  -> operation ended correctly
      *         FALSE -> an error occurred
      */
-    bool exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const throw();
+    bool exportCellsVTU(const std::string & filename, const std::vector<UInt> & idCells) const;
 
     //! Export in a single vtk file all the facets representing each fracture in the network
     /*!
@@ -644,7 +644,7 @@ public:
      * @return TRUE  -> operation ended correctly
      *         FALSE -> an error occurred
      */
-    bool exportFractureNetworkVTK(const std::string & filename) const throw();
+    bool exportFractureNetworkVTK(const std::string & filename) const;
 
     //! Export in a vtk file the facets representing a fracture in the network
     /*!
@@ -654,7 +654,7 @@ public:
      * @return TRUE  -> operation ended correctly
      *         FALSE -> an error occurred
      */
-    bool exportFractureVTK(const std::string & filename, const UInt & f) const throw();
+    bool exportFractureVTK(const std::string & filename, const UInt & f) const;
 
     //! Clear the mesh
     void clear();

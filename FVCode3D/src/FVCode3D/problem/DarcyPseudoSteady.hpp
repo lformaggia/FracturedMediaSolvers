@@ -88,7 +88,7 @@ public:
      * The BCs and the source are not added to the RHS.
      * To be called only once.
      */
-    virtual void initialize() throw();
+    virtual void initialize();
 
     //! Assemble matrix method
     /*!
@@ -183,7 +183,7 @@ public:
      * The BCs and the source are not added to the RHS.
      * To be called only once.
      */
-    virtual void initialize() throw();
+    virtual void initialize();
 
     //! Assemble the linear system
     /*!
@@ -258,7 +258,7 @@ assemble()
 
 template <class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< QRMatrix, QRFracture, Implicit >::
-initialize() throw()
+initialize()
 {
 	auto & A = this->getMatrix();
 	auto & b = this->getRHS();
@@ -351,7 +351,7 @@ assemble()
 
 template <class QRMatrix, class QRFracture>
 void DarcyPseudoSteady< QRMatrix, QRFracture, BDF2 >::
-initialize() throw()
+initialize()
 {
 	auto & A = this->getMatrix();
 	auto & b = this->getRHS();

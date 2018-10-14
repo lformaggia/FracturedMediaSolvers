@@ -502,7 +502,7 @@ public:
          * To be used for general shaped cells. The vector of alhpas must have been built through Rigid_Mesh::BuildEdges and
          * Rigid_Mesh::BuildOrientationfacets.
          */
-        Real getAlpha(const UInt facetId) const throw();
+        Real getAlpha(const UInt facetId) const;
 				
         //! Get Facets ids (const)
         /*!
@@ -551,7 +551,7 @@ public:
          * @param the Facet
          * @return the alpha orientation of the facet
          */
-        Real orientationFacet_forConvexCells(const Facet & fac) const throw();
+        Real orientationFacet_forConvexCells(const Facet & fac) const;
 
         //! Get volume (const)
         /*!
@@ -582,7 +582,7 @@ public:
          * @param The Id of the facet
          * @return The Id of the adjacent facet
          */
-        UInt adjacentFacet (const Edge & edge, const UInt IdFac) const throw();
+        UInt adjacentFacet (const Edge & edge, const UInt IdFac) const;
 
         //@}
 

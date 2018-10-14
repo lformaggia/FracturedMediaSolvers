@@ -115,7 +115,7 @@ public:
     /*!
      * @return the momolithic system matrix 
      */
-    SpMat & getMatrix() throw()
+    SpMat & getMatrix()
     {
 		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
 			return dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
@@ -131,7 +131,7 @@ public:
     /*!
      * @return the momolithic system matrix 
      */
-    const SpMat & getMatrix() const throw()
+    const SpMat & getMatrix() const
     {
 		if(dynamic_cast<DirectSolver*>(this->getSolverPtr()))
 			return dynamic_cast<DirectSolver*>(this->getSolverPtr())->getA();
@@ -147,7 +147,7 @@ public:
     /*!
      * @return the system matrix in block form.
      */
-    SaddlePointMat & getSaddlePointMatrix() throw()
+    SaddlePointMat & getSaddlePointMatrix()
     {
 		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
 			return dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();
@@ -163,7 +163,7 @@ public:
     /*!
      * @return the system matrix in block form.
      */
-    const SaddlePointMat & getSaddlePointMatrix() const throw()
+    const SaddlePointMat & getSaddlePointMatrix() const
     {
 		if(dynamic_cast<IterativeSolver*>(this->getSolverPtr()))
 			return dynamic_cast<IterativeSolver*>(this->getSolverPtr())->getA();
