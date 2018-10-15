@@ -6,3 +6,8 @@
 *.dvi
 *.aux
 *.bak
+/FVCode3D/auto/
+/FVCode3D/codeblock
+/eclipse/
+/fvcode3d-install
+/FVCode3D/*.log
