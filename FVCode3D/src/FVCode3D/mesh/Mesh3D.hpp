@@ -53,7 +53,7 @@ public:
         //! @name Constructor & Destructor
         //@{
 
-        //! Empty constructor
+        //! Default constructor
         Facet3D();
 
         //! Copy constructor
@@ -79,12 +79,12 @@ public:
 
         //! Get mesh
         /*!
-         * @return the pointer to the mesh
+         * @return the pointer to the mesh (const)
          */
         Mesh3D * getMesh() const
             { return M_mesh; }
 
-        //! Get mesh (const)
+        //! Get mesh
         /*!
          * @return the pointer to the mesh
          */
