@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphics}
+\usepackage{color}
+\definecolor{DarkGreen}{rgb}{0, .5, 0}
+\definecolor{DarkBlue}{rgb}{0, 0, .5}
+\definecolor{DarkRed}{rgb}{.5, 0, 0}
+\definecolor{LightGray}{rgb}{.95, .95, .95}
+\definecolor{White}{rgb}{1.0,1.0,1.0}
+\definecolor{darkblue}{rgb}{0,0,0.9}
+\definecolor{darkred}{rgb}{0.8,0,0}
+\definecolor{darkgreen}{rgb}{0.0,0.85,0}
+
+\usepackage{listings}
+\lstset{  
+  language=[ISO]C++,                       % The default language
+  backgroundcolor=\color{White},       % Set listing background
+  keywordstyle=\color{DarkBlue}\bfseries,  % Set keyword style
+  commentstyle=\color{DarkGreen}\itshape, % Set comment style
+  stringstyle=\color{DarkRed},             % Set string constant style
+  extendedchars=true                       % Allow extended characters
+  breaklines=true,
+  basewidth={0.5em,0.4em},
+  fontadjust=true,
+  linewidth=\textwidth,
+  breakatwhitespace=true,
+  lineskip=0ex, %  frame=single
+}
+
+\newcommand{\li}{\lstinline}
+\newenvironment{lstlistings}
+{\begin{lstlisting}[basicstyle=\footnotesize\sf]}
+{\end{lstlisting}}
+\newcommand{\cpp}[1]{\li! #1 !}
+\begin{document}
+\begin{enumerate}
+\item The class \cpp{Point3D} has a major flaw! There is an overloading of \cpp{operator <} that contains a tolerance, and so it does not define
+an ordering relation. I suggest to verify where the tolerance is needed and use a special comparison operator there. For instance by defining a
+\begin{lstlisting}
+struct CompareWithTolerance
+{
+  bool operator()(Point3D a, Point3D b);
+\\ etc.
+}
+\end{lstlisting}
+\end{enumerate}
+
+\end{document}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
