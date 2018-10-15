@@ -35,7 +35,7 @@ public:
      * Create the permeability as a scalar(=1), diagonal tensor(3), symmetric tensor(6) or full tensor(9)
      * @param size this parameter allows to select the type of the permeability. Default 1.
      */
-    PermeabilityBase(const UInt size = 1): M_permeability(size, 0.) {};
+    PermeabilityBase(const UInt size = 1u): M_permeability(size, 0.) {};
 
     //! Get the permeability at position (i,j) of the 3x3 tensor
     /*!
@@ -191,7 +191,7 @@ class PermeabilityScalar : public PermeabilityBase
 public:
 
     //! Default constructor
-    PermeabilityScalar(): PermeabilityBase(M_size) {};
+    PermeabilityScalar(): PermeabilityBase(PermeabilityScalar::M_size) {};
 
     //! Get the permeability at position (i,j) of the 3x3 tensor
     /*!
@@ -199,7 +199,7 @@ public:
      * @param j column
      * @return the permeability at (i,j)
      */
-    virtual Real operator()(const UInt i, const UInt j) const
+    Real operator()(const UInt i, const UInt j) const override
         { return i==j ? M_permeability[0] : 0; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -207,24 +207,25 @@ public:
      * @param i position of the permeability into the vector
      * @return the permeability at i
      */
-    virtual Real operator()(const UInt i) const
+    Real operator()(const UInt i) const override
         { return i%4==0 ? M_permeability[0] : 0; };
 
     //! Set the permeability at position (i,j) of the 3x3 tensor
+    //! Since it is a scalar I admit only i== j. If not we do nothing
     /*!
      * @param perm permeability at (i,j)
      * @param i row
      * @param j column
      */
-    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
+    void setPermeability(const Real perm, const UInt i, const UInt j) override
         { M_permeability[0] = i==j ? perm : M_permeability[0]; };
 
-    //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
+    //! Set the permeability at position (i) of the vector associated with the tensor, reading by row
     /*!
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void setPermeability(const Real perm, const UInt i)
+    void setPermeability(const Real perm, const UInt i) override
         { M_permeability[0] = i%4==0 ? perm : M_permeability[0]; };
 
     //! Vector-tensor product
@@ -232,14 +233,14 @@ public:
      * @param vector vector
      * @return the product between vector^T and the permeability tensor
      */
-    virtual Point3D vectorTensorProduct(const Point3D & vector) const;
+    Point3D vectorTensorProduct(const Point3D & vector) const override;
 
     //! Tensor-vector product
     /*!
      * @param vector vector
      * @return the product between the permeability tensor and vector
      */
-    virtual Point3D tensorVectorProduct(const Point3D & vector) const;
+    Point3D tensorVectorProduct(const Point3D & vector) const override;
 
     //! Vector-tensor product
     /*!
@@ -278,7 +279,7 @@ public:
      * @param os output stream
      * @return output stream
      */
-    virtual std::ostream & showMe(std::ostream & os = std::cout) const;
+    std::ostream & showMe(std::ostream & os = std::cout) const override;
 
     //! Show the permeability tensor
     /*!
@@ -295,11 +296,12 @@ private:
     //! Size of the permeability
     static const UInt M_size = 1;
 
-    //! No copy-constructor
-    PermeabilityScalar(const PermeabilityScalar &) = delete;
+public:
+    //! Copy-constructor
+    PermeabilityScalar(const PermeabilityScalar &) = default;
 
-    //! No assignment operator
-    PermeabilityScalar & operator=(const PermeabilityScalar &) = delete;
+    //! Assignment operator
+    PermeabilityScalar & operator=(const PermeabilityScalar &) = default;
 };
 
 //! Diagonal tensor Permeability
@@ -313,7 +315,7 @@ class PermeabilityDiagonal : public PermeabilityBase
 public:
 
     //! Default constructor
-    PermeabilityDiagonal():PermeabilityBase(M_size){};
+    PermeabilityDiagonal():PermeabilityBase(PermeabilityDiagonal::M_size){};
 
     //! Get the permeability at position (i,j) of the 3x3 tensor
     /*!
@@ -321,7 +323,7 @@ public:
      * @param j column
      * @return the permeability at (i,j)
      */
-    virtual Real operator()(const UInt i, const UInt j) const
+    Real operator()(const UInt i, const UInt j) const override
         { return i==j ? M_permeability[i] : 0; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -329,7 +331,7 @@ public:
      * @param i position of the permeability into the vector
      * @return the permeability at i
      */
-    virtual Real operator()(const UInt i) const
+    Real operator()(const UInt i) const override
         { return i%4==0 ? M_permeability[i/4] : 0; };
 
     //! Set the permeability at position (i,j) of the 3x3 tensor
@@ -338,7 +340,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
+    void setPermeability(const Real perm, const UInt i, const UInt j) override
         { M_permeability[i] = i==j ? perm : M_permeability[i];};
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -346,7 +348,7 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void setPermeability(const Real perm, const UInt i)
+    void setPermeability(const Real perm, const UInt i) override
         { M_permeability[i/4] = i%4==0 ? perm : M_permeability[i/4];};
 
     //! Vector-tensor product
@@ -354,14 +356,14 @@ public:
      * @param vector vector
      * @return the product between vector^T and the permeability tensor
      */
-    virtual Point3D vectorTensorProduct(const Point3D & vector) const;
+    Point3D vectorTensorProduct(const Point3D & vector) const override;
 
     //! Tensor-vector product
     /*!
      * @param vector vector
      * @return the product between the permeability tensor and vector
      */
-    virtual Point3D tensorVectorProduct(const Point3D & vector) const;
+    Point3D tensorVectorProduct(const Point3D & vector) const override;
 
     //! Vector-tensor product
     /*!
@@ -400,7 +402,7 @@ public:
      * @param os output stream
      * @return output stream
      */
-    virtual std::ostream & showMe(std::ostream & os = std::cout) const;
+    std::ostream & showMe(std::ostream & os = std::cout) const override;
 
     //! Show the permeability tensor
     /*!
@@ -417,11 +419,12 @@ private:
     //! Size of the permeability
     static const UInt M_size = 3;
 
+public:
     //! No copy-constructor
-    PermeabilityDiagonal(const PermeabilityDiagonal &) = delete;
+    PermeabilityDiagonal(const PermeabilityDiagonal &) = default;
 
     //! No assignment operator
-    PermeabilityDiagonal & operator=(const PermeabilityDiagonal &) = delete;
+    PermeabilityDiagonal & operator=(const PermeabilityDiagonal &) = default;
 };
 
 //! Symmetric tensor Permeability
@@ -443,7 +446,7 @@ public:
      * @param j column
      * @return the permeability at (i,j)
      */
-    virtual Real operator()(const UInt i, const UInt j) const
+    Real operator()(const UInt i, const UInt j) const override
         { return j>=i ? M_permeability[3*i+j-i-(i>1)] : operator()(j,i); };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -451,7 +454,7 @@ public:
      * @param i position of the permeability into the vector
      * @return the permeability at i
      */
-    virtual Real operator()(const UInt i) const
+    Real operator()(const UInt i) const override
         { return operator()(i/3, i%3); };
 
     //! Set the permeability at position (i,j) of the 3x3 tensor
@@ -460,7 +463,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
+    void setPermeability(const Real perm, const UInt i, const UInt j) override
         { M_permeability[3*i+j-i-(i>1)] = j>=i ? perm : M_permeability[3*i+j-i-(i>1)]; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -468,7 +471,7 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void setPermeability(const Real perm, const UInt i)
+    void setPermeability(const Real perm, const UInt i) override
         { setPermeability(perm, i/3, i%3); };
 
     //! Vector-tensor product
@@ -476,14 +479,14 @@ public:
      * @param vector vector
      * @return the product between vector^T and the permeability tensor
      */
-    virtual Point3D vectorTensorProduct(const Point3D & vector) const;
+    Point3D vectorTensorProduct(const Point3D & vector) const override;
 
     //! Tensor-vector product
     /*!
      * @param vector vector
      * @return the product between the permeability tensor and vector
      */
-    virtual Point3D tensorVectorProduct(const Point3D & vector) const;
+    Point3D tensorVectorProduct(const Point3D & vector) const override;
 
     //! Vector-tensor product
     /*!
@@ -522,7 +525,7 @@ public:
      * @param os output stream
      * @return output stream
      */
-    virtual std::ostream & showMe(std::ostream & os = std::cout) const;
+    std::ostream & showMe(std::ostream & os = std::cout) const override;
 
     //! Show the permeability tensor
     /*!
@@ -538,12 +541,12 @@ public:
 private:
     //! Size of the permeability
     static const UInt M_size = 6;
-
+public:
     //! No copy-constructor
-    PermeabilitySymTensor(const PermeabilitySymTensor &) = delete;
+    PermeabilitySymTensor(const PermeabilitySymTensor &) = default;
 
     //! No assignment operator
-    PermeabilitySymTensor & operator=(const PermeabilitySymTensor &) = delete;
+    PermeabilitySymTensor & operator=(const PermeabilitySymTensor &) = default;
 };
 
 //! Full tensor Permeability
@@ -565,7 +568,7 @@ public:
      * @param j column
      * @return the permeability at (i,j)
      */
-    virtual Real operator()(const UInt i, const UInt j) const
+    Real operator()(const UInt i, const UInt j) const override
         { return M_permeability[3*i+j];};
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -573,7 +576,7 @@ public:
      * @param i position of the permeability into the vector
      * @return the permeability at i
      */
-    virtual Real operator()(const UInt i) const
+    Real operator()(const UInt i) const override
         { return M_permeability[i]; };
 
     //! Set the permeability at position (i,j) of the 3x3 tensor
@@ -582,7 +585,7 @@ public:
      * @param i row
      * @param j column
      */
-    virtual void setPermeability(const Real perm, const UInt i, const UInt j)
+    void setPermeability(const Real perm, const UInt i, const UInt j) override
         { M_permeability[3*i+j] = perm; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
@@ -590,7 +593,7 @@ public:
      * @param perm permeability at i
      * @param i position of the permeability into the vector
      */
-    virtual void setPermeability(const Real perm, const UInt i)
+    void setPermeability(const Real perm, const UInt i) override
         { M_permeability[i] = perm; };
 
     //! Vector-tensor product
@@ -598,14 +601,14 @@ public:
      * @param vector vector
      * @return the product between vector^T and the permeability tensor
      */
-    virtual Point3D vectorTensorProduct(const Point3D & vector) const;
+    Point3D vectorTensorProduct(const Point3D & vector) const override;
 
     //! Tensor-vector product
     /*!
      * @param vector vector
      * @return the product between the permeability tensor and vector
      */
-    virtual Point3D tensorVectorProduct(const Point3D & vector) const;
+    Point3D tensorVectorProduct(const Point3D & vector) const override;
 
     //! Vector-tensor product
     /*!
@@ -644,7 +647,7 @@ public:
      * @param os output stream
      * @return output stream
      */
-    virtual std::ostream & showMe(std::ostream & os = std::cout) const;
+    std::ostream & showMe(std::ostream & os = std::cout) const override;
 
     //! Show the permeability tensor
     /*!
@@ -661,11 +664,12 @@ private:
     //! Size of the permeability
     static const UInt M_size = 9;
 
+public:
     //! No copy-constructor
-    PermeabilityFullTensor(const PermeabilityFullTensor &) = delete;
+    PermeabilityFullTensor(const PermeabilityFullTensor &) = default;
 
     //! No assignment operator
-    PermeabilityFullTensor & operator=(const PermeabilityFullTensor &) = delete;
+    PermeabilityFullTensor & operator=(const PermeabilityFullTensor &) = default;
 };
 
 } // namespace FVCode3D
