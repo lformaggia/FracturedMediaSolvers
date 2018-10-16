@@ -9,7 +9,7 @@
 #include <FVCode3D/core/BasicType.hpp>
 #include <FVCode3D/geometry/Point3D.hpp>
 #include <FVCode3D/core/Chrono.hpp>
-#include <FVCode3D/GetPot>
+#include "GetPot"
 
 namespace FVCode3D
 {
