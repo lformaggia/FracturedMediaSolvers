@@ -8,6 +8,7 @@
 *.bak
 /FVCode3D/auto/
 /FVCode3D/codeblock
-/eclipse/
 /fvcode3d-install
 /FVCode3D/*.log
+/FVCode3D/notes.pdf
+/eclipse-project
