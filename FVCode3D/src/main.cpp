@@ -107,7 +107,9 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-    std::cout << "Set uniform properties..." << std::flush;
+    std::cout << "Set properties..." << std::flush;
+    /* Old version
+
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
     std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityDiagonal );
 //	std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
@@ -124,6 +126,11 @@ int main(int argc, char * argv[])
     const Real fracturesPoro = 1; 
     propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
     propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
+    */
+    // New Version: data read from file into DataPtr and passed throgh call to the relevant methods.
+    propMap.setPropertiesOnMatrix(mesh,dataPtr->getMatrixOtherData(), dataPtr->getMatrixPermeabilityData());
+    propMap.setPropertiesOnFractures(mesh,dataPtr->getFractureOtherData(), dataPtr->getFracturePermeabilityData());
+//
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -329,7 +336,7 @@ int main(int argc, char * argv[])
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;  
      
     if(dataPtr->getNumericalMethodType() == Data::MFD){
-		UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
+		//UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
 		UInt numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
 		std::cout << "Export Solution..." << std::flush;
 		exporter.exportSolution( myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", 

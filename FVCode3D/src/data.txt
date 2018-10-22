@@ -24,6 +24,41 @@ perm_size   = ScalarPermeability     # ScalarPermeability, DiagonalPermeability,
 initial_time    = 0.                 # if type = pseudosteady, this set the initial time
 end_time    = 2.e6                   # if type = pseudosteady, this set the final time
 time_step   = 1.e5                   # if type = pseudosteady, this set the time step
+# permeabilities for matrix (bulk) and fractures
+# in the form [type value(s)]
+# type=0 scalar (1 value)
+# type=1 diagonal (3 values)
+# type=2 symmetric tensor (6 values by row, no repetitions)
+[problem/bulk]
+#default must be present
+permeability='1 1.e+30 1.e+30 2.e+30' #diagonal
+porosity=1.0
+#number of zones. 0 or missing means only default
+numzones=2
+# the zone identifiers
+zones='1 2'
+[problem/bulk/zone/1]
+permeability='2 1.e+20 1.e+20 2.e+20 4.e+20 7.e+20 9.e+20' #tensor
+porosity=1.0
+[problem/bulk/zone/2]
+permeability='0 1.25' #scalar, value 1.25
+porosity=1.0
+[problem/fracture]
+#default must be present
+permeability='1 5.e+30 7.e+30 9.e+30'
+porosity=1.0
+aperture=1e-3
+#number of zones. 0 means only default
+numzones=2
+zones='30 40'
+[problem/fracture/zone/30]
+permeability='1 1.e+20 1.e+20 2.e+20'
+porosity=1.0
+aperture=1e-3
+[problem/fracture/zone/40]
+permeability='0 1.25'
+porosity=1.0
+aperture=1e-3
 
 [fluid]
 mobility    = 1.                     # mobility of the fluid

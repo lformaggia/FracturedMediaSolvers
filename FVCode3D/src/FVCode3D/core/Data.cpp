@@ -5,6 +5,10 @@
 
 #include <FVCode3D/core/Data.hpp>
 #include <FVCode3D/solver/SolverHandler.hpp>
+#include <algorithm>
+#include <tuple>
+#include <vector>
+#include <string>
 
 namespace FVCode3D
 {
@@ -28,6 +32,7 @@ Data::Data():
     M_permFrac(0.), M_poroFrac(0.), M_aperFrac(0.),
     M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
     M_mobility(1.), M_compressibility(1.),
+    M_SolverPolicy(SolverPolicy::Direct),
     M_maxIt(1.), M_tol(0.),
     M_theta(0.), M_verbose(true)
 {}
@@ -114,6 +119,11 @@ Data::Data(const std::string dataFileName)
     M_theta = dataFile("bc/theta", 0.);
 
     M_verbose = static_cast<bool>(dataFile("miscellaneous/verbose", 1));
+
+    std::tie(this->M_bulkPermeabilityData,this->M_fracturePermeabilityData)=
+     Utility::readPermeabilityData(dataFile);
+    this->M_bulkData=Utility::readBulkData(dataFile);
+    this->M_fractureData=Utility::readFractureData(dataFile);
 }
 
 void Data::setMeshExtension(const std::string ext)
@@ -273,6 +283,40 @@ void Data::showMe( std::ostream & output ) const
     output << "-----------------------------" << std::endl;
 }
 
+std::tuple<double,double> Data::fracturePorosityAndAperture(int const & zoneNumber) const
+{
+    return Utility::getFractureData(this->M_fractureData,zoneNumber);
+}
+  
+Real Data::getFractureAperture(int zoneNumber) const
+{
+    auto r = Data::fracturePorosityAndAperture(zoneNumber);
+    return std::get<1>(r);
+}
+
+Real Data::getFracturePorosity(int zoneNumber) const
+{
+    auto r = Data::fracturePorosityAndAperture(zoneNumber);
+    return std::get<0>(r);
+}
+
+Real Data::getMatrixPorosity(int zoneNumber) const
+{
+    return Utility::getBulkData(this->M_bulkData,zoneNumber);
+}
+
+Utility::Permeability
+Data::getFracturePermeability(int zoneNumber) const
+{
+    return Utility::getPermeability(this->M_fracturePermeabilityData,zoneNumber);
+}
+
+Utility::Permeability
+Data::getMatrixPermeability(int zoneNumber) const
+{
+    return Utility::getPermeability(this->M_bulkPermeabilityData,zoneNumber);
+}
+
 template<class T>
 EnumParser<T>::EnumParser() = default;
 
@@ -323,5 +367,15 @@ EnumParser<Data::SourceSinkOn>::EnumParser()
     M_enumMap[ toUpper( "all" ) ] = Data::SourceSinkOn::Both;
     M_enumMap[ toUpper( "none" ) ] = Data::SourceSinkOn::None;
 }
+
+template<>
+EnumParser<Data::PermeabilityType>::EnumParser()
+{
+    M_enumMap[ toUpper( "scalar" ) ] = Data::PermeabilityType::Scalar;
+    M_enumMap[ toUpper( "diagonal" ) ] = Data::PermeabilityType::Diagonal;
+    M_enumMap[ toUpper( "symtensor" ) ] = Data::PermeabilityType::SymTensor;
+    M_enumMap[ toUpper( "arbitrarytensor" ) ] = Data::PermeabilityType::ArbitraryTensor;
+}
+
 
 } // namespace FVCode3D

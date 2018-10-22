@@ -447,11 +447,11 @@ public:
      * @return the permeability at (i,j)
      */
     Real operator()(const UInt i, const UInt j) const override
-        { return j>=i ? M_permeability[3*i+j-i-(i>1)] : operator()(j,i); };
+        { return M_permeability[i+j+static_cast<UInt>(i*j>0)]; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
     /*!
-     * @param i position of the permeability into the vector
+     * @param i position in the permeability matrix, by row (as a full matrix!)
      * @return the permeability at i
      */
     Real operator()(const UInt i) const override
@@ -464,12 +464,12 @@ public:
      * @param j column
      */
     void setPermeability(const Real perm, const UInt i, const UInt j) override
-        { M_permeability[3*i+j-i-(i>1)] = j>=i ? perm : M_permeability[3*i+j-i-(i>1)]; };
+        { M_permeability[i+j+static_cast<UInt>(i*j>0)] = perm; };
 
     //! Get the permeability at position (i) of the vector associated with the tensor, reading by row
     /*!
      * @param perm permeability at i
-     * @param i position of the permeability into the vector
+     * @param i position in the permeability considered as a full tensor!
      */
     void setPermeability(const Real perm, const UInt i) override
         { setPermeability(perm, i/3, i%3); };

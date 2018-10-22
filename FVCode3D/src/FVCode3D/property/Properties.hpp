@@ -9,6 +9,9 @@
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/property/PermeabilityFactory.hpp>
 #include <FVCode3D/property/Permeability.hpp>
+#include <FVCode3D/utility/readPermeabilities.hpp>
+#include <FVCode3D/utility/readOtherData.hpp>
+
 
 namespace FVCode3D
 {
@@ -136,6 +139,18 @@ public:
      */
     void setPropertiesOnMatrix(const Mesh3D & mesh, const Real porosity, const PermPtr_Type & permeability);
 
+    //! Set the same property on all the porous medium (bolk)
+      /*!
+       * New version that takes in input a Permeability  and a BulkData lists containing the info for each zone
+       * which may be read from file
+       *
+       * @param mesh reference to a Mesh3D
+       * @param porosityList Porosity list of the matrix according to the zones.
+       * @param permeabilities permeability list of the matrix accordin to the zones
+       */
+    void setPropertiesOnMatrix(const Mesh3D & mesh, const Utility::bulkDataList & porosityList,
+              Utility::BulkPermeabilityData const & permeabilities);
+
     //! Set the same property on all the fractures
     /*!
      * @param mesh reference to a Mesh3D
@@ -144,6 +159,17 @@ public:
      * @param permeability Permeability of the fractures
      */
     void setPropertiesOnFractures(const Mesh3D & mesh, const Real aperture, const Real porosity, const PermPtr_Type & permeability);
+
+       //! Set the same property on all the fractures
+      /*!
+       * New version that takes as input a Permeability and a the data of aperture and pososity on each zone
+       * @param mesh reference to a Mesh3D
+       * @param poroAndAperture data structure containing info on por
+       * @param porosity Porosity of the fractures
+       * @param permeability Permeability of the fractures
+       */
+    void setPropertiesOnFractures(const Mesh3D & mesh, Utility::fractureDataList const & poroAndAperture,
+              Utility::FracturePermeabilityData const & permeabilities);
 
     //! Set the properties of a selected zone
     /*!

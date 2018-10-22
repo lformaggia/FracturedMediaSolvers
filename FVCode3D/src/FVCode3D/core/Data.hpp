@@ -8,6 +8,8 @@
 
 #include <FVCode3D/core/TypeDefinition.hpp>
 #include <FVCode3D/utility/StringManipolator.hpp>
+#include <FVCode3D/utility/readPermeabilities.hpp>
+#include <FVCode3D/utility/readOtherData.hpp>
 
 namespace FVCode3D
 {
@@ -95,6 +97,20 @@ namespace FVCode3D
       Both            = 2,
       None            = 3
     };
+
+    //! Defiles permeability types
+    /*!
+     * @enum PermeabilityType
+     * Allows to select the type of permeability
+     * \note ArbirtraryTensor is kept for compatiblity, but it is not used in practice so far.
+     */
+     enum class PermeabilityType
+     {
+   	  Scalar=0,
+   	  Diagonal=1,
+   	  SymTensor=2,
+   	  ArbitraryTensor=3
+     };
 
     //! @name Constructors
     //@{
@@ -308,29 +324,101 @@ namespace FVCode3D
      */
     const std::string getPermeabilityType() const { return M_permeabilityType; }
 
+    //! Get matrix (bulk) permeability associated to a zone.
+    /*!
+     * @par zoneNumber The number of the zone. 0 default
+     * @return A tuple<int,vector<Real>> containing the type and the values
+     * The type is according to PermeabilityType, the values are accordingly
+     *
+     * @throw runtime_error If zone is not found
+     */
+    Utility::Permeability getMatrixPermeability(int zoneNumber) const;
     //! Get the permeability in the porous medium
+     /*!
+      * @return the permeability in the porous medium
+      */
+    Real getMatrixPermeability() const { return M_permMatrix; }
+    //! Get the permeability in the porous medium as a PermeabilityDataList
     /*!
      * @return the permeability in the porous medium
      */
-    Real getMatrixPermeability() const { return M_permMatrix; }
-
+    Utility::BulkPermeabilityData getMatrixPermeabilityData() const
+    {
+      return this->M_bulkPermeabilityData;
+    }
     //! Get the porosity in the porous medium
     /*!
      * @return the porosity in the porous medium
      */
     Real getMatrixPorosity() const { return M_poroMatrix; }
+    //! Get the porosity in the porous medium
+    /*!
+     * @return the porosity in the porous medium as a bulkDataList
+     */
+    Utility::bulkDataList getMatrixOtherData() const { return this->M_bulkData; }
+    //! Get matrix (bulk) porosity associated to a zone.
+    /*!
+     * @par zoneNumber The number of the zone. 0 default
+     * @return A Real containing the corresponding value     *
+     * @throw runtime_error If zone is not found
+     */
+    Real getMatrixPorosity(int zoneNumber) const;
 
-    //! Get the permeability in the fracture
+    //! Get fracture permeability associated to a zone.
+    /*!
+     * @par zoneNumber The number of the zone. 0 default
+     * @return A tuple<int,vector<Real>> containing the type and the values
+     * The type is according to PermeabilityType, the values are accordingly
+     *
+     * @throw runtime_error If zone is not found
+     */
+    Utility::Permeability getFracturePermeability(int zoneNumber) const;
+    //! Get the permeabilities in the various zones of the fracture as a PeremabilityDataList item
     /*!
      * @return the permeability in the fracture
      */
+    Utility::FracturePermeabilityData getFracturePermeabilityData() const
+    {
+      return this->M_fracturePermeabilityData;
+    }
+    //! Get the permeability in the fracture as scalar
+    /*!
+     * @return the permeability in the fracture
+     */
+
     Real getFracturePermeability() const { return M_permFrac; }
+
+    //! Get fracture porosity associated to a zone.
+    /*!
+     * @par zoneNumber The number of the zone. 0 default
+     * @return A Real containing the corresponding value     *
+     * @throw runtime_error If zone is not found
+     */
+    Real getFracturePorosity(int zoneNumber) const;
+
+    //! Get fracture porosity and aperture for each zone in the form of a FractureData List
+      /*!
+     * @return A FractureDataList object containing data on porosity and aperture
+     * fo each fracture zone
+     */
+    Utility::fractureDataList getFractureOtherData() const
+    {
+      return this->M_fractureData;
+    }
 
     //! Get the porosity in the fracture
     /*!
      * @return the porosity in the fracture
      */
     Real getFracturePorosity() const { return M_poroFrac; }
+
+    //! Get fracture aperture associated to a zone.
+    /*!
+     * @par zoneNumber The number of the zone. 0 default
+     * @return A Real containing the corresponding value     *
+     * @throw runtime_error If zone is not found
+     */
+    Real getFractureAperture(int zoneNumber) const;
 
     //! Get the aperture in the fracture
     /*!
@@ -810,6 +898,17 @@ protected:
     Real M_theta;
     //! Verbose
     bool M_verbose;
+    //      Version 2 by Luca F.
+    //! Contains data on bulk permeability for each zone
+    Utility::BulkPermeabilityData M_bulkPermeabilityData;
+    //! Contains data on bulk permeability for each zone
+    Utility::FracturePermeabilityData M_fracturePermeabilityData;
+    //! Contains porosity and aperture for each zone
+    Utility::bulkDataList M_bulkData;
+    //! Contains porosity for each zone
+    Utility::fractureDataList M_fractureData;
+    std::tuple<double,double> fracturePorosityAndAperture(int const & zoneNumber) const;
+
 };
 
   //! Class that implements a parser for a generic enumerator
@@ -874,6 +973,10 @@ EnumParser<Data::NoiseOn>::EnumParser();
 template<>
 EnumParser<Data::SourceSinkOn>::EnumParser();
 
+//! Specialized class that implements a parser for the Data::SourceSinkOn enum
+template<>
+EnumParser<Data::PermeabilityType>::EnumParser();
+
 //! Typedef for std::unique_ptr<Data>
 /*!
  * @typedef DataPtr_Type
@@ -882,4 +985,6 @@ EnumParser<Data::SourceSinkOn>::EnumParser();
 typedef std::unique_ptr<Data> DataPtr_Type;
 
 } // namespace FVCode3D
+
+
 #endif /* DATA_HPP_ */
