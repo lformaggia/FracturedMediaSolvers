@@ -281,10 +281,10 @@ public:
     //@}
 
 private:
-	//! Constant reference to the boundary conditions
-	const BoundaryConditions      &	M_bc;
-	//! A reference to the rhs of the system
-	Vector                        & M_b;  
+    //! A reference to the rhs of the system
+    Vector                        & M_b;
+    //! Constant reference to the boundary conditions
+    const BoundaryConditions      &	M_bc;
 };
 
 } // namespace FVCode3D

@@ -54,7 +54,7 @@ namespace FVCode3D
   typedef uint64_t Flag64bit;
   
   //! PI
-  const Real _PI_ = std::atan(1)*4;
+  constexpr Real _PI_ = 3.14159265358979323846;
   
   //! Type for eigen column-major sparse matrix of Real
   typedef Eigen::SparseMatrix<Real> SpMat;

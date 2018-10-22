@@ -136,17 +136,16 @@ public:
     //! @name Constructor & Destructor
     //@{
     //! Empty constructor
-    DirectSolver(const UInt nbDofs = 0): 
-		M_A(nbDofs,nbDofs),
-		Solver(nbDofs) {}
+    DirectSolver(const UInt nbDofs = 0): Solver(nbDofs),M_A(nbDofs,nbDofs)
+    {}
 
     //! Constructor
     /*!
      * @param A Eigen sparse matrix
      * @param b RHS, it is Eigen vector
      */
-    DirectSolver( const SpMat & A, const Vector & b):
-        M_A(A), Solver(b) {}
+    DirectSolver( const SpMat & A, const Vector & b):Solver(b),
+        M_A(A) {}
         
     //! Destructor
     virtual ~DirectSolver() = default;
@@ -343,8 +342,8 @@ public:
      * @param Brow B block row
      * @param Bcol B block col
      */
-	IterativeSolver(const UInt Mdim,const UInt Brow):
-		M_A(Mdim,Brow), Solver(Mdim+Brow), 
+	IterativeSolver(const UInt Mdim,const UInt Brow): Solver(Mdim+Brow),
+		M_A(Mdim,Brow),
 		M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0), CIndex(0) {}
 
     //! Constructor
@@ -353,7 +352,7 @@ public:
      * @param b RHS, it is Eigen vector
      */
     IterativeSolver(const SaddlePointMat & A, const Vector & b ):
-        M_A(A) ,Solver(b),
+        Solver(b), M_A(A),
         M_maxIter( S_referenceMaxIter ), M_iter(0), M_tol( S_referenceTol ), M_res(0), CIndex(0) {}
 
     //! Destructor
