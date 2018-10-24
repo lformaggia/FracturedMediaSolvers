@@ -48,7 +48,7 @@ inline std::ostream & operator<<(std::ostream & o, const dType & d)
 		o<<"Fracture type";	
 	}		
 	return o;
-};
+}
 		
 //! Base class for assembling a global operator of the problem.
 /*!

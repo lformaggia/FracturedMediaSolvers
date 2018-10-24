@@ -160,8 +160,8 @@ public:
      */
     void free_unusefulSpace()
 		{ 
-			Np.resize(0,0);
-			Rp.resize(0,0);
+			Np.resize(0,3);
+			Rp.resize(0,3);
 			Mp0.resize(0,0);
 			Mp1.resize(0,0);
 		};

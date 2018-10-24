@@ -387,7 +387,7 @@ void FluxOperator::reserve_space()
 
 void FluxOperator::assembleFrFace(const Rigid_Mesh::Fracture_Facet & facet_it, SpMat & S, const UInt rowoff, const UInt coloff) const
 {
-	const UInt Offset = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size()+M_mesh.getCellsVector().size();
+	//const UInt Offset = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size()+M_mesh.getCellsVector().size();
 	for (auto juncture_it : facet_it.getFractureNeighbors())
 	{	
 		std::vector<Real> alphas;

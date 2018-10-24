@@ -464,7 +464,7 @@ public: static const char*  name()          { return "integer"; }
 };
 template <> class TypeInfo<std::string> : public TypeInfo<const char*> 
 { public: 
-    static const char*  convert(std::string& X) { return (const char*)"inadmissible"; } 
+    static const char*  convert(std::string&) { return (const char*)"inadmissible"; } 
     static std::string  default_value()         { return std::string(""); }    
 };
 template <>   class TypeInfo<unsigned int>      : public TypeInfo<int> 
@@ -687,15 +687,15 @@ GetPot::set_variable<const char*>(const StringOrCharP VarName, const char* Value
 }
 
 template <> __GETPOT_INLINE void
-GetPot::set_variable<double>(const StringOrCharP VarName, double Value, const bool Requested /* = true*/)
+GetPot::set_variable<double>(const StringOrCharP VarName, double Value, const bool /* = true*/)
 { __set_variable(VarName.content, __double2string(Value)); }
 
 template <> __GETPOT_INLINE void 
-GetPot::set_variable<int>(const StringOrCharP VarName, int Value, const bool Requested /* = true*/)
+GetPot::set_variable<int>(const StringOrCharP VarName, int Value, const bool /* = true*/)
 { __set_variable(VarName.content, __int2string(Value)); }
 
 template <> __GETPOT_INLINE void 
-GetPot::set_variable<bool>(const StringOrCharP VarName, bool Value, const bool Requested /* = true*/)
+GetPot::set_variable<bool>(const StringOrCharP VarName, bool Value, const bool /* = true*/)
 { 
     if( true_string_list.size() == 0 || false_string_list.size() == 0 ) {
         throw std::runtime_error(GETPOT_STR_TRUE_FALSE_UNDEFINED);
@@ -777,8 +777,8 @@ GetPot::__convert_to_type<int>(const std::string& String, int Default,
 
 // convert string to string, so that GetPot::read method can be generic (template).
 template <> __GETPOT_INLINE const char*
-GetPot::__convert_to_type<const char*>(const std::string& String, const char* Default,
-                                       bool ThrowExceptionF /* = GETPOT_SETTING_THROW_EXCEPTION_ON_DEFAULT */) const
+GetPot::__convert_to_type<const char*>(const std::string& String, const char*,
+                                       bool /* = GETPOT_SETTING_THROW_EXCEPTION_ON_DEFAULT */) const
 {
     return __get_const_char(String);
 }

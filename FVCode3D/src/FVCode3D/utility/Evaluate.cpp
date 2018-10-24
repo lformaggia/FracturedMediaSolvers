@@ -104,7 +104,7 @@ for(auto & facet : mesh.getFacetsVector())
         const Point3D B(facet.getMesh()->getNodesVector()[M_vertexIds[1]]);
         const Point3D C(facet.getMesh()->getNodesVector()[M_vertexIds[2]]);
 //		Point3D normTr = FVCode3D::computeNormal(A, B, C);
-        Real area = FVCode3D::triangleArea(A, B, C);
+        //Real area = FVCode3D::triangleArea(A, B, C);
         Point3D TriaCentroid = FVCode3D::triangleCentroid(A, B, C);
         result[facet.getId()] = funcx(TriaCentroid)*normal.x() + funcy(TriaCentroid)*normal.y() + funcz(TriaCentroid)*normal.z();
         

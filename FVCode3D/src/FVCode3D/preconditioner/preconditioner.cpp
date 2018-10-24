@@ -21,14 +21,14 @@ Vector diagonal_preconditioner::solve(const Vector & r) const
 	auto & M = *Mptr;
 	auto & T = *Tptr;
 	Vector z = Vector::Zero(M.rows()+T.rows());      // The preconditioned residual
-	for(UInt i = 0; i<M.rows(); i++)                 
+	for(int i = 0; i<M.rows(); i++)
 	{
 		if(M.coeff(i,i)!=0)
 			z[i] = r[i]/M.coeff(i,i);
 		else
 			z[i] = r[i];
     }
-	for(UInt i = 0; i<T.rows(); i++)                
+	for(int i = 0; i<T.rows(); i++)
 	{
 		if(T.coeff(i,i)!=0)
 			z[M.rows()+i] = r[M.rows()+i]/T.coeff(i,i);          
@@ -77,12 +77,12 @@ void HSS_preconditioner::set(const SaddlePointMat & SP)
 	auto & T = SP.getT();
 	Bptr = & SP.getB();
 	Halpha = M;
-	for(UInt i=0; i<M.rows(); i++)
+	for(int i=0; i<M.rows(); i++)
 		Halpha.coeffRef(i,i) += alpha;
 		
 	UInt c  = 0;   //To count number of fracture facets
 	UInt cc = 0;
-	for (UInt k=0; k<T.outerSize(); ++k)
+	for (int k=0; k<T.outerSize(); ++k)
 	{
 		for (SpMat::InnerIterator it(T,k); it; ++it)
 		{
@@ -98,11 +98,11 @@ void HSS_preconditioner::set(const SaddlePointMat & SP)
 	Nfrac = c;
 	Ncell = T.rows()-c;
 	SpMat Talpha = -T.bottomRightCorner(Nfrac,Nfrac);
-	for(UInt i=0; i<Talpha.rows(); i++)
+	for(int i=0; i<Talpha.rows(); i++)
 		Talpha.coeffRef(i,i) += alpha;		
 		
 	SpMat BBtalpha = B*B.transpose();
-	for(UInt i=0; i<BBtalpha.rows(); i++)
+	for(int i=0; i<BBtalpha.rows(); i++)
 		BBtalpha.coeffRef(i,i) += alpha*alpha;	
 		
 	cg.setMaxIterations(MaxIt);

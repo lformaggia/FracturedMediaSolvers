@@ -237,7 +237,7 @@ public:
     /*!
      * @param Mat The saddle point mat
      */
-    void set(const SaddlePointMat & Mat)
+    void set(const SaddlePointMat &)
     {
 		std::cout<<"WARNING: the system is highly ill conditioned. It is highly reccomended to precondition the system."<<std::endl<<std::endl;
 	}
