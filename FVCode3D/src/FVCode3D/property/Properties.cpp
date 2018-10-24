@@ -48,6 +48,7 @@ void PropertiesMap::setPropertiesOnFractures(const Mesh3D & mesh, // @suppress("
         const Utility::fractureDataList & porosityList,
         Utility::FracturePermeabilityData const & permeabilities)
 {
+    static bool onlyone(false);
     std::set<UInt> zones;
     for(std::map<UInt,Mesh3D::Facet3D>::const_iterator it = mesh.getFacetsMap().begin();
             it != mesh.getFacetsMap().end(); ++it)
@@ -70,8 +71,11 @@ void PropertiesMap::setPropertiesOnFractures(const Mesh3D & mesh, // @suppress("
         }
         catch (...)
         {
+            if(! onlyone){
+            onlyone=true;
             std::cerr<<"Cannot find permeability associated to fracture zone "<<*it<<std::endl;
-            std::cerr<<"Using default";
+            std::cerr<<"Using default"<<std::endl;
+            }
             //perm=defaultPermeability;
         }
         try
@@ -80,8 +84,11 @@ void PropertiesMap::setPropertiesOnFractures(const Mesh3D & mesh, // @suppress("
         }
         catch(...)
         {
-            std::cerr<<"Cannot find porosity associated to matrix zone "<<*it<<std::endl;
-            std::cerr<<"Using default";
+            if(!onlyone)
+              {
+            std::cerr<<"Cannot find porosity associated to fracture zone "<<*it<<std::endl;
+            std::cerr<<"Using default"<<std::endl;
+              }
             //poroAndAperture=defaultFractureData;
         }
         // Now build the real stuff
@@ -122,6 +129,7 @@ void PropertiesMap::setPropertiesOnMatrix(const Mesh3D & mesh, // @suppress("Mem
         const Utility::bulkDataList & porosityList,
         Utility::BulkPermeabilityData const & permeabilities)
 {
+    static bool onlyone(false);
     std::set<UInt> zones;
     for(std::map<UInt,Mesh3D::Cell3D>::const_iterator it = mesh.getCellsMap().begin();
             it != mesh.getCellsMap().end(); ++it)
@@ -145,8 +153,12 @@ void PropertiesMap::setPropertiesOnMatrix(const Mesh3D & mesh, // @suppress("Mem
         }
         catch (...)
         {
-            std::cerr<<"Cannot find peremability associated to matrix zone "<<*it<<std::endl;
-            std::cerr<<"Using default";
+            if (!onlyone)
+              {
+            std::cerr<<"Cannot find permeability associated to matrix zone "<<*it<<std::endl;
+            std::cerr<<"Using default (will be printed only once)"<<std::endl;
+            onlyone=true;
+              }
             perm=defaultPermeability;
         }
         try
@@ -155,8 +167,10 @@ void PropertiesMap::setPropertiesOnMatrix(const Mesh3D & mesh, // @suppress("Mem
         }
         catch(...)
         {
+            if (! onlyone){
             std::cerr<<"Cannot find porosity associated to matrix zone "<<*it<<std::endl;
-            std::cerr<<"Using default";
+            std::cerr<<"Using default"<<std::endl;
+            }
             poro=defaultPorosity;
         }
         // Now build the real stuff

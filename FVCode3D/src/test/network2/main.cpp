@@ -32,6 +32,7 @@
 
 using namespace FVCode3D;
 
+
 typedef Problem<CentroidQuadrature, CentroidQuadrature> Pb;
 typedef DarcySteady<CentroidQuadrature, CentroidQuadrature> DarcyPb;
 typedef DarcyPseudoSteady<CentroidQuadrature, CentroidQuadrature, TimeScheme::BDF2> PseudoDarcyPb;
@@ -106,19 +107,30 @@ int main(int argc, char * argv[])
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 
-    std::cout << "Set uniform properties..." << std::flush;
+    std::cout << "Set properties..." << std::flush;
+    /* Old version
+
     std::shared_ptr<PermeabilityBase> matrixPerm( new PermeabilityDiagonal );
-    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
+    std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityDiagonal );
+//	std::shared_ptr<PermeabilityBase> fracturesPerm( new PermeabilityScalar );
     matrixPerm->setPermeability( 1., 0 );
     matrixPerm->setPermeability( 1., 4 );
     matrixPerm->setPermeability( 1., 8 );
-    const Real kf = 1.e3; 
-    fracturesPerm->setPermeability( kf, 0 );
+    fracturesPerm->setPermeability( 1.e3, 0 );
+    fracturesPerm->setPermeability( 1.e3, 4 );
+    fracturesPerm->setPermeability( 1.e3, 8 );
+//   const Real kf = 1.e-3; 
+//   fracturesPerm->setPermeability( kf, 0 );
     const Real aperture = 1.e-2;
     const Real matrixPoro = 0.25;
     const Real fracturesPoro = 1; 
     propMap.setPropertiesOnMatrix(mesh, matrixPoro, matrixPerm);
     propMap.setPropertiesOnFractures(mesh, aperture, fracturesPoro, fracturesPerm);
+    */
+    // New Version: data read from file into DataPtr and passed throgh call to the relevant methods.
+    propMap.setPropertiesOnMatrix(mesh,dataPtr->getMatrixOtherData(), dataPtr->getMatrixPermeabilityData());
+    propMap.setPropertiesOnFractures(mesh,dataPtr->getFractureOtherData(), dataPtr->getFracturePermeabilityData());
+//
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -167,6 +179,7 @@ int main(int argc, char * argv[])
     myrmesh.BuildEdges();
     myrmesh.BuildOrientationFacets();
     std::cout << " done." << std::endl << std::endl;
+    
 
     myrmesh.showMe();
     std::cout << "hMin: " << myrmesh.getMinEdgeSize() << std::endl;
@@ -208,7 +221,7 @@ int main(int argc, char * argv[])
 		}
 		if(dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV && dataPtr->getSolverPolicy() == Data::SolverPolicy::Iterative)
 		{
-			std::cout<<"Iterative solver not supported for MFD"<<std::endl<<std::endl;
+			std::cout<<"Iterative solver not supported for FV"<<std::endl<<std::endl;
 			return 0;
 		}
 			
@@ -316,7 +329,7 @@ int main(int argc, char * argv[])
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;  
      
     if(dataPtr->getNumericalMethodType() == Data::MFD){
-		UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
+		//UInt numFacetsTot   = myrmesh.getFacetsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
 		UInt numCellsTot    = myrmesh.getCellsVector().size() + myrmesh.getFractureFacetsIdsVector().size();
 		std::cout << "Export Solution..." << std::flush;
 		exporter.exportSolution( myrmesh, dataPtr->getOutputDir() + dataPtr->getOutputFile() + "_solution.vtu", 

@@ -24,7 +24,8 @@ set_default_compiler_variables
 popd > /dev/null
 
 # Project specific options
-build_type="Release"
+#build_type="Release"
+build_type="Debug"
 install_project=1
 install_doc=1
 build_project_tests="ON"

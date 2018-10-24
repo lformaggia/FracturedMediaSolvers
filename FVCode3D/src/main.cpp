@@ -157,14 +157,7 @@ int main(int argc, char * argv[])
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
     BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Neumann, fZero );
     BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
-    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );         
-    
-/*    BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Neumann, fZero );
-    BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Neumann, fZero );
-    BoundaryConditions::BorderBC backBC (BorderLabel::Back, Dirichlet, fZero );
-    BoundaryConditions::BorderBC frontBC(BorderLabel::Front, Dirichlet, fOne );
-    BoundaryConditions::BorderBC upBC   (BorderLabel::Top, Neumann, fZero );
-    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );              */ 
+    BoundaryConditions::BorderBC downBC (BorderLabel::Bottom, Neumann, fZero );
 
     std::vector<BoundaryConditions::BorderBC> borders;
 

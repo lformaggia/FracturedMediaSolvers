@@ -31,10 +31,10 @@ time_step   = 1.e5                   # if type = pseudosteady, this set the time
 # type=2 symmetric tensor (6 values by row, no repetitions)
 [problem/bulk]
 #default must be present
-permeability='1 1.e+30 1.e+30 2.e+30' #diagonal
-porosity=1.0
+permeability='1 1. 1. 1.' #diagonal
+porosity=0.25
 #number of zones. 0 or missing means only default
-numzones=2
+numzones=0 # example for 2 zones
 # the zone identifiers
 zones='1 2'
 [problem/bulk/zone/1]
@@ -45,9 +45,9 @@ permeability='0 1.25' #scalar, value 1.25
 porosity=1.0
 [problem/fracture]
 #default must be present
-permeability='1 5.e+30 7.e+30 9.e+30'
+permeability='0 1.e-2'
 porosity=1.0
-aperture=1e-3
+aperture=1e-2
 #number of zones. 0 means only default
 numzones=2
 zones='30 40'
@@ -59,7 +59,6 @@ aperture=1e-3
 permeability='0 1.25'
 porosity=1.0
 aperture=1e-3
-
 [fluid]
 mobility    = 1.                     # mobility of the fluid
 compressibility = 1.                 # compressibility of the fluid

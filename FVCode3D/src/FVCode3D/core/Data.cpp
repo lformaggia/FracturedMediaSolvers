@@ -9,6 +9,7 @@
 #include <tuple>
 #include <vector>
 #include <string>
+#include <map>
 
 namespace FVCode3D
 {
@@ -281,6 +282,30 @@ void Data::showMe( std::ostream & output ) const
     output << "Verbose: " << M_verbose << std::endl;
 
     output << "-----------------------------" << std::endl;
+
+    std::map<int,std::string> permName{{0,"Scalar"},{1,"Diagonal"},{2,"SymTensor"}};
+
+    output<<"  MATRIX PROPERTIES\n";
+    for (auto i=0u; i< this->M_bulkPermeabilityData.size(); ++i)
+      {
+        auto & g = this->M_bulkPermeabilityData[i];
+        output<<"Zone "<<std::get<0>(g)<<" ";
+        output<<"Permeability type "<<permName[std::get<0>(std::get<1>(g))]<<" Values: ";
+        for (auto & p : std::get<1>(std::get<1>(g))) output<<p<<" ";
+        output<<"\n";
+        output<<"Porosity: "<<std::get<1>(this->M_bulkData[i])<<"\n";
+      }
+    output<<"FRACTURE PROPERTIES\n";
+    for (auto i=0u; i< this->M_fracturePermeabilityData.size(); ++i)
+       {
+         auto & g = this->M_fracturePermeabilityData[i];
+         output<<"Zone "<<std::get<0>(g)<<" ";
+         output<<"Permeability type "<<permName[std::get<0>(std::get<1>(g))]<<" Values: ";
+         for (auto & p : std::get<1>(std::get<1>(g))) output<<p<<" ";
+         output<<"\n";
+         output<<"Porosity: "<<std::get<1>(this->M_fractureData[i])<<"Aperture: "<<std::get<2>(this->M_fractureData[i])<<"\n";
+       }
+
 }
 
 std::tuple<double,double> Data::fracturePorosityAndAperture(int const & zoneNumber) const

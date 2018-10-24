@@ -460,7 +460,7 @@ namespace FVCode3D
     /*!
      * @return the solver policy
      */
-    const SolverPolicy getSolverPolicy() const { return M_SolverPolicy; }
+    SolverPolicy getSolverPolicy() const { return M_SolverPolicy; }
 
     //! Get solver type
     /*!

@@ -597,10 +597,10 @@ public:
         UInt M_zoneCode;
         //! The vector of the ids of the Cell's vertices
         std::vector<UInt> M_verticesIds;
-        //! The vector of the ids of the Facets
-        std::vector<UInt> M_facetsIds;
         //! The vector of the ids of the Cell's edges
         std::vector<UInt> M_edgesIds;
+        //! The vector of the ids of the Facets
+        std::vector<UInt> M_facetsIds;
         //! The vector of the ids of the Cells neighbors
         std::vector<UInt> M_neighborsIds;
         //! The vector of the orientations of the facets
