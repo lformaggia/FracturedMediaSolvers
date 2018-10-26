@@ -27,8 +27,8 @@ class Mesh3D;
 */
 enum BCType
 {
-    Dirichlet,
-    Neumann
+    Dirichlet=0,
+    Neumann=1
 };
 
 enum BorderLabel : UInt

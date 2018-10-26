@@ -5,7 +5,7 @@
 
 #ifndef FUNCTIONS_HPP_
 #define FUNCTIONS_HPP_
-
+#include <FVCode3D/core/TypeDefinition.hpp>
 #include <cmath>
 
 namespace FVCode3D

@@ -2,6 +2,7 @@
 #    Data file for FVCode3D    #
 #------------------------------#
 
+functionLibrary=./libfun.so   # library with the functions
 [mesh]
 mesh_dir    = ./                # mesh directory
 mesh_file   = polyGrid3.fvg          # mesh filename
@@ -15,6 +16,7 @@ output_file = sol                    # output prefix of the files
 method      = MFD                    # FV or MFD
 
 [problem]
+sourceFunction=SourceTerm            # function for source term (in th elibrary defined by functionLibrary)
 type        = steady                 # steady or pseudoSteady
 fracturesOn = 1                      # 1 enable fractures, 0 disable fractures
 sourceOn    = none                   # where the source is applied: all, matrix, fractures, none
@@ -68,6 +70,24 @@ compressibility = 1.                 # compressibility of the fluid
 
 [bc]
 theta       = 0.                     # rotation to apply to grid around the z
+[bc/Left]
+type=0   # 0 Dirichlet 1 Neumann
+f=fOne
+[bc/Right]
+type=0   # 0 Dirichlet 1 Neumann
+f=fZero
+[bc/Back]
+type=1   # 0 Dirichlet 1 Neumann
+f=fZero
+[bc/Front]
+type=1   # 0 Dirichlet 1 Neumann
+f=fZero
+[bc/Top]
+type=1   # 0 Dirichlet 1 Neumann
+f=fZero
+[bc/Bottom]
+type=1   # 0 Dirichlet 1 Neumann
+f=fZero
 
 [solver]
 policy  = Iterative     	         # Iterative , Direct

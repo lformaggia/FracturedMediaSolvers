@@ -28,7 +28,7 @@
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/utility/Evaluate.hpp>
-#include "functions.hpp"
+#include <FVCode3D/utility/readFunctionsFromGetpot.hpp>
 
 using namespace FVCode3D;
 
@@ -48,6 +48,9 @@ int main(int argc, char * argv[])
     std::cout << "Read Data from " << dataFileName << "..." << std::flush;
     DataPtr_Type dataPtr(new Data(dataFileName));
     std::cout << " done." << std::endl;
+
+    // Now for boundary conditionst and source term
+    FVCode3D::ReadFunctionsFromGetpot functions(dataFileName);
 
     std::cout << std::endl;
     dataPtr->showMe();
@@ -152,6 +155,8 @@ int main(int argc, char * argv[])
 
     std::cout << "Add BCs..." << std::flush;
 
+    auto borders = functions.getBCForStandardDomain();
+    /*
     BoundaryConditions::BorderBC leftBC (BorderLabel::Left, Dirichlet, fOne );
     BoundaryConditions::BorderBC rightBC(BorderLabel::Right, Dirichlet, fZero );
     BoundaryConditions::BorderBC backBC (BorderLabel::Back, Neumann, fZero );
@@ -167,8 +172,9 @@ int main(int argc, char * argv[])
     borders.push_back( rightBC );
     borders.push_back( upBC );
     borders.push_back( downBC );
-
+*/
     BoundaryConditions BC(borders);
+
     std::cout << " done." << std::endl << std::endl;
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
@@ -199,13 +205,14 @@ int main(int argc, char * argv[])
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
 #endif // FVCODE3D_EXPORT
 
+    auto sourceFunction = functions.getSourceFunction();
     std::cout << "Define the problem..." << std::endl<<std::endl;
     
     Pb * darcy(nullptr);
     
 		if(dataPtr->getProblemType() == Data::ProblemType::steady && dataPtr->getNumericalMethodType() == Data::NumericalMethodType::MFD)
 		{
-			darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+			darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, sourceFunction, dataPtr);
 		}
 		if(dataPtr->getProblemType() == Data::ProblemType::pseudoSteady && dataPtr->getNumericalMethodType() == Data::NumericalMethodType::MFD)
 		{
@@ -215,9 +222,9 @@ int main(int argc, char * argv[])
 		if(dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV && dataPtr->getSolverPolicy() == Data::SolverPolicy::Direct)
 		{
 			if(dataPtr->getProblemType() == Data::ProblemType::steady)
-				darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+				darcy = new DarcyPb(dataPtr->getSolverType(), myrmesh, BC, sourceFunction, dataPtr);
 			else
-				darcy = new PseudoDarcyPb(dataPtr->getSolverType(), myrmesh, BC, SS, dataPtr);
+				darcy = new PseudoDarcyPb(dataPtr->getSolverType(), myrmesh, BC, sourceFunction, dataPtr);
 		}
 		if(dataPtr->getNumericalMethodType() == Data::NumericalMethodType::FV && dataPtr->getSolverPolicy() == Data::SolverPolicy::Iterative)
 		{

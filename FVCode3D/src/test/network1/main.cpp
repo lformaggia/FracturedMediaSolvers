@@ -28,7 +28,7 @@
 #include <FVCode3D/problem/DarcyPseudoSteady.hpp>
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/utility/Evaluate.hpp>
-#include "functions.hpp"
+#include <FVCode3D/core/functions.hpp>
 
 using namespace FVCode3D;
 

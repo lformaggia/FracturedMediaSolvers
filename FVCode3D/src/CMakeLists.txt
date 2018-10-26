@@ -6,6 +6,7 @@ add_executable(fvcode3d.exe main.cpp )
 # Create executable and link libraries
 target_link_libraries(fvcode3d.exe
     fvcode3d
+    dl
     ${LIBRARIES}
     )
 

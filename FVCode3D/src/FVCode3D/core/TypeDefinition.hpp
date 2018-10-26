@@ -16,6 +16,8 @@ namespace FVCode3D
   
   //! Type for a std::function<Real(Point3D)>
   typedef std::function<Real(Point3D)> Func;
+  //! For time dependent problems
+  typedef std::function<Real(Real,Point3D)> Funct;
   
 } // namespace FVCode3D
 

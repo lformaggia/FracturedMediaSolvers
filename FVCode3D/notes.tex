@@ -29,10 +29,48 @@
 
 \newcommand{\li}{\lstinline}
 \newenvironment{lstlistings}
-{\begin{lstlisting}[basicstyle=\footnotesize\sf]}
+{\begin{lstlisting}[basicstyle=\sf]}
 {\end{lstlisting}}
 \newcommand{\cpp}[1]{\li! #1 !}
 \begin{document}
+\section{New release 0.1, October 2018}
+This release has several enhancements. First of all permeabilities, porosity and fracture aperture  are given 
+via the data file and they may be specified by zones. See the \li!data.txt! file in the examples.
+
+Moreover, now it is possible to specify and load run time user-specific functions to describe both boundary conditions and source term.
+The user defined functions have to be stored in a \emph{shared library} whose name is given to the program via the data file with the keyword
+\li!functionLibrary=functionName!, where \li!functionname! is in the usual form for a shared library. In the examples the shared library is built automatically, by a suitable set the cmake files. But it can be also generated on the fly directly calling the compiler:
+
+\begin{verbatim}
+g++ -fPIC -shared -o libname.so -I<FVCode3Ddir> funsource.cpp
+\end{verbatim}
+
+You have to remember to indicate the directory at the top of the \li!src! hierarchy so that the required files are included. \li!FVCode3Ddir! is the directory under which \li!utility/! and \li!core/! reside.
+
+A prototype for the file containing the functions is
+
+\begin{lstlisting}
+#include <FVCode3D/core/TypeDefinition.hpp>
+#include <cmath>
+FVCode3D::Func SourceTerm = [](FVCode3D::Point3D p)
+{return 15.*( (
+              (p.x()-0.3)*(p.x()-0.3) +
+              (p.y()-0.3)*(p.y()-0.3) +
+                (p.z()-0.8)*(p.z()-0.8)
+              ) <=0.04
+                        )
+     -15.*( (
+            (p.x()-0.5)*(p.x()-0.5) +
+            (p.y()-0.5)*(p.y()-0.5) +
+            (p.z()-0.3)*(p.z()-0.3)
+             ) <=0.04);};
+\end{lstlisting}
+
+Note that you have to follow the syntax. Do not wrap the functions in a namespace. You may also use functors if you prefer. Note also that there are some in-built functions that you do not need to create: \li!fZero! and \li!fOne!. They return always zero and one.
+
+See the data files available in the examples. They are heavily commented.
+
+\section{Problems to be addressed}
 \begin{enumerate}
 \item The class \cpp{Point3D} has a major flaw! There is an overloading of \cpp{operator <} that contains a tolerance, and so it does not define
 an ordering relation. I suggest to verify where the tolerance is needed and use a special comparison operator there. For instance by defining a
