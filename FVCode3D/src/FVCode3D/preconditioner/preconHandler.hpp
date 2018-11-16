@@ -16,6 +16,7 @@ namespace FVCode3D
 /*!
  * @typedef preconBuilder
  * It is the Builder: takes nothing, returns a preconPtr_Type
+ * @note maybe better std::function (more flexible)
  */
 typedef preconPtr_Type (* preconBuilder)();
 
@@ -80,7 +81,7 @@ private:
 //! Proxy for preconHandler
 /*!
  * @class preconProxy
- * This class implements the Proxy that actually create a new product
+ * This class implements the Proxy that actually creates a new product
  */
 template<typename T>
 class preconProxy
@@ -93,6 +94,7 @@ public:
      */
     preconProxy(const std::string & proxyName);
 
+    //
     //! Destructor
     ~preconProxy() = default;
 
@@ -101,6 +103,7 @@ public:
      * @return a pointer to a preconditioner class
      */
     static preconPtr_Type Build();
+
 
 private:
 
@@ -131,6 +134,7 @@ preconPtr_Type preconProxy<T>::Build()
 {
     return preconPtr_Type(new T);
 }
+
 
 } // namespace FVCode3D
 

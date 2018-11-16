@@ -39,11 +39,11 @@ porosity=0.25
 #number of zones. 0 or missing means only default
 numzones=0 # example for 2 zones
 # the zone identifiers
-zones='1 2'
-[problem/bulk/zone/1]
+zones='10 20'
+[problem/bulk/zone/10]
 permeability='2 1.e+20 1.e+20 2.e+20 4.e+20 7.e+20 9.e+20' #tensor
 porosity=1.0
-[problem/bulk/zone/2]
+[problem/bulk/zone/20]
 permeability='0 1.25' #scalar, value 1.25
 porosity=1.0
 [problem/fracture]
