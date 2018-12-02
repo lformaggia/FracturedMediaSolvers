@@ -12,6 +12,7 @@
 
 #include <FVCode3D/core/BasicType.hpp>
 #include <Eigen/LU>
+#include <Eigen/SparseCholesky>
 #include <unsupported/Eigen/SparseExtra>
 
 namespace FVCode3D
@@ -390,7 +391,7 @@ private:
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv;
     //! Cholesky factorization
-    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
+    Eigen::SimplicialLDLT<SpMat, Eigen::Upper> chol;
     bool lumped=false;
 };
 
@@ -451,7 +452,7 @@ private:
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv;
     //! Cholesky factorization
-    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
+    Eigen::SimplicialLDLT<SpMat, Eigen::Upper> chol;
     bool lumped=false;
 };
 
@@ -515,7 +516,7 @@ private:
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv;
     //! Cholesky factorization
-    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
+    Eigen::SimplicialLDLT<SpMat, Eigen::Upper> chol;
     bool lumped=false;
 };
 
@@ -593,9 +594,9 @@ private:
     //! The CG for Halpha
     Eigen::ConjugateGradient<SpMat> cg;
     // Cholesky factorization for Talpha
-    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> cholT;
+    Eigen::SimplicialLDLT<SpMat, Eigen::Upper> cholT;
     //! Cholesky factorization for BBtalpha
-    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> cholBBt;
+    Eigen::SimplicialLDLT<SpMat, Eigen::Upper> cholBBt;
     //! The alpha coefficient of the scheme
     Real                       alpha;
     //! The max it for CG
