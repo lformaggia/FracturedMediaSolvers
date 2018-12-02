@@ -74,11 +74,14 @@ type    = imlGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlC
     maxIt       = 20000              # maximum number of iterations of the iterative solver
     tolerance   = 1e-6               # tolerance of the iterative solver
 	preconditioner = ILU           # Identity, Diagonal, BlockTriangular, ILU, HSS, BlockDiagonal
+	                               #  Identity, Diagonal and BlockDiagonal are sdp, so can be used with MINRES solver
 	lumped         = 0             # 1 perform lumping of mimetic inner product to construct approx shur
 	                               # 0 use diagonal of mimetic inner product to construct approx shur
-	restart        =100            # restart level for GMRES(m) and FGMRES(m)
-        innerIteratorSolver = Chowleski # Solver used for the incomplete shur complement (Chowleski, Umfpack, CG)
-# Tolerance used in the inner solver if innerIteratorSolver=CG
+	restart        =100            # restart level for GMRES(m) and FGMRES(m) NOT YET IMPLEMENTED
+# Solver used for the incomplete shur complement (Chowleski, Umfpack, CG) NOT YET IMPLEMENTED
+# Chowleski (the defuult) in fact implements a sparse LDLT decomposition
+        innerIteratorSolver = Chowleski 
+# Tolerance used in the inner solver if innerIteratorSolver=CG  NOT YET IMPLEMENTE
         innerSolverTolerance = 1e-7     
         
 	
