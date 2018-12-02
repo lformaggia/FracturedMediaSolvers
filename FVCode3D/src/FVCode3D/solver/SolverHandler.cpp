@@ -30,6 +30,8 @@ void SolverHandler::registration()
     SolverProxy<imlBiCGSTAB>    SolverBiCGSTAB( toUpper( "imlBiCGSTAB" ) );
     SolverProxy<imlGMRES>       SolverGMRES( toUpper( "imlGMRES" ) );
     SolverProxy<imlFGMRES>      SolverFGMRES( toUpper( "imlFGMRES" ) );
+    SolverProxy<imlMINRES>      SolverMINRES( toUpper( "imlMINRES" ) );
+
 #ifdef FVCODE3D_HAS_SAMG
     SolverProxy<SamgSym>        SolverSamgSym( toUpper( "SamgSym" ) );
     SolverProxy<SamgNotSym>     SolverSamgNotSym( toUpper( "SamgNotSym" ) );

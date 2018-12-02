@@ -68,10 +68,18 @@ theta       = 0.                     # rotation to apply to grid around the z
 
 [solver]
 policy  = Iterative  	         # Iterative , Direct
-type    = imlGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlGMRES, imlFGMRES
+type    = imlGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlCG , imlBiCGSTAB, imlGMRES, imlFGMRES, imlMINRES
 
     [./iterative]
     maxIt       = 20000              # maximum number of iterations of the iterative solver
     tolerance   = 1e-6               # tolerance of the iterative solver
-	preconditioner = ILU           # Identity, Diagonal, BlockTriangular, ILU, HSS
+	preconditioner = ILU           # Identity, Diagonal, BlockTriangular, ILU, HSS, BlockDiagonal
+	lumped         = 0             # 1 perform lumping of mimetic inner product to construct approx shur
+	                               # 0 use diagonal of mimetic inner product to construct approx shur
+	restart        =100            # restart level for GMRES(m) and FGMRES(m)
+        innerIteratorSolver = Chowleski # Solver used for the incomplete shur complement (Chowleski, Umfpack, CG)
+# Tolerance used in the inner solver if innerIteratorSolver=CG
+        innerSolverTolerance = 1e-7     
+        
+	
 

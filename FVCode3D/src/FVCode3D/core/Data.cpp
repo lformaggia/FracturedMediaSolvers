@@ -34,7 +34,7 @@ Data::Data():
     M_initTime(0.), M_endTime(1.), M_timeStep(0.1),
     M_mobility(1.), M_compressibility(1.),
     M_SolverPolicy(SolverPolicy::Direct),
-    M_maxIt(1.), M_tol(0.),
+    M_maxIt(1.), M_tol(0.),M_restart(100u),
     M_theta(0.), M_verbose(true)
 {}
 
@@ -116,13 +116,15 @@ Data::Data(const std::string dataFileName)
     M_maxIt = dataFile("solver/iterative/maxIt", 1000);
     M_tol = dataFile("solver/iterative/tolerance", 1e-4);
     M_precon = dataFile("solver/iterative/preconditioner", "ILU");
+    M_lumpedMim=static_cast<bool>(dataFile("solver/iterative/lumped",0));
+    M_restart=dataFile("solver/iterative/restart",100);
 
     M_theta = dataFile("bc/theta", 0.);
 
     M_verbose = static_cast<bool>(dataFile("miscellaneous/verbose", 1));
 
-    std::tie(this->M_bulkPermeabilityData,this->M_fracturePermeabilityData)=
-     Utility::readPermeabilityData(dataFile);
+    std::tie(this->M_bulkPermeabilityData,this->M_fracturePermeabilityData)
+    =Utility::readPermeabilityData(dataFile);
     this->M_bulkData=Utility::readBulkData(dataFile);
     this->M_fractureData=Utility::readFractureData(dataFile);
 }
@@ -269,14 +271,23 @@ void Data::showMe( std::ostream & output ) const
     output << "Mobility: " << M_mobility << std::endl;
 
     output << "Solver: " << M_solverType << std::endl;
-    if(dynamic_cast<IterativeSolver*>(SolverHandler::Instance().getProduct(M_solverType).get()))
     {
-        output << "# max iter: " << M_maxIt << std::endl;
-        output << "Tolerance: " << M_tol << std::endl;
+      auto SolverPtr = SolverHandler::Instance().getProduct(M_solverType);
+      bool testIterative = dynamic_cast<IterativeSolver*>(SolverPtr.get());
+      if(testIterative)
+        {
+          output << "# max iter: " << M_maxIt << std::endl;
+          output << "Tolerance: " << M_tol << std::endl;
+          if(this->M_lumpedMim)
+            output<<"Using lumped inner product matrix for approximating Shur complement"<<std::endl;
+          else
+            output<<"Using diagonal of inner product matrix for approximating Shur complement"<<std::endl;
+          bool testGMRES = dynamic_cast<imlGMRES*>(SolverPtr.get()) || dynamic_cast<imlFGMRES*>(SolverPtr.get());
+          if (testGMRES)
+            output<<"Restart level:  "<<this->M_restart<<std::endl;
+          output << "Preconditioner: " << M_precon << std::endl;
+        }
     }
-    if(dynamic_cast<IterativeSolver*>(SolverHandler::Instance().getProduct(M_solverType).get()))
-		output << "Preconditioner: " << M_precon << std::endl;
-
     output << "Theta: " << M_theta << std::endl;
 
     output << "Verbose: " << M_verbose << std::endl;

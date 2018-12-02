@@ -33,9 +33,9 @@ typedef std::shared_ptr<preconditioner> preconPtr_Type;
  * M, B and T. It will be build up through an object of type SaddlePoint_StiffMatrix
  * that is the assembler of the numerical method and it overloads the *(Vector) operator
  * to use the blocks matrix to compute the matrix-vector product. In this way we avoid
- * to storage the whole system matrix and we use the same 3 blocks (without any copy of them)
+ * to store the whole system matrix and we use the same 3 blocks (without any copy of them)
  * to make everything we need: matrix-vector product, building and inverting the preconditioner.
- * Clearly this class is interesting only with an iterative system solving the system.
+ * Clearly, this class is interesting only with an iterative system solving the system.
  * Constructors, assignement, destructor and so on are all defaulted.
 */
 class SaddlePointMat
@@ -195,6 +195,23 @@ private:
 	SpMat      T;
 };
 
+//! This utility function computes the Approximate Inverse of the Mimetic Inner Product Matrix
+/*!
+ * @param Mat a SaddlePointMatrix
+ * @param lumping. If true I return the lumped innerproduct matrix, if not I return the diagonal part.
+ * @return The Shur Complement w.r.t. w.r.t. the lower diagonal block B D^-1 B^T + T
+ */
+DiagMat ComputeApproximateInverseInnerProd(const SaddlePointMat & Mat, bool lumping);
+
+//! Compute the approximate Shur complement using a diagonal approximate inverse
+/*!
+ * @param Mat A saddle point matrix
+ * @param D a diagonal matrix that represents an approximate inverse of the inner product matrix
+ * @return th approximate Shur complement
+ *
+ */
+SpMat ComputeApproximateSchur(const SaddlePointMat & Mat, const DiagMat & D);
+
 //! Base class for assembling a preconditioner.
 /*!
  * @class preconditioner
@@ -233,15 +250,17 @@ public:
 class identity_preconditioner: public preconditioner
 {
 public:
+    //! Set the use of the lumped form for the diagonal approximation of M
+
     //! Set the preconditioner
     /*!
      * @param Mat The saddle point mat
      */
     void set(const SaddlePointMat &)
     {
-		std::cout<<"WARNING: the system is highly ill conditioned. It is highly reccomended to precondition the system."<<std::endl<<std::endl;
+		std::cout<<"WARNING: the system is highly ill conditioned. It is highly recommended to precondition the system."<<std::endl<<std::endl;
 	}
-	//! @name Solve Methods
+     //! @name Solve Methods
     //@{
     //! Solve the linear system Pz=r
     /*!
@@ -268,7 +287,16 @@ public:
      */
 	diagonal_preconditioner( const SaddlePointMat & Mat ):
 		Mptr(& Mat.getM()), Tptr(& Mat.getT()) {}
-	//! No Copy-Constructor
+	//! Copy-Constructor deleted
+	/*!
+	 * The reason is that this class is just a wrapper to an existing
+	 * SaddePointMat. If you activate copy it will be just a shallow copy and
+	 * this may confuse the user. Better avoid copy constructions
+	 *
+	 * @todo It is probably simpler and less error prone to delete the copy constructor
+	 * and assignment operator at the level of the base class, thus invalidating
+	 * those of the derived classes automatically.
+	 */
     diagonal_preconditioner(const diagonal_preconditioner &) = delete;
 	//! Empty-Constructor
     diagonal_preconditioner(): Mptr(nullptr), Tptr(nullptr) {}
@@ -296,9 +324,9 @@ public:
     //@}
     
 private:            
-	//! A const reference to the inner product matrix
+	//! A const pointer to the inner product matrix
     const SpMat *       Mptr;    
-	//! A const reference to the T block matrix
+	//! A const pointer to the T block matrix
     const SpMat *       Tptr;               
 };
 
@@ -321,36 +349,30 @@ public:
 	//! Destructor
     ~BlockTriangular_preconditioner() = default;
 	//@}
-
+    /*!
+      *  If we set lumping=true the approximation of the matrix M in the Shur complement will be made
+      *  by the lumping strategy, i.e. by summing the rows. The default (lumping=false) uses the diagonal part of M
+      */
+       void setLumping(bool lumping)
+       {
+         this->lumped=lumping;
+       }
+       //! To verify if lumping is used instead of diagonal to approximate M
+       bool lumping() const {return this->lumped;}
     //! @name Assemble Methods
     //@{
 	//! Assemble the the inverse diag of M and the SC
     /*!
      * @param Mat The saddle point mat
+     *
      */
-    void set(const SaddlePointMat & SP)
-	{
-		Bptr   = & SP.getB();
-#ifdef LUMP
-		auto & M = SP.getM();
-		Vector ML(M.rows());
-		ML.setZero();
-		for(UInt i = 0; i<M.rows(); i++)
-		{
-			for(UInt j = 0; j<M.cols(); j++)
-			{
-				ML[i] += M.coeff(i,j);
-			}
-		}
-		Md_inv = ML.asDiagonal().inverse();
-#else
-		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
-#endif
-		SpMat ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
-		ISC   += SP.getT(); 
-		
-		chol.compute(-ISC);
-	}
+       void set(const SaddlePointMat & SP) override
+       {
+         Bptr   = & SP.getB();
+         Md_inv=ComputeApproximateInverseInnerProd(SP,lumped);
+         // B D^{-1}B^T -T
+         chol.compute(-ComputeApproximateSchur(SP, Md_inv));// store chowleski factor
+       }
     //@}
 
     //! @name Solve Methods
@@ -369,7 +391,68 @@ private:
     DiagMat                    Md_inv;
     //! Cholesky factorization
     Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
-                      
+    bool lumped=false;
+};
+
+//! A Symmetric block diagonal preconditioner to be used with MINRES
+/*!
+ *  Following the indication of the book of Wather et al.
+ *
+ */
+class BlockDiagonal_preconditioner: public preconditioner
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+      //! No Copy-Constructor
+    BlockDiagonal_preconditioner(const BlockDiagonal_preconditioner &) = delete;
+      //! Empty-Constructor
+    BlockDiagonal_preconditioner(): Bptr(nullptr) {}
+      //! Destructor
+    ~BlockDiagonal_preconditioner() = default;
+      //@}
+    /*!
+      *  If we set lumping=true the approximation of the matrix M in the Shur complement will be made
+      *  by the lumping strategy, i.e. by summing the rows. The default (lumping=false) uses the diagonal part of M
+      */
+       void setLumping(bool lumping)
+       {
+         this->lumped=lumping;
+       }
+       //! To verify if lumping is used instead of diagonal to approximate M
+       bool lumping() const {return this->lumped;}
+    //! @name Assemble Methods
+    //@{
+      //! Assemble the the inverse diag of M and the SC
+    /*!
+     * @param Mat The saddle point mat
+     *
+     */
+       void set(const SaddlePointMat & SP) override
+       {
+         Bptr   = & SP.getB();
+         Md_inv = ComputeApproximateInverseInnerProd(SP,lumped);
+         chol.compute(-ComputeApproximateSchur(SP, Md_inv));// store chowleski factor
+       }
+    //@}
+
+    //! @name Solve Methods
+    //@{
+    //! Solve the linear system Pz=r
+    /*!
+     * @param r The rhs vector on what we apply the P^-1
+     */
+    Vector solve(const Vector & r) const;
+    //@}
+
+private:
+      //! The B block matrix
+    const SpMat *              Bptr;
+    //! The inverse of the diagonal of M
+    DiagMat                    Md_inv;
+    //! Cholesky factorization
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
+    bool lumped=false;
 };
 
 //! Class for assembling a ILU preconditioner.
@@ -378,6 +461,7 @@ private:
  * This class builds up a ILU preconditioner where the M block is approximated via its diagonal part
  * and the SC is approximated through the inverse of the diagonal part of M.
  * The SC linear system is solved through the Eigen CG.
+ * @todo again it is better to have the version for the lumped
 */
 class ILU_preconditioner: public preconditioner
 {
@@ -391,6 +475,16 @@ public:
 	//! Destructor
     ~ILU_preconditioner() = default;
 	//@}
+    /*!
+       *  If we set lumping=true the approximation of the matrix M in the Shur complement will be made
+       *  by the lumping strategy, i.e. by summing the rows. The default (lumping=false) uses the diagonal part of M
+       */
+        void setLumping(bool lumping)
+        {
+          this->lumped=lumping;
+        }
+        //! To verify if lumping is used instead of diagonal to approximate M
+        bool lumping() const {return this->lumped;}
 
     //! @name Assemble Methods
     //@{
@@ -398,30 +492,13 @@ public:
     /*!
      * @param Mat The saddle point mat
      */
-    void set(const SaddlePointMat & SP)
-	{
-		Bptr   = & SP.getB();
-#ifdef LUMP
-		auto & M = SP.getM();
-		Vector ML(M.rows());
-		ML.setZero();
-		for(UInt i = 0; i<M.rows(); i++)
-		{
-			for(UInt j = 0; j<M.cols(); j++)
-			{
-				ML[i] += M.coeff(i,j);
-			}
-		}
-		Md_inv = ML.asDiagonal().inverse();
-#else
-		Md_inv = SP.getM().diagonal().asDiagonal().inverse();
-#endif
-		SpMat ISC    = - SP.getB() * Md_inv * SP.getB().transpose();
-		ISC   += SP.getT(); 
-		
-		chol.compute(-ISC);
-	}
-    //@}
+        void set(const SaddlePointMat & SP)
+        {
+          Bptr   = & SP.getB();
+          Md_inv=ComputeApproximateInverseInnerProd(SP,lumped);
+          chol.compute(-ComputeApproximateSchur(SP, Md_inv));// store chowleski factor
+        }
+        //@}
 
     //! @name Solve Methods
     //@{
@@ -438,7 +515,8 @@ private:
     //! The inverse of the diagonal of M
     DiagMat                    Md_inv;
     //! Cholesky factorization
-    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;                   
+    Eigen::SimplicialCholesky<SpMat, Eigen::Upper> chol;
+    bool lumped=false;
 };
 
 //! Class for assembling a HSS preconditioner.
@@ -513,7 +591,7 @@ private:
 	//! The matrix Halpha
 	SpMat                      Halpha;
     //! The CG for Halpha
-	Eigen::ConjugateGradient<SpMat> cg;
+    Eigen::ConjugateGradient<SpMat> cg;
     // Cholesky factorization for Talpha
     Eigen::SimplicialCholesky<SpMat, Eigen::Upper> cholT;
     //! Cholesky factorization for BBtalpha

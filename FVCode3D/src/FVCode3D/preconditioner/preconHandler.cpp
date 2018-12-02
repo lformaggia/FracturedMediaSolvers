@@ -30,7 +30,8 @@ void preconHandler::registration()
     preconProxy<diagonal_preconditioner>          preconDiag( toUpper( "Diagonal" ) );
     preconProxy<BlockTriangular_preconditioner>   preconBT( toUpper( "BlockTriangular" ) );
     preconProxy<ILU_preconditioner>               preconILU( toUpper( "ILU" ) );
-	preconProxy<HSS_preconditioner>               preconHSS( toUpper( "HSS" ) );
+    preconProxy<HSS_preconditioner>               preconHSS( toUpper( "HSS" ) );
+    preconProxy<BlockDiagonal_preconditioner>     preconBDiag(toUpper( "BlockDiagonal" ) );
 } // preconHandler::registration
 
 void preconHandler::addProduct(const std::string productName, const preconBuilder & builder)

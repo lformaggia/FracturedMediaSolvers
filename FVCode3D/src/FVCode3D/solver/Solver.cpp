@@ -10,6 +10,7 @@
 #include <FVCode3D/solver/bicgstab.hpp>
 #include <FVCode3D/solver/gmres.hpp>
 #include <FVCode3D/solver/fgmres.hpp>
+#include <FVCode3D/solver/minres.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/preconditioner/preconHandler.hpp>
 #include <Eigen/UmfPackSupport>
@@ -66,20 +67,36 @@ void imlBiCGSTAB::solve()
 constexpr UInt imlGMRES::Default_m;
 void imlGMRES::solve()
 {
-	// Define the initial guess to zero
-	M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
-	// Set the restart level
-//	set_m(60);
-	// Conversion needed
-	int iter = (int) M_maxIter;
-	int m_int = (int) m;
-	// Solve the system
-	int conv = GMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
-	// Conversion needed
-	CIndex = (UInt) conv;	
-	M_iter = (UInt) iter;
-	
+      // Define the initial guess to zero
+      M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
+      // Set the restart level
+//    set_m(60);
+      // Conversion needed
+      int iter = (int) M_maxIter;
+      int m_int = (int) m;
+      // Solve the system
+      int conv = GMRES(M_A, M_x, M_b, *preconPtr, m_int, iter, M_res);
+      // Conversion needed
+      CIndex = (UInt) conv;
+      M_iter = (UInt) iter;
+
 } // imlGMRES::solve
+
+void imlMINRES::solve()
+{
+      // Define the initial guess to zero
+      M_x = Vector::Zero(M_A.getM().cols()+M_A.getB().rows());
+      // Set the restart level
+//    set_m(60);
+      // Conversion needed
+      int iter = (int) M_maxIter;
+      // Solve the system
+      int conv = MINRES(M_A, M_x, M_b, *preconPtr, iter, M_res);
+      // Conversion needed
+      CIndex = (UInt) conv;
+      M_iter = (UInt) iter;
+
+} // imlMINRES::solve
 
 constexpr UInt imlFGMRES::Default_m;
 void imlFGMRES::solve()

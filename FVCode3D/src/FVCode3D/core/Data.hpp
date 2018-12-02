@@ -98,7 +98,7 @@ namespace FVCode3D
       None            = 3
     };
 
-    //! Defiles permeability types
+    //! Defines permeability types
     /*!
      * @enum PermeabilityType
      * Allows to select the type of permeability
@@ -112,6 +112,13 @@ namespace FVCode3D
    	  ArbitraryTensor=3
      };
 
+    //! Defines the inner solver used for the Schur complement in the preconditioner
+     enum class SchurInnerSolverType
+     {
+       Chowlesky=0,
+       Umfpack=1,
+       CG=2
+     };
     //! @name Constructors
     //@{
     
@@ -267,6 +274,7 @@ namespace FVCode3D
     //! Get if the stiffness matrix in the mimetic method is lumped
     /*!
      * @return lumped true if the stiffness matrix is lumped
+     * @todo This method is never called. We need to fix it!
      */
     bool getLumpedMimetic() const { return M_lumpedMim; }
 
@@ -485,6 +493,11 @@ namespace FVCode3D
      * @return tolerance of the iterative solver
      */
     Real getIterativeSolverTolerance() const { return M_tol; }
+
+    //! Get restart (only for GMRES and FGMRES)
+    //! @return the restart for GMRES(m) and FGMRES(m)
+    //! @todo This method is never used, I need to fix it.
+     UInt getRestart(){return M_restart;}
 
     //! Get theta angle
     /*!
@@ -762,7 +775,10 @@ namespace FVCode3D
      * @param the preconditioner type
      */
     void setpreconType(const std::string precon) { M_precon =precon; }
-
+    //! Set inner solver type for the approximate Schur complement
+    void setSchurInnerSolverType(SchurInnerSolverType s){this->M_SchurInnerSolverType = s;}
+    //! Set tolerance for inner solver for the Schur complement, if iterative
+    void setSchurInnerSolverTolerance(Real s){this->M_SchurInnerSolverTolerance = s;}
     //! Set maximum iterations of the iterative solver
     /*!
      * @param maxIt maximum iterations of the iterative solver
@@ -775,6 +791,8 @@ namespace FVCode3D
      */
     void setIterativeSolverTolerance(const Real tol) { M_tol = tol; }
 
+    //! Set restart (only for GMRES and FGMRES)
+    void setRestart(UInt r){this->M_restart=r;}
     //! Set theta angle
     /*!
      * @param theta the angle theta used to identify the BC ids
@@ -891,9 +909,16 @@ protected:
     UInt M_maxIt;
     //! Tolerance of the iterative solver
     Real M_tol;
+    //! restart (for GMRES and FGMRES)
+    UInt M_restart;
     //! The preconditioner
     std::string M_precon;
-
+    //! Lumping or Diagonal?
+    // bool M_lumped; // now M_lumpedMim
+    //! InnerIterativeSolver
+    SchurInnerSolverType M_SchurInnerSolverType={SchurInnerSolverType::Chowlesky};
+    //! Tolerance for the Inner Iterative Solver
+    Real M_SchurInnerSolverTolerance={1.e-7};
     //! Angle used to rotate along z-axis the domain. It is used only to compute the normal for detecting BC!
     Real M_theta;
     //! Verbose

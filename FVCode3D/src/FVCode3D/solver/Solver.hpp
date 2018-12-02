@@ -656,6 +656,51 @@ private:
 	
 }; // class GMRES
 
+//! Class imlMINRES
+/*!
+ * @class imlMINRES
+ * This class implements a linear solver for the system Ax=b.
+ * It uses the minimum residual method
+ */
+class imlMINRES : public IterativeSolver
+{
+public:
+    //! @name Constructor & Destructor
+    //@{
+    //! Empty constructor
+    imlMINRES(): IterativeSolver() {}
+
+      //! Constructor
+    /*!
+     * @param Mdim M block dimension
+     * @param Brow B block row
+     * @param Bcol B block col
+     */
+      imlMINRES(const UInt Mdim,const UInt Brow):
+            IterativeSolver(Mdim,Brow) {}
+
+    //! Constructor
+    /*!
+     * @param A Eigen sparse matrix
+     * @param b RHS, it is Eigen vector
+     */
+    imlMINRES( const SaddlePointMat & A, const Vector & b ):
+        IterativeSolver(A, b){}
+
+    //! Destructor
+    ~imlMINRES() = default;
+    //@}
+
+ //! @name Methods
+    //@{
+    //! Solve the linear system
+    /*!
+     * Solve the linear system Ax=b by means of the GMRES method.
+     */
+    void solve();
+    //@}
+}; // class MINRES
+
 //! Class imlFGMRES
 /*!
  * @class imlFGMRES

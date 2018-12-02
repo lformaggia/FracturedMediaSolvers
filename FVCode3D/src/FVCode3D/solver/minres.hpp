@@ -3,7 +3,7 @@
 //*****************************************************************
 // Iterative template routine -- MINRES
 //
-// CG solves the symmetric positive definite linear
+// MINRES solves the symmetric positive definite linear
 // system Ax=b using the Preconditioned MINRES method.
 // Preconditioner must be symmetric
 //
