@@ -108,9 +108,15 @@ public:
     //! Get the solver pointer
     /*!
      * @return a pointer to the Solver
+     * @note use with care. Use getSolverSharedPtr if you use the pointed object!
      */
     Solver * getSolverPtr() { return M_solver.get(); }
-    
+    //! Get the solver pointer as shared pointer
+    /*!
+     * @return a pointer to the Solver
+     */
+
+    SolverPtr_Type getSolverSharedPtr() const { return M_solver; }
     //! Get the system matrix (Direct solver case)
     /*!
      * @return the momolithic system matrix 
@@ -138,7 +144,7 @@ public:
 		else
 		{
 			std::stringstream error;	
-			error << "Error: with an iterative solver the matrix is stored as an SpMat"<<std::endl;
+			error << "Error: with an iterative solver the matrix is stored as an SaddlePointMat"<<std::endl;
 			throw std::runtime_error(error.str());	
 		}	
 	}
@@ -154,7 +160,7 @@ public:
 		else
 		{
 			std::stringstream error;	
-			error << "Error: with an iterative solver the matrix is stored as a SaddlePointMat"<<std::endl;
+			error << "Error: with a Direct solver the matrix is stored as a SpMat"<<std::endl;
 			throw std::runtime_error(error.str());	
 		}	
 	}
@@ -170,7 +176,7 @@ public:
 		else
 		{
 			std::stringstream error;	
-			error << "Error: with an iterative solver the matrix is stored as a SaddlePointMat"<<std::endl;
+			error << "Error: with a Direct solver the matrix is stored as a SpMat"<<std::endl;
 			throw std::runtime_error(error.str());	
 		}	
 	}
