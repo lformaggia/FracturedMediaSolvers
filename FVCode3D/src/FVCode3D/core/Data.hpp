@@ -20,6 +20,9 @@ namespace FVCode3D
    * This class takes care of the information needed for the solver, as boundary conditions and the source/sink term.
    * It also handles the name of the input/output directory and the name of the input/output file,
    * the shared library name and miscellaneous options.
+   * @note This class is a monster class overly complicated. Its role is to have a centralized place for all problem parameters.
+   * The idea is fine yet it had been better to have a simple aggregate (no need of setters and getters) maybe implemented as
+   * a singleton namespace variable (no need of using pointers in this case). It would make life much easier.
    */
   class Data{
   public:
@@ -505,6 +508,11 @@ namespace FVCode3D
      */
     Real getTheta() const { return M_theta; }
 
+    //! Do we want to dump matrices in matrixmarket format?
+    /*
+     * @return true. System matrices are dumped in matrix market format with standard names
+     */
+    bool getDumpMatrices()const {return M_dumpMatrix;}
     //! Verbose
     /*!
      * @return true if verbose
@@ -798,6 +806,8 @@ namespace FVCode3D
      * @param theta the angle theta used to identify the BC ids
      */
     void setTheta(const Real theta) { M_theta = theta; }
+    //! Sets if we want to dump matrices in matrixmarket format
+    void setDumpMatrices(bool dump){this->M_dumpMatrix=dump;}
 
     //! Enable or disable verbosity
     /*!
@@ -932,8 +942,13 @@ protected:
     Utility::bulkDataList M_bulkData;
     //! Contains porosity for each zone
     Utility::fractureDataList M_fractureData;
+    //! Do we want to dump matrices?
+    /*!
+     * If true all matrices are dumped in matrixmarket format
+     */
+    bool M_dumpMatrix{false};
+    //! Utility to read fracture porosity and aperture data
     std::tuple<double,double> fracturePorosityAndAperture(int const & zoneNumber) const;
-
 };
 
   //! Class that implements a parser for a generic enumerator

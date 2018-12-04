@@ -80,9 +80,11 @@ type    = imlGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlC
 	restart        =100            # restart level for GMRES(m) and FGMRES(m) NOT YET IMPLEMENTED
 # Solver used for the incomplete shur complement (Chowleski, Umfpack, CG) NOT YET IMPLEMENTED
 # Chowleski (the defuult) in fact implements a sparse LDLT decomposition
-        innerIteratorSolver = Chowleski 
+    innerIteratorSolver = Chowleski 
 # Tolerance used in the inner solver if innerIteratorSolver=CG  NOT YET IMPLEMENTE
-        innerSolverTolerance = 1e-7     
-        
+    innerSolverTolerance = 1e-7     
+[miscellaneous]
+    verbose=0 # if =1 more verbose output
+    dumpMatrices=0 # if =1 we dump matrices in matrix marked format (if iterative method is used)        
 	
 

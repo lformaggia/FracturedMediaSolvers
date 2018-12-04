@@ -127,6 +127,7 @@ Data::Data(const std::string dataFileName)
     =Utility::readPermeabilityData(dataFile);
     this->M_bulkData=Utility::readBulkData(dataFile);
     this->M_fractureData=Utility::readFractureData(dataFile);
+    this->M_dumpMatrix=static_cast<bool>(dataFile("miscellaneous/dumpMatrices", 0));
 }
 
 void Data::setMeshExtension(const std::string ext)

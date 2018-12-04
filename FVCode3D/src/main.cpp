@@ -29,6 +29,7 @@
 #include <FVCode3D/assembler/FixPressureDofs.hpp>
 #include <FVCode3D/utility/Evaluate.hpp>
 #include <FVCode3D/utility/readFunctionsFromGetpot.hpp>
+#include <FVCode3D/utility/dumpMatrices.hpp>
 
 using namespace FVCode3D;
 
@@ -357,6 +358,41 @@ int main(int argc, char * argv[])
 	}
 
     std::cout << "Passed seconds: " << chrono.partial() << " s." << std::endl << std::endl;
+
+    if(dataPtr->getDumpMatrices())
+      {
+        std::cout<<"  *** DUMPING SYSTEM MATRICES ***"<<std::endl;
+        auto solverSPtr=darcy->getSolverSharedPtr();
+        auto solverPtr=dynamic_cast<IterativeSolver*>(solverSPtr.get());
+        if(solverPtr == nullptr)
+          {
+            std::cerr<<" CANNOT DUMP MATRIX FOR DIRECT SOLVER, NOT YET IMPLEMENTED ***"<<std::endl;
+          }
+        else
+          {
+            bool status=dumpSaddlePointMatrix(solverPtr->getA());
+            if (!status)
+              {
+                std::cerr<<"SOMETHING WRONG DUMPING SYSTEM MATRICES"<<std::endl;
+              }
+            else
+              {
+                std::cout<<"Dumped M, B and T"<<std::endl;
+              }
+            bool lumped = dataPtr->getLumpedMimetic();
+            status=dumpApproximateSchurMatrix(solverPtr->getA(),lumped);
+            if (!status)
+              {
+                std::cerr<<"SOMETHING WRONG DUMPING SYSTEM MATRICES"<<std::endl;
+              }
+            else
+              {
+                std::cout<<"Dumped Approximate M and approximate Schur"<<std::endl;
+              }
+
+          }
+      }
+
 
 #ifdef FVCODE3D_EXPORT
     std::cout << "Export Property..." << std::flush;
