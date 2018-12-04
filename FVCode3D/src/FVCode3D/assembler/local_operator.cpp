@@ -39,9 +39,9 @@ void local_InnerProduct::assemble()
 	Kp(1,0) = Mob*K->operator()(1,0);
 	Kp(1,1) = Mob*K->operator()(1,1);
 	Kp(1,2) = Mob*K->operator()(1,2);
-    Kp(2,0) = Mob*K->operator()(2,0);
-    Kp(2,1) = Mob*K->operator()(2,1);
-    Kp(2,2) = Mob*K->operator()(2,2);
+      Kp(2,0) = Mob*K->operator()(2,0);
+      Kp(2,1) = Mob*K->operator()(2,1);
+      Kp(2,2) = Mob*K->operator()(2,2);
 
 	// Loop on facets to build Rp, Np
 	for(UInt localFacetId=0; localFacetId<numCellFacets; ++localFacetId)

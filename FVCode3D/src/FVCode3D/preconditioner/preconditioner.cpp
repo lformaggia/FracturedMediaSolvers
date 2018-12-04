@@ -24,11 +24,11 @@ namespace FVCode3D
         auto & M = SP.getM();
         Vector ML(M.rows());
         ML.setZero();
-        for(int i = 0; i<M.rows(); i++)
+        for(int j = 0; j<M.outerSize(); ++j)
           {
-            for(int j = 0; j<M.cols(); j++)
+            for(SpMat::InnerIterator it(M,j); it; ++it)
               {
-                ML[i] += M.coeff(i,j);
+                ML[it.row()] += it.value();
               }
           }
         return ML.asDiagonal().inverse();

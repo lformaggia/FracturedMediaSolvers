@@ -610,7 +610,7 @@ for(auto & cell : M_cells)
             const Point3D C = M_nodes[*it2];
 
             area = FVCode3D::triangleArea(center, B, C);
-			normTr = FVCode3D::computeNormal(center, B, C);
+		normTr = FVCode3D::computeNormal(center, B, C);
             mapNormFac[facetId] += normTr * area;
             vol += 1./3.*area*dotProduct(FVCode3D::triangleCentroid(center,B,C),normTr);
         }

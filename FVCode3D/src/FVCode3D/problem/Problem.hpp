@@ -109,11 +109,12 @@ public:
     /*!
      * @return a pointer to the Solver
      * @note use with care. Use getSolverSharedPtr if you use the pointed object!
+     * @deprecated
      */
     Solver * getSolverPtr() { return M_solver.get(); }
     //! Get the solver pointer as shared pointer
     /*!
-     * @return a pointer to the Solver
+     * @return a shared pointer to the Solver
      */
 
     SolverPtr_Type getSolverSharedPtr() const { return M_solver; }
