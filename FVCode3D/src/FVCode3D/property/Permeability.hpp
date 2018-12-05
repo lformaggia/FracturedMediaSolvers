@@ -7,6 +7,8 @@
 #define PERMEABILITY_HPP_
 
 #include <FVCode3D/core/TypeDefinition.hpp>
+#include <FVCode3D/core/BasicType.hpp>
+
 
 namespace FVCode3D
 {
@@ -96,6 +98,8 @@ public:
     virtual UInt size()
         {return M_size;};
 
+    //! Returns permeability as a Eigen33 Matrix
+    Mat33 getPermabilityMatrix() const;
     //! Vector-tensor product
     /*!
      * @param vector vector
@@ -673,5 +677,6 @@ public:
 };
 
 } // namespace FVCode3D
+
 
 #endif /* PERMEABILITY_HPP_ */

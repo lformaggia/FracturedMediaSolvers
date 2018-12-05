@@ -342,4 +342,21 @@ std::ostream & operator<<(std::ostream & os, const std::shared_ptr<PermeabilityF
     return os;
 }
 
+Mat33
+PermeabilityBase::getPermabilityMatrix () const
+{
+  Mat33 Kp;
+  Kp(0,0) = this->operator()(0,1);
+  Kp(0,1) = this->operator()(0,1);
+  Kp(0,2) = this->operator()(0,2);
+  Kp(1,0) = this->operator()(1,0);
+  Kp(1,1) = this->operator()(1,1);
+  Kp(1,2) = this->operator()(1,2);
+  Kp(2,0) = this->operator()(2,0);
+  Kp(2,1) = this->operator()(2,1);
+  Kp(2,2) = this->operator()(2,2);
+  return Kp;
+}
+
+
 } // namespace FVCode3D

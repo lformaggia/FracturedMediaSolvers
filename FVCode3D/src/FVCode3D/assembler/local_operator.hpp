@@ -192,8 +192,8 @@ private:
     Mat                      Mp1;           
     //! Local Mp matrix for internal product
     Mat                      Mp;            
-//	//! Scalar factor in Mp1 expression
-	static constexpr Real    gamma = 2.;
+    //! Scalar factor in Mp1 expression
+    static constexpr Real    gamma = 0.5;
 };
 
 //! Class for assembling a local div matrix
