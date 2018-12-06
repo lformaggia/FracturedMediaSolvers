@@ -633,18 +633,24 @@ void BCimposition::ImposeBConBulk(SpMat & S, Vector & rhs) const
 	
 	for( auto facet_it : M_mesh.getBorderFacetsIdsVector() )
 	{	
-		UInt borderId = facet_it.getBorderId();
-		UInt facetId  = facet_it.getId();
-			
+		UInt borderId    = facet_it.getBorderId();
+		UInt facetId     = facet_it.getId();
+		auto facethi   = facet_it.get_h();
+		auto facetsize = facet_it.getSize();
 		if( M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
 		{
 			// Nitsche formulation for Neumann bcs
 			UInt cellId = facet_it.getSeparatedCellsIds()[0];
-			S.coeffRef(facetId, facetId) += penalty*facet_it.getSize()*facet_it.get_h();
+			const Rigid_Mesh::Cell & cell = M_mesh.getCellsVector()[cellId];
+			auto const Kp = M_mesh.getPropertiesMap().getProperties(cell.getZoneCode()).M_permeability;
+                  auto Kfact=1./(Kp->operator()(0,0)+Kp->operator()(1,1)+Kp->operator()(2,2));
+			auto NitschePenaltyFactor=penalty*facetsize*facethi*Kfact;
+			S.coeffRef(facetId, facetId) += NitschePenaltyFactor;
 			S.coeffRef(numfacetsTot+cellId, facetId) -= facet_it.getSize();
 			S.coeffRef(facetId, numfacetsTot+cellId) -= facet_it.getSize();
-			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())*facet_it.get_h();
-			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+			auto bcToImpose=M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+			rhs[facetId] += NitschePenaltyFactor*bcToImpose;
+			rhs[numfacetsTot+cellId] -= facet_it.getSize()*bcToImpose;// perche`??????????
 		}
 		else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
 		{
@@ -666,15 +672,23 @@ void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
 	{	
 		UInt borderId = facet_it.getBorderId();
 		UInt facetId  = facet_it.getId();
-			
+            auto  facethi   = facet_it.get_h();
+            auto  facetsize = facet_it.getSize();
+
 		if( M_bc.getBordersBCMap().at(borderId).getBCType() == Neumann )
 		{
 			// Nitsche formulation for Neumann bcs
 			UInt cellId = facet_it.getSeparatedCellsIds()[0];
-			M.coeffRef(facetId, facetId) += penalty*facet_it.getSize()*facet_it.get_h();
+                  const Rigid_Mesh::Cell & cell = M_mesh.getCellsVector()[cellId];
+                  auto const Kp = M_mesh.getPropertiesMap().getProperties(cell.getZoneCode()).M_permeability;
+                  auto Kfact=1./(Kp->operator()(0,0)+Kp->operator()(1,1)+Kp->operator()(2,2));
+                  auto NitschePenaltyFactor=penalty*facetsize*facethi*Kfact;
+                  auto bcToImpose=M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+
+			M.coeffRef(facetId, facetId) += NitschePenaltyFactor;
 			B.coeffRef(cellId, facetId) -= facet_it.getSize();
-			rhs[facetId] += penalty*facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid())*facet_it.get_h();
-			rhs[numfacetsTot+cellId] -= facet_it.getSize()*M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+			rhs[facetId] += NitschePenaltyFactor*bcToImpose;
+			rhs[numfacetsTot+cellId] -= facet_it.getSize()*bcToImpose;
 		}
 		else if(M_bc.getBordersBCMap().at(borderId).getBCType() == Dirichlet)
 		{

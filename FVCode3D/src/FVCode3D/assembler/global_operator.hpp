@@ -480,7 +480,7 @@ private:
 	//! The parameter defining the coupling confition, it must be less or equal 1 and greater then 0
 	Real                           xsi;
 	//! The default parameter defining the coupling confition, it must be less or equal 1 and greater then 0
-	static constexpr Real          Default_xsi = 0.75;
+	static constexpr Real          Default_xsi = 0.6666667;
 };
 
 //! Class for assembling a trasmissibility fracture matrix.
@@ -889,7 +889,7 @@ private:
 	//! The penalty coefficient
 	Real penalty;
 	//! The default penalty value
-	static constexpr Real Default_penalty = 1e30;
+	static constexpr Real Default_penalty = 10.0;
 };
 
 
