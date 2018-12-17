@@ -47,7 +47,9 @@ int main(int argc, char * argv[])
     chrono.start();
 
     std::cout << "Read Data from " << dataFileName << "..." << std::flush;
-    DataPtr_Type dataPtr(new Data(dataFileName));
+    //DataPtr_Type dataPtr(new Data(dataFileName));
+    // use global variable
+    dataPtr->load(dataFileName);
     std::cout << " done." << std::endl;
 
     // Now for boundary conditionst and source term

@@ -38,7 +38,12 @@ Data::Data():
     M_theta(0.), M_verbose(true)
 {}
 
-Data::Data(const std::string dataFileName)
+Data::Data(const std::string dataFileName):Data()
+{
+  this->load(dataFileName);
+}
+
+void Data::load(const std::string dataFileName)
 {
     EnumParser<MeshFormatType> parserMeshType;
     EnumParser<NumericalMethodType> parserNumericalMethodType;
@@ -413,6 +418,6 @@ EnumParser<Data::PermeabilityType>::EnumParser()
     M_enumMap[ toUpper( "symtensor" ) ] = Data::PermeabilityType::SymTensor;
     M_enumMap[ toUpper( "arbitrarytensor" ) ] = Data::PermeabilityType::ArbitraryTensor;
 }
-
-
+// Definition of the global namespace variable to hold general parameters for the code
+DataPtr_Type dataPtr(new Data());
 } // namespace FVCode3D

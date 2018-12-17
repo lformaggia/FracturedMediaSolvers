@@ -137,6 +137,8 @@ namespace FVCode3D
      */
     Data(const std::string dataFileName);
 
+    //! Load data from filename
+    void load(const std::string dataFileName);
     //! Copy constructor
     /*!
      * @param data reference of a Data
@@ -826,7 +828,7 @@ namespace FVCode3D
     //! Destructor
     ~Data() {}
 
-protected:
+public:
 
     //! Mesh directory
     std::string M_meshDir;
@@ -1023,6 +1025,10 @@ EnumParser<Data::PermeabilityType>::EnumParser();
  * This type definition permits to handle a std::unique_ptr<Data> as a DataPtr_Type.
  */
 typedef std::unique_ptr<Data> DataPtr_Type;
+
+//! This is a new treatment for Data object. We access them through a namespace global object
+
+extern DataPtr_Type dataPtr;
 
 } // namespace FVCode3D
 

@@ -33,6 +33,13 @@
 {\end{lstlisting}}
 \newcommand{\cpp}[1]{\li! #1 !}
 \begin{document}
+\section{New release 0.2 December 2018}
+
+\begin{itemize}
+\item Added block diagonal preconditioner and preconditioned MinRes iterative methods. 
+\item Bettered specification of data through file.
+\item Now \cpp{dataPtr} is a global variable in the namespace \cpp{FVCode3D}. The data has been made public. This way the addition of features controlled by file is eased greatly. The datafile is loaded in the main and the variable \cpp{dataPtr} is accessible to all translation units that include \cpp{Data.hpp}.
+\end{itemize}
 \section{New release 0.1, October 2018}
 This release has several enhancements. First of all permeabilities, porosity and fracture aperture  are given 
 via the data file and they may be specified by zones. See the \li!data.txt! file in the examples.
