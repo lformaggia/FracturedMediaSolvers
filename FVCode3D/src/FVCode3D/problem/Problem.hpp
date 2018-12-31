@@ -254,7 +254,16 @@ Problem(const std::string solver, const Rigid_Mesh & mesh, const BoundaryConditi
     isSymUndef( (data->getpreconType()=="HSS") ? -1 : 1 ),
     M_quadrature(nullptr),
     M_solver( SolverHandler::Instance().getProduct(solver) )
-	{} // Problem
+    {
+     {
+      auto ptra = dynamic_cast<imlGMRES*>(M_solver.get());
+      if(ptra) ptra->set_m(data->getRestart());
+     }
+     {
+       auto ptra = dynamic_cast<imlFGMRES*>(M_solver.get());
+       if(ptra) ptra->set_m(data->getRestart());
+      }
+     } // Problem
 
 } // namespace FVCode3D
 

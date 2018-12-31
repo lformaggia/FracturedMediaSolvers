@@ -38,7 +38,9 @@ FVCode3D::dumpApproximateSchurMatrix (const SaddlePointMat& SP, bool lumping)
        MRed=ML.asDiagonal();
      }
    else
+     {
      MRed=SP.getM().diagonal().asDiagonal();
+     }
      FVCode3D::SpMat AShur=- SP.getB() * MRed.inverse() * SP.getB().transpose();
      AShur+=SP.getT();
      bool status{true};

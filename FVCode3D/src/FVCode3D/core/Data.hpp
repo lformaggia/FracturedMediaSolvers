@@ -922,7 +922,7 @@ public:
     //! Tolerance of the iterative solver
     Real M_tol;
     //! restart (for GMRES and FGMRES)
-    UInt M_restart;
+    UInt M_restart=100u;
     //! The preconditioner
     std::string M_precon;
     //! Lumping or Diagonal?
@@ -949,6 +949,7 @@ public:
      * If true all matrices are dumped in matrixmarket format
      */
     bool M_dumpMatrix{false};
+private:
     //! Utility to read fracture porosity and aperture data
     std::tuple<double,double> fracturePorosityAndAperture(int const & zoneNumber) const;
 };
