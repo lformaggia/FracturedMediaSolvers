@@ -906,7 +906,7 @@ UInt Rigid_Mesh::Cell::adjacentFacet (const Edge & edge, const UInt IdFac) const
 		error << "Error in adjacentFacet method: the edge is not in the facet.";
 		throw std::runtime_error(error.str());		
 	}
-	UInt adjFacet;
+	UInt adjFacet{0};
 	for(auto & facetId:edge.getSeparatedFacetsIds())
 	{
 		auto FacetIt = find(M_facetsIds.begin(),M_facetsIds.end(),facetId);
