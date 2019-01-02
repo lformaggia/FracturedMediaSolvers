@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <cctype>
 
 namespace FVCode3D
 {
@@ -34,7 +35,7 @@ namespace FVCode3D
   inline std::string toUpper ( const std::string& _string )
   {
     std::string out( _string );
-    std::transform( std::begin( out ), std::end( out ), std::begin( out ), ::toupper );
+    std::transform( std::begin( out ), std::end( out ), std::begin( out ), [](unsigned char c){return std::toupper(c);});
     return out;
 } // toUpper
   
