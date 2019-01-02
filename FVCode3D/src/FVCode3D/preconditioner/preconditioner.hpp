@@ -462,7 +462,7 @@ private:
  * This class builds up a ILU preconditioner where the M block is approximated via its diagonal part
  * and the SC is approximated through the inverse of the diagonal part of M.
  * The SC linear system is solved through the Eigen CG.
- * @todo again it is better to have the version for the lumped
+ *
 */
 class ILU_preconditioner: public preconditioner
 {

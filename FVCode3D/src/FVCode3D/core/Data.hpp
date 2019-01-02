@@ -505,7 +505,7 @@ namespace FVCode3D
 
     //! Get restart (only for GMRES and FGMRES)
     //! @return the restart for GMRES(m) and FGMRES(m)
-    //! @todo This method is never used, I need to fix it.
+    //!
      UInt getRestart(){return M_restart;}
 
     //! Get theta angle
