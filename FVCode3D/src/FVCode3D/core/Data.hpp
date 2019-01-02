@@ -283,7 +283,7 @@ namespace FVCode3D
     //! Get if the stiffness matrix in the mimetic method is lumped
     /*!
      * @return lumped true if the stiffness matrix is lumped
-     * @todo This method is never called. We need to fix it!
+     * This method is never called. We need to fix it!
      */
     bool getLumpedMimetic() const { return M_lumpedMim; }
 
