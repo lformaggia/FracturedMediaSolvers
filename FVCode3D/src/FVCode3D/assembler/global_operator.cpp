@@ -740,7 +740,7 @@ void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) cons
                     auto i = it.row();
                     auto j = it.col();
                     // @todo take it away when you are sure
-                    if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
+                    //if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
                     if(i!=j)
                       {
                         rhs[i]-=M.coeff(i,j)*bcToImpose;
@@ -753,7 +753,7 @@ void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) cons
                     auto i = it.row();
                     auto j = it.col();
                     // @todo take it away when you are sure
-                    if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
+                    //if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
                     rhs[i+numfacetsTot]-=B.coeff(i,j)*bcToImpose;
                     // I could use prune also on B, but it seems simpler to just set the value to zero
                     B.coeffRef(i,facetId)=0.;
@@ -778,13 +778,14 @@ void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) cons
          std::cout<<"Pruning inner product matrix to impose BC strongly. it may take time"<<std::endl;
          M.prune(keep);
          std::cout<<"Done"<<std::endl;
-         /* Here if I want to use prune also on B
-         auto keepB = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
+         //Here if I want to use prune also on B
+         std::cout<<"Pruning B matrix to impose BC strongly. it may take time"<<std::endl;
+         auto keepB = [&bcFacets](const SpMat::Index & , const SpMat::Index & j, const SpMat::Scalar &)
          {
             return !bcFacets[j];
          };
          B.prune(keepB);
-         */
+         std::cout<<"Done"<<std::endl;
 }
 
 
