@@ -833,7 +833,7 @@ void ImporterForSolver::import(bool fracturesOn)
         facetsRef.emplace( std::piecewise_construct, std::forward_as_tuple(i),
                            std::forward_as_tuple(&M_mesh, tmp,
                            isFrac*static_cast<UInt>(fracturesOn)*zone, bcId) );
-        if (isFrac*static_cast<UInt>(fracturesOn))
+        if (isFrac && static_cast<UInt>(fracturesOn))
         {
             prop.setProperties(aperture, porosity, permPtr);
             M_properties.setZone(zone, prop);
