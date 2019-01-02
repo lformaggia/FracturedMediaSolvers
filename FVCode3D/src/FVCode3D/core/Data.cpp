@@ -125,7 +125,8 @@ void Data::load(const std::string dataFileName)
     M_restart=dataFile("solver/iterative/restart",100);
 
     M_theta = dataFile("bc/theta", 0.);
-
+    M_bcStrategy = static_cast<BcStrategy>(dataFile("bc/strategy", 0));
+    M_Nitsche=dataFile("bc/nitscheParameter", 100.);
     M_verbose = static_cast<bool>(dataFile("miscellaneous/verbose", 1));
 
     std::tie(this->M_bulkPermeabilityData,this->M_fracturePermeabilityData)
@@ -322,7 +323,8 @@ void Data::showMe( std::ostream & output ) const
          output<<"\n";
          output<<"Porosity: "<<std::get<1>(this->M_fractureData[i])<<"Aperture: "<<std::get<2>(this->M_fractureData[i])<<"\n";
        }
-
+    output<<"BC imposition strategy: "<<(M_bcStrategy==Nitsche?"Nitsche penalization":"Strong imposition")<<std::endl;
+    if (M_bcStrategy==Nitsche) output<<"Nitsche penalization parameter= "<<M_Nitsche<<std::endl;
 }
 
 std::tuple<double,double> Data::fracturePorosityAndAperture(int const & zoneNumber) const

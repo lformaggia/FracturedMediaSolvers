@@ -16,6 +16,7 @@
 #include <FVCode3D/core/BasicType.hpp>
 #include <Eigen/LU>
 #include <unsupported/Eigen/SparseExtra>
+#include <FVCode3D/core/Data.hpp>
 
 namespace FVCode3D
 {
@@ -857,12 +858,41 @@ public:
     
     //! Assemble bulk bc in block matrices M and B.
     /*!
-     * Assemble Neumann bcs through Nitshce approach and Dirichlet directly on the rhs.
-     * @param S The monolithic matrix
+     * Assemble Neumann bcs through Nitsche approach and Dirichlet directly on the rhs.
+     * @param M mimetic inner product matrix
+     * @param B divergence matrix
      * @param rhs The rhs of the system
      */
-    void ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const; 
-    
+    void ImposeBConBulkNitsche(SpMat & M, SpMat & B, Vector & rhs) const;
+    //! Assemble bulk bc in block matrices M and B.
+     /*!
+      * Assemble Neumann bcs on velocity using strong  imposition and Dirichlet directly on the rhs.
+      * @param M mimetic inner product matrix
+      * @param B divergence matrix
+      * @param rhs The rhs of the system
+      */
+     void ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) const;
+
+    //! Assemble bulk bc in block matrices M and B.
+       /*!
+        * Assemble bcs through Nitsche or Strong imposition according to the content of
+        * dataPtr->bcStrategy
+        * @param M mimetic inner product matrix
+        * @param B divergence matrix
+        * @param rhs The rhs of the system
+        */
+     void ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
+     {
+       if(FVCode3D::dataPtr->M_bcStrategy==Data::Nitsche)
+         {
+           ImposeBConBulkNitsche(M, B, rhs);
+         }
+       else
+         {
+           ImposeBConBulkStrong(M, B, rhs);
+         }
+     }
+
     //! Assemble bcs on fractures acting on the system matrix.
     /*!
      * Assemble the Neumann bcs imposing the flux, the Dirichlet through ghost-cells.

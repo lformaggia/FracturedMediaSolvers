@@ -70,6 +70,8 @@ compressibility = 1.                 # compressibility of the fluid
 
 [bc]
 theta       = 0.                     # rotation to apply to grid around the z
+strategy    = 0                      # 0 strong  1 Nitsche penalization
+nitscheParameter=100.                # used only if strategy=1  
 [bc/Left]
 type=0   # 0 Dirichlet 1 Neumann
 f=fOne
@@ -100,7 +102,7 @@ type    = imlGMRES               # EigenCholesky , EigenLU , EigenUmfPack , imlC
 	                               #  Identity, Diagonal and BlockDiagonal are sdp, so can be used with MINRES solver
 	lumped         = 0             # 1 perform lumping of mimetic inner product to construct approx shur
 	                               # 0 use diagonal of mimetic inner product to construct approx shur
-	restart        =100            # restart level for GMRES(m) and FGMRES(m) NOT YET IMPLEMENTED
+	restart        =100            # restart level for GMRES(m) and FGMRES(m)
 # Solver used for the incomplete shur complement (Chowleski, Umfpack, CG) NOT YET IMPLEMENTED
 # Chowleski (the default) in fact implements a sparse LDLT decomposition
     innerIteratorSolver = Chowleski 

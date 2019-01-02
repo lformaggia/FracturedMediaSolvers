@@ -8,7 +8,6 @@
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/assembler/global_operator.hpp>
 #include <FVCode3D/assembler/SaddlePoint.hpp>
-
 namespace FVCode3D
 {
 	
@@ -52,6 +51,8 @@ void SaddlePoint_StiffMatHandler::assemble()
 
 	// Define the BCs imposition object
 	BCimposition BCimp(M_mesh, M_bc);
+	// Set Nitsche parameter in case of bc via penalization
+	BCimp.set_penalty(dataPtr->M_Nitsche);
 	// Impose BCs on bulk
 	BCimp.ImposeBConBulk(M, B, M_b);
 	// Impose BCs in fractures

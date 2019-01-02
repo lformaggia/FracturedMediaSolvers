@@ -49,8 +49,8 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 	// This is to take into account the decoupling of fractures facets
 	if( M_mesh.getFacetsVector()[i].isFracture() && (cell.getAlpha(i)<0) )
 		i = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[i].getFractureFacetId();
-	
-	if( Mp(iloc,iloc) != 0. )
+	// add row offset
+	if( Mp(iloc,iloc) != 0. ) // this in practice should never happen!
 			S.coeffRef(rowoff + i,coloff + i) += Mp(iloc,iloc);
 
 	for(UInt jloc=iloc+1; jloc<cell.getFacetsIds().size(); ++jloc)
@@ -61,8 +61,8 @@ void global_InnerProduct::assembleFace(const UInt iloc, const Mat & Mp, const Ri
 			j = M_mesh.getFacetsVector().size() + M_mesh.getFacetsVector()[j].getFractureFacetId();
 		if (Mp(iloc,jloc) != 0.)
 		{
-			S.coeffRef(rowoff + i,coloff + j) += Mp(iloc,jloc);
-			S.coeffRef(rowoff + j,coloff + i) += Mp(iloc,jloc);
+		    S.coeffRef(rowoff + i,coloff + j) += Mp(iloc,jloc);
+		    S.coeffRef(rowoff + j,coloff + i) += Mp(iloc,jloc);
 		} 
 	}
 }
@@ -664,7 +664,7 @@ void BCimposition::ImposeBConBulk(SpMat & S, Vector & rhs) const
 	}	
 }
 
-void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
+void BCimposition::ImposeBConBulkNitsche(SpMat & M, SpMat & B, Vector & rhs) const
 {
 	UInt numfacetsTot = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size();
 	
@@ -701,6 +701,85 @@ void BCimposition::ImposeBConBulk(SpMat & M, SpMat & B, Vector & rhs) const
 		}
 	}	
 }
+
+void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) const
+{
+      UInt numfacetsTot = M_mesh.getFacetsVector().size()+M_mesh.getFractureFacetsIdsVector().size();
+      std::vector<bool> bcFacets(M.rows(),false);
+      /*!
+       *  @note at the moment it works only if matrices are stored in columnwise format
+       *  For the matrix M is in fact irrelevant since M is symmetric
+       *  But I have to access the columns of B to correct the rhs and the most efficient way
+       *  if the matrix is in column-wise format is to iterate over the inner iterator, which
+       *  in this case goes through the row of the column.
+       *  If in the future one wants the matrices in row-wise format you need to use prune also
+       *  to correct the rhs for B, much less efficient.
+       */
+      static_assert(!SpMat::IsRowMajor,"Strong imposition of velocity BC requires column-wise ordering of matrices");
+
+      // go through all facets (velocity dofs) on the boundary
+      for( auto facet_it : M_mesh.getBorderFacetsIdsVector() )
+      {
+            // Get the id of the boundary
+            UInt borderId = facet_it.getBorderId();
+            // Get the id of the facet
+            UInt facetId  = facet_it.getId();
+            // Get the value of the data relative to that boundary
+            auto const & borderData=M_bc.getBordersBCMap().at(borderId);
+            if( borderData.getBCType() == Neumann )
+            {
+                // value to be imposed
+                auto bcToImpose=borderData.getBC()(facet_it.getCentroid());
+                // Mark the facet for later use
+                bcFacets[facetId]=true;
+                // Correct Rhs to impose the bc (I keep the diagonal term of M as coefficient)
+                rhs[facetId]=M.coeff(facetId,facetId)*bcToImpose;
+                // now correct other rows
+                for (SpMat::InnerIterator it(M,facetId);it;++it)
+                  {
+                    auto i = it.row();
+                    auto j = it.col();
+                    // @todo take it away when you are sure
+                    if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
+                    rhs[i]-=M.coeff(i,j)*bcToImpose;
+                  }
+                for (SpMat::InnerIterator it(B,facetId);it;++it)
+                  {
+                    auto i = it.row();
+                    auto j = it.col();
+                    // @todo take it away when you are sure
+                    if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
+                    rhs[i+numfacetsTot]-=B.coeff(i,j)*bcToImpose;
+                    // I could use prune also on B, but it seems simpler to just set the value to zero
+                    B.coeffRef(i,facetId)=0.;
+                  }
+                // clears rows and columns of M corresponding to bc imposition
+                  auto keep = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
+                  {
+                     return (!bcFacets[i] && !bcFacets[j]) || (i==j);
+                  };
+                  M.prune(keep);
+                  /* Here if I want to use prune also on B
+                  auto keepB = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
+                  {
+                     return !bcFacets[j];
+                  };
+                  B.prune(keepB);
+                  */
+            }
+            else if(borderData.getBCType() == Dirichlet)
+            {
+                  // Impose Dirichlet BC on the rhs
+                  Real pD = M_bc.getBordersBCMap().at(borderId).getBC()(facet_it.getCentroid());
+                  const Real facetMeasure = facet_it.getSize();
+                  const Rigid_Mesh::Cell & cell = M_mesh.getCellsVector()[ facet_it.getSeparatedCellsIds()[0] ];
+                  const Real alpha = cell.getAlpha(facetId);
+                  rhs[facetId] = - alpha * facetMeasure * pD;
+            }
+      }
+}
+
+
 
 void BCimposition::ImposeBConFracture(SpMat & S, Vector & rhs, FluxOperator & Fo) const
 {

@@ -84,10 +84,14 @@ namespace FVCode3D
     enum class NoiseOn
     {
       Matrix          = 0,
-        Fractures       = 1,
-        All             = 2
-        };
-    
+      Fractures       = 1,
+      All             = 2
+      };
+    enum BcStrategy
+    {
+      Strong = 0,
+      Nitsche= 1
+    };
     //! Define where to apply the source/sink term
     /*!
      * @enum SourceSinkOn
@@ -949,6 +953,11 @@ public:
      * If true all matrices are dumped in matrixmarket format
      */
     bool M_dumpMatrix{false};
+    //! Strategy for bc imposition
+    BcStrategy M_bcStrategy=Nitsche;
+    //! Nitsche penalization parameter
+    double M_Nitsche=100.;
+    //
 private:
     //! Utility to read fracture porosity and aperture data
     std::tuple<double,double> fracturePorosityAndAperture(int const & zoneNumber) const;

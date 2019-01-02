@@ -13,7 +13,8 @@
 #include <FVCode3D/mesh/RigidMesh.hpp>
 #include <FVCode3D/preconditioner/preconditioner.hpp>
 #include <FVCode3D/boundaryCondition/BC.hpp>
-
+#include <FVCode3D/core/Data.hpp>
+#include <map>
 namespace FVCode3D
 {
 
@@ -39,7 +40,11 @@ public:
         @param b The rhs
     */
     SaddlePoint_StiffMatHandler(const Rigid_Mesh & pmesh, SaddlePointMat & Msp, Vector & b, const BoundaryConditions & bc):
-        M_mesh(pmesh), M_SP(Msp), M_b(b), M_bc(bc){}
+        M_mesh(pmesh), M_SP(Msp), M_b(b), M_bc(bc)
+      {
+      // Get the strategy
+      this->M_bcStrategy=dataPtr->M_bcStrategy;
+      }
     //! No Copy-Constructor
     SaddlePoint_StiffMatHandler(const SaddlePoint_StiffMatHandler &) = delete;
     //! No Empty-Constructor
@@ -191,7 +196,20 @@ public:
 		M_SP.resize(Mdim,Brow);
 		M_b.resize(Mdim+Brow);
 	}
-        
+    /*!
+     * Enquire about the strategy used to imose boundary conditions.
+     * It affects only conditions on velocity
+     *
+     * Strong: imposition by modifying the linear system so that conditions on velocity
+     * are imposed exactly
+     * Nitsche: imposition by consistent penalization. See paper by A. Scotti and D'Angelo
+     *
+     * @return An enum containing either Nitsche or Strong
+     */
+    Data::BcStrategy getbcStrategy() const
+    {
+      return M_bcStrategy;
+    }
     //! Assemble method
     /*!
      * Assemble the block matrices M, B and T
@@ -203,11 +221,12 @@ private:
 	//! Const reference to the rigid mesh
 	const Rigid_Mesh              & M_mesh; 
     //! A reference to the saddle point matrix
-    SaddlePointMat                & M_SP;
+      SaddlePointMat                & M_SP;
 	//! A reference to the rhs of the system
 	Vector                        & M_b;
 	//! Constant reference to the boundary conditions
-	const BoundaryConditions      &	M_bc; 
+	const BoundaryConditions      & M_bc;
+	Data::BcStrategy M_bcStrategy;
 };
 
 } //FVCode3D
