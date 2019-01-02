@@ -741,7 +741,12 @@ void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) cons
                     auto j = it.col();
                     // @todo take it away when you are sure
                     if (j!=static_cast<int>(facetId)) std::cerr<<"Something strange. Wrong imposition of bc";
-                    rhs[i]-=M.coeff(i,j)*bcToImpose;
+                    if(i!=j)
+                      {
+                        rhs[i]-=M.coeff(i,j)*bcToImpose;
+                        M.coeffRef(i,j)=0.; //clear column element
+                        M.coeffRef(j,i)=0.; // clear row element
+                      }
                   }
                 for (SpMat::InnerIterator it(B,facetId);it;++it)
                   {
@@ -753,20 +758,7 @@ void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) cons
                     // I could use prune also on B, but it seems simpler to just set the value to zero
                     B.coeffRef(i,facetId)=0.;
                   }
-                // clears rows and columns of M corresponding to bc imposition
-                  auto keep = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
-                  {
-                     return (!bcFacets[i] && !bcFacets[j]) || (i==j);
-                  };
-                  M.prune(keep);
-                  /* Here if I want to use prune also on B
-                  auto keepB = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
-                  {
-                     return !bcFacets[j];
-                  };
-                  B.prune(keepB);
-                  */
-            }
+             }
             else if(borderData.getBCType() == Dirichlet)
             {
                   // Impose Dirichlet BC on the rhs
@@ -777,6 +769,22 @@ void BCimposition::ImposeBConBulkStrong(SpMat & M, SpMat & B, Vector & rhs) cons
                   rhs[facetId] = - alpha * facetMeasure * pD;
             }
       }
+      // clears rows and columns of M corresponding to bc imposition
+         auto keep = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
+         {
+            return (!bcFacets[i] && !bcFacets[j]) || (i==j);
+         };
+         //! @note pruning is not strictly necessary. It may save execution time
+         std::cout<<"Pruning inner product matrix to impose BC strongly. it may take time"<<std::endl;
+         M.prune(keep);
+         std::cout<<"Done"<<std::endl;
+         /* Here if I want to use prune also on B
+         auto keepB = [&bcFacets](const SpMat::Index & i, const SpMat::Index & j, const SpMat::Scalar &)
+         {
+            return !bcFacets[j];
+         };
+         B.prune(keepB);
+         */
 }
 
 
